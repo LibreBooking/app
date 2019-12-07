@@ -54,7 +54,8 @@ function AttributeManagement(opts) {
 
     AttributeManagement.prototype.init = function () {
 
-        $(".save").click(function () {
+        $(".save").click(function (e) {
+            e.preventDefault();
             $(this).closest('form').submit();
         });
 
@@ -94,7 +95,8 @@ function AttributeManagement(opts) {
             elements.appliesTo.text(options.allText);
             elements.secondaryPrompt.text(options.allText);
             elements.appliesToId.val('');
-            elements.addDialog.modal('show');
+            elements.addDialog.modal('open');
+            M.updateTextFields();
         });
 
         elements.attributeType.on('change', function () {
@@ -160,6 +162,8 @@ function AttributeManagement(opts) {
             if (elements.limitScope.is(':checked')) {
                 elements.attributeSecondary.removeClass('no-show');
             }
+
+            $('#attributeSecondaryCategory').formSelect();
         });
 
         elements.secondaryAttributeCategory.change(function (e) {
@@ -222,18 +226,18 @@ function AttributeManagement(opts) {
 
     var addAttributeHandler = function () {
         elements.addForm.resetForm();
-        elements.addDialog.modal('hide');
+        elements.addDialog.modal('close');
         RefreshAttributeList();
     };
 
     var editAttributeHandler = function () {
         elements.form.resetForm();
-        elements.editDialog.modal('hide');
+        elements.editDialog.modal('close');
         RefreshAttributeList();
     };
 
     var deleteAttributeHandler = function () {
-        elements.deleteDialog.modal('hide');
+        elements.deleteDialog.modal('close');
         RefreshAttributeList();
     };
 
@@ -297,12 +301,13 @@ function AttributeManagement(opts) {
 
         setActiveId(selectedAttribute.id);
 
-        elements.editDialog.modal('show');
+        elements.editDialog.modal('open');
+        M.updateTextFields();
     };
 
     var showDeleteDialog = function (selectedAttributeId) {
         setActiveId(selectedAttributeId);
-        elements.deleteDialog.modal('show');
+        elements.deleteDialog.modal('open');
     };
 
     var defaultSubmitCallback = function (form) {
@@ -331,15 +336,19 @@ function AttributeManagement(opts) {
             $('.secondaryEntities, .attributeSecondary').addClass('no-show');
             $('.attributeIsPrivate').hide();
         }
+
+        M.updateTextFields();
     };
 
     var showEntities = function (element, categoryId, selectedIds, formName) {
         //var selectedIds = [];
+        var linkPosition = element.position();
+        var linkOffset = element.offset();
         elements.appliesToId.find('input:checkbox').removeAttr('checked');
 
         selectedEntityChoices.empty();
-        selectedEntityChoices.css({left: element.position().left, top: element.position().top + element.height()});
         selectedEntityChoices.show();
+        selectedEntityChoices.css({left: linkPosition.left, top: linkOffset.top - element.height()});
 
         $('<div class="ajax-indicator">&nbsp;</div>').appendTo(selectedEntityChoices).show();
 
@@ -357,16 +366,18 @@ function AttributeManagement(opts) {
             data = getResourceTypes();
         }
 
-        var items = ['<li><a href="#" class="all">' + options.allText + '</a> <a href="#" class="ok">OK</a></li>'];
+        var items = ['<li><a href="#" class="all">' + options.allText + '</a> | <a href="#" class="ok">OK</a></li>'];
         $.each(data, function (index, item) {
             var checked = '';
             if (selectedIds.indexOf(item.Id) !== -1) {
                 checked = ' checked="checked" ';
             }
-            items.push('<li><label><input type="checkbox" name="' + formName + '[]" value="' + item.Id + '"' + checked + ' data-text="' + item.Name.replace(/"/g, '&quot;') + '"/>' + item.Name + '</label></li>');
+            items.push('<li><label><input type="checkbox" name="' + formName + '[]" value="' + item.Id + '"' + checked + ' data-text="' + item.Name.replace(/"/g, '&quot;') + '"/><span>' + item.Name + '</span></label></li>');
         });
 
         selectedEntityChoices.empty();
+
+        M.updateTextFields();
 
         $('<div/>', {'class': '', html: items.join('')}).appendTo(selectedEntityChoices);
     };

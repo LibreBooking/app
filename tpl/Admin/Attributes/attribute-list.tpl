@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<h3>{$Attributes|count} {translate key=Attributes}</h3>
+<h5>{$Attributes|count} {translate key=Attributes}</h5>
 {if $Attributes|count > 0}
 	<table class="table">
 		<thead>
