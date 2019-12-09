@@ -29,6 +29,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationBasic
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ExistingResourceAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationDateTimeRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationOverlappingRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationStartTimeRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/PermissionValidationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationRuleResult.php');

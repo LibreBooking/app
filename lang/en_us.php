@@ -833,6 +833,7 @@ class en_us extends Language
 		$strings['ConflictingAccessoryDates'] = 'There are not enough of the following accessories:';
 		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources.';
 		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
+		$strings['InstancesOverlapRule'] = 'Some instances of the reservation series overlap:';
 		$strings['StartDateBeforeEndDateRule'] = 'The start date and time must be before the end date and time.';
 		$strings['StartIsInPast'] = 'The start date and time cannot be in the past.';
 		$strings['EmailDisabled'] = 'The administrator has disabled email notifications.';
