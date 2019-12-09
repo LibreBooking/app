@@ -2676,8 +2676,25 @@ td.update {
 #page-manage-quotas .dateinput {
   width: 80px;
 }
-#importInstructions {
-  font-size: 0.8em;
+.permissionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#groupsDialog .title {
+  font-weight: 600;
+}
+#groupsDialog .title:not(:first-of-type) {
+  margin-top: 1rem;
+}
+#groupsDialog .badge {
+  background-color: #D5DED9;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+#groupsDialog .group-item {
+  cursor: pointer;
 }
 #page-manage-resource-groups #groupName {
   width: 80%;

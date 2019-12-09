@@ -787,6 +787,8 @@ class en_us extends Language
         $strings['EndTime'] = 'End Time';
         $strings['New'] = 'New';
         $strings['Updated'] = 'Updated';
+        $strings['GroupMembership'] = 'Group Membership';
+        $strings['AvailableGroups'] = 'Available Groups';
         // End Strings
 
 		// Install

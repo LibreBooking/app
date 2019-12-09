@@ -509,9 +509,9 @@ td.update {
 }
 
 
-  .days, .hours, .minutes, .credits {
-    width: 80px !important;
-  }
+.days, .hours, .minutes, .credits {
+  width: 80px !important;
+}
 
 .popover {
   max-width: 500px;
@@ -602,8 +602,29 @@ td.update {
   }
 }
 
-#importInstructions {
-  font-size: .8em;
+.permissionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#groupsDialog {
+  .title {
+    font-weight: 600;
+  }
+
+  .title:not(:first-of-type) {
+    margin-top: 1rem;
+  }
+
+  .badge {
+    background-color: @blue-gray;
+    .rounded()
+  }
+
+  .group-item {
+    cursor: pointer;
+  }
 }
 
 #page-manage-resource-groups {

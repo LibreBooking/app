@@ -79,14 +79,17 @@ function UserManagement(opts) {
 		});
 
 		elements.userList.delegate('.resetPassword', 'click', function (e) {
-			elements.passwordDialog.find(':password').val('');
-			elements.passwordDialog.modal('show');
+			elements.passwordDialog.modal('open');
+			var passwordInput = $("#updatePassword");
+            passwordInput.val('');
+            passwordInput.focus();
+            M.updateTextFields();
 		});
 
 		elements.userList.delegate('.changeColor', 'click', function (e) {
 			var user = getActiveUser();
 			elements.colorValue.val(user.reservationColor);
-			elements.colorDialog.modal('show');
+			elements.colorDialog.modal('open');
 		});
 
 		elements.userList.delegate('.edit', 'click', function () {
@@ -150,17 +153,17 @@ function UserManagement(opts) {
 
         elements.checkAllResourcesFull.click(function(e){
             e.preventDefault();
-            elements.permissionsDialog.find('.full').prop('selected', true)
+            elements.permissionsDialog.find('.full').prop('selected', true);
         });
 
         elements.checkAllResourcesView.click(function(e){
             e.preventDefault();
-            elements.permissionsDialog.find('.view').prop('selected', true)
+            elements.permissionsDialog.find('.view').prop('selected', true);
         });
 
         elements.checkNoResources.click(function(e){
             e.preventDefault();
-            elements.permissionsDialog.find('.none').prop('selected', true)
+            elements.permissionsDialog.find('.none').prop('selected', true);
         });
 
 		$(".save").click(function () {
@@ -177,19 +180,19 @@ function UserManagement(opts) {
 
 		$('#add-user').click(function (e) {
 			e.preventDefault();
-			elements.addDialog.modal('show');
+			elements.addDialog.modal('open');
 		});
 
 		$('#invite-users').click(function (e) {
 			e.preventDefault();
-			elements.invitationDialog.modal('show');
+			elements.invitationDialog.modal('open');
 		});
 
 		$('#import-users').click(function (e) {
 			e.preventDefault();
             $('#importErrors').empty().addClass('no-show');
 			$('#importResults').addClass('no-show');
-			elements.importUsersDialog.modal('show');
+			elements.importUsersDialog.modal('open');
 		});
 
 		elements.deleteMultiplePrompt.click(function(e){
@@ -198,7 +201,7 @@ function UserManagement(opts) {
 			elements.deleteMultipleCount.text(checked.length);
 			elements.deleteMultiplePlaceHolder.empty();
 			elements.deleteMultiplePlaceHolder.append(checked.clone());
-			elements.deleteMultipleDialog.modal('show');
+			elements.deleteMultipleDialog.modal('open');
 		});
 
 		elements.deleteMultipleSelectAll.click(function(e) {
@@ -225,14 +228,14 @@ function UserManagement(opts) {
 		};
 
 		var hideDialog = function (dialogElement) {
-			dialogElement.modal('hide');
+			dialogElement.modal('close');
 		};
 
 		var hideDialogCallback = function (dialogElement) {
 			return function () {
 				hideDialog(dialogElement);
 				window.location.reload();
-			}
+			};
 		};
 
 		var error = function (errorText) {
@@ -260,7 +263,7 @@ function UserManagement(opts) {
 
 		var inviteHandler = function(responseText, form) {
 			elements.inviteEmails.val('');
-			elements.invitationDialog.modal('hide');
+			elements.invitationDialog.modal('close');
 		};
 
 		$('#addOrganization').orgAutoComplete(options.orgAutoCompleteUrl);
@@ -356,7 +359,7 @@ function UserManagement(opts) {
             elements.groupCount.text(count);
 		});
 
-		elements.groupsDialog.modal('show');
+		elements.groupsDialog.modal('open');
 	};
 
 	var changeGroup = function (action, groupId) {
@@ -380,7 +383,7 @@ function UserManagement(opts) {
                 elements.permissionsForm.find('#permission_' + value).val(value + '_1');
             });
 
-            elements.permissionsDialog.modal('show');
+            elements.permissionsDialog.modal('open');
         });
 	};
 
@@ -407,10 +410,12 @@ function UserManagement(opts) {
 		$('#organization').val(user.organization);
 		$('#position').val(user.position);
 
-		elements.userDialog.modal('show');
+		elements.userDialog.modal('open');
+        M.updateTextFields();
+        $('#username').focus();
 	};
 
 	var deleteUser = function () {
-		elements.deleteDialog.modal('show');
+		elements.deleteDialog.modal('open');
 	};
 }

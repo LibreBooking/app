@@ -494,7 +494,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
             </div>
             <div class="modal-content">
-                <div id="addResourceResults" class="card warning no-show"></div>
+                <div class="card warning no-show">
+                    <div id="addResourceResults" class="card-content"></div>
+                </div>
 
                 <div class="input-field">
                     <label for="resourceName">{translate key='Name'} *</label>
@@ -1669,8 +1671,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
                 </div>
                 <div class="margin-bottom-25">
-                    <label for="resourceImportFile" class="no-show">Resource Import File</label>
-                    <input type="file" {formname key=RESOURCE_IMPORT_FILE} id="resourceImportFile"/>
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span class="fa fa-file"></span>
+                            <input type="file" {formname key=RESOURCE_IMPORT_FILE} id="resourceImportFile" accept=".csv"/>
+                            <label for="resourceImportFile" class="no-show">Resource Import File</label>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" id="resourceImportFilePath">
+                            <label for="resourceImportFilePath" class="no-show">Resource Import File</label>
+                        </div>
+                    </div>
                     <div>
                         <label for="updateOnImport">
                             <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
@@ -1680,15 +1691,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
                 <div id="importInstructions" class="alert alert-info">
                     <div class="note">{translate key=ResourceImportInstructions}</div>
-                    <a href="{$smarty.server.SCRIPT_NAME}?dr=template"
-                       download="{$smarty.server.SCRIPT_NAME}?dr=template"
-                       target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
                 </div>
             </div>
             <div class="modal-footer">
+                <div class="left">
+                    <a href="{$smarty.server.SCRIPT_NAME}?dr=template"
+                       download="{$smarty.server.SCRIPT_NAME}?dr=template"
+                       target="_blank" class="btn btn-white waves-effect waves-light">{translate key=GetTemplate} <span
+                                class="fa fa-download"></span></a>
+                </div>
+                <div class="right">
                 {cancel_button}
                 {add_button key=Import}
                 {indicator}
+                </div>
+                <div class="clearfix"></div>
             </div>
         </form>
     </div>
