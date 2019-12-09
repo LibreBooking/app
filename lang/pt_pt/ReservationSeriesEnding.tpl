@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2019 Nick Korbel
+Copyright 2013-2019 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,39 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
-	Detalhes da Reserva:
+A série de reservas recorrentes de {$ResourceName} irá terminar em {formatdate date=$StartDate key=reservation_email}.<br/>
+Detalhes da reserva:
 	<br/>
 	<br/>
-
-	Utilizador: {$UserName}
 	Início: {formatdate date=$StartDate key=reservation_email}<br/>
 	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
 	Recurso: {$ResourceName}<br/>
-
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
-
 	Título: {$Title}<br/>
-	Descrição: {$Description}<br/>
-
-	{if count($RepeatDates) gt 0}
-		<br/>
-		A reserva ocorre nas seguintes datas:
-		<br/>
-	{/if}
-
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
-
-	{if $RequiresApproval}
-		<br/>
-		Um ou mais recursos reservados requerem aprovação antes do uso. Certifique-se que este pedido de reserva é aprovado ou rejeitado.
-	{/if}
-
-	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> | <a href="{$ScriptUrl}">Entrar no Booked Scheduler</a>
-
+	Descrição: {$Description|nl2br}
+<br/>
+<br/>
+<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
+<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>

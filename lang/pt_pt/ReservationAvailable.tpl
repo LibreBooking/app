@@ -16,13 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-Aqui está a sua senha temporária em {$AppTitle} senha: {$TemporaryPassword}
-
-<br/>
-
-A senha antiga já não irá funcionar.
+{$FirstName},<br/>
+{$ResourceName} está atualmente disponível entre {formatdate date=$StartDate key=res_popup} e {formatdate date=$EndDate key=res_popup}
 <br/>
 <br/>
-
-Por favor <a href="{$ScriptUrl}">Entre em {$AppTitle}</a> mude a sua senha o mais cedo possível.
-
+<a href="{$ScriptUrl}/{$ReservationUrl}">Reserve agora</a> |
+<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
