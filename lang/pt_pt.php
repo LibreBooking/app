@@ -51,8 +51,11 @@ class pt_pt extends en_gb
         $dates['momentjs_datetime'] = 'D/M/YY H:mm';
 		$dates['calendar_time'] = 'H:mm';
 		$dates['calendar_dates'] = 'd M';
-        $dates['report_date'] = '%d/%m';
-
+        $dates['embedded_date'] = 'D d';
+        $dates['embedded_time'] = 'H:i';
+        $dates['embedded_datetime'] = 'd/m/Y H:i';
+        $dates['report_date'] = '%m/%d';
+		
         $this->Dates = $dates;
         return $this->Dates;
     }
