@@ -405,7 +405,7 @@ class CustomAttribute
 		}
 
 		$trimmed = trim($value);
-		return !empty($trimmed);
+		return !(empty($trimmed) && !is_numeric($trimmed));
 	}
 
 	/**

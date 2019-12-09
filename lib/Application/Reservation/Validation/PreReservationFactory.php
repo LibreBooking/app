@@ -221,6 +221,7 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new AccessoryResourceRule($this->accessoryRepository));
         $ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, $userSession->Timezone));
         $ruleProcessor->AddRule(new ScheduleAvailabilityRule($this->scheduleRepository));
+        $ruleProcessor->AddRule(new ReservationOverlappingRule($userSession->Timezone));
 
 		return $ruleProcessor;
 	}
