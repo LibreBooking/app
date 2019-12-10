@@ -21,7 +21,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <h4>{translate key=ManageQuotas}</h4>
 
     <form id="addQuotaForm" method="post" role="form">
-
         <div class="card" id="add-quota-panel">
             <div class="card-content">
                 <div class="panel-heading">{translate key="AddQuota"} {showhide_icon}</div>
@@ -93,88 +92,94 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {/capture}
 
                     {capture name="enforceHours" assign="enforceHours"}
-                        <label for='enforce-all-day'>
-                            <input type='checkbox' id='enforce-all-day' checked='checked'
-                                   value='1' {formname key=ENFORCE_ALL_DAY}/>
-                            <span>{translate key=AllDay}</span>
-                        </label>
+                    <label for='enforce-all-day'>
+                        <input type='checkbox' id='enforce-all-day' checked='checked'
+                               value='1' {formname key=ENFORCE_ALL_DAY}/>
+                        <span>{translate key=AllDay}</span>
+                    </label>
+                    <div id='enforce-hours-times' class='inline no-show'>
+                        <div class='input-field inline'>
+                            <label for='enforce-time-start'>&nbsp;</label>
+
+                            <input type='text' class='time' id='enforce-time-start' size='6'
+                                   value='12:00am' {formname key=BEGIN_TIME} aria-label='Start Time'/>
+                        </div>
                         <div id='enforce-hours-times' class='inline no-show'>
-                            <div class='input-field inline'>
-                                <label for='enforce-time-start'>&nbsp;</label>
-
-                                <input type='text' class='time' id='enforce-time-start' size='6'
-                                       value='12:00am' {formname key=BEGIN_TIME} aria-label='Start Time'/>
+                            <div class='form-group form-group-sm'>
+                                <span>{translate key=Between}</span>
+                                <label for='enforce-time-start' class='no-show'>{translate key=StartTime}</label>
+                                <label for='enforce-time-end' class='no-show'>{translate key=EndTime}</label>
+                                <input type='text' class='form-control time' id='enforce-time-start' size='6'
+                                       value='12:00am' {formname key=BEGIN_TIME}/>
+                                -
+                                <div class='input-field inline'>
+                                    <label for='enforce-time-end'>&nbsp;</label>
+                                    <input type='text' class='time' id='enforce-time-end' size='6'
+                                           value='12:00am' {formname key=END_TIME} aria-label='End Time'/>
+                                </div>
                             </div>
-					<div id='enforce-hours-times' class='inline no-show'>
-						<div class='form-group form-group-sm'>
-							<span>{translate key=Between}</span>
-                            <label for='enforce-time-start' class='no-show'>{translate key=StartTime}</label>
-                            <label for='enforce-time-end' class='no-show'>{translate key=EndTime}</label>
-                            <input type='text' class='form-control time' id='enforce-time-start' size='6' value='12:00am' {formname key=BEGIN_TIME}/>
-                            -
-                            <div class='input-field inline'>
-                                <label for='enforce-time-end'>&nbsp;</label>
-                                <input type='text' class='time' id='enforce-time-end' size='6'
-                                       value='12:00am' {formname key=END_TIME} aria-label='End Time'/>
-                            </div>
+                            {/capture}
+
+                            {capture name="enforceDays" assign="enforceDays"}
+                                <label for='enforce-every-day'><input type='checkbox' id='enforce-every-day'
+                                                                      checked='checked'
+                                                                      value='1' {formname key=ENFORCE_EVERY_DAY}/>
+                                    <span>{translate key=Everyday}</span>
+                                </label>
+                                <div id='enforce-days' class='inline no-show'>
+                                    <label for='enforce-sun'>
+                                        <input type='checkbox' id='enforce-sun'
+                                               value='0' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DaySundayAbbr"}</span>
+                                    </label>
+                                    <label for='enforce-mon'><input type='checkbox' id='enforce-mon'
+                                                                    value='1' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DayMondayAbbr"}</span>
+                                    </label>
+                                    <label for='enforce-tue'><input type='checkbox' id='enforce-tue'
+                                                                    value='2' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DayTuesdayAbbr"}</span>
+                                    </label>
+                                    <label for='enforce-wed'><input type='checkbox' id='enforce-wed'
+                                                                    value='3' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DayWednesdayAbbr"}</span>
+                                    </label>
+                                    <label for='enforce-thu'>
+                                        <input type='checkbox' id='enforce-thu'
+                                               value='4' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DayThursdayAbbr"}</span>
+                                    </label>
+                                    <label for='enforce-fri'>
+                                        <input type='checkbox'
+                                               id='enforce-fri'
+                                               value='5' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DayFridayAbbr"}</span>
+                                    </label>
+                                    <label for='enforce-sat'>
+                                        <input type='checkbox'
+                                               id='enforce-sat'
+                                               value='6' {formname key=DAY multi=true}/>
+                                        <span>{translate key="DaySaturdayAbbr"}</span>
+                                    </label>
+                                </div>
+                            {/capture}
+
+                            {capture name="scope" assign="scope"}
+                                <label for='quotaScope'>
+                                    <input type='checkbox' checked='checked' {formname key=QUOTA_SCOPE}
+                                           id='quotaScope'/>
+                                    <span>{translate key=IncludingCompletedReservations}</span>
+                                </label>
+                            {/capture}
+
+                            <div class="add-quota-line">{translate key=QuotaConfiguration args="$schedules,$resources,$groups,$amount,$unit,$duration"} {$scope}</div>
+                            <div class="add-quota-line">{translate key=QuotaEnforcement args="$enforceHours,$enforceDays"}</div>
+
                         </div>
-                    {/capture}
-
-                    {capture name="enforceDays" assign="enforceDays"}
-                        <label for='enforce-every-day'><input type='checkbox' id='enforce-every-day'
-                                                              checked='checked'
-                                                              value='1' {formname key=ENFORCE_EVERY_DAY}/>
-                            <span>{translate key=Everyday}</span>
-                        </label>
-                        <div id='enforce-days' class='inline no-show'>
-                            <label for='enforce-sun'>
-                                <input type='checkbox' id='enforce-sun' value='0' {formname key=DAY multi=true}/>
-                                <span>{translate key="DaySundayAbbr"}</span>
-                            </label>
-                            <label for='enforce-mon'><input type='checkbox' id='enforce-mon'
-                                                            value='1' {formname key=DAY multi=true}/>
-                                <span>{translate key="DayMondayAbbr"}</span>
-                            </label>
-                            <label for='enforce-tue'><input type='checkbox' id='enforce-tue'
-                                                            value='2' {formname key=DAY multi=true}/>
-                                <span>{translate key="DayTuesdayAbbr"}</span>
-                            </label>
-                            <label for='enforce-wed'><input type='checkbox' id='enforce-wed'
-                                                            value='3' {formname key=DAY multi=true}/>
-                                <span>{translate key="DayWednesdayAbbr"}</span>
-                            </label>
-                            <label for='enforce-thu'>
-                                <input type='checkbox' id='enforce-thu'
-                                       value='4' {formname key=DAY multi=true}/>
-                                <span>{translate key="DayThursdayAbbr"}</span>
-                            </label>
-                            <label for='enforce-fri'>
-                                <input type='checkbox'
-                                       id='enforce-fri'
-                                       value='5' {formname key=DAY multi=true}/>
-                                <span>{translate key="DayFridayAbbr"}</span>
-                            </label>
-                            <label for='enforce-sat'>
-                                <input type='checkbox'
-                                       id='enforce-sat'
-                                       value='6' {formname key=DAY multi=true}/>
-                                <span>{translate key="DaySaturdayAbbr"}</span>
-                            </label>
-                        </div>
-                    {/capture}
-
-                    {capture name="scope" assign="scope"}
-                        <label for='quotaScope'>
-                            <input type='checkbox' checked='checked' {formname key=QUOTA_SCOPE} id='quotaScope'/>
-                            <span>{translate key=IncludingCompletedReservations}</span>
-                        </label>
-                    {/capture}
-
-                    <div class="add-quota-line">{translate key=QuotaConfiguration args="$schedules,$resources,$groups,$amount,$unit,$duration"} {$scope}</div>
-                    <div class="add-quota-line">{translate key=QuotaEnforcement args="$enforceHours,$enforceDays"}</div>
+                        <div class="clearfix">&nbsp;</div>
+                    </div>
 
                 </div>
-                <div class="clearfix">&nbsp;</div>
             </div>
             <div class="card-action align-right">
                 <div class="note left">{translate key=QuotaReminder}</div>
@@ -312,10 +317,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             };
 
             $('#enforce-time-start').timepicker({
-				timeFormat: '{$TimeFormat}'
+                timeFormat: '{$TimeFormat}'
             });
             $('#enforce-time-end').timepicker({
-				timeFormat: '{$TimeFormat}'
+                timeFormat: '{$TimeFormat}'
             });
 
             var quotaManagement = new QuotaManagement(quotaOptions);

@@ -70,7 +70,7 @@ function AnnouncementManagement(opts) {
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
 		ConfigureAsyncForm(elements.form, getSubmitCallback(options.actions.edit));
 		ConfigureAsyncForm(elements.emailForm, getSubmitCallback(options.actions.email), function() {
-			elements.emailDialog.modal('hide');}
+			elements.emailDialog.modal('close');}
 		);
 	};
 
@@ -119,7 +119,8 @@ function AnnouncementManagement(opts) {
             elements.editResourceGroups.trigger('change');
         }
 
-		elements.editDialog.modal('show');
+		elements.editDialog.modal('open');
+        elements.editText.focus();
 	};
 
 	var emailAnnouncement = function() {
@@ -127,12 +128,12 @@ function AnnouncementManagement(opts) {
 
 		ajaxGet(options.getEmailCountUrl + '&aid=' +announcement.id, function(){}, function(data) {
 			elements.emailCount.text(data.users);
-			elements.emailDialog.modal('show');
+			elements.emailDialog.modal('open');
 		});
 	};
 
 	var deleteAnnouncement = function () {
-		elements.deleteDialog.modal('show');
+		elements.deleteDialog.modal('open');
 	};
 
 	var getActiveAnnouncement = function () {

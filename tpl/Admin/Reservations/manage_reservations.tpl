@@ -161,7 +161,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
         <div class="card-action align-right">
-
             {filter_button id="filter" class="btn-small"}
             {reset_button id="clearFilter" class="btn-small btn-flat"}
             <div class="clearfix"></div>

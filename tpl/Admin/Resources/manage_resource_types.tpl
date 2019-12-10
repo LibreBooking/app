@@ -41,13 +41,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							  id="resourceTypeDesc"></textarea>
                     </div>
                 </div>
-{*                <div class="panel-footer">*}
-                    <div class="card-action align-right">
-                        {reset_button id="clearFilter"}
-                        {add_button submit=true}
-                        {indicator}
-                    </div>
-{*                </div>*}
+            </div>
+            <div class="card-action align-right">
+                {reset_button id="clearFilter"}
+                {add_button submit=true}
+                {indicator}
             </div>
         </div>
     </form>

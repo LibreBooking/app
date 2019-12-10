@@ -158,11 +158,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {/foreach}
                     <div class="clearfix"></div>
                 </div>
-
-                <div class="card-action align-right">
-                    {reset_button id="clearFilter" class="btn-sm"}
-                    {filter_button id="filter" class="btn-sm"}
-                </div>
+            </div>
+            <div class="card-action align-right">
+                {reset_button id="clearFilter" class="btn-sm"}
+                {filter_button id="filter" class="btn-sm"}
             </div>
         </form>
     </div>

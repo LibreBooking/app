@@ -39,11 +39,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </label>
                     </div>
                 </div>
-                <div class="card-action align-right">
-                    {reset_button class="btn-sm"}
-                    {add_button class="btn-sm"}
-                    {indicator}
-                </div>
+            </div>
+            <div class="card-action align-right">
+                {reset_button class="btn-sm"}
+                {add_button class="btn-sm"}
+                {indicator}
             </div>
         </form>
     </div>
