@@ -64,5 +64,6 @@ function EmailTemplateManagement(opts) {
     function loadTemplate(data) {
         elements.templateContents.val(data);
         elements.editEmailSection.removeClass('no-show');
+        M.textareaAutoResize(elements.templateContents);
     }
 }

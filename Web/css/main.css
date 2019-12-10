@@ -801,6 +801,9 @@ ul.bullet-list li {
   font-weight: 600;
   padding: 3px 12px;
 }
+textarea.textarea-highlight {
+  background-color: #FFFFE0;
+}
 /** Page level overrides **/
 #page-login {
   height: 100%;
