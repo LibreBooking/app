@@ -292,7 +292,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <label for="targetScheduleId">{translate key=MoveResourcesAndReservations}</label>
                             <select id="targetScheduleId" {formname key=SCHEDULE_ID} class="form-control required">
                                 <option value="">-- {translate key=Schedule} --</option>
-                                {foreach from=$Schedules item=schedule}
+                                {foreach from=$SourceSchedules item=schedule}
                                     <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
                                 {/foreach}
                             </select>
