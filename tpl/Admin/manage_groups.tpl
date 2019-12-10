@@ -18,39 +18,41 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<div id="page-manage-groups" class="admin-page">
-    <h1>{translate key=ManageGroups}</h1>
+<div id="page-manage-groups" class="admin-page row">
+    <h4>{translate key='ManageGroups'}</h4>
 
-    <form id="addGroupForm" class="form-inline" role="form" method="post">
-        <div class="panel panel-default" id="add-group-panel">
-            <div class="panel-heading">{translate key="AddGroup"} {showhide_icon}</div>
-            <div class="panel-body add-contents">
-                <div id="addGroupResults" class="error" style="display:none;"></div>
-                <div class="form-group has-feedback">
-                    <label for="addGroupName">{translate key=Name}</label>
-                    <input {formname key=GROUP_NAME} type="text" id="addGroupName" required
-                                                     class="form-control required"/>
-                    <i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="addGroupName"></i>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <input type="checkbox" id="addGroupIsDefault" {formname key=IS_DEFAULT} />
-                        <label for="addGroupIsDefault">{translate key=AutomaticallyAddToGroup}</label>
+    <div class="card" id="add-group-panel">
+        <form id="addGroupForm" class="form-inline" role="form" method="post">
+            <div class="card-content">
+                <div class="panel-heading">{translate key="AddGroup"} {showhide_icon}</div>
+                <div class="panel-body add-contents">
+                    <div id="addGroupResults" class="error" style="display:none;"></div>
+                    <div class="form-group has-feedback">
+                        <label for="addGroupName">{translate key=Name}</label>
+                        <input {formname key=GROUP_NAME} type="text" id="addGroupName" required
+                                                         class="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="addGroupIsDefault">
+                            <input type="checkbox" id="addGroupIsDefault" {formname key=IS_DEFAULT} />
+                            <span>{translate key=AutomaticallyAddToGroup}</span>
+                        </label>
                     </div>
                 </div>
+                <div class="card-action align-right">
+                    {reset_button class="btn-sm"}
+                    {add_button class="btn-sm"}
+                    {indicator}
+                </div>
             </div>
-            <div class="panel-footer">
-                {add_button class="btn-sm"}
-                {reset_button class="btn-sm"}
-                {indicator}
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
-    <div id="groupSearchPanel">
-        <label for="groupSearch">{translate key='FindGroup'}</label>
-        | {html_link href=$smarty.server.SCRIPT_NAME key=AllGroups}
-        <input type="text" id="groupSearch" class="form-control" size="40"/>
+    <div id="groupSearchPanel" class="input-field">
+        <label for="groupSearch">{translate key='FindGroup'}
+            | {html_link href=$smarty.server.SCRIPT_NAME key=AllGroups}
+        </label>
+        <input type="text" id="groupSearch" class=""/>
     </div>
 
     <table class="table" id="groupList">
@@ -63,7 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <th>{translate key='GroupRoles'}</th>
             {/if}
             <th>{translate key='GroupAdmin'}</th>
-            <th>{translate key='GroupAutomaticallyAdd'}</th>
+            <th class="action">{translate key='GroupAutomaticallyAdd'}</th>
             <th class="action">{translate key='Actions'}</th>
         </tr>
         </thead>
@@ -79,15 +81,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <a href="#" class="update roles">{translate key='Change'}</a>
 
                         {if $group->IsExtendedAdmin()}
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-default dropdown-toggle"
-                                        data-toggle="dropdown">
-
-                                    <span class="caret"></span>
+                            <div class="btn-group inline-block">
+                                <button type="button" class="btn btn-sm btn-flat dropdown-trigger"
+                                        data-target="{$id}group-edit-actions">
+                                    <span class="fa fa-caret-down"></span>
                                     <span class="sr-only">{translate key=More}</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                    <li class="dropdown-header">{translate key=Administration}</li>
+                                <ul class="dropdown-content" role="menu" id="{$id}group-edit-actions">
+                                    <div class="dropdown-title">{translate key=Administration}</div>
                                     <li role="separator" class="divider"></li>
                                     {if $group->IsGroupAdmin()}
                                         <li role="presentation">
@@ -113,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </td>
                 {/if}
                 <td><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:$chooseText}</a></td>
-                <td>{if $group->IsDefault}
+                <td class="action">{if $group->IsDefault}
                         <span class="fa fa-check-circle-o"></span>
                     {else}
                         <span class="fa fa-circle-o"></span>
@@ -131,84 +132,79 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <input type="hidden" id="activeId"/>
 
-    <div class="modal fade" id="membersDialog" tabindex="-1" role="dialog" aria-labelledby="membersDialogLabel"
+    <div class="modal modal-fixed-header modal-fixed-footer" id="membersDialog" tabindex="-1" role="dialog"
+         aria-labelledby="membersDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="membersDialogLabel">{translate key=GroupMembers}</h4>
-                </div>
-                <div class="modal-body scrollable-modal-content">
-                    <div class="form-group">
-                        <label for="userSearch">{translate key=AddUser}: <a href="#"
-                                                                            id="browseUsers">{translate key=Browse}</a></label>
-                        <input type="text" id="userSearch" class="form-control" size="40"/>
-                    </div>
-                    <h4><span id="totalUsers"></span> {translate key=UsersInGroup}</h4>
-
-                    <div id="groupUserList"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default cancel"
-                            data-dismiss="modal">{translate key='Done'}</button>
-                </div>
+        <div class="modal-header">
+            <h4 class="modal-title left" id="membersDialogLabel">{translate key=GroupMembers}</h4>
+            <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+        </div>
+        <div class="modal-content">
+            <div class="input-field">
+                <label for="userSearch">
+                    {translate key=AddUser}:
+                    <a href="#" id="browseUsers">{translate key=Browse}</a>
+                </label>
+                <input type="text" id="userSearch"/>
             </div>
+
+            <div class="title"><span id="totalUsers"></span> {translate key=UsersInGroup}</div>
+
+            <div id="groupUserList"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary cancel modal-close">{translate key='Done'}</button>
         </div>
     </div>
 
-    <div id="allUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseUsersDialogLabel"
+    <div id="allUsers" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
+         aria-labelledby="browseUsersDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
-                </div>
-                <div class="modal-body scrollable-modal-content">
-                    <div id="allUsersList"></div>
-                </div>
-            </div>
+        <div class="modal-header">
+            <h4 class="modal-title left" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
+            <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+        </div>
+        <div class="modal-content">
+            <div id="allUsersList"></div>
         </div>
     </div>
 
-    <div class="modal fade" id="permissionsDialog" tabindex="-1" role="dialog" aria-labelledby="permissionsDialogLabel"
+    <div class="modal modal-fixed-header modal-fixed-footer" id="permissionsDialog" tabindex="-1" role="dialog"
+         aria-labelledby="permissionsDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="permissionsForm" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
-                    </div>
-                    <div class="modal-body scrollable-modal-content">
-                        <a href="#" id="checkNoResources">{translate key=None}</a> |
-                        <a href="#" id="checkAllResourcesFull">{translate key=FullAccess}</a> |
-                        <a href="#" id="checkAllResourcesView">{translate key=ViewOnly}</a>
+        <form id="permissionsForm" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title left" id="permissionsDialogLabel">{translate key=Permissions}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="modal-content">
+                <a href="#" id="checkNoResources">{translate key=None}</a> |
+                <a href="#" id="checkAllResourcesFull">{translate key=FullAccess}</a> |
+                <a href="#" id="checkAllResourcesView">{translate key=ViewOnly}</a>
 
-                        {foreach from=$resources item=resource}
-                            {cycle values='row0,row1' assign=rowCss}
-                            {assign var=rid value=$resource->GetResourceId()}
-                            <div class="{$rowCss} permissionRow form-group">
-                                <label for="permission_{$rid}" class="inline-block">{$resource->GetName()}</label>
-                                <select class="pull-right form-control input-sm resourceId inline-block"
-                                        style="width:auto;" {formname key=RESOURCE_ID multi=true}id="permission_{$rid}">
-                                    <option value="{$rid}_none" class="none">{translate key=None}</option>
-                                    <option value="{$rid}_0" class="full">{translate key=FullAccess}</option>
-                                    <option value="{$rid}_1" class="view">{translate key=ViewOnly}</option>
-                                </select>
-                                <div class="clearfix"></div>
-                            </div>
-                        {/foreach}
+                {foreach from=$resources item=resource}
+                    {cycle values='row0,row1' assign=rowCss}
+                    {assign var=rid value=$resource->GetResourceId()}
+                    <div class="{$rowCss} permissionRow">
+                        <span class="">{$resource->GetName()}</span>
+                        <div class="input-field">
+                            <label for="permission_{$rid}" class="no-show">{translate key=Permissions}</label>
+                            <select class="input-sm resourceId"
+                                    style="width:auto;" {formname key=RESOURCE_ID multi=true}id="permission_{$rid}">
+                                <option value="{$rid}_none" class="none">{translate key=None}</option>
+                                <option value="{$rid}_0" class="full">{translate key=FullAccess}</option>
+                                <option value="{$rid}_1" class="view">{translate key=ViewOnly}</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
-                </div>
-            </form>
-        </div>
+                {/foreach}
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
+            </div>
+        </form>
     </div>
 
     <form id="removeUserForm" method="post">
@@ -219,212 +215,204 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <input type="hidden" id="addUserId" {formname key=USER_ID} />
     </form>
 
-    <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
+    <div class="modal modal-fixed-header modal-fixed-footer" id="deleteDialog" tabindex="-1" role="dialog"
+         aria-labelledby="deleteDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="deleteGroupForm" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
-                            <div>{translate key=DeleteWarning}</div>
-                            <div>{translate key=DeleteGroupWarning}</div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {delete_button}
-                        {indicator}
+
+        <form id="deleteGroupForm" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title left" id="deleteDialogLabel">{translate key=Delete}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="modal-content">
+                <div class="card warning">
+                    <div class="card-content">
+                        <div>{translate key=DeleteWarning}</div>
+                        <div>{translate key=DeleteMultipleUserWarning}</div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {delete_button}
+                {indicator}
+            </div>
+
+        </form>
     </div>
 
-    <div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
+    <div class="modal modal-fixed-header modal-fixed-footer" id="editDialog" tabindex="-1" role="dialog"
+         aria-labelledby="editDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="editGroupForm" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="editDialogLabel">{translate key=Update}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group has-feedback">
-                            <label for="editGroupName">{translate key=Name}</label>
-                            <input type="text" id="editGroupName" class="form-control required"
-                                   required {formname key=GROUP_NAME} />
-                            <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                               data-bv-icon-for="groupName"></i>
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <input type="checkbox" id="editGroupIsDefault" {formname key=IS_DEFAULT} />
-                                <label for="editGroupIsDefault">{translate key=AutomaticallyAddToGroup}</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+        <form id="editGroupForm" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title left" id="editDialogLabel">{translate key=Update}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="modal-content">
+                <div class="input-field">
+                    <label for="editGroupName" class="active">{translate key=Name}</label>
+                    <input type="text" id="editGroupName" class="required"
+                           required {formname key=GROUP_NAME} autofocus/>
                 </div>
-            </form>
-        </div>
+                <div class="input-field">
+                    <label for="editGroupIsDefault">
+                        <input type="checkbox" id="editGroupIsDefault" {formname key=IS_DEFAULT} />
+                        <span>{translate key=AutomaticallyAddToGroup}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
+            </div>
+        </form>
     </div>
 
     {if $CanChangeRoles}
-        <div class="modal fade" id="rolesDialog" tabindex="-1" role="dialog" aria-labelledby="rolesDialogLabel"
+        <div class="modal modal-fixed-header modal-fixed-footer" id="rolesDialog" tabindex="-1" role="dialog"
+             aria-labelledby="rolesDialogLabel"
              aria-hidden="true">
-            <div class="modal-dialog">
-                <form id="rolesForm" method="post">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="rolesDialogLabel">{translate key=WhatRolesApplyToThisGroup}</h4>
-                        </div>
-                        <div class="modal-body">
-                            {foreach from=$Roles item=role}
-                                <div class="checkbox">
-                                    <input type="checkbox" id="role{$role->Id}" {formname key=ROLE_ID multi=true}"
-                                    value="{$role->Id}" />
-                                    <label for="role{$role->Id}">{$role->Name}</label>
-                                </div>
-                            {/foreach}
-                        </div>
-                        <div class="modal-footer">
-                            {cancel_button}
-                            {update_button}
-                            {indicator}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="modal fade adminDialog" id="resourceAdminDialog" tabindex="-1" role="dialog"
-             aria-labelledby="resourceAdminDialogLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form id="resourceAdminForm" method="post">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="resourceAdminDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
-                        </div>
-                        <div class="modal-body scrollable-modal-content">
-                            <h4><span class="count"></span> {translate key=Resources}</h4>
-
-                            {foreach from=$resources item=resource}
-                                <div class="checkbox">
-                                    <input type="checkbox" id="resource{$resource->GetId()}" {formname key=RESOURCE_ID multi=true}"
-                                    value="{$resource->GetId()}" />
-                                    <label for="resource{$resource->GetId()}">{$resource->GetName()}</label>
-                                </div>
-                            {/foreach}
-                        </div>
-                        <div class="modal-footer">
-                            {cancel_button}
-                            {update_button}
-                            {indicator}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="modal fade adminDialog" id="groupAdminAllDialog" tabindex="-1" role="dialog"
-             aria-labelledby="groupAdminAllDialogLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form id="groupAdminGroupsForm" method="post">
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="groupAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
-                        </div>
-                        <div class="modal-body scrollable-modal-content">
-                            <h4><span class="count"></span> {translate key=Groups}</h4>
-
-                            {foreach from=$groups item=group}
-                                <div class="checkbox">
-                                    <input type="checkbox" id="group{$group->Id}" {formname key=GROUP_ID multi=true}"
-                                    value="{$group->Id}" />
-                                    <label for="group{$group->Id}">{$group->Name}</label>
-                                </div>
-                            {/foreach}
-                        </div>
-                        <div class="modal-footer">
-                            {cancel_button}
-                            {update_button}
-                            {indicator}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="modal fade adminDialog" id="scheduleAdminDialog" tabindex="-1" role="dialog"
-             aria-labelledby="scheduleAdminDialogLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form id="scheduleAdminForm" method="post">
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="scheduleAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
-                        </div>
-                        <div class="modal-body scrollable-modal-content">
-                            <h4><span class="count"></span> {translate key=Schedules}</h4>
-
-                            {foreach from=$Schedules item=schedule}
-                                <div class="checkbox">
-                                    <input type="checkbox" id="schedule{$schedule->GetId()}" {formname key=SCHEDULE_ID multi=true}"
-                                    value="{$schedule->GetId()}" />
-                                    <label for="schedule{$schedule->GetId()}">{$schedule->GetName()}</label>
-                                </div>
-                            {/foreach}
-                        </div>
-                        <div class="modal-footer">
-                            {cancel_button}
-                            {update_button}
-                            {indicator}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {/if}
-
-    <div class="modal fade" id="groupAdminDialog" tabindex="-1" role="dialog" aria-labelledby="groupAdminDialogLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="groupAdminForm" method="post">
+            <form id="rolesForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title left" id="rolesDialogLabel">{translate key=WhatRolesApplyToThisGroup}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="groupAdminDialogLabel">{translate key=WhoCanManageThisGroup}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group has-feedback">
-                            <label for="groupAdmin" class="off-screen">{translate key=WhoCanManageThisGroup}</label>
-                            <select {formname key=GROUP_ADMIN} class="form-control" id="groupAdmin">
-                                <option value="">-- {translate key=None} --</option>
-                                {foreach from=$AdminGroups item=adminGroup}
-                                    <option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-                                {/foreach}
-                            </select>
+                    {foreach from=$Roles item=role}
+                        <div>
+                            <label for="role{$role->Id}">
+                                <input type="checkbox" id="role{$role->Id}" {formname key=ROLE_ID multi=true}"
+                                value="{$role->Id}" />
+                                <span>{$role->Name}</span>
+                            </label>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+                    {/foreach}
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
                 </div>
             </form>
         </div>
+        <div class="modal modal-fixed-header modal-fixed-footer adminDialog" id="resourceAdminDialog" tabindex="-1"
+             role="dialog"
+             aria-labelledby="resourceAdminDialogLabel" aria-hidden="true">
+            <form id="resourceAdminForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title left"
+                        id="resourceAdminDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-content">
+                    <div class="title"><span class="count"></span> {translate key=Resources}</div>
+                    {foreach from=$resources item=resource}
+                        <div>
+                        <label for="resource{$resource->GetId()}">
+                            <input type="checkbox"
+                                   id="resource{$resource->GetId()}" {formname key=RESOURCE_ID multi=true}"
+                            value="{$resource->GetId()}" />
+                            <span>{$resource->GetName()}</span>
+                        </label>
+                        </div>
+                    {/foreach}
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
+                </div>
+            </form>
+        </div>
+        <div class="modal modal-fixed-header modal-fixed-footer adminDialog" id="groupAdminAllDialog" tabindex="-1"
+             role="dialog"
+             aria-labelledby="groupAdminAllDialogLabel" aria-hidden="true">
+            <form id="groupAdminGroupsForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title left"
+                        id="groupAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-content">
+                    <div class="title"><span class="count"></span> {translate key=Groups}</div>
+
+                    {foreach from=$groups item=group}
+                        <div>
+                            <label for="group{$group->Id}">
+                                <input type="checkbox" id="group{$group->Id}" {formname key=GROUP_ID multi=true}"
+                                value="{$group->Id}" />
+                                <span>{$group->Name}</span>
+                            </label>
+                        </div>
+                    {/foreach}
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
+                </div>
+            </form>
+        </div>
+        <div class="modal modal-fixed-header modal-fixed-footer adminDialog" id="scheduleAdminDialog" tabindex="-1"
+             role="dialog"
+             aria-labelledby="scheduleAdminDialogLabel" aria-hidden="true">
+            <form id="scheduleAdminForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title left"
+                        id="scheduleAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="modal-content">
+                    <div class="title"><span class="count"></span> {translate key=Schedules}</div>
+
+                    {foreach from=$Schedules item=schedule}
+                        <div>
+                            <label for="schedule{$schedule->GetId()}">
+                                <input type="checkbox"
+                                       id="schedule{$schedule->GetId()}" {formname key=SCHEDULE_ID multi=true}"
+                                value="{$schedule->GetId()}" />
+                                <span>{$schedule->GetName()}</span>
+                            </label>
+                        </div>
+                    {/foreach}
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
+                </div>
+            </form>
+        </div>
+    {/if}
+
+    <div class="modal modal-fixed-header modal-fixed-footer" id="groupAdminDialog" tabindex="-1" role="dialog"
+         aria-labelledby="groupAdminDialogLabel"
+         aria-hidden="true">
+        <form id="groupAdminForm" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title left"
+                    id="groupAdminDialogLabel">{translate key=WhoCanManageThisGroup}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="modal-content">
+                <div class="input-field">
+                    <label for="groupAdmin" class="active">{translate key=Groups}</label>
+                    <select {formname key=GROUP_ADMIN} id="groupAdmin">
+                        <option value="">-- {translate key=None} --</option>
+                        {foreach from=$AdminGroups item=adminGroup}
+                            <option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
+            </div>
+        </form>
     </div>
 
     {csrf_token}
@@ -438,6 +426,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $('div.modal').modal();
+
+            $('.dropdown-trigger').dropdown({
+                constrainWidth: false,
+                coverTrigger: false
+            });
+
 
             var actions = {
                 activate: '{ManageGroupsActions::Activate}',

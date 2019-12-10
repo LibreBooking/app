@@ -797,6 +797,10 @@ ul.bullet-list {
 ul.bullet-list li {
   list-style-type: circle;
 }
+.dropdown-content .dropdown-title {
+  font-weight: 600;
+  padding: 3px 12px;
+}
 /** Page level overrides **/
 #page-login {
   height: 100%;

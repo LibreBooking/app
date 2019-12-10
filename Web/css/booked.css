@@ -884,6 +884,10 @@ ul.bullet-list {
 ul.bullet-list li {
   list-style-type: circle;
 }
+.dropdown-content .dropdown-title {
+  font-weight: 600;
+  padding: 3px 12px;
+}
 /** Page level overrides **/
 #page-login {
   height: 100%;
@@ -2604,9 +2608,6 @@ td.update {
 }
 #groupSearchPanel {
   margin-bottom: 15px;
-}
-#groupSearch {
-  width: 400px;
 }
 #announcementList .announcementPriority {
   width: 100px;
