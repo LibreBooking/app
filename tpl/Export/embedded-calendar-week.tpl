@@ -40,6 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                        title="{translate key=ViewCalendar}">{format_date date=$date timezone=$Timezone format=d}</a>
                 </div>
                 {foreach from=$Reservations->OnDate($date)->Reservations() item=r}
+                {assign var=color value=$r->GetColor()}
                     <div class="booked-day-events">
                         <a class="booked-calendar-event"
                             href="{$ReservationUrl}{$r->ReferenceNumber()}"
