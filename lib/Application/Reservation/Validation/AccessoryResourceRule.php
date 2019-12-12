@@ -83,7 +83,7 @@ class AccessoryResourceRule implements IReservationValidationRule
 
 					if (!empty($resource->MaxQuantity) && $bookedAccessories[$accessoryId]->QuantityReserved > $resource->MaxQuantity)
 					{
-						$errors[] = $this->strings->GetString('AccessoryMinQuantityErrorMessage', array($resource->MinQuantity, $accessory->GetName()));
+						$errors[] = $this->strings->GetString('AccessoryMaxQuantityErrorMessage', array($resource->MaxQuantity, $accessory->GetName()));
 					}
 				}
 			}
