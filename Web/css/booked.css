@@ -84,6 +84,9 @@ div.clearfix {
   width: 100%;
   overflow-y: auto;
 }
+strong {
+  font-weight: 600;
+}
 /** end materialize overrides**/
 /*---------------------------------------------------
     LESS Elements 0.9
@@ -2728,6 +2731,9 @@ td.update {
 #page-manage-schedules .input-sm {
   font-size: 13px;
   height: 2rem;
+}
+#page-change-theme h4 {
+  font-size: 1rem;
 }
 #install-page input {
   width: 250px;

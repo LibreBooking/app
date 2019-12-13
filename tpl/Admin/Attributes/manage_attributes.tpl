@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
 <div id="page-manage-attributes" class="admin-page row">
-    <h4>{translate key=CustomAttributes}</h4>
+    <h1 class="page-title">{translate key=CustomAttributes}</h1>
 
     <div>
         <div>

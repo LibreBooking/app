@@ -19,9 +19,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl'}
 <div id="page-support-and-credits" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="default-box col s12 m8 offset-m2">
 
-        <h1>About Booked Scheduler</h1>
+        <h1 class="page-title">About Booked Scheduler</h1>
 
         <h2>Support</h2>
 

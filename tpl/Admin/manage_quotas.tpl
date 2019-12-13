@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' Timepicker=true}
 <div id="page-manage-quotas" class="admin-page row">
-    <h4>{translate key=ManageQuotas}</h4>
+    <h1 class="page-title">{translate key=ManageQuotas}</h1>
 
     <form id="addQuotaForm" method="post" role="form">
         <div class="card" id="add-quota-panel">

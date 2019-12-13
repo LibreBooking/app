@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-manage-configuration" class="admin-page">
 
-    <h1>{translate key=ManageConfiguration}</h1>
+    <h1 class="page-title">{translate key=ManageConfiguration}</h1>
 
     {if $ShowScriptUrlWarning}
         <div class="alert alert-danger">
@@ -32,7 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <form id="frmConfigFile" method="GET" action="{$SCRIPT_NAME}" role="form">
         <div class="form-group">
             <label for="cf">{translate key=File}</label>
-            <select name="cf" id="cf" class="form-control">
+            <select name="cf" id="cf" class="">
                 {foreach from=$ConfigFiles item=file}
                     {assign var=selected value=""}
                     {if $file->Location eq $SelectedFile}{assign var=selected value="selected='selected'"}{/if}
@@ -47,48 +47,48 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {cycle values=',row1' assign=rowCss}
             {assign var="name" value=$setting->Name}
             <div class="{$rowCss}">
-                <div class="form-group col-xs-12">
+                <div class="input-field">
                     <label for="{$name}" class="control-label">{$setting->Key}</label>
                     {if $setting->Key == ConfigKeys::DEFAULT_TIMEZONE}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
                         </select>
                     {elseif $setting->Key == ConfigKeys::LANGUAGE}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$setting->Value|strtolower}
                         </select>
                     {elseif $setting->Key == ConfigKeys::DEFAULT_HOMEPAGE}
                         <label for="default__homepage" class="no-show">Homepage</label>
-                        <select id="default__homepage" name="{$name}" class="form-control">
+                        <select id="default__homepage" name="{$name}" class="">
                             {html_options values=$HomepageValues output=$HomepageOutput selected=$setting->Value|strtolower}
                         </select> <a href="#" id="applyHomepage">{translate key=ApplyToCurrentUsers}</a>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_AUTHENTICATION}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$AuthenticationPluginValues output=$AuthenticationPluginValues selected=$setting->Value}
                         </select>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_AUTHORIZATION}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$AuthorizationPluginValues output=$AuthorizationPluginValues selected=$setting->Value}
                         </select>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_PERMISSION}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$PermissionPluginValues output=$PermissionPluginValues selected=$setting->Value}
                         </select>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_POSTREGISTRATION}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$PostRegistrationPluginValues output=$PostRegistrationPluginValues selected=$setting->Value}
                         </select>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_PRERESERVATION}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$PreReservationPluginValues output=$PreReservationPluginValues selected=$setting->Value}
                         </select>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_POSTRESERVATION}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="{$name}" name="{$name}" class="">
                             {html_options values=$PostReservationPluginValues output=$PostReservationPluginValues selected=$setting->Value}
                         </select>
                     {elseif $setting->Type == ConfigSettingType::String}
                         <input id="{$name}" type="text" size="50" name="{$name}" value="{$setting->Value|escape}"
-                               class="form-control"/>
+                               class=""/>
                     {else}
                         <div>
                             <div class="radio radio-inline">
@@ -124,17 +124,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if $IsPageEnabled && $IsConfigFileWritable}
 
         {assign var=HelpUrl value="$ScriptUrl/help.php?ht=admin"}
-        <h3>{translate key=ConfigurationUpdateHelp args=$HelpUrl}</h3>
+
         <div id="updatedMessage" class="alert alert-success" style="display:none;">
             {translate key=ConfigurationUpdated}
         </div>
         <div id="configSettings">
 
             <input type="button" value="{translate key=Update}" class='btn btn-success save'/>
-
+            <div>{translate key=ConfigurationUpdateHelp args=$HelpUrl}</div>
             <form id="frmConfigSettings" method="post" ajaxAction="{ConfigActions::Update}"
                   action="{$smarty.server.SCRIPT_NAME}">
-                <h3>{translate key=GeneralConfigSettings}</h3>
+                <div>{translate key=GeneralConfigSettings}</div>
                 <fieldset>
                     <div class="no-style config-settings">
                         {list_settings settings=$Settings}
@@ -142,7 +142,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </fieldset>
 
                 {foreach from=$SectionSettings key=section item=settings}
-                    <h3>{$section}</h3>
+                    <div>{$section}</div>
                     <fieldset>
                         <div class="no-style config-settings">
                             {list_settings settings=$settings}

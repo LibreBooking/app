@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css'}
 <div id='activation-body'>
-	<h2 align="center">{translate key=ActivationEmailSent}</h2>
+    <h1 class="page-title" style="text-align:center;">{translate key=ActivationEmailSent}</h1>
 </div>
 {include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

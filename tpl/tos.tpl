@@ -17,6 +17,6 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>{translate key=TermsOfService}</h1>
+<h1 class="page-title">{translate key=TermsOfService}</h1>
 {$TermsContent|nl2br}
 {include file='globalfooter.tpl'}

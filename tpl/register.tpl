@@ -50,7 +50,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
                   action="{$smarty.server.SCRIPT_NAME}" role="form">
 
-                <h4>{translate key=RegisterANewAccount}</h4>
+                <h1 class="page-title">{translate key=RegisterANewAccount}</h1>
 
                 <div class="row">
                     <div class="col s12 m6 input-field" id="username">

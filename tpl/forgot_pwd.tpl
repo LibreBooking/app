@@ -30,17 +30,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="forgotbox">
 	<form class="forgot" method="post" action="{$smarty.server.SCRIPT_NAME}">
 		<div class="forgot_pwdHeader">
-			<h1>{translate key='ForgotPassword'}</h1>
+			<h1 class="page-title">{translate key='ForgotPassword'}</h1>
 		</div>
 		<div>
-			<p class="forgot">{translate key='YouWillBeEmailedANewPassword'}</p>
-			<p>
-				<label class="forgot">{translate key='EmailAddress'}<br />
-					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
-			</p>
-			<p class="resetpassword">
+			<div class="forgot">{translate key='YouWillBeEmailedANewPassword'}</div>
+			<div class="input-field">
+				<label class="forgot">{translate key='EmailAddress'}</label>
+                {textbox name="EMAIL" class="input" size="20" tabindex="10"}
+			</div>
+			<div class="resetpassword">
 				<button type="submit" class="btn btn-default" name="{Actions::RESET}" value="{Actions::RESET}">{translate key='ChangePassword'}</button>
-			</p>
+			</div>
 		</div>
 	</form>
 </div>

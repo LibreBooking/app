@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl'}
 
 <div id="page-manage-groups" class="admin-page row">
-    <h4>{translate key='ManageGroups'}</h4>
+    <h1 class="page-title">{translate key='ManageGroups'}</h1>
 
     <div class="card" id="add-group-panel">
         <form id="addGroupForm" class="form-inline" role="form" method="post">
