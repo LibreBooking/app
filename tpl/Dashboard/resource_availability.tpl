@@ -30,14 +30,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </div>
     <div class="dashboardContents">
         <div class="header">{translate key=Available}</div>
-        {foreach from=$Schedules item=s}
+        {if $Available|count == 0}
+            <div class="no-data">{translate key=None}</div>
+        {else}
+            {foreach from=$Schedules item=s}
+            <h5>{$s->GetName()}</h5>
             {assign var=availability value=$Available[$s->GetId()]}
             {if is_array($availability) && $availability|count > 0}
-            <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
                 <div class="availabilityItem row">
                     <div class="col s12 m4">
-                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
+                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle hide-on-large-only"></i>
                         <div class="resourceName" style="background-color:{$i->GetColor()};color:{$i->GetTextColor()};">
                             <a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}"
                                resource-id="{$i->ResourceId()}"
@@ -58,22 +61,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="clearfix"></div>
                 </div>
-                {foreachelse}
-                <div class="no-data">{translate key=None}</div>
             {/foreach}
+            {else}
+                <div class="no-data">{translate key=None}</div>
             {/if}
         {/foreach}
+        {/if}
 
         <div class="header">{translate key=Unavailable}</div>
-
-        {foreach from=$Schedules item=s}
-            {assign var=availability value=$Unavailable[$s->GetId()]}
-            {if $availability|count > 0}
+        {if $Unavailable|count == 0}
+            <div class="no-data">{translate key=None}</div>
+        {else}
+            {foreach from=$Schedules item=s}
             <h5>{$s->GetName()}</h5>
+            {assign var=availability value=$Unavailable[$s->GetId()]}
+            {if is_array($availability) && $availability|count > 0}
             {foreach from=$availability item=i}
                 <div class="availabilityItem row">
                     <div class="col s12 m4">
-                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
+                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle hide-on-large-only"></i>
                         <div class="resourceName" style="background-color:{$i->GetColor()};color:{$i->GetTextColor()};">
                             <a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}"
                                resource-id="{$i->ResourceId()}"
@@ -89,40 +95,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                {foreachelse}
-                <div class="no-data">{translate key=None}</div>
             {/foreach}
+            {else}
+                <div class="no-data">{translate key=None}</div>
             {/if}
         {/foreach}
+        {/if}
 
         <div class="header">{translate key=UnavailableAllDay}</div>
-        {foreach from=$Schedules item=s}
-            {assign var=availability value=$UnavailableAllDay[$s->GetId()]}
-            {if $availability|count > 0}
+        {if $UnavailableAllDay|count == 0}
+            <div class="no-data">{translate key=None}</div>
+        {else}
+            {foreach from=$Schedules item=s}
             <h5>{$s->GetName()}</h5>
-            {foreach from=$Uavailability item=i}
-                <div class="availabilityItem row">
-                    <div class="col s12 m4">
-                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
-                        <div class="resourceName" style="background-color:{$i->GetColor()};color:{$i->GetTextColor()};">
-                            <a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}"
-                               resource-id="{$i->ResourceId()}"
-                               class="resourceNameSelector" style="color:{$i->GetTextColor()}">{$i->ResourceName()}</a>
+            {assign var=availability value=$UnavailableAllDay[$s->GetId()]}
+            {if is_array($availability) && $availability|count > 0}
+                {foreach from=$availability item=i}
+                    <div class="availabilityItem row">
+                        <div class="col s12 m4">
+                            <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle hide-on-large-only"></i>
+                            <div class="resourceName" style="background-color:{$i->GetColor()};color:{$i->GetTextColor()};">
+                                <a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}"
+                                   resource-id="{$i->ResourceId()}"
+                                   class="resourceNameSelector" style="color:{$i->GetTextColor()}">{$i->ResourceName()}</a>
+                            </div>
+                        </div>
+                        <div class="availability col s12 m5">
+                            {translate key=AvailableAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
+                        </div>
+                        <div class="reserveButton col s12 m3">
+                            <a class="btn btn-small col s12"
+                               href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
                         </div>
                     </div>
-                    <div class="availability col s12 m5">
-                        {translate key=AvailableAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
-                    </div>
-                    <div class="reserveButton col s12 m3">
-                        <a class="btn btn-small col s12"
-                           href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                {foreachelse}
+                    <div class="clearfix"></div>
+                {/foreach}
+            {else}
                 <div class="no-data">{translate key=None}</div>
-            {/foreach}
             {/if}
         {/foreach}
+        {/if}
     </div>
 </div>
