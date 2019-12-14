@@ -83,6 +83,10 @@ a, a:visited {
   color: @link-color;
 }
 
+a.btn, a.btn:hover, a.btn:visited {
+  color: #fff;
+}
+
 a:hover {
   color: @link-color-hover;
 }
@@ -846,6 +850,24 @@ ul.bullet-list {
 
 textarea.textarea-highlight {
   background-color: #FFFFE0;
+}
+
+.alert-warning, .alert-danger {
+  padding: 1rem;
+  background-color: lighten(@dark-orange, 30%);
+  border: solid 1px @dark-orange;
+  .rounded();
+  text-align: center;
+  margin: 1rem;
+}
+
+.alert-danger {
+  background-color: lighten(@muted-red, 30%);
+  border: solid 1px @muted-red;
+}
+
+.text-center {
+  text-align: center;
 }
 
 /** Page level overrides **/

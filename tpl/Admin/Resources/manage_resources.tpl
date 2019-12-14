@@ -68,7 +68,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
             </ul>
         </div>
-        <h4>{translate key='ManageResources'}</h4>
+        <h1 class="page-title">{translate key='ManageResources'}</h1>
     </div>
 
     <div class="card filterTable" id="filter-resources-panel">
@@ -165,7 +165,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </form>
     </div>
-
 
     {pagination pageInfo=$PageInfo showCount=true}
 

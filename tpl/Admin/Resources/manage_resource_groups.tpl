@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {include file='Admin/Resources/manage_resource_menu.tpl' ResourcePageTitleKey='ManageResourceGroups'}
 
-    <div id="globalError" class="alert alert-danger no-show"></div>
+    <div id="globalError" class="error no-show"></div>
 
     <div id="manage-resource-groups-container">
         <div id="new-group" class="row">

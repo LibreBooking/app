@@ -789,6 +789,7 @@ class en_us extends Language
         $strings['Updated'] = 'Updated';
         $strings['GroupMembership'] = 'Group Membership';
         $strings['AvailableGroups'] = 'Available Groups';
+        $strings['ReservationsFound'] = '%s Reservations Found';
         // End Strings
 
 		// Install

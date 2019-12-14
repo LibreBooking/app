@@ -21,8 +21,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-import-ics" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-        <h1>{translate key=ImportICS}</h1>
+    <div class="default-box col s12 m8 offset-m2">
+        <h1 class="page-title">{translate key=ImportICS}</h1>
 
         <div class="margin-bottom-25">
 

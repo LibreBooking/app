@@ -21,6 +21,8 @@ function ResourceDisplay(opts) {
             elements.resourceList.append('<option value="' + resource.id + '">' + resource.name + '</option>');
         });
 
+        elements.resourceList.formSelect();
+
         elements.resourceListBox.removeClass('no-show');
     }
 
@@ -115,7 +117,7 @@ function ResourceDisplay(opts) {
         elements.placeholder.on('click', '.slot', function (e) {
             var slot = $(e.target);
             var begin = $('#beginPeriod');
-            begin.val(slot.data('begin'));
+            begin.changeDropdown(slot.data('begin'));
             begin.trigger('change');
         });
 
@@ -147,6 +149,7 @@ function ResourceDisplay(opts) {
             );
 
             $('#emailAddress').focus();
+            $('select').formSelect();
         }
 
         function pauseRefresh() {
@@ -199,6 +202,7 @@ function ResourceDisplay(opts) {
                         newSelectedEnd = totalNumberOfEnds;
                     }
                     end.prop('selectedIndex', newSelectedEnd);
+                    end.changeDropdown(end.val());
                     beginIndex = newIndex;
                 });
 
@@ -238,7 +242,7 @@ function ResourceDisplay(opts) {
     });
 
     elements.resourceList.on('change', function () {
-        var resourceId = $(this).val()
+        var resourceId = $(this).val();
 
         if (resourceId != '') {
             activateResourceDisplay(resourceId);

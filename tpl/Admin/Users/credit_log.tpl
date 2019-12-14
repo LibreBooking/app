@@ -1,7 +1,7 @@
 {include file='globalheader.tpl'}
 
 <div id="page-admin-credit-log" class="admin-page">
-    <h1>{translate key=CreditHistory} - {$UserName}</h1>
+    <h1 class="page-title">{translate key=CreditHistory} - {$UserName}</h1>
 
     {if $ShowError}
         <div class="alert alert-danger">

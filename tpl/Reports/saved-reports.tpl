@@ -27,7 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="panel-body no-padding">
                 {if $ReportList|count == 0}
-                    <h2 class="no-data" style="text-align: center;">{translate key=NoSavedReports}</h2>
+                    <div class="no-data" style="text-align: center;">{translate key=NoSavedReports}</div>
                     <div style="text-align:center;"><a
                                 href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></div>
                 {else}

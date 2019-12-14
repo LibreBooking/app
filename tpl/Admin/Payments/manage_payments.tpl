@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-manage-payments" class="admin-page">
 
     <div class="row">
-        <h5>{translate key=ManagePayments}</h5>
+        <h1 class="page-title">{translate key=ManagePayments}</h1>
 
         <div class="col s12 card success" id="updatedCreditsMessage" style="display:none;">
             <ul>

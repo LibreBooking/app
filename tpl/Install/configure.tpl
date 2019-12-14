@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<h1>{translate key=ConfigureApplication}</h1>
+<h1 class="page-title">{translate key=ConfigureApplication}</h1>
 
 <div>
     <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">

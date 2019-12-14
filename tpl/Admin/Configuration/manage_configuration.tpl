@@ -48,7 +48,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {assign var="name" value=$setting->Name}
             <div class="{$rowCss}">
                 <div class="input-field">
-                    <label for="{$name}" class="control-label">{$setting->Key}</label>
+                    {if $setting->Type != ConfigSettingType::Boolean}
+                    <label for="{$name}" class="active">{$setting->Key}</label>
+                    {/if}
                     {if $setting->Key == ConfigKeys::DEFAULT_TIMEZONE}
                         <select id="{$name}" name="{$name}" class="">
                             {html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
@@ -61,7 +63,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <label for="default__homepage" class="no-show">Homepage</label>
                         <select id="default__homepage" name="{$name}" class="">
                             {html_options values=$HomepageValues output=$HomepageOutput selected=$setting->Value|strtolower}
-                        </select> <a href="#" id="applyHomepage">{translate key=ApplyToCurrentUsers}</a>
+                        </select>
+                        <a href="#" id="applyHomepage">{translate key=ApplyToCurrentUsers}</a>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_AUTHENTICATION}
                         <select id="{$name}" name="{$name}" class="">
                             {html_options values=$AuthenticationPluginValues output=$AuthenticationPluginValues selected=$setting->Value}
@@ -91,15 +94,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                class=""/>
                     {else}
                         <div>
-                            <div class="radio radio-inline">
-                                <input id="radio{$name}t" type="radio" value="true"
-                                       name="{$name}"{if $setting->Value == 'true'} checked="checked"{/if} />
-                                <label for="radio{$name}t">{translate key="True"}</label>
+                            <span>{$setting->Key}</span>
+                            <div class="">
+                                <label for="radio{$name}t">
+                                    <input id="radio{$name}t" type="radio" value="true"
+                                           name="{$name}"{if $setting->Value == 'true'} checked="checked"{/if} />
+                                    <span>{translate key="True"}</span>
+                                </label>
                             </div>
-                            <div class="radio radio-inline">
-                                <input id="radio{$name}f" type="radio" value="false"
-                                       name="{$name}"{if $setting->Value == 'false'} checked="checked"{/if} />
-                                <label for="radio{$name}f">{translate key="False"}</label>
+                            <div class="">
+                                <label for="radio{$name}f">
+                                    <input id="radio{$name}f" type="radio" value="false"
+                                           name="{$name}"{if $setting->Value == 'false'} checked="checked"{/if} />
+                                    <span>{translate key="False"}</span>
+                                </label>
                             </div>
                         </div>
                     {/if}
@@ -110,23 +118,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 
     {if !$IsPageEnabled}
-        <div class="alert alert-danger">
-            {translate key=ConfigurationUiNotEnabled}
+        <div class="card warning">
+            <div class="card-content">
+                {translate key=ConfigurationUiNotEnabled}
+            </div>
         </div>
     {/if}
 
     {if !$IsConfigFileWritable}
-        <div class="alert alert-danger">
-            {translate key=ConfigurationFileNotWritable}
+        <div class="card warning">
+            <div class="card-content">
+                {translate key=ConfigurationFileNotWritable}
+            </div>
         </div>
     {/if}
 
     {if $IsPageEnabled && $IsConfigFileWritable}
 
         {assign var=HelpUrl value="$ScriptUrl/help.php?ht=admin"}
-
-        <div id="updatedMessage" class="alert alert-success" style="display:none;">
-            {translate key=ConfigurationUpdated}
+        <div id="updatedMessage" class="card success" style="display:none;">
+            <div class="card-content">
+                {translate key=ConfigurationUpdated}
+            </div>
         </div>
         <div id="configSettings">
 
@@ -134,20 +147,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <div>{translate key=ConfigurationUpdateHelp args=$HelpUrl}</div>
             <form id="frmConfigSettings" method="post" ajaxAction="{ConfigActions::Update}"
                   action="{$smarty.server.SCRIPT_NAME}">
-                <div>{translate key=GeneralConfigSettings}</div>
-                <fieldset>
+                <div class="config-section">
+                    <h5>{translate key=GeneralConfigSettings}</h5>
                     <div class="no-style config-settings">
                         {list_settings settings=$Settings}
                     </div>
-                </fieldset>
+                </div>
 
                 {foreach from=$SectionSettings key=section item=settings}
-                    <div>{$section}</div>
-                    <fieldset>
+
+                    <div class="config-section">
+                        <h5>{$section}</h5>
                         <div class="no-style config-settings">
                             {list_settings settings=$settings}
                         </div>
-                    </fieldset>
+                    </div>
                 {/foreach}
 
                 <input type="hidden" name="setting_names" value="{$SettingNames}"/>
@@ -155,13 +169,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <input type="button" value="{translate key=Update}" class='btn btn-success save'/>
 
         </div>
-
         <form id="updateHomepageForm"
-            method="post" ajaxAction="{ConfigActions::SetHomepage}"
-            action="{$smarty.server.SCRIPT_NAME}">
-            <input type="hidden" name="homepage_id" id="homepage_id" />
+              method="post" ajaxAction="{ConfigActions::SetHomepage}"
+              action="{$smarty.server.SCRIPT_NAME}">
+            <input type="hidden" name="homepage_id" id="homepage_id"/>
         </form>
-
         {csrf_token}
 
         {include file="javascript-includes.tpl"}

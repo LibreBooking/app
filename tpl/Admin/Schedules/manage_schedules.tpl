@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-manage-schedules" class="admin-page row">
 
-    <h4>{translate key=ManageSchedules}</h4>
+    <h1 class="page-title">{translate key=ManageSchedules}</h1>
 
     <div class="card admin-panel" id="list-schedules-panel">
         <div class="card-content">

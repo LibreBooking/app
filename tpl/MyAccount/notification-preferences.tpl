@@ -42,7 +42,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         {else}
             <div id="notification-preferences-box" class="col s12 m8 offset-m2 ">
-                <h5>{translate key=NotificationPreferences}</h5>
+                <h1 class="page-title">{translate key=NotificationPreferences}</h1>
 
                 <form id="notification-preferences-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
 

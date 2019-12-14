@@ -145,6 +145,11 @@ a,
 a:visited {
   color: #669999;
 }
+a.btn,
+a.btn:hover,
+a.btn:visited {
+  color: #fff;
+}
 a:hover {
   color: #428181;
 }
@@ -803,6 +808,24 @@ ul.bullet-list li {
 }
 textarea.textarea-highlight {
   background-color: #FFFFE0;
+}
+.alert-warning,
+.alert-danger {
+  padding: 1rem;
+  background-color: #ffc194;
+  border: solid 1px #FA6900;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-align: center;
+  margin: 1rem;
+}
+.alert-danger {
+  background-color: #de9e9e;
+  border: solid 1px #AA3939;
+}
+.text-center {
+  text-align: center;
 }
 /** Page level overrides **/
 #page-login {

@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
+<div>
+    {translate key=ReservationsFound args={$Reservations|count}}
+</div>
 <table class="table" id="reservationTable">
 	<thead>
 		<tr>

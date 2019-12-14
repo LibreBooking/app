@@ -52,7 +52,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </li>
             </ul>
         </div>
-        <h4>{translate key='ManageUsers'}</h4>
+        <h1 class="page-title">{translate key='ManageUsers'}</h1>
     </div>
 
 

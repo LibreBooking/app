@@ -141,7 +141,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
     <!-- End CSS -->
 </head>
-<body {if $HideNavBar == true}style="padding-top:0;"{/if}>
+<body {if $HideNavBar == true}style="padding-top:0;margin-top:0;"{/if}>
 
 {if $HideNavBar == false}
 
@@ -229,4 +229,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </ul>
 {/if}
 
-<div id="main" class="container">
+<div id="main" class="{if !$HideNavBar}container{/if}" {if $HideNavBar == true}style="padding-top:0;margin-top:0;"{/if}>

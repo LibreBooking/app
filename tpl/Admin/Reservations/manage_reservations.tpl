@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
             </ul>
         </div>
-        <h4>{translate key=ManageReservations}</h4>
+        <h1 class="page-title">{translate key=ManageReservations}</h1>
     </div>
 
     <div class="card filterTable" id="filter-reservations-panel">

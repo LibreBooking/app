@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl' Title='Booked Scheduler v2 Migration'}
 
-<h1>Migrate phpScheduleIt v1.2 to Booked Scheduler v2.x (MySQL only)</h1>
+<h1 class="page-title">Migrate phpScheduleIt v1.2 to Booked Scheduler v2.x (MySQL only)</h1>
 
 <div class="migratingElements" style="display:none;">Migrating <span
 			class="elementType"></span> {html_image src="admin-ajax-indicator.gif"}</div>

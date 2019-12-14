@@ -21,8 +21,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-import-quartzy" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-        <h1>{translate key=ImportQuartzy}</h1>
+    <div class="default-box col s12 m8 offset-m2">
+        <h1 class="page-title">{translate key=ImportQuartzy}</h1>
 
         <div class="margin-bottom-25">
 
@@ -51,8 +51,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
 
                 <div>
-                    <label for="includeBookings">Include Bookings</label>
-                    <input type="checkbox" id="includeBookings" name="includeBookings"/>
+                    <label for="includeBookings">
+                        <input type="checkbox" id="includeBookings" name="includeBookings"/>
+                        <span>Include Bookings</span>
+                    </label>
                     <span>(this can take up to 20 minutes)</span>
                 </div>
 

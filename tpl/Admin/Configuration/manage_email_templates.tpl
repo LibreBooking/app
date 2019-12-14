@@ -2,7 +2,7 @@
 
 <div id="page-manage-email-templates" class="admin-page row">
 
-    <h1>{translate key=ManageEmailTemplates}</h1>
+    <h1 class="page-title">{translate key=ManageEmailTemplates}</h1>
 
     <div class="input-field col s6 m4">
         <select id="templateOpts" title="{translate key=EmailTemplate}" class="form-control">

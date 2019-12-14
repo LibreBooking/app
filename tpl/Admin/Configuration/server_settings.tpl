@@ -19,9 +19,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl'}
 
 <div id="server-settings-page" class="admin-page">
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="default-box col s12 m8 offset-m2">
 
-        <h1>{translate key=ServerSettings}</h1>
+        <h1 class="page-title">{translate key=ServerSettings}</h1>
 
         <ul class="indented">
             <li>Current Time: {$currentTime}</li>
@@ -34,11 +34,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </li>
         </ul>
 
-        <h3 style="margin-top: 20px;">Plugins</h3>
-        <ul class="indented">
+        <h5 style="margin-top: 20px;">Plugins</h5>
+        <ul class="indented browser-default">
             {foreach from=$plugins key=category item=items}
                 <li>{$category}
-                    <ul>
+                    <ul class="browser-default">
                         {foreach from=$items item=pluginName}
                             <li>{$pluginName}</li>
                         {/foreach}

@@ -235,6 +235,11 @@ a,
 a:visited {
   color: #669999;
 }
+a.btn,
+a.btn:hover,
+a.btn:visited {
+  color: #fff;
+}
 a:hover {
   color: #428181;
 }
@@ -893,6 +898,24 @@ ul.bullet-list li {
 }
 textarea.textarea-highlight {
   background-color: #FFFFE0;
+}
+.alert-warning,
+.alert-danger {
+  padding: 1rem;
+  background-color: #ffc194;
+  border: solid 1px #FA6900;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-align: center;
+  margin: 1rem;
+}
+.alert-danger {
+  background-color: #de9e9e;
+  border: solid 1px #AA3939;
+}
+.text-center {
+  text-align: center;
 }
 /** Page level overrides **/
 #page-login {
@@ -2571,7 +2594,7 @@ ul.resource-status-reasons {
   margin-bottom: 5px;
 }
 .highlight {
-  background-color: #b2c5ab;
+  background-color: lightyellow;
 }
 #add-blackout-panel label {
   min-width: 100px;
@@ -2636,6 +2659,14 @@ td.update {
 }
 #resource-images .resource-image img {
   width: 100%;
+}
+.config-section {
+  border: solid 1px #cccccc;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  padding: 2rem;
+  margin: 1rem;
 }
 .admin-page input,
 #page-manage-blackouts input,
@@ -3108,18 +3139,18 @@ ul.jqtree-tree .jqtree-toggler {
 }
 .left-panel {
   background-color: #778899;
-  padding-top: 15px;
-  min-height: 100%;
+  padding-top: 15px !important;
+  min-height: 100% !important;
   position: relative;
 }
 .left-panel-bottom {
   position: absolute;
-  bottom: 0;
+  bottom: 0 !important;
   width: 100%;
 }
 .right-panel {
-  padding-top: 15px;
-  min-height: 100%;
+  padding-top: 15px !important;
+  min-height: 100% !important;
   background-image: linear-gradient(-90deg, #495561, #778899);
 }
 .resource-display-reservation,

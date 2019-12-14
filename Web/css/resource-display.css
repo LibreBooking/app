@@ -135,18 +135,18 @@
 }
 .left-panel {
   background-color: #778899;
-  padding-top: 15px;
-  min-height: 100%;
+  padding-top: 15px !important;
+  min-height: 100% !important;
   position: relative;
 }
 .left-panel-bottom {
   position: absolute;
-  bottom: 0;
+  bottom: 0 !important;
   width: 100%;
 }
 .right-panel {
-  padding-top: 15px;
-  min-height: 100%;
+  padding-top: 15px !important;
+  min-height: 100% !important;
   background-image: linear-gradient(-90deg, #495561, #778899);
 }
 .resource-display-reservation,
@@ -173,7 +173,7 @@
   height: 100%;
   text-align: center;
   background-color: #353432;
-  opacity: .8;
+  opacity: 0.8;
   filter: alpha(opacity=80);
   display: none;
 }

@@ -30,7 +30,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <div id="participation-box" class="col s12 m8 offset-m2">
 
-            <h5 class="underline">{translate key=OpenInvitations} <span class="badge">{$Reservations|count}</span></h5>
+            <h1 class="page-title underline">{translate key=OpenInvitations} <span class="badge">{$Reservations|count}</span></h1>
 
             <ul class="list-unstyled participation">
                 {foreach from=$Reservations item=reservation name=invitations}

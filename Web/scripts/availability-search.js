@@ -39,12 +39,14 @@ function AvailabilitySearch(options) {
 
         elements.anyResource.click(function (e) {
             if (elements.anyResource.is(':checked')) {
-                elements.resourceGroups.val('').change();
+                elements.resourceGroups.val('')
                 elements.resourceGroups.attr('disabled', 'disabled');
             }
             else {
-                elements.resourceGroups.removeAttr('disabled');
+                elements.resourceGroups.attr('disabled', false);
             }
+
+            elements.resourceGroups.formSelect();
         });
 
         elements.daterange.change(function (e) {

@@ -18,7 +18,7 @@
 {/foreach}
 
 {if $Openings|count == 0}
-    <div class="alert alert-warning">
+    <div class="alert-warning">
         <i class="fa fa-frown-o"></i> {translate key=NoAvailableMatchingTimes}
     </div>
 {/if}

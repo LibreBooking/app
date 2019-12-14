@@ -7,8 +7,8 @@
     </div>
 {/function}
 
-<div id="resource-display" class="resource-display">
-    <div class="col-xs-7 left-panel">
+<div id="resource-display" class="resource-display row no-margin">
+    <div class="col s7 left-panel">
         <div class="resource-display-name">{$ResourceName}</div>
 
         <div class="resource-display-current">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-5 right-panel">
+    <div class="col s5 right-panel">
         <div class="time">{formatdate date=$Now key=period_time timezone=$Timezone}</div>
         <div class="date">{formatdate date=$Now key=schedule_daily timezone=$Timezone}</div>
         <div class="upcoming-reservations">
@@ -68,7 +68,7 @@
     <div id="reservation-box">
         <form role="form" method="post" id="formReserve" action="{$smarty.server.SCRIPT_NAME}?action=reserve">
             <div class="row margin-top-25">
-                <div class="col-xs-12">
+                <div class="col s12">
                     <div id="validationErrors" class="validationSummary alert alert-danger no-show">
                         <ul>
                         </ul>
@@ -111,24 +111,19 @@
                         </table>
                     </div>
 
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon" id="email-addon"><span
-                                    class="glyphicon glyphicon-envelope"></span></span>
-                        <label for="emailAddress" class="hidden">{translate key=Email}</label>
-                        <input id="emailAddress" type="email" class="form-control"
-                               placeholder="{translate key=Email}"
-                               aria-describedby="email-addon" required="required" {formname key=EMAIL} />
+                    <div class="input-field">
+                        <i class="material-icons prefix">email</i>
+                        <label for="emailAddress">{translate key=Email}</label>
+                        <input id="emailAddress" type="email" required="required" {formname key=EMAIL} />
                     </div>
                 </div>
             </div>
-            <div class="row margin-top-25">
-                <div class="col-xs-6">
-                    <div class="input-group input-group-lg has-feedback">
-                            <span class="input-group-addon" id="starttime-addon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </span>
-                        <select title="Begin" class="form-control" aria-describedby="starttime-addon"
-                                id="beginPeriod" {formname key=BEGIN_PERIOD}>
+            <div class="row">
+                <div class="col s6">
+                    <div class="input-field">
+                        <i class="material-icons prefix">access_time</i>
+                        <label for="beginPeriod" class="active">{translate key=BeginDate}</label>
+                        <select title="Begin" id="beginPeriod" {formname key=BEGIN_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
                                     <option value="{$slot->Begin()}">{$slot->Begin()->Format($TimeFormat)}</option>
@@ -137,12 +132,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-6">
-                    <div class="input-group input-group-lg">
-				            <span class="input-group-addon" id="endtime-addon"><span
-                                        class="glyphicon glyphicon-time"></span></span>
-                        <select title="End" class="form-control input-lg" aria-describedby="endtime-addon"
-                                id="endPeriod" {formname key=END_PERIOD}>
+                <div class="col s6">
+                    <div class="input-field">
+                        <i class="material-icons prefix">access_time</i>
+                        <label for="endPeriod" class="active">{translate key=EndDate}</label>
+                        <select title="End" class="" id="endPeriod" {formname key=END_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
                                     <option value="{$slot->End()}">{$slot->End()->Format($TimeFormat)}</option>
@@ -154,40 +148,39 @@
             </div>
 
             {if $Terms != null}
-            <div class="row col-xs-12" id="termsAndConditions">
-                <div class="checkbox">
-                    <input type="checkbox"
-                           id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT} {if $TermsAccepted}checked="checked"{/if}/>
-                    <label for="termsAndConditionsAcknowledgement">{translate key=IAccept}</label>
-                    <a href="{$Terms->DisplayUrl()}" style="vertical-align: middle"
-                       target="_blank">{translate key=TheTermsOfService}</a>
+                <div class="row" id="termsAndConditions">
+                    <label for="termsAndConditionsAcknowledgement">
+                        <input type="checkbox"
+                               id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT} {if $TermsAccepted}checked="checked"{/if}/>
+                        <span>{translate key=IAccept}</span>
+                    </label>
+                    <a href="{$Terms->DisplayUrl()}" style="vertical-align: middle"  target="_blank">{translate key=TheTermsOfService}</a>
                 </div>
-            </div>
             {/if}
 
             {if $Attributes|count > 0}
-            <div class="row margin-top-25">
-                <div class="customAttributes col-xs-12">
-                    {foreach from=$Attributes item=attribute name=attributeEach}
-                        {if $smarty.foreach.attributeEach.index % 2 == 0}
-                            <div class="row">
-                        {/if}
-                        <div class="customAttribute col-xs-6">
-                            {control type="AttributeControl" attribute=$attribute}
-                        </div>
-                        {if $smarty.foreach.attributeEach.index % 2 ==1}
+                <div class="row margin-top-25">
+                    <div class="customAttributes col s12">
+                        {foreach from=$Attributes item=attribute name=attributeEach}
+                            {if $smarty.foreach.attributeEach.index % 2 == 0}
+                                <div class="row">
+                            {/if}
+                            <div class="customAttribute col s6">
+                                {control type="AttributeControl" attribute=$attribute}
                             </div>
+                            {if $smarty.foreach.attributeEach.index % 2 ==1}
+                                </div>
+                            {/if}
+                        {/foreach}
+                        {if $Attributes|count % 2 == 1}
+                            <div class="col s6">&nbsp;</div>
                         {/if}
-                    {/foreach}
-                    {if $Attributes|count % 2 == 1}
-                        <div class="col-xs-6">&nbsp;</div>
-                    {/if}
+                    </div>
                 </div>
-            </div>
             {/if}
 
             <div class="row margin-top-25">
-                <div class="col-xs-12 text-center">
+                <div class="col s12 text-center">
                     <input type="submit" class="action-reserve col-xs-12" value="Reserve"/>
                     <a href="#" class="action-cancel" id="reserveCancel">{translate key=Cancel}</a>
                 </div>
