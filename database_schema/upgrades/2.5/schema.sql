@@ -54,12 +54,12 @@ CREATE TABLE `blackout_series_resources` (
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-DELETE blackout_series
-FROM blackout_series
-LEFT JOIN resources ON blackout_series.resource_id = resources.resource_id
-WHERE resources.resource_id IS NULL;
+DELETE `blackout_series`
+FROM `blackout_series`
+LEFT JOIN `resources` ON `blackout_series`.`resource_id` = `resources`.`resource_id`
+WHERE `resources`.`resource_id` IS NULL;
 
-INSERT INTO blackout_series_resources SELECT blackout_series_id, resource_id FROM blackout_series;
+INSERT INTO `blackout_series_resources` SELECT `blackout_series_id`, `resource_id` FROM `blackout_series`;
 
 ALTER TABLE `blackout_series` DROP COLUMN `resource_id`;
 ALTER TABLE `blackout_series` ADD COLUMN `repeat_type` varchar(10) default NULL;
@@ -93,6 +93,6 @@ CREATE TABLE `resource_status_reasons` (
 ALTER TABLE `resources` ADD COLUMN `status_id` tinyint unsigned NOT NULL DEFAULT 1;
 ALTER TABLE `resources` ADD COLUMN `resource_status_reason_id` smallint(5) unsigned;
 ALTER TABLE `resources` ADD FOREIGN KEY (`resource_status_reason_id`) REFERENCES `resource_status_reasons`(`resource_status_reason_id`) ON DELETE SET NULL;
-UPDATE resources SET status_id = isactive;
+UPDATE `resources` SET `status_id` = `isactive`;
 ALTER TABLE `resources` DROP COLUMN `isactive`;
 ALTER TABLE `resources` ADD COLUMN `buffer_time` int unsigned;
