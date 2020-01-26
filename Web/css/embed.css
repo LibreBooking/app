@@ -59,7 +59,7 @@
   border-radius: 2px;
   padding: 2px;
   margin: 2px 0;
-  font-size: .7em;
+  font-size: 0.7em;
   display: block;
   text-decoration: none;
   background-color: #fff;
@@ -68,7 +68,7 @@
   background-color: #E9E9E9;
 }
 .booked-agenda-date {
-  font-size: .9em;
+  font-size: 0.9em;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 .booked-agenda-date a,

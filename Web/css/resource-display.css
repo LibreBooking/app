@@ -173,7 +173,7 @@
   height: 100%;
   text-align: center;
   background-color: #353432;
-  opacity: .8;
+  opacity: 0.8;
   filter: alpha(opacity=80);
   display: none;
 }
