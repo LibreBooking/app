@@ -124,7 +124,7 @@ class CountCommand extends SqlCommand
 
 	public function GetQuery()
 	{
-		return 'SELECT COUNT(*) as total FROM (' . $this->baseCommand->GetQuery() . ') results';
+		return 'SELECT COUNT(*) as `total` FROM (' . $this->baseCommand->GetQuery() . ') `results`';
 	}
 }
 

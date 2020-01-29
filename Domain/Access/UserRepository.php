@@ -151,7 +151,7 @@ class UserFilter
 
 		if (!empty($this->attributes))
 		{
-			$attributeFilter = AttributeFilter::Create(TableNames::USERS_ALIAS . '.' . ColumnNames::USER_ID, $this->attributes);
+			$attributeFilter = AttributeFilter::Create('`'. TableNames::USERS_ALIAS . '`.`' . ColumnNames::USER_ID . '`', $this->attributes);
 
 			if ($attributeFilter != null)
 			{

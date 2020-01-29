@@ -43,7 +43,7 @@ try
 	$resourceRepository = new ResourceRepository();
 	$reservationRepository = new ReservationRepository();
 
-	$onlyAutoReleasedResources = new SqlFilterFreeForm(sprintf("%s IS NOT NULL AND %s <> ''",
+	$onlyAutoReleasedResources = new SqlFilterFreeForm(sprintf("`%s` IS NOT NULL AND `%s` <> ''",
 															   ColumnNames::AUTO_RELEASE_MINUTES, ColumnNames::AUTO_RELEASE_MINUTES));
 	$autoReleasedResources = $resourceRepository->GetList(null, null, null, null, $onlyAutoReleasedResources)->Results();
 
@@ -58,7 +58,7 @@ try
 
 		$latestStartDate = Date::Now()->SubtractMinutes($autoReleaseMinutes)->ToDatabase();
 
-		$reservationsThatShouldHaveBeenCheckedIn = new SqlFilterFreeForm(sprintf("%s.%s = %s AND %s IS NULL AND %s.%s < '%s'",
+		$reservationsThatShouldHaveBeenCheckedIn = new SqlFilterFreeForm(sprintf("`%s`.`%s` = %s AND `%s` IS NULL AND `%s`.`%s` < '%s'",
 																				 TableNames::RESOURCES, ColumnNames::RESOURCE_ID, $resource->GetId(),
 																				 ColumnNames::CHECKIN_DATE,
 																				 TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, $latestStartDate));

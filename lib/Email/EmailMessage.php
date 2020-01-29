@@ -31,12 +31,14 @@ abstract class EmailMessage implements IEmailMessage
 
 	protected function __construct($languageCode = null)
 	{
+	    $this->email = new SmartyPage($resources);
 		$resources = Resources::GetInstance();
 		if (!empty($languageCode))
 		{
 			$resources->SetLanguage($languageCode);
+			$this->Set('CurrentLanguage', $languageCode);
 		}
-		$this->email = new SmartyPage($resources);
+
 		$this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
 		$this->Set('Charset', $resources->Charset);
         $this->Set('AppTitle', (empty($appTitle) ? 'Booked' : $appTitle));
