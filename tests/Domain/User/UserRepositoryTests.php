@@ -310,7 +310,8 @@ class UserRepositoryTests extends TestBase
 		$repo = new UserRepository();
 		$repo->Update($user);
 
-		$this->assertTrue($this->db->ContainsCommand(new UpdateUserPreferenceCommand($userId, 'pref2', 'val3')));
+		$this->assertTrue($this->db->ContainsCommand(new DeleteAllUserPreferences($userId)));
+		$this->assertTrue($this->db->ContainsCommand(new AddUserPreferenceCommand($userId, 'pref2', 'val3')));
 		$this->assertTrue($this->db->ContainsCommand(new AddUserPreferenceCommand($userId, 'pref3', 'val4')));
 
 	}

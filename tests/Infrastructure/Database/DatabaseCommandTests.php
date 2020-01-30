@@ -235,7 +235,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$baseCommand = new AdHocCommand($baseSql);
 		$countCommand = new CountCommand($baseCommand);
 
-		$this->assertEquals("SELECT COUNT(*) as total FROM ($baseSql) results", $countCommand->GetQuery());
+		$this->assertEquals("SELECT COUNT(*) as `total` FROM ($baseSql) `results`", $countCommand->GetQuery());
 	}
 
 	public function testFilterCommandWrapsAppendsToWhere()
@@ -252,7 +252,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals('%firstname%', $filterCommand->Parameters->Items(0)->Value);
 		$this->assertEquals('last', $filterCommand->Parameters->Items(1)->Value);
 
-		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND ( lname = @lname )) GROUP BY 1, 2 ORDER BY blah1");
+		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (`fname` LIKE @fname AND ( `lname` = @lname )) GROUP BY 1, 2 ORDER BY blah1");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
@@ -268,7 +268,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
-		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (fname LIKE @fname AND ( lname = @lname ))");
+		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (`fname` LIKE @fname AND ( `lname` = @lname ))");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
@@ -284,7 +284,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
-		$constraint = $this->stringContains("WHERE fname LIKE @fname AND ( lname = @lname ) GROUP BY 1, 2 ORDER BY 3, 4");
+		$constraint = $this->stringContains("WHERE `fname` LIKE @fname AND ( `lname` = @lname ) GROUP BY 1, 2 ORDER BY 3, 4");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
@@ -297,7 +297,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
-		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (fname IN ('n''k','123'))");
+		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (`fname` IN ('n''k','123'))");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
@@ -309,7 +309,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
         $countCommand = new CountCommand($filterCommand);
 
         $containsSubQuery = $this->stringContains("INNER JOIN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) ss on ss.user_id = owner_id WHERE ", false);
-        $containsFilter = $this->stringContains("AND (accessory_name = @accessory_name)", false);
+        $containsFilter = $this->stringContains("AND (`accessory_name` = @accessory_name)", false);
 
         $query = $filterCommand->GetQuery();
         $countQuery = $countCommand->GetQuery();

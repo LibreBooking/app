@@ -554,15 +554,6 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		foreach ($user->GetPreferences()->All() as $name => $value) {
             $db->Execute(new AddUserPreferenceCommand($user->Id(), $name, $value));
         }
-//		foreach ($user->GetPreferences()->AddedPreferences() as $added)
-//		{
-//			$db->Execute(new AddUserPreferenceCommand($user->Id(), $added, $user->GetPreference($added)));
-//		}
-//
-//		foreach ($user->GetPreferences()->ChangedPreferences() as $updated)
-//		{
-//			$db->Execute(new UpdateUserPreferenceCommand($user->Id(), $updated, $user->GetPreference($updated)));
-//		}
 
 		foreach ($user->GetRemovedGroups() as $removed)
 		{
