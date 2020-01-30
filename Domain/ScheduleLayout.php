@@ -817,7 +817,7 @@ class PeakTimes
         $startDay = $this->GetBeginDay();
         $endMonth = $this->GetEndMonth();
         $endDay = $this->GetEndDay();
-        $originalEndDay = $this->GetEndDay();
+        $endDayAddition = 0;
         $startTime = $this->GetBeginTime();
         $endTime = $this->GetEndTime();
         $weekdays = $this->GetWeekdays();
@@ -843,11 +843,11 @@ class PeakTimes
         }
 
         if ($endTime->Compare($startTime) <= 0) {
-            $endDay = $endDay + 1;
+            $endDayAddition = 1;
         }
 
         $peakStart = Date::Create($year, $startMonth, $startDay, $startTime->Hour(), $startTime->Minute(), 0, $date->Timezone());
-        $peakEnd = Date::Create($endYear, $endMonth, $originalEndDay, $endTime->Hour(), $endTime->Minute(), 0, $date->Timezone())->AddDays($endDay);
+        $peakEnd = Date::Create($endYear, $endMonth, $endDay, $endTime->Hour(), $endTime->Minute(), 0, $date->Timezone())->AddDays($endDayAddition);
 
         if ($date->Compare($peakStart) >= 0 && $date->Compare($peakEnd) <= 0) {
             $isPeakHour = $this->IsAllDay() || ($date->CompareTimes($startTime) >= 0 && $date->CompareTimes($endTime) < 0);
