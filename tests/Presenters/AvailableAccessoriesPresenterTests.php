@@ -50,6 +50,7 @@ class AvailableAccessoriesPresenterTests extends TestBase
 		$this->accessoryRepo = new FakeAccessoryRepository();
 		$this->reservationRepo = new FakeReservationViewRepository();
 		$this->page = new FakeAvailableAccessoriesPage();
+		$this->fakeUser->Timezone = 'UTC';
 
 		$this->presenter = new AvailableAccessoriesPresenter($this->page, $this->accessoryRepo, $this->reservationRepo, $this->fakeUser);
 	}
@@ -97,6 +98,10 @@ class AvailableAccessoriesPresenterTests extends TestBase
 
 	public function testWhenReservationSpansMultipleDays()
 	{
+        $this->page->_StartDate = '2016-11-23';
+        $this->page->_EndDate = '2016-11-24';
+        $this->page->_StartTime = '08:30';
+        $this->page->_EndTime = '17:30';
 		$this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 10));
 
 		$this->reservationRepo->_AccessoryReservations = array(
@@ -113,7 +118,10 @@ class AvailableAccessoriesPresenterTests extends TestBase
 	
 	public function testWhenAccessoryReservationSpansMultipleDays()
 	{
-		$this->page->_StartDate = '2016-11-24';
+		$this->page->_StartDate = '2016-11-23';
+        $this->page->_EndDate = '2016-11-24';
+        $this->page->_StartTime = '08:30';
+        $this->page->_EndTime = '17:30';
 		$this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 10));
 
 		$this->reservationRepo->_AccessoryReservations = array(
