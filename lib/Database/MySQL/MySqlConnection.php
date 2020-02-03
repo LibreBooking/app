@@ -57,14 +57,14 @@ class MySqlConnection implements IDbConnection
             $port = intval($parts[1]);
         }
 
-		$this->_db = mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $port);
-		$selected = mysqli_select_db($this->_db, $this->_dbName);
-		mysqli_set_charset($this->_db, 'utf8');
+		$this->_db = @mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $port);
+		$selected = @mysqli_select_db($this->_db, $this->_dbName);
+		@mysqli_set_charset($this->_db, 'utf8');
 
 		if (!$this->_db || !$selected)
 		{
-			Log::Error("Error connecting to database\n%s",  mysqli_error($this->_db));
-			throw new Exception("Error connecting to database\nError: " . mysqli_error($this->_db));
+			Log::Error("Error connecting to database\nCheck your database settings in the config file\n%s", @mysqli_error($this->_db));
+			throw new Exception("Error connecting to database\nError: " . @mysqli_error($this->_db));
 		}
 
 		$this->_connected = true;

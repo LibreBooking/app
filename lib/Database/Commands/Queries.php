@@ -388,7 +388,7 @@ class Queries
 			'SELECT `g`.*, `admin_group`.`name` as `admin_group_name`,
 			(SELECT GROUP_CONCAT(`gr`.`role_id`) FROM `group_roles` `gr` WHERE `gr`.`group_id` = `g`.`group_id`) as `group_role_list`
 		FROM `groups` `g`
-		LEFT JOIN `groups admin_group` ON `g`.`admin_group_id` = `admin_group`.`group_id`
+		LEFT JOIN `groups` `admin_group` ON `g`.`admin_group_id` = `admin_group`.`group_id`
 		ORDER BY `g`.`name`';
 
 	const GET_ALL_GROUPS_BY_ROLE =
@@ -714,7 +714,6 @@ class Queries
 			[JOIN_TOKEN]
 			WHERE `rs`.`status_id` <> 2
 			[AND_TOKEN]
-			GROUP BY `ri`.`reservation_instance_id`, `ri`.`series_id`, `rr`.`resource_id`
 			ORDER BY `ri`.`start_date` ASC';
 
 	const GET_RESERVATION_ACCESSORIES =
