@@ -419,7 +419,7 @@ class ReservationRepository implements IReservationRepository
         $configuration = RepeatConfiguration::Create($repeatType, $configurationString);
         $factory = new RepeatOptionsFactory();
         return $factory->Create($repeatType, $configuration->Interval, $configuration->TerminationDate,
-            $configuration->Weekdays, $configuration->MonthlyType);
+            $configuration->Weekdays, $configuration->MonthlyType, []);
     }
 
     // LOAD BY ID HELPER FUNCTIONS END

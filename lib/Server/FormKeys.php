@@ -239,6 +239,7 @@ class FormKeys
 	const RESOURCE_STATUS_REASON_ID = 'RESOURCE_STATUS_REASON_ID';
 	const RESOURCE_STATUS_UPDATE_SCOPE = 'RESOURCE_STATUS_UPDATE_SCOPE';
 	const ROLLING = 'ROLLING';
+	const REPEAT_CUSTOM_DATES = 'repeatCustomDates';
 
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';

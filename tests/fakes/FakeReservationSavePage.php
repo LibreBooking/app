@@ -59,6 +59,7 @@ class FakeReservationSavePage implements IReservationSavePage
     public $participatingGuests = array();
     public $invitedGuests = array();
     public $canJoinWaitlist = false;
+    public $repeatCustomDates = [];
 
     public function __construct()
     {
@@ -299,12 +300,14 @@ class FakeReservationSavePage implements IReservationSavePage
         $this->canJoinWaitlist = $canJoinWaitlist;
     }
 
-    /**
-     * @return bool
-     */
     public function GetTermsOfServiceAcknowledgement()
     {
-        // TODO: Implement GetTermsOfServiceAcknowledgement() method.
+        return true;
+    }
+
+    public function GetRepeatCustomDates()
+    {
+        return $this->repeatCustomDates;
     }
 }
 

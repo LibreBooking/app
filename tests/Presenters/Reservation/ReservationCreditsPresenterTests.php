@@ -196,6 +196,11 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
      */
     public $_CreditCost;
 
+    /**
+     * @var Date[]
+     */
+    public $_RepeatCustomDates = [];
+
     public function __construct()
     {
         $start = Date::Now()->AddHours(1);
@@ -278,5 +283,10 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
     {
        $this->_CreditsRequired = $creditsRequired;
        $this->_CreditCost = $cost;
+    }
+
+    public function GetRepeatCustomDates()
+    {
+        return $this->_RepeatCustomDates;
     }
 }

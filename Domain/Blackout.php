@@ -346,7 +346,7 @@ class BlackoutSeries
 		$configuration = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create($row[ColumnNames::REPEAT_TYPE], $configuration->Interval, $configuration->TerminationDate,
-									$configuration->Weekdays, $configuration->MonthlyType);
+									$configuration->Weekdays, $configuration->MonthlyType, []);
 
 		$series->WithRepeatOptions($options);
 

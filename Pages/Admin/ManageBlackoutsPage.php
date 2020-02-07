@@ -610,6 +610,16 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		return $this->GetForm(FormKeys::END_REPEAT_DATE);
 	}
 
+    public function GetRepeatCustomDates()
+    {
+        $dates = $this->GetForm(FormKeys::REPEAT_CUSTOM_DATES);
+        if(!is_array($dates) || empty($dates)) {
+            return [];
+        }
+
+        return $dates;
+    }
+
 	public function GetSeriesUpdateScope()
 	{
 		$scope = $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);

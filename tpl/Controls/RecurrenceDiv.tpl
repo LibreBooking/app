@@ -101,5 +101,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" id="{$prefix}formattedEndRepeat" {formname key=end_repeat_date}
 				   value="{formatdate date=$RepeatTerminationDate key=system}"/>
 		</div>
+
+        <div id="{$prefix}customDatesDiv" class="col-xs-12 no-show specific-dates">
+            <label for="{$prefix}RepeatDate">Repeat On</label>
+            <input type="text" id="{$prefix}RepeatDate" class="form-control input-sm inline-block dateinput" value=""/>
+            <input type="hidden" id="{$prefix}formattedRepeatDate" key=system}"/>
+            <a href="#" role="button" id="{$prefix}AddDate">Add Date <i class="fa fa-plus-square"></i></a>
+            <div>Repeat Dates</div>
+            <div class="repeat-date-list">
+
+            </div>
+        </div>
 	</div>
 </div>

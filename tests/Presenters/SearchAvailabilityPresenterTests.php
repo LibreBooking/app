@@ -465,6 +465,11 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
      */
     public $_RepeatMonthlyType = RepeatMonthlyType::DayOfMonth;
 
+    /**
+     * @var Date[]
+     */
+    public $_RepeatCustomDates = [];
+
     public $_RepeatTerminationDate;
     public $_Specific = false;
     public $_StartTime;
@@ -536,5 +541,10 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
     public function SearchingSpecificTime()
     {
         return $this->_Specific;
+    }
+
+    public function GetRepeatCustomDates()
+    {
+       return $this->_RepeatCustomDates;
     }
 }

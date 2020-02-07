@@ -59,7 +59,7 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals(2, count($repeatedDates));
 	}
 
-	public function testRepeatDailyCreatesRecurranceEverySpecifiedDayUntilEndAcrossDST()
+	public function testRepeatDailyCreatesRecurrenceEverySpecifiedDayUntilEndAcrossDST()
 	{
 		$reservationStart = Date::Parse('2010-02-12 08:30', 'CST');
 		$reservationEnd = Date::Parse('2010-02-12 10:30', 'CST');
@@ -80,7 +80,7 @@ class RepeatOptionsTests extends TestBase
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
 	}
 
-	public function testRepeatWeeklyCreatesRecurranceOnSpecifiedDaysEveryIntervalUntilEndAcrossDST()
+	public function testRepeatWeeklyCreatesRecurrenceOnSpecifiedDaysEveryIntervalUntilEndAcrossDST()
 	{
 		$timezone = 'EST';
 		$reservationStart = Date::Parse('2010-02-11 08:30', $timezone);
@@ -110,7 +110,7 @@ class RepeatOptionsTests extends TestBase
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
 	}
 
-	public function testRepeatWeeklyCreatesRecurranceOnSingleDayEveryIntervalUntilEndAcrossDST()
+	public function testRepeatWeeklyCreatesRecurrenceOnSingleDayEveryIntervalUntilEndAcrossDST()
 	{
 		$timezone = 'EST';
 		$reservationStart = Date::Parse('2010-02-11 08:30', $timezone);
@@ -352,6 +352,13 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals(RepeatType::Yearly, $config->Type);
 		$this->assertEquals(10, $config->Interval);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
+
+		// custom
+        $custom = new RepeatCustom([]);
+        $config = RepeatConfiguration::Create($custom->RepeatType(), $custom->ConfigurationString());
+        $this->assertEquals(RepeatType::Custom, $config->Type);
+        $this->assertEquals("", $config->Interval);
+        $this->assertEquals(new NullDate(), $config->TerminationDate);
 	}
 
 	public function testRepeatWhenRepeatingDayBeforeFirstDayOfMonth()
@@ -426,4 +433,26 @@ class RepeatOptionsTests extends TestBase
 		$dates = $repeat->GetDates($firstFriday);
 		$this->assertEquals(1, $dates[3]->GetBegin()->Day());
 	}
+
+    public function testFactoryCreatesCustomRepeatOptions()
+    {
+        $factory = new RepeatOptionsFactory();
+        $options = $factory->Create('custom', null, null, null, null, []);
+
+        $this->assertInstanceOf('RepeatCustom', $options);
+    }
+
+	public function testRepeatCustom()
+    {
+        $timezone = 'America/Chicago';
+        $reservationDate = DateRange::Create('2020-02-02 2:30', '2020-02-03 4:00', $timezone);
+	    $repeatDates = array(new Date('2020-02-05', $timezone), new Date('2020-02-22', $timezone), new Date('2020-05-19', $timezone),);
+	    $repeat = new RepeatCustom($repeatDates);
+
+        $dates = $repeat->GetDates($reservationDate);
+        $this->assertEquals(3, count($dates));
+        $this->assertEquals(DateRange::Create('2020-02-05 2:30', '2020-02-06 4:00', $timezone), $dates[0]);
+        $this->assertEquals(DateRange::Create('2020-02-22 2:30', '2020-02-23 4:00', $timezone), $dates[1]);
+        $this->assertEquals(DateRange::Create('2020-05-19 2:30', '2020-05-20 4:00', $timezone), $dates[2]);
+    }
 }

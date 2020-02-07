@@ -31,6 +31,7 @@ class RecurrenceControl extends Control
 						'weekly' => array('key' => 'Weekly', 'everyKey' => 'weeks'),
 						'monthly' => array('key' => 'Monthly', 'everyKey' => 'months'),
 						'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
+						'custom' => array('key' => 'Custom', 'everyKey' => 'custom'),
 								)
 		);
 		$this->Set('DayNames', array(

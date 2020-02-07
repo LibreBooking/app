@@ -780,6 +780,7 @@ class en_us extends Language
         $strings['EndTime'] = 'End Time';
         $strings['New'] = 'New';
         $strings['Updated'] = 'Updated';
+        $strings['Custom'] = 'Custom';
         // End Strings
 
 		// Install

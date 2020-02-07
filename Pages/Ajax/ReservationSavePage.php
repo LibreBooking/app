@@ -367,14 +367,21 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		return $this->GetForm(FormKeys::END_REPEAT_DATE);
 	}
 
+    public function GetRepeatCustomDates()
+    {
+        $dates = $this->GetForm(FormKeys::REPEAT_CUSTOM_DATES);
+        if(!is_array($dates) || empty($dates)) {
+            return [];
+        }
+
+        return $dates;
+    }
+
 	public function GetSeriesUpdateScope()
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
 
-	/**
-	 * @return int[]
-	 */
 	public function GetParticipants()
 	{
 		$participants = $this->GetForm(FormKeys::PARTICIPANT_LIST);
@@ -386,9 +393,6 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		return array();
 	}
 
-	/**
-	 * @return int[]
-	 */
 	public function GetInvitees()
 	{
 		$invitees = $this->GetForm(FormKeys::INVITATION_LIST);

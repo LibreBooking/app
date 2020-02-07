@@ -520,7 +520,12 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		return $this->GetDate($this->recurrenceRule->repeatTerminationDate, 'Y-m-d');
 	}
 
-	public function GetUserId()
+	public function GetRepeatCustomDates()
+    {
+       return [];
+    }
+
+    public function GetUserId()
 	{
 		if (!empty($this->request->userId))
 		{

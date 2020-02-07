@@ -334,6 +334,14 @@ class DateRange
     {
         return $this->_begin->Timezone();
     }
+
+    /**
+     * @return DateDiff
+     */
+    public function Duration()
+    {
+        return $this->_begin->GetDifference($this->_end);
+    }
 }
 
 class NullDateRange extends DateRange
