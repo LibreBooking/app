@@ -221,7 +221,12 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	 */
 	public function SetRepeatWeekdays($repeatWeekdays);
 
-	/**
+    /**
+     * @param Date[] $customRepeatDates
+     */
+    public function SetCustomRepeatDates($customRepeatDates);
+
+    /**
 	 * @param Date $repeatTerminationDate
 	 */
 	public function SetRepeatTerminationDate($repeatTerminationDate);
@@ -667,7 +672,12 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->Set('RepeatTerminationDate', $repeatTerminationDate);
 	}
 
-	public function SetBlackoutId($blackoutId)
+	public function SetCustomRepeatDates($customRepeatDates)
+    {
+        $this->Set('CustomRepeatDates', $customRepeatDates);
+    }
+
+    public function SetBlackoutId($blackoutId)
 	{
 		$this->Set('BlackoutId', $blackoutId);
 	}

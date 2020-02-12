@@ -38,6 +38,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
     };
 
     var options = recurOptions;
+    options.customRepeatExclusions = recurOptions.customRepeatExclusions || [];
 
     var elements = $.extend(e, recurElements);
 

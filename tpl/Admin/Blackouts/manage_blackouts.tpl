@@ -351,8 +351,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{control type="DatePickerSetupControl" ControlId="addStartDate" AltId="formattedAddStartDate"}
 	{control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
 	{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
+    {control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
 
-	<div id="wait-box" class="wait-box">
+
+    <div id="wait-box" class="wait-box">
 		<div id="creatingNotification">
 			<h3>
 				{block name="ajaxMessage"}

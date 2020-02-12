@@ -200,6 +200,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 			}
 			$this->page->SetRepeatType($repeatConfiguration->Type);
 			$this->page->SetRepeatWeekdays($repeatConfiguration->Weekdays);
+			$this->page->SetCustomRepeatDates($series->CustomRepeatDates());
 			$this->page->SetWasBlackoutFound(true);
 		}
 		else
