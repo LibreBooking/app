@@ -622,13 +622,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             repeatInterval: '{$RepeatInterval}',
             repeatMonthlyType: '{$RepeatMonthlyType}',
             repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}],
-            autoSetTerminationDate: $('#referenceNumber').val() != ''
+            autoSetTerminationDate: $('#referenceNumber').val() != '',
+            customRepeatExclusions: ['{formatdate date=$StartDate key=system}']
         };
 
         var recurrence = new Recurrence(recurOpts);
         recurrence.init();
 
         recurrence.onChange(reservation.repeatOptionsChanged);
+
+        {foreach from=$CustomRepeatDates item=date}
+            recurrence.addCustomDate('{format_date date=$date key=system timezone=$Timezone}', '{format_date date=$date timezone=$Timezone}');
+        {/foreach}
 
         var ajaxOptions = {
             target: '#result', // target element(s) to be updated with server response

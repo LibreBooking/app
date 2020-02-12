@@ -284,6 +284,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetRepeatType($this->reservationView->RepeatType);
 		$this->page->SetRepeatInterval($this->reservationView->RepeatInterval);
 		$this->page->SetRepeatMonthlyType($this->reservationView->RepeatMonthlyType);
+		$this->page->SetCustomRepeatDates($this->reservationView->CustomRepeatDates);
 
 		if ($this->reservationView->RepeatTerminationDate != null)
 		{

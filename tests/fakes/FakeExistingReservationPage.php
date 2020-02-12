@@ -272,4 +272,9 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
     {
         // TODO: Implement SetTermsAccepted() method.
     }
+
+    public function SetCustomRepeatDates($customRepeatDates)
+    {
+        // TODO: Implement SetCustomRepeatDates() method.
+    }
 }

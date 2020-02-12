@@ -1784,6 +1784,15 @@ class GetReservationReminders extends SqlCommand
     }
 }
 
+class GetReservationRepeatDatesCommand extends SqlCommand
+{
+    public function __construct($seriesId)
+    {
+        parent::__construct(Queries::GET_RESERVATION_REPEAT_DATES);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
+
 class GetReservationResourcesCommand extends SqlCommand
 {
     public function __construct($seriesId)

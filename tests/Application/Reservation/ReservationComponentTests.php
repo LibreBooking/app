@@ -553,6 +553,7 @@ class ReservationComponentTests extends TestBase
 		$this->reservationView->EndReminder = null;
 		$this->reservationView->ParticipatingGuests = $participatingGuests;
 		$this->reservationView->InvitedGuests = $invitedGuests;
+		$this->reservationView->CustomRepeatDates = [Date::Now()];
 
 		$this->page->expects($this->once())
 				   ->method('SetAdditionalResources')
@@ -601,6 +602,10 @@ class ReservationComponentTests extends TestBase
 		$this->page->expects($this->once())
 				   ->method('SetRepeatWeekdays')
 				   ->with($this->equalTo($repeatWeekdays));
+
+        $this->page->expects($this->once())
+            ->method('SetCustomRepeatDates')
+            ->with($this->equalTo($this->reservationView->CustomRepeatDates));
 
 		$this->page->expects($this->once())
 				   ->method('SetAccessories')

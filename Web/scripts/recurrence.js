@@ -65,6 +65,10 @@ function Recurrence(recurOptions, recurElements, prefix) {
         changeCallback = callback;
     };
 
+    this.addCustomDate = function(systemFormattedDate, userFormattedDate) {
+        AddRepeatDate(systemFormattedDate, userFormattedDate);
+    };
+
     var NotifyChange = function () {
         if (changeCallback) {
             changeCallback(elements.repeatOptions.val(),
@@ -259,11 +263,12 @@ function Recurrence(recurOptions, recurElements, prefix) {
 
     var AddRepeatDate = function(systemFormattedDate, userFormattedDate) {
         var d = {"system": systemFormattedDate, "user": userFormattedDate};
-        if (systemFormattedDate != "" && userFormattedDate != "" && repeatDates.find(x => x.system === systemFormattedDate) === undefined) {
+        if (systemFormattedDate != "" && userFormattedDate != "" && repeatDates.find(x => x.system === systemFormattedDate) === undefined && options.customRepeatExclusions.find(x => x == systemFormattedDate) === undefined) {
             repeatDates.push(d);
         }
 
         DisplayRepeatDates();
+        NotifyChange();
     };
 
     var DisplayRepeatDates = function() {
@@ -277,5 +282,6 @@ function Recurrence(recurOptions, recurElements, prefix) {
     var OnRepeatDateRemoved = function(systemFormattedDate) {
         repeatDates = repeatDates.filter(d => d.system !== systemFormattedDate);
         DisplayRepeatDates();
+        NotifyChange();
     };
 }

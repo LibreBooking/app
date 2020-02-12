@@ -60,6 +60,11 @@ interface IExistingReservationPage extends IReservationPage
 	function SetRepeatWeekdays($repeatWeekdays);
 
 	/**
+	 * @param $customRepeatDates Date[]
+	 */
+	function SetCustomRepeatDates($customRepeatDates);
+
+	/**
 	 * @param $referenceNumber string
 	 */
 	function SetReferenceNumber($referenceNumber);
@@ -239,6 +244,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		$this->Set('RepeatWeekdays', $repeatWeekdays);
 	}
+
+    public function SetCustomRepeatDates($customRepeatDates)
+    {
+        $this->Set('CustomRepeatDates', $customRepeatDates);
+    }
 
 	public function SetReferenceNumber($referenceNumber)
 	{

@@ -70,7 +70,7 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 			if ($this->_reservationSavedSuccessfully)
 			{
 				$this->Set('Resources', $reservation->AllResources());
-				$this->Set('Instances', $reservation->Instances());
+				$this->Set('Instances', $reservation->SortedInstances());
 				$this->Set('Timezone', ServiceLocator::GetServer()->GetUserSession()->Timezone);
 				$this->Display('Ajax/reservation/update_successful.tpl');
 			}

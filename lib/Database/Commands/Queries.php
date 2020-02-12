@@ -752,6 +752,8 @@ class Queries
 
 	const GET_RESERVATION_REMINDERS = 'SELECT * FROM `reservation_reminders` WHERE `series_id` = @seriesid';
 
+	const GET_RESERVATION_REPEAT_DATES = 'SELECT `start_date` FROM `reservation_instances` WHERE `series_id` = @seriesid';
+
 	const GET_RESERVATION_RESOURCES =
 			'SELECT `r`.*, `rr`.`resource_level_id`, `s`.`admin_group_id` as `s_admin_group_id`
 		FROM `reservation_resources` `rr`

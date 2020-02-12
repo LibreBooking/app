@@ -157,6 +157,11 @@ class ReservationView
      */
     public $TermsAcceptanceDate;
 
+    /**
+     * @var Date[]
+     */
+    public $CustomRepeatDates = [];
+
     public function __construct()
     {
         $this->CheckinDate = new NullDate();
