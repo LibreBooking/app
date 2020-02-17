@@ -557,7 +557,7 @@ class de_de extends en_gb
         $strings['FindATime'] = 'Termin finden';
         $strings['AnyResource'] = 'Irgendeine Ressource';
         $strings['ThisWeek'] = 'Diese Woche';
-        $strings['Hours'] = 'Studnden';
+        $strings['Hours'] = 'Stunden';
         $strings['Minutes'] = 'Minuten';
         $strings['ImportICS'] = 'Aus ICS_Datei importieren';
         $strings['ImportQuartzy'] = 'Von Quartzy importieren';
