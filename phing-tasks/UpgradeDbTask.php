@@ -17,9 +17,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once "phing/Task.php";
+//require_once "phing/Task.php";
 
-class UpgradeDbTask extends Task
+//require __DIR__ . '../vendor/autoload.php';
+
+class UpgradeDbTask // extends Task
 {
     private $username = null;
 
@@ -159,4 +161,11 @@ class UpgradeDbTask extends Task
     }
 }
 
+$task = new UpgradeDbTask();
+$task->setUsername($argv[1]);
+$task->setPassword($argv[2]);
+$task->setHost($argv[3]);
+$task->setDatabase($argv[4]);
+$task->setSchemadir($argv[5]);
+$task->main();
 ?>

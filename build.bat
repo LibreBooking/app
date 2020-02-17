@@ -1,6 +1,6 @@
 @echo off
-IF NOT EXIST c:\php\phing.bat GOTO PEAR_DIR
-c:\php\phing %1%
+rem IF NOT EXIST c:\php\phing-2.16.3.phar GOTO PEAR_DIR
+vendor\phing\phing\bin\phing %1%
 
 
 :PEAR_DIR
