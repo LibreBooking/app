@@ -43,13 +43,13 @@ class ManageAccessoriesPresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageAccessoriesPage');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->accessoryRepository = $this->getMock('IAccessoryRepository');
+		$this->page = $this->createMock('IManageAccessoriesPage');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
 		$this->presenter = new ManageAccessoriesPresenter(
 			$this->page,
@@ -57,7 +57,7 @@ class ManageAccessoriesPresenterTests extends TestBase
 			$this->accessoryRepository);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

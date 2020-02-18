@@ -22,10 +22,10 @@ class ReservationHandlerTests extends TestBase
 {
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()
 	{
-		$persistenceService = $this->getMock('IReservationPersistenceService');
-		$validationService = $this->getMock('IReservationValidationService');
-		$notificationService = $this->getMock('IReservationNotificationService');
-		$page = $this->getMock('IReservationSaveResultsView');
+		$persistenceService = $this->createMock('IReservationPersistenceService');
+		$validationService = $this->createMock('IReservationValidationService');
+		$notificationService = $this->createMock('IReservationNotificationService');
+		$page = $this->createMock('IReservationSaveResultsView');
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
@@ -64,10 +64,10 @@ class ReservationHandlerTests extends TestBase
 	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
 	{
         $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_WAITLIST, true);
-		$persistenceService = $this->getMock('IReservationPersistenceService');
-		$validationService = $this->getMock('IReservationValidationService');
-		$notificationService = $this->getMock('IReservationNotificationService');
-		$page = $this->getMock('IReservationSaveResultsView');
+		$persistenceService = $this->createMock('IReservationPersistenceService');
+		$validationService = $this->createMock('IReservationValidationService');
+		$notificationService = $this->createMock('IReservationNotificationService');
+		$page = $this->createMock('IReservationSaveResultsView');
 
 		$errorMessage1 = 'e1';
 		$errorMessage2 = 'e2';
@@ -107,9 +107,9 @@ class ReservationHandlerTests extends TestBase
 
 	public function testPreventsPersistenceAndNotificationAndShowsRetryMessageIfCanBeRetried()
 	{
-		$persistenceService = $this->getMock('IReservationPersistenceService');
-		$validationService = $this->getMock('IReservationValidationService');
-		$notificationService = $this->getMock('IReservationNotificationService');
+		$persistenceService = $this->createMock('IReservationPersistenceService');
+		$validationService = $this->createMock('IReservationValidationService');
+		$notificationService = $this->createMock('IReservationNotificationService');
 		$page = new FakeReservationSavePage();
 		$page->retryParameters = array();
 
@@ -150,10 +150,10 @@ class ReservationHandlerTests extends TestBase
     public function testCanJoinWaitListIfTurnedOnAndNotRecurringSeriesAndOnlyErrorIsAvailability()
     {
 
-        $persistenceService = $this->getMock('IReservationPersistenceService');
-        $validationService = $this->getMock('IReservationValidationService');
-        $notificationService = $this->getMock('IReservationNotificationService');
-        $page = $this->getMock('IReservationSaveResultsView');
+        $persistenceService = $this->createMock('IReservationPersistenceService');
+        $validationService = $this->createMock('IReservationValidationService');
+        $notificationService = $this->createMock('IReservationNotificationService');
+        $page = $this->createMock('IReservationSaveResultsView');
 
         $errorMessage1 = 'e1';
         $errorMessage2 = 'e2';

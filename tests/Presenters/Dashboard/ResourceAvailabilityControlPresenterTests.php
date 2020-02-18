@@ -62,7 +62,7 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
      */
     private $scheduleRepo;
 
-    public function setup()
+    public function setUp(): void
 	{
 		parent::setup();
 

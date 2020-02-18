@@ -93,7 +93,7 @@ class ResourceDisplayPresenterTests extends TestBase
      */
     private $termsOfServiceRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

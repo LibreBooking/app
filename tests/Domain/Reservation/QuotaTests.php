@@ -42,9 +42,9 @@ class QuotaTests extends TestBase
 	 */
 	var $user;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
 
 		$this->tz = 'America/Chicago';
 		$this->schedule = new Schedule(1, null, null, null, null, $this->tz);
@@ -54,7 +54,7 @@ class QuotaTests extends TestBase
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

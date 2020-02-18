@@ -23,12 +23,12 @@ interface ISqlCommand
 	/**
 	 * @param Parameters $parameters
 	 */
-	public function SetParameters(Parameters &$parameters);
+	public function SetParameters(Parameters $parameters);
 
 	/**
 	 * @param Parameter $parameter
 	 */
-	public function AddParameter(Parameter &$parameter);
+	public function AddParameter(Parameter $parameter);
 
 	/**
 	 * @return string the underlying query to be executed

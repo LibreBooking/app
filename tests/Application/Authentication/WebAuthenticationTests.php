@@ -40,7 +40,7 @@ class WebAuthenticationTests extends TestBase
 	private $username = 'LoGInName';
 	private $password = 'password';
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -155,7 +155,7 @@ class WebAuthenticationTests extends TestBase
 
 	public function testHandlesLoginFailure()
 	{
-		$page = $this->getMock('ILoginPage');
+		$page = $this->createMock('ILoginPage');
 		$this->webAuth->HandleLoginFailure($page);
 
 		$this->assertTrue($this->fakeAuth->_HandleLoginFailureCalled);

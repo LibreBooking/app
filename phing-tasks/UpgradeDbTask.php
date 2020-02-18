@@ -168,4 +168,3 @@ $task->setHost($argv[3]);
 $task->setDatabase($argv[4]);
 $task->setSchemadir($argv[5]);
 $task->main();
-?>

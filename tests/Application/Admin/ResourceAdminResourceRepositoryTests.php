@@ -27,15 +27,15 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 	 */
 	private $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->userRepository = $this->getMock('IUserRepository');
+		$this->userRepository = $this->createMock('IUserRepository');
 
 		parent::setup();
 	}
 	public function testOnlyGetsResourcesWhereUserIsAdmin()
 	{
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$this->userRepository->expects($this->once())
 						->method('LoadById')
 						->with($this->equalTo($this->fakeUser->UserId))
@@ -92,7 +92,7 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 
     public function testDoesNotUpdateResourceIfUserDoesNotHaveAccess()
     {
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$this->userRepository->expects($this->once())
 						->method('LoadById')
 						->with($this->equalTo($this->fakeUser->UserId))
@@ -123,7 +123,7 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 	public function testGetsScheduleResourcesUserHasAdminRightsTo()
 	{
 		$scheduleId = 100;
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$this->userRepository->expects($this->once())
 						->method('LoadById')
 						->with($this->equalTo($this->fakeUser->UserId))

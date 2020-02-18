@@ -39,7 +39,7 @@ class AnnouncementPresenterTests extends TestBase
 	 */
 	private $announcements;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -52,7 +52,7 @@ class AnnouncementPresenterTests extends TestBase
 		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements, $this->permissionService);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 

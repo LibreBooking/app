@@ -30,13 +30,13 @@ class ResourceRepositoryTests extends TestBase
 	 */
 	private $repository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->repository = new ResourceRepository();
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

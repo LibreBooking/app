@@ -28,7 +28,7 @@ class ReservationWaitlistRepositoryTests extends TestBase
      */
     public $repository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

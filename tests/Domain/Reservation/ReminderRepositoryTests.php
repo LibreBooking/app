@@ -27,7 +27,7 @@ class ReminderRepositoryTests extends TestBase
 	 */
 	public $repository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 		$this->repository = new ReminderRepository();

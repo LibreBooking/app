@@ -37,7 +37,7 @@ class ReservationWaitlistPresenterTests extends TestBase
      */
     private $presenter;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
         $this->page = new FakeReservationWaitlistPage();

@@ -42,11 +42,11 @@ class AttributeServiceTests extends TestBase
 	 */
 	public $resourceService;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-//		$this->attributeRepository = $this->getMock('IAttributeRepository');
+//		$this->attributeRepository = $this->createMock('IAttributeRepository');
 
 		$this->attributeRepository = new FakeAttributeRepository();
 		$this->authorizationService = new FakeAuthorizationService();

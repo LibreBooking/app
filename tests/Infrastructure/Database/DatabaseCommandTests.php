@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class DatabaseCommandTests extends PHPUnit_Framework_TestCase
+class DatabaseCommandTests extends TestBase
 {
 	function testAuthorizationCommand()
 	{

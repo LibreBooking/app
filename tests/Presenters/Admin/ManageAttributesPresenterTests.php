@@ -38,12 +38,12 @@ class ManageAttributesPresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeAttributePage();
-		$this->attributeRepository = $this->getMock('IAttributeRepository');
+		$this->attributeRepository = $this->createMock('IAttributeRepository');
 
 		$this->presenter = new ManageAttributesPresenter($this->page, $this->attributeRepository);
 	}

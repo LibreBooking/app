@@ -29,7 +29,7 @@ class ParticipationNotificationTests extends TestBase
      */
     private $participationNotification;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
         $this->userRepository = new FakeUserRepository();

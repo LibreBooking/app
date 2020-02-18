@@ -37,11 +37,11 @@ class AttributesWebServiceTests extends TestBase
 	 */
 	private $server;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->attributeService = $this->createMock('IAttributeService');
 		$this->server = new FakeRestServer();
 
 		$this->service = new AttributesWebService($this->server, $this->attributeService);

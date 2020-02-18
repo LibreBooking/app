@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class ConfigTests extends TestBase
 {
-	function setup()
+	function setup(): void
 	{
 		parent::setup();
 

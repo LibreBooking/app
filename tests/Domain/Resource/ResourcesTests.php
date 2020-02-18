@@ -25,13 +25,13 @@ class ResourcesTests extends TestBase
 {
 	private $Resources;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setup();
 		Resources::SetInstance(null);
 	}
 
-	public function tearDown()
+	public function teardown(): void
 	{
 		$this->Resources = null;
 		parent::teardown();

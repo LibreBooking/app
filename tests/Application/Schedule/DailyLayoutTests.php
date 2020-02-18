@@ -22,12 +22,12 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class DailyLayoutTests extends TestBase
 {
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }
@@ -41,7 +41,7 @@ class DailyLayoutTests extends TestBase
         $scheduleLayout = new ScheduleLayout($targetTimezone);
         $scheduleLayout->AppendPeriod(new Time(5, 0, 0, $targetTimezone), new Time(6, 0, 0, $targetTimezone));
 
-        $listing = $this->getMock('IReservationListing');
+        $listing = $this->createMock('IReservationListing');
 
         $startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
         $endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
@@ -71,7 +71,7 @@ class DailyLayoutTests extends TestBase
         $periods[] = new SchedulePeriod(Date::Parse('2010-03-17 12:30'), Date::Parse('2010-03-17 20:30'), "start", "end");
         $periods[] = new SchedulePeriod(Date::Parse('2010-03-17 20:30'), Date::Parse('2010-03-18 12:30'));
 
-        $scheduleLayout = $this->getMock('IScheduleLayout');
+        $scheduleLayout = $this->createMock('IScheduleLayout');
         $scheduleLayout->expects($this->once())
             ->method('GetLayout')
             ->with($this->equalTo($displayDate))
@@ -105,7 +105,7 @@ class DailyLayoutTests extends TestBase
         $periods[] = new SchedulePeriod(Date::Parse('2010-03-17 14:00'), Date::Parse('2010-03-18 17:30'));
         $periods[] = new SchedulePeriod(Date::Parse('2010-03-17 17:30'), Date::Parse('2010-03-18 8:30'));
 
-        $scheduleLayout = $this->getMock('IScheduleLayout');
+        $scheduleLayout = $this->createMock('IScheduleLayout');
         $scheduleLayout->expects($this->once())
             ->method('GetLayout')
             ->with($this->equalTo($displayDate))
@@ -158,7 +158,7 @@ class DailyLayoutTests extends TestBase
         $scheduleLayout = new ScheduleLayout($targetTimezone);
         $scheduleLayout->AppendPeriod(new Time(4, 0, 0, $targetTimezone), new Time(5, 0, 0, $targetTimezone));
 
-        $listing = $this->getMock('IReservationListing');
+        $listing = $this->createMock('IReservationListing');
 
         $firstReservation = new TestReservationListItem($start, $end, $resourceId);
         $reservations = array(

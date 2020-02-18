@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class PasswordEncryptionTests extends PHPUnit_Framework_TestCase
+class PasswordEncryptionTests extends TestBase
 {
 	public function testGeneratesSaltAndHashesPassword()
 	{

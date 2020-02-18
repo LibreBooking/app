@@ -35,7 +35,7 @@ class AttributeSaveControllerTests extends TestBase
 	private $attributeRepository;
 	private $session;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

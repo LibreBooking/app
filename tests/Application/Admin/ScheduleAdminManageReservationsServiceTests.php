@@ -42,15 +42,15 @@ class ScheduleAdminManageReservationsServiceTests extends TestBase
 	 */
 	private $service;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
-		$handler = $this->getMock('IReservationHandler');
-		$persistenceService = $this->getMock('IUpdateReservationPersistenceService');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->reservationAuthorization = $this->createMock('IReservationAuthorization');
+		$handler = $this->createMock('IReservationHandler');
+		$persistenceService = $this->createMock('IUpdateReservationPersistenceService');
 
 		$this->service = new ScheduleAdminManageReservationsService($this->reservationViewRepository, $this->userRepository, $this->reservationAuthorization, $handler, $persistenceService);
 	}

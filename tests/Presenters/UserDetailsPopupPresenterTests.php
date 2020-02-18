@@ -47,7 +47,7 @@ class UserDetailsPopupPresenterTests extends TestBase
 	 */
 	private $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

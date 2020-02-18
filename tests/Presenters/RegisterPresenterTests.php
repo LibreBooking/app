@@ -71,15 +71,15 @@ class RegisterPresenterTests extends TestBase
 	private $homepageId = '1';
 	private $acknowledgedTerms = true;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeRegistrationPage();
 		$this->fakeReg = new FakeRegistration();
         $this->fakeAuth = new FakeAuth();
-        $this->captcha = $this->getMock('ICaptchaService');
-        $this->attributeService = $this->getMock('IAttributeService');
+        $this->captcha = $this->createMock('ICaptchaService');
+        $this->attributeService = $this->createMock('IAttributeService');
         $this->termsOfServiceRepository = new FakeTermsOfServiceRepository();
 
 		$this->presenter = new RegistrationPresenter(
@@ -91,7 +91,7 @@ class RegisterPresenterTests extends TestBase
             $this->termsOfServiceRepository);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 

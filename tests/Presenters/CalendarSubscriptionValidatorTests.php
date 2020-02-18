@@ -38,12 +38,12 @@ class CalendarSubscriptionValidatorTests extends TestBase
      */
     private $subscriptionService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->page = $this->getMock('ICalendarSubscriptionPage');
-        $this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
+        $this->page = $this->createMock('ICalendarSubscriptionPage');
+        $this->subscriptionService = $this->createMock('ICalendarSubscriptionService');
         $this->validator = new CalendarSubscriptionValidator($this->page, $this->subscriptionService);
     }
 

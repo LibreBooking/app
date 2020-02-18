@@ -52,14 +52,14 @@ class ManageUsersServiceTests extends TestBase
      */
     private $passwordEncryption;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->registration = $this->getMock('IRegistration');
-        $this->userRepo = $this->getMock('IUserRepository');
-        $this->groupRepo = $this->getMock('IGroupRepository');
-        $this->userViewRepo = $this->getMock('IUserRepository');
+        $this->registration = $this->createMock('IRegistration');
+        $this->userRepo = $this->createMock('IUserRepository');
+        $this->groupRepo = $this->createMock('IGroupRepository');
+        $this->userViewRepo = $this->createMock('IUserRepository');
         $this->passwordEncryption = new FakePasswordEncryption();
 
         $this->service = new ManageUsersService(

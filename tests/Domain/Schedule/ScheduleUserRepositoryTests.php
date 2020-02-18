@@ -20,12 +20,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class ScheduleUserRepositoryTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

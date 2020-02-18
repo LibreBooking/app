@@ -26,7 +26,7 @@ class DashboardPresenterTests extends TestBase
 	private $presenter;
 	private $page;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -37,7 +37,7 @@ class DashboardPresenterTests extends TestBase
 		$this->presenter = new DashboardPresenter($this->page);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 

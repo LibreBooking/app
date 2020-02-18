@@ -25,10 +25,10 @@ class PasswordPresenterTests extends TestBase
 {
 	public function testResetsPassword()
 	{
-		$page = $this->getMock('IPasswordPage');
-		$userRepo = $this->getMock('IUserRepository');
-		$encryption = $this->getMock('PasswordEncryption');
-		$user =  $this->getMock('User');
+		$page = $this->createMock('IPasswordPage');
+		$userRepo = $this->createMock('IUserRepository');
+		$encryption = $this->createMock('PasswordEncryption');
+		$user =  $this->createMock('User');
 
 		$newPassword = 'new password';
 		$encryptedValue = 'enc';

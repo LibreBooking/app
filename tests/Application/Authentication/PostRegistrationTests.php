@@ -50,7 +50,7 @@ class PostRegistrationTests extends TestBase
 	 */
 	private $context;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

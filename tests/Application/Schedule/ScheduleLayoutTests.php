@@ -25,13 +25,13 @@ class ScheduleLayoutTests extends TestBase
 {
     private $date;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
         $this->date = Date::Parse('2011-03-01', 'America/Chicago');
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }

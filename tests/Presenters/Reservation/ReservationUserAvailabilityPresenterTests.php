@@ -53,7 +53,7 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
      */
     private $resourceRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
@@ -162,11 +162,6 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->assertEquals($expectedResources, $this->page->_Resources);
         $this->assertEquals($expectedUser, $this->page->_User);
         $this->assertEquals($expectedLayout, $this->page->_Layout);
-    }
-
-    public function testDoesNotShowResourcesUserCannotAccess()
-    {
-
     }
 }
 

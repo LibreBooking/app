@@ -23,12 +23,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 
 class InvitationEmailNotificationTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -49,8 +49,8 @@ class InvitationEmailNotificationTests extends TestBase
 		$series->WithCurrentInstance($instance1);
 		$series->WithOwnerId($ownerId);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 			->method('LoadById')

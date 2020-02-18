@@ -17,9 +17,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once "phing/Task.php";
+//require_once "phing/Task.php";
 
-class CombineDbFilesTask extends Task
+class CombineDbFilesTask
 {
     private $schemaDir = null;
 
@@ -153,4 +153,8 @@ class CombineDbFilesTask extends Task
     }
 }
 
-?>
+$task = new CombineDbFilesTask();
+$task->setSchemadir($argv[1]);
+$task->setSchemafile($argv[2]);
+$task->setDatafile($argv[3]);
+$task->main();

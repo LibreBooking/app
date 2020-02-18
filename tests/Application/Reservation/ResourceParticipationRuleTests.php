@@ -37,7 +37,7 @@ class ResourceParticipationRuleTests extends TestBase
 	 */
 	private $resourceLimit20;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

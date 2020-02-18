@@ -42,12 +42,12 @@ class SavedReportsPresenterTests extends TestBase
 	 */
 	public $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeSavedReportsPage();
-		$this->service = $this->getMock('IReportingService');
+		$this->service = $this->createMock('IReportingService');
 		$this->userRepository = new FakeUserRepository();
 
 		$this->presenter = new SavedReportsPresenter($this->page, $this->fakeUser, $this->service, $this->userRepository);

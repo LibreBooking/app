@@ -23,12 +23,12 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class ReservationServiceTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -42,9 +42,9 @@ class ReservationServiceTests extends TestBase
 
 		$range = new DateRange($startDate, $endDate);
 
-		$repository = $this->getMock('IReservationViewRepository');
+		$repository = $this->createMock('IReservationViewRepository');
 		$reservationListing = new TestReservationListing();
-		$listingFactory = $this->getMock('IReservationListingFactory');
+		$listingFactory = $this->createMock('IReservationListingFactory');
 
 		$rows = FakeReservationRepository::GetReservationRows();
 		$res1 = ReservationItemView::Populate($rows[0]);

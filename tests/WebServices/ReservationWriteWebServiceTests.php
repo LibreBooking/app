@@ -37,12 +37,12 @@ class ReservationWriteWebServiceTests extends TestBase
 	 */
 	private $controller;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->controller = $this->getMock('IReservationSaveController');
+		$this->controller = $this->createMock('IReservationSaveController');
 
 		$this->service = new ReservationWriteWebService($this->server, $this->controller);
 	}

@@ -43,7 +43,7 @@ class CheckoutPresenterTests extends TestBase
      */
     private $paymentLogger;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

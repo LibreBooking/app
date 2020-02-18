@@ -33,16 +33,16 @@ class ReservationStartTimeRuleTests extends TestBase
      */
     private $layout;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
-        $this->scheduleRepository = $this->getMock('IScheduleRepository');
-        $this->layout = $this->getMock('IScheduleLayout');
+        $this->scheduleRepository = $this->createMock('IScheduleRepository');
+        $this->layout = $this->createMock('IScheduleLayout');
 
         $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::FUTURE);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

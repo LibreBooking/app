@@ -57,14 +57,14 @@ class ReservationAttributesPresenterTests extends TestBase
 	 */
 	private $attributeRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, true);
 		$this->page = new FakeReservationAttributesPage();
 
-		$this->attributeRepository = $this->getMock('IAttributeRepository');
+		$this->attributeRepository = $this->createMock('IAttributeRepository');
 		$this->attributeService = new AttributeService($this->attributeRepository);
 		$this->authorizationService = new FakeAuthorizationService();
 		$this->attributeService->SetAuthorizationService($this->authorizationService);

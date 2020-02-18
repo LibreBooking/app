@@ -43,12 +43,12 @@ class WebServiceSecurityTests extends TestBase
 	 */
 	private $userSessionRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->userSessionRepository = $this->getMock('IUserSessionRepository');
-		$this->server = $this->getMock('IRestServer');
+		$this->userSessionRepository = $this->createMock('IUserSessionRepository');
+		$this->server = $this->createMock('IRestServer');
 
 		$this->security = new WebServiceSecurity($this->userSessionRepository);
 

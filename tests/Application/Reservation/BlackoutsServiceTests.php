@@ -47,14 +47,14 @@ class BlackoutsServiceTests extends TestBase
 	 */
 	private $blackoutRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->conflictHandler = $this->getMock('IReservationConflictResolution');
-		$this->blackoutRepository = $this->getMock('IBlackoutRepository');
-		$this->userRepository = $this->getMock('IUserRepository');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+		$this->conflictHandler = $this->createMock('IReservationConflictResolution');
+		$this->blackoutRepository = $this->createMock('IBlackoutRepository');
+		$this->userRepository = $this->createMock('IUserRepository');
 
 		$this->service = new ManageBlackoutsService($this->reservationViewRepository, $this->blackoutRepository, $this->userRepository);
 	}
@@ -330,7 +330,7 @@ class BlackoutsServiceTests extends TestBase
 	{
 		$id = 123231;
 		$userId = 89191;
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$resource = new BlackoutResource(1, 'name', 3);
 
 		$series = BlackoutSeries::Create(1, 'title', new TestDateRange());
@@ -374,7 +374,7 @@ class BlackoutsServiceTests extends TestBase
 
 		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId($seriesId);
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 
 		$reservationBefore = new TestReservationItemView(1, Date::Parse('2010-01-01'), $start, 1);
 		$reservationAfter = new TestReservationItemView(2, $end, Date::Parse('2012-01-01'), 2);
@@ -426,7 +426,7 @@ class BlackoutsServiceTests extends TestBase
 		$title = 'title';
 		$blackoutInstanceId = 199;
 
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId(1);
 
@@ -475,7 +475,7 @@ class BlackoutsServiceTests extends TestBase
 
 		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId($seriesId);
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 
 		$user->expects($this->any())
 			 ->method('IsResourceAdminFor')
@@ -539,7 +539,7 @@ class BlackoutsServiceTests extends TestBase
 
 		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId($seriesId);
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 
 		$user->expects($this->any())
 			 ->method('IsResourceAdminFor')

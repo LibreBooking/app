@@ -41,11 +41,11 @@ class ReservationAuthorizationTests extends TestBase
 	 */
 	private $reservationAuthorization;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->authorizationService = $this->getMock('IAuthorizationService');
+		$this->authorizationService = $this->createMock('IAuthorizationService');
 
 		$this->currentUser = new FakeUserSession(false, null, 998);
 		$this->adminUser = new FakeUserSession(true, null, 999);

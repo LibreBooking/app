@@ -38,17 +38,17 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 	 */
 	private $strategy;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$this->strategy = $this->createMock('IResourceAvailabilityStrategy');
         $this->scheduleRepository = new FakeScheduleRepository();
         $this->schedule = new FakeSchedule();
         $this->scheduleRepository->_Schedule = $this->schedule;
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -224,7 +224,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$scheduleReservation4->WithBufferTime($r2Buffer);
 
 		$scheduleReservation5 = new TestReservationItemView(6, $startDate, $endDate, 999);
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -277,7 +277,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 																							   'UTC'),  $resource1->GetId());
 		$nonConflict3->WithBufferTime($bufferTime);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')

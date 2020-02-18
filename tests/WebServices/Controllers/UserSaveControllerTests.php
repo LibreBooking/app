@@ -42,13 +42,13 @@ class UserSaveControllerTests extends TestBase
      */
     private $requestValidator;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->manageUserServiceFactory = $this->getMock('IManageUsersServiceFactory');
-        $this->manageUsersService = $this->getMock('IManageUsersService');
-        $this->requestValidator = $this->getMock('IUserRequestValidator');
+        $this->manageUserServiceFactory = $this->createMock('IManageUsersServiceFactory');
+        $this->manageUsersService = $this->createMock('IManageUsersService');
+        $this->requestValidator = $this->createMock('IUserRequestValidator');
 
         $this->controller = new UserSaveController($this->manageUserServiceFactory, $this->requestValidator);
     }

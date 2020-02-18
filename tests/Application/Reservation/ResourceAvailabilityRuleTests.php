@@ -33,7 +33,7 @@ class ResourceAvailabilityRuleTests extends TestBase
      */
     private $schedule;
 
-	public function setup()
+	public function setUp(): void
 	{
 	    $this->scheduleRepository = new FakeScheduleRepository();
 	    $this->schedule = new FakeSchedule();
@@ -55,7 +55,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$scheduleReservation = new TestReservationItemView(2, $startDate, $endDate, 1);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -98,7 +98,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(5, $startNonConflict2, $endNonConflict2, $resourceId),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -135,7 +135,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(3, $startConflict2, $endConflict2, $additionalResourceId),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -196,7 +196,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$scheduleReservation4->WithBufferTime($r2Buffer);
 
 		$scheduleReservation5 = new TestReservationItemView(6, $startDate, $endDate, 999);
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -254,7 +254,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 													$resource1->GetId());
 		$nonConflict3->WithBufferTime($bufferTime);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -290,7 +290,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 												 $resource1->GetId());
 		$conflict1->WithBufferTime($bufferTime);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -320,7 +320,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->WithDuration($reservationDates);
 		$reservation->WithRepeatOptions($twoRepetitions);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->exactly(1 + count($repeatDates)))
 				 ->method('GetItemsBetween')
@@ -337,7 +337,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endDate = Date::Now();
 		$resourceIds = array(1,2);
 
-		$repository = $this->getMock('IReservationViewRepository');
+		$repository = $this->createMock('IReservationViewRepository');
 
 		$strategy = new ResourceAvailability($repository);
 
@@ -376,7 +376,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->at(0))
 				 ->method('GetItemsBetween')
@@ -414,7 +414,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->at(0))
 				 ->method('GetItemsBetween')
@@ -456,7 +456,7 @@ class ResourceAvailabilityRuleTests extends TestBase
             new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
         );
 
-        $strategy = $this->getMock('IResourceAvailabilityStrategy');
+        $strategy = $this->createMock('IResourceAvailabilityStrategy');
 
         $strategy->expects($this->atLeastOnce())
             ->method('GetItemsBetween')
@@ -495,7 +495,7 @@ class ResourceAvailabilityRuleTests extends TestBase
             new TestReservationItemView(3, $startConflict2, $endConflict2, $additionalResourceId),
         );
 
-        $strategy = $this->getMock('IResourceAvailabilityStrategy');
+        $strategy = $this->createMock('IResourceAvailabilityStrategy');
 
         $strategy->expects($this->any())
             ->method('GetItemsBetween')

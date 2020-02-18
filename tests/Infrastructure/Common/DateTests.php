@@ -25,7 +25,7 @@ class DateTests extends TestBase
 	private $tz;
 	private $datestring;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

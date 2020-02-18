@@ -26,7 +26,7 @@ class SlotLabelFactoryTests extends TestBase
 	 */
 	private $reservation;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -136,7 +136,7 @@ class SlotLabelFactoryTests extends TestBase
 
         $fullName = $this->reservation->GetUserName()->__toString();
 
-        $this->assertNotContains($fullName, $label);
+        $this->assertStringNotContainsString($fullName, $label);
     }
 
     public function testShowsUserDetailsIfCanEditResource()
@@ -156,7 +156,7 @@ class SlotLabelFactoryTests extends TestBase
 
         $fullName = $this->reservation->GetUserName()->__toString();
 
-        $this->assertContains($fullName, $label);
+        $this->assertStringContainsString($fullName, $label);
     }
 
     public function testHidesReservationDetails()
@@ -166,7 +166,7 @@ class SlotLabelFactoryTests extends TestBase
         $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
 
         $authService = new FakeAuthorizationService();
-        $this->reservation->WithOwnerGroupIds(1);
+        $this->reservation->WithOwnerGroupIds([1]);
         $this->fakeUser->AdminGroups = array($this->reservation->OwnerGroupIds());
         $this->fakeUser->IsAdmin = false;
         $authService->_CanReserveFor = true;

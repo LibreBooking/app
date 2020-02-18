@@ -43,7 +43,7 @@ class UserCreditsPresenterTests extends TestBase
      */
     private $creditRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

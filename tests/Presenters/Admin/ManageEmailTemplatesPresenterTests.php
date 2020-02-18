@@ -32,7 +32,7 @@ class ManageEmailTemplatesPresenterTests extends TestBase
      */
     private $presenter;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

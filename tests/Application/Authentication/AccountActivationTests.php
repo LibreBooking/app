@@ -35,12 +35,12 @@ class AccountActivationTests extends TestBase
 	 */
 	private $activation;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->activationRepo = $this->getMock('IAccountActivationRepository');
-		$this->userRepo = $this->getMock('IUserRepository');
+		$this->activationRepo = $this->createMock('IAccountActivationRepository');
+		$this->userRepo = $this->createMock('IUserRepository');
 		$this->activation = new AccountActivation($this->activationRepo, $this->userRepo);
 	}
 

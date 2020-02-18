@@ -65,7 +65,7 @@ class ActiveDirectoryTests extends TestBase
 	 */
 	private $loginContext;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -95,7 +95,7 @@ class ActiveDirectoryTests extends TestBase
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
 
-		$this->loginContext = $this->getMock('ILoginContext');
+		$this->loginContext = $this->createMock('ILoginContext');
 	}
 
 	public function testCanValidateUser()

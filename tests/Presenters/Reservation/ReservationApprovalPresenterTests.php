@@ -48,14 +48,14 @@ class ReservationApprovalPresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IReservationApprovalPage');
-		$this->persistence = $this->getMock('IUpdateReservationPersistenceService');
-		$this->handler = $this->getMock('IReservationHandler');
-		$this->auth = $this->getMock('IReservationAuthorization');
+		$this->page = $this->createMock('IReservationApprovalPage');
+		$this->persistence = $this->createMock('IUpdateReservationPersistenceService');
+		$this->handler = $this->createMock('IReservationHandler');
+		$this->auth = $this->createMock('IReservationAuthorization');
 
 		$this->presenter = new ReservationApprovalPresenter($this->page, $this->persistence, $this->handler, $this->auth, $this->fakeUser);
 	}

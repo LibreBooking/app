@@ -42,13 +42,13 @@ class ManageResourceTypesPresenterTests extends TestBase
 	 */
 	private $attributeService;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageResourceTypesPage');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->page = $this->createMock('IManageResourceTypesPage');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		$this->presenter = new ManageResourceTypesPresenter($this->page, $this->fakeUser, $this->resourceRepository, $this->attributeService);
 	}
@@ -57,7 +57,7 @@ class ManageResourceTypesPresenterTests extends TestBase
 	{
 		$types = array(new ResourceType(1, 'name', 'desc'));
 
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = $this->createMock('IEntityAttributeList');
 
 		$this->resourceRepository
 				->expects($this->once())

@@ -33,15 +33,15 @@ class ResourceCrossDayRuleTests extends TestBase
 	 */
 	private $schedule;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
 		$this->schedule = new FakeSchedule();
 		$this->schedule->SetTimezone('America/Chicago');
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

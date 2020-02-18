@@ -42,11 +42,11 @@ class ActivationPresenterTests extends TestBase
 	 */
 	private $auth;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IActivationPage');
+		$this->page = $this->createMock('IActivationPage');
 		$this->accountActivation = new FakeActivation();
 		$this->auth = new FakeWebAuthentication();
 

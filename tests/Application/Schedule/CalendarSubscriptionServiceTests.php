@@ -41,13 +41,13 @@ class CalendarSubscriptionServiceTests extends TestBase
      */
     private $scheduleRepo;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->userRepo = $this->getMock('IUserRepository');
-        $this->resourceRepo = $this->getMock('IResourceRepository');
-        $this->scheduleRepo = $this->getMock('IScheduleRepository');
+        $this->userRepo = $this->createMock('IUserRepository');
+        $this->resourceRepo = $this->createMock('IResourceRepository');
+        $this->scheduleRepo = $this->createMock('IScheduleRepository');
 
         $this->service = new CalendarSubscriptionService($this->userRepo, $this->resourceRepo, $this->scheduleRepo);
     }

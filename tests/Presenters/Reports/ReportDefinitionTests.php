@@ -27,7 +27,7 @@ class ReportDefinitionTests extends TestBase
 	 */
 	private $attributeRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->attributeRepository = new FakeAttributeRepository();
 		parent::setup();

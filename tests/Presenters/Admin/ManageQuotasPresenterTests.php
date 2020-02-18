@@ -52,15 +52,15 @@ class ManageQuotasPresenterTests extends TestBase
 	 */
 	public $quotaRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageQuotasPage');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->groupRepository = $this->getMock('IGroupViewRepository');
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->quotaRepository = $this->getMock('QuotaRepository');
+		$this->page = $this->createMock('IManageQuotasPage');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->groupRepository = $this->createMock('IGroupViewRepository');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
+		$this->quotaRepository = $this->createMock('QuotaRepository');
 
 		$this->presenter = new ManageQuotasPresenter(
 				$this->page,
@@ -70,7 +70,7 @@ class ManageQuotasPresenterTests extends TestBase
 				$this->quotaRepository);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

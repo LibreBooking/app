@@ -38,17 +38,17 @@ class AccessoryAvailabilityRuleTests extends TestBase
      */
     public $rule;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->reservationRepository = $this->getMock('IReservationViewRepository');
-        $this->accessoryRepository = $this->getMock('IAccessoryRepository');
+        $this->reservationRepository = $this->createMock('IReservationViewRepository');
+        $this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
         $this->rule = new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, 'UTC');
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }

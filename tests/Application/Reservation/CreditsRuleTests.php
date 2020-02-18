@@ -33,7 +33,7 @@ class CreditsRuleTests extends TestBase
 	 */
 	public $rule;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

@@ -32,7 +32,7 @@ class AnnouncementRepositoryTests extends TestBase
      */
     private $permissionService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
@@ -42,7 +42,7 @@ class AnnouncementRepositoryTests extends TestBase
         $this->permissionService = new FakePermissionService();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
 

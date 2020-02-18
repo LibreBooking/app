@@ -26,7 +26,7 @@ class ReservationReminder
 
 	public function __construct($value, $interval)
 	{
-		$this->value = $value;
+		$this->value = is_numeric($value) ? $value : 0;
 		$this->interval = $interval;
 
 		if ($interval == ReservationReminderInterval::Days)

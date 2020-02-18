@@ -27,7 +27,7 @@ class UserSessionRepositoryTests extends TestBase
 	 */
 	private $repo;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

@@ -53,14 +53,14 @@ class CalendarSubscriptionPresenterTests extends TestBase
 	 */
 	private $privacyFilter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->repo = $this->getMock('IReservationViewRepository');
-		$this->page = new FakeCalendarSubscriptionPage();//$this->getMock('ICalendarSubscriptionPage');
-		$this->validator = $this->getMock('ICalendarExportValidator');
-		$this->service = $this->getMock('ICalendarSubscriptionService');
+		$this->repo = $this->createMock('IReservationViewRepository');
+		$this->page = new FakeCalendarSubscriptionPage();//$this->createMock('ICalendarSubscriptionPage');
+		$this->validator = $this->createMock('ICalendarExportValidator');
+		$this->service = $this->createMock('ICalendarSubscriptionService');
 		$this->privacyFilter = new FakePrivacyFilter();
 
 		$this->validator->expects($this->atLeastOnce())

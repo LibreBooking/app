@@ -62,17 +62,17 @@ class ManageReservationsPresenterTests extends TestBase
      */
     private $termsOfServiceRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->page = $this->getMock('IManageReservationsPage');
-        $this->reservationsService = $this->getMock('IManageReservationsService');
-        $this->scheduleRepository = $this->getMock('IScheduleRepository');
-        $this->resourceRepository = $this->getMock('IResourceRepository');
-        $this->attributeService = $this->getMock('IAttributeService');
-        $this->userRepository = $this->getMock('IUserRepository');
-        $this->termsOfServiceRepository = $this->getMock('ITermsOfServiceRepository');
+        $this->page = $this->createMock('IManageReservationsPage');
+        $this->reservationsService = $this->createMock('IManageReservationsService');
+        $this->scheduleRepository = $this->createMock('IScheduleRepository');
+        $this->resourceRepository = $this->createMock('IResourceRepository');
+        $this->attributeService = $this->createMock('IAttributeService');
+        $this->userRepository = $this->createMock('IUserRepository');
+        $this->termsOfServiceRepository = $this->createMock('ITermsOfServiceRepository');
 
         $this->presenter = new ManageReservationsPresenter($this->page,
             $this->reservationsService,

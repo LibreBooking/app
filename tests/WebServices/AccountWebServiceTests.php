@@ -34,7 +34,7 @@ class AccountWebServiceTests extends TestBase
 
     private $controller;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

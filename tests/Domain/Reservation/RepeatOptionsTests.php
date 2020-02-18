@@ -24,12 +24,12 @@ class RepeatOptionsTests extends TestBase
 {
 	//http://www.timeanddate.com/calendar/
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -262,7 +262,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesRepeatDailyOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('daily', 1, null, null, null);
+		$options = $factory->Create('daily', 1, null, null, null, []);
 
 		$this->assertInstanceOf('RepeatDaily', $options);
 	}
@@ -270,7 +270,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesRepeatWeeklyOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('weekly', 1, null, array(), null);
+		$options = $factory->Create('weekly', 1, null, array(), null, []);
 
 		$this->assertInstanceOf('RepeatWeekly', $options);
 	}
@@ -278,7 +278,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesDayOfMonthRepeatOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('monthly', 1, null, null, 'dayOfMonth');
+		$options = $factory->Create('monthly', 1, null, null, 'dayOfMonth', []);
 
 		$this->assertInstanceOf('RepeatDayOfMonth', $options);
 	}
@@ -286,7 +286,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesWeekDayOfMonthRepeatOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('monthly', 1, null, null, null);
+		$options = $factory->Create('monthly', 1, null, null, null, []);
 
 		$this->assertInstanceOf('RepeatWeekDayOfMonth', $options);
 	}
@@ -294,7 +294,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesYearlyRepeatOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('yearly', 1, null, null, null);
+		$options = $factory->Create('yearly', 1, null, null, null, []);
 
 		$this->assertInstanceOf('RepeatYearly', $options);
 	}
@@ -302,7 +302,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesNoRepeatOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('none', 1, null, null, null);
+		$options = $factory->Create('none', 1, null, null, null, []);
 
 		$this->assertInstanceOf('RepeatNone', $options);
 	}

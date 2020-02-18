@@ -62,7 +62,7 @@ class ReservationsWebServiceTests extends TestBase
 	 */
 	private $defaultEndDate;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -75,9 +75,9 @@ class ReservationsWebServiceTests extends TestBase
 		$this->server = new FakeRestServer();
 		$this->server->SetSession($this->userSession);
 
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->privacyFilter = $this->getMock('IPrivacyFilter');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+		$this->privacyFilter = $this->createMock('IPrivacyFilter');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		$this->service = new ReservationsWebService(
 			$this->server,

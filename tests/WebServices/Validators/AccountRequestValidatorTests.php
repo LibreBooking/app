@@ -41,7 +41,7 @@ class AccountRequestValidatorTests extends TestBase
      */
     private $session;
 
-    public function setup()
+    public function setUp(): void
 	{
 		parent::setup();
 

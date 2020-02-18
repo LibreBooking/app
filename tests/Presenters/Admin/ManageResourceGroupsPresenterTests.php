@@ -38,12 +38,12 @@ class ManageResourceGroupsPresenterTests extends TestBase
 	private $resourceRepository;
 
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageResourceGroupsPage');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->page = $this->createMock('IManageResourceGroupsPage');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
 
 		$this->presenter = new ManageResourceGroupsPresenter($this->page, $this->fakeUser, $this->resourceRepository);
 	}

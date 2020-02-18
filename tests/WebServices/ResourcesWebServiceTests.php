@@ -47,14 +47,14 @@ class ResourcesWebServiceTests extends TestBase
 	 */
 	private $service;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->repository = $this->getMock('IResourceRepository');
-		$this->reservationRepository = $this->getMock('IReservationViewRepository');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->repository = $this->createMock('IResourceRepository');
+		$this->reservationRepository = $this->createMock('IReservationViewRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		$this->service = new ResourcesWebService($this->server, $this->repository, $this->attributeService, $this->reservationRepository);
 	}

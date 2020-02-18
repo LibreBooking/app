@@ -54,12 +54,12 @@ class CustomAttributeValidationRuleTests extends TestBase
 	 */
 	private $bookedBy;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->attributeService = $this->getMock('IAttributeService');
-		$this->userRepository = $this->getMock('IUserRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
+		$this->userRepository = $this->createMock('IUserRepository');
 
 		$this->reservation = new TestReservationSeries();
 		$this->user = new FakeUser(1);
@@ -83,7 +83,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 		$this->rule = $rule = new CustomAttributeValidationRule($this->attributeService, $this->userRepository);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -107,9 +107,9 @@ class CustomAttributeValidationRuleTests extends TestBase
 		$result = $this->rule->Validate($this->reservation, null);
 
 		$this->assertEquals(false, $result->IsValid());
-		$this->assertContains('error1', $result->ErrorMessage());
-		$this->assertContains('error2', $result->ErrorMessage());
-		$this->assertNotContains('error3', $result->ErrorMessage(), "don't include the 3rd error because it's for an attribute that doesn't apply");
+		$this->assertStringContainsString('error1', $result->ErrorMessage());
+		$this->assertStringContainsString('error2', $result->ErrorMessage());
+		$this->assertStringNotContainsString('error3', $result->ErrorMessage(), "don't include the 3rd error because it's for an attribute that doesn't apply");
 	}
 
 	public function testWhenAllAttributesAreValid()
@@ -145,7 +145,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 	{
 		$this->reservation->WithAttributeValue(new AttributeValue(1, null));
 
-		$attributeService = $this->getMock('IAttributeService');
+		$attributeService = $this->createMock('IAttributeService');
 
 		$userAttribute = new FakeCustomAttribute();
 		$userAttribute->WithSecondaryEntities(CustomAttributeCategory::USER, 123);
@@ -170,7 +170,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 		$this->reservation->WithResource(new FakeBookableResource(1));
 		$this->reservation->WithAttributeValue(new AttributeValue(1, null));
 
-		$attributeService = $this->getMock('IAttributeService');
+		$attributeService = $this->createMock('IAttributeService');
 
 		$userAttribute = new FakeCustomAttribute();
 		$userAttribute->WithSecondaryEntities(CustomAttributeCategory::RESOURCE, 2);
@@ -197,7 +197,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 		$this->reservation->WithResource($resource);
 		$this->reservation->WithAttributeValue(new AttributeValue(1, null));
 
-		$attributeService = $this->getMock('IAttributeService');
+		$attributeService = $this->createMock('IAttributeService');
 
 		$userAttribute = new FakeCustomAttribute();
 		$userAttribute->WithSecondaryEntities(CustomAttributeCategory::RESOURCE_TYPE, 2);

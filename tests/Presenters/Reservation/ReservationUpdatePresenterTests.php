@@ -61,16 +61,16 @@ class ReservationUpdatePresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->user = $this->fakeServer->UserSession;
 		$this->userId = $this->user->UserId;
 
-		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
-		$this->handler = $this->getMock('IReservationHandler');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->persistenceService = $this->createMock('IUpdateReservationPersistenceService');
+		$this->handler = $this->createMock('IReservationHandler');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
 		$this->scheduleRepository = new FakeScheduleRepository();
 
 		$this->page = new FakeReservationUpdatePage();
@@ -84,7 +84,7 @@ class ReservationUpdatePresenterTests extends TestBase
 				$this->fakeUser);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

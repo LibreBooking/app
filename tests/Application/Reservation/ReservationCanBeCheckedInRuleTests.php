@@ -20,7 +20,7 @@
  */
 class ReservationCanBeCheckedInRuleTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}

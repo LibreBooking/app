@@ -26,12 +26,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 
 class AdminEmailNotificationTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -60,8 +60,8 @@ class AdminEmailNotificationTests extends TestBase
 		$appAdmins = array($admin3, $admin4, $admin1);
 		$groupAdmins = array($admin5, $admin6, $admin2);
 
-		$attributeRepo = $this->getMock('IAttributeRepository');
-		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
 		$userRepo->expects($this->once())
 				 ->method('LoadById')
 				 ->with($this->equalTo($ownerId))
@@ -120,8 +120,8 @@ class AdminEmailNotificationTests extends TestBase
 		$appAdmins = array($admin3, $admin4, $admin1);
 		$groupAdmins = array($admin5, $admin6, $admin2);
 
-		$attributeRepo = $this->getMock('IAttributeRepository');
-		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
 		$userRepo->expects($this->once())
 				 ->method('LoadById')
 				 ->with($this->equalTo($ownerId))
@@ -181,8 +181,8 @@ class AdminEmailNotificationTests extends TestBase
 		$appAdmins = array($admin3, $admin4, $admin1);
 		$groupAdmins = array($admin5, $admin6, $admin2);
 
-		$attributeRepo = $this->getMock('IAttributeRepository');
-		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
 		$userRepo->expects($this->once())
 				 ->method('LoadById')
 				 ->with($this->equalTo($ownerId))
@@ -230,8 +230,8 @@ class AdminEmailNotificationTests extends TestBase
 		$reservation->WithResource($resource);
 		$reservation->SetStatusId(ReservationStatus::Created);
 
-		$attributeRepo = $this->getMock('IAttributeRepository');
-		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
 
 		$this->EnableNotifyFor(ConfigKeys::NOTIFY_APPROVAL_RESOURCE_ADMINS);
 		$this->EnableNotifyFor(ConfigKeys::NOTIFY_APPROVAL_APPLICATION_ADMINS);
@@ -267,8 +267,8 @@ class AdminEmailNotificationTests extends TestBase
 		$appAdmins = array($admin3, $admin4, $admin1);
 		$groupAdmins = array($admin5, $admin6, $admin2);
 
-		$attributeRepo = $this->getMock('IAttributeRepository');
-		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
 		$userRepo->expects($this->once())
 				 ->method('LoadById')
 				 ->with($this->equalTo($ownerId))
@@ -327,8 +327,8 @@ class AdminEmailNotificationTests extends TestBase
 		$appAdmins = array($admin3, $admin4, $admin1);
 		$groupAdmins = array($admin5, $admin6, $admin2);
 
-		$attributeRepo = $this->getMock('IAttributeRepository');
-		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
 		$userRepo->expects($this->once())
 				 ->method('LoadById')
 				 ->with($this->equalTo($ownerId))
@@ -369,8 +369,8 @@ class AdminEmailNotificationTests extends TestBase
 		$this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_APPLICATION_ADMINS, false);
 		$this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_GROUP_ADMINS, false);
 
-		$notification = new AdminEmailCreatedNotification($this->getMock('IUserRepository'), $this->getMock('IUserViewRepository'),
-														  $this->getMock('IAttributeRepository'));
+		$notification = new AdminEmailCreatedNotification($this->createMock('IUserRepository'), $this->createMock('IUserViewRepository'),
+														  $this->createMock('IAttributeRepository'));
 		$notification->Notify(new TestReservationSeries());
 
 		$this->assertEquals(0, count($this->fakeEmailService->_Messages));

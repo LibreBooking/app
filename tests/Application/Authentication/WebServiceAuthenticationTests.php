@@ -40,14 +40,14 @@ class WebServiceAuthenticationTests extends TestBase
 	 */
 	private $userSessionRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		WebServiceSessionToken::$_Token = 'hard coded token';
 
 		$this->fakeAuth = new FakeAuth();
-		$this->userSessionRepository = $this->getMock('IUserSessionRepository');
+		$this->userSessionRepository = $this->createMock('IUserSessionRepository');
 
 		$this->webAuth = new WebServiceAuthentication($this->fakeAuth, $this->userSessionRepository);
 	}

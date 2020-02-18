@@ -29,14 +29,14 @@ class ReservationRepositoryTests extends TestBase
      */
     private $repository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
         $this->repository = new ReservationRepository();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
 
@@ -181,7 +181,7 @@ class ReservationRepositoryTests extends TestBase
 
         $duration = new TestDateRange();
 
-        $repeats = $this->getMock('IRepeatOptions');
+        $repeats = $this->createMock('IRepeatOptions');
 
         $repeats->expects($this->once())
             ->method('GetDates')

@@ -32,10 +32,10 @@ class ScheduleResourceFilterTests extends TestBase
 	 */
 	private $attributeService;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		parent::setup();
 	}

@@ -42,11 +42,11 @@ class ReservationAttachmentPresenterTests extends TestBase
 	 */
 	private $fakePermissionService;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->fakePermissionService = new FakePermissionService(array(true));
-		$this->reservationRepository = $this->getMock('IReservationRepository');
-		$this->page = $this->getMock('IReservationAttachmentPage');
+		$this->reservationRepository = $this->createMock('IReservationRepository');
+		$this->page = $this->createMock('IReservationAttachmentPage');
 
 		$this->presenter = new ReservationAttachmentPresenter($this->page, $this->reservationRepository, $this->fakePermissionService);
 

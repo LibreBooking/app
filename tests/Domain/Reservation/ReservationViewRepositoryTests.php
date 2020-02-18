@@ -25,14 +25,14 @@ class ReservationViewRepositoryTests extends TestBase
      */
     private $repository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
         $this->repository = new ReservationViewRepository();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }

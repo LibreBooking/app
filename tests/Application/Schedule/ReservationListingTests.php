@@ -23,12 +23,12 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class ReservationListingTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

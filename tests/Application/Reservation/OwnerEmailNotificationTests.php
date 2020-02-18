@@ -26,12 +26,12 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmail.php');
 
 class OwnerEmailNotificationTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -48,7 +48,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$reservation->WithResource($resource);
         $reservation->WithCurrentInstance(new TestReservation());
 
-		$userRepo = $this->getMock('IUserRepository');
+		$userRepo = $this->createMock('IUserRepository');
 		$attributeRepo = new FakeAttributeRepository();
 
 		$user = $this->LoadsUser($userRepo, $ownerId);
@@ -77,8 +77,8 @@ class OwnerEmailNotificationTests extends TestBase
 		$reservation->WithOwner($ownerId);
 		$reservation->WithPrimaryResource($resource);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$user = $this->LoadsUser($userRepo, $ownerId);
 
@@ -103,8 +103,8 @@ class OwnerEmailNotificationTests extends TestBase
         $reservation->WithOwner($ownerId);
         $reservation->WithPrimaryResource($resource);
 
-        $userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+        $userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
         $user = $this->LoadsUser($userRepo, $ownerId);
 

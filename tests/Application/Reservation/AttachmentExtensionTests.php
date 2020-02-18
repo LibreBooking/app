@@ -33,7 +33,7 @@ class AttachmentExtensionTests extends TestBase
 	 */
 	private $series;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->series = new TestReservationSeries();
 		$this->validator = new ReservationAttachmentRule();

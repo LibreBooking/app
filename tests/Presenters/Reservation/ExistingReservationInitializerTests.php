@@ -35,14 +35,14 @@ class ExistingReservationInitializerTests extends TestBase
 	private $userId;
 
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->userId = $this->fakeUser->UserId;
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -51,12 +51,12 @@ class ExistingReservationInitializerTests extends TestBase
 	{
 		$scheduleId = 1;
 
-		$userBinder = $this->getMock('IReservationComponentBinder');
-		$dateBinder = $this->getMock('IReservationComponentBinder');
-		$resourceBinder = $this->getMock('IReservationComponentBinder');
-		$reservationBinder = $this->getMock('IReservationComponentBinder');
+		$userBinder = $this->createMock('IReservationComponentBinder');
+		$dateBinder = $this->createMock('IReservationComponentBinder');
+		$resourceBinder = $this->createMock('IReservationComponentBinder');
+		$reservationBinder = $this->createMock('IReservationComponentBinder');
         $termsRepository = new FakeTermsOfServiceRepository();
-		$page = $this->getMock('IExistingReservationPage');
+		$page = $this->createMock('IExistingReservationPage');
 
 		$reservationView = new ReservationView();
 
@@ -97,8 +97,8 @@ class ExistingReservationInitializerTests extends TestBase
 
 	public function testBindsToClosestPeriodFromReservationDates()
 	{
-		$page = $this->getMock('IExistingReservationPage');
-		$binder = $this->getMock('IReservationComponentBinder');
+		$page = $this->createMock('IExistingReservationPage');
+		$binder = $this->createMock('IReservationComponentBinder');
 
 		$timezone = $this->fakeUser->Timezone;
 

@@ -23,12 +23,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 
 class GuestEmailNotificationTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -49,8 +49,8 @@ class GuestEmailNotificationTests extends TestBase
 		$series->WithOwnerId($ownerId);
 		$series->WithCurrentInstance($instance1);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 				 ->method('LoadById')
@@ -86,8 +86,8 @@ class GuestEmailNotificationTests extends TestBase
 		$series->WithOwnerId($ownerId);
 		$series->WithCurrentInstance($instance1);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 				 ->method('LoadById')
@@ -132,8 +132,8 @@ class GuestEmailNotificationTests extends TestBase
 		$series->WithOwnerId($ownerId);
 		$series->WithCurrentInstance($instance1);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 				 ->method('LoadById')

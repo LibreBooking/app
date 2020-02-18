@@ -37,9 +37,9 @@ class ScheduleAdminScheduleRepositoryTests extends TestBase
 	 */
 	public $repo;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->userRepository = $this->getMock('IUserRepository');
+		$this->userRepository = $this->createMock('IUserRepository');
 		$this->user = new FakeUserSession();
 		$this->repo = new ScheduleAdminScheduleRepository($this->userRepository, $this->user);
 
@@ -48,7 +48,7 @@ class ScheduleAdminScheduleRepositoryTests extends TestBase
 
 	public function testOnlyGetsSchedulesWhereUserIsAdmin()
 	{
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$this->userRepository->expects($this->once())
 				->method('LoadById')
 				->with($this->equalTo($this->fakeUser->UserId))
@@ -76,7 +76,7 @@ class ScheduleAdminScheduleRepositoryTests extends TestBase
 
 	public function testDoesNotUpdateScheduleIfUserDoesNotHaveAccess()
 	{
-		$user = $this->getMock('User');
+		$user = $this->createMock('User');
 		$this->userRepository->expects($this->once())
 				->method('LoadById')
 				->with($this->equalTo($this->fakeUser->UserId))

@@ -32,11 +32,11 @@ class PrivacyFilterTests extends TestBase
 	 */
 	private $reservationAuthorization;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
+		$this->reservationAuthorization = $this->createMock('IReservationAuthorization');
 
 		$this->privacyFilter = new PrivacyFilter($this->reservationAuthorization);
 	}

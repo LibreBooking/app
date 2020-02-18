@@ -19,6 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'tests/AllTests.php');
+require_once(ROOT_DIR . 'tests/TestHelper.php');
 
 class Application_Admin_Suite
 {

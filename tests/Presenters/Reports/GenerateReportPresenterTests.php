@@ -42,15 +42,15 @@ class GenerateReportPresenterTests extends TestBase
 	 */
 	public $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeGenerateReportPage();
-		$this->reportingService = $this->getMock('IReportingService');
-		$resourceRepository = $this->getMock('IResourceRepository');
-		$scheduleRepository = $this->getMock('IScheduleRepository');
-		$groupRepository = $this->getMock('IGroupViewRepository');
+		$this->reportingService = $this->createMock('IReportingService');
+		$resourceRepository = $this->createMock('IResourceRepository');
+		$scheduleRepository = $this->createMock('IScheduleRepository');
+		$groupRepository = $this->createMock('IGroupViewRepository');
 		$this->userRepository = new FakeUserRepository();
 
 		$this->presenter = new GenerateReportPresenter($this->page,

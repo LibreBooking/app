@@ -36,7 +36,7 @@ class FakeServer extends Server
 	 */
 	public $UserSession;
 
-	public function FakeServer()
+	public function __construct()
 	{
 		$this->UserSession = new FakeUserSession();
 		$this->SetSession(SessionKeys::USER_SESSION, $this->UserSession);

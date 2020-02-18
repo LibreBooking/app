@@ -48,13 +48,13 @@ class AdminExcludedRuleTests extends TestBase
 	private $resource1;
 	private $resource2;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->baseRule = $this->getMock('IReservationValidationRule');
-		$this->user =  $this->getMock('User');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->baseRule = $this->createMock('IReservationValidationRule');
+		$this->user =  $this->createMock('User');
 
 		$this->rule = new AdminExcludedRule($this->baseRule, $this->fakeUser, $this->userRepository);
 
@@ -135,8 +135,8 @@ class AdminExcludedRuleTests extends TestBase
 		$this->fakeUser->IsAdmin = false;
 		$this->fakeUser->IsGroupAdmin = true;
 
-		$adminUser =  $this->getMock('User');
-		$reservationUser =  $this->getMock('User');
+		$adminUser =  $this->createMock('User');
+		$reservationUser =  $this->createMock('User');
 
 		$this->userRepository->expects($this->at(0))
 							->method('LoadById')

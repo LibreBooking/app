@@ -47,7 +47,7 @@ class ReservationCreditsPresenterTests extends TestBase
      */
     private $paymentRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

@@ -36,7 +36,7 @@ class SlackPresenterTests extends TestBase
      */
     public $resourceRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

@@ -37,15 +37,15 @@ class UpcomingReservationsPresenterTests extends TestBase
 	 */
 	private $repository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->control = $this->getMock('IUpcomingReservationsControl');
-		$this->repository = $this->getMock('IReservationViewRepository');
+		$this->control = $this->createMock('IUpcomingReservationsControl');
+		$this->repository = $this->createMock('IReservationViewRepository');
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

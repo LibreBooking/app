@@ -47,7 +47,7 @@ class MonitorDisplayPresenterTests extends TestBase
      */
     private $scheduleService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

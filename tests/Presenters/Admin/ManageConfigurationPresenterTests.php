@@ -42,12 +42,12 @@ class ManageConfigurationPresenterTests extends TestBase
 	 */
 	private $configFilePath;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeManageConfigurationPage();
-		$this->configSettings = $this->getMock('IConfigurationSettings');
+		$this->configSettings = $this->createMock('IConfigurationSettings');
 
 		$this->configFilePath = ROOT_DIR . 'config/config.php';
 

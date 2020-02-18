@@ -47,14 +47,14 @@ class UsersWebServiceTests extends TestBase
 	 */
 	private $attributeService;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->userRepositoryFactory = $this->getMock('IUserRepositoryFactory');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->userRepositoryFactory = $this->createMock('IUserRepositoryFactory');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		$this->service = new UsersWebService($this->server, $this->userRepositoryFactory, $this->attributeService);
 	}
@@ -114,7 +114,7 @@ class UsersWebServiceTests extends TestBase
 		$me = new FakeUser($sessionUserId);
 		$me->_SetIsAdminForUser(true);
 
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = $this->createMock('IEntityAttributeList');
 
 		$this->userRepositoryFactory->expects($this->once())
 				->method('Create')
@@ -150,7 +150,7 @@ class UsersWebServiceTests extends TestBase
 
 		$this->HideUsers(true);
 
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = $this->createMock('IEntityAttributeList');
 
 		$this->userRepositoryFactory->expects($this->once())
 				->method('Create')
@@ -207,7 +207,7 @@ class UsersWebServiceTests extends TestBase
 		$user = new FakeUser($userId);
 		$me = new FakeUser($sessionUserId);
 		$me->_SetIsAdminForUser(false);
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = $this->createMock('IEntityAttributeList');
 
 		$this->userRepositoryFactory->expects($this->once())
 				->method('Create')
@@ -242,7 +242,7 @@ class UsersWebServiceTests extends TestBase
 		$userId = 999;
 		$user = new FakeUser($userId);
 
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = $this->createMock('IEntityAttributeList');
 
 		$this->userRepositoryFactory->expects($this->once())
 				->method('Create')

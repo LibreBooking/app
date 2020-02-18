@@ -32,9 +32,9 @@ class ResourceRequestValidatorTests extends TestBase
 	 */
 	private $attributeService;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->attributeService = $this->createMock('IAttributeService');
 		$this->validator = new ResourceRequestValidator($this->attributeService);
 		parent::setup();
 	}

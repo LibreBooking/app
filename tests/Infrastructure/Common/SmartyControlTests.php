@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
-class SmartyControlTests extends PHPUnit_Framework_TestCase
+class SmartyControlTests extends TestBase
 {
 	private $_server;
 	private $_attributes = 'style="font-size:12px;" class="something"';
@@ -32,7 +32,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 	private $_expectedStyle;
 	private $_id = "id";
 
-	public function setUp()
+	public function setUp(): void
 	{
 		$this->_expectedName = FormKeys::FIRST_NAME;
 		$this->_server = new FakeServer();
@@ -41,7 +41,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 		$this->_smarty->_Value = $this->_expectedValue;
 	}
 
-	public function tearDown()
+	public function teardown(): void
 	{
 		$this->_server = null;
 		$this->_smarty = null;

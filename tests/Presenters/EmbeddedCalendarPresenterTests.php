@@ -47,7 +47,7 @@ class EmbeddedCalendarPresenterTests extends TestBase
      */
     private $resourceRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

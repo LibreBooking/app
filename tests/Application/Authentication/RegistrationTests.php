@@ -58,11 +58,11 @@ class RegistrationTests extends TestBase
     private $groups = null;
     private $acceptTerms = true;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->userRepository = $this->getMock('IUserRepository');
+        $this->userRepository = $this->createMock('IUserRepository');
         $this->groupRepository = new FakeGroupViewRepository();
 
         $this->fakeEncryption = new FakePasswordEncryption();
@@ -72,7 +72,7 @@ class RegistrationTests extends TestBase
         $this->attributes = array(new AttributeValue(1, 1));
     }
 
-    public function tearDown()
+    public function teardown(): void
     {
         parent::teardown();
         $this->registration = null;

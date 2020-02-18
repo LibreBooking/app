@@ -37,7 +37,7 @@ class GuestUserServiceTests extends TestBase
 	 */
 	private $registration;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->authentication = new FakeAuthentication();
 		$this->registration = new FakeRegistration();

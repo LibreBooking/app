@@ -61,7 +61,7 @@ class ReservationEmailPresenterTests extends TestBase
      */
     private $permissionService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

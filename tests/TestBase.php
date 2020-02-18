@@ -18,8 +18,9 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+use PHPUnit\Framework\TestCase;
 
-class TestBase extends PHPUnit_Framework_TestCase
+class TestBase extends TestCase
 {
 	/**
 	 * @var FakeDatabase
@@ -61,7 +62,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 */
 	public $fileSystem;
 
-	public function setup()
+	public function setUp(): void
 	{
 		Date::_SetNow(Date::Now());
 		ReferenceNumberGenerator::$__referenceNumber = null;
@@ -86,7 +87,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 		PluginManager::SetInstance($this->fakePluginManager);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		$this->db = null;
 		$this->fakeServer = null;

@@ -27,14 +27,14 @@ class GroupRepositoryTests extends TestBase
      */
     private $repository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
         $this->repository = new GroupRepository();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }

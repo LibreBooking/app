@@ -29,7 +29,7 @@ class SchedulePresenterTests extends TestBase
 	private $numDaysVisible;
 	private $showInaccessibleResources = 'true';
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -43,7 +43,7 @@ class SchedulePresenterTests extends TestBase
 										 $this->showInaccessibleResources);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -52,21 +52,21 @@ class SchedulePresenterTests extends TestBase
 	{
 		$user = $this->fakeServer->GetUserSession();
 		$resources = array();
-		$reservations = $this->getMock('IReservationListing');
-		$layout = $this->getMock('IScheduleLayout');
+		$reservations = $this->createMock('IReservationListing');
+		$layout = $this->createMock('IScheduleLayout');
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
 		$groups = new ResourceGroupTree();
 		$resourceTypes = array(new ResourceType(1, 'n', 'd'));
 		$resourceAttributes = array(new FakeCustomAttribute());
 		$resourceTypeAttributes = array(new FakeCustomAttribute());
 
-		$page = $this->getMock('ISchedulePage');
-		$scheduleService = $this->getMock('IScheduleService');
-		$resourceService = $this->getMock('IResourceService');
-		$pageBuilder = $this->getMock('ISchedulePageBuilder');
-		$reservationService = $this->getMock('IReservationService');
-		$dailyLayoutFactory = $this->getMock('IDailyLayoutFactory');
-		$dailyLayout = $this->getMock('IDailyLayout');
+		$page = $this->createMock('ISchedulePage');
+		$scheduleService = $this->createMock('IScheduleService');
+		$resourceService = $this->createMock('IResourceService');
+		$pageBuilder = $this->createMock('ISchedulePageBuilder');
+		$reservationService = $this->createMock('IReservationService');
+		$dailyLayoutFactory = $this->createMock('IDailyLayoutFactory');
+		$dailyLayout = $this->createMock('IDailyLayout');
 
 		$presenter = new SchedulePresenter($page, $scheduleService, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 
@@ -192,7 +192,7 @@ class SchedulePresenterTests extends TestBase
 		$schedule = new FakeSchedule($activeId, $activeName, true, $weekdayStart);
 		$schedule->SetAllowConcurrentReservations(true);
 
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 
 		$page
 				->expects($this->once())
@@ -236,8 +236,8 @@ class SchedulePresenterTests extends TestBase
 
 	public function testScheduleBuilderGetCurrentScheduleReturnsSelectedScheduleOnPostBack()
 	{
-		$s1 = $this->getMock('ISchedule');
-		$s2 = $this->getMock('ISchedule');
+		$s1 = $this->createMock('ISchedule');
+		$s2 = $this->createMock('ISchedule');
 
 		$s1
 				->expects($this->once())
@@ -251,7 +251,7 @@ class SchedulePresenterTests extends TestBase
 
 		$schedules = array($s1, $s2);
 
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 
 		$page
 				->expects($this->atLeastOnce())
@@ -271,7 +271,7 @@ class SchedulePresenterTests extends TestBase
 
 		$schedules = array($s1, $s2);
 
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 
 		$pageBuilder = new SchedulePageBuilder();
 		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules, $this->fakeUser);
@@ -288,7 +288,7 @@ class SchedulePresenterTests extends TestBase
 
 		$schedules = array($s1, $s2, $s3);
 
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 
 		$pageBuilder = new SchedulePageBuilder();
 		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules, $session);
@@ -316,8 +316,8 @@ class SchedulePresenterTests extends TestBase
 		$user = new UserSession(1);
 		$user->Timezone = $timezone;
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -358,8 +358,8 @@ class SchedulePresenterTests extends TestBase
 		$user = new UserSession(1);
 		$user->Timezone = $timezone;
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -402,8 +402,8 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -445,8 +445,8 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -491,8 +491,8 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -537,8 +537,8 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -579,8 +579,8 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -608,8 +608,8 @@ class SchedulePresenterTests extends TestBase
 
 	public function testBindReservationsSetsReservationsAndResourcesOnPage()
 	{
-		$page = $this->getMock('ISchedulePage');
-		$dailyLayout = $this->getMock('IDailyLayout');
+		$page = $this->createMock('ISchedulePage');
+		$dailyLayout = $this->createMock('IDailyLayout');
 		$resources = array();
 
 		$page
@@ -631,7 +631,7 @@ class SchedulePresenterTests extends TestBase
 		$tz = 'America/New_York';
 		$daysVisible = 7;
 		$schedule = new Schedule(1, '', false, 4, $daysVisible);
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 
 		$start = Date::Now();
 		$end = Date::Now()->AddDays(10);
@@ -673,7 +673,7 @@ class SchedulePresenterTests extends TestBase
 		$expectedPrevious = Date::Parse('2011-03-28', $tz);
 		$expectedNext = Date::Parse('2011-04-11', $tz);
 
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 		$page
 				->expects($this->once())
 				->method('SetPreviousNextDates')
@@ -702,7 +702,7 @@ class SchedulePresenterTests extends TestBase
 		$expectedPrevious = Date::Parse('2011-03-28', $tz);
 		$expectedNext = Date::Parse('2011-04-14', $tz);
 
-		$page = $this->getMock('ISchedulePage');
+		$page = $this->createMock('ISchedulePage');
 		$page
 				->expects($this->once())
 				->method('SetPreviousNextDates')
@@ -772,8 +772,8 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone($timezone);
 
-		$schedule = $this->getMock('ISchedule');
-		$schedulePage = $this->getMock('ISchedulePage');
+		$schedule = $this->createMock('ISchedule');
+		$schedulePage = $this->createMock('ISchedulePage');
 
 		$schedulePage
 				->expects($this->once())
@@ -804,14 +804,14 @@ class SchedulePresenterTests extends TestBase
 	public function testCanGetLayoutForScheduleOnDate()
 	{
 		$user = $this->fakeUser;
-		$page = $this->getMock('ISchedulePage');
-		$scheduleService = $this->getMock('IScheduleService');
-		$resourceService = $this->getMock('IResourceService');
-		$pageBuilder = $this->getMock('ISchedulePageBuilder');
-		$reservationService = $this->getMock('IReservationService');
-		$dailyLayoutFactory = $this->getMock('IDailyLayoutFactory');
+		$page = $this->createMock('ISchedulePage');
+		$scheduleService = $this->createMock('IScheduleService');
+		$resourceService = $this->createMock('IResourceService');
+		$pageBuilder = $this->createMock('ISchedulePageBuilder');
+		$reservationService = $this->createMock('IReservationService');
+		$dailyLayoutFactory = $this->createMock('IDailyLayoutFactory');
 
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 
 		$dateString = '2013-01-07';
 		$date = Date::Parse($dateString, $user->Timezone);

@@ -30,7 +30,7 @@ class ExistingReservationDeleteTests extends TestBase
 	 */
 	private $admin;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -38,7 +38,7 @@ class ExistingReservationDeleteTests extends TestBase
 		$this->admin = new FakeUserSession(true);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

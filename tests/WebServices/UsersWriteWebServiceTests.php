@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 require_once(ROOT_DIR . 'WebServices/UsersWriteWebService.php');
 
 class UsersWriteWebServiceTests extends TestBase
@@ -33,16 +35,16 @@ class UsersWriteWebServiceTests extends TestBase
 	private $server;
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|IUserSaveController
+	 * @var MockObject|IUserSaveController
 	 */
 	private $controller;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->controller = $this->getMock('IUserSaveController');
+		$this->controller = $this->createMock('IUserSaveController');
 
 		$this->service = new UsersWriteWebService($this->server, $this->controller);
 	}

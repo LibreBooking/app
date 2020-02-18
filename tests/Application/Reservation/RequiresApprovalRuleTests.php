@@ -35,11 +35,11 @@ class RequiresApprovalRuleTests extends TestBase
 	 */
 	public $rule;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->authorizationService = $this->getMock('IAuthorizationService');
+		$this->authorizationService = $this->createMock('IAuthorizationService');
 
 		$this->rule = new RequiresApprovalRule($this->authorizationService);
 	}

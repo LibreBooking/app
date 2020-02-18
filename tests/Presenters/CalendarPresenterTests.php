@@ -68,17 +68,17 @@ class CalendarPresenterTests extends TestBase
      */
     private $privacyFilter;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->page = $this->getMock('ICommonCalendarPage');
-        $this->repository = $this->getMock('IReservationViewRepository');
-        $this->scheduleRepository = $this->getMock('IScheduleRepository');
+        $this->page = $this->createMock('ICommonCalendarPage');
+        $this->repository = $this->createMock('IReservationViewRepository');
+        $this->scheduleRepository = $this->createMock('IScheduleRepository');
         $this->userRepository = new FakeUserRepository();
-        $this->calendarFactory = $this->getMock('ICalendarFactory');
-        $this->resourceService = $this->getMock('IResourceService');
-        $this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
+        $this->calendarFactory = $this->createMock('ICalendarFactory');
+        $this->resourceService = $this->createMock('IResourceService');
+        $this->subscriptionService = $this->createMock('ICalendarSubscriptionService');
         $this->privacyFilter = new FakePrivacyFilter();
 
         $this->presenter = new CalendarPresenter(

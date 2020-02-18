@@ -51,17 +51,17 @@ class ReservationDeletePresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->user = $this->fakeServer->UserSession;
 		$this->userId = $this->user->UserId;
 
-		$this->persistenceService = $this->getMock('IDeleteReservationPersistenceService');
-		$this->handler = $this->getMock('IReservationHandler');
+		$this->persistenceService = $this->createMock('IDeleteReservationPersistenceService');
+		$this->handler = $this->createMock('IReservationHandler');
 
-		$this->page = $this->getMock('IReservationDeletePage');
+		$this->page = $this->createMock('IReservationDeletePage');
 
 		$this->presenter = new ReservationDeletePresenter(
 								$this->page,
@@ -70,7 +70,7 @@ class ReservationDeletePresenterTests extends TestBase
 								$this->user);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -81,7 +81,7 @@ class ReservationDeletePresenterTests extends TestBase
 		$seriesUpdateScope = SeriesUpdateScope::ThisInstance;
 		$reason = 'reason';
 
-		$expectedSeries = $this->getMock('ExistingReservationSeries');
+		$expectedSeries = $this->createMock('ExistingReservationSeries');
 
 		$this->page->expects($this->once())
 			->method('GetReferenceNumber')

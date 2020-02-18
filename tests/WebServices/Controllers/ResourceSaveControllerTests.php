@@ -42,10 +42,10 @@ class ResourceSaveControllerTests extends TestBase
 	 */
 	private $validator;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->validator = $this->getMock('IResourceRequestValidator');
-		$this->repository = $this->getMock('IResourceRepository');
+		$this->validator = $this->createMock('IResourceRequestValidator');
+		$this->repository = $this->createMock('IResourceRepository');
 		$this->session = new FakeWebServiceUserSession(1);
 		$this->controller = new ResourceSaveController($this->repository, $this->validator);
 
