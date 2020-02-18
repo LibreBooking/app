@@ -165,6 +165,7 @@
     {control type="DatePickerSetupControl" ControlId="beginDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$StartDate}
+    {control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
 
     <script type="text/javascript">
 

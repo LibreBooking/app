@@ -781,6 +781,8 @@ class en_us extends Language
         $strings['New'] = 'New';
         $strings['Updated'] = 'Updated';
         $strings['Custom'] = 'Custom';
+        $strings['AddDate'] = 'Add Date';
+        $strings['RepeatOn'] = 'Repeat On';
         // End Strings
 
 		// Install

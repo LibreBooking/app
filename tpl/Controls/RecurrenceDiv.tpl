@@ -103,11 +103,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
         <div id="{$prefix}customDatesDiv" class="col-xs-12 no-show specific-dates">
-            <label for="{$prefix}RepeatDate">Repeat On</label>
+            <label for="{$prefix}RepeatDate">{translate key=RepeatOn}</label>
             <input type="text" id="{$prefix}RepeatDate" class="form-control input-sm inline-block dateinput" value=""/>
             <input type="hidden" id="{$prefix}formattedRepeatDate" key=system}"/>
-            <a href="#" role="button" id="{$prefix}AddDate">Add Date <i class="fa fa-plus-square"></i></a>
-            <div>Repeat Dates</div>
+            <a href="#" role="button" id="{$prefix}AddDate">{translate key=AddDate} <i class="fa fa-plus-square"></i></a>
             <div class="repeat-date-list">
 
             </div>

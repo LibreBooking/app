@@ -534,7 +534,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate MinDate=$StartDate MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
-{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate" MinDate=$StartDate MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
+{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate" MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 
 {jsfile src="js/jquery.autogrow.js"}
 {jsfile src="js/moment.min.js"}

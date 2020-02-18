@@ -147,3 +147,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {control type="DatePickerSetupControl" ControlId="updateStartDate" AltId="formattedUpdateStartDate"}
 {control type="DatePickerSetupControl" ControlId="updateEndDate" AltId="formattedUpdateEndDate"}
 {control type="DatePickerSetupControl" ControlId="editEndRepeat" AltId="editformattedEndRepeat"}
+{control type="DatePickerSetupControl" ControlId="editRepeatDate" AltId="editformattedRepeatDate"}

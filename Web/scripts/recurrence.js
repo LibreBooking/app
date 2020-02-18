@@ -53,6 +53,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
         InitializeRepeatOptions();
         ToggleRepeatOptions();
         elements.addDateBtn.on('click', function(e) {
+            e.preventDefault();
             OnRepeatDateAdded();
         });
 
