@@ -44,8 +44,8 @@ class Report_RangeTests extends TestBase
 	{
 		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->timezone);
 
-		$this->assertTrue(Date::Parse('2011-07-01', 'America/Chicago')->Equals($range->Start()));
-		$this->assertTrue(Date::Parse('2011-08-01', 'America/Chicago')->Equals($range->End()));
+		$this->assertTrue(Date::Parse('2011-07-01', $this->fakeUser->Timezone)->Equals($range->Start()));
+		$this->assertTrue(Date::Parse('2011-07-31', $this->fakeUser->Timezone)->Equals($range->End()));
 		$this->assertEquals(31, count($range->Dates()));
 	}
 
@@ -53,17 +53,16 @@ class Report_RangeTests extends TestBase
 	{
 		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->timezone);
 
-		// 8 days to capture everything on the 7th day
-		$this->assertTrue(Date::Parse('2011-07-15', 'America/Chicago')->Equals($range->Start()));
-		$this->assertTrue(Date::Parse('2011-07-22', 'America/Chicago')->Equals($range->End()));
+		$this->assertTrue(Date::Parse('2011-07-17', $this->fakeUser->Timezone)->Equals($range->Start()));
+		$this->assertTrue(Date::Parse('2011-07-23', $this->fakeUser->Timezone)->Equals($range->End()));
 	}
 
 	public function testGetsToday()
 	{
 		$range = new Report_Range(Report_Range::TODAY, null, null, $this->timezone);
 
-		$this->assertTrue(Date::Parse('2011-07-20', 'America/Chicago')->Equals($range->Start()));
-		$this->assertTrue(Date::Parse('2011-07-21', 'America/Chicago')->Equals($range->End()));
+		$this->assertTrue(Date::Parse('2011-07-20', $this->fakeUser->Timezone)->Equals($range->Start()));
+		$this->assertTrue(Date::Parse('2011-07-20', $this->fakeUser->Timezone)->Equals($range->End()));
 	}
 
 	public function testDefaultsStartAndEnd()
