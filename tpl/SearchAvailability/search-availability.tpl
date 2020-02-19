@@ -34,7 +34,7 @@
         <div class="form-group col-xs-6 col-sm-2">
             <div class="input-group">
                 <label for="minutes" class="no-show">{translate key=Minutes}</label>
-                <input type="number" min="0" step="30" value="30" class="form-control hours-minutes"
+                <input type="number" min="0" step="5" value="30" class="form-control hours-minutes"
                        id="minutes" {formname key=MINUTES}"/>
                 <span class="input-group-addon hours-minutes">{translate key=Minutes}</span>
             </div>
