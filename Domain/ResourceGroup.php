@@ -196,7 +196,7 @@ class ResourceGroup
 	/**
 	 * @param $resourceGroup ResourceGroup
 	 */
-	public function AddChild(ResourceGroup &$resourceGroup)
+	public function AddChild(ResourceGroup $resourceGroup)
 	{
 		$resourceGroup->parent_id = $this->id;
 		$this->children[] = $resourceGroup;
@@ -205,7 +205,7 @@ class ResourceGroup
 	/**
 	 * @param $assignment ResourceGroupAssignment
 	 */
-	public function AddResource(ResourceGroupAssignment &$assignment)
+	public function AddResource(ResourceGroupAssignment $assignment)
 	{
 		$this->children[] = $assignment;
 	}

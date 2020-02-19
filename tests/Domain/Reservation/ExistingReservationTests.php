@@ -1060,7 +1060,7 @@ class ExistingReservationTests extends TestBase
 
         $instances = $series->Instances();
 
-        $this->assertEquals(5, count($instances));
+        $this->assertEquals(6, count($instances));
     }
 
     public function testChangingRepeatOfAPastEvent()
@@ -1163,7 +1163,8 @@ class ExistingReservationTests extends TestBase
         $this->assertEquals(4, count($instances));
         $this->assertEquals(0, count($removedReferenceNumbers));
         $this->assertEquals(0, count($addedReferenceNumbers));
-        $this->assertEquals([4, 3, 2, 1], $updatedReferenceNumbers);
+		sort($updatedReferenceNumbers);
+        $this->assertEquals([1, 2, 3, 4], $updatedReferenceNumbers);
         $this->assertEquals($instances[1]->StartDate(), $date1->GetBegin()->AddDays(1));
         $this->assertEquals($instances[1]->EndDate(), $date1->GetBegin()->AddDays(1)->SetTimeString("13:00"));
     }
@@ -1271,6 +1272,7 @@ class ExistingReservationTests extends TestBase
         $this->assertEquals(2, count($instances), "the original/current is in the past");
         $this->assertEquals(3, count($removedReferenceNumbers));
         $this->assertEquals(2, count($addedReferenceNumbers));
-        $this->assertEquals([2, 4, 3], $removedReferenceNumbers);
+		sort($removedReferenceNumbers);
+        $this->assertEquals([2, 3, 4], $removedReferenceNumbers);
     }
 }

@@ -4,14 +4,5 @@
         <testsuite name="unit">
             <directory suffix="Tests.php">./tests/</directory>
         </testsuite>
-
-
-<!--        <testsuite name="integration">-->
-<!--            <directory>tests/integration</directory>-->
-<!--        </testsuite>-->
-
-<!--        <testsuite name="edge-to-edge">-->
-<!--            <directory>tests/edge-to-edge</directory>-->
-<!--        </testsuite>-->
     </testsuites>
 </phpunit>

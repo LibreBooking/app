@@ -18,6 +18,8 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php');
 
 class BlackoutsServiceTests extends TestBase
@@ -28,22 +30,22 @@ class BlackoutsServiceTests extends TestBase
 	private $service;
 
 	/**
-	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IReservationViewRepository|MockObject
 	 */
 	private $reservationViewRepository;
 
 	/**
-	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IUserRepository|MockObject
 	 */
 	private $userRepository;
 
 	/**
-	 * @var IReservationConflictResolution|PHPUnit_Framework_MockObject_MockObject
+	 * @var IReservationConflictResolution|MockObject
 	 */
 	private $conflictHandler;
 
 	/**
-	 * @var IBlackoutRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeBlackoutRepository
 	 */
 	private $blackoutRepository;
 
@@ -53,7 +55,7 @@ class BlackoutsServiceTests extends TestBase
 
 		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
 		$this->conflictHandler = $this->createMock('IReservationConflictResolution');
-		$this->blackoutRepository = $this->createMock('IBlackoutRepository');
+		$this->blackoutRepository = new FakeBlackoutRepository();
 		$this->userRepository = $this->createMock('IUserRepository');
 
 		$this->service = new ManageBlackoutsService($this->reservationViewRepository, $this->blackoutRepository, $this->userRepository);
@@ -89,13 +91,12 @@ class BlackoutsServiceTests extends TestBase
 		$series->AddResourceId($resourceIds[1]);
 		$series->AddResourceId($resourceIds[2]);
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('Add')
-								 ->with($this->equalTo($series, 1));
-
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
 		$this->assertTrue($result->WasSuccessful());
+		$series->_ResetBlackoutIteration();
+		$this->blackoutRepository->_Added->_ResetBlackoutIteration();
+		$this->assertEquals($series, $this->blackoutRepository->_Added);
 	}
 
 	public function testDoesNotAddAnyBlackoutsIfThereAreConflictingBlackoutTimes()
@@ -111,9 +112,6 @@ class BlackoutsServiceTests extends TestBase
 										->method('GetBlackoutsWithin')
 										->with($this->anything())
 										->will($this->returnValue(array($blackoutDuring)));
-
-		$this->blackoutRepository->expects($this->never())
-								 ->method('Add');
 
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
@@ -155,13 +153,12 @@ class BlackoutsServiceTests extends TestBase
 							  ->with($this->equalTo($reservation2))
 							  ->will($this->returnValue(true));
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('Add')
-								 ->with($this->equalTo($series, 1));
-
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
 		$this->assertTrue($result->WasSuccessful());
+		$series->_ResetBlackoutIteration();
+		$this->blackoutRepository->_Added->_ResetBlackoutIteration();
+		$this->assertEquals($series, $this->blackoutRepository->_Added);
 	}
 
 	public function testConflictHandlerReportsConflictingReservationAndDoesNotSaveBlackout()
@@ -194,9 +191,6 @@ class BlackoutsServiceTests extends TestBase
 							  ->method('Handle')
 							  ->with($this->equalTo($reservation2))
 							  ->will($this->returnValue(false));
-
-		$this->blackoutRepository->expects($this->never())
-								 ->method('Add');
 
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
@@ -244,14 +238,13 @@ class BlackoutsServiceTests extends TestBase
 
 		}
 
-		$this->blackoutRepository->expects($this->at(0))
-								 ->method('Add')
-								 ->with($this->equalTo($series, 4));
-
 		$this->assertEquals(4, $i, 'should create 4 blackouts');
 
 		$result = $this->service->Add($range, $resourceIds, $title, $this->conflictHandler, $repeatDaily);
 		$this->assertTrue($result->WasSuccessful());
+		$series->_ResetBlackoutIteration();
+		$this->blackoutRepository->_Added->_ResetBlackoutIteration();
+		$this->assertEquals($series, $this->blackoutRepository->_Added);
 	}
 
 	public function testNothingIsCheckedIfTimesAreInvalid()
@@ -268,11 +261,9 @@ class BlackoutsServiceTests extends TestBase
 		$blackoutId = 123;
 		$scope = SeriesUpdateScope::ThisInstance;
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('Delete')
-								 ->with($this->equalTo($blackoutId));
 
 		$this->service->Delete($blackoutId, $scope);
+		$this->assertEquals($blackoutId, $this->blackoutRepository->_DeletedId);
 	}
 
 	public function testDeletesBlackoutSeriesByInstanceId()
@@ -280,11 +271,8 @@ class BlackoutsServiceTests extends TestBase
 		$blackoutId = 123;
 		$scope = SeriesUpdateScope::FullSeries;
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('DeleteSeries')
-								 ->with($this->equalTo($blackoutId));
-
 		$this->service->Delete($blackoutId, $scope);
+		$this->assertEquals($blackoutId, $this->blackoutRepository->_DeletedSeriesId);
 	}
 
 	public function testGetsBlackoutsThatUserCanManageIfNotAdmin()
@@ -341,10 +329,7 @@ class BlackoutsServiceTests extends TestBase
 							 ->with($this->equalTo($userId))
 							 ->will($this->returnValue($user));
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('LoadByBlackoutId')
-								 ->with($this->equalTo($id))
-								 ->will($this->returnValue($series));
+		$this->blackoutRepository->_Series = $series;
 
 		$user->expects($this->once())
 			 ->method('IsResourceAdminFor')
@@ -354,6 +339,7 @@ class BlackoutsServiceTests extends TestBase
 		$actualSeries = $this->service->LoadBlackout($id, $userId);
 
 		$this->assertEquals($series, $actualSeries);
+		$this->assertEquals($id, $this->blackoutRepository->_LoadedBlackoutId);
 	}
 
 	public function testUpdatesBlackoutForEachResourceWhenNoConflicts()
@@ -399,14 +385,7 @@ class BlackoutsServiceTests extends TestBase
 							 ->with($this->equalTo($userId))
 							 ->will($this->returnValue($user));
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('LoadByBlackoutId')
-								 ->with($this->equalTo($blackoutInstanceId))
-								 ->will($this->returnValue($series));
-
-		$this->blackoutRepository->expects($this->once())
-								 ->method('Update')
-								 ->with($this->equalTo($series));
+		$this->blackoutRepository->_Series = $series;
 
 		$result = $this->service->Update($blackoutInstanceId, $date, $resourceIds, $title, $this->conflictHandler,
 										 new RepeatNone(), SeriesUpdateScope::FullSeries);
@@ -414,6 +393,7 @@ class BlackoutsServiceTests extends TestBase
 		$this->assertTrue($result->WasSuccessful());
 
 		$this->assertEquals($title, $series->Title());
+		$this->assertEquals($series, $this->blackoutRepository->_Updated);
 	}
 
 	public function testDoesNotUpdateAnyBlackoutsIfThereAreConflictingBlackoutTimes()
@@ -446,13 +426,7 @@ class BlackoutsServiceTests extends TestBase
 							 ->with($this->equalTo($userId))
 							 ->will($this->returnValue($user));
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('LoadByBlackoutId')
-								 ->with($this->equalTo($blackoutInstanceId))
-								 ->will($this->returnValue($series));
-
-		$this->blackoutRepository->expects($this->never())
-								 ->method('Update');
+		$this->blackoutRepository->_Series = $series;
 
 		$result = $this->service->Update($blackoutInstanceId, $date, $resourceIds, $title, $this->conflictHandler,
 										 new RepeatNone(), SeriesUpdateScope::FullSeries);
@@ -509,19 +483,13 @@ class BlackoutsServiceTests extends TestBase
 							  ->with($this->equalTo($reservation2))
 							  ->will($this->returnValue(true));
 
-		$this->blackoutRepository->expects($this->once())
-								 ->method('LoadByBlackoutId')
-								 ->with($this->equalTo($blackoutInstanceId))
-								 ->will($this->returnValue($series));
-
-		$this->blackoutRepository->expects($this->once())
-								 ->method('Update')
-								 ->with($this->equalTo($series));
+		$this->blackoutRepository->_Series = $series;
 
 		$result = $this->service->Update($blackoutInstanceId, $date, $resourceIds, $title, $this->conflictHandler,
 										 new RepeatNone(), SeriesUpdateScope::FullSeries);
 
 		$this->assertTrue($result->WasSuccessful());
+		$this->assertEquals($series, $this->blackoutRepository->_Updated);
 	}
 
 	public function testConflictHandlerReportsConflictingReservationAndDoesNotUpdateBlackout()
@@ -573,13 +541,7 @@ class BlackoutsServiceTests extends TestBase
 							  ->with($this->equalTo($reservation2))
 							  ->will($this->returnValue(false));
 
-		$this->blackoutRepository->expects($this->never())
-								 ->method('Update');
-
-		$this->blackoutRepository->expects($this->once())
-								 ->method('LoadByBlackoutId')
-								 ->with($this->equalTo($blackoutInstanceId))
-								 ->will($this->returnValue($series));
+		$this->blackoutRepository->_Series = $series;
 
 		$result = $this->service->Update($blackoutInstanceId, $date, $resourceIds, $title, $this->conflictHandler,
 										 new RepeatNone(), SeriesUpdateScope::FullSeries);

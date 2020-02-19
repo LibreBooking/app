@@ -277,6 +277,7 @@ class ReservationViewRepositoryTests extends TestBase
         $expectedView->InvitedGuests = array('i1@email.com');
         $expectedView->CreditsConsumed = 20;
         $expectedView->TermsAcceptanceDate = NullDate::Instance();
+        $expectedView->RepeatTerminationDate = NullDate::Instance();
 
         $this->assertEquals($expectedView, $reservationView);
     }

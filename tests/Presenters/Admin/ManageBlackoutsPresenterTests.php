@@ -131,7 +131,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatEndDate = Date::Parse($endDateString, $timezone);
-		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType, []);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
@@ -178,7 +178,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatEndDate = Date::Parse($endDateString, $timezone);
-		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType, []);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
@@ -328,7 +328,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatEndDate = Date::Parse($endDateString, $timezone);
-		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType, []);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
@@ -422,7 +422,9 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$this->page->expects($this->any())
 					->method('GetRepeatMonthlyType')
 					->will($this->returnValue($repeatMonthlyType));
+
+		$this->page->expects($this->once())
+					->method('GetRepeatCustomDates')
+					->will($this->returnValue([]));
 	}
 }
-
-?>

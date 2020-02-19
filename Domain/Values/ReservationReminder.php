@@ -31,16 +31,16 @@ class ReservationReminder
 
 		if ($interval == ReservationReminderInterval::Days)
 		{
-			$this->minutesPrior = $value * 60 * 24;
+			$this->minutesPrior = $this->value * 60 * 24;
 		}
 		elseif ($interval == ReservationReminderInterval::Hours)
 		{
-			$this->minutesPrior = $value * 60;
+			$this->minutesPrior = $this->value * 60;
 		}
 		else
 		{
 			$this->interval = ReservationReminderInterval::Minutes;
-			$this->minutesPrior = $value;
+			$this->minutesPrior = $this->value;
 		}
 	}
 

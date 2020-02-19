@@ -380,7 +380,6 @@ class ResourceRepositoryTests extends TestBase
 		$this->assertEquals(null, $groups[1]->parent_id);
 		$this->assertEquals(2, count($groups[1]->children));
 
-		$this->assertEquals(1, count($groups[1]->children[0]));
 		$this->assertEquals('group1a', $groups[1]->children[0]->label);
 		$this->assertEquals('group1a1', $groups[1]->children[0]->children[0]->label);
 		$this->assertEquals('resource1', $groups[1]->children[0]->children[0]->children[0]->label);

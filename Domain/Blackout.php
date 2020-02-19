@@ -407,6 +407,14 @@ class BlackoutSeries
 
         return false;
     }
+
+	/**
+	 * testing only
+	 */
+	public function _ResetBlackoutIteration()
+	{
+		$this->blackoutIteration = 0;
+	}
 }
 
 class Blackout
