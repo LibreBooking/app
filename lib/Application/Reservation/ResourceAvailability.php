@@ -24,7 +24,7 @@ interface IResourceAvailabilityStrategy
      * @param Date $startDate
      * @param Date $endDate
 	 * @param int[] $resourceIds
-     * @return array|IReservedItemView[]|int
+     * @return array|IReservedItemView[]
      */
     public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds);
 }

@@ -26,7 +26,6 @@ class ReservationRetryParameter
 	private $value;
 
 	/**
-	 * ReservationRetryParameter constructor.
 	 * @param string $name
 	 * @param string $value
 	 */

@@ -160,7 +160,7 @@ class PreReservationFactory implements IPreReservationFactory
         $ruleProcessor->AddRule(new TermsOfServiceRule(new TermsOfServiceRepository()));
         $ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumNoticeRuleAdd($userSession), $userSession, $this->userRepository));
         $ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
-		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone, $this->scheduleRepository));
+		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ReservationConflictIdentifier(new ResourceAvailability($this->reservationRepository), $this->scheduleRepository), $userSession->Timezone));
 		return new AddReservationValidationService($ruleProcessor);
 	}
 
@@ -172,7 +172,7 @@ class PreReservationFactory implements IPreReservationFactory
 		}
         $ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumNoticeRuleUpdate($userSession), $userSession, $this->userRepository));
         $ruleProcessor->AddRule(new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository));
-        $ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone, $this->scheduleRepository));
+        $ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier(new ResourceAvailability($this->reservationRepository), $this->scheduleRepository), $userSession->Timezone));
         return new UpdateReservationValidationService($ruleProcessor);
 	}
 
