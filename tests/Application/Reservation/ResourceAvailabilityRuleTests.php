@@ -393,7 +393,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$this->assertTrue($result->CanBeRetried(),
 						  'should only be able to retry if there are less conflicts than dates reserved');
-		$this->assertEquals(array(new ReservationRetryParameter('skipconflicts', true)), $result->RetryParameters());
+		$this->assertEquals(array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)), $result->RetryParameters());
 	}
 
 	public function testSkipsConflictsIfRequested()
@@ -427,7 +427,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->will($this->returnValue($reservations));
 
 		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
-		$result = $rule->Validate($reservation, array(new ReservationRetryParameter('skipconflicts', true)));
+		$result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
 
 		$this->assertTrue($result->IsValid(), 'should have skipped conflicts');
 		$this->assertEquals(1, count($reservation->Instances()));
@@ -463,7 +463,7 @@ class ResourceAvailabilityRuleTests extends TestBase
             ->will($this->returnValue($reservations));
 
         $rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
-        $result = $rule->Validate($reservation, array(new ReservationRetryParameter('skipconflicts', true)));
+        $result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
 
         $this->assertTrue($result->IsValid(), 'should have skipped conflicts');
         $this->assertEquals(3, count($reservation->Instances()));

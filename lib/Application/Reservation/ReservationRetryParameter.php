@@ -21,6 +21,7 @@
 
 class ReservationRetryParameter
 {
+	public static $SKIP_CONFLICTS = "skipconflicts";
 	private $name;
 	private $value;
 

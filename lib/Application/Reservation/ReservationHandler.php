@@ -96,6 +96,7 @@ class ReservationHandler implements IReservationHandler
 	 */
 	public function Handle($reservationSeries, IReservationSaveResultsView $view)
 	{
+		$this->retryOptions->AdjustReservation($reservationSeries, $view->GetRetryParameters());
 		$validationResult = $this->validationService->Validate($reservationSeries, $view->GetRetryParameters());
 		$result = $validationResult->CanBeSaved();
 

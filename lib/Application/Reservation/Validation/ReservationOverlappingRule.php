@@ -67,7 +67,7 @@ class ReservationOverlappingRule implements IReservationValidationRule
                 $this->GetErrorString($overlap),
                 true, // retry
                 Resources::GetInstance()->GetString('RetrySkipConflicts'),
-                array(new ReservationRetryParameter('skipconflicts', true)),
+                array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)),
                 false // wait list
             );
         }

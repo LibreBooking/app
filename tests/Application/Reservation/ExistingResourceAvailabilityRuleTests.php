@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
@@ -34,7 +36,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
      */
     private $schedule;
 	/**
-	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IReservationViewRepository|MockObject
 	 */
 	private $strategy;
 

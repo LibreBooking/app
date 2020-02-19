@@ -48,7 +48,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
         {
             return new ReservationRuleResult();
         }
-        $shouldSkipConflicts = ReservationRetryParameter::GetValue('skipconflicts', $retryParameters, new BooleanConverter()) == true;
+        $shouldSkipConflicts = ReservationRetryParameter::GetValue(ReservationRetryParameter::$SKIP_CONFLICTS, $retryParameters, new BooleanConverter()) == true;
         $conflicts = array();
 
         $reservations = $reservationSeries->Instances();
@@ -112,7 +112,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
                 $this->GetErrorString($conflicts),
                 $shouldRetry,
                 Resources::GetInstance()->GetString('RetrySkipConflicts'),
-                array(new ReservationRetryParameter('skipconflicts', true)),
+                array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)),
                 $canJoinWaitlist);
         }
 
