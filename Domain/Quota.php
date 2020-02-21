@@ -536,7 +536,7 @@ class Quota implements IQuota
 		if (!$this->EnforcedAllDay())
 		{
 			$enforcedStart = $dateRange->GetBegin()->SetTime($this->EnforcedStartTime());
-			$enforcedEnd = $dateRange->GetEnd()->SetTime($this->EnforcedEndTime());
+			$enforcedEnd = $dateRange->GetBegin()->SetTime($this->EnforcedEndTime());
 			$enforcedRange = new DateRange($enforcedStart, $enforcedEnd);
 			if (!$enforcedRange->Overlaps($dateRange))
 			{

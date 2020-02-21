@@ -277,36 +277,36 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 
-    public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnThursday()
-    {
-        $tz = 'UTC';
-        $this->schedule->SetTimezone($tz);
-        $this->schedule->SetWeekdayStart(4);
+	public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnThursday()
+	{
+		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		$this->schedule->SetWeekdayStart(4);
 
-        $duration = new QuotaDurationWeek();
-        $limit = new QuotaLimitCount(2);
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitCount(2);
 
-        $quota = new Quota(1, $duration, $limit);
+		$quota = new Quota(1, $duration, $limit);
 
-        // week 01/11/2018 - 01/18/2018
-        $startDate = Date::Parse('2018-01-15 5:30', $tz);
-        $endDate = Date::Parse('2018-01-15 6:30', $tz);
+		// week 01/11/2018 - 01/18/2018
+		$startDate = Date::Parse('2018-01-15 5:30', $tz);
+		$endDate = Date::Parse('2018-01-15 6:30', $tz);
 
-        $series = $this->GetHourLongReservation($startDate, $endDate);
+		$series = $this->GetHourLongReservation($startDate, $endDate);
 
-        $res1 = new ReservationItemView('', Date::Parse('2018-01-11 1:30', $tz), Date::Parse('2018-01-11 2:30', $tz), '', $series->ResourceId(), 98712);
-        $res2 = new ReservationItemView('', Date::Parse('2018-01-12 1:30', $tz), Date::Parse('2018-01-12 2:30', $tz), '', $series->ResourceId(), 98712);
-        $reservations = array($res1, $res2);
+		$res1 = new ReservationItemView('', Date::Parse('2018-01-11 1:30', $tz), Date::Parse('2018-01-11 2:30', $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2018-01-12 1:30', $tz), Date::Parse('2018-01-12 2:30', $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
 
-        $startSearch = Date::Parse('2018-01-11 00:00', $tz);
-        $endSearch = Date::Parse('2018-01-18 00:00', $tz);
+		$startSearch = Date::Parse('2018-01-11 00:00', $tz);
+		$endSearch = Date::Parse('2018-01-18 00:00', $tz);
 
-        $this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 
-        $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
-        $this->assertTrue($exceeds);
-    }
+		$this->assertTrue($exceeds);
+	}
 
 	public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnToday()
 	{
@@ -890,35 +890,51 @@ class QuotaTests extends TestBase
 
 	public function testTwoFullDayReservationWith24HoursPerDayLimitBackToBack()
 	{
-	    $quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitHours(24), null, null, null, null, null, array(), new QuotaScopeExcluded());
-        $reservationDate = DateRange::Create('2019-09-04 00:00', '2019-09-06 00:00', 'America/Chicago');
-        $series = ReservationSeries::Create(1, new FakeBookableResource(1), '', '', $reservationDate, new RepeatNone(), $this->fakeUser);
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitHours(24), null, null, null, null, null, array(), new QuotaScopeExcluded());
+		$reservationDate = DateRange::Create('2019-09-04 00:00', '2019-09-06 00:00', 'America/Chicago');
+		$series = ReservationSeries::Create(1, new FakeBookableResource(1), '', '', $reservationDate, new RepeatNone(), $this->fakeUser);
 
-            $res1 = new ReservationItemView('', Date::Parse('2019-09-02 05:00', 'UTC'), Date::Parse('2019-09-04 05:00', 'UTC'), '', $series->ResourceId(), 98712);
+		$res1 = new ReservationItemView('', Date::Parse('2019-09-02 05:00', 'UTC'), Date::Parse('2019-09-04 05:00', 'UTC'), '', $series->ResourceId(), 98712);
 
-        $this->reservationViewRepository->expects($this->any())
-            ->method('GetReservations')
-            ->will($this->returnValue(array($res1)));
+		$this->reservationViewRepository->expects($this->any())
+										->method('GetReservations')
+										->will($this->returnValue(array($res1)));
 
-        $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
-	    $this->assertFalse($exceeds);
+		$this->assertFalse($exceeds);
 	}
 
-    public function testTwoDayReservationWith24HoursPerDayLimit()
-    {
-        $quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitHours(24), null, null, null, null, null, array(), new QuotaScopeExcluded());
-        $reservationDate = DateRange::Create('2019-08-27 12:00', '2019-08-29 12:00', 'America/Chicago');
-        $series = ReservationSeries::Create(1, new FakeBookableResource(1), '', '', $reservationDate, new RepeatNone(), $this->fakeUser);
+	public function testTwoDayReservationWith24HoursPerDayLimit()
+	{
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitHours(24), null, null, null, null, null, array(), new QuotaScopeExcluded());
+		$reservationDate = DateRange::Create('2019-08-27 12:00', '2019-08-29 12:00', 'America/Chicago');
+		$series = ReservationSeries::Create(1, new FakeBookableResource(1), '', '', $reservationDate, new RepeatNone(), $this->fakeUser);
 
-        $this->reservationViewRepository->expects($this->any())
-            ->method('GetReservations')
-            ->will($this->returnValue(array()));
+		$this->reservationViewRepository->expects($this->any())
+										->method('GetReservations')
+										->will($this->returnValue(array()));
 
-        $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
-        $this->assertFalse($exceeds);
-    }
+		$this->assertFalse($exceeds);
+	}
+
+	public function testBugOvernightBookingCausingNewReservationsToExceedQuota()
+	{
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitHours(1), null, null, null, "08:00", "20:00", array(), new QuotaScopeIncluded());
+		$overnightReservation = new ReservationItemView('', Date::Parse('2019-08-27 21:00','America/Chicago'), Date::Parse('2019-08-28 04:00', 'America/Chicago'), null, 1);
+		$reservationDate = DateRange::Create('2019-08-28 12:00', '2019-08-28 13:00', 'America/Chicago');
+		$series = ReservationSeries::Create(1, new FakeBookableResource(1), '', '', $reservationDate, new RepeatNone(), $this->fakeUser);
+
+		$this->reservationViewRepository->expects($this->any())
+										->method('GetReservations')
+										->will($this->returnValue(array($overnightReservation)));
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
 
 	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null,
 											$scheduleId = null)
