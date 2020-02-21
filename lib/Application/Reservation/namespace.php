@@ -40,3 +40,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/CompositeResourceFilter.php
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationHandler.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationDetailsFilter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationRetryParameter.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationRetryOptions.php');

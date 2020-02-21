@@ -62,6 +62,8 @@ class ReservationAuthorization implements IReservationAuthorization
 
 	public function CanEdit(ReservationView $reservationView, UserSession $currentUser)
 	{
+//		$isGroupAdmin = $this->authorizationService->IsAdminFor($currentUser, $reservationView->OwnerId);
+//		$isResourceAdmin = $this->authorizationService->CanEditForResource($currentUser, $resource)
 		if ($currentUser->IsAdmin)
 		{
 			return true;

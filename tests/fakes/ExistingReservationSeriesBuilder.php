@@ -93,6 +93,8 @@ class ExistingReservationSeriesBuilder
 	public function WithBookedBy(UserSession $user)
 	{
 		$this->bookedBy = $user;
+
+		return $this;
 	}
 
 	/**

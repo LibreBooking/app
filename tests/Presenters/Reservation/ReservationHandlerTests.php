@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ReservationHandlerTests extends TestBase
 {
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()
@@ -26,6 +27,7 @@ class ReservationHandlerTests extends TestBase
 		$validationService = $this->createMock('IReservationValidationService');
 		$notificationService = $this->createMock('IReservationNotificationService');
 		$page = $this->createMock('IReservationSaveResultsView');
+		$retryOptions = new FakeReservationRetryOptions();
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
@@ -56,9 +58,10 @@ class ReservationHandlerTests extends TestBase
 			 ->with($this->equalTo($validationResult->GetWarnings()));
 
 
-		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
+		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService, $retryOptions);
 		$handler->Handle($series, $page);
 
+		$this->assertTrue($retryOptions->_AdjustReservationCalled);
 	}
 
 	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
@@ -101,7 +104,7 @@ class ReservationHandlerTests extends TestBase
 			 ->method('SetCanJoinWaitList')
 			 ->with($this->equalTo(true));
 
-		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
+		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService, new FakeReservationRetryOptions());
 		$handler->Handle($series, $page);
 	}
 
@@ -137,7 +140,7 @@ class ReservationHandlerTests extends TestBase
 		$notificationService->expects($this->never())
 							->method('Notify');
 
-		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
+		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService, new FakeReservationRetryOptions());
 		$handler->Handle($series, $page);
 
 		$this->assertFalse($page->saveSuccessful);
@@ -183,7 +186,20 @@ class ReservationHandlerTests extends TestBase
             ->method('SetErrors')
             ->with($this->equalTo($errors));
 
-        $handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
+        $handler = new ReservationHandler($persistenceService, $validationService, $notificationService, new FakeReservationRetryOptions());
         $handler->Handle($series, $page);
     }
+}
+
+class FakeReservationRetryOptions implements IReservationRetryOptions
+{
+	/**
+	 * @var bool
+	 */
+	public $_AdjustReservationCalled = false;
+
+	public function AdjustReservation(ExistingReservationSeries $series, $retryParameters)
+	{
+		$this->_AdjustReservationCalled = true;
+	}
 }
