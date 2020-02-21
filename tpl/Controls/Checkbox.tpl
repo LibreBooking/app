@@ -1,5 +1,5 @@
 {*
-Copyright 2014-2019 Nick Korbel
+Copyright 2014-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 

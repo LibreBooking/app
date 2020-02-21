@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel, Paul Menchini
+Copyright 2013-2020 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 

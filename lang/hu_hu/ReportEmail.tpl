@@ -1,7 +1,7 @@
 {*
 Eredeti angol jogi nyilatkozat:
 
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 ---
 Az Eredeti angol jogi nyilatkozat magyar fordítása:
 
-Szerzői jog tulajdonos: 2011-2019 Nick Korbel
+Szerzői jog tulajdonos: 2011-2020 Nick Korbel
 
 Ez a fájl a Booked Scheduler része.
 
