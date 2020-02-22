@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -48,19 +48,19 @@ class ManageSchedulesPresenterTests extends TestBase
 	 */
 	private $service;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageSchedulesPage');
-		$this->scheduleRepo = $this->getMock('IScheduleRepository');
-		$this->resourceRepo = $this->getMock('IResourceRepository');
-		$this->groupRepo = $this->getMock('IGroupViewRepository');
+		$this->page = $this->createMock('IManageSchedulesPage');
+		$this->scheduleRepo = $this->createMock('IScheduleRepository');
+		$this->resourceRepo = $this->createMock('IResourceRepository');
+		$this->groupRepo = $this->createMock('IGroupViewRepository');
 
 		$this->service = new ManageScheduleService($this->scheduleRepo, $this->resourceRepo);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

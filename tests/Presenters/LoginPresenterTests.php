@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -50,13 +50,13 @@ class LoginPresenterTests extends TestBase
      */
     private $announcementRepository;
 
-    public function setup()
+    public function setUp(): void
 	{
 		parent::setup();
 
 		$this->auth = new FakeWebAuthentication();
 		$this->page = new FakeLoginPage();
-		$this->captchaService = $this->getMock('ICaptchaService');
+		$this->captchaService = $this->createMock('ICaptchaService');
 		$this->announcementRepository = new FakeAnnouncementRepository();
 
 		$this->page->_EmailAddress = 'nkorbel@bookedscheduler.com';
@@ -68,7 +68,7 @@ class LoginPresenterTests extends TestBase
 		$this->presenter = new LoginPresenter($this->page, $this->auth, $this->captchaService, $this->announcementRepository);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 

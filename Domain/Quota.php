@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -536,7 +536,7 @@ class Quota implements IQuota
 		if (!$this->EnforcedAllDay())
 		{
 			$enforcedStart = $dateRange->GetBegin()->SetTime($this->EnforcedStartTime());
-			$enforcedEnd = $dateRange->GetEnd()->SetTime($this->EnforcedEndTime());
+			$enforcedEnd = $dateRange->GetBegin()->SetTime($this->EnforcedEndTime());
 			$enforcedRange = new DateRange($enforcedStart, $enforcedEnd);
 			if (!$enforcedRange->Overlaps($dateRange))
 			{

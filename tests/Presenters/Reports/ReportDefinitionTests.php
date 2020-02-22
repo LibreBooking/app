@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -27,7 +27,7 @@ class ReportDefinitionTests extends TestBase
 	 */
 	private $attributeRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->attributeRepository = new FakeAttributeRepository();
 		parent::setup();

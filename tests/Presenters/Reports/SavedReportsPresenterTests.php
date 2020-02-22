@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -42,12 +42,12 @@ class SavedReportsPresenterTests extends TestBase
 	 */
 	public $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeSavedReportsPage();
-		$this->service = $this->getMock('IReportingService');
+		$this->service = $this->createMock('IReportingService');
 		$this->userRepository = new FakeUserRepository();
 
 		$this->presenter = new SavedReportsPresenter($this->page, $this->fakeUser, $this->service, $this->userRepository);

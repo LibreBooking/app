@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,12 +31,14 @@ abstract class EmailMessage implements IEmailMessage
 
 	protected function __construct($languageCode = null)
 	{
+	    $this->email = new SmartyPage($resources);
 		$resources = Resources::GetInstance();
 		if (!empty($languageCode))
 		{
 			$resources->SetLanguage($languageCode);
+			$this->Set('CurrentLanguage', $languageCode);
 		}
-		$this->email = new SmartyPage($resources);
+
 		$this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
 		$this->Set('Charset', $resources->Charset);
         $this->Set('AppTitle', (empty($appTitle) ? 'Booked' : $appTitle));

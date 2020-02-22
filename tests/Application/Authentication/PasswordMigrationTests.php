@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class PasswordMigrationTests extends PHPUnit_Framework_TestCase
+class PasswordMigrationTests extends TestBase
 {
 	/**
 	 * @var FakeDatabase
@@ -31,7 +31,7 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 	private $newEncryption;
 	private $oldEncryption;
 
-	function setup()
+	function setup(): void
 	{
 		$this->_db = new FakeDatabase();
 		ServiceLocator::SetDatabase($this->_db);
@@ -40,7 +40,7 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 		$this->oldEncryption = new RetiredPasswordEncryption();
 	}
 
-	function teardown()
+	function teardown(): void
 	{
 		$this->_db = null;
 	}

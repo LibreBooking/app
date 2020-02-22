@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -32,10 +32,10 @@ class ScheduleResourceFilterTests extends TestBase
 	 */
 	private $attributeService;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		parent::setup();
 	}

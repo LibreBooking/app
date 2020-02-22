@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -520,7 +520,12 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		return $this->GetDate($this->recurrenceRule->repeatTerminationDate, 'Y-m-d');
 	}
 
-	public function GetUserId()
+	public function GetRepeatCustomDates()
+    {
+       return [];
+    }
+
+    public function GetUserId()
 	{
 		if (!empty($this->request->userId))
 		{

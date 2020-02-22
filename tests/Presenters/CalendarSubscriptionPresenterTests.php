@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -53,14 +53,14 @@ class CalendarSubscriptionPresenterTests extends TestBase
 	 */
 	private $privacyFilter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->repo = $this->getMock('IReservationViewRepository');
-		$this->page = new FakeCalendarSubscriptionPage();//$this->getMock('ICalendarSubscriptionPage');
-		$this->validator = $this->getMock('ICalendarExportValidator');
-		$this->service = $this->getMock('ICalendarSubscriptionService');
+		$this->repo = $this->createMock('IReservationViewRepository');
+		$this->page = new FakeCalendarSubscriptionPage();//$this->createMock('ICalendarSubscriptionPage');
+		$this->validator = $this->createMock('ICalendarExportValidator');
+		$this->service = $this->createMock('ICalendarSubscriptionService');
 		$this->privacyFilter = new FakePrivacyFilter();
 
 		$this->validator->expects($this->atLeastOnce())

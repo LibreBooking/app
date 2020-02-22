@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -41,13 +41,13 @@ class ResourcePermissionStoreTests extends TestBase
 		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3), array());
 		$groups = array($g1, $g2);
 
-		$user = $this->getMock('IScheduleUser');
+		$user = $this->createMock('IScheduleUser');
 
 		$user->expects($this->once())
 			->method('GetAllResources')
 			->will($this->returnValue(array($r1, $r2, $r3, $r4)));
 
-		$userRepository = $this->getMock('IScheduleUserRepository');
+		$userRepository = $this->createMock('IScheduleUserRepository');
 
 		$userRepository->expects($this->once())
 			->method('GetUser')
@@ -80,7 +80,7 @@ class ResourcePermissionStoreTests extends TestBase
         $userId = 1;
 	    $user = new ScheduleUser($userId, $full, $view, $groupPermissions, $groupAdminPermissions);
 
-	    $userRepository = $this->getMock('IScheduleUserRepository');
+	    $userRepository = $this->createMock('IScheduleUserRepository');
         $userRepository->expects($this->any())
             ->method('GetUser')
             ->will($this->returnValue($user));

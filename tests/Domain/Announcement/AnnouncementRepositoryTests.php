@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -32,7 +32,7 @@ class AnnouncementRepositoryTests extends TestBase
      */
     private $permissionService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
@@ -42,7 +42,7 @@ class AnnouncementRepositoryTests extends TestBase
         $this->permissionService = new FakePermissionService();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
 

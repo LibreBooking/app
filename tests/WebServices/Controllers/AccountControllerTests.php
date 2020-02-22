@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2019 Nick Korbel
+ * Copyright 2019-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -51,7 +51,7 @@ class AccountControllerTests extends TestBase
      */
     private $attributeService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

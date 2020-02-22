@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -57,16 +57,16 @@ class ReservationMovePresenterTests extends TestBase
 	 */
 	private $resourceRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->user = $this->fakeServer->UserSession;
 		$this->userId = $this->user->UserId;
 
-		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
-		$this->handler = $this->getMock('IReservationHandler');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->persistenceService = $this->createMock('IUpdateReservationPersistenceService');
+		$this->handler = $this->createMock('IReservationHandler');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
 
 		$this->page = new FakeReservationMovePage();
 

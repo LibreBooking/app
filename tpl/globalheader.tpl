@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {*
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -24,8 +24,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex"/>
     {if $ShouldLogout}
-        <!--meta http-equiv="REFRESH"
-			  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}"-->
+        <meta http-equiv="REFRESH"
+			  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}" />
     {/if}
     <link rel="shortcut icon" href="{$Path}{$FaviconUrl}"/>
     <link rel="icon" href="{$Path}{$FaviconUrl}"/>

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -37,7 +37,7 @@ class ResourceParticipationRuleTests extends TestBase
 	 */
 	private $resourceLimit20;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 

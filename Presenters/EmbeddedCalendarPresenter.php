@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2018-2019 Nick Korbel
+ * Copyright 2018-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -304,7 +304,8 @@ class EmbeddedCalendarTitleFormatter
             $format = 'date';
         }
         $allowUser = !Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
-
+		$allowRevervation = !Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
+		
         $dateText = $this->GetDateText($reservation, $boundDate);
         $title = $reservation->GetTitle();
         $resourceName = $reservation->GetResourceName();
@@ -313,7 +314,10 @@ class EmbeddedCalendarTitleFormatter
         {
             $userName = '';
         }
-
+		if (!$allowRevervation)
+        {
+            $title = '';
+        }
         $format = str_replace('date', $dateText, $format);
         $format = str_replace('title', !empty($title) ? '<br/>' . $title : '', $format);
         $format = str_replace('user', !empty($userName) ? '<br/>' . $userName : '', $format);

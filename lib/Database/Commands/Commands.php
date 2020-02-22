@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -1784,6 +1784,15 @@ class GetReservationReminders extends SqlCommand
     }
 }
 
+class GetReservationRepeatDatesCommand extends SqlCommand
+{
+    public function __construct($seriesId)
+    {
+        parent::__construct(Queries::GET_RESERVATION_REPEAT_DATES);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
+
 class GetReservationResourcesCommand extends SqlCommand
 {
     public function __construct($seriesId)
@@ -2113,48 +2122,6 @@ class MigratePasswordCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
         $this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
-    }
-}
-
-class RegisterFormSettingsCommand extends SqlCommand
-{
-    public function __construct($firstName, $lastName, $username, $email, $password, $organization, $group, $position,
-                                $address, $phone, $homepage, $timezone)
-    {
-        parent::__construct(Queries::REGISTER_FORM_SETTINGS);
-
-        $this->AddParameter(new Parameter(ParameterNames::FIRST_NAME_SETTING, $firstName));
-        $this->AddParameter(new Parameter(ParameterNames::LAST_NAME_SETTING, $lastName));
-        $this->AddParameter(new Parameter(ParameterNames::USERNAME_SETTING, $username));
-        $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS_SETTING, $email));
-        $this->AddParameter(new Parameter(ParameterNames::PASSWORD_SETTING, $password));
-        $this->AddParameter(new Parameter(ParameterNames::ORGANIZATION_SELECTION_SETTING, $organization));
-        $this->AddParameter(new Parameter(ParameterNames::GROUP_SETTING, $group));
-        $this->AddParameter(new Parameter(ParameterNames::POSITION_SETTING, $position));
-        $this->AddParameter(new Parameter(ParameterNames::ADDRESS_SETTING, $address));
-        $this->AddParameter(new Parameter(ParameterNames::PHONE_SETTING, $phone));
-        $this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_SELECTION_SETTING, $homepage));
-        $this->AddParameter(new Parameter(ParameterNames::TIMEZONE_SELECTION_SETTING, $timezone));
-    }
-}
-
-class RegisterMiniUserCommand extends SqlCommand
-{
-    public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $userStatusId,
-                                $userRoleId, $language)
-    {
-        parent::__construct(Queries::REGISTER_MINI_USER);
-
-        $this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
-        $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
-        $this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
-        $this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
-        $this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
-        $this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
-        $this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
-        $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
-        $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
-        $this->AddParameter(new Parameter(ParameterNames::USER_ROLE_ID, $userRoleId));
     }
 }
 

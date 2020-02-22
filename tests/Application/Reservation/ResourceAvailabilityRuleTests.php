@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -33,7 +33,7 @@ class ResourceAvailabilityRuleTests extends TestBase
      */
     private $schedule;
 
-	public function setup()
+	public function setUp(): void
 	{
 	    $this->scheduleRepository = new FakeScheduleRepository();
 	    $this->schedule = new FakeSchedule();
@@ -55,14 +55,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$scheduleReservation = new TestReservationItemView(2, $startDate, $endDate, 1);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
 				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				 ->will($this->returnValue(array($scheduleReservation)));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
@@ -98,14 +98,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(5, $startNonConflict2, $endNonConflict2, $resourceId),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
 				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				 ->will($this->returnValue($reservations));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
@@ -135,14 +135,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(3, $startConflict2, $endConflict2, $additionalResourceId),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
 				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				 ->will($this->returnValue($reservations));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
@@ -196,14 +196,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$scheduleReservation4->WithBufferTime($r2Buffer);
 
 		$scheduleReservation5 = new TestReservationItemView(6, $startDate, $endDate, 999);
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
 				 ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
 				 ->will($this->returnValue(array($scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5)));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
@@ -254,7 +254,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 													$resource1->GetId());
 		$nonConflict3->WithBufferTime($bufferTime);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -262,7 +262,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->will($this->returnValue(array($conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3)));
 
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
@@ -290,7 +290,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 												 $resource1->GetId());
 		$conflict1->WithBufferTime($bufferTime);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
 				 ->method('GetItemsBetween')
@@ -298,7 +298,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->will($this->returnValue(array($conflict1)));
 
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), "UTC");
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
@@ -320,14 +320,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->WithDuration($reservationDates);
 		$reservation->WithRepeatOptions($twoRepetitions);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->exactly(1 + count($repeatDates)))
 				 ->method('GetItemsBetween')
 				 ->with($this->anything(), $this->anything())
 				 ->will($this->returnValue(array()));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 	}
 
@@ -337,7 +337,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endDate = Date::Now();
 		$resourceIds = array(1,2);
 
-		$repository = $this->getMock('IReservationViewRepository');
+		$repository = $this->createMock('IReservationViewRepository');
 
 		$strategy = new ResourceAvailability($repository);
 
@@ -376,7 +376,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->at(0))
 				 ->method('GetItemsBetween')
@@ -388,12 +388,12 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($instance->GetBegin()), $this->equalTo($instance->GetEnd()))
 				 ->will($this->returnValue(array()));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->CanBeRetried(),
 						  'should only be able to retry if there are less conflicts than dates reserved');
-		$this->assertEquals(array(new ReservationRetryParameter('skipconflicts', true)), $result->RetryParameters());
+		$this->assertEquals(array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)), $result->RetryParameters());
 	}
 
 	public function testSkipsConflictsIfRequested()
@@ -414,7 +414,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
 		);
 
-		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->at(0))
 				 ->method('GetItemsBetween')
@@ -426,8 +426,8 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($instance->GetBegin()), $this->equalTo($instance->GetEnd()))
 				 ->will($this->returnValue($reservations));
 
-		$rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
-		$result = $rule->Validate($reservation, array(new ReservationRetryParameter('skipconflicts', true)));
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
 
 		$this->assertTrue($result->IsValid(), 'should have skipped conflicts');
 		$this->assertEquals(1, count($reservation->Instances()));
@@ -456,14 +456,14 @@ class ResourceAvailabilityRuleTests extends TestBase
             new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
         );
 
-        $strategy = $this->getMock('IResourceAvailabilityStrategy');
+        $strategy = $this->createMock('IResourceAvailabilityStrategy');
 
         $strategy->expects($this->atLeastOnce())
             ->method('GetItemsBetween')
             ->will($this->returnValue($reservations));
 
-        $rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
-        $result = $rule->Validate($reservation, array(new ReservationRetryParameter('skipconflicts', true)));
+        $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+        $result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
 
         $this->assertTrue($result->IsValid(), 'should have skipped conflicts');
         $this->assertEquals(3, count($reservation->Instances()));
@@ -495,14 +495,14 @@ class ResourceAvailabilityRuleTests extends TestBase
             new TestReservationItemView(3, $startConflict2, $endConflict2, $additionalResourceId),
         );
 
-        $strategy = $this->getMock('IResourceAvailabilityStrategy');
+        $strategy = $this->createMock('IResourceAvailabilityStrategy');
 
         $strategy->expects($this->any())
             ->method('GetItemsBetween')
             ->with($this->equalTo($startDate), $this->equalTo($endDate))
             ->will($this->returnValue($reservations));
 
-        $rule = new ResourceAvailabilityRule($strategy, 'UTC', $this->scheduleRepository);
+        $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
         $result = $rule->Validate($reservation, null);
 
         $this->assertTrue($result->IsValid());

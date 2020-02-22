@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -41,12 +41,12 @@ class FakeDatabase extends Database
 		$this->reader[0] = new FakeReader(array());
 	}
 
-	public function SetReader($readerCount, IReader &$reader)
+	public function SetReader($readerCount, IReader $reader)
 	{
 		$this->reader[$readerCount] = $reader;
 	}
 
-	public function &Query(ISqlCommand &$command)
+	public function Query(ISqlCommand $command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
@@ -64,7 +64,7 @@ class FakeDatabase extends Database
 		return $reader;
 	}
 
-	public function &LimitQuery(ISqlCommand $command, $limit, $offset = null)
+	public function LimitQuery(ISqlCommand $command, $limit, $offset = null)
 	{
 		$this->_Limit = $limit;
 		$this->_Offset = $offset;
@@ -93,7 +93,7 @@ class FakeDatabase extends Database
 		return $expectedId;
 	}
 
-	private function _AddCommand(&$command)
+	private function _AddCommand($command)
 	{
 		array_push($this->_Commands, $command);
 	}

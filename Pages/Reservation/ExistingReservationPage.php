@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -58,6 +58,11 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param $repeatWeekdays int[]
 	 */
 	function SetRepeatWeekdays($repeatWeekdays);
+
+	/**
+	 * @param $customRepeatDates Date[]
+	 */
+	function SetCustomRepeatDates($customRepeatDates);
 
 	/**
 	 * @param $referenceNumber string
@@ -239,6 +244,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		$this->Set('RepeatWeekdays', $repeatWeekdays);
 	}
+
+    public function SetCustomRepeatDates($customRepeatDates)
+    {
+        $this->Set('CustomRepeatDates', $customRepeatDates);
+    }
 
 	public function SetReferenceNumber($referenceNumber)
 	{

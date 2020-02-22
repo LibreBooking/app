@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -62,22 +62,22 @@ class ReservationsWebServiceTests extends TestBase
 	 */
 	private $defaultEndDate;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->userSession = new WebServiceUserSession(123);
 		$this->userSession->Timezone = 'America/Chicago';
 
-		$this->defaultStartDate = Date::Now();
+		$this->defaultStartDate = Date::Now()->AddDays(0);
 		$this->defaultEndDate = Date::Now()->AddDays(14);
 
 		$this->server = new FakeRestServer();
 		$this->server->SetSession($this->userSession);
 
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->privacyFilter = $this->getMock('IPrivacyFilter');
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+		$this->privacyFilter = $this->createMock('IPrivacyFilter');
+		$this->attributeService = $this->createMock('IAttributeService');
 
 		$this->service = new ReservationsWebService(
 			$this->server,

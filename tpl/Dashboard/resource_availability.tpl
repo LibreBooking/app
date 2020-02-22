@@ -1,5 +1,5 @@
 {*
-Copyright 2017-2019 Nick Korbel
+Copyright 2017-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -76,6 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <h5>{$s->GetName()}</h5>
             {assign var=availability value=$Unavailable[$s->GetId()]}
             {if is_array($availability) && $availability|count > 0}
+            <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
                 <div class="availabilityItem row">
                     <div class="col s12 m4">

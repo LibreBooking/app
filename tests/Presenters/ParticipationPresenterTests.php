@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -51,14 +51,14 @@ class ParticipationPresenterTests extends TestBase
      */
     private $participationNotification;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->page = $this->getMock('IParticipationPage');
-        $this->reservationRepo = $this->getMock('IReservationRepository');
-        $this->reservationViewRepo = $this->getMock('IReservationViewRepository');
-        $this->scheduleRepository = $this->getMock('IScheduleRepository');
+        $this->page = $this->createMock('IParticipationPage');
+        $this->reservationRepo = $this->createMock('IReservationRepository');
+        $this->reservationViewRepo = $this->createMock('IReservationViewRepository');
+        $this->scheduleRepository = $this->createMock('IScheduleRepository');
         $this->participationNotification = new FakeParticipationNotification();
         $rules = array(new ReservationStartTimeRule($this->scheduleRepository), new ResourceMinimumNoticeRuleAdd($this->fakeUser), new ResourceMaximumNoticeRule($this->fakeUser));
         $this->presenter = new ParticipationPresenter(
@@ -68,7 +68,7 @@ class ParticipationPresenterTests extends TestBase
             $this->participationNotification);
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }
@@ -337,7 +337,7 @@ class ParticipationPresenterTests extends TestBase
         $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::NONE);
         $currentUserId = 1029;
         $referenceNumber = 'abc123';
-        $series = $this->getMock('ExistingReservationSeries');
+        $series = $this->createMock('ExistingReservationSeries');
         $series->expects($this->any())->method('GetAllowParticipation')->will($this->returnValue(true));
         $series->expects($this->any())->method('AllResources')->will($this->returnValue(array()));
 

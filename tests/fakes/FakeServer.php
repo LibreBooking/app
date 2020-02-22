@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -36,7 +36,7 @@ class FakeServer extends Server
 	 */
 	public $UserSession;
 
-	public function FakeServer()
+	public function __construct()
 	{
 		$this->UserSession = new FakeUserSession();
 		$this->SetSession(SessionKeys::USER_SESSION, $this->UserSession);

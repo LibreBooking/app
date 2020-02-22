@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -27,14 +27,14 @@ class ScheduleRepositoryTests extends TestBase
      */
     private $scheduleRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
         $this->scheduleRepository = new ScheduleRepository();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
 
@@ -105,7 +105,7 @@ class ScheduleRepositoryTests extends TestBase
 
         $scheduleId = 109;
 
-        $layoutFactory = $this->getMock('ILayoutFactory');
+        $layoutFactory = $this->createMock('ILayoutFactory');
         $expectedLayout = new ScheduleLayout($timezone);
 
         $layoutFactory->expects($this->once())
@@ -172,7 +172,7 @@ class ScheduleRepositoryTests extends TestBase
 
         $scheduleId = 109;
 
-        $layoutFactory = $this->getMock('ILayoutFactory');
+        $layoutFactory = $this->createMock('ILayoutFactory');
         $expectedLayout = new ScheduleLayout($timezone);
 
         $layoutFactory->expects($this->once())
@@ -208,7 +208,7 @@ class ScheduleRepositoryTests extends TestBase
         $timezone = 'America/New_York';
         $scheduleId = 109;
 
-        $layoutFactory = $this->getMock('ILayoutFactory');
+        $layoutFactory = $this->createMock('ILayoutFactory');
         $expectedLayout = new ScheduleLayout($timezone);
 
         $layoutFactory->expects($this->once())
@@ -353,7 +353,7 @@ class ScheduleRepositoryTests extends TestBase
             new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
         );
 
-        $layout = $this->getMock('ILayoutCreation');
+        $layout = $this->createMock('ILayoutCreation');
 
         $layout->expects($this->once())
             ->method('UsesDailyLayouts')
@@ -412,7 +412,7 @@ class ScheduleRepositoryTests extends TestBase
             new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
         );
 
-        $layout = $this->getMock('ILayoutCreation');
+        $layout = $this->createMock('ILayoutCreation');
 
         $layout->expects($this->once())
             ->method('UsesDailyLayouts')

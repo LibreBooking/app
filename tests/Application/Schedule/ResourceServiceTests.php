@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -52,13 +52,13 @@ class ResourceServiceTests extends TestBase
 	 */
 	private $accessoryRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->permissionService = $this->getMock('IPermissionService');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->attributeService = $this->getMock('IAttributeService');
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->accessoryRepository = $this->getMock('IAccessoryRepository');
+		$this->permissionService = $this->createMock('IPermissionService');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
 		$this->resourceService = new ResourceService($this->resourceRepository, $this->permissionService, $this->attributeService, $this->userRepository, $this->accessoryRepository);
 
@@ -312,7 +312,7 @@ class ResourceServiceTests extends TestBase
 				->with($this->anything(), $this->anything())
 				->will($this->returnValue(true));
 
-		$filter = $this->getMock('IScheduleResourceFilter');
+		$filter = $this->createMock('IScheduleResourceFilter');
 
 		$filter->expects($this->once())
 			   ->method('FilterResources')

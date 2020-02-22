@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -42,11 +42,11 @@ class ActivationPresenterTests extends TestBase
 	 */
 	private $auth;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IActivationPage');
+		$this->page = $this->createMock('IActivationPage');
 		$this->accountActivation = new FakeActivation();
 		$this->auth = new FakeWebAuthentication();
 

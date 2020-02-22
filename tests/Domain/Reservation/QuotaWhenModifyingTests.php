@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -42,9 +42,9 @@ class QuotaWhenModifyingTests extends TestBase
 	 */
 	var $user;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
 
 		$this->tz = 'UTC';
 		$this->schedule = new Schedule(1, null, null, null, null, $this->tz);
@@ -54,7 +54,7 @@ class QuotaWhenModifyingTests extends TestBase
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

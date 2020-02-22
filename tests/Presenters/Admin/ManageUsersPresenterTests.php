@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -68,18 +68,18 @@ class ManageUsersPresenterTests extends TestBase
 	 */
 	public $groupViewRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageUsersPage');
-		$this->userRepo = $this->getMock('UserRepository');
-		$this->resourceRepo = $this->getMock('IResourceRepository');
-		$this->encryption = $this->getMock('PasswordEncryption');
-		$this->manageUsersService = $this->getMock('IManageUsersService');
-		$this->attributeService = $this->getMock('IAttributeService');
-		$this->groupRepository = $this->getMock('IGroupRepository');
-		$this->groupViewRepository = $this->getMock('IGroupViewRepository');
+		$this->page = $this->createMock('IManageUsersPage');
+		$this->userRepo = $this->createMock('UserRepository');
+		$this->resourceRepo = $this->createMock('IResourceRepository');
+		$this->encryption = $this->createMock('PasswordEncryption');
+		$this->manageUsersService = $this->createMock('IManageUsersService');
+		$this->attributeService = $this->createMock('IAttributeService');
+		$this->groupRepository = $this->createMock('IGroupRepository');
+		$this->groupViewRepository = $this->createMock('IGroupViewRepository');
 
 		$this->presenter = new ManageUsersPresenter($this->page,
 													$this->userRepo,
@@ -91,7 +91,7 @@ class ManageUsersPresenterTests extends TestBase
 													$this->groupViewRepository);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

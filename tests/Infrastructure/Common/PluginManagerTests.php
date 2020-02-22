@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -22,14 +22,14 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class PluginManagerTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		PluginManager::SetInstance(null);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

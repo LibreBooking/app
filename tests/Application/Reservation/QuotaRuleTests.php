@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -48,18 +48,18 @@ class QuotaRuleTests extends TestBase
 	 */
 	private $quotaViewRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->quotaRepository = $this->getMock('IQuotaRepository');
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+		$this->quotaRepository = $this->createMock('IQuotaRepository');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
 		$this->quotaViewRepository = new FakeQuotaViewRepository();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -175,7 +175,7 @@ class QuotaRuleTests extends TestBase
 
 	private function mockQuota()
 	{
-		$mock = $this->getMock('IQuota');
+		$mock = $this->createMock('IQuota');
 		$mock->expects($this->any())
 			 ->method('ToString')
 			 ->will($this->returnValue(''));

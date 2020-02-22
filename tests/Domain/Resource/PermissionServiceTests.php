@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -31,7 +31,7 @@ class PermissionServiceTests extends TestBase
 		$resource = new FakeBookableResource(1, 'whatever');
 		$resourceIdList = array(3, 1, 4);
 
-		$store = $this->getMock('IResourcePermissionStore');
+		$store = $this->createMock('IResourcePermissionStore');
 		$ps = new PermissionService($store);
 
 		$store->expects($this->once())
@@ -53,7 +53,7 @@ class PermissionServiceTests extends TestBase
 		$resource = new FakeBookableResource(1, 'whatever');
 		$resourceIdList = array(3, 1, 4);
 
-		$store = $this->getMock('IResourcePermissionStore');
+		$store = $this->createMock('IResourcePermissionStore');
 		$ps = new PermissionService($store);
 
 		$store->expects($this->once())

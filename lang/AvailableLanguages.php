@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -51,6 +51,7 @@ class AvailableLanguages
             'lt' => new AvailableLanguage('lt', 'lt.php', 'Lietuvių'),
             'no_no' => new AvailableLanguage('no_no', 'no_no.php', 'Norsk bokmål'),
             'pl' => new AvailableLanguage('pl', 'pl.php', 'Polski'),
+            'pt_pt' => new AvailableLanguage('pt_pt', 'pt_pt.php', 'Portugu&ecirc;s'),
             'pt_br' => new AvailableLanguage('pt_br', 'pt_br.php', 'Portugu&ecirc;s Brasileiro'),
             'ru_ru' => new AvailableLanguage('ru_ru', 'ru_ru.php', 'Русский'),
             'si_si' => new AvailableLanguage('si_si', 'si_si.php', 'Slovenščina'),

@@ -1,5 +1,5 @@
 /**
- Copyright 2012-2019 Nick Korbel
+ Copyright 2012-2020 Nick Korbel
 
  This file is part of Booked Scheduler.
 
@@ -30,26 +30,45 @@ function Recurrence(recurOptions, recurElements, prefix) {
         beginTime: $('#' + prefix + 'BeginPeriod'),
         endTime: $('#' + prefix + 'EndPeriod'),
         repeatOnWeeklyDiv: $('#' + prefix + 'repeatOnWeeklyDiv'),
-        repeatOnMonthlyDiv: $('#' + prefix + 'repeatOnMonthlyDiv')
+        repeatOnMonthlyDiv: $('#' + prefix + 'repeatOnMonthlyDiv'),
+        addDateBtn: $('#' + prefix + 'AddDate'),
+        repeatDateFormatted: $('#' + prefix + 'formattedRepeatDate'),
+        repeatDate: $('#' + prefix + 'RepeatDate'),
+        customDatesDiv: $('#' + prefix + 'customDatesDiv')
     };
 
     var options = recurOptions;
+    options.customRepeatExclusions = recurOptions.customRepeatExclusions || [];
 
     var elements = $.extend(e, recurElements);
 
     var repeatToggled = false;
     var terminationDateSetManually = recurOptions.autoSetTerminationDate || false;
     var changeCallback = null;
+    var repeatDates = [];
 
     this.init = function () {
         InitializeDateElements();
         InitializeRepeatElements();
         InitializeRepeatOptions();
         ToggleRepeatOptions();
+        elements.addDateBtn.on('click', function(e) {
+            e.preventDefault();
+            OnRepeatDateAdded();
+        });
+
+        elements.customDatesDiv.on('click', '.remove-repeat-date', function(e) {
+            e.preventDefault();
+            OnRepeatDateRemoved($(e.target).data("repeat-date"));
+        });
     };
 
     this.onChange = function (callback) {
         changeCallback = callback;
+    };
+
+    this.addCustomDate = function(systemFormattedDate, userFormattedDate) {
+        AddRepeatDate(systemFormattedDate, userFormattedDate);
     };
 
     var NotifyChange = function () {
@@ -76,43 +95,37 @@ function Recurrence(recurOptions, recurElements, prefix) {
 
     var ChangeRepeatOptions = function () {
         var repeatDropDown = elements.repeatOptions;
-        if (repeatDropDown.val() != 'none') {
+        if (repeatDropDown.val() != 'none' && repeatDropDown.val() != 'custom') {
             show($('#' + prefix + 'repeatUntilDiv'));
         }
         else {
             hide($('.recur-toggle', elements.repeatDiv));
         }
 
-        if (repeatDropDown.val() == 'daily') {
-            hide($('.weeks', elements.repeatDiv));
-            hide($('.months', elements.repeatDiv));
-            hide($('.years', elements.repeatDiv));
+        hide($('.days', elements.repeatDiv));
+        hide($('.weeks', elements.repeatDiv));
+        hide($('.months', elements.repeatDiv));
+        hide($('.years', elements.repeatDiv));
+        hide($('.specific-dates', elements.repeatDiv));
 
+        if (repeatDropDown.val() == 'daily') {
             show($('.days', elements.repeatDiv));
         }
 
         if (repeatDropDown.val() == 'weekly') {
-            hide($('.days', elements.repeatDiv));
-            hide($('.months', elements.repeatDiv));
-            hide($('.years', elements.repeatDiv));
-
             show($('.weeks', elements.repeatDiv));
         }
 
         if (repeatDropDown.val() == 'monthly') {
-            hide($('.days', elements.repeatDiv));
-            hide($('.weeks', elements.repeatDiv));
-            hide($('.years', elements.repeatDiv));
-
             show($('.months', elements.repeatDiv));
         }
 
         if (repeatDropDown.val() == 'yearly') {
-            hide($('.days', elements.repeatDiv));
-            hide($('.weeks', elements.repeatDiv));
-            hide($('.months', elements.repeatDiv));
-
             show($('.years', elements.repeatDiv));
+        }
+
+        if(repeatDropDown.val() == 'custom') {
+            show($('.specific-dates', elements.repeatDiv));
         }
 
         NotifyChange();
@@ -244,5 +257,34 @@ function Recurrence(recurOptions, recurElements, prefix) {
 
         elements.repeatTerminationTextbox.datepicker("setDate", newEndDate);
         M.updateTextFields();
+    };
+
+    var OnRepeatDateAdded = function()
+    {
+        AddRepeatDate(elements.repeatDateFormatted.val(), elements.repeatDate.val());
+    };
+
+    var AddRepeatDate = function(systemFormattedDate, userFormattedDate) {
+        var d = {"system": systemFormattedDate, "user": userFormattedDate};
+        if (systemFormattedDate != "" && userFormattedDate != "" && repeatDates.find(x => x.system === systemFormattedDate) === undefined && options.customRepeatExclusions.find(x => x == systemFormattedDate) === undefined) {
+            repeatDates.push(d);
+        }
+
+        DisplayRepeatDates();
+        NotifyChange();
+    };
+
+    var DisplayRepeatDates = function() {
+        var datediv = elements.customDatesDiv.find(".repeat-date-list");
+        datediv.empty();
+        repeatDates.sort((r1, r2) => r1.system.localeCompare(r2.system)).forEach((v, i) => {
+            datediv.append($("<div data-repeat-date='"  + v.system + "'><span>" + v.user + "</span> <a href='#'><i class='fa fa-remove icon delete remove-repeat-date' data-repeat-date='" + v.system +"' /></a><input type='hidden' name='repeatCustomDates[]' value='" + v.system +"'</div>"));
+        });
+    };
+
+    var OnRepeatDateRemoved = function(systemFormattedDate) {
+        repeatDates = repeatDates.filter(d => d.system !== systemFormattedDate);
+        DisplayRepeatDates();
+        NotifyChange();
     };
 }

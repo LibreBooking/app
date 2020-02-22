@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -42,15 +42,15 @@ class GenerateReportPresenterTests extends TestBase
 	 */
 	public $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeGenerateReportPage();
-		$this->reportingService = $this->getMock('IReportingService');
-		$resourceRepository = $this->getMock('IResourceRepository');
-		$scheduleRepository = $this->getMock('IScheduleRepository');
-		$groupRepository = $this->getMock('IGroupViewRepository');
+		$this->reportingService = $this->createMock('IReportingService');
+		$resourceRepository = $this->createMock('IResourceRepository');
+		$scheduleRepository = $this->createMock('IScheduleRepository');
+		$groupRepository = $this->createMock('IGroupViewRepository');
 		$this->userRepository = new FakeUserRepository();
 
 		$this->presenter = new GenerateReportPresenter($this->page,

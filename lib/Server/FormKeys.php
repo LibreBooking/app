@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,6 +239,7 @@ class FormKeys
 	const RESOURCE_STATUS_REASON_ID = 'RESOURCE_STATUS_REASON_ID';
 	const RESOURCE_STATUS_UPDATE_SCOPE = 'RESOURCE_STATUS_UPDATE_SCOPE';
 	const ROLLING = 'ROLLING';
+	const REPEAT_CUSTOM_DATES = 'repeatCustomDates';
 
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';

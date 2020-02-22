@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,13 +25,13 @@ class ResourcesTests extends TestBase
 {
 	private $Resources;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setup();
 		Resources::SetInstance(null);
 	}
 
-	public function tearDown()
+	public function teardown(): void
 	{
 		$this->Resources = null;
 		parent::teardown();

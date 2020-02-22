@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -35,7 +35,7 @@ class SqlCommand implements ISqlCommand
 		$this->Parameters = new Parameters();
 	}
 
-	public function SetParameters(Parameters &$parameters)
+	public function SetParameters(Parameters $parameters)
 	{
 		$this->_paramNames = array(); // Clean out contents
 		$this->_values = array();
@@ -50,7 +50,7 @@ class SqlCommand implements ISqlCommand
 		}
 	}
 
-	public function AddParameter(Parameter &$parameter)
+	public function AddParameter(Parameter $parameter)
 	{
 		$this->Parameters->Add($parameter);
 	}
@@ -124,7 +124,7 @@ class CountCommand extends SqlCommand
 
 	public function GetQuery()
 	{
-		return 'SELECT COUNT(*) as total FROM (' . $this->baseCommand->GetQuery() . ') results';
+		return 'SELECT COUNT(*) as `total` FROM (' . $this->baseCommand->GetQuery() . ') `results`';
 	}
 }
 

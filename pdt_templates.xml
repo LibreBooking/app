@@ -144,12 +144,12 @@ ${cursor}</template><template autoinsert="true" context="php" deleted="false" de
 	${cursor}&#13;
 }</template><template autoinsert="true" context="php" deleted="false" description="" enabled="true" name="tf">class ${file} extends TestBase&#13;
 {&#13;
-	public function setup()&#13;
+	public function setUp(): void&#13;
 	{&#13;
 		parent::setup();&#13;
 	}&#13;
 	&#13;
-	public function teardown()&#13;
+	public function teardown(): void&#13;
 	{&#13;
 		parent::teardown();&#13;
 	}&#13;

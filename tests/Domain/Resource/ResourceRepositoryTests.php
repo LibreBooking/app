@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -30,13 +30,13 @@ class ResourceRepositoryTests extends TestBase
 	 */
 	private $repository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->repository = new ResourceRepository();
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -380,7 +380,6 @@ class ResourceRepositoryTests extends TestBase
 		$this->assertEquals(null, $groups[1]->parent_id);
 		$this->assertEquals(2, count($groups[1]->children));
 
-		$this->assertEquals(1, count($groups[1]->children[0]));
 		$this->assertEquals('group1a', $groups[1]->children[0]->label);
 		$this->assertEquals('group1a1', $groups[1]->children[0]->children[0]->label);
 		$this->assertEquals('resource1', $groups[1]->children[0]->children[0]->children[0]->label);

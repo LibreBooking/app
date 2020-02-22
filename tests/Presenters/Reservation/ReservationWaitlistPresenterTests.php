@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -37,7 +37,7 @@ class ReservationWaitlistPresenterTests extends TestBase
      */
     private $presenter;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
         $this->page = new FakeReservationWaitlistPage();

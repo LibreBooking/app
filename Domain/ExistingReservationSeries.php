@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -203,10 +203,9 @@ class ExistingReservationSeries extends ReservationSeries
         $removed = parent::RemoveInstance($toRemove);
 
 //		if ($removed) {
-        $this->AddEvent(new InstanceRemovedEvent($toRemove, $this));
-        $this->_deleteRequestIds[] = $toRemove->ReservationId();
-        $this->RemoveEvent(new InstanceAddedEvent($toRemove, $this));
-
+			$this->AddEvent(new InstanceRemovedEvent($toRemove, $this));
+			$this->_deleteRequestIds[] = $toRemove->ReservationId();
+			$this->RemoveEvent(new InstanceAddedEvent($toRemove, $this));
 //        }
         return true;
     }
@@ -268,6 +267,12 @@ class ExistingReservationSeries extends ReservationSeries
 
         $currentBegin = $currentDuration->GetBegin();
         $currentEnd = $currentDuration->GetEnd();
+
+        Log::Debug('duration %s', $currentDuration->ToString());
+        Log::Debug('current begin %s', $currentBegin->ToString());
+        Log::Debug('current end %s', $currentEnd->ToString());
+        Log::Debug('date begin %s', $reservationDate->GetBegin()->ToString());
+        Log::Debug('date end %s', $reservationDate->GetEnd()->ToString());
 
         $startTimeAdjustment = $currentBegin->GetDifference($reservationDate->GetBegin());
         $endTimeAdjustment = $currentEnd->GetDifference($reservationDate->GetEnd());

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php'
 
 class ReservationConflictResolutionTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
@@ -32,7 +32,7 @@ class ReservationConflictResolutionTests extends TestBase
 		$id = 123;
 		$reservationView = new TestReservationItemView($id, Date::Now(), Date::Now());
 
-		$repo = $this->getMock('IReservationRepository');
+		$repo = $this->createMock('IReservationRepository');
 		$notificationService = new FakeReservationNotificationService();
 		$handler = new ReservationConflictDelete($repo, $notificationService);
 

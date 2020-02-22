@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -28,7 +28,7 @@ class ReservationWaitlistRepositoryTests extends TestBase
      */
     public $repository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

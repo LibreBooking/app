@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -85,7 +85,7 @@ class AuthenticationTests extends TestBase
 	 */
 	private $fakeFirstRegistration;
 
-	function setup()
+	function setup(): void
 	{
 		parent::setup();
 
@@ -120,9 +120,9 @@ class AuthenticationTests extends TestBase
 		$this->fakeMigration = new FakeMigration();
 		$this->fakeMigration->_Password = $this->fakePassword;
 
-		$this->authorization = $this->getMock('IRoleService');
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->groupRepository = $this->getMock('IGroupRepository');
+		$this->authorization = $this->createMock('IRoleService');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->groupRepository = $this->createMock('IGroupRepository');
 		$this->fakeFirstRegistration = new FakeFirstRegistrationStrategy();
 
 		$this->auth = new Authentication($this->authorization, $this->userRepository, $this->groupRepository);

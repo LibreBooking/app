@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -64,7 +64,7 @@ class ReservationSavePresenterTests extends TestBase
 	 */
 	private $scheduleRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -73,9 +73,9 @@ class ReservationSavePresenterTests extends TestBase
 
 		$this->page = new FakeReservationSavePage();
 
-		$this->persistenceService = $this->getMock('IReservationPersistenceService');
-		$this->handler = $this->getMock('IReservationHandler');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->persistenceService = $this->createMock('IReservationPersistenceService');
+		$this->handler = $this->createMock('IReservationHandler');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
 		$this->scheduleRepository = new FakeScheduleRepository();
 
 		$this->presenter = new ReservationSavePresenter(
@@ -87,7 +87,7 @@ class ReservationSavePresenterTests extends TestBase
 				$this->fakeUser);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

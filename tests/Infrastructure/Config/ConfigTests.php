@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class ConfigTests extends TestBase
 {
-	function setup()
+	function setup(): void
 	{
 		parent::setup();
 

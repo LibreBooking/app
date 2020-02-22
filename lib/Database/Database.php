@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,9 +25,9 @@ class Database
 	 */
 	public $Connection = null;
 
-	public function __construct(IDbConnection &$dbConnection)
+	public function __construct(IDbConnection $dbConnection)
 	{
-		$this->Connection = &$dbConnection;
+		$this->Connection = $dbConnection;
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Database
 	 * @param ISqlCommand $command
 	 * @return IReader to iterate over
 	 */
-	public function &Query(ISqlCommand &$command)
+	public function Query(ISqlCommand $command)
 	{
 		$this->Connection->Connect();
 
@@ -54,7 +54,7 @@ class Database
 	 * @param int $offset
 	 * @return IReader to iterate over
 	 */
-	public function &LimitQuery(ISqlCommand $command, $limit, $offset = null)
+	public function LimitQuery(ISqlCommand $command, $limit, $offset = null)
 	{
 		$this->Connection->Connect();
 

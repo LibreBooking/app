@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -54,13 +54,13 @@ class GuestReservationPresenterTests extends TestBase
      */
     private $authentication;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->page = new FakeGuestReservationPage();
         $this->registration = new FakeRegistration();
-        $this->factory = $this->getMock('IReservationInitializerFactory');
-        $this->preconditionService = $this->getMock('INewReservationPreconditionService');
-        $this->initializer = $this->getMock('IReservationInitializer');
+        $this->factory = $this->createMock('IReservationInitializerFactory');
+        $this->preconditionService = $this->createMock('INewReservationPreconditionService');
+        $this->initializer = $this->createMock('IReservationInitializer');
         $this->authentication = new FakeWebAuthentication();
 
         $this->factory->expects($this->any())

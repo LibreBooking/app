@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -23,12 +23,12 @@ interface ISqlCommand
 	/**
 	 * @param Parameters $parameters
 	 */
-	public function SetParameters(Parameters &$parameters);
+	public function SetParameters(Parameters $parameters);
 
 	/**
 	 * @param Parameter $parameter
 	 */
-	public function AddParameter(Parameter &$parameter);
+	public function AddParameter(Parameter $parameter);
 
 	/**
 	 * @return string the underlying query to be executed

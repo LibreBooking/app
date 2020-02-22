@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -32,18 +32,18 @@ class ReservationSaveControllerTests extends TestBase
 	 */
 	private $presenterFactory;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->presenterFactory = $this->getMock('IReservationPresenterFactory');
+		$this->presenterFactory = $this->createMock('IReservationPresenterFactory');
 		$this->controller = new ReservationSaveController($this->presenterFactory);
 	}
 
 	public function testUsesPresenterToCreateReservation()
 	{
 		$series = new TestReservationSeries();
-		$presenter = $this->getMock('IReservationSavePresenter');
+		$presenter = $this->createMock('IReservationSavePresenter');
 
 		$request = new ReservationRequest();
 		$request->resourceId = 1;
@@ -74,7 +74,7 @@ class ReservationSaveControllerTests extends TestBase
 	public function testUpdatesExistingReservation()
 	{
 		$series = new TestReservationSeries();
-		$presenter = $this->getMock('IReservationSavePresenter');
+		$presenter = $this->createMock('IReservationSavePresenter');
 		$referenceNumber = '123';
 		$updateScope = SeriesUpdateScope::FullSeries;
 
@@ -106,7 +106,7 @@ class ReservationSaveControllerTests extends TestBase
 
 	public function testApprovesExistingReservation()
 	{
-		$presenter = $this->getMock('IReservationApprovalPresenter');
+		$presenter = $this->createMock('IReservationApprovalPresenter');
 		$referenceNumber = '123';
 		$session = new FakeWebServiceUserSession(123);
 
@@ -134,7 +134,7 @@ class ReservationSaveControllerTests extends TestBase
 
 		$facade = new ReservationDeleteRequestResponseFacade($referenceNumber, $updateScope);
 
-		$presenter = $this->getMock('IReservationDeletePresenter');
+		$presenter = $this->createMock('IReservationDeletePresenter');
 
 		$reservation = new TestReservation();
 

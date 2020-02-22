@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2019 Nick Korbel
+Copyright 2019-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -41,7 +41,7 @@ class AccountRequestValidatorTests extends TestBase
      */
     private $session;
 
-    public function setup()
+    public function setUp(): void
 	{
 		parent::setup();
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2019 Nick Korbel
+ * Copyright 2019-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -29,7 +29,7 @@ class ParticipationNotificationTests extends TestBase
      */
     private $participationNotification;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
         $this->userRepository = new FakeUserRepository();

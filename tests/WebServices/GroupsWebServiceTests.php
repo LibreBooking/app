@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -42,13 +42,13 @@ class GroupsWebServiceTests extends TestBase
 	 */
 	private $groupViewRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->groupRepository = $this->getMock('IGroupRepository');
-		$this->groupViewRepository = $this->getMock('IGroupViewRepository');
+		$this->groupRepository = $this->createMock('IGroupRepository');
+		$this->groupViewRepository = $this->createMock('IGroupViewRepository');
 
 		$this->service = new GroupsWebService($this->server, $this->groupRepository, $this->groupViewRepository);
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -43,13 +43,13 @@ class ReservationCheckinPresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeReservationCheckinPage();
-		$this->persistence = $this->getMock('IUpdateReservationPersistenceService');
-		$this->handler = $this->getMock('IReservationHandler');
+		$this->persistence = $this->createMock('IUpdateReservationPersistenceService');
+		$this->handler = $this->createMock('IReservationHandler');
 
 		$this->presenter = new ReservationCheckinPresenter($this->page, $this->persistence, $this->handler, $this->fakeUser);
 	}

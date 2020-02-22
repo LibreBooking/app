@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -42,13 +42,13 @@ class SchedulesWebServiceTests extends TestBase
 	 */
 	private $privacyFilter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->privacyFilter = $this->getMock('IPrivacyFilter');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
+		$this->privacyFilter = $this->createMock('IPrivacyFilter');
 
 		$this->service = new SchedulesWebService($this->server, $this->scheduleRepository, $this->privacyFilter);
 	}
@@ -72,7 +72,7 @@ class SchedulesWebServiceTests extends TestBase
 		$scheduleId = 89181;
 
 		$schedule = new FakeSchedule($scheduleId);
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 
 		$layout->expects($this->any())
 				->method('GetLayout')
@@ -112,7 +112,7 @@ class SchedulesWebServiceTests extends TestBase
 	public function testScheduleResponseReturnsLayoutForEachDayOfWeek()
 	{
 		$schedule = new FakeSchedule();
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 		$timezone = $this->server->GetSession()->Timezone;
 
 		$date1 = Date::Now()->ToTimezone($timezone);

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -33,11 +33,11 @@ class AuthorizationServiceTests extends TestBase
      */
     private $userRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->userRepository = $this->getMock('IUserRepository');
+        $this->userRepository = $this->createMock('IUserRepository');
         $this->authorizationService = new AuthorizationService($this->userRepository);
     }
 
@@ -48,8 +48,8 @@ class AuthorizationServiceTests extends TestBase
         $adminUser = new FakeUserSession(true);
         $user = new FakeUserSession(false, null, $userId);
 
-        $groupAdmin = $this->getMock('User');
-        $normalDude = $this->getMock('User');
+        $groupAdmin = $this->createMock('User');
+        $normalDude = $this->createMock('User');
 
         $groupAdmin->expects($this->once())
                 ->method('IsGroupAdmin')
@@ -87,9 +87,9 @@ class AuthorizationServiceTests extends TestBase
         $user = new FakeUserSession(false, null, $userId);
         $user->IsGroupAdmin = true;
 
-        $groupAdmin = $this->getMock('User');
-        $normalDude = $this->getMock('User');
-        $reserveForUser = $this->getMock('User');
+        $groupAdmin = $this->createMock('User');
+        $normalDude = $this->createMock('User');
+        $reserveForUser = $this->createMock('User');
 
         // group admin
         $this->userRepository->expects($this->at(0))
@@ -141,10 +141,10 @@ class AuthorizationServiceTests extends TestBase
         $user = new FakeUserSession(false, null, $userId);
         $user->IsGroupAdmin = true;
 
-        $groupAdmin = $this->getMock('User');
-        $normalDude = $this->getMock('User');
+        $groupAdmin = $this->createMock('User');
+        $normalDude = $this->createMock('User');
 
-        $reserveForUser = $this->getMock('User');
+        $reserveForUser = $this->createMock('User');
 
         // group admin
         $this->userRepository->expects($this->at(0))
@@ -260,8 +260,8 @@ class AuthorizationServiceTests extends TestBase
         $userSession = new UserSession($userId);
         $userSession->IsResourceAdmin = true;
 
-        $groupAdmin = $this->getMock('User');
-        $resource = $this->getMock('IResource');
+        $groupAdmin = $this->createMock('User');
+        $resource = $this->createMock('IResource');
 
         $this->userRepository->expects($this->at(0))
                 ->method('LoadById')
@@ -284,8 +284,8 @@ class AuthorizationServiceTests extends TestBase
         $userSession = new UserSession($userId);
         $userSession->IsResourceAdmin = true;
 
-        $groupAdmin = $this->getMock('User');
-        $resource = $this->getMock('IResource');
+        $groupAdmin = $this->createMock('User');
+        $resource = $this->createMock('IResource');
 
         $this->userRepository->expects($this->at(0))
                 ->method('LoadById')

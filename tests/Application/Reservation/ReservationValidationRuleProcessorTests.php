@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -22,12 +22,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
 class ReservationValidationRuleProcessorTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -37,9 +37,9 @@ class ReservationValidationRuleProcessorTests extends TestBase
 		$reservation = new ExistingReservationSeries();
 		$validResult = new ReservationRuleResult(true);
 
-		$rule1 = $this->getMock('IUpdateReservationValidationRule');
-		$rule2 = $this->getMock('IUpdateReservationValidationRule');
-		$rule3 = $this->getMock('IUpdateReservationValidationRule');
+		$rule1 = $this->createMock('IUpdateReservationValidationRule');
+		$rule2 = $this->createMock('IUpdateReservationValidationRule');
+		$rule3 = $this->createMock('IUpdateReservationValidationRule');
 
 		$rule1->expects($this->once())
 			->method('Validate')
@@ -70,9 +70,9 @@ class ReservationValidationRuleProcessorTests extends TestBase
 	{
 		$reservation = new ExistingReservationSeries();
 
-		$rule1 = $this->getMock('IUpdateReservationValidationRule');
-		$rule2 = $this->getMock('IUpdateReservationValidationRule');
-		$rule3 = $this->getMock('IUpdateReservationValidationRule');
+		$rule1 = $this->createMock('IUpdateReservationValidationRule');
+		$rule2 = $this->createMock('IUpdateReservationValidationRule');
+		$rule3 = $this->createMock('IUpdateReservationValidationRule');
 
 		$rules = array($rule1, $rule2, $rule3);
 

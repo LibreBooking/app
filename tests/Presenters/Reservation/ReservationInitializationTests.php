@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -66,17 +66,17 @@ class ReservationInitializationTests extends TestBase
      */
     private $termsRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
-        $this->userBinder = $this->getMock('IReservationComponentBinder');
-        $this->dateBinder = $this->getMock('IReservationComponentBinder');
-        $this->resourceBinder = $this->getMock('IReservationComponentBinder');
-        $this->page = $this->getMock('INewReservationPage');
+        $this->userBinder = $this->createMock('IReservationComponentBinder');
+        $this->dateBinder = $this->createMock('IReservationComponentBinder');
+        $this->resourceBinder = $this->createMock('IReservationComponentBinder');
+        $this->page = $this->createMock('INewReservationPage');
         $this->scheduleRepository = new FakeScheduleRepository();
-        $this->resourceRepository = $this->getMock('IResourceRepository');
-        $this->termsRepository = $this->getMock('ITermsOfServiceRepository');
+        $this->resourceRepository = $this->createMock('IResourceRepository');
+        $this->termsRepository = $this->createMock('ITermsOfServiceRepository');
 
         $this->initializer = new NewReservationInitializer($this->page,
             $this->userBinder,
@@ -88,7 +88,7 @@ class ReservationInitializationTests extends TestBase
             $this->termsRepository);
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }
@@ -122,8 +122,8 @@ class ReservationInitializationTests extends TestBase
 
     public function testBindsToClosestPeriod()
     {
-        $page = $this->getMock('INewReservationPage');
-        $binder = $this->getMock('IReservationComponentBinder');
+        $page = $this->createMock('INewReservationPage');
+        $binder = $this->createMock('IReservationComponentBinder');
 
         $timezone = $this->fakeUser->Timezone;
 

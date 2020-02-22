@@ -21,3 +21,5 @@
 /efs/config
 /.ebextensions
 /config/1.config.php
+/vendor
+/.phpunit.result.cache

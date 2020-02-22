@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -60,7 +60,7 @@ class LdapTests extends TestBase
 	 */
 	private $loginContext;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -84,7 +84,7 @@ class LdapTests extends TestBase
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
 
-		$this->loginContext = $this->getMock('ILoginContext');
+		$this->loginContext = $this->createMock('ILoginContext');
 	}
 
 	public function testCanValidateUser()
@@ -347,7 +347,7 @@ class LdapTests extends TestBase
 
 }
 
-class LdapIntegrationTests extends PHPUnit_Framework_TestCase
+class LdapIntegrationTests extends TestBase
 {
 
 	public function testAuthRealLdap()

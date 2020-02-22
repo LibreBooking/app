@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -30,7 +30,7 @@ class ExistingReservationDeleteTests extends TestBase
 	 */
 	private $admin;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -38,7 +38,7 @@ class ExistingReservationDeleteTests extends TestBase
 		$this->admin = new FakeUserSession(true);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -33,15 +33,15 @@ class ResourceCrossDayRuleTests extends TestBase
 	 */
 	private $schedule;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
 		$this->schedule = new FakeSchedule();
 		$this->schedule->SetTimezone('America/Chicago');
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

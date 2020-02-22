@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -24,7 +24,7 @@ interface IResourceAvailabilityStrategy
      * @param Date $startDate
      * @param Date $endDate
 	 * @param int[] $resourceIds
-     * @return array|IReservedItemView[]|int
+     * @return array|IReservedItemView[]
      */
     public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds);
 }

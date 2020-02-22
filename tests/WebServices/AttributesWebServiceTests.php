@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -37,11 +37,11 @@ class AttributesWebServiceTests extends TestBase
 	 */
 	private $server;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->attributeService = $this->createMock('IAttributeService');
 		$this->server = new FakeRestServer();
 
 		$this->service = new AttributesWebService($this->server, $this->attributeService);

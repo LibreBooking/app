@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -37,7 +37,7 @@ class GuestUserServiceTests extends TestBase
 	 */
 	private $registration;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->authentication = new FakeAuthentication();
 		$this->registration = new FakeRegistration();

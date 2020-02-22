@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -37,12 +37,12 @@ class UserRequestValidatorTests extends TestBase
 	 */
 	private $userRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->attributeService = $this->getMock('IAttributeService');
-		$this->userRepository = $this->getMock('IUserViewRepository');
+		$this->attributeService = $this->createMock('IAttributeService');
+		$this->userRepository = $this->createMock('IUserViewRepository');
 
 		$this->validator = new UserRequestValidator($this->attributeService, $this->userRepository);
 	}

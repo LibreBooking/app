@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -40,7 +40,7 @@ class WebAuthenticationTests extends TestBase
 	private $username = 'LoGInName';
 	private $password = 'password';
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -155,7 +155,7 @@ class WebAuthenticationTests extends TestBase
 
 	public function testHandlesLoginFailure()
 	{
-		$page = $this->getMock('ILoginPage');
+		$page = $this->createMock('ILoginPage');
 		$this->webAuth->HandleLoginFailure($page);
 
 		$this->assertTrue($this->fakeAuth->_HandleLoginFailureCalled);

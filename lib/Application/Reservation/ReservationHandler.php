@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -31,7 +31,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 interface IReservationHandler
 {
 	/**
-     * @param ReservationSeries|ExistingReservationSeries $reservationSeries
+	 * @param ReservationSeries|ExistingReservationSeries $reservationSeries
 	 * @param IReservationSaveResultsView $view
 	 * @return bool if the reservation was handled or not
 	 */
@@ -55,13 +55,20 @@ class ReservationHandler implements IReservationHandler
 	 */
 	private $notificationService;
 
+	/**
+	 * @var IReservationRetryOptions
+	 */
+	private $retryOptions;
+
 	public function __construct(IReservationPersistenceService $persistenceService,
 								IReservationValidationService $validationService,
-								IReservationNotificationService $notificationService)
+								IReservationNotificationService $notificationService,
+								IReservationRetryOptions $retryOptions)
 	{
 		$this->persistenceService = $persistenceService;
 		$this->validationService = $validationService;
 		$this->notificationService = $notificationService;
+		$this->retryOptions = $retryOptions;
 	}
 
 	/**
@@ -85,7 +92,10 @@ class ReservationHandler implements IReservationHandler
 		$notificationFactory = new ReservationNotificationFactory();
 		$notificationService = $notificationFactory->Create($reservationAction, $session);
 
-		return new ReservationHandler($persistenceService, $validationService, $notificationService);
+		$scheduleRepository = new ScheduleRepository();
+		$retryOptions = new ReservationRetryOptions(new ReservationConflictIdentifier(new ResourceAvailability(new ReservationViewRepository()), $scheduleRepository), $scheduleRepository);
+
+		return new ReservationHandler($persistenceService, $validationService, $notificationService, $retryOptions);
 	}
 
 	/**
@@ -96,6 +106,7 @@ class ReservationHandler implements IReservationHandler
 	 */
 	public function Handle($reservationSeries, IReservationSaveResultsView $view)
 	{
+		$this->retryOptions->AdjustReservation($reservationSeries, $view->GetRetryParameters());
 		$validationResult = $this->validationService->Validate($reservationSeries, $view->GetRetryParameters());
 		$result = $validationResult->CanBeSaved();
 
@@ -110,7 +121,7 @@ class ReservationHandler implements IReservationHandler
 				throw($ex);
 			}
 
-            $this->notificationService->Notify($reservationSeries);
+			$this->notificationService->Notify($reservationSeries);
 
 			$view->SetSaveSuccessfulMessage($result);
 		}
@@ -122,8 +133,10 @@ class ReservationHandler implements IReservationHandler
 			$view->SetCanBeRetried($validationResult->CanBeRetried());
 			$view->SetRetryParameters($validationResult->GetRetryParameters());
 			$view->SetRetryMessages($validationResult->GetRetryMessages());
-            $view->SetCanJoinWaitList($validationResult->CanJoinWaitList() && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_WAITLIST, new BooleanConverter()));
-        }
+			$view->SetCanJoinWaitList($validationResult->CanJoinWaitList() && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
+																													   ConfigKeys::RESERVATION_ALLOW_WAITLIST,
+																													   new BooleanConverter()));
+		}
 
 		$view->SetWarnings($validationResult->GetWarnings());
 

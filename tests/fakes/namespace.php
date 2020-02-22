@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -90,3 +90,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakeStripeGateway.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeTermsOfServiceRepository.php');
 require_once(ROOT_DIR . 'tests/fakes/ReservationItemViewBuilder.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationNotificationService.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeBlackoutRepository.php');

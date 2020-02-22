@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2018-2019 Nick Korbel
+ * Copyright 2018-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -32,7 +32,7 @@ class ManageEmailTemplatesPresenterTests extends TestBase
      */
     private $presenter;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 

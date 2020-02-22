@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -38,12 +38,12 @@ class ManageAttributesPresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeAttributePage();
-		$this->attributeRepository = $this->getMock('IAttributeRepository');
+		$this->attributeRepository = $this->createMock('IAttributeRepository');
 
 		$this->presenter = new ManageAttributesPresenter($this->page, $this->attributeRepository);
 	}

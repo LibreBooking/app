@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class SqlFilterColumn implements ISqlFilterColumn
 
     public function __construct($tableName, $columnName)
     {
-        $this->fullName = $tableName . '.' . $columnName;
+        $this->fullName = '`' . $tableName . '`.`' . $columnName . '`';
     }
 
     public function __toString()
@@ -61,7 +61,7 @@ class SqlRepeatingFilterColumn implements ISqlFilterColumn
 
     public function __construct($tableName, $columnName, $index)
     {
-        $this->fullName = empty($tableName) ? $columnName : $tableName . '.' . $columnName;
+        $this->fullName = empty($tableName) ? '`'. $columnName . '`' : '`' .$tableName . '`.`' . $columnName . '`';
         $this->index = $index;
     }
 
@@ -167,6 +167,12 @@ class Criteria
     public function __construct($columnName, $columnValue, $variableName = null)
     {
         $this->Name = $columnName;
+        if (!BookedStringHelper::StartsWith($this->Name, '`')) {
+            $this->Name = '`' . $this->Name;
+        }
+        if (!BookedStringHelper::EndsWith($this->Name, '`')) {
+            $this->Name = $this->Name . '`';
+        }
         $this->Value = $columnValue;
         $this->Variable = empty($variableName) ? "@$columnName" : "@$variableName";
     }

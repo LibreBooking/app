@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -79,23 +79,23 @@ class ReservationComponentTests extends TestBase
 	 */
 	private $privacyFilter;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->userId = 9999;
 
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->attributeRepository = $this->getMock('IAttributeRepository');
-		$this->userRepository = $this->getMock('IUserRepository');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
+		$this->attributeRepository = $this->createMock('IAttributeRepository');
+		$this->userRepository = $this->createMock('IUserRepository');
 
-		$this->resourceService = $this->getMock('IResourceService');
-		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
+		$this->resourceService = $this->createMock('IResourceService');
+		$this->reservationAuthorization = $this->createMock('IReservationAuthorization');
 
-		$this->initializer = $this->getMock('IReservationComponentInitializer');
-		$this->page = $this->getMock('IExistingReservationPage');
+		$this->initializer = $this->createMock('IReservationComponentInitializer');
+		$this->page = $this->createMock('IExistingReservationPage');
 		$this->reservationView = new ReservationView();
-		$this->privacyFilter = $this->getMock('IPrivacyFilter');
+		$this->privacyFilter = $this->createMock('IPrivacyFilter');
 
 		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $this->page,
 																	   $this->reservationView, $this->privacyFilter);
@@ -284,7 +284,7 @@ class ReservationComponentTests extends TestBase
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
 								 ->method('GetLayout')
@@ -369,7 +369,7 @@ class ReservationComponentTests extends TestBase
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
 								 ->method('GetLayout')
@@ -450,7 +450,7 @@ class ReservationComponentTests extends TestBase
 		);
 		$startPeriods = array($periods[1], $periods[0]);
 		$endPeriods = array($periods[1], $periods[0]);
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
 								 ->method('GetLayout')
@@ -553,6 +553,7 @@ class ReservationComponentTests extends TestBase
 		$this->reservationView->EndReminder = null;
 		$this->reservationView->ParticipatingGuests = $participatingGuests;
 		$this->reservationView->InvitedGuests = $invitedGuests;
+		$this->reservationView->CustomRepeatDates = [Date::Now()];
 
 		$this->page->expects($this->once())
 				   ->method('SetAdditionalResources')
@@ -601,6 +602,10 @@ class ReservationComponentTests extends TestBase
 		$this->page->expects($this->once())
 				   ->method('SetRepeatWeekdays')
 				   ->with($this->equalTo($repeatWeekdays));
+
+        $this->page->expects($this->once())
+            ->method('SetCustomRepeatDates')
+            ->with($this->equalTo($this->reservationView->CustomRepeatDates));
 
 		$this->page->expects($this->once())
 				   ->method('SetAccessories')

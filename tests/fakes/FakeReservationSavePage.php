@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -59,6 +59,7 @@ class FakeReservationSavePage implements IReservationSavePage
     public $participatingGuests = array();
     public $invitedGuests = array();
     public $canJoinWaitlist = false;
+    public $repeatCustomDates = [];
 
     public function __construct()
     {
@@ -299,12 +300,14 @@ class FakeReservationSavePage implements IReservationSavePage
         $this->canJoinWaitlist = $canJoinWaitlist;
     }
 
-    /**
-     * @return bool
-     */
     public function GetTermsOfServiceAcknowledgement()
     {
-        // TODO: Implement GetTermsOfServiceAcknowledgement() method.
+        return true;
+    }
+
+    public function GetRepeatCustomDates()
+    {
+        return $this->repeatCustomDates;
     }
 }
 

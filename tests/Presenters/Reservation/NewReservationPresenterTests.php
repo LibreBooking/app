@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -34,7 +34,7 @@ class NewReservationPresenterTests extends TestBase
 	 */
 	private $_userId;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -42,22 +42,22 @@ class NewReservationPresenterTests extends TestBase
 		$this->_userId = $this->_user->UserId;
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
 
 	public function testPageLoadValidatesAllPreconditionsAndGetsReservationInitializerAndInitializes()
 	{
-		$page = $this->getMock('INewReservationPage');
+		$page = $this->createMock('INewReservationPage');
 
-		$reservationPreconditionService = $this->getMock('INewReservationPreconditionService');
+		$reservationPreconditionService = $this->createMock('INewReservationPreconditionService');
 		$reservationPreconditionService->expects($this->once())
 			->method('CheckAll')
 			->with($this->equalTo($page), $this->equalTo($this->_user));
 
-		$reservationInitializerFactory = $this->getMock('IReservationInitializerFactory');
-		$initializer = $this->getMock('IReservationInitializer');
+		$reservationInitializerFactory = $this->createMock('IReservationInitializerFactory');
+		$initializer = $this->createMock('IReservationInitializer');
 
 		$reservationInitializerFactory->expects($this->once())
 			->method('GetNewInitializer')

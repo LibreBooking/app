@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -40,14 +40,14 @@ class WebServiceAuthenticationTests extends TestBase
 	 */
 	private $userSessionRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		WebServiceSessionToken::$_Token = 'hard coded token';
 
 		$this->fakeAuth = new FakeAuth();
-		$this->userSessionRepository = $this->getMock('IUserSessionRepository');
+		$this->userSessionRepository = $this->createMock('IUserSessionRepository');
 
 		$this->webAuth = new WebServiceAuthentication($this->fakeAuth, $this->userSessionRepository);
 	}

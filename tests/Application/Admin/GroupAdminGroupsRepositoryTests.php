@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -30,7 +30,7 @@ class GroupAdminGroupsRepositoryTests extends TestBase
         $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::GROUP_ADMIN);
         $user->WithOwnedGroups(array($adminGroup1, $adminGroup2, $adminGroup3));
 
-        $userRepo = $this->getMock('IUserRepository');
+        $userRepo = $this->createMock('IUserRepository');
         $userRepo->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -27,7 +27,7 @@ class ReminderRepositoryTests extends TestBase
 	 */
 	public $repository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 		$this->repository = new ReminderRepository();

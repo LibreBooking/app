@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -52,23 +52,23 @@ class EditReservationPresenterTests extends TestBase
 	 */
 	private $initializer;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->user = $this->fakeServer->UserSession;
 		$this->userId = $this->user->UserId;
 
-		$this->page = $this->getMock('IExistingReservationPage');
+		$this->page = $this->createMock('IExistingReservationPage');
 
-		$this->initializerFactory = $this->getMock('IReservationInitializerFactory');
-		$this->initializer = $this->getMock('IReservationInitializer');
+		$this->initializerFactory = $this->createMock('IReservationInitializerFactory');
+		$this->initializer = $this->createMock('IReservationInitializer');
 
-		$this->preconditionService = $this->getMock('EditReservationPreconditionService');
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
+		$this->preconditionService = $this->createMock('EditReservationPreconditionService');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}

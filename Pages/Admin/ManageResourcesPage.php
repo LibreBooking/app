@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -1204,7 +1204,7 @@ class ResourceFilterValues
                 $attributeDefinitions[$a->Id()] = $a;
             }
 
-            $f = new SqlFilterFreeForm(ColumnNames::RESOURCE_ID . ' IN (SELECT a0.' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a0 ');
+            $f = new SqlFilterFreeForm('`' . ColumnNames::RESOURCE_ID . '` IN (SELECT `a0`.`' . ColumnNames::ATTRIBUTE_ENTITY_ID . '` FROM `' . TableNames::CUSTOM_ATTRIBUTE_VALUES . '` `a0` ');
 
             $attributeFragment = new SqlFilterNull();
 
@@ -1219,7 +1219,7 @@ class ResourceFilterValues
                 $attributeValue = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $id);
 
                 $idEquals = new SqlFilterEquals($attributeId, $id);
-                $f->AppendSql('LEFT JOIN ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a' . $id . ' ON a0.entity_id = a' . $id . '.entity_id ');
+                $f->AppendSql('LEFT JOIN `' . TableNames::CUSTOM_ATTRIBUTE_VALUES . '` `a`' . $id . ' ON `a0`.`entity_id` = `a' . $id . '`.`entity_id` ');
                 if ($attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX || $attribute->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX) {
                     $attributeFragment->_And($idEquals->_And(new SqlFilterLike($attributeValue, $value)));
                 }

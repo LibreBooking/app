@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -28,14 +28,14 @@ class QuotaRepositoryTests extends TestBase
 	 */
 	private $repository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->repository = new QuotaRepository();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 

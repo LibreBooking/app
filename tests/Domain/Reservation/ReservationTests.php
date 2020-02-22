@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -22,12 +22,12 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 
 class ReservationTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -51,7 +51,7 @@ class ReservationTests extends TestBase
 		$dateRange = DateRange::Create($startDateCst, $endDateCst, $tz);
 		$repeatedDate = DateRange::Create('2010-01-01', '2010-01-02', 'UTC');
 
-		$repeatOptions = $this->getMock('IRepeatOptions');
+		$repeatOptions = $this->createMock('IRepeatOptions');
 		$repeatDates = array($repeatedDate);
 
 		$repeatOptions->expects($this->once())
@@ -92,7 +92,7 @@ class ReservationTests extends TestBase
 		$endDate = $startDate->AddDays(1);
 		$dateRange = new DateRange($startDate, $endDate);
 
-		$repeatOptions = $this->getMock('IRepeatOptions');
+		$repeatOptions = $this->createMock('IRepeatOptions');
 
 		$series = ReservationSeries::Create(1, new FakeBookableResource(1), null, null, $dateRange, $repeatOptions, new FakeUserSession());
 

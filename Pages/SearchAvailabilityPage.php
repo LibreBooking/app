@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -307,6 +307,16 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
     public function GetRepeatTerminationDate()
     {
         return $this->GetForm(FormKeys::END_REPEAT_DATE);
+    }
+
+    public function GetRepeatCustomDates()
+    {
+        $dates = $this->GetForm(FormKeys::REPEAT_CUSTOM_DATES);
+        if(!is_array($dates) || empty($dates)) {
+            return [];
+        }
+
+        return $dates;
     }
 
     public function GetStartTime()

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -151,7 +151,7 @@ class UserFilter
 
 		if (!empty($this->attributes))
 		{
-			$attributeFilter = AttributeFilter::Create(TableNames::USERS_ALIAS . '.' . ColumnNames::USER_ID, $this->attributes);
+			$attributeFilter = AttributeFilter::Create('`'. TableNames::USERS_ALIAS . '`.`' . ColumnNames::USER_ID . '`', $this->attributes);
 
 			if ($attributeFilter != null)
 			{
@@ -554,15 +554,6 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		foreach ($user->GetPreferences()->All() as $name => $value) {
             $db->Execute(new AddUserPreferenceCommand($user->Id(), $name, $value));
         }
-//		foreach ($user->GetPreferences()->AddedPreferences() as $added)
-//		{
-//			$db->Execute(new AddUserPreferenceCommand($user->Id(), $added, $user->GetPreference($added)));
-//		}
-//
-//		foreach ($user->GetPreferences()->ChangedPreferences() as $updated)
-//		{
-//			$db->Execute(new UpdateUserPreferenceCommand($user->Id(), $updated, $user->GetPreference($updated)));
-//		}
 
 		foreach ($user->GetRemovedGroups() as $removed)
 		{

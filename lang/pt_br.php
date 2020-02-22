@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -781,6 +781,10 @@ class pt_br extends en_gb
     $strings['SwitchToACustomLayout'] = 'Mudar para um layout personalizado';
     $strings['SwitchLayoutWarning'] = 'Tem certeza de que deseja alterar o tipo de layout? Isso removerá todos os slots existentes.';
     $strings['OnlyViewedCalendar'] = 'Esta agenda só pode ser visualizada a partir da exibição da agenda.';
+    
+    $strings['ViewTerms']         = 'Ver os Termos de Serviço';
+    $strings['IAccept']           = 'Eu Aceito';
+    $strings['TheTermsOfService'] = 'os Termos de Serviço';
     
     //Users
     $strings['InviteUsers'] = 'Convidar usuários';

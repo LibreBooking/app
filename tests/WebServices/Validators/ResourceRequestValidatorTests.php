@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -32,9 +32,9 @@ class ResourceRequestValidatorTests extends TestBase
 	 */
 	private $attributeService;
 
-	public function setup()
+	public function setUp(): void
 	{
-		$this->attributeService = $this->getMock('IAttributeService');
+		$this->attributeService = $this->createMock('IAttributeService');
 		$this->validator = new ResourceRequestValidator($this->attributeService);
 		parent::setup();
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -46,7 +46,7 @@ class SearchAvailabilityPresenterTests extends TestBase
      */
     private $scheduleService;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
@@ -465,6 +465,11 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
      */
     public $_RepeatMonthlyType = RepeatMonthlyType::DayOfMonth;
 
+    /**
+     * @var Date[]
+     */
+    public $_RepeatCustomDates = [];
+
     public $_RepeatTerminationDate;
     public $_Specific = false;
     public $_StartTime;
@@ -536,5 +541,10 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
     public function SearchingSpecificTime()
     {
         return $this->_Specific;
+    }
+
+    public function GetRepeatCustomDates()
+    {
+       return $this->_RepeatCustomDates;
     }
 }

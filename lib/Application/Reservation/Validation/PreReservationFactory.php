@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -160,7 +160,7 @@ class PreReservationFactory implements IPreReservationFactory
         $ruleProcessor->AddRule(new TermsOfServiceRule(new TermsOfServiceRepository()));
         $ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumNoticeRuleAdd($userSession), $userSession, $this->userRepository));
         $ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
-		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone, $this->scheduleRepository));
+		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ReservationConflictIdentifier(new ResourceAvailability($this->reservationRepository), $this->scheduleRepository), $userSession->Timezone));
 		return new AddReservationValidationService($ruleProcessor);
 	}
 
@@ -172,7 +172,7 @@ class PreReservationFactory implements IPreReservationFactory
 		}
         $ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumNoticeRuleUpdate($userSession), $userSession, $this->userRepository));
         $ruleProcessor->AddRule(new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository));
-        $ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone, $this->scheduleRepository));
+        $ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier(new ResourceAvailability($this->reservationRepository), $this->scheduleRepository), $userSession->Timezone));
         return new UpdateReservationValidationService($ruleProcessor);
 	}
 
@@ -221,6 +221,7 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new AccessoryResourceRule($this->accessoryRepository));
         $ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, $userSession->Timezone));
         $ruleProcessor->AddRule(new ScheduleAvailabilityRule($this->scheduleRepository));
+        $ruleProcessor->AddRule(new ReservationOverlappingRule($userSession->Timezone));
 
 		return $ruleProcessor;
 	}

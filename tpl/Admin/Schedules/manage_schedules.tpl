@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -294,7 +294,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <label for="targetScheduleId"
                                class="active">{translate key=MoveResourcesAndReservations}</label>
                         <select id="targetScheduleId" {formname key=SCHEDULE_ID} class="required">
-                            {foreach from=$Schedules item=schedule}
+                                {foreach from=$SourceSchedules item=schedule}
                                 <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
                             {/foreach}
                         </select>

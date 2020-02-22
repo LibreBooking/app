@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013-2019 Nick Korbel
+Copyright 2013-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -37,12 +37,12 @@ class ResourcesWriteWebServiceTests extends TestBase
 	 */
 	private $controller;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->controller = $this->getMock('IResourceSaveController');
+		$this->controller = $this->createMock('IResourceSaveController');
 
 		$this->service = new ResourcesWriteWebService($this->server, $this->controller);
 	}

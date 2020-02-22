@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2017-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -47,7 +47,7 @@ class ReservationCreditsPresenterTests extends TestBase
      */
     private $paymentRepository;
 
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
 
@@ -196,6 +196,11 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
      */
     public $_CreditCost;
 
+    /**
+     * @var Date[]
+     */
+    public $_RepeatCustomDates = [];
+
     public function __construct()
     {
         $start = Date::Now()->AddHours(1);
@@ -278,5 +283,10 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
     {
        $this->_CreditsRequired = $creditsRequired;
        $this->_CreditCost = $cost;
+    }
+
+    public function GetRepeatCustomDates()
+    {
+        return $this->_RepeatCustomDates;
     }
 }

@@ -1,5 +1,5 @@
 {*
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -103,5 +103,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <input type="hidden" id="{$prefix}formattedEndRepeat" {formname key=end_repeat_date}
                    value="{formatdate date=$RepeatTerminationDate key=system}"/>
         </div>
+
+        <div id="{$prefix}customDatesDiv" class="col-xs-12 no-show specific-dates">
+            <label for="{$prefix}RepeatDate">{translate key=RepeatOn}</label>
+            <input type="text" id="{$prefix}RepeatDate" class="form-control input-sm inline-block dateinput" value=""/>
+            <input type="hidden" id="{$prefix}formattedRepeatDate" key=system}"/>
+            <a href="#" role="button" id="{$prefix}AddDate">{translate key=AddDate} <i class="fa fa-plus-square"></i></a>
+            <div class="repeat-date-list">
+
     </div>
+        </div>
+	</div>
 </div>

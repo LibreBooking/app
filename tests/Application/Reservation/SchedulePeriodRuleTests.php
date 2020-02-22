@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -38,12 +38,12 @@ class SchedulePeriodRuleTests extends TestBase
 	 */
 	private $rule;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->layout = $this->getMock('IScheduleLayout');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
+		$this->layout = $this->createMock('IScheduleLayout');
 
 		$this->rule = new SchedulePeriodRule($this->scheduleRepository, $this->fakeUser);
 	}

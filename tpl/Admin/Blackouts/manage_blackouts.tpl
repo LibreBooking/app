@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -404,6 +404,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {control type="DatePickerSetupControl" ControlId="addStartDate" AltId="formattedAddStartDate"}
     {control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
     {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
+    {control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
+
 
     <div id="wait-box" class="wait-box">
         <div id="creatingNotification">

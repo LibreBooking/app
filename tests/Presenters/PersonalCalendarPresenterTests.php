@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -63,17 +63,17 @@ class PersonalCalendarPresenterTests extends TestBase
 	 */
 	private $scheduleRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('ICommonCalendarPage');
-		$this->repository = $this->getMock('IReservationViewRepository');
-		$this->calendarFactory = $this->getMock('ICalendarFactory');
-		$this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
-		$this->userRepository = $this->getMock('IUserRepository');
-		$this->resourceService = $this->getMock('IResourceService');
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->page = $this->createMock('ICommonCalendarPage');
+		$this->repository = $this->createMock('IReservationViewRepository');
+		$this->calendarFactory = $this->createMock('ICalendarFactory');
+		$this->subscriptionService = $this->createMock('ICalendarSubscriptionService');
+		$this->userRepository = $this->createMock('IUserRepository');
+		$this->resourceService = $this->createMock('IResourceService');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
 
 		$this->presenter = new PersonalCalendarPresenter(
 		    $this->page,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  * Copyright 2012-2014 Alois Schloegl
  *
  * This file is part of Booked Scheduler.
@@ -140,8 +140,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
             $reservationView->DateModified = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
 
-            $repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE],
-                $row[ColumnNames::REPEAT_OPTIONS]);
+            $repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 
             $reservationView->RepeatType = $repeatConfig->Type;
             $reservationView->RepeatInterval = $repeatConfig->Interval;
@@ -163,6 +162,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $this->SetAttachments($reservationView);
             $this->SetReminders($reservationView);
             $this->SetGuests($reservationView);
+            $this->SetCustomRepeatDates($reservationView);
         }
 
 		$reader->Free();
@@ -408,6 +408,16 @@ class ReservationViewRepository implements IReservationViewRepository
         }
 
         $reader->Free();
+    }
+
+    private function SetCustomRepeatDates(ReservationView $reservationView) {
+        if ($reservationView->RepeatType == RepeatType::Custom) {
+            $getRepeatDates = new GetReservationRepeatDatesCommand($reservationView->SeriesId);
+            $reader = ServiceLocator::GetDatabase()->Query($getRepeatDates);
+            while ($row = $reader->GetRow()) {
+                $reservationView->CustomRepeatDates[] = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
+            }
+        }
     }
 
     public function GetAccessoriesWithin(DateRange $dateRange)

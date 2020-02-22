@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -52,14 +52,14 @@ class ManageReservationsServiceTests extends TestBase
 	 */
 	private $reservationRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
-		$this->reservationHandler = $this->getMock('IReservationHandler');
-		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
+		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+		$this->reservationAuthorization = $this->createMock('IReservationAuthorization');
+		$this->reservationHandler = $this->createMock('IReservationHandler');
+		$this->persistenceService = $this->createMock('IUpdateReservationPersistenceService');
 		$this->reservationRepository = new FakeReservationRepository();
 
 		$this->service = new ManageReservationsService($this->reservationViewRepository, $this->reservationAuthorization, $this->reservationHandler, $this->persistenceService, $this->reservationRepository);

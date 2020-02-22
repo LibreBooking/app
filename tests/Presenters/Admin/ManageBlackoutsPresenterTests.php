@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -47,14 +47,14 @@ class ManageBlackoutsPresenterTests extends TestBase
 	 */
 	private $resourceRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IManageBlackoutsPage');
-		$this->blackoutsService = $this->getMock('IManageBlackoutsService');
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->page = $this->createMock('IManageBlackoutsPage');
+		$this->blackoutsService = $this->createMock('IManageBlackoutsService');
+		$this->scheduleRepository = $this->createMock('IScheduleRepository');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
 
 		$this->presenter = new ManageBlackoutsPresenter($this->page,
 											$this->blackoutsService,
@@ -131,7 +131,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatEndDate = Date::Parse($endDateString, $timezone);
-		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType, []);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
@@ -145,7 +145,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 			->method('GetApplyBlackoutToAllResources')
 			->will($this->returnValue(false));
 
-		$result = $this->getMock('IBlackoutValidationResult');
+		$result = $this->createMock('IBlackoutValidationResult');
 		$this->blackoutsService->expects($this->once())
 			->method('Add')
 			->with($this->equalTo($dr),
@@ -178,7 +178,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatEndDate = Date::Parse($endDateString, $timezone);
-		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType, []);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
@@ -198,7 +198,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 			->with($this->equalTo($scheduleId))
 			->will($this->returnValue($resources));
 
-		$result = $this->getMock('IBlackoutValidationResult');
+		$result = $this->createMock('IBlackoutValidationResult');
 		$this->blackoutsService->expects($this->once())
 			->method('Add')
 			->with($this->equalTo($dr),
@@ -328,7 +328,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatEndDate = Date::Parse($endDateString, $timezone);
-		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType, []);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
@@ -346,7 +346,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 			->method('GetSeriesUpdateScope')
 			->will($this->returnValue($scope));
 
-		$result = $this->getMock('IBlackoutValidationResult');
+		$result = $this->createMock('IBlackoutValidationResult');
 
 		$this->blackoutsService->expects($this->once())
 			->method('Update')
@@ -422,7 +422,9 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$this->page->expects($this->any())
 					->method('GetRepeatMonthlyType')
 					->will($this->returnValue($repeatMonthlyType));
+
+		$this->page->expects($this->once())
+					->method('GetRepeatCustomDates')
+					->will($this->returnValue([]));
 	}
 }
-
-?>

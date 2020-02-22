@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -23,12 +23,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 
 class ParticipantEmailNotificationTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -49,8 +49,8 @@ class ParticipantEmailNotificationTests extends TestBase
 		$series->WithOwnerId($ownerId);
 		$series->WithCurrentInstance($instance1);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 				 ->method('LoadById')
@@ -93,8 +93,8 @@ class ParticipantEmailNotificationTests extends TestBase
 		$series->WithOwnerId($ownerId);
 		$series->WithCurrentInstance($instance1);
 
-		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$userRepo = $this->createMock('IUserRepository');
+		$attributeRepo = $this->createMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 				 ->method('LoadById')

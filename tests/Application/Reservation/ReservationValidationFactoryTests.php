@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,10 +25,10 @@ class ReservationValidationFactoryTests extends TestBase
 
     public function testLoadsAddRulesFromPlugins()
     {
-        $preResPlugin = $this->getMock('IPreReservationFactory');
+        $preResPlugin = $this->createMock('IPreReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->preResPlugin = $preResPlugin;
-        $validationService = $this->getMock('IReservationValidationService');
+        $validationService = $this->createMock('IReservationValidationService');
 
         PluginManager::SetInstance($pluginManager);
 
@@ -45,10 +45,10 @@ class ReservationValidationFactoryTests extends TestBase
 
     public function testLoadsUpdateRulesFromPlugins()
     {
-        $preResPlugin = $this->getMock('IPreReservationFactory');
+        $preResPlugin = $this->createMock('IPreReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->preResPlugin = $preResPlugin;
-        $validationService = $this->getMock('IReservationValidationService');
+        $validationService = $this->createMock('IReservationValidationService');
 
         PluginManager::SetInstance($pluginManager);
 
@@ -65,10 +65,10 @@ class ReservationValidationFactoryTests extends TestBase
 
     public function testLoadsDeleteRulesFromPlugins()
     {
-        $preResPlugin = $this->getMock('IPreReservationFactory');
+        $preResPlugin = $this->createMock('IPreReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->preResPlugin = $preResPlugin;
-        $validationService = $this->getMock('IReservationValidationService');
+        $validationService = $this->createMock('IReservationValidationService');
 
         PluginManager::SetInstance($pluginManager);
 

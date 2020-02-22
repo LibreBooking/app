@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2019 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -22,12 +22,12 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 
 class ExistingReservationTests extends TestBase
 {
-    public function setup()
+    public function setUp(): void
     {
         parent::setup();
     }
 
-    public function teardown()
+    public function teardown(): void
     {
         parent::teardown();
     }
@@ -1060,7 +1060,7 @@ class ExistingReservationTests extends TestBase
 
         $instances = $series->Instances();
 
-        $this->assertEquals(5, count($instances));
+        $this->assertEquals(6, count($instances));
     }
 
     public function testChangingRepeatOfAPastEvent()
@@ -1102,7 +1102,177 @@ class ExistingReservationTests extends TestBase
         }
 
         $this->assertFalse(in_array(1, $removedReferenceNumbers));
+    }
 
+    public function testChangingTimeOfExistingCustomRepeat()
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, 'none');
 
+        $admin = $this->fakeUser;
+        $admin->IsAdmin = false;
+        $tz = 'America/Chicago';
+        Date::_SetNow(Date::Parse('2018-10-01 22:00', $tz));
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $originalRange = DateRange::Create('2018-10-01 12:00', '2018-10-01 13:00', $tz);
+        $date1 = $originalRange->AddDays(1);
+        $date2 = $originalRange->AddDays(5);
+        $date3 = $originalRange->AddDays(15);
+        $repeatOptions = new RepeatCustom([$date1->GetBegin(), $date2->GetBegin(), $date3->GetBegin()]);
+        $reservation = $builder
+            ->WithCurrentInstance(new TestReservation(1, $originalRange))
+            ->WithRepeatOptions($repeatOptions)
+            ->WithInstance(new TestReservation(2, $date1))
+            ->WithInstance(new TestReservation(3, $date2))
+            ->WithInstance(new TestReservation(4, $date3))
+            ->WithPrimaryResource(new FakeBookableResource(1))
+            ->Build();
+
+        $reservation->UpdateDuration($originalRange->AddDays(1));
+        $reservation->UpdateBookedBy($admin);
+        $reservation->Repeats($repeatOptions);
+
+        $instances = $reservation->SortedInstances();
+
+        $events = $reservation->GetEvents();
+
+        $removedReferenceNumbers = [];
+        $addedReferenceNumbers = [];
+        $updatedReferenceNumbers = [];
+        foreach ($events as $e)
+        {
+            if (is_a($e, 'InstanceRemovedEvent'))
+            {
+                /** @var InstanceRemovedEvent $e */
+                $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+
+            if (is_a($e, 'InstanceAddedEvent'))
+            {
+                /** @var InstanceAddedEvent $e */
+                $addedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+
+            if (is_a($e, 'InstanceUpdatedEvent'))
+            {
+                /** @var InstanceAddedEvent $e */
+                $updatedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+        }
+
+        $this->assertEquals(4, count($instances));
+        $this->assertEquals(0, count($removedReferenceNumbers));
+        $this->assertEquals(0, count($addedReferenceNumbers));
+		sort($updatedReferenceNumbers);
+        $this->assertEquals([1, 2, 3, 4], $updatedReferenceNumbers);
+        $this->assertEquals($instances[1]->StartDate(), $date1->GetBegin()->AddDays(1));
+        $this->assertEquals($instances[1]->EndDate(), $date1->GetBegin()->AddDays(1)->SetTimeString("13:00"));
+    }
+
+    public function testAddingDateToExistingCustomRepeat()
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, 'none');
+
+        $admin = $this->fakeUser;
+        $admin->IsAdmin = false;
+        $tz = 'America/Chicago';
+        Date::_SetNow(Date::Parse('2018-10-01 22:00', $tz));
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $originalRange = DateRange::Create('2018-10-01 12:00', '2018-10-01 13:00', $tz);
+        $date1 = $originalRange->AddDays(1);
+        $date2 = $originalRange->AddDays(5);
+        $date3 = $originalRange->AddDays(15);
+        $newDate = $originalRange->AddDays(10);
+        $reservation = $builder
+            ->WithCurrentInstance(new TestReservation(1, $originalRange))
+            ->WithRepeatOptions(new RepeatCustom([$date1->GetBegin(), $date2->GetBegin(), $date3->GetBegin()]))
+            ->WithInstance(new TestReservation(2, $date1))
+            ->WithInstance(new TestReservation(3, $date2))
+            ->WithInstance(new TestReservation(4, $date3))
+            ->WithPrimaryResource(new FakeBookableResource(1))
+            ->Build();
+
+        $reservation->UpdateBookedBy($admin);
+        $reservation->Repeats(new RepeatCustom([$date1->GetBegin(), $date2->GetBegin(), $date3->GetBegin(), $newDate->GetBegin()]));
+
+        $instances = $reservation->Instances();
+
+        $events = $reservation->GetEvents();
+
+        $removedReferenceNumbers = [];
+        $addedReferenceNumbers = [];
+        foreach ($events as $e)
+        {
+            if (is_a($e, 'InstanceRemovedEvent'))
+            {
+                /** @var InstanceRemovedEvent $e */
+                $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+
+            if (is_a($e, 'InstanceAddedEvent'))
+            {
+                /** @var InstanceAddedEvent $e */
+                $addedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+        }
+
+        $this->assertEquals(5, count($instances));
+        $this->assertEquals(3, count($removedReferenceNumbers));
+        $this->assertEquals(4, count($addedReferenceNumbers));
+    }
+
+    public function testRemovingDateFromExistingCustomRepeat()
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, 'future');
+
+        $admin = $this->fakeUser;
+        $admin->IsAdmin = false;
+        $tz = 'America/Chicago';
+        Date::_SetNow(Date::Parse('2018-10-01 22:00', $tz));
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $originalRange = DateRange::Create('2018-10-01 12:00', '2018-10-01 13:00', $tz);
+        $date1 = $originalRange->AddDays(1);
+        $date2 = $originalRange->AddDays(5);
+        $date3 = $originalRange->AddDays(15);
+        $reservation = $builder
+            ->WithCurrentInstance(new TestReservation(1, $originalRange))
+            ->WithRepeatOptions(new RepeatCustom([$date1->GetBegin(), $date2->GetBegin(), $date3->GetBegin()]))
+            ->WithInstance(new TestReservation(2, $date1))
+            ->WithInstance(new TestReservation(3, $date2))
+            ->WithInstance(new TestReservation(4, $date3))
+            ->WithPrimaryResource(new FakeBookableResource(1))
+            ->Build();
+
+        $reservation->UpdateBookedBy($admin);
+        $reservation->Repeats(new RepeatCustom([$date1->GetBegin(), $date3->GetBegin()]));
+
+        $instances = $reservation->Instances();
+
+        $events = $reservation->GetEvents();
+
+        $removedReferenceNumbers = [];
+        $addedReferenceNumbers = [];
+        foreach ($events as $e)
+        {
+            if (is_a($e, 'InstanceRemovedEvent'))
+            {
+                /** @var InstanceRemovedEvent $e */
+                $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+
+            if (is_a($e, 'InstanceAddedEvent'))
+            {
+                /** @var InstanceAddedEvent $e */
+                $addedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+        }
+
+        $this->assertEquals(2, count($instances), "the original/current is in the past");
+        $this->assertEquals(3, count($removedReferenceNumbers));
+        $this->assertEquals(2, count($addedReferenceNumbers));
+		sort($removedReferenceNumbers);
+        $this->assertEquals([2, 3, 4], $removedReferenceNumbers);
     }
 }

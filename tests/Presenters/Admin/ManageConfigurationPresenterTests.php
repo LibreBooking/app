@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -42,12 +42,12 @@ class ManageConfigurationPresenterTests extends TestBase
 	 */
 	private $configFilePath;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
 		$this->page = new FakeManageConfigurationPage();
-		$this->configSettings = $this->getMock('IConfigurationSettings');
+		$this->configSettings = $this->createMock('IConfigurationSettings');
 
 		$this->configFilePath = ROOT_DIR . 'config/config.php';
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class ReportCommandBuilderTests extends TestBase
 {
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 	}
@@ -34,10 +34,10 @@ class ReportCommandBuilderTests extends TestBase
 						  ->OfResources()
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testJustFullAccessoryList()
@@ -47,10 +47,10 @@ class ReportCommandBuilderTests extends TestBase
 						  ->OfAccessories()
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredBySchedule()
@@ -63,12 +63,12 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithScheduleIds($scheduleId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::SCHEDULE_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::SCHEDULE_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByAccessory()
@@ -81,11 +81,11 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithAccessoryIds($accessoryId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByUser()
@@ -98,11 +98,11 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithUserId($userId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::USER_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::USER_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByParticipant()
@@ -115,11 +115,11 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithParticipantId($userId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::PARTICIPANT_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::PARTICIPANT_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByGroup()
@@ -132,13 +132,13 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithGroupIds($groupId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByGroupAndSchedule()
@@ -153,16 +153,16 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithScheduleIds($scheduleId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::SCHEDULE_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ACCESSORY_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::SCHEDULE_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testCountOfResourceIdGroupedByGroup()
@@ -175,12 +175,12 @@ class ReportCommandBuilderTests extends TestBase
 						  ->GroupByGroup()
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_BY_GROUP_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_BY_GROUP_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByDateRange()
@@ -196,11 +196,11 @@ class ReportCommandBuilderTests extends TestBase
 						  ->Within($start, $end)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_ID_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::DATE_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::DATE_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testGroupsByGroupAndResource()
@@ -211,13 +211,13 @@ class ReportCommandBuilderTests extends TestBase
 						  ->GroupByResource()
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_BY_GROUP_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_BY_RESOURCE_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_BY_GROUP_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_BY_RESOURCE_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testGroupsBySchedule()
@@ -227,10 +227,10 @@ class ReportCommandBuilderTests extends TestBase
 						  ->GroupBySchedule()
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::SCHEDULE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_BY_SCHEDULE_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::SCHEDULE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_BY_SCHEDULE_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testGroupsByUser()
@@ -240,9 +240,9 @@ class ReportCommandBuilderTests extends TestBase
 						  ->GroupByUser()
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::GROUP_BY_USER_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::COUNT_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::USER_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::GROUP_BY_USER_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testIfGroupByThenNoResourcesAreListed()
@@ -253,8 +253,8 @@ class ReportCommandBuilderTests extends TestBase
 						  ->GroupByGroup()
 						  ->Build();
 
-		$this->assertNotContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertNotContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringNotContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringNotContainsString(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
 	}
 
 	public function testFilteredByResourceType()
@@ -267,8 +267,8 @@ class ReportCommandBuilderTests extends TestBase
 						  ->WithResourceTypeIds($resourceTypeId)
 						  ->Build();
 
-		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
-		$this->assertContains(ReportCommandBuilder::RESOURCE_TYPE_ID_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertStringContainsString(ReportCommandBuilder::RESOURCE_TYPE_ID_FRAGMENT, $actual->GetQuery());
 	}
 }

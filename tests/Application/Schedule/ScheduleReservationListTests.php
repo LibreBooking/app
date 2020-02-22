@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -36,7 +36,7 @@ class ScheduleReservationListTests extends TestBase
 	 */
 	private $testDbLayout;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -64,7 +64,7 @@ class ScheduleReservationListTests extends TestBase
 		$this->testDbLayout = $layout;
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 	}
@@ -89,7 +89,7 @@ class ScheduleReservationListTests extends TestBase
 		$p3 = new SchedulePeriod($s3, $e3);
 		$layoutPeriods = array($p1, $p2, $p3);
 
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->createMock('IScheduleLayout');
 		$layout->expects($this->once())
 				->method('Timezone')
 				->will($this->returnValue($userTz));

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -39,7 +39,7 @@ class AnnouncementPresenterTests extends TestBase
 	 */
 	private $announcements;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
@@ -52,7 +52,7 @@ class AnnouncementPresenterTests extends TestBase
 		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements, $this->permissionService);
 	}
 
-	public function teardown()
+	public function teardown(): void
 	{
 		parent::teardown();
 

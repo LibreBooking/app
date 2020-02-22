@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -566,7 +566,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
-{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
+{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate MinDate=$StartDate MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
+{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate" MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 
 {jsfile src="js/jquery.autogrow.js"}
 {jsfile src="js/moment.min.js"}
@@ -657,13 +658,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             repeatInterval: '{$RepeatInterval}',
             repeatMonthlyType: '{$RepeatMonthlyType}',
             repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}],
-            autoSetTerminationDate: $('#referenceNumber').val() != ''
+            autoSetTerminationDate: $('#referenceNumber').val() != '',
+            customRepeatExclusions: ['{formatdate date=$StartDate key=system}']
         };
 
         var recurrence = new Recurrence(recurOpts);
         recurrence.init();
 
         recurrence.onChange(reservation.repeatOptionsChanged);
+
+        {foreach from=$CustomRepeatDates item=date}
+            recurrence.addCustomDate('{format_date date=$date key=system timezone=$Timezone}', '{format_date date=$date timezone=$Timezone}');
+        {/foreach}
 
         var ajaxOptions = {
             target: '#result', // target element(s) to be updated with server response

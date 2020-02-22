@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2012-2019 Nick Korbel
+ * Copyright 2012-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -22,10 +22,10 @@
 class ReportCommandBuilder
 {
 	const REPORT_TEMPLATE = 'SELECT [SELECT_TOKEN]
-				,1 as utilization_type
-				FROM reservation_instances ri
-				INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-				INNER JOIN users owner ON owner.user_id = rs.owner_id
+				,1 as `utilization_type`
+				FROM `reservation_instances` `ri`
+				INNER JOIN `reservation_series` `rs` ON `rs`.`series_id` = `ri`.`series_id`
+				INNER JOIN `users` `owner` ON `owner`.`user_id` = `rs`.`owner_id`
 
 				[JOIN_TOKEN]
 				WHERE 1=1
@@ -35,81 +35,81 @@ class ReportCommandBuilder
 				[ORDER_TOKEN]
 				[LIMIT_TOKEN]';
 
-	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type, rs.description as description,
-	rs.title as title, rs.status_id as status_id,
-		ri.reference_number, ri.start_date, ri.end_date, ri.checkin_date, ri.checkout_date, ri.previous_end_date, ri.credit_count, TIMESTAMPDIFF(SECOND, ri.start_date, ri.end_date) as duration,
-							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
-								FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list,
-							(SELECT GROUP_CONCAT(CONCAT(participant_users.fname, " ", participant_users.lname) SEPARATOR "!sep!")
-								FROM reservation_users participants INNER JOIN users participant_users ON participant_users.user_id = participants.user_id WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
-							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
-								FROM custom_attribute_values cav WHERE cav.entity_id = rs.owner_id AND cav.attribute_category = 2) as user_attribute_list,
-							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
-								FROM custom_attribute_values cav WHERE cav.entity_id = resources.resource_id AND cav.attribute_category = 4) as resource_attribute_list,
-							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
-								FROM custom_attribute_values cav WHERE cav.entity_id = resources.resource_type_id AND cav.attribute_category = 5) as resource_type_attribute_list,
-                            (SELECT GROUP_CONCAT(g.name SEPARATOR ", ")
-								FROM groups g LEFT JOIN user_groups ug ON g.group_id = ug.group_id WHERE ug.user_id = owner.user_id) as user_group_list
+	const RESERVATION_LIST_FRAGMENT = '`rs`.`date_created` as `date_created`, `rs`.`last_modified` as `last_modified`, `rs`.`repeat_type`, `rs`.`description` as `description`,
+	`rs`.`title` as `title`, `rs`.`status_id` as `status_id`,
+		`ri`.`reference_number`, `ri`.`start_date`, `ri`.`end_date`, `ri`.`checkin_date`, `ri`.`checkout_date`, `ri`.`previous_end_date`, `ri`.`credit_count`, TIMESTAMPDIFF(SECOND, `ri`.`start_date`, `ri`.`end_date`) as `duration`,
+							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
+								FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `ri`.`series_id` AND `cav`.`attribute_category` = 1) as `attribute_list`,
+							(SELECT GROUP_CONCAT(CONCAT(`participant_users`.`fname`, " ", `participant_users`.`lname`) SEPARATOR "!sep!")
+								FROM `reservation_users` `participants` INNER JOIN `users` `participant_users` ON `participant_users`.`user_id` = `participants`.`user_id` WHERE `participants`.`reservation_instance_id` = `ri`.`reservation_instance_id` AND `participants`.`reservation_user_level` = 2) as `participant_list`,
+							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
+								FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `rs`.`owner_id` AND `cav`.`attribute_category` = 2) as `user_attribute_list`,
+							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
+								FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `resources`.`resource_id` AND `cav`.`attribute_category` = 4) as `resource_attribute_list`,
+							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
+								FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `resources`.`resource_type_id` AND `cav`.`attribute_category` = 5) as `resource_type_attribute_list`,
+                            (SELECT GROUP_CONCAT(`g`.`name` SEPARATOR ", ")
+								FROM `groups` `g` LEFT JOIN `user_groups` `ug` ON `g`.`group_id` = `ug`.`group_id` WHERE `ug`.`user_id` = `owner`.`user_id`) as `user_group_list`
 								';
 
-	const COUNT_FRAGMENT = 'COUNT(1) as total';
+	const COUNT_FRAGMENT = 'COUNT(1) as `total`';
 
-	const TOTAL_TIME_FRAGMENT = 'SUM( UNIX_TIMESTAMP(LEAST(ri.end_date, @endDate)) - UNIX_TIMESTAMP(GREATEST(ri.start_date, @startDate)) ) AS totalTime';
+	const TOTAL_TIME_FRAGMENT = 'SUM( UNIX_TIMESTAMP(LEAST(`ri`.`end_date`, @endDate)) - UNIX_TIMESTAMP(GREATEST(`ri`.`start_date`, @startDate)) ) AS `totalTime`';
 
-	const DURATION_FRAGMENT = 'ri.start_date, ri.end_date';
+	const DURATION_FRAGMENT = '`ri`.`start_date`, `ri`.`end_date`';
 
-	const RESOURCE_LIST_FRAGMENT = 'resources.name as resource_name, resources.resource_id';
+	const RESOURCE_LIST_FRAGMENT = '`resources`.`name` as `resource_name`, `resources`.`resource_id`';
 
-	const SCHEDULE_LIST_FRAGMENT = 'schedules.schedule_id, schedules.name as schedule_name';
+	const SCHEDULE_LIST_FRAGMENT = '`schedules`.`schedule_id`, `schedules`.`name` as `schedule_name`';
 
-	const ACCESSORY_LIST_FRAGMENT = 'accessories.accessory_name, accessories.accessory_id, ar.quantity';
+	const ACCESSORY_LIST_FRAGMENT = '`accessories`.`accessory_name`, `accessories`.`accessory_id`, `ar`.`quantity`';
 
-	const USER_LIST_FRAGMENT = 'owner.fname as owner_fname, owner.lname as owner_lname, owner.email as email, CONCAT(owner.fname, \' \', owner.lname) as owner_name, owner.user_id as owner_id, owner.organization as organization';
+	const USER_LIST_FRAGMENT = '`owner`.`fname` as `owner_fname`, `owner`.`lname` as `owner_lname`, `owner`.`email` as `email`, CONCAT(`owner`.`fname`, \' \', `owner`.`lname`) as `owner_name`, `owner`.`user_id` as `owner_id`, `owner`.`organization` as `organization`';
 
-	const GROUP_LIST_FRAGMENT = 'groups.name as group_name, groups.group_id';
+	const GROUP_LIST_FRAGMENT = '`groups`.`name` as `group_name`, `groups`.`group_id`';
 
-	const RESOURCE_JOIN_FRAGMENT = 'INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
-				INNER JOIN resources ON rr.resource_id = resources.resource_id
-				INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id';
+	const RESOURCE_JOIN_FRAGMENT = 'INNER JOIN `reservation_resources` `rr` ON `rs`.`series_id` = `rr`.`series_id`
+				INNER JOIN `resources` ON `rr`.`resource_id` = `resources`.`resource_id`
+				INNER JOIN `schedules` ON `resources`.`schedule_id` = `schedules`.`schedule_id`';
 
-	const PARTICIPANT_JOIN_FRAGMENT = 'INNER JOIN users participants ON participants.user_id = @participant_id
-			INNER JOIN reservation_users pu ON pu.user_id = participants.user_id AND pu.reservation_user_level = 2 AND pu.reservation_instance_id = ri.reservation_instance_id ';
+	const PARTICIPANT_JOIN_FRAGMENT = 'INNER JOIN `users` `participants` ON `participants`.`user_id` = @participant_id
+			INNER JOIN `reservation_users` `pu` ON `pu`.`user_id` = `participants`.`user_id` AND `pu`.`reservation_user_level` = 2 AND `pu`.`reservation_instance_id` = `ri`.`reservation_instance_id` ';
 
-	const ACCESSORY_JOIN_FRAGMENT = 'INNER JOIN reservation_accessories ar ON rs.series_id = ar.series_id
-				INNER JOIN accessories ON ar.accessory_id = accessories.accessory_id';
+	const ACCESSORY_JOIN_FRAGMENT = 'INNER JOIN `reservation_accessories` `ar` ON `rs`.`series_id` = `ar`.`series_id`
+				INNER JOIN `accessories` ON `ar`.`accessory_id` = `accessories`.`accessory_id`';
 
-	const GROUP_JOIN_FRAGMENT = 'INNER JOIN user_groups ug ON ug.user_id = owner.user_id
-				INNER JOIN groups ON groups.group_id = ug.group_id';
+	const GROUP_JOIN_FRAGMENT = 'INNER JOIN `user_groups` `ug` ON `ug`.`user_id` = `owner`.`user_id`
+				INNER JOIN `groups` ON `groups`.`group_id` = `ug`.`group_id`';
 
-	const ORDER_BY_FRAGMENT = 'ORDER BY ri.start_date ASC';
+	const ORDER_BY_FRAGMENT = 'ORDER BY `ri`.`start_date` ASC';
 
-	const TOTAL_ORDER_BY_FRAGMENT = 'ORDER BY total DESC';
+	const TOTAL_ORDER_BY_FRAGMENT = 'ORDER BY `total` DESC';
 
-	const TIME_ORDER_BY_FRAGMENT = 'ORDER BY totalTime DESC';
+	const TIME_ORDER_BY_FRAGMENT = 'ORDER BY `totalTime` DESC';
 
-	const SCHEDULE_ID_FRAGMENT = 'AND schedules.schedule_id IN (@scheduleid)';
+	const SCHEDULE_ID_FRAGMENT = 'AND `schedules`.`schedule_id` IN (@scheduleid)';
 
-	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id IN (@resourceid)';
+	const RESOURCE_ID_FRAGMENT = 'AND `resources`.`resource_id` IN (@resourceid)';
 
-	const RESOURCE_TYPE_ID_FRAGMENT = 'AND resources.resource_type_id IN (@resource_type_id)';
+	const RESOURCE_TYPE_ID_FRAGMENT = 'AND `resources`.`resource_type_id` IN (@resource_type_id)';
 
-	const ACCESSORY_ID_FRAGMENT = 'AND accessories.accessory_id IN (@accessoryid)';
+	const ACCESSORY_ID_FRAGMENT = 'AND `accessories`.`accessory_id` IN (@accessoryid)';
 
-	const USER_ID_FRAGMENT = 'AND owner.user_id = @userid';
+	const USER_ID_FRAGMENT = 'AND `owner`.`user_id` = @userid';
 
-	const GROUP_ID_FRAGMENT = 'AND ug.group_id IN (@groupid)';
+	const GROUP_ID_FRAGMENT = 'AND `ug`.`group_id` IN (@groupid)';
 
-	const DATE_FRAGMENT = 'AND ((ri.start_date >= @startDate AND ri.start_date < @endDate) OR
-						(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
-						(ri.start_date <= @startDate AND ri.end_date > @endDate))';
+	const DATE_FRAGMENT = 'AND ((`ri`.`start_date` >= @startDate AND `ri`.`start_date` < @endDate) OR
+						(`ri`.`end_date` >= @startDate AND `ri`.`end_date` <= @endDate) OR
+						(`ri`.`start_date` <= @startDate AND `ri`.`end_date` > @endDate))';
 
-	const GROUP_BY_GROUP_FRAGMENT = 'GROUP BY groups.group_id';
+	const GROUP_BY_GROUP_FRAGMENT = 'GROUP BY `groups`.`group_id`';
 
-	const GROUP_BY_RESOURCE_FRAGMENT = 'GROUP BY resources.resource_id';
+	const GROUP_BY_RESOURCE_FRAGMENT = 'GROUP BY `resources`.`resource_id`';
 
-	const GROUP_BY_SCHEDULE_FRAGMENT = 'GROUP BY schedules.schedule_id';
+	const GROUP_BY_SCHEDULE_FRAGMENT = 'GROUP BY `schedules`.`schedule_id`';
 
-	const GROUP_BY_USER_FRAGMENT = 'GROUP BY owner.user_id';
+	const GROUP_BY_USER_FRAGMENT = 'GROUP BY `owner`.`user_id`';
 
 	/**
 	 * @var bool
@@ -471,7 +471,7 @@ class ReportCommandBuilder
 
         if ($this->joinBlackouts)
         {
-            $blackoutsSql = str_replace('1 as utilization_type', '2 as utilization_type', $sql);
+            $blackoutsSql = str_replace('1 as `utilization_type`', '2 as `utilization_type`', $sql);
             $blackoutsSql = str_replace(TableNames::RESERVATION_INSTANCES, TableNames::BLACKOUT_INSTANCES, $blackoutsSql);
             $blackoutsSql = str_replace(TableNames::RESERVATION_SERIES, TableNames::BLACKOUT_SERIES, $blackoutsSql);
             $blackoutsSql = str_replace(TableNames::RESERVATION_RESOURCES, TableNames::BLACKOUT_SERIES_RESOURCES, $blackoutsSql);
@@ -720,7 +720,7 @@ class ReportCommandBuilder
 			return '';
 		}
 
-		return 'AND rs.status_id <> 2';
+		return 'AND `rs`.`status_id` <> 2';
 	}
 }
 

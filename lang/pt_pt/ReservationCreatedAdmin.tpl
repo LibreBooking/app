@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -50,5 +50,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Ver esta reserva</a> | <a href="{$ScriptUrl}">Entrar no Booked Scheduler</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> | <a href="{$ScriptUrl}">Entrar no Booked Scheduler</a>
 

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2019 Nick Korbel
+Copyright 2011-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -37,11 +37,11 @@ class AuthenticationWebServiceTests extends TestBase
 	 */
 	private $server;
 
-	public function setup()
+	public function setUp(): void
 	{
 		parent::setup();
 
-		$this->authentication = $this->getMock('IWebServiceAuthentication');
+		$this->authentication = $this->createMock('IWebServiceAuthentication');
 		$this->server = new FakeRestServer();
 
 		$this->service = new AuthenticationWebService($this->server, $this->authentication);

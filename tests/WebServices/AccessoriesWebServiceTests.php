@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
+Copyright 2012-2020 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -43,11 +43,11 @@ class AccessoriesWebServiceTests extends TestBase
 	 */
 	private $accessoryRepository;
 
-	public function setup()
+	public function setUp(): void
 	{
 		$this->server = new FakeRestServer();
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->accessoryRepository = $this->getMock('IAccessoryRepository');
+		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
 		$this->service = new AccessoriesWebService($this->server, $this->resourceRepository, $this->accessoryRepository);
 		parent::setup();
