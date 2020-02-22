@@ -108,7 +108,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="indicator" style="display:none; text-align: center;">
-    <h3>{translate key=Working}</h3>
+    <h5>{translate key=Working}</h5>
     {html_image src="admin-ajax-indicator.gif"}
 </div>
 

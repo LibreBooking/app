@@ -62,7 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 	</div>
 {else}
-	<h2 id="report-no-data" class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h2>
+	<h5 id="report-no-data" class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h5>
 {/if}
 
 <script type="text/javascript">
