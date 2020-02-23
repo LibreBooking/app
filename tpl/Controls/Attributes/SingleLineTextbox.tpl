@@ -27,7 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <input type="text" id="{$attributeId}" name="{$attributeName}" value="{$attribute->Value()}"
                    class="customAttribute {$inputClass}" {if $attribute->Required() && !$searchmode}required{/if}/>
             {if $attribute->Required() && !$searchmode}
-                <i class="fa fa-asterisk"></i>
+                *
             {/if}
             {if $searchmode}
                 <span class="searchclear searchclear-label fa fa-remove-circle" ref="{$attributeId}"></span>

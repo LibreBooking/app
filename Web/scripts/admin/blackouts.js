@@ -144,10 +144,13 @@ function BlackoutManagement(opts) {
 
 		elements.deleteMultipleCheckboxes.click(function (e) {
 			e.stopPropagation();
-			var numberChecked = elements.blackoutTable.find('.delete-multiple:checked').length;
-			var allSelected = numberChecked == elements.blackoutTable.find('.delete-multiple').length;
+			const thisChecked = $(e.target).is(":checked");
+			const blackoutId = $(e.target).attr("value");
+			elements.blackoutTable.find('.delete-multiple[value="' +  blackoutId +'"]').attr('checked', thisChecked);
+            const numberChecked = elements.blackoutTable.find('.delete-multiple:checked').length;
+            const  allSelected = numberChecked === elements.blackoutTable.find('.delete-multiple').length;
 			elements.deleteMultipleSelectAll.prop('checked', allSelected);
-			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked === 0);
 		});
 
 		ConfigureAsyncForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {

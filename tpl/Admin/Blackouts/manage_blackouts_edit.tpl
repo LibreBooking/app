@@ -71,7 +71,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
         <div class="input-field col s12">
-            <label for="blackoutReason">{translate key=Reason} <i class="fa fa-asterisk"></i></label>
+            <label for="blackoutReason">{translate key=Reason} *</label>
             <input {formname key=SUMMARY} type="text" id="blackoutReason" required
                                           class="required" value="{$BlackoutTitle}"/>
         </div>

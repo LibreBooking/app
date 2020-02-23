@@ -246,7 +246,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
                 <div class="modal-body">
                     <div class="input-field">
-                        <label for="addName">{translate key=Name} <i class="fa fa-asterisk"></i></label>
+                        <label for="addName">{translate key=Name} *</label>
                         <input type="text" id="addName"
                                class="required" {formname key=SCHEDULE_NAME} />
                     </div>

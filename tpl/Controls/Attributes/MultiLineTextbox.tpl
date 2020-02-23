@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div class="input-field">
         <label class="customAttribute {if $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
         {if $attribute->Required() && !$searchmode}
-            <i class="fa fa-asterisk"></i>
+            *
         {/if}
         <textarea id="{$attributeId}" name="{$attributeName}" rows="2" class="customAttribute form-control {$inputClass}" {if $attribute->Required() && !$searchmode}required{/if}>{$attribute->Value()}</textarea>
         {if $searchmode}

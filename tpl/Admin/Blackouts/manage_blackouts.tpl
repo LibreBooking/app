@@ -87,7 +87,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     <div class="col s12">
                         <div class="input-field">
-                            <label for="blackoutReason">{translate key=Reason} <i class="fa fa-asterisk"></i></label>
+                            <label for="blackoutReason">{translate key=Reason} *</label>
                             <input {formname key=SUMMARY} type="text" id="blackoutReason" required
                                                           class="required"/>
                         </div>
@@ -218,9 +218,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
                 <td class="action-delete">
 
-                    <label for="delete{$id}" class="">
+                    <label for="delete{$id}-{$blackout->ResourceId}" class="">
                         <input {formname key=BLACKOUT_INSTANCE_ID multi=true} class="delete-multiple" type="checkbox"
-                                                                              id="delete{$id}"
+                                                                              id="delete{$id}-{$blackout->ResourceId}"
                                                                               value="{$id}"
                                                                               aria-label="{translate key=Delete}"/>
                         <span>&nbsp;</span>

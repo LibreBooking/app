@@ -18,19 +18,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div>
 	{if $Successful}
-		<h2>{translate key=$SuccessKey}</h2>
+		<h5>{translate key=$SuccessKey}</h5>
 		<button class="reload btn btn-primary">{translate key="OK"}</button>
 	{else}
-		<h2>{translate key=$FailKey}</h2>
+		<h5>{translate key=$FailKey}</h5>
 		<button class="unblock btn btn-primary">{translate key="OK"}</button>
 	{/if}
 
 	{if !empty($Message)}
-		<h5>{$Message}</h5>
+		<strong>{$Message}</strong>
 	{/if}
 
 	{if !empty($Blackouts)}
-		<h5>{translate key=BlackoutConflicts}</h5>
+		<strong>{translate key=BlackoutConflicts}</strong>
 		{foreach from=$Blackouts item=blackout}
 			{format_date date=$blackout->StartDate timezone=$Timezone}
 		{/foreach}

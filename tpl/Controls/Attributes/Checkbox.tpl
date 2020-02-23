@@ -36,7 +36,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                        {if $attribute->Value() == "1"}checked="checked"{/if} class="{$inputClass}"/>
                 {$attribute->Label()}
                 {if $attribute->Required() && !$searchmode}
-                    <i class="fa fa-asterisk"></i>
+                    *
                 {/if}
             </label>
         </div>

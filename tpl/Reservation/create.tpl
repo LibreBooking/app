@@ -253,7 +253,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="input-field">
                             <label for="reservationTitle">{translate key="ReservationTitle"}
                                 {if $TitleRequired}
-                                    <i class="fa fa-asterisk"></i>
+                                    *
                                 {/if}</label>
                             {textbox name="RESERVATION_TITLE" class="" value="ReservationTitle" id="reservationTitle" maxlength="300" required=$TitleRequired}
                         </div>
@@ -263,7 +263,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="input-field">
                             <label for="description">{translate key="ReservationDescription"}
                                 {if $DescriptionRequired}
-                                    <i class="fa fa-asterisk"></i>
+                                   *
                                 {/if}</label>
                             <textarea id="description" name="{FormKeys::DESCRIPTION}"
                                       class="materialize-textarea"

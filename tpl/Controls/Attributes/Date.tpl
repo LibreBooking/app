@@ -31,7 +31,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <label class="customAttribute {if $searchmode}search{else}standard{/if}"
                    for="{$attributeId}">{$attribute->Label()}</label>
             {if $attribute->Required() && !$searchmode}
-                <i class="fa fa-asterisk"></i>
+                *
             {/if}
         </div>
         {control type="DatePickerSetupControl" ControlId="{$attributeId}" AltId="formatted{$attributeId}" HasTimepicker=true}
