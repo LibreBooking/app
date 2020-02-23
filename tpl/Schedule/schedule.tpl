@@ -80,7 +80,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-    {include file='globalheader.tpl' Qtip=true FloatThead=true Select2=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
+    {include file='globalheader.tpl' Qtip=true FloatThead=true Select2=true cssFiles='scripts/css/jqtree.css' Owl=true printCssFiles='css/schedule.print.css'}
 {/block}
 
 <div id="page-schedule" class="row">
@@ -381,7 +381,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {csrf_token}
 </form>
 
-{include file="javascript-includes.tpl" Qtip=true FloatThead=true Select2=true}
+{include file="javascript-includes.tpl" Qtip=true FloatThead=true Select2=true Owl=true}
 
 {block name="scripts-before"}
 

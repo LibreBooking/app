@@ -78,14 +78,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {else}
             {translate key=NoResourceTypeLabel}
         {/if}
-        {if $Attributes|count > 0}
+        {if is_array($Attributes) && $Attributes|count > 0}
             {foreach from=$Attributes item=attribute}
                 <div>
                     {control type="AttributeControl" attribute=$attribute readonly=true}
                 </div>
             {/foreach}
         {/if}
-        {if $ResourceTypeAttributes|count > 0}
+        {if is_array($ResourceTypeAttributes) && $ResourceTypeAttributes|count > 0}
             {foreach from=$ResourceTypeAttributes item=attribute}
                 <div>
                     {control type="AttributeControl" attribute=$attribute readonly=true}
