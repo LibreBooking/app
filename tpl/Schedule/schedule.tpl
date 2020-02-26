@@ -46,13 +46,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='' Draggable="{$CanViewAdmin}" ResourceId=$ResourceId}
+    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='' Draggable=$CanViewAdmin ResourceId=$ResourceId}
 {/function}
 
 {function name=displayPastTime}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}"
-        class="pasttime slot" draggable="{$CanViewAdmin}" resid="{$Slot->Id()}"
-        data-resourceId="{$ResourceId}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
+    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
+        ref="{$SlotRef}"
+        class="pasttime slot"
+        draggable="{$CanViewAdmin}"
+        resid="{$Slot->Id()}"
+        data-resourceId="{$ResourceId}"
+        data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayReservable}
@@ -60,12 +65,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         data-href="{$Href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+        data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}"
         data-resourceId="{$ResourceId}">&nbsp;
     </td>
 {/function}
 
 {function name=displayRestricted}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>
+    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
+        data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}"
+        class="restricted slot">&nbsp;</td>
 {/function}
 
 {function name=displayUnreservable}
@@ -191,11 +201,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
                             <a href="#" class="change-date" data-year="{$PreviousDate->Year()}"
                                data-month="{$PreviousDate->Month()}"
-                               data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="{translate key=Back}"}</a>
+                               data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt='{translate key=Back}'}</a>
                             {formatdate date=$FirstDate} - {formatdate date=$LastDate}
                             <a href="#" class="change-date" data-year="{$NextDate->Year()}"
                                data-month="{$NextDate->Month()}"
-                               data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="{translate key=Forward}"}</a>
+                               data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt='{translate key=Forward}'}</a>
 
                             {if $ShowFullWeekLink}
                                 <a href="{add_querystring key=SHOW_FULL_WEEK value=1}"

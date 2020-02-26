@@ -6,9 +6,13 @@
 {foreach from=$BoundDates item=date}
     {assign var=ts value=$date->Timestamp()}
     {$periods.$ts = $DailyLayout->GetPeriods($date, true)}
-    {if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
-    <div style="position:relative;">
-        <table class="reservations" border="1" cellpadding="0" width="100%">
+    {$slots.$ts = $DailyLayout->GetPeriods($date, false)}
+    {assign var=count value=$periods[$ts]|count}
+    {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
+    {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
+    {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
+    <div style="position:relative;" data-min="">
+        <table style="position:relative;" class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
             <thead>
             {if $date->DateEquals($TodaysDate)}
             <tr class="today">
@@ -25,7 +29,8 @@
             <tbody>
             {foreach from=$Resources item=resource name=resource_loop}
                 {assign var=resourceId value=$resource->Id}
-                {assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
+{*                {assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
+{*                {assign var=slots value=$DailyLayout->GetSlots($date)}*}
                 {assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
                 <tr class="slots">
                     <td class="resourcename"
@@ -40,9 +45,18 @@
                                   {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
                         {/if}
                     </td>
-                    {foreach from=$slots item=slot}
-                        {assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                        {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
+                    {foreach from=$slots.$ts item=Slot}
+                        {assign var=slotRef value="{$Slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
+                        <td class="reservable clickres slot"
+                            ref="{$slotRef}"
+                        data-href="{$href}"
+                        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+                        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+                        data-min="{$Slot->BeginDate()->Timestamp()}"
+                        data-max="{$Slot->EndDate()->Timestamp()}"
+                        data-resourceId="{$resourceId}">&nbsp;</td>
+
+{*                        {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}*}
                     {/foreach}
                 </tr>
             {/foreach}

@@ -1608,7 +1608,7 @@ td.dropped {
   color: #ffb540;
   font-weight: bold;
 }
-td.resourcename.hilite {
+table.reservations td.resourcename.hilite {
   background-color: #fbffc2 !important;
 }
 div.legend {
@@ -1762,6 +1762,14 @@ a.toggle-sidebar {
 .reservation-updated {
   background-color: #D5DED9;
   color: #000;
+}
+#reservations {
+  position: relative;
+}
+.test {
+  position: absolute;
+  background-color: #000;
+  height: 30px;
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
