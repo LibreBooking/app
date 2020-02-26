@@ -100,7 +100,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {assign var=availability value=$UnavailableAllDay[$s->GetId()]}
             {if is_array($availability) && $availability|count > 0}
             <h5>{$s->GetName()}</h5>
-            {foreach from=$Uavailability item=i}
+            {foreach from=$availability item=i}
                 <div class="availabilityItem">
                     <div class="col-xs-12 col-sm-5">
                         <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
