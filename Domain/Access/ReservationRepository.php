@@ -299,8 +299,9 @@ class ReservationRepository implements IReservationRepository
             $instance = new Reservation($series, $duration, $row[ColumnNames::RESERVATION_INSTANCE_ID], $row[ColumnNames::REFERENCE_NUMBER]);
             $instance->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
             $instance->WithCreditsConsumed($row[ColumnNames::CREDIT_COUNT]);
+			$instance->SetCreditsRequired($row[ColumnNames::CREDIT_COUNT]);
 
-            $series->WithCurrentInstance($instance);
+			$series->WithCurrentInstance($instance);
         }
         $reader->Free();
 
@@ -322,6 +323,7 @@ class ReservationRepository implements IReservationRepository
                 $row[ColumnNames::REFERENCE_NUMBER]);
             $reservation->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
             $reservation->WithCreditsConsumed($row[ColumnNames::CREDIT_COUNT]);
+            $reservation->SetCreditsRequired($row[ColumnNames::CREDIT_COUNT]);
 
             $series->WithInstance($reservation);
         }

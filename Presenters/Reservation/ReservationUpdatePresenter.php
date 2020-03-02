@@ -177,10 +177,10 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		}
 
 		if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
-		{
-			$layout = $this->scheduleRepository->GetLayout($existingSeries->ScheduleId(), new ScheduleLayoutFactory($this->userSession->Timezone));
-			$existingSeries->CalculateCredits($layout);
-		}
+				{
+					$layout = $this->scheduleRepository->GetLayout($existingSeries->ScheduleId(), new ScheduleLayoutFactory($this->userSession->Timezone));
+					$existingSeries->CalculateCredits($layout);
+				}
 
 		return $existingSeries;
 	}
