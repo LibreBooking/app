@@ -151,6 +151,7 @@ class FormKeys
 	const MIN_NOTICE_NONE_DELETE = 'minNoticeNoneDelete';
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
+	const MIN_CAPACITY = 'MIN_CAPACITY';
 
 	const NAME = 'name';
 	const NOTES = 'notes';
@@ -266,6 +267,7 @@ class FormKeys
 	const SLACK_TEXT = 'text';
 	const SLACK_TOKEN = 'token';
 	const SPECIFIC_TIME = 'SPECIFIC_TIME';
+	const SPECIFIC_DATES = 'SPECIFIC_DATES';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';

@@ -101,6 +101,34 @@ interface IReservedItemView
      * @return bool
      */
     public function RequiresCheckin();
+
+    /**
+     * @return bool
+     */
+    public function IsPending();
+
+    /**
+     * @param int $newMinutes
+     * @return bool
+     */
+    public function GetIsNew(int $newMinutes);
+
+    /**
+     * @param int $updatedMinutes
+     * @return bool
+     */
+    public function GetIsUpdated(int $updatedMinutes);
+
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function IsOwner(int $userId);
+
+    /**
+     * @return string
+     */
+    public function GetLabel();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -847,7 +875,7 @@ class ReservationItemView implements IReservedItemView
             $this->IsCheckInEnabled &&
             $this->EndDate->GreaterThan(Date::Now()) &&
             Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate)
-            );
+        );
     }
 
     public function RequiresCheckOut()
@@ -884,8 +912,7 @@ class ReservationItemView implements IReservedItemView
      */
     public function GetColor()
     {
-        if ($this->RequiresApproval)
-        {
+        if ($this->RequiresApproval) {
             return '';
         }
         if ($this->_color == null) {
@@ -924,8 +951,7 @@ class ReservationItemView implements IReservedItemView
      */
     public function GetTextColor()
     {
-        if ($this->RequiresApproval)
-        {
+        if ($this->RequiresApproval) {
             return '';
         }
         $color = $this->GetColor();
@@ -960,9 +986,42 @@ class ReservationItemView implements IReservedItemView
     {
         return new FullName($this->FirstName, $this->LastName);
     }
+
+    public function IsPending()
+    {
+        return $this->RequiresApproval;
+    }
+
+    public function GetIsNew(int $newMinutes)
+    {
+        $modifiedDate = $this->ModifiedDate;
+        return
+            ($newMinutes > 0) &&
+            (empty($modifiedDate)) &&
+            ($this->CreatedDate->AddMinutes($newMinutes)->GreaterThanOrEqual(Date::Now()));
+    }
+
+    public function GetIsUpdated(int $updatedMinutes)
+    {
+        $modifiedDate = $this->ModifiedDate;
+        return
+            ($updatedMinutes > 0) &&
+            (!empty($modifiedDate)) &&
+            ($this->ModifiedDate->AddMinutes($updatedMinutes)->GreaterThanOrEqual(Date::Now()));
+    }
+
+    public function IsOwner(int $userId)
+    {
+        return $this->IsUserOwner($userId);
+    }
+
+    public function GetLabel()
+    {
+        return SlotLabelFactory::Create($this);
+    }
 }
 
-class BlackoutItemView implements IReservedItemView
+class BlackoutItemView extends ReservationItemView
 {
     /**
      * @var Date
@@ -1219,5 +1278,30 @@ class BlackoutItemView implements IReservedItemView
     public function RequiresCheckin()
     {
         return false;
+    }
+
+    public function IsPending()
+    {
+        return false;
+    }
+
+    public function GetIsNew(int $newMinutes)
+    {
+        return false;
+    }
+
+    public function GetIsUpdated(int $updatedMinutes)
+    {
+        return false;
+    }
+
+    public function IsOwner(int $userId)
+    {
+        return false;
+    }
+
+    public function GetLabel()
+    {
+        return $this->GetTitle();
     }
 }

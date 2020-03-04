@@ -11,7 +11,7 @@
     {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
     {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
     {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
-    <div style="position:relative;" data-min="">
+{*    <div style="position:relative;">*}
         <table style="position:relative;" class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
             <thead>
             {if $date->DateEquals($TodaysDate)}
@@ -62,6 +62,6 @@
             {/foreach}
             </tbody>
         </table>
-    </div>
+{*    </div>*}
     {flush}
 {/foreach}

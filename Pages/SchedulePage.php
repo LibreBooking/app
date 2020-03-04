@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/LoadReservationRequest.php');
 
 interface ISchedulePage extends IActionPage
 {
@@ -155,7 +156,7 @@ interface ISchedulePage extends IActionPage
     /**
      * @return int
      */
-    public function GetMaxParticipants();
+    public function GetMinCapacity();
 
     /**
      * @return AttributeFormElement[]|array
@@ -209,6 +210,16 @@ interface ISchedulePage extends IActionPage
      * @param bool $allowConcurrentReservations
      */
     public function SetAllowConcurrent($allowConcurrentReservations);
+
+    /**
+     * @return LoadReservationRequest
+     */
+    public function GetReservationRequest();
+
+    /**
+     * @param ReservationListItem[] $items
+     */
+    public function BindReservations(array $items);
 }
 
 class SchedulePage extends ActionPage implements ISchedulePage
@@ -310,7 +321,12 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
     public function ProcessDataRequest($dataRequest)
     {
-        $this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());
+        if ($dataRequest === "reservations") {
+            $this->_presenter->LoadReservations(ServiceLocator::GetServer()->GetUserSession());
+        }
+        else {
+            $this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());
+        }
     }
 
     public function GetScheduleId()
@@ -500,10 +516,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
         return $this->GetQuerystring(FormKeys::RESOURCE_TYPE_ID);
     }
 
-    public function GetMaxParticipants()
+    public function GetMinCapacity()
     {
-        $max = $this->GetQuerystring(FormKeys::MAX_PARTICIPANTS);
-        return intval($max);
+        $min = $this->GetQuerystring(FormKeys::MAX_PARTICIPANTS);
+        return intval($min);
     }
 
     public function GetResourceAttributes()
@@ -520,7 +536,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         $this->Set('ResourceIdFilter', $this->GetResourceId());
         $this->Set('ResourceTypeIdFilter', $resourceFilter->ResourceTypeId);
-        $this->Set('MaxParticipantsFilter', $resourceFilter->MinCapacity);
+        $this->Set('MinCapacityFilter', $resourceFilter->MinCapacity);
         $this->Set('ResourceIds', $resourceFilter->ResourceIds);
         $this->_isFiltered = $resourceFilter->HasFilter();
     }
@@ -559,6 +575,48 @@ class SchedulePage extends ActionPage implements ISchedulePage
         $this->Set('AllowConcurrentReservations', $allowConcurrentReservations);
         $hide = $this->GetVar('HideSchedule');
         $this->Set('HideSchedule', $hide || $allowConcurrentReservations);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReservationRequest()
+    {
+        $timezone = $this->server->GetUserSession()->Timezone;
+
+        $specificDatesForm = $this->GetForm(FormKeys::SPECIFIC_DATES);
+        $specificDates = [];
+        if (!empty($specificDatesForm) && is_array($specificDatesForm)) {
+            foreach ($specificDatesForm as $date) {
+                $specificDates[] = Date::Parse($date, $timezone);
+            }
+        }
+        $resourceIds = [];
+        $resourceIdsForm = $this->GetForm(FormKeys::RESOURCE_ID);
+        if (!empty($resourceIdsForm) && is_array($resourceIdsForm)) {
+            foreach ($resourceIdsForm as $id) {
+                $resourceIds[] = intval($id);
+            }
+        }
+        $builder = new LoadReservationRequestBuilder();
+        return $builder
+            ->WithRange(Date::Parse($this->GetForm(FormKeys::BEGIN_DATE), $timezone), Date::Parse($this->GetForm(FormKeys::END_DATE), $timezone))
+            ->WithResources($resourceIds)
+            ->WithScheduleId($this->GetForm(FormKeys::SCHEDULE_ID))
+            ->WithSpecificDates($specificDates)
+            ->Build();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function BindReservations(array $items)
+    {
+        $itemsAsJson = [];
+        foreach($items as $item) {
+            $itemsAsJson[] = $item->AsDto($this->server->GetUserSession()->UserId);
+        }
+        $this->SetJson($itemsAsJson);
     }
 }
 

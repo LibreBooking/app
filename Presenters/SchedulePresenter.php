@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'Presenters/Schedule/LoadReservationRequest.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
@@ -127,9 +128,8 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 			$rids[] = $resource->Id;
 		}
 //		$rids= array();
-        $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone, $rids);
-        $dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), $reservationListing);
-
+//        $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone, $rids);
+        $dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), new EmptyReservationListing());
         $this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
     }
 
@@ -145,4 +145,11 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
 		$this->_page->SetLayoutResponse(new ScheduleLayoutSerializable($periods));
 	}
+
+    public function LoadReservations()
+    {
+        $filter = $this->_page->GetReservationRequest();
+        $items = $this->_reservationService->Search($filter->DateRange(), $filter->ScheduleId(), $filter->ResourceIds());
+        $this->_page->BindReservations($items);
+    }
 }

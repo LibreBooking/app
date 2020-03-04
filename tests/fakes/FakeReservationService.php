@@ -52,6 +52,10 @@ class FakeReservationService implements IReservationService
      * @var ExistingReservationSeries
      */
     public $_Reservation;
+    /**
+     * @var ReservationListItem
+     */
+    public $_ReservationsAndBlackouts = [];
 
     public function __construct()
     {
@@ -65,7 +69,7 @@ class FakeReservationService implements IReservationService
      * @param null|int $resourceIds
      * @return IReservationListing
      */
-    function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
+    public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
     {
         $this->_LastDateRange = $dateRangeUtc;
         $this->_LastScheduleId = $scheduleId;
@@ -73,6 +77,11 @@ class FakeReservationService implements IReservationService
         $this->_LastResourceId = $resourceIds;
 
         return $this->_ReservationListing;
+    }
+
+    public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null)
+    {
+        return $this->_ReservationsAndBlackouts;
     }
 }
 

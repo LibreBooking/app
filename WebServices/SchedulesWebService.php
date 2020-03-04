@@ -398,7 +398,7 @@ class ScheduleWebServiceView implements ISchedulePage
 		return null;
 	}
 
-	public function GetMaxParticipants()
+	public function GetMinCapacity()
 	{
 		return null;
 	}
@@ -550,5 +550,22 @@ class ScheduleWebServiceView implements ISchedulePage
     public function SetAllowConcurrent($allowConcurrentReservations)
     {
         $this->allowConcurrentReservations = $allowConcurrentReservations;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReservationRequest()
+    {
+        // no-op
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function BindReservations(array $items)
+    {
+        // no-op
     }
 }

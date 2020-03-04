@@ -14,6 +14,26 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+interface IReservationService
+{
+    /**
+     * @param DateRange $dateRangeUtc range of dates to search against in UTC
+     * @param int $scheduleId
+     * @param string $targetTimezone timezone to convert the results to
+     * @param null|int[] $resourceIds
+     * @return IReservationListing
+     */
+    public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null);
+
+    /**
+     * @param DateRange $dateRange
+     * @param int $scheduleId
+     * @param null|int[] $resourceIds
+     * @return ReservationListItem[]
+     */
+    public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null);
+}
+
 class ReservationService implements IReservationService
 {
 	/**
@@ -67,16 +87,24 @@ class ReservationService implements IReservationService
 
 		return $reservationListing;
 	}
-}
 
-interface IReservationService
-{
-	/**
-	 * @param DateRange $dateRangeUtc range of dates to search against in UTC
-	 * @param int $scheduleId
-	 * @param string $targetTimezone timezone to convert the results to
-	 * @param null|int $resourceIds
-	 * @return IReservationListing
-	 */
-	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null);
+    /**
+     * @inheritDoc
+     */
+    public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null)
+    {
+        $reservations = $this->_repository->GetReservations($dateRange->GetBegin(), $dateRange->GetEnd(), null, null, $scheduleId, $resourceIds);
+        $blackouts = $this->_repository->GetBlackoutsWithin($dateRange, $scheduleId, $resourceIds);
+
+        /** @var ReservationListItem[] $items */
+        $items = [];
+        foreach($reservations as $i) {
+            $items[] = new ReservationListItem($i);
+        }
+        foreach($blackouts as $i) {
+            $items[] = new BlackoutListItem($i);
+        }
+
+        return $items;
+    }
 }

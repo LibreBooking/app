@@ -8,103 +8,11 @@ function Schedule(opts, resourceGroups) {
 
     this.init = function () {
 
-        const reservationList = [
-            {
-                start: 1582468200,
-                end: 1582475400,
-                resourceId: 1,
-            },
-            {
-                start: 1582642800,
-                end: 1582660800,
-                resourceId: 2,
-            },
-            {
-                start: 1582549200,
-                end: 1582664400,
-                resourceId: 1,
-            },
-        ];
-
-        reservationList.forEach(res => {
-            $('#reservations').find(".reservations").each(function () {
-                const t = $(this);
-                const tableMin = Number.parseInt(t.data("min"));
-                const tableMax = Number.parseInt(t.data("max"));
-
-                function within() {
-                    return (res.start >= tableMin && res.start < tableMax) ||
-                        (res.end > tableMin && res.end <= tableMax) ||
-                        (res.start <= tableMin && res.end >= tableMax);
-                }
-
-                if (within()) {
-                    let startTd = t.find('td[data-resourceid="' + res.resourceId + '"][data-min="' + res.start + '"]:first');
-                    let endTd = t.find('td[data-resourceid="' + res.resourceId + '"][data-min="' + res.end + '"]:first');
-                    let calculatedAdjustment = 0;
-
-                    if (startTd.length === 0) {
-                        startTd = t.find('td[data-resourceid="' + res.resourceId + '"]').first();
-                    }
-                    if (endTd.length === 0) {
-                        endTd = t.find('td[data-resourceid="' + res.resourceId + '"]').last();
-                        calculatedAdjustment = endTd.outerWidth();
-                    }
-                    console.log("start", startTd.position(), "end", endTd.position());
-                    var div = $('<div class="test">test div</div>');
-                    const width = endTd.position().left - startTd.position().left + calculatedAdjustment;
-                    console.log("width", width);
-                    div.css({left: startTd.position().left, top: startTd.position().top, width: width});
-                    t.append(div);
-                }
-
-            });
-        });
-
         this.initUserDefaultSchedule();
         this.initRotateSchedule();
-        this.initReservations();
         this.initResourceFilter();
-
-        var reservations = $('#reservations');
-
-        reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function () {
-            $(this).siblings('.resourcename').toggleClass('hilite');
-            var ref = $(this).attr('ref');
-            reservations.find('td[ref="' + ref + '"]').addClass('hilite');
-        });
-
-        reservations.delegate('.clickres:not(.reserved)', 'mouseleave', function () {
-            $(this).siblings('.resourcename').removeClass('hilite');
-            var ref = $(this).attr('ref');
-            reservations.find('td[ref="' + ref + '"]').removeClass('hilite');
-            $(this).removeClass('hilite');
-        });
-
-        reservations.delegate('.clickres', 'mousedown', function () {
-            $(this).addClass('clicked');
-        });
-
-        reservations.delegate('.clickres', 'mouseup', function () {
-            $(this).removeClass('clicked');
-        });
-
-        reservations.delegate('.reservable', 'click', function () {
-            var sd = '';
-            var ed = '';
-
-            var start = $(this).attr('data-start');
-            if (start) {
-                sd = start;
-            }
-            var end = $(this).attr('data-end');
-            if (end) {
-                ed = end;
-            }
-
-            var link = $(this).attr('data-href');
-            window.location = link + "&sd=" + sd + "&ed=" + ed;
-        });
+        this.renderEvents();
+        this.initReservations();
 
         // var isOldIE = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0);
         // if (opts.lockTableHead && !isOldIE)
@@ -158,6 +66,171 @@ function Schedule(opts, resourceGroups) {
                 scrollTop: today.offset().top - 50
             }, 500);
         }
+    };
+
+    this.renderEvents = function () {
+        // const reservationList = [
+        //     {
+        //         start: 1582468200,
+        //         end: 1582475400,
+        //         resourceId: 1,
+        //     },
+        //     {
+        //         start: 1582642800,
+        //         end: 1582660800,
+        //         resourceId: 2,
+        //     },
+        //     {
+        //         start: 1582549200,
+        //         end: 1582664400,
+        //         resourceId: 1,
+        //     },
+        // ];
+
+        function attachReservationEvents(div, reservation) {
+            var reservations = $('#reservations');
+            var resid = reservation.ReferenceNumber;
+            var pattern = 'div.reserved[data-resid="' + resid + '"]';
+
+            div.hover(function (e) {
+                $(pattern, reservations).addClass('hilite');
+            }, function (e) {
+                $(pattern, reservations).removeClass('hilite');
+            });
+
+            div.click(function (e) {
+                var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
+                window.location = reservationUrl;
+            });
+
+            // div.on('mouseenter', function(e) {
+            //     e.stopPropagation();
+            // });
+
+            var qTipElement = div;
+
+            if (div.is('div')) {
+                var fa =div.find('.fa');
+                if (fa.length > 0) {
+                    qTipElement = div.find('.fa');
+
+                    qTipElement.click(function (e) {
+                        e.stopPropagation();
+                    });
+                }
+            }
+
+            qTipElement.qtip({
+                position: {
+                    my: 'bottom left', at: 'top left', effect: false,
+                    viewport: $(window)
+                },
+
+                content: {
+                    text: function (event, api) {
+                        $.ajax({url: options.summaryPopupUrl, data: {id: resid}})
+                            .done(function (html) {
+                                api.set('content.text', html);
+                            })
+                            .fail(function (xhr, status, error) {
+                                api.set('content.text', status + ': ' + error);
+                            });
+
+                        return 'Loading...';
+                    }
+                },
+
+                show: {
+                    delay: 700, effect: false
+                },
+
+                hide: {
+                    fixed: true, delay: 500
+                },
+
+                style: {
+                    classes: 'qtip-light qtip-bootstrap'
+                }
+            });
+        }
+
+        ajaxPost($("#fetchReservationsForm"), options.reservationLoadUrl, null, function (reservationList) {
+            reservationList.forEach(res => {
+                $('#reservations').find(".reservations").each(function () {
+                    const t = $(this);
+                    const tableMin = Number.parseInt(t.data("min"));
+                    const tableMax = Number.parseInt(t.data("max"));
+
+                    const rendersWithin = (
+                        (res.StartDate >= tableMin && res.StartDate < tableMax) ||
+                        (res.EndDate > tableMin && res.EndDate <= tableMax) ||
+                        (res.StartDate <= tableMin && res.EndDate >= tableMax)
+                    );
+
+                    if (rendersWithin) {
+                        let startTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.StartDate + '"]:first');
+                        let endTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.EndDate + '"]:first');
+                        let calculatedAdjustment = 0;
+
+                        if (startTd.length === 0) {
+                            startTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').first();
+                        }
+                        if (endTd.length === 0) {
+                            endTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').last();
+                            calculatedAdjustment = endTd.outerWidth();
+                        }
+                        if (startTd.length === 0 || endTd.length === 0) {
+                            // does not fit in this reservation table
+                            return;
+                        }
+                        const height = startTd.outerHeight();
+                        const width = endTd.position().left - startTd.position().left + calculatedAdjustment;
+                        const className = res.IsReservation ? "reserved" : "unreservable";
+                        const mine = res.IsOwner ? "mine" : "";
+                        const past = res.IsPast ? "past" : "";
+                        const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
+                        const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
+                        const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
+                        const style = `left:${startTd.position().left}px; top:${startTd.position().top}px; width:${width}px; height:${height}px;`;
+                        const div = $(`<div 
+                                    class="${className} ${mine} ${past} event" 
+                                    style="${style} ${color}"
+                                    data-resid="${res.ReferenceNumber}"
+                                    ${draggableAttribute}>
+                                    ${res.Label}</div>`);
+                        // const div = $('<div class="reserved test" data-resid="' + res.ReferenceNumber +'">' +  res.Label +'</div>');
+
+                        if (res.IsReservation) {
+                            attachReservationEvents(div, res);
+                        }
+
+
+                        t.append(div);
+
+                        if (isDraggable) {
+                            div.on('dragstart', function (event) {
+                                div.qtip("hide");
+                                $(event.target).removeClass('clicked');
+                                const data = JSON.stringify({referenceNumber: res.ReferenceNumber, resourceId: res.ResourceId});
+                                // event.data.referenceNumber = res.ReferenceNumber;
+                                // event.data.sourceResourceId = res.ResourceId;
+                                event.originalEvent.dataTransfer.setData("text", data);
+                            });
+
+                            // div.on("drop", function(event) {
+                            //     dragging = false;
+                            // });
+                        }
+
+
+                        // console.log("width", width);
+                        // div.css({left: startTd.position().left, top: startTd.position().top, width: width});
+                    }
+                });
+            });
+        });
+
+
     };
 
     this.initResources = function () {
@@ -340,74 +413,72 @@ function Schedule(opts, resourceGroups) {
     };
 
     this.initReservations = function () {
-        var reservations = $('#reservations');
+
+        const reservations = $('#reservations');
 
         if (options.disableSelectable != '1') {
-            this.makeSlotsSelectable(reservations);
+            var selectingTds = false;
+            // this.makeSlotsSelectable(reservations);
+            reservations.on("mousedown", "td.reservable", e => {
+                selectingTds = true;
+                console.log("clicking a td");
+                // return false;
+            });
+            reservations.on("mouseover", "td.reservable", e => {
+                if (selectingTds) {
+                    $(e.target).toggleClass("hilite");
+                    e.stopPropagation();
+
+                    console.log("dragging a td", $(e.target).attr('ref'));
+                }
+            });
+            reservations.on("mouseup", "td.reservable", e => {
+                if (selectingTds) {
+                    e.stopPropagation();
+                    console.log("done dragging a td");
+                }
+                selectingTds = false;
+            });
+            reservations.find("td.reservable").on("selectstart", e => { return false; });
             this.makeReservationsMoveable(reservations);
         }
 
-        $('.reserved', reservations).each(function () {
-            var resid = $(this).attr('resid');
-            var pattern = 'td[resid="' + resid + '"]';
+        reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function () {
+            $(this).siblings('.resourcename').toggleClass('hilite');
+            var ref = $(this).attr('ref');
+            reservations.find('td[ref="' + ref + '"]').addClass('hilite');
+        });
 
-            $(this).hover(function () {
-                $(pattern, reservations).addClass('hilite');
-            }, function () {
-                $(pattern, reservations).removeClass('hilite');
-            });
+        reservations.delegate('.clickres:not(.reserved)', 'mouseleave', function () {
+            $(this).siblings('.resourcename').removeClass('hilite');
+            var ref = $(this).attr('ref');
+            reservations.find('td[ref="' + ref + '"]').removeClass('hilite');
+            $(this).removeClass('hilite');
+        });
 
-            $(this).click(function (e) {
-                e.stopPropagation();
-                var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
-                window.location = reservationUrl;
-            });
+        reservations.delegate('.clickres', 'mousedown', function () {
+            $(this).addClass('clicked');
+        });
 
-            var qTipElement = $(this);
+        reservations.delegate('.clickres', 'mouseup', function () {
+            $(this).removeClass('clicked');
+        });
 
-            if ($(this).is('div')) {
-                var fa = $(this).find('.fa');
-                if (fa.length > 0) {
-                    qTipElement = $(this).find('.fa');
+        reservations.delegate('.reservable', 'click', function () {
+            var sd = '';
+            var ed = '';
 
-                    qTipElement.click(function (e) {
-                        e.stopPropagation();
-                    });
-                }
+            var start = $(this).attr('data-start');
+            if (start) {
+                sd = start;
+            }
+            var end = $(this).attr('data-end');
+            if (end) {
+                ed = end;
             }
 
-            qTipElement.qtip({
-                position: {
-                    my: 'bottom left', at: 'top left', effect: false,
-                    viewport: $(window)
-                },
-
-                content: {
-                    text: function (event, api) {
-                        $.ajax({url: options.summaryPopupUrl, data: {id: resid}})
-                            .done(function (html) {
-                                api.set('content.text', html);
-                            })
-                            .fail(function (xhr, status, error) {
-                                api.set('content.text', status + ': ' + error);
-                            });
-
-                        return 'Loading...';
-                    }
-                },
-
-                show: {
-                    delay: 700, effect: false
-                },
-
-                hide: {
-                    fixed: true, delay: 500
-                },
-
-                style: {
-                    classes: 'qtip-light qtip-bootstrap'
-                }
-            });
+            var link = $(this).attr('data-href');
+            window.location = link + "&sd=" + sd + "&ed=" + ed;
         });
     };
 
@@ -430,8 +501,14 @@ function Schedule(opts, resourceGroups) {
             cancel: 'td.reserved',
             distance: 20,
             start: function (event, ui) {
+                if (dragging) {
+                    return false;
+                }
                 startHref = '';
             }, selecting: function (event, ui) {
+                if (dragging) {
+                    return false;
+                }
                 select($(ui.selecting));
             }, unselecting: function (event, ui) {
                 select($(ui.unselecting));
@@ -452,19 +529,16 @@ function Schedule(opts, resourceGroups) {
     };
 
     this.makeReservationsMoveable = function (reservations) {
-        var sourceResourceId = null;
-        var referenceNumber = null;
-
-        reservations.find('td[draggable="true"]').on('dragstart', function (event) {
-            $(event.target).removeClass('clicked');
-            referenceNumber = $(event.target).attr('resid');
-            sourceResourceId = $(event.target).attr('data-resourceId');
-
-            event.originalEvent.dataTransfer.setData("text", event.target.id);
-        });
+        // var sourceResourceId = null;
+        // var referenceNumber = null;
 
         reservations.find('td.reservable').on('dragover dragleave drop', function (event) {
             event.preventDefault();
+            event.stopPropagation();
+
+            const data = JSON.parse(event.originalEvent.dataTransfer.getData("text"));
+            var referenceNumber = data.referenceNumber;
+            var sourceResourceId = data.resourceId;
 
             var targetSlot = $(event.target);
 

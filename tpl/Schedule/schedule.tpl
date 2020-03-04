@@ -75,7 +75,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
         data-min="{$Slot->BeginDate()->Timestamp()}"
         data-max="{$Slot->EndDate()->Timestamp()}"
-        class="restricted slot">&nbsp;</td>
+        class="restricted slot">&nbsp;
+    </td>
 {/function}
 
 {function name=displayUnreservable}
@@ -312,10 +313,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                             <div id="resettable">
                                 <div class="input-field">
-                                    <label for="maxCapactiy">{translate key=MinimumCapacity}</label>
-                                    <input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
-                                           class="input-sm" {formname key=MAX_PARTICIPANTS}
-                                           value="{$MaxParticipantsFilter}"/>
+                                    <label for="minCapacity">{translate key=MinimumCapacity}</label>
+                                    <input type='number' min='0' id='minCapacity' size='5' maxlength='5'
+                                           class="input-sm" {formname key=MIN_CAPACITY}
+                                           value="{$MinCapacityFilter}"/>
                                 </div>
 
                                 <div class="input-field">
@@ -391,6 +392,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {csrf_token}
 </form>
 
+<form id="fetchReservationsForm">
+    <input type="hidden" {formname key=BEGIN_DATE} value="{formatdate date=$FirstDate key=system}"/>
+    <input type="hidden" {formname key=END_DATE} value="{formatdate date=$LastDate key=system}"/>
+    <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+    {foreach from=$SpecificDates item=d}
+        <input type="hidden" {formname key=SPECIFIC_DATES multi=true} value="{formatdate date=$d key=system}"/>
+    {/foreach}
+    <input type="hidden" {formname key=MIN_CAPACITY} value="{$MinCapacityFilter}"/>
+    <input type="hidden" {formname key=RESOURCE_TYPE_ID} value="{$ResourceTypeIdFilter}" />
+    {foreach from=$ResourceAttributes item=attribute}
+        <input type="hidden" name="RESOURCE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}" />
+        {/foreach}
+    {foreach from=$ResourceTypeAttributes item=attribute}
+        <input type="hidden" name="RESOURCE_TYPE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}" />
+        {/foreach}
+    {foreach from=$ResourceIds item=id}
+        <input type="hidden" {formname key=RESOURCE_ID multi=true} value="{$id}" />
+    {/foreach}
+    {csrf_token}
+</form>
+
 {include file="javascript-includes.tpl" Qtip=true FloatThead=true Select2=true Owl=true}
 
 {block name="scripts-before"}
@@ -417,7 +439,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 scriptUrl: '{$ScriptUrl}',
                 selectedResources: [{','|implode:$ResourceIds}],
                 specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-                disableSelectable: '{$IsMobile}'
+                disableSelectable: '{$IsMobile}',
+                reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations"
             };
             var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
             {if $AllowGuestBooking}
@@ -445,7 +468,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
                 updateReservationUrl: "{$Path}ajax/reservation_move.php",
                 lockTableHead: {$LockTableHead},
-                disableSelectable: '{$IsMobile}'
+                disableSelectable: '{$IsMobile}',
+                reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations"
             };
 
             var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

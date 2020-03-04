@@ -87,6 +87,24 @@ class ReservationServiceTests extends TestBase
 		$this->assertTrue(in_array($blackout3, $reservationListing->blackouts));
 	}
 
+	public function testSearchGetsReservationsAndBlackoutsForRange()
+	{
+	    $repository = new FakeReservationViewRepository();
+	    $repository->_Blackouts = [new TestBlackoutItemView(222, Date::Now(), Date::Now(), 1)];
+	    $repository->_Reservations  = [new TestReservationItemView(111, Date::Now(), Date::Now(), 1)];
+        $service = new ReservationService($repository, new NullReservationListingFactory());
+
+        $scheduleId = 1;
+        $range = DateRange::Create("2020-03-01 12:00", "2020-03-07 12:00", "UTC");
+        $resourceIds = [];
+
+        $items = $service->Search($range, $scheduleId, $resourceIds);
+
+        $this->assertEquals(2, count($items));
+        $this->assertEquals(111, $items[0]->Id());
+        $this->assertEquals(222, $items[1]->Id());
+	}
+
 }
 
 class TestReservationListing implements IMutableReservationListing

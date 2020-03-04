@@ -72,3 +72,46 @@ interface IMutableReservationListing extends IReservationListing
 	 */
 	public function AddBlackout($blackout);
 }
+
+class EmptyReservationListing implements IReservationListing {
+
+    /**
+     * @inheritDoc
+     */
+    public function Count()
+    {
+        return 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function Reservations()
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function OnDate($date)
+    {
+        return new EmptyReservationListing();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function ForResource($resourceId)
+    {
+        return new EmptyReservationListing();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function OnDateForResource(Date $date, $resourceId)
+    {
+        return new EmptyReservationListing();
+    }
+}

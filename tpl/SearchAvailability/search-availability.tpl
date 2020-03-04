@@ -108,7 +108,7 @@
                         <label for="maxCapacity">{translate key=MinimumCapacity}</label>
                         <input type='number' id='maxCapacity' min='0' size='5' maxlength='5'
                                class="input-sm" {formname key=MAX_PARTICIPANTS}
-                               value="{$MaxParticipantsFilter}"/>
+                               value="{$MinCapacityFilter}"/>
                     </div>
                     <div class="col s6 input-field">
                         <label for="resourceType" class="active">{translate key=ResourceType}</label>

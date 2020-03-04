@@ -1423,7 +1423,7 @@ table.reservations.mobile div.reservable {
   border: dashed 1px #585754;
   color: #585754;
   line-height: 20px;
-  background-color: #fff !important;
+  background-color: #fff;
   padding-left: 3px;
 }
 table.reservations td {
@@ -1434,29 +1434,29 @@ table.reservations td {
 }
 table.reservations td.resourcename {
   padding: 1px 3px;
-  background-color: #EDEDED !important;
-  color: #999999 !important;
+  background-color: #EDEDED;
+  color: #999999;
   width: 150px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 table.reservations td.resourcename a {
-  color: #0772A1 !important;
+  color: #0772A1;
   text-decoration: none;
 }
 table.reservations td.resourcename a:hover {
-  color: #3BA3D0 !important;
+  color: #3BA3D0;
 }
 table.reservations td.resdate {
   width: 150px;
   padding: 0 3px;
-  background-color: #36648B !important;
-  color: #F0F0F0 !important;
+  background-color: #36648B;
+  color: #F0F0F0;
 }
 table.reservations tr.today td.resdate,
 table.reservations td.today {
-  color: #FFFFFF !important;
-  background-color: #5199d1 !important;
+  color: #FFFFFF;
+  background-color: #5199d1;
 }
 .reservations.condensed td.resdate {
   width: auto;
@@ -1476,52 +1476,61 @@ table.reservations td.today {
   border: dashed 1px #585754;
   color: #585754;
   line-height: 30px;
-  background-color: #fff !important;
+  background-color: #fff;
 }
 .reservations.condensed div.reservable:hover {
-  background-color: #E9E9E9 !important;
+  background-color: #E9E9E9;
 }
 #reservations .mobile {
   font-size: 0.8em;
 }
 #reservations .mobile .resdate {
-  background-color: #4279A5 !important;
+  background-color: #4279A5;
   width: auto;
 }
 #reservations .mobile td.today {
-  background-color: #5199d1 !important;
+  background-color: #5199d1;
 }
 #reservations .mobile .slot {
   padding: 2px;
 }
 tr.today td.reslabel {
-  background-color: #cfcfcf !important;
+  background-color: #cfcfcf;
 }
 .slot {
   min-width: 1px;
   max-width: 1px;
   overflow: hidden;
 }
+.event {
+  overflow: hidden;
+  position: absolute;
+  background-color: #000;
+  height: 30px;
+  border-top: solid 1px #36648B;
+  border-left: solid 1px #36648B;
+  z-index: 2;
+}
 td.reslabel {
   padding-left: 2px;
-  background-color: #EDEDED !important;
-  color: #333333 !important;
+  background-color: #EDEDED;
+  color: #333333;
 }
 tr.today td.reslabel {
-  color: #000000 !important;
+  color: #000000;
 }
 .unreservable {
-  background-color: #CF9D9B !important;
-  color: #fff !important;
+  background-color: #CF9D9B;
+  color: #fff;
 }
 td.reservable,
 div.reservable {
-  background-color: #FFF !important;
-  color: #333 !important;
+  background-color: #FFF;
+  color: #333;
 }
 .reserved {
-  background-color: #408AD2 !important;
-  color: #fff !important;
+  background-color: #408AD2;
+  color: #fff;
 }
 td.reserved {
   padding-left: 1px;
@@ -1529,54 +1538,57 @@ td.reserved {
 @keyframes droppedpulse {
   0%,
   100% {
-    background-color: #6F9BAE !important;
+    background-color: #6F9B;
   }
   50% {
-    background-color: transparent !important;
+    background-color: transparent;
   }
 }
 td.dropped {
   animation: droppedpulse 1s infinite;
 }
 .reserved.hilite {
-  background-color: #59A8EF !important;
+  background-color: #59A8EF;
 }
 .reserved.mine {
-  background-color: #6F9BAE !important;
+  background-color: #6F9BAE;
 }
 .reserved.mine.hilite {
-  background-color: #63AFD0 !important;
-  color: #ffffff !important;
+  background-color: #63AFD0;
+  color: #ffffff;
 }
 .reserved.participating {
-  background-color: #875cae !important;
+  background-color: #875cae;
 }
 .reserved.participating.hilite {
-  background-color: #a979d1 !important;
+  background-color: #a979d1;
+}
+.past {
+  opacity: 0.6;
 }
 .reserved.pending {
-  background-color: #ffb540 !important;
-  color: black !important;
+  background-color: #ffb540;
+  color: black;
 }
 .reserved.pending.hilite {
-  background-color: #ffc973 !important;
+  background-color: #ffc973;
 }
 .reservable.hilite,
 #reservations .ui-selecting {
-  background-color: #23BF35 !important;
+  background-color: #23BF35;
 }
 .hilite {
-  cursor: pointer !important;
+  cursor: pointer;
 }
 .reservable.clicked,
 #reservations .ui-selected {
-  background-color: #259433 !important;
+  background-color: #259433;
 }
 .reserved.clicked {
-  background-color: #1979CF !important;
+  background-color: #1979CF;
 }
 .pasttime {
-  background-color: #BDBDBD !important;
+  background-color: #BDBDBD;
 }
 .restricted {
   background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient(to bottom, #eee, #999);
@@ -1609,7 +1621,7 @@ td.dropped {
   font-weight: bold;
 }
 table.reservations td.resourcename.hilite {
-  background-color: #fbffc2 !important;
+  background-color: #fbffc2;
 }
 div.legend {
   line-height: 22px;
@@ -1765,11 +1777,6 @@ a.toggle-sidebar {
 }
 #reservations {
   position: relative;
-}
-.test {
-  position: absolute;
-  background-color: #000;
-  height: 30px;
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
