@@ -176,6 +176,36 @@ function Schedule(opts, resourceGroups) {
                         return;
                     }
 
+                    const className = res.IsReservation ? "reserved" : "unreservable";
+                    const mine = res.IsOwner ? "mine" : "";
+                    const past = res.IsPast ? "past" : "";
+                    const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
+                    const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
+                    const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
+
+                    if (opts.scheduleStyle === ScheduleCondensed) {
+                        if (Number.parseInt(t.data("resourceid")) !== Number.parseInt(res.ResourceId))
+                        {
+                            return;
+                        }
+                        const startsBefore = res.BufferedStartDate < tableMin;
+                        const endsAfter = res.BufferedEndDate > tableMax;
+                        let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
+                        let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
+                        const div = $(`<div 
+                                    class="${className} ${mine} ${past} condensed-event" 
+                                    style="${color}"
+                                    data-resid="${res.ReferenceNumber}">
+                                    <span>${startTime}-${endTime}</span>
+                                    ${res.Label}</div>`);
+
+                        t.append(div);
+                        if (res.IsReservation) {
+                            attachReservationEvents(div, res);
+                        }
+                        return;
+                    }
+
                     let startTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.StartDate + '"]:first');
                     let endTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.EndDate + '"]:first');
                     let calculatedAdjustment = 0;
@@ -201,12 +231,6 @@ function Schedule(opts, resourceGroups) {
                         width = endTd.position().left - startTd.position().left + calculatedAdjustment;
                     }
 
-                    const className = res.IsReservation ? "reserved" : "unreservable";
-                    const mine = res.IsOwner ? "mine" : "";
-                    const past = res.IsPast ? "past" : "";
-                    const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
-                    const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
-                    const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
                     const style = `left:${startTd.position().left}px; top:${startTd.position().top}px; width:${width}px; height:${height}px;`;
                     const div = $(`<div 
                                     class="${className} ${mine} ${past} event" 

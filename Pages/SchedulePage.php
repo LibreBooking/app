@@ -615,7 +615,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         $itemsAsJson = [];
         foreach($items as $item) {
-            $itemsAsJson[] = $item->AsDto($this->server->GetUserSession()->UserId);
+            $itemsAsJson[] = $item->AsDto($this->server->GetUserSession()->UserId, $this->server->GetUserSession()->Timezone);
         }
         $this->SetJson($itemsAsJson);
     }

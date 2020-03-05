@@ -1478,7 +1478,6 @@ table.reservations td.today {
 .reservations.condensed div.reservable {
   border: dashed 1px #585754;
   color: #585754;
-  line-height: 30px;
   background-color: #fff;
 }
 .reservations.condensed div.reservable:hover {

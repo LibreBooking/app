@@ -188,9 +188,10 @@ class ReservationListItem
 
     /**
      * @param $currentUserId int
+     * @param $timezone string
      * @return ReservationListItemDto
      */
-    public function AsDto(int $currentUserId)
+    public function AsDto(int $currentUserId, string $timezone)
     {
         $dto = new ReservationListItemDto();
         $dto->StartDate = $this->StartDate()->Timestamp();
@@ -212,6 +213,9 @@ class ReservationListItem
         $dto->IsOwner = $this->GetIsOwner($currentUserId);
         $dto->Label = $this->GetLabel();
         $dto->IsPast = $this->BufferedEndDate()->LessThan(Date::Now());
+        $format = Resources::GetInstance()->GetDateFormat('period_time');
+        $dto->StartTime = $this->StartDate()->ToTimezone($timezone)->Format($format);
+        $dto->EndTime =  $this->EndDate()->ToTimezone($timezone)->Format($format);
 //        if (is_a($this->item, 'ReservationItemView')) {
 //            $dto->Label = SlotLabelFactory::Create($this->item);
 //            $dto->IsPending = $this->item->RequiresApproval;
@@ -441,4 +445,12 @@ class ReservationListItemDto
      * @var bool
      */
     public $IsPast;
+    /**
+     * @var string
+     */
+    public $StartTime;
+    /**
+     * @var string
+     */
+    public $EndTime;
 }
