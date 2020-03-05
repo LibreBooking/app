@@ -110,7 +110,7 @@ function Schedule(opts, resourceGroups) {
             var qTipElement = div;
 
             if (div.is('div')) {
-                var fa =div.find('.fa');
+                var fa = div.find('.fa');
                 if (fa.length > 0) {
                     qTipElement = div.find('.fa');
 
@@ -155,6 +155,11 @@ function Schedule(opts, resourceGroups) {
         }
 
         ajaxPost($("#fetchReservationsForm"), options.reservationLoadUrl, null, function (reservationList) {
+            const ScheduleStandard = "0";
+            const ScheduleWide = "1";
+            const ScheduleTall = "2";
+            const ScheduleCondensed = "3";
+
             reservationList.forEach(res => {
                 $('#reservations').find(".reservations").each(function () {
                     const t = $(this);
@@ -167,65 +172,79 @@ function Schedule(opts, resourceGroups) {
                         (res.StartDate <= tableMin && res.EndDate >= tableMax)
                     );
 
-                    if (rendersWithin) {
-                        let startTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.StartDate + '"]:first');
-                        let endTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.EndDate + '"]:first');
-                        let calculatedAdjustment = 0;
+                    if (!rendersWithin) {
+                        return;
+                    }
 
-                        if (startTd.length === 0) {
-                            startTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').first();
-                        }
-                        if (endTd.length === 0) {
-                            endTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').last();
-                            calculatedAdjustment = endTd.outerWidth();
-                        }
-                        if (startTd.length === 0 || endTd.length === 0) {
-                            // does not fit in this reservation table
-                            return;
-                        }
-                        const height = startTd.outerHeight();
-                        const width = endTd.position().left - startTd.position().left + calculatedAdjustment;
-                        const className = res.IsReservation ? "reserved" : "unreservable";
-                        const mine = res.IsOwner ? "mine" : "";
-                        const past = res.IsPast ? "past" : "";
-                        const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
-                        const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
-                        const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
-                        const style = `left:${startTd.position().left}px; top:${startTd.position().top}px; width:${width}px; height:${height}px;`;
-                        const div = $(`<div 
+                    let startTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.StartDate + '"]:first');
+                    let endTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.EndDate + '"]:first');
+                    let calculatedAdjustment = 0;
+
+                    if (startTd.length === 0) {
+                        startTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').first();
+                    }
+                    if (endTd.length === 0) {
+                        endTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').last();
+                        calculatedAdjustment = endTd.outerWidth();
+                    }
+                    if (startTd.length === 0 || endTd.length === 0) {
+                        // does not fit in this reservation table
+                        return;
+                    }
+                    let width = 0;
+                    let height = 0;
+                    if (opts.scheduleStyle === ScheduleTall) {
+                        width = startTd.outerWidth();
+                        height = endTd.position().top - startTd.position().top;
+                    } else {
+                        height = startTd.outerHeight();
+                        width = endTd.position().left - startTd.position().left + calculatedAdjustment;
+                    }
+
+                    const className = res.IsReservation ? "reserved" : "unreservable";
+                    const mine = res.IsOwner ? "mine" : "";
+                    const past = res.IsPast ? "past" : "";
+                    const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
+                    const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
+                    const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
+                    const style = `left:${startTd.position().left}px; top:${startTd.position().top}px; width:${width}px; height:${height}px;`;
+                    const div = $(`<div 
                                     class="${className} ${mine} ${past} event" 
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     ${draggableAttribute}>
                                     ${res.Label}</div>`);
-                        // const div = $('<div class="reserved test" data-resid="' + res.ReferenceNumber +'">' +  res.Label +'</div>');
+                    // const div = $('<div class="reserved test" data-resid="' + res.ReferenceNumber +'">' +  res.Label +'</div>');
 
-                        if (res.IsReservation) {
-                            attachReservationEvents(div, res);
-                        }
-
-
-                        t.append(div);
-
-                        if (isDraggable) {
-                            div.on('dragstart', function (event) {
-                                div.qtip("hide");
-                                $(event.target).removeClass('clicked');
-                                const data = JSON.stringify({referenceNumber: res.ReferenceNumber, resourceId: res.ResourceId});
-                                // event.data.referenceNumber = res.ReferenceNumber;
-                                // event.data.sourceResourceId = res.ResourceId;
-                                event.originalEvent.dataTransfer.setData("text", data);
-                            });
-
-                            // div.on("drop", function(event) {
-                            //     dragging = false;
-                            // });
-                        }
-
-
-                        // console.log("width", width);
-                        // div.css({left: startTd.position().left, top: startTd.position().top, width: width});
+                    if (res.IsReservation) {
+                        attachReservationEvents(div, res);
                     }
+
+
+                    t.append(div);
+
+                    if (isDraggable) {
+                        div.on('dragstart', function (event) {
+                            div.qtip("hide");
+                            $(event.target).removeClass('clicked');
+                            const data = JSON.stringify({
+                                referenceNumber: res.ReferenceNumber,
+                                resourceId: res.ResourceId
+                            });
+                            // event.data.referenceNumber = res.ReferenceNumber;
+                            // event.data.sourceResourceId = res.ResourceId;
+                            event.originalEvent.dataTransfer.setData("text", data);
+                        });
+
+                        // div.on("drop", function(event) {
+                        //     dragging = false;
+                        // });
+                    }
+
+
+                    // console.log("width", width);
+                    // div.css({left: startTd.position().left, top: startTd.position().top, width: width});
+
                 });
             });
         });
@@ -439,7 +458,9 @@ function Schedule(opts, resourceGroups) {
                 }
                 selectingTds = false;
             });
-            reservations.find("td.reservable").on("selectstart", e => { return false; });
+            reservations.find("td.reservable").on("selectstart", e => {
+                return false;
+            });
             this.makeReservationsMoveable(reservations);
         }
 

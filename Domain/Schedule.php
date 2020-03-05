@@ -219,9 +219,9 @@ class Schedule implements ISchedule
      */
     public function SetAdminGroupId($adminGroupId)
     {
-    	if (empty($adminGroupId)) {
-    		$adminGroupId = null;
-		}
+        if (empty($adminGroupId)) {
+            $adminGroupId = null;
+        }
         $this->_adminGroupId = $adminGroupId;
     }
 
@@ -406,11 +406,16 @@ class NullSchedule extends Schedule
     }
 }
 
-
 class ScheduleStyle
 {
     const Standard = 0;
     const Wide = 1;
     const Tall = 2;
     const CondensedWeek = 3;
+
+    public static function IsKnown($value)
+    {
+        $val = intval($value);
+        return in_array($val, [0, 1, 2, 3]);
+    }
 }

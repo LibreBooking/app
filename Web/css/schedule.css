@@ -64,6 +64,9 @@ table.reservations.mobile div.reservable {
   background-color: #fff;
   padding-left: 3px;
 }
+table.reservations {
+  position: relative;
+}
 table.reservations td {
   border: solid #36648B 1px;
   height: 30px;

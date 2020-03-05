@@ -11,57 +11,58 @@
     {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
     {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
     {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
-{*    <div style="position:relative;">*}
-        <table style="position:relative;" class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
-            <thead>
-            {if $date->DateEquals($TodaysDate)}
-            <tr class="today">
-                {else}
-            <tr>
-                {/if}
-                <td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
-                {foreach from=$periods.$ts item=period}
-                    <td class="reslabel"
-                        colspan="{$period->Span()}">{$period->Label($date)}</td>
-                {/foreach}
-            </tr>
-            </thead>
-            <tbody>
-            {foreach from=$Resources item=resource name=resource_loop}
-                {assign var=resourceId value=$resource->Id}
-{*                {assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
-{*                {assign var=slots value=$DailyLayout->GetSlots($date)}*}
-                {assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-                <tr class="slots">
-                    <td class="resourcename"
-                        {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
-                        {if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
-                            <a href="{$href}" resourceId="{$resource->Id}"
-                               class="resourceNameSelector"
-                               {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
-                        {else}
-                            <span resourceId="{$resource->Id}" resourceId="{$resource->Id}"
-                                  class="resourceNameSelector"
-                                  {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
-                        {/if}
-                    </td>
-                    {foreach from=$slots.$ts item=Slot}
-                        {assign var=slotRef value="{$Slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                        <td class="reservable clickres slot"
-                            ref="{$slotRef}"
-                        data-href="{$href}"
+    {*    <div style="position:relative;">*}
+    <table class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}"
+           data-max="{$max}">
+        <thead>
+        {if $date->DateEquals($TodaysDate)}
+        <tr class="today">
+            {else}
+        <tr>
+            {/if}
+            <td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
+            {foreach from=$periods.$ts item=period}
+                <td class="reslabel"
+                    colspan="{$period->Span()}">{$period->Label($date)}</td>
+            {/foreach}
+        </tr>
+        </thead>
+        <tbody>
+        {foreach from=$Resources item=resource name=resource_loop}
+            {assign var=resourceId value=$resource->Id}
+            {*                {assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
+            {*                {assign var=slots value=$DailyLayout->GetSlots($date)}*}
+            {assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
+            <tr class="slots">
+                <td class="resourcename"
+                    {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
+                    {if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
+                        <a href="{$href}" resourceId="{$resource->Id}"
+                           class="resourceNameSelector"
+                           {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
+                    {else}
+                        <span resourceId="{$resource->Id}" resourceId="{$resource->Id}"
+                              class="resourceNameSelector"
+                              {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
+                    {/if}
+                </td>
+                {foreach from=$slots.$ts item=Slot}
+                    {assign var=slotRef value="{$Slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
+                    <td class="reservable clickres slot"
+                        ref="{$slotRef}"
+                        data-href="{$href|escape:url}"
                         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
                         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
                         data-min="{$Slot->BeginDate()->Timestamp()}"
                         data-max="{$Slot->EndDate()->Timestamp()}"
-                        data-resourceId="{$resourceId}">&nbsp;</td>
-
-{*                        {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}*}
-                    {/foreach}
-                </tr>
-            {/foreach}
-            </tbody>
-        </table>
-{*    </div>*}
+                        data-resourceId="{$resourceId}">&nbsp;
+                    </td>
+                    {*                        {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}*}
+                {/foreach}
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {*    </div>*}
     {flush}
 {/foreach}

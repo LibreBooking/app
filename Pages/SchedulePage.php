@@ -446,17 +446,18 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function GetScheduleStyle($scheduleId)
     {
         $cookie = $this->server->GetCookie("schedule-style-$scheduleId");
-        if ($cookie != null) {
+        if ($cookie != null && ScheduleStyle::IsKnown($cookie)) {
             return $cookie;
         }
 
         return null;
     }
 
-    public function SetScheduleStyle($direction)
+    public function SetScheduleStyle($style)
     {
-        $this->ScheduleStyle = $direction;
+        $this->ScheduleStyle = $style;
         $this->Set('CookieName', 'schedule-style-' . $this->GetVar('ScheduleId'));
+        $this->Set("ScheduleStyle", $style);
     }
 
     /**
