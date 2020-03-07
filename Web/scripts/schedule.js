@@ -92,33 +92,39 @@ function Schedule(opts, resourceGroups) {
             var resid = reservation.ReferenceNumber;
             var pattern = 'div.reserved[data-resid="' + resid + '"]';
 
+            div.click(function (e) {
+                var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
+                window.location = reservationUrl;
+            });
+
+            if (opts.isMobileView) {
+                return;
+            }
+
             div.hover(function (e) {
                 $(pattern, reservations).addClass('hilite');
             }, function (e) {
                 $(pattern, reservations).removeClass('hilite');
             });
 
-            div.click(function (e) {
-                var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
-                window.location = reservationUrl;
-            });
+
 
             // div.on('mouseenter', function(e) {
             //     e.stopPropagation();
             // });
 
             var qTipElement = div;
-
-            if (div.is('div')) {
-                var fa = div.find('.fa');
-                if (fa.length > 0) {
-                    qTipElement = div.find('.fa');
-
-                    qTipElement.click(function (e) {
-                        e.stopPropagation();
-                    });
-                }
-            }
+            //
+            // if (opts.isMobileView) {
+            //     var fa = div.find('.fa');
+            //     if (fa.length > 0) {
+            //         qTipElement = div.find('.fa');
+            //
+            //         qTipElement.click(function (e) {
+            //             e.stopPropagation();
+            //         });
+            //     }
+            // }
 
             qTipElement.qtip({
                 position: {
@@ -141,7 +147,7 @@ function Schedule(opts, resourceGroups) {
                 },
 
                 show: {
-                    delay: 700, effect: false
+                    delay: 700, effect: false, event: "click"
                 },
 
                 hide: {
@@ -183,7 +189,7 @@ function Schedule(opts, resourceGroups) {
                     const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
                     const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
 
-                    if (opts.scheduleStyle === ScheduleCondensed) {
+                    if (opts.scheduleStyle === ScheduleCondensed || (opts.isMobileView === "1" && opts.scheduleStyle === ScheduleStandard)) {
                         if (Number.parseInt(t.data("resourceid")) !== Number.parseInt(res.ResourceId))
                         {
                             return;

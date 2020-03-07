@@ -442,7 +442,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 disableSelectable: '{$IsMobile}',
                 reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
                 scheduleStyle: "{$ScheduleStyle}",
-                midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}"
+                midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
+                isMobileView: "{$IsMobile}"
             };
             var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
             {if $AllowGuestBooking}
@@ -473,7 +474,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 disableSelectable: '{$IsMobile}',
                 reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
                 scheduleStyle: "{$ScheduleStyle}",
-                midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}"
+                midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
+                isMobileView: "{$IsMobile}"
             };
 
             var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

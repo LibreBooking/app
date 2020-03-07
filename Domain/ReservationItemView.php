@@ -970,7 +970,7 @@ class ReservationItemView implements IReservedItemView
     {
         $color = $this->GetColor();
         if (!empty($color)) {
-            $contrastingColor = new AdjustedColor($color, 50);
+            $contrastingColor = new AdjustedColor($color, -.3);
             return $contrastingColor->__toString();
         }
 

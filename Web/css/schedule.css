@@ -162,6 +162,7 @@ tr.today td.reslabel {
 .unreservable {
   background-color: #CF9D9B;
   color: #fff;
+  border-color: #482423;
 }
 td.reservable,
 div.reservable {
@@ -361,12 +362,20 @@ ul.jqtree-tree .jqtree-toggler {
 #page-schedule a {
   text-decoration: none;
 }
-.reservations.mobile .reserved {
+.reservations.mobile .condensed-event {
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
   padding: 1px 2px;
-  margin: 1px;
+  margin: 3px;
+  border-style: solid;
+  border-width: 1px;
+}
+.reservations.mobile .reservable {
+  margin: 3px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
 }
 a.toggle-sidebar {
   color: #585754;

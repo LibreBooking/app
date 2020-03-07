@@ -140,6 +140,7 @@ tr.today td.reslabel {
 .unreservable {
   background-color: #CF9D9B;
   color: #fff;
+  border-color: darken(#CF9D9B, 50);
 }
 
 td.reservable, div.reservable {
@@ -404,64 +405,73 @@ ul.jqtree-tree .jqtree-toggler {
   }
 }
 
-.reservations.mobile .reserved {
-  .rounded(1px);
-  padding: 1px 2px;
-  margin: 1px;
-}
+.reservations.mobile {
+  .condensed-event {
+    .rounded(1px);
+    padding: 1px 2px;
+    margin: 3px;
+    border-style:solid;
+    border-width: 1px;
+  }
 
-a.toggle-sidebar {
-  color: @dark-gray;
-}
-
-.no-resource-warning {
-  padding: 10px;
-  .rounded(2px);
-}
-
-#showFullWeek {
-  display: block;
-}
-
-.schedule-legend {
-  margin-bottom: 10px;
-}
-
-#individualDatesGo {
-  display: none;
-}
-
-#individualDatesList {
-  display: none;
-
-  div {
-    display: inline-block;
-    padding-right: 5px;
+  .reservable {
+    margin: 3px;
+    .rounded(1px);
   }
 }
 
-#scheduleListDropdown .caret {
-  margin-left: 0;
-  border-top: 8px dashed;
-  border-right: 8px solid transparent;
-  border-left: 8px solid transparent;
-}
+  a.toggle-sidebar {
+    color: @dark-gray;
+  }
 
-.reservation-new, .reservation-updated {
-  .rounded(2px);
-  font-size: .9rem;
-  text-transform: uppercase;
-  background-color: @primary-green;
-  padding: 2px;
-  margin: 0 1px;
-  color: #000;
-}
+  .no-resource-warning {
+    padding: 10px;
+    .rounded(2px);
+  }
 
-.reservation-updated {
-  background-color: @blue-gray;
-  color: #000;
-}
+  #showFullWeek {
+    display: block;
+  }
 
-#reservations {
-  position: relative;
-}
+  .schedule-legend {
+    margin-bottom: 10px;
+  }
+
+  #individualDatesGo {
+    display: none;
+  }
+
+  #individualDatesList {
+    display: none;
+
+    div {
+      display: inline-block;
+      padding-right: 5px;
+    }
+  }
+
+  #scheduleListDropdown .caret {
+    margin-left: 0;
+    border-top: 8px dashed;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+  }
+
+  .reservation-new, .reservation-updated {
+    .rounded(2px);
+    font-size: .9rem;
+    text-transform: uppercase;
+    background-color: @primary-green;
+    padding: 2px;
+    margin: 0 1px;
+    color: #000;
+  }
+
+  .reservation-updated {
+    background-color: @blue-gray;
+    color: #000;
+  }
+
+  #reservations {
+    position: relative;
+  }

@@ -135,7 +135,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {*                                {/foreach}*}
 {*                            </td>*}
 {*                        {else}*}
-                            {assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
+                            {assign var=href value="{$CreateReservationPage}?rid={$resourceId}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
                             <td style="vertical-align: top;" class=""
                                 ref="{$href}&rd={formatdate date=$date key=url}" data-href="{$href}"
                                 data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"
@@ -147,7 +147,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     <i class="fa fa-plus-circle"></i> {translate key=CreateReservation}
                                     <input type="hidden" class="href" value="{$href}"/>
                                 </div>
-                                <div class="reservations" data-min="{$min}" data-max="{$max}" data-resourceid="{$resource->Id}"></div>
+                                <div class="reservations" data-min="{$min}" data-max="{$max}" data-resourceid="{$resourceId}"></div>
                             </td>
 {*                        {/if}*}
                     {/foreach}

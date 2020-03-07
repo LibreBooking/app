@@ -53,25 +53,41 @@ class AdjustedColor
      */
     private $steps;
 
-    public function __construct($sourceColor, $steps = 50)
+    public function __construct($sourceColor, $steps = 0)
     {
         $this->sourceColor = str_replace('#', '', $sourceColor);
         $this->steps = $steps;
     }
 
     public function GetHex(){
-        if(!preg_match('/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i', $this->sourceColor, $parts))
-        {
-            return '';
+        $hexCode = $this->sourceColor;
+
+        if (strlen($hexCode) == 3) {
+            $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
         }
-        $out = ""; // Prepare to fill with the results
-        for($i = 1; $i <= 3; $i++) {
-            $parts[$i] = hexdec($parts[$i]);
-            $parts[$i] = round($parts[$i] * $this->steps/100); // 80/100 = 80%, i.e. 20% darker
-            // Increase or decrease it to fit your needs
-            $out .= str_pad(dechex($parts[$i]), 2, '0', STR_PAD_LEFT);
+
+        $hexCode = array_map('hexdec', str_split($hexCode, 2));
+
+        foreach ($hexCode as & $color) {
+            $adjustableLimit = $this->steps < 0 ? $color : 255 - $color;
+            $adjustAmount = ceil($adjustableLimit * $this->steps);
+
+            $color = str_pad(dechex($color + $adjustAmount), 2, '0', STR_PAD_LEFT);
         }
-        return '#' . $out;
+
+        return '#' . implode($hexCode);
+//        if(!preg_match('/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i', $this->sourceColor, $parts))
+//        {
+//            return '';
+//        }
+//        $out = ""; // Prepare to fill with the results
+//        for($i = 1; $i <= 3; $i++) {
+//            $parts[$i] = hexdec($parts[$i]);
+//            $parts[$i] = round($parts[$i] * $this->steps/100); // 80/100 = 80%, i.e. 20% darker
+//            // Increase or decrease it to fit your needs
+//            $out .= str_pad(dechex($parts[$i]), 2, '0', STR_PAD_LEFT);
+//        }
+//        return '#' . $out;
     }
 
     public function __toString()
