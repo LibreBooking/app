@@ -25,23 +25,6 @@ class DisplaySlotFactory
 {
     public function GetFunction(SchedulePeriod $slot, $accessAllowed = false, $functionSuffix = '')
     {
-//        if ($slot->IsReserved()) {
-//            if ($this->IsMyReservation($slot)) {
-//                return "displayMyReserved$functionSuffix";
-//            }
-//            elseif ($this->AmIParticipating($slot)) {
-//                return "displayMyParticipating$functionSuffix";
-//            }
-//			elseif ($this->IsAdminFor($slot))
-//            {
-//                return "displayAdminReserved$functionSuffix";
-//            }
-//            else {
-//
-//                return "displayReserved$functionSuffix";
-//            }
-//        }
-//        else {
             if (!$accessAllowed) {
                 return "displayRestricted$functionSuffix";
             }
@@ -58,7 +41,6 @@ class DisplaySlotFactory
                     }
                 }
             }
-//        }
 
         return "displayUnreservable$functionSuffix";
     }

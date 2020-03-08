@@ -11,7 +11,6 @@
     {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
     {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
     {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
-    {*    <div style="position:relative;">*}
     <table class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}"
            data-max="{$max}">
         <thead>
@@ -30,8 +29,6 @@
         <tbody>
         {foreach from=$Resources item=resource name=resource_loop}
             {assign var=resourceId value=$resource->Id}
-            {*                {assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
-            {*                {assign var=slots value=$DailyLayout->GetSlots($date)}*}
             {assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
             <tr class="slots">
                 <td class="resourcename"
@@ -54,6 +51,5 @@
         {/foreach}
         </tbody>
     </table>
-    {*    </div>*}
     {flush}
 {/foreach}

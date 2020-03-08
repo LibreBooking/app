@@ -73,16 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {foreach from=$Resources item=resource name=resource_loop}
                         {assign var=resourceId value=$resource->Id}
                         {assign var=slotRef value="{$period->BeginDate()->Format('YmdHis')}{$resourceId}"}
-{*                        <td class="reservable clickres slot"*}
-{*                            ref="{$slotRef}"*}
-{*                            data-href="{$href|escape:url}"*}
-{*                            data-start="{$period->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"*}
-{*                            data-end="{$period->EndDate()->Format('Y-m-d H:i:s')|escape:url}"*}
-{*                            data-min="{$period->BeginDate()->Timestamp()}"*}
-{*                            data-max="{$period->EndDate()->Timestamp()}"*}
-{*                            data-resourceId="{$resourceId}">&nbsp;</td>*}
                         {displaySlot Slot=$period Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
-
                     {/foreach}
                 </tr>
             {/foreach}
@@ -94,32 +85,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name="scripts-before"}
-{*    <script type="text/javascript">*}
-
-{*        $(document).ready(function () {*}
-{*            var rows = new Object();*}
-{*            {foreach from=$Resources item=resource name=resource_loop}*}
-{*            {foreach from=$BoundDates item=date}*}
-{*            {assign var=resourceId value=$resource->Id}*}
-{*            {assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
-{*            {assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}*}
-
-{*            {foreach from=$slots item=slot name=slot_loop}*}
-{*            {assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}*}
-{*            {capture assign="slotContent"}*}
-{*            {call displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row' ResourceId=$resourceId}*}
-{*            {/capture}*}
-{*            if (!rows['#{$slot->BeginSlotId()}']) {*}
-{*                rows['#{$slot->BeginSlotId()}'] = [];*}
-{*            }*}
-{*            rows['#{$slot->BeginSlotId()}'].push('{$slotContent|trim|regex_replace:"/[\r\t\n]/":" "}');*}
-{*            {/foreach}*}
-{*            {/foreach}*}
-{*            {/foreach}*}
-
-{*            $.each(rows, function (index, item) {*}
-{*                $(index).find('td:last').after(item.join(''));*}
-{*            });*}
-{*        })*}
-{*    </script>*}
 {/block}

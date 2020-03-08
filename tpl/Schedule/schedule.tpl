@@ -19,36 +19,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {* All of the slot display formatting *}
 
-{function name=displayGeneralReserved}
-    {if $Slot->IsPending()}
-        {assign var=class value='pending'}
-    {elseif $Slot->HasCustomColor()}
-        {assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;"'}
-    {/if}
-    {assign var=badge value=''}
-    {if $Slot->IsNew()}{assign var=badge value='<span class="reservation-new">'|cat:{translate key="New"}|cat:'</span>'}{/if}
-    {if $Slot->IsUpdated()}{assign var=badge value='<span class="reservation-updated">'|cat:{translate key="Updated"}|cat:'</span>'}{/if}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} {$OwnershipClass} clickres slot"
-        resid="{$Slot->Id()}" {$color} {if $Draggable}draggable="true"{/if} data-resourceId="{$ResourceId}"
-        id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$badge}{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
-{/function}
-
-{function name=displayMyReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='mine' Draggable=true ResourceId=$ResourceId}
-{/function}
-
-{function name=displayAdminReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='admin' Draggable=true ResourceId=$ResourceId}
-{/function}
-
-{function name=displayMyParticipating}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='participating' ResourceId=$ResourceId}
-{/function}
-
-{function name=displayReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='' Draggable=$CanViewAdmin ResourceId=$ResourceId}
-{/function}
-
 {function name=displayPastTime}
     <td ref="{$slotRef}"
         class="pasttime slot"
@@ -61,14 +31,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayReservable}
-{*    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot"*}
-{*        data-href="{$Href}"*}
-{*        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"*}
-{*        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"*}
-{*        data-min="{$Slot->BeginDate()->Timestamp()}"*}
-{*        data-max="{$Slot->EndDate()->Timestamp()}"*}
-{*        data-resourceId="{$ResourceId}">&nbsp;*}
-{*    </td>*}
     <td class="reservable clickres slot"
         ref="{$slotRef}"
         data-href="{$href|escape:url}"
@@ -92,8 +54,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayUnreservable}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
-        class="unreservable slot">{$Slot->Label($SlotLabelFactory)|escape}</td>
+    <td ref="{$slotRef}"
+        class="unreservable slot"
+        data-href="{$href|escape:url}"
+        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+        data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}"
+        data-resourceId="{$resourceId}">&nbsp;</td>
 {/function}
 
 {function name=displaySlot}

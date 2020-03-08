@@ -72,23 +72,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
                         {assign var=slotRef value="{$Slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
                         {displaySlot Slot=$Slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
-
-                        {*                        <td class="reservable clickres slot"*}
-{*                            ref="{$slotRef}"*}
-{*                            data-href="{$href|escape:url}"*}
-{*                            data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"*}
-{*                            data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"*}
-{*                            data-min="{$Slot->BeginDate()->Timestamp()}"*}
-{*                            data-max="{$Slot->EndDate()->Timestamp()}"*}
-{*                            data-resourceId="{$resourceId}">&nbsp;*}
-                        </td>
                     {/foreach}
-                    {*						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
-                    {*						{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}*}
-                    {*						{foreach from=$slots item=slot}*}
-                    {*							{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}*}
-                    {*							{call displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}*}
-                    {*						{/foreach}*}
                 {/foreach}
             </tr>
         {/foreach}
