@@ -1415,19 +1415,25 @@ table.reservations {
   width: 100%;
   font-size: 0.85em;
   border: solid #36648B 1px;
-}
-table.reservations.mobile {
-  table-layout: fixed;
-}
-table.reservations.mobile div.reservable {
-  border: dashed 1px #585754;
-  color: #585754;
-  line-height: 20px;
-  background-color: #fff;
-  padding-left: 3px;
-}
-table.reservations {
   position: relative;
+}
+table.reservations td,
+table.reservations th {
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topright: 0;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-topleft: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 }
 table.reservations td {
   border: solid #36648B 1px;
@@ -1460,6 +1466,27 @@ table.reservations tr.today td.resdate,
 table.reservations td.today {
   color: #FFFFFF;
   background-color: #5199d1;
+}
+table.reservations tr.today td.reslabel {
+  background-color: #cfcfcf;
+}
+table.reservations td.reslabel {
+  padding-left: 2px;
+  background-color: #EDEDED;
+  color: #333333;
+}
+table.reservations tr.today td.reslabel {
+  color: #000000;
+}
+table.reservations.mobile {
+  table-layout: fixed;
+}
+table.reservations.mobile div.reservable {
+  border: dashed 1px #585754;
+  color: #585754;
+  line-height: 20px;
+  background-color: #fff;
+  padding-left: 3px;
 }
 .reservations.condensed td.resdate {
   width: auto;
@@ -1496,9 +1523,6 @@ table.reservations td.today {
 #reservations .mobile .slot {
   padding: 2px;
 }
-tr.today td.reslabel {
-  background-color: #cfcfcf;
-}
 .slot {
   min-width: 1px;
   max-width: 1px;
@@ -1512,14 +1536,6 @@ tr.today td.reslabel {
   border-top: solid 1px #36648B;
   border-left: solid 1px #36648B;
   z-index: 2;
-}
-td.reslabel {
-  padding-left: 2px;
-  background-color: #EDEDED;
-  color: #333333;
-}
-tr.today td.reslabel {
-  color: #000000;
 }
 .unreservable {
   background-color: #CF9D9B;

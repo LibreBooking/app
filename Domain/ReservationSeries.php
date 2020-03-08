@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/Reservation.php');
 require_once(ROOT_DIR . 'Domain/Values/ReservationAccessory.php');
 require_once(ROOT_DIR . 'Domain/Values/ReservationReminder.php');
+require_once(ROOT_DIR . 'Domain/Values/ReservationPastTimeConstraint.php');
 require_once(ROOT_DIR . 'Domain/ReservationAttachment.php');
 
 class ReservationSeries

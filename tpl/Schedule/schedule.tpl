@@ -50,33 +50,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayPastTime}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
-        ref="{$SlotRef}"
+    <td ref="{$slotRef}"
         class="pasttime slot"
-        draggable="{$CanViewAdmin}"
-        resid="{$Slot->Id()}"
-        data-resourceId="{$ResourceId}"
-        data-min="{$Slot->BeginDate()->Timestamp()}"
-        data-max="{$Slot->EndDate()->Timestamp()}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
-{/function}
-
-{function name=displayReservable}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot"
-        data-href="{$Href}"
+        data-href="{$href|escape:url}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-min="{$Slot->BeginDate()->Timestamp()}"
         data-max="{$Slot->EndDate()->Timestamp()}"
-        data-resourceId="{$ResourceId}">&nbsp;
+        data-resourceId="{$resourceId}">&nbsp;</td>
+{/function}
+
+{function name=displayReservable}
+{*    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot"*}
+{*        data-href="{$Href}"*}
+{*        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"*}
+{*        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"*}
+{*        data-min="{$Slot->BeginDate()->Timestamp()}"*}
+{*        data-max="{$Slot->EndDate()->Timestamp()}"*}
+{*        data-resourceId="{$ResourceId}">&nbsp;*}
+{*    </td>*}
+    <td class="reservable clickres slot"
+        ref="{$slotRef}"
+        data-href="{$href|escape:url}"
+        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+        data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}"
+        data-resourceId="{$resourceId}">&nbsp;
     </td>
 {/function}
 
 {function name=displayRestricted}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
+    <td ref="{$slotRef}"
+        class="restricted slot"
+        data-href="{$href|escape:url}"
+        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-min="{$Slot->BeginDate()->Timestamp()}"
         data-max="{$Slot->EndDate()->Timestamp()}"
-        class="restricted slot">&nbsp;
-    </td>
+        data-resourceId="{$resourceId}">&nbsp;</td>
 {/function}
 
 {function name=displayUnreservable}
@@ -443,7 +455,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
                 scheduleStyle: "{$ScheduleStyle}",
                 midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
-                isMobileView: "{$IsMobile}"
+                isMobileView: "{$IsMobile && !$IsTablet}"
             };
             var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
             {if $AllowGuestBooking}
@@ -475,7 +487,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
                 scheduleStyle: "{$ScheduleStyle}",
                 midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
-                isMobileView: "{$IsMobile}"
+                isMobileView: "{$IsMobile && !$IsTablet}"
             };
 
             var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

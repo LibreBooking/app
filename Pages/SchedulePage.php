@@ -294,13 +294,13 @@ class SchedulePage extends ActionPage implements ISchedulePage
         $this->Set('LoadViewOnly', false);
         $this->Set('ShowSubscription', true);
 
-        if ($this->IsMobile && !$this->IsTablet) {
-            if ($this->ScheduleStyle == ScheduleStyle::Tall) {
-                $this->Display('Schedule/schedule-flipped.tpl');
-            }
-            else {
+        if ($this->IsMobile && !$this->IsTablet && $this->ScheduleStyle == ScheduleStyle::Standard) {
+//            if ($this->ScheduleStyle == ScheduleStyle::Standard) {
                 $this->Display('Schedule/schedule-mobile.tpl');
-            }
+//            }
+//            else {
+//                $this->Display('Schedule/schedule-mobile.tpl');
+//            }
         }
         else {
             if (array_key_exists($this->ScheduleStyle, $this->_styles)) {

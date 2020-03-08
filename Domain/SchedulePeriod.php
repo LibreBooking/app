@@ -153,6 +153,10 @@ class SchedulePeriod
 		return $this->_begin->DateCompare($date) < 0;
 	}
 
+	public function IsPastDate() {
+	    return ReservationPastTimeConstraint::IsPast($this->BeginDate(), $this->EndDate());
+    }
+
 	/**
 	 * @return string
 	 */

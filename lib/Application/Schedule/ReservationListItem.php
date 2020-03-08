@@ -211,18 +211,12 @@ class ReservationListItem
         $dto->IsNew = $this->GetIsNew();
         $dto->IsUpdated = $this->GetIsUpdated();
         $dto->IsOwner = $this->GetIsOwner($currentUserId);
+        $dto->IsParticipant = $this->GetIsParticipant($currentUserId);
         $dto->Label = $this->GetLabel();
         $dto->IsPast = $this->BufferedEndDate()->LessThan(Date::Now());
         $format = Resources::GetInstance()->GetDateFormat('period_time');
         $dto->StartTime = $this->StartDate()->ToTimezone($timezone)->Format($format);
         $dto->EndTime =  $this->EndDate()->ToTimezone($timezone)->Format($format);
-//        if (is_a($this->item, 'ReservationItemView')) {
-//            $dto->Label = SlotLabelFactory::Create($this->item);
-//            $dto->IsPending = $this->item->RequiresApproval;
-//            $dto->IsNew = $this->IsNew($this->item);
-//            $dto->IsUpdated = $this->IsUpdated($this->item);
-//            $dto->IsOwner = $this->item->OwnerId === $currentUserId;
-//        }
 
         return $dto;
     }
@@ -252,6 +246,11 @@ class ReservationListItem
     private function GetLabel()
     {
         return $this->item->GetLabel();
+    }
+
+    private function GetIsParticipant(int $currentUserId)
+    {
+        return $this->item->IsUserParticipating($currentUserId);
     }
 }
 
@@ -453,4 +452,8 @@ class ReservationListItemDto
      * @var string
      */
     public $EndTime;
+    /**
+     * @var bool
+     */
+    public $IsParticipant;
 }

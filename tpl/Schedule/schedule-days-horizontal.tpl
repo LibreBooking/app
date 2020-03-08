@@ -19,6 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {extends file="Schedule/schedule.tpl"}
 
+{function name=displaySlot}
+    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef ResourceId=$ResourceId}
+{/function}
+
 {block name="reservations"}
     {assign var=TodaysDate value=Date::Now()}
     <table class="reservations" border="1" cellpadding="0" style="width:auto;" data-min="0" data-max="999999999999999">
@@ -67,14 +71,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {foreach from=$slots.$ts item=Slot}
                         {assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
                         {assign var=slotRef value="{$Slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                        <td class="reservable clickres slot"
-                            ref="{$slotRef}"
-                            data-href="{$href|escape:url}"
-                            data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-                            data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-                            data-min="{$Slot->BeginDate()->Timestamp()}"
-                            data-max="{$Slot->EndDate()->Timestamp()}"
-                            data-resourceId="{$resourceId}">&nbsp;
+                        {displaySlot Slot=$Slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
+
+                        {*                        <td class="reservable clickres slot"*}
+{*                            ref="{$slotRef}"*}
+{*                            data-href="{$href|escape:url}"*}
+{*                            data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"*}
+{*                            data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"*}
+{*                            data-min="{$Slot->BeginDate()->Timestamp()}"*}
+{*                            data-max="{$Slot->EndDate()->Timestamp()}"*}
+{*                            data-resourceId="{$resourceId}">&nbsp;*}
                         </td>
                     {/foreach}
                     {*						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}

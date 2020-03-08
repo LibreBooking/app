@@ -48,16 +48,7 @@
                 </td>
                 {foreach from=$slots.$ts item=Slot}
                     {assign var=slotRef value="{$Slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                    <td class="reservable clickres slot"
-                        ref="{$slotRef}"
-                        data-href="{$href|escape:url}"
-                        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-                        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-                        data-min="{$Slot->BeginDate()->Timestamp()}"
-                        data-max="{$Slot->EndDate()->Timestamp()}"
-                        data-resourceId="{$resourceId}">&nbsp;
-                    </td>
-                    {*                        {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}*}
+                    {displaySlot Slot=$Slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
                 {/foreach}
             </tr>
         {/foreach}

@@ -19,6 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {extends file="Schedule/schedule.tpl"}
 
+{function name=displaySlot}
+    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef ResourceId=$ResourceId}
+{/function}
+
 {block name="reservations"}
 
     {assign var=TodaysDate value=Date::Now()}
@@ -69,14 +73,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {foreach from=$Resources item=resource name=resource_loop}
                         {assign var=resourceId value=$resource->Id}
                         {assign var=slotRef value="{$period->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                        <td class="reservable clickres slot"
-                            ref="{$slotRef}"
-                            data-href="{$href|escape:url}"
-                            data-start="{$period->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-                            data-end="{$period->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-                            data-min="{$period->BeginDate()->Timestamp()}"
-                            data-max="{$period->EndDate()->Timestamp()}"
-                            data-resourceId="{$resourceId}">&nbsp;</td>
+{*                        <td class="reservable clickres slot"*}
+{*                            ref="{$slotRef}"*}
+{*                            data-href="{$href|escape:url}"*}
+{*                            data-start="{$period->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"*}
+{*                            data-end="{$period->EndDate()->Format('Y-m-d H:i:s')|escape:url}"*}
+{*                            data-min="{$period->BeginDate()->Timestamp()}"*}
+{*                            data-max="{$period->EndDate()->Timestamp()}"*}
+{*                            data-resourceId="{$resourceId}">&nbsp;</td>*}
+                        {displaySlot Slot=$period Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
+
                     {/foreach}
                 </tr>
             {/foreach}

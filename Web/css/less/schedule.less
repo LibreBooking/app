@@ -6,23 +6,13 @@ table.reservations {
   width: 100%;
   font-size: .85em;
   border: solid #36648B 1px;
-}
+  position: relative;
 
-table.reservations.mobile {
-  table-layout: fixed;
-
-  div.reservable {
-    border: dashed 1px @dark-gray;
-    color: @dark-gray;
-    line-height: 20px;
-    background-color: #fff;
-    padding-left: 3px;
+  td, th {
+    .border-radius();
   }
-}
 
-table.reservations {
-  position:relative;
-td {
+  td {
     border: solid #36648B 1px;
     height: 30px;
     display: table-cell;
@@ -59,6 +49,33 @@ td {
     background-color: #5199d1;
   }
 
+
+  tr.today td.reslabel {
+    background-color: #cfcfcf;
+  }
+
+
+  td.reslabel {
+    padding-left: 2px;
+    background-color: #EDEDED;
+    color: #333333;
+  }
+
+  tr.today td.reslabel {
+    color: #000000;
+  }
+}
+
+table.reservations.mobile {
+  table-layout: fixed;
+
+  div.reservable {
+    border: dashed 1px @dark-gray;
+    color: @dark-gray;
+    line-height: 20px;
+    background-color: #fff;
+    padding-left: 3px;
+  }
 }
 
 .reservations.condensed {
@@ -103,10 +120,6 @@ td {
   padding: 2px;
 }
 
-tr.today td.reslabel {
-  background-color: #cfcfcf;
-}
-
 .slot {
   min-width: 1px;
   max-width: 1px;
@@ -125,16 +138,6 @@ tr.today td.reslabel {
 
 .condensed-event {
 
-}
-
-td.reslabel {
-  padding-left: 2px;
-  background-color: #EDEDED;
-  color: #333333;
-}
-
-tr.today td.reslabel {
-  color: #000000;
 }
 
 .unreservable {
@@ -410,7 +413,7 @@ ul.jqtree-tree .jqtree-toggler {
     .rounded(1px);
     padding: 1px 2px;
     margin: 3px;
-    border-style:solid;
+    border-style: solid;
     border-width: 1px;
   }
 
@@ -420,58 +423,58 @@ ul.jqtree-tree .jqtree-toggler {
   }
 }
 
-  a.toggle-sidebar {
-    color: @dark-gray;
-  }
+a.toggle-sidebar {
+  color: @dark-gray;
+}
 
-  .no-resource-warning {
-    padding: 10px;
-    .rounded(2px);
-  }
+.no-resource-warning {
+  padding: 10px;
+  .rounded(2px);
+}
 
-  #showFullWeek {
-    display: block;
-  }
+#showFullWeek {
+  display: block;
+}
 
-  .schedule-legend {
-    margin-bottom: 10px;
-  }
+.schedule-legend {
+  margin-bottom: 10px;
+}
 
-  #individualDatesGo {
-    display: none;
-  }
+#individualDatesGo {
+  display: none;
+}
 
-  #individualDatesList {
-    display: none;
+#individualDatesList {
+  display: none;
 
-    div {
-      display: inline-block;
-      padding-right: 5px;
-    }
+  div {
+    display: inline-block;
+    padding-right: 5px;
   }
+}
 
-  #scheduleListDropdown .caret {
-    margin-left: 0;
-    border-top: 8px dashed;
-    border-right: 8px solid transparent;
-    border-left: 8px solid transparent;
-  }
+#scheduleListDropdown .caret {
+  margin-left: 0;
+  border-top: 8px dashed;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+}
 
-  .reservation-new, .reservation-updated {
-    .rounded(2px);
-    font-size: .9rem;
-    text-transform: uppercase;
-    background-color: @primary-green;
-    padding: 2px;
-    margin: 0 1px;
-    color: #000;
-  }
+.reservation-new, .reservation-updated {
+  .rounded(2px);
+  font-size: .9rem;
+  text-transform: uppercase;
+  background-color: @primary-green;
+  padding: 2px;
+  margin: 0 1px;
+  color: #000;
+}
 
-  .reservation-updated {
-    background-color: @blue-gray;
-    color: #000;
-  }
+.reservation-updated {
+  background-color: @blue-gray;
+  color: #000;
+}
 
-  #reservations {
-    position: relative;
-  }
+#reservations {
+  position: relative;
+}
