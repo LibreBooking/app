@@ -22,5 +22,8 @@ define('ROOT_DIR', '../');
 
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
+ob_implicit_flush(1);
+ini_set('implicit_flush', 1);
+
 $page = new SecurePageDecorator(new SchedulePage());
 $page->PageLoad();

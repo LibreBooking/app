@@ -51,5 +51,5 @@
         {/foreach}
         </tbody>
     </table>
-    {flush}
+{*    {flush}*}
 {/foreach}

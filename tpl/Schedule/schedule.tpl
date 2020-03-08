@@ -409,23 +409,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {jsfile src="ajax-helpers.js"}
     <script type="text/javascript">
 
+        var scheduleOpts = {
+            reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+            summaryPopupUrl: "{$Path}ajax/respopup.php",
+            setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
+            cookieName: "{$CookieName}",
+            scheduleId: "{$ScheduleId|escape:'javascript'}",
+            scriptUrl: '{$ScriptUrl}',
+            selectedResources: [{','|implode:$ResourceIds}],
+            specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
+            updateReservationUrl: "{$Path}ajax/reservation_move.php",
+            lockTableHead: "{$LockTableHead}",
+            disableSelectable: "{$IsMobile}",
+            reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
+            scheduleStyle: "{$ScheduleStyle}",
+            midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
+            isMobileView: "{$IsMobile && !$IsTablet}"
+        };
+
         {if $LoadViewOnly}
         $(document).ready(function () {
-            var scheduleOptions = {
-                reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-                summaryPopupUrl: "ajax/respopup.php",
-                cookieName: "{$CookieName}",
-                scheduleId: "{$ScheduleId}",
-                scriptUrl: '{$ScriptUrl}',
-                selectedResources: [{','|implode:$ResourceIds}],
-                specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-                disableSelectable: '{$IsMobile}',
-                reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
-                scheduleStyle: "{$ScheduleStyle}",
-                midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
-                isMobileView: "{$IsMobile && !$IsTablet}"
-            };
-            var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
+            scheduleOpts.reservationUrlTemplate = "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]";
+            scheduleOpts.reservationLoadUrl = "{$Path}{Pages::VIEW_SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations";
+
+            var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
             {if $AllowGuestBooking}
             schedule.init();
             schedule.initUserDefaultSchedule(true);
@@ -440,32 +447,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         });
         {else}
         $(document).ready(function () {
-            var scheduleOpts = {
-                reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-                summaryPopupUrl: "{$Path}ajax/respopup.php",
-                setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
-                cookieName: "{$CookieName}",
-                scheduleId: "{$ScheduleId|escape:'javascript'}",
-                scriptUrl: '{$ScriptUrl}',
-                selectedResources: [{','|implode:$ResourceIds}],
-                specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-                updateReservationUrl: "{$Path}ajax/reservation_move.php",
-                lockTableHead: {$LockTableHead},
-                disableSelectable: '{$IsMobile}',
-                reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
-                scheduleStyle: "{$ScheduleStyle}",
-                midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
-                isMobileView: "{$IsMobile && !$IsTablet}"
-            };
-
             var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
             schedule.init();
         });
         {/if}
-
-        // $('#schedules').select2({
-        //     width: 'resolve'
-        // });
 
         var pageLoadTime = {round($endTime-$startTime)};
         var resourceCount = {$Resources|count};

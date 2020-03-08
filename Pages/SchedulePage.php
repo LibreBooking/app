@@ -293,14 +293,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
         $this->Set('LockTableHead', (int)($this->ScheduleStyle == ScheduleStyle::Tall || (count($this->GetVar('Resources')) > 7)));
         $this->Set('LoadViewOnly', false);
         $this->Set('ShowSubscription', true);
-
         if ($this->IsMobile && !$this->IsTablet && $this->ScheduleStyle == ScheduleStyle::Standard) {
-//            if ($this->ScheduleStyle == ScheduleStyle::Standard) {
-                $this->Display('Schedule/schedule-mobile.tpl');
-//            }
-//            else {
-//                $this->Display('Schedule/schedule-mobile.tpl');
-//            }
+            $this->Display('Schedule/schedule-mobile.tpl');
         }
         else {
             if (array_key_exists($this->ScheduleStyle, $this->_styles)) {
@@ -614,7 +608,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function BindReservations(array $items)
     {
         $itemsAsJson = [];
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $itemsAsJson[] = $item->AsDto($this->server->GetUserSession()->UserId, $this->server->GetUserSession()->Timezone);
         }
         $this->SetJson($itemsAsJson);

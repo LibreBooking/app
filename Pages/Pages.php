@@ -60,6 +60,7 @@ class Pages
     const SCHEDULE = 'schedule.php';
     const SEARCH_RESERVATIONS = 'search-reservations.php';
     const VIEW_CALENDAR = 'view-calendar.php';
+    const VIEW_SCHEDULE = 'view-schedule.php';
 
     private static $_pages = array(
         1 => array('url' => Pages::DASHBOARD, 'name' => 'Dashboard'),
