@@ -26,6 +26,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {block name="reservations"}
     {assign var=TodaysDate value=Date::Now()}
     <table class="reservations" border="1" cellpadding="0" style="width:auto;" data-min="0" data-max="999999999999999">
+        <thead>
         <tr>
             <td rowspan="2">&nbsp;</td>
             {foreach from=$BoundDates item=date}
@@ -50,6 +51,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/foreach}
             {/foreach}
         </tr>
+        </thead>
+        <tbody>
 
         {foreach from=$Resources item=resource name=resource_loop}
             {assign var=resourceId value=$resource->Id}
@@ -76,6 +79,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/foreach}
             </tr>
         {/foreach}
+        </tbody>
     </table>
 {/block}
 

@@ -78,6 +78,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {assign var=columnWidth value=(1/($BoundDates|count+1))*100}
     <div id="reservations">
         <table class="reservations condensed" border="1" cellpadding="0" style="width:100%;">
+            <thead>
             <tr>
                 <td style="width:{$columnWidth}%">&nbsp;</td>
                 {foreach from=$BoundDates item=date}
@@ -93,7 +94,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         style="width:{$columnWidth}%">{formatdate date=$date key="schedule_daily"}</td>
                 {/foreach}
             </tr>
-
+            </thead>
+        <tbody>
             {foreach from=$Resources item=resource name=resource_loop}
                 {assign var=resourceId value=$resource->Id}
                 {assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
@@ -153,6 +155,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {/foreach}
                 </tr>
             {/foreach}
+        </tbody>
         </table>
     </div>
 {/block}
