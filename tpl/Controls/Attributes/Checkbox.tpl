@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="{$class}">
     {if $readonly}
         <label class="customAttribute readonly" for="{$attributeId}">{$attribute->Label()}</label>
-        <span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
+        <span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='Yes'}{else}{translate key='No'}{/if}</span>
     {elseif $searchmode}
         <div class="input-field">
             <label class="customAttribute search" for="{$attributeId}">{$attribute->Label()}</label>
