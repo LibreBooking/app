@@ -146,7 +146,7 @@ class de_de extends en_gb
         $strings['ResourceMinNoticeNoneUpdate'] = 'Änderungen von Reservierungen können ohne Vorlaufzeit getätigt werden';
         $strings['ResourceMinNoticeDelete'] = 'Löschungen von Reservierungen müssen mindestens %s vor der Startzeit getätigt werden';
         $strings['ResourceMinNoticeNoneDelete'] = 'Löschungen von Reservierungen können ohne Vorlaufzeit getätigt werden';
-        $strings['ResourceMaxNotice'] = 'Reservierungen dürfen nicht %s vor der aktuellen Zeit enden';
+        $strings['ResourceMaxNotice'] = 'Reservierungen dürfen nicht mehr als %s nach der aktuellen Zeit enden';
         $strings['ResourceMaxNoticeNone'] = 'Reservierungen können zu jeder Zeit enden';
         $strings['ResourceBufferTime'] = 'Zwischen Reservierungen muss ein Puffer von %s liegen';
         $strings['ResourceBufferTimeNone'] = 'Es gibt keinen Puffer zwischen den Reservierungen';
