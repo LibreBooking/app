@@ -119,7 +119,7 @@ class ReservationRepository implements IReservationRepository
                 $this->AddReservationAttachment($attachment);
             }
 
-            $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+            $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetOriginalCreditsConsumed();
 
             Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
                 $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());

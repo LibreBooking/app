@@ -718,7 +718,10 @@ class ReservationSeries
 		$creditsRequired = 0;
 		foreach ($this->Instances() as $instance)
 		{
-			$creditsRequired += $instance->GetCreditsRequired();
+			if (!$this->IsMarkedForDelete($instance->ReservationId()))
+			{
+				$creditsRequired += $instance->GetCreditsRequired();
+			}
 		}
 
 		$this->creditsRequired = $creditsRequired;

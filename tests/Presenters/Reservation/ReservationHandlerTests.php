@@ -198,7 +198,7 @@ class FakeReservationRetryOptions implements IReservationRetryOptions
 	 */
 	public $_AdjustReservationCalled = false;
 
-	public function AdjustReservation(ExistingReservationSeries $series, $retryParameters)
+	public function AdjustReservation(ReservationSeries $series, $retryParameters)
 	{
 		$this->_AdjustReservationCalled = true;
 	}
