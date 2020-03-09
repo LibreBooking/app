@@ -27,6 +27,7 @@ class TestReservationItemView extends ReservationItemView
 	 * @param Date $startDate
 	 * @param Date $endDate
 	 * @param int $resourceId
+	 * @param string|null $referenceNumber
 	 */
 	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1, $referenceNumber = null)
 	{
@@ -39,6 +40,7 @@ class TestReservationItemView extends ReservationItemView
 		$this->Date = new DateRange($startDate, $endDate);
 		$this->RepeatType = RepeatType::None;
 		$this->ReferenceNumber = $referenceNumber;
+		$this->ScheduleId = 1;
 	}
 
 	public function WithSeriesId($seriesId)

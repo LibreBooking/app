@@ -36,24 +36,38 @@ class UnavailableResourcesPresenter
 	 * @var UserSession
 	 */
 	private $userSession;
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
 
-	public function __construct(IAvailableResourcesPage $page, IResourceAvailabilityStrategy $resourceAvailability, UserSession $userSession)
+	public function __construct(IAvailableResourcesPage $page, IResourceAvailabilityStrategy $resourceAvailability, UserSession $userSession,
+								IScheduleRepository $scheduleRepository)
 	{
 		$this->page = $page;
 		$this->resourceAvailability = $resourceAvailability;
 		$this->userSession = $userSession;
+		$this->scheduleRepository = $scheduleRepository;
 	}
 
 	public function PageLoad()
 	{
-		$duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(), $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
-		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin(), $duration->GetEnd(), ReservationViewRepository::ALL_RESOURCES);
+		$duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
+									  $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
+		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin(), $duration->GetEnd(), array(ReservationViewRepository::ALL_RESOURCES));
+
+		$concurrentScheduleIds = $this->GetConcurrentScheduleIds();
 
 		$unavailable = array();
 
 		foreach ($reserved as $reservation)
 		{
 			if ($reservation->GetReferenceNumber() == $this->page->GetReferenceNumber())
+			{
+				continue;
+			}
+
+			if (in_array($reservation->GetScheduleId(), $concurrentScheduleIds))
 			{
 				continue;
 			}
@@ -65,5 +79,22 @@ class UnavailableResourcesPresenter
 		}
 
 		$this->page->BindUnavailable(array_unique($unavailable));
+	}
+
+	/**
+	 * @return int[]
+	 */
+	private function GetConcurrentScheduleIds()
+	{
+		$schedules = $this->scheduleRepository->GetAll();
+		$concurrentScheduleIds = array();
+		foreach ($schedules as $s)
+		{
+			if ($s->GetAllowConcurrentReservations())
+			{
+				$concurrentScheduleIds[] = $s->GetId();
+			}
+		}
+		return $concurrentScheduleIds;
 	}
 }

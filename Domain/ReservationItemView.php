@@ -101,6 +101,11 @@ interface IReservedItemView
      * @return bool
      */
     public function RequiresCheckin();
+
+	/**
+	 * @return int
+	 */
+    public function GetScheduleId();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -960,6 +965,11 @@ class ReservationItemView implements IReservedItemView
     {
         return new FullName($this->FirstName, $this->LastName);
     }
+
+    public function GetScheduleId()
+	{
+		return $this->ScheduleId;
+	}
 }
 
 class BlackoutItemView implements IReservedItemView
@@ -1220,4 +1230,9 @@ class BlackoutItemView implements IReservedItemView
     {
         return false;
     }
+
+	public function GetScheduleId()
+	{
+		return $this->ScheduleId;
+	}
 }
