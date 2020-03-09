@@ -316,7 +316,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function ProcessDataRequest($dataRequest)
     {
         if ($dataRequest === "reservations") {
-            $this->_presenter->LoadReservations(ServiceLocator::GetServer()->GetUserSession());
+            $this->_presenter->LoadReservations();
         }
         else {
             $this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());

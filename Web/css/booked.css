@@ -1795,8 +1795,10 @@ a.toggle-sidebar {
   text-transform: uppercase;
   background-color: #88CC88;
   padding: 2px;
-  margin: 0 1px;
+  margin: 1px;
   color: #000;
+  display: inline-block;
+  line-height: 1rem;
 }
 .reservation-updated {
   background-color: #D5DED9;

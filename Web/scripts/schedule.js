@@ -7,12 +7,15 @@ function Schedule(opts, resourceGroups) {
     var multidateselect = $('#multidateselect');
 
     this.init = function () {
-
         this.initUserDefaultSchedule();
         this.initRotateSchedule();
         this.initResourceFilter();
         this.renderEvents();
         this.initReservations();
+
+        $(window).resize(function () {
+            renderEvents(true);
+        });
 
         // var isOldIE = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0);
         // if (opts.lockTableHead && !isOldIE)
@@ -68,24 +71,10 @@ function Schedule(opts, resourceGroups) {
         }
     };
 
-    this.renderEvents = function () {
-        // const reservationList = [
-        //     {
-        //         start: 1582468200,
-        //         end: 1582475400,
-        //         resourceId: 1,
-        //     },
-        //     {
-        //         start: 1582642800,
-        //         end: 1582660800,
-        //         resourceId: 2,
-        //     },
-        //     {
-        //         start: 1582549200,
-        //         end: 1582664400,
-        //         resourceId: 1,
-        //     },
-        // ];
+    function renderEvents(clear = false) {
+        if (clear) {
+            $("#reservations").find("div.event").remove();
+        }
 
         function attachReservationEvents(div, reservation) {
             var reservations = $('#reservations');
@@ -107,24 +96,7 @@ function Schedule(opts, resourceGroups) {
                 $(pattern, reservations).removeClass('hilite');
             });
 
-
-
-            // div.on('mouseenter', function(e) {
-            //     e.stopPropagation();
-            // });
-
             var qTipElement = div;
-            //
-            // if (opts.isMobileView) {
-            //     var fa = div.find('.fa');
-            //     if (fa.length > 0) {
-            //         qTipElement = div.find('.fa');
-            //
-            //         qTipElement.click(function (e) {
-            //             e.stopPropagation();
-            //         });
-            //     }
-            // }
 
             qTipElement.qtip({
                 position: {
@@ -147,7 +119,7 @@ function Schedule(opts, resourceGroups) {
                 },
 
                 show: {
-                    delay: 700, effect: false, event: "click"
+                    delay: 700, effect: false,
                 },
 
                 hide: {
@@ -184,14 +156,17 @@ function Schedule(opts, resourceGroups) {
 
                     const className = res.IsReservation ? "reserved" : "unreservable";
                     const mine = res.IsOwner ? "mine" : "";
+                    const participant = res.IsParticipant ? "participating" : "";
                     const past = res.IsPast ? "past" : "";
+                    const isNew = res.IsNew ? `<span class="reservation-new">${opts.newLabel}</span>` : "";
+                    const isUpdated = res.IsUpdated ? `<span class="reservation-updated">${opts.updatedLabel}</span>` : "";
+                    const isPending = res.IsPending ? "pending" : "";
                     const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
-                    const draggableAttribute = isDraggable ? "draggable=\"true\"" : "";
+                    const draggableAttribute = isDraggable ? 'draggable="true"' : "";
                     const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
 
                     if (opts.scheduleStyle === ScheduleCondensed || (opts.isMobileView === "1" && opts.scheduleStyle === ScheduleStandard)) {
-                        if (Number.parseInt(t.data("resourceid")) !== Number.parseInt(res.ResourceId))
-                        {
+                        if (Number.parseInt(t.data("resourceid")) !== Number.parseInt(res.ResourceId)) {
                             return;
                         }
                         const startsBefore = res.BufferedStartDate < tableMin;
@@ -199,11 +174,11 @@ function Schedule(opts, resourceGroups) {
                         let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
                         let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
                         const div = $(`<div 
-                                    class="${className} ${mine} ${past} condensed-event" 
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event" 
                                     style="${color}"
                                     data-resid="${res.ReferenceNumber}">
                                     <span>${startTime}-${endTime}</span>
-                                    ${res.Label}</div>`);
+                                    ${isNew} ${isUpdated} ${res.Label}</div>`);
 
                         t.append(div);
                         if (res.IsReservation) {
@@ -239,17 +214,15 @@ function Schedule(opts, resourceGroups) {
 
                     const style = `left:${startTd.position().left}px; top:${startTd.position().top}px; width:${width}px; height:${height}px;`;
                     const div = $(`<div 
-                                    class="${className} ${mine} ${past} event" 
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     ${draggableAttribute}>
-                                    ${res.Label}</div>`);
-                    // const div = $('<div class="reserved test" data-resid="' + res.ReferenceNumber +'">' +  res.Label +'</div>');
+                                    ${isNew} ${isUpdated} ${res.Label}</div>`);
 
                     if (res.IsReservation) {
                         attachReservationEvents(div, res);
                     }
-
 
                     t.append(div);
 
@@ -278,9 +251,9 @@ function Schedule(opts, resourceGroups) {
                 });
             });
         });
+    }
 
-
-    };
+    this.renderEvents = renderEvents;
 
     this.initResources = function () {
         $('.resourceNameSelector').each(function () {
@@ -448,6 +421,8 @@ function Schedule(opts, resourceGroups) {
             } else {
                 show();
             }
+
+            renderEvents(true);
         }
 
         $('.toggle-sidebar').on('click', function () {

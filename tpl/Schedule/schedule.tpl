@@ -424,7 +424,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
             scheduleStyle: "{$ScheduleStyle}",
             midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
-            isMobileView: "{$IsMobile && !$IsTablet}"
+            isMobileView: "{$IsMobile && !$IsTablet}",
+            newLabel: "{translate key=New}",
+            updatedLabel: "{translate key=Updated}"
         };
 
         {if $LoadViewOnly}
