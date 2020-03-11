@@ -71,6 +71,4 @@ class CreditsRuleTests extends TestBase
 
 		$this->assertFalse($result->IsValid());
 	}
-
-
 }

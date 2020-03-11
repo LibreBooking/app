@@ -72,7 +72,7 @@ class Ldap2Wrapper
      */
     public function Authenticate($username, $password, $filter)
     {
-        $this->PopulateUser($username, $filter, $password);
+        $populated = $this->PopulateUser($username, $filter, $password);
 
         if ($this->user == null)
         {
@@ -86,9 +86,13 @@ class Ldap2Wrapper
         {
             Log::Debug('Authentication was successful');
 
-            // PopulateUser should be split into two functions: one for the anonymous bind that takes the pieces from the config
-            // and another one that has to be run after that the user authenticated with his own dn
-            return $this->PopulateUser($username, $filter, $password);
+            if (!$populated)
+			{
+				// PopulateUser should be split into two functions: one for the anonymous bind that takes the pieces from the config
+				// and another one that has to be run after that the user authenticated with his own dn
+				return $this->PopulateUser($username, $filter, $password);
+			}
+            return $populated;
         }
 
         $l = new Net_LDAP2();

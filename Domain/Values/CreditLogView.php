@@ -60,7 +60,7 @@ class CreditLogView
      * @param array $row
      * @return CreditLogView
      */
-    public function Populate($row)
+    public static function Populate($row)
     {
         $userName = '';
         if (isset($row[ColumnNames::FIRST_NAME]))

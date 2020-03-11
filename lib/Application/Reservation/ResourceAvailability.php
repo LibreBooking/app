@@ -44,7 +44,7 @@ class ResourceAvailability implements IResourceAvailabilityStrategy
     public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds)
     {
 		$reservations = $this->_repository->GetReservations($startDate, $endDate, null, null, null, $resourceIds);
-        $blackouts = $this->_repository->GetBlackoutsWithin(new DateRange($startDate, $endDate));
+        $blackouts = $this->_repository->GetBlackoutsWithin(new DateRange($startDate, $endDate), null, $resourceIds);
 
         return array_merge($reservations, $blackouts);
     }

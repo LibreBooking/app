@@ -324,7 +324,7 @@ function Calendar(opts) {
 
     var openNewReservation = function () {
         var view = _fullCalendar.fullCalendar('getView');
-        var end = dateVar.add(30, 'minutes');
+        var end = moment(dateVar).add(30, 'minutes');
         var year = dateVar.year();
         var month = dateVar.month() + 1;
         var day = dateVar.date();

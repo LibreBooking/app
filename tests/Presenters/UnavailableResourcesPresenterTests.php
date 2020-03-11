@@ -38,6 +38,10 @@ class UnavailableResourcesPresenterTests extends TestBase
 	 * @var UnavailableResourcesPresenter
 	 */
 	private $presenter;
+	/**
+	 * @var FakeScheduleRepository
+	 */
+	private $scheduleRepository;
 
 	public function setUp(): void
 	{
@@ -45,8 +49,9 @@ class UnavailableResourcesPresenterTests extends TestBase
 
 		$this->resourceAvailability = new FakeResourceAvailabilityStrategy();
 		$this->page = new FakeAvailableResourcesPage($this->fakeUser);
+		$this->scheduleRepository = new FakeScheduleRepository();
 
-		$this->presenter = new UnavailableResourcesPresenter($this->page, $this->resourceAvailability, $this->fakeUser);
+		$this->presenter = new UnavailableResourcesPresenter($this->page, $this->resourceAvailability, $this->fakeUser, $this->scheduleRepository);
 	}
 
 	public function testGetsUnavailableResourceIdsWhenNotTheSameReservation()
@@ -61,7 +66,9 @@ class UnavailableResourcesPresenterTests extends TestBase
 				new TestReservationItemView(2, $duration->GetEnd(), $duration->GetEnd()->AddDays(1), $available2, 'available2'),
 				new TestReservationItemView(3, $duration->GetBegin(), $duration->GetEnd(), $unavailable, 'conflict'),
 				new TestReservationItemView(4, $duration->GetBegin(), $duration->GetEnd(), $unavailable, 'conflict2'),
-				);
+		);
+
+		$this->scheduleRepository->_Schedules = array(new FakeSchedule(1));
 
 		$this->presenter->PageLoad();
 
@@ -81,7 +88,9 @@ class UnavailableResourcesPresenterTests extends TestBase
 				new TestReservationItemView(1, $duration->GetBegin(), $duration->GetEnd(), $available1, $this->page->_ReferenceNumber),
 				new TestReservationItemView(2, $duration->GetEnd(), $duration->GetEnd()->AddDays(1), $unavailable, 'available2'),
 				new TestReservationItemView(3, $duration->GetBegin(), $duration->GetEnd(), $unavailable, 'conflict'),
-				);
+		);
+
+		$this->scheduleRepository->_Schedules = array(new FakeSchedule(1));
 
 		$this->presenter->PageLoad();
 
@@ -109,13 +118,36 @@ class UnavailableResourcesPresenterTests extends TestBase
 				new TestReservationItemView(3, Date::Parse('2017-05-03 09:00', $tz), Date::Parse('2017-05-03 11:00', $tz), $unavailable2, 'conflict2'),
 				new TestReservationItemView(4, Date::Parse('2017-05-01 05:00', $tz), Date::Parse('2017-05-03 11:00', $tz), $unavailable3, 'conflict3'),
 				new TestReservationItemView(5, Date::Parse('2017-05-02 09:00', $tz), Date::Parse('2017-05-02 11:00', $tz), $unavailable4, 'conflict4'),
-				);
+		);
+		$this->scheduleRepository->_Schedules = array(new FakeSchedule(1));
 
 		$this->presenter->PageLoad();
 
 		$bound = $this->page->_BoundAvailability;
 
 		$this->assertEquals(array($unavailable1, $unavailable2, $unavailable3, $unavailable4), $bound);
+	}
+
+	public function testWhenScheduleAllowsCurrent()
+	{
+		$fakeSchedule = new FakeSchedule(1);
+		$fakeSchedule->SetAllowConcurrentReservations(true);
+		$this->scheduleRepository->_Schedules = array($fakeSchedule);
+
+		$unavailable = 1;
+		$duration = $this->page->GetDuration();
+
+		$r1 = new TestReservationItemView(3, $duration->GetBegin(), $duration->GetEnd(), $unavailable, 'conflict');
+		$r2 = new TestReservationItemView(4, $duration->GetBegin(), $duration->GetEnd(), $unavailable, 'conflict2');
+		$r1->ScheduleId = $fakeSchedule->GetId();
+		$r2->ScheduleId = $fakeSchedule->GetId();
+		$this->resourceAvailability->_ReservedItems = array($r1, $r2,);
+
+		$this->presenter->PageLoad();
+
+		$bound = $this->page->_BoundAvailability;
+
+		$this->assertEquals(array(), $bound);
 	}
 }
 

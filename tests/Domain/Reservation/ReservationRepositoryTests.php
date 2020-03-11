@@ -143,7 +143,7 @@ class ReservationRepositoryTests extends TestBase
 
         $addAttachment = new AddReservationAttachmentCommand($attachment->FileName(), $attachment->FileType(), $attachment->FileSize(),
             $attachment->FileExtension(), $seriesId);
-        $this->assertEquals(11, count($this->db->_Commands));
+        $this->assertEquals(12, count($this->db->_Commands));
 
         $this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
         $this->assertEquals($insertReservationResource, $this->db->_Commands[1]);

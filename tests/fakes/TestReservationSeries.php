@@ -99,4 +99,9 @@ class TestReservationSeries extends ReservationSeries
 	{
 		$this->creditsRequired = $credits;
 	}
+
+	public function GetCreditsRequired()
+	{
+		return $this->creditsRequired;
+	}
 }

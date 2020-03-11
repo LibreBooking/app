@@ -1042,11 +1042,10 @@ class ExistingReservationTests extends TestBase
         $now = Date::Parse('2017-08-10');
         for ($i = 0; $i < 5; $i++) {
             $date = new DateRange($now->AddDays($i)->SetTime(Time::Parse('13:00')), $now->AddDays($i)->SetTime(Time::Parse('14:00')));
-            $reservations[] = new TestReservation(null, $date);
+            $reservations[] = new TestReservation($i, $date, $i);
         }
         $series = new ExistingReservationSeries();
         for ($i = 1; $i < 5; $i++) {
-
             $series->WithInstance($reservations[$i]);
         }
 

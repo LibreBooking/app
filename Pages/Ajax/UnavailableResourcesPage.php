@@ -47,9 +47,8 @@ class UnavailableResourcesPage extends Page implements IAvailableResourcesPage
 
 	public function PageLoad()
 	{
-		$presenter = new UnavailableResourcesPresenter($this, new ResourceAvailability(new ReservationViewRepository()), ServiceLocator::GetServer()->GetUserSession());
+		$presenter = new UnavailableResourcesPresenter($this, new ResourceAvailability(new ReservationViewRepository()), ServiceLocator::GetServer()->GetUserSession(), new ScheduleRepository());
 		$presenter->PageLoad();
-
 	}
 
 	public function GetStartDate()

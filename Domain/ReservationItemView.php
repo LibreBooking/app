@@ -129,6 +129,11 @@ interface IReservedItemView
      * @return string
      */
     public function GetLabel();
+
+	/**
+	 * @return int
+	 */
+    public function GetScheduleId();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -987,6 +992,11 @@ class ReservationItemView implements IReservedItemView
         return new FullName($this->FirstName, $this->LastName);
     }
 
+    public function GetScheduleId()
+	{
+		return $this->ScheduleId;
+	}
+
     public function IsPending()
     {
         return $this->RequiresApproval;
@@ -1279,6 +1289,11 @@ class BlackoutItemView extends ReservationItemView
     {
         return false;
     }
+
+	public function GetScheduleId()
+	{
+		return $this->ScheduleId;
+	}
 
     public function IsPending()
     {
