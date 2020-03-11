@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {function name=displayPastTime}
     <td ref="{$slotRef}"
         class="pasttime slot"
-        data-href="{$href|escape:url}"
+        data-href="{$href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-min="{$Slot->BeginDate()->Timestamp()}"
@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {function name=displayReservable}
     <td class="reservable clickres slot"
         ref="{$slotRef}"
-        data-href="{$href|escape:url}"
+        data-href="{$href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-min="{$Slot->BeginDate()->Timestamp()}"
@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {function name=displayRestricted}
     <td ref="{$slotRef}"
         class="restricted slot"
-        data-href="{$href|escape:url}"
+        data-href="{$href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-min="{$Slot->BeginDate()->Timestamp()}"
@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {function name=displayUnreservable}
     <td ref="{$slotRef}"
         class="unreservable slot"
-        data-href="{$href|escape:url}"
+        data-href="{$href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
         data-min="{$Slot->BeginDate()->Timestamp()}"

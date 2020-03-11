@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/validation_group}
 
 	<div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-		<h2>{translate key=WeNeedYourEmailAddress}</h2>
+		<h5>{translate key=WeNeedYourEmailAddress}</h5>
 
 		<form method="post" id="form-guest-collect" action="{$smarty.server.REQUEST_URI|escape:'html'}" role="form">
 
@@ -42,6 +42,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<button type="submit" class="update btn btn-primary col-xs-12" name="" id="btnUpdate">
 					{translate key='Continue'}
 				</button>
+                {cancel_button id="cancel"}
 			</div>
 		</form>
 	</div>
@@ -56,4 +57,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cancel").on("click", function(e) {
+            window.history.back();
+        });
+    });
+</script>
+
 {include file='globalfooter.tpl'}
