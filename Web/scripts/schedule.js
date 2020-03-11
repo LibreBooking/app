@@ -12,54 +12,6 @@ function Schedule(opts, resourceGroups) {
         this.initResourceFilter();
         this.renderEvents();
         this.initReservations();
-
-        $(window).resize(function () {
-            renderEvents(true);
-        });
-
-        // var isOldIE = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0);
-        // if (opts.lockTableHead && !isOldIE)
-        // {
-        // 	{
-        // 		var reservationTables = reservations.find('table.reservations');
-        // 		reservationTables.floatThead({
-        // 			position: 'auto', top: 50, zIndex: 998
-        // 		});
-        //
-        // 		var onPrinting = function () {
-        // 			reservationTables.floatThead('destroy');
-        // 		};
-        //
-        // 		var onScreen = function () {
-        // 			reservationTables.floatThead({
-        // 				position: 'auto', top: 50, zIndex: 998
-        // 			});
-        // 		};
-        //
-        // 		//WebKit print detection
-        // 		if (window.matchMedia)
-        // 		{
-        // 			var mediaQueryList = window.matchMedia('print');
-        // 			mediaQueryList.addListener(function (mql) {
-        // 				if (mql.matches)
-        // 				{
-        // 					onPrinting();
-        // 				}
-        // 				else
-        // 				{
-        // 					onScreen();
-        // 				}
-        // 			});
-        // 		}
-        //
-        // 		//IE print detection
-        // 		window.onbeforeprint = onPrinting;
-        // 		window.onafterprint = onScreen;
-        //
-        // 		onScreen();
-        // 	}
-        // }
-
         this.initResources();
         this.initNavigation();
 
@@ -69,6 +21,14 @@ function Schedule(opts, resourceGroups) {
                 scrollTop: today.offset().top - 50
             }, 500);
         }
+
+        $(window).resize(function () {
+            renderEvents(true);
+        });
+
+        setInterval(function() {
+            renderEvents(true);
+        }, 300000);
     };
 
     function renderEvents(clear = false) {
