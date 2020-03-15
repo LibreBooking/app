@@ -31,6 +31,8 @@ function Schedule(opts, resourceGroups) {
     };
 
     function renderEvents(clear = false) {
+        $("#loading-schedule").removeClass("no-show");
+
         if (clear) {
             $("#reservations").find("div.event").remove();
         }
@@ -211,6 +213,8 @@ function Schedule(opts, resourceGroups) {
             });
 
             initReservable();
+
+            $("#loading-schedule").addClass("no-show");
         });
     }
 
@@ -491,7 +495,7 @@ function Schedule(opts, resourceGroups) {
                         openReservation(firstTd, lastTd);
                     } else {
                         reservations.find("td.hilite, td.clicked").each((i, e) => $(e).removeClass("hilite clicked"));
-
+                    }
                 }
                 selectingTds = false;
             });

@@ -393,6 +393,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {csrf_token}
 </form>
 
+<div id="loading-schedule" class="no-show">Loading reservations...</div>
+
 {include file="javascript-includes.tpl" Qtip=true FloatThead=true Select2=true Owl=true}
 
 {block name="scripts-before"}
