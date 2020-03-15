@@ -426,10 +426,11 @@ function Schedule(opts, resourceGroups) {
 
             function isSequentialReservation(td) {
                 const resourceId = td.data('resourceid');
+                const firstMinTime = Number.parseInt(firstTd.data("min"));
                 const minTime = Number.parseInt(td.data('min'));
                 const lastResourceId = lastTd.data('resourceid');
                 const lastMinTime = Number.parseInt(lastTd.data('min'));
-                const isSequential = resourceId === lastResourceId && minTime > lastMinTime;
+                const isSequential = resourceId === lastResourceId && minTime > firstMinTime && minTime > lastMinTime;
                 return isSequential;
             }
 
@@ -437,9 +438,13 @@ function Schedule(opts, resourceGroups) {
                 tds.push(td);
             }
 
-            function removeIfDraggingBack(td) {
-                const futureTds = tds.filter(i => Number.parseInt(i.data("min")) > Number.parseInt(td.data("min")));
-                futureTds.forEach(i => i.removeClass("hilite"));
+            function removeIfNonSequential(td) {
+                tds.forEach(i => {
+                    if (Number.parseInt(i.data("min")) > Number.parseInt(td.data("min"))
+                        || i.data("resourceid") !== firstTd.data("resourceid")) {
+                        i.removeClass("hilite")
+                    }
+                });
                 tds = tds.filter(i => Number.parseInt(i.data("min")) <= Number.parseInt(td.data("min")));
             }
 
@@ -447,15 +452,17 @@ function Schedule(opts, resourceGroups) {
                 selectingTds = true;
                 firstTd = $(e.target);
                 lastTd = $(e.target);
+                add(firstTd);
                 return false;
             });
+
             reservations.on("mouseenter", "td.reservable", e => {
                 let td = $(e.target);
                 td.addClass("hilite");
                 td.siblings('.resourcename').toggleClass('hilite');
 
                 if (selectingTds) {
-                    removeIfDraggingBack(td);
+                    removeIfNonSequential(td);
                     if (isSequentialReservation(td)) {
                         add(td);
                     }
@@ -464,20 +471,26 @@ function Schedule(opts, resourceGroups) {
                     return false;
                 }
             });
+
             reservations.on("mouseleave", "td.reservable", e => {
                 let td = $(e.target);
 
                 td.siblings('.resourcename').removeClass('hilite');
-                if (selectingTds) {
+                if (selectingTds && tds.find(i => i.data("ref") === td.data("ref")) !== undefined) {
                     e.stopPropagation();
                 } else {
                     td.removeClass("hilite");
                 }
             });
+
             reservations.on("mouseup", "td.reservable", e => {
                 if (selectingTds) {
                     e.stopPropagation();
-                    openReservation(firstTd, lastTd);
+                    if (Number.parseInt(firstTd.data("min")) < Number.parseInt(lastTd.data("min"))
+                        && firstTd.data("resourceid") === lastTd.data("resourceid")) {
+                        openReservation(firstTd, lastTd);
+                    } else {
+                        reservations.find("td.hilite, td.clicked").each((i, e) => $(e).removeClass("hilite clicked"));
 
                 }
                 selectingTds = false;
