@@ -10,8 +10,7 @@ function Schedule(opts, resourceGroups) {
         this.initUserDefaultSchedule();
         this.initRotateSchedule();
         this.initResourceFilter();
-        this.renderEvents();
-        this.initReservations();
+        renderEvents();
         this.initResources();
         this.initNavigation();
 
@@ -26,7 +25,7 @@ function Schedule(opts, resourceGroups) {
             renderEvents(true);
         });
 
-        setInterval(function() {
+        setInterval(function () {
             renderEvents(true);
         }, 300000);
     };
@@ -210,6 +209,8 @@ function Schedule(opts, resourceGroups) {
 
                 });
             });
+
+            initReservable();
         });
     }
 
@@ -396,51 +397,99 @@ function Schedule(opts, resourceGroups) {
         }
     };
 
-    this.initReservations = function () {
-
+    function initReservable() {
+        let selectingTds = false;
         const reservations = $('#reservations');
+        let finalTd;
 
         if (options.disableSelectable != '1') {
-            var selectingTds = false;
+            let firstTd;
+            let lastTd;
+
+            function isSequentialReservation(td) {
+                const resourceId = td.data('resourceid');
+                const minTime = Number.parseInt(td.data('min'));
+                const lastResourceId = lastTd.data('resourceid');
+                const lastMinTime = Number.parseInt(lastTd.data('min'));
+                const isSequential = resourceId === lastResourceId && minTime > lastMinTime;
+                console.log("is sequential", isSequential);
+                // console.log(`is sequential id ${resourceId} lid ${lastResourceId} mt ${minTime} lmt ${lastMinTime}`, isSequential, td, lastTd);
+                return isSequential;
+            }
+
             // this.makeSlotsSelectable(reservations);
             reservations.on("mousedown", "td.reservable", e => {
+                console.log("mousedown");
                 selectingTds = true;
-                console.log("clicking a td");
+                firstTd = $(e.target);
+                lastTd = $(e.target);
+                // console.log("clicking a td");
                 // return false;
             });
-            reservations.on("mouseover", "td.reservable", e => {
-                if (selectingTds) {
-                    $(e.target).toggleClass("hilite");
-                    e.stopPropagation();
+            reservations.on("mouseenter", "td.reservable", e => {
+                // console.log("mouseenter");
+                let td = $(e.target);
+                td.addClass("hilite");
+                td.siblings('.resourcename').toggleClass('hilite');
 
-                    console.log("dragging a td", $(e.target).attr('ref'));
+                if (selectingTds && isSequentialReservation(td)) {
+
+                    lastTd = td;
+                    e.stopPropagation();
+                    return false;
+                }
+            });
+            reservations.on("mouseleave", "td.reservable", e => {
+                // console.log("mouseleave");
+                let td = $(e.target);
+
+                td.siblings('.resourcename').removeClass('hilite');
+                if (selectingTds) {
+                    e.stopPropagation();
+                } else {
+                    // console.log("leaving");
+                    td.removeClass("hilite");
                 }
             });
             reservations.on("mouseup", "td.reservable", e => {
+                // console.log("mouseup");
+                let td = $(e.target);
+                td.removeClass("hilite");
                 if (selectingTds) {
                     e.stopPropagation();
-                    console.log("done dragging a td");
+                    console.log("done selecting", firstTd, lastTd);
                 }
                 selectingTds = false;
             });
-            reservations.find("td.reservable").on("selectstart", e => {
-                return false;
-            });
-            this.makeReservationsMoveable(reservations);
+
+            // reservations.find("td.reservable").on("selectstart", e => {
+            //     return false;
+            // });
+
+            makeReservationsMoveable(reservations);
         }
 
-        reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function () {
+        /**
+         reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function () {
+            if (selectingTds) {
+                return;
+            }
             $(this).siblings('.resourcename').toggleClass('hilite');
             var ref = $(this).attr('ref');
             reservations.find('td[ref="' + ref + '"]').addClass('hilite');
         });
 
-        reservations.delegate('.clickres:not(.reserved)', 'mouseleave', function () {
+         reservations.delegate('.clickres:not(.reserved)', 'mouseleave', function () {
+            if (selectingTds) {
+                return;
+            }
+
             $(this).siblings('.resourcename').removeClass('hilite');
             var ref = $(this).attr('ref');
             reservations.find('td[ref="' + ref + '"]').removeClass('hilite');
             $(this).removeClass('hilite');
         });
+         */
 
         reservations.delegate('.clickres', 'mousedown', function () {
             $(this).addClass('clicked');
@@ -466,9 +515,11 @@ function Schedule(opts, resourceGroups) {
             var link = $(this).attr('data-href');
             window.location = link + "&sd=" + sd + "&ed=" + ed;
         });
-    };
+    }
 
-    this.makeSlotsSelectable = function (reservationsElement) {
+    this.initReservable = initReservable;
+
+    function makeSlotsSelectable(reservationsElement) {
         var startHref = '';
         var startDate = '';
         var endDate = '';
@@ -512,9 +563,9 @@ function Schedule(opts, resourceGroups) {
                 }
             }
         });
-    };
+    }
 
-    this.makeReservationsMoveable = function (reservations) {
+    function makeReservationsMoveable(reservations) {
         // var sourceResourceId = null;
         // var referenceNumber = null;
 

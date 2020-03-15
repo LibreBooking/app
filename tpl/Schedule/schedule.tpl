@@ -441,7 +441,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {else}
             schedule.initNavigation();
             schedule.initRotateSchedule();
-            schedule.initReservations();
+            schedule.initReservable();
             schedule.initResourceFilter();
             schedule.initResources();
             schedule.initUserDefaultSchedule(true);
