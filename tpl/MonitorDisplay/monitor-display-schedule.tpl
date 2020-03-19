@@ -59,7 +59,7 @@
     {foreach from=$BoundDates item=date}
         <div class="monitor-display-date">{formatdate date=$date}</div>
         {foreach from=$Resources item=resource name=resource_loop}
-            {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important;background-color:{$resource->GetColor()} !important;"{/if}
+            {if $resource->HasColor()}{assign var=style value="color:{$resource->GetTextColor()} !important;background-color:{$resource->GetColor()} !important;"}{/if}
             <div class="monitor-display-resource-name">{$resource->Name}</div>
             {assign var=slots value=$DailyLayout->GetLayout($date, $resource->Id)}
             {foreach from=$slots item=slot}
