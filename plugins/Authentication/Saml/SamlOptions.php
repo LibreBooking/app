@@ -49,13 +49,25 @@ class SamlOptions
 		$this->SetOption('ssphp_phone', $this->GetConfig(SamlConfig::PHONE));
 		$this->SetOption('ssphp_organization', $this->GetConfig(SamlConfig::ORGANIZATION));
 		$this->SetOption('ssphp_position', $this->GetConfig(SamlConfig::POSITION));
+		$this->SetOption('ssphp_groups', $this->GetConfig(SamlConfig::GROUPS));
 
 		return $this->_options;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function ReturnTo()
     {
         return $this->GetConfig(SamlConfig::RETURN_TO);
+    }
+
+	/**
+	 * @return bool
+	 */
+    public function SyncGroups()
+    {
+        return $this->GetConfig(SamlConfig::SYNC_GROUPS, new BooleanConverter());
     }
 
 	private function SetOption($key, $value)

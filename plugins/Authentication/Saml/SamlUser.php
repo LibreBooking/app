@@ -23,14 +23,16 @@ class SamlUser
 	private $phone;
 	private $institution;
 	private $title;
+	private $groups = array();
 
 	/**
 	 * @param array of SAML user attributes
-	 * @param array of configuration options
+	 * @param SamlOptions $samlOptions
 	 */
-	public function __construct($saml_attributes = array(), $options = array())
+	public function __construct($saml_attributes = array(), $samlOptions)
 	{
 		Log::Debug('Inside construct SamlUser');
+		$options = $samlOptions->AdSamlOptions();
 		if (count($options) > 0)
 		{
 			Log::Debug('Inside construct SamlUser and count options is %d', count($options));
@@ -54,6 +56,12 @@ class SamlUser
 
 			$this->title = $this->GetAttributeValue($saml_attributes, $options, "ssphp_position");
 			Log::Debug('Value of title is %s', $this->GetTitle());
+
+			$this->groups = array();
+			if ($samlOptions->SyncGroups())
+			{
+				$this->groups = $this->GetAttributeValue($saml_attributes, $options, "ssphp_groups");
+			}
 		}
 	}
 
@@ -94,26 +102,32 @@ class SamlUser
 
     public function GetGroups()
     {
-        return array();
+        return $this->groups;
     }
 
 	/**
 	 * @param $saml_attributes array
 	 * @param $options array
 	 * @param $key string
+	 * @param $returnArray bool
 	 * @return mixed
 	 */
-	private function GetAttributeValue($saml_attributes, $options, $key)
+	private function GetAttributeValue($saml_attributes, $options, $key, $returnArray = false)
 	{
 		$attributeKeys = array_map('trim', explode(',', $options[$key]));
 		foreach ($attributeKeys as $attributeKey)
 		{
 			if (array_key_exists($attributeKey, $saml_attributes))
 			{
+				if ($returnArray) {
+					return $saml_attributes[$attributeKey];
+				}
 				return $saml_attributes[$attributeKey][0];
 			}
 		}
+		if ($returnArray) {
+			return array();
+		}
 		return '';
 	}
-
 }

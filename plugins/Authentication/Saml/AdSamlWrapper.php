@@ -60,10 +60,7 @@ class AdSamlWrapper implements ISaml
 
     public function GetSamlUser()
     {
-        // Obtain a list of user attributes from SimpleSAMLphp
-        // Identity Provider
-        return new SamlUser($this->saml->getAttributes(),
-            $this->options->AdSamlOptions());
+        return new SamlUser($this->saml->getAttributes(), $this->options);
     }
 
     public function Logout()
@@ -71,5 +68,4 @@ class AdSamlWrapper implements ISaml
         $this->Connect();
         $this->saml->Logout($this->options->ReturnTo());
     }
-
 }

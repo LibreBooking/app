@@ -17,14 +17,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 interface IReservationAuthorization
 {
 	/**
-	 * @abstract
 	 * @param UserSession $currentUser
 	 * @return bool
 	 */
 	function CanChangeUsers(UserSession $currentUser);
 
 	/**
-	 * @abstract
 	 * @param ReservationView $reservationView
 	 * @param UserSession $currentUser
 	 * @return bool
@@ -32,7 +30,6 @@ interface IReservationAuthorization
 	function CanEdit(ReservationView $reservationView, UserSession $currentUser);
 
 	/**
-	 * @abstract
 	 * @param ReservationView $reservationView
 	 * @param UserSession $currentUser
 	 * @return bool
@@ -40,7 +37,6 @@ interface IReservationAuthorization
 	function CanApprove(ReservationView $reservationView, UserSession $currentUser);
 
 	/**
-	 * @abstract
 	 * @param ReservationView $reservationView
 	 * @param UserSession $currentUser
 	 * @return bool

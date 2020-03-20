@@ -26,5 +26,7 @@ class SamlConfig {
     const PHONE = 'simplesamlphp.phone';
     const ORGANIZATION = 'simplesamlphp.organization';
     const POSITION = 'simplesamlphp.position';
+    const GROUPS = 'simplesamlphp.groups';
     const RETURN_TO = 'simplesamlphp.return.to';
+    const SYNC_GROUPS = 'simplesamlphp.sync.groups';
 }
