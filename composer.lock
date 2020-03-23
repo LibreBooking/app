@@ -360,16 +360,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.0.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "a48807183a4b819072f26e347bbd0b5199a9d15f"
+                "reference": "cd72d394ca794d3466a3b2fc09d5a6c1dc86b47e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/a48807183a4b819072f26e347bbd0b5199a9d15f",
-                "reference": "a48807183a4b819072f26e347bbd0b5199a9d15f",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/cd72d394ca794d3466a3b2fc09d5a6c1dc86b47e",
+                "reference": "cd72d394ca794d3466a3b2fc09d5a6c1dc86b47e",
                 "shasum": ""
             },
             "require": {
@@ -409,30 +409,29 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-02-09T09:16:15+00:00"
+            "time": "2020-02-22T12:28:44+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "2e32a6d48972b2c1976ed5d8967145b6cec4a4a9"
+                "reference": "7462d5f123dfc080dfdf26897032a6513644fc95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/2e32a6d48972b2c1976ed5d8967145b6cec4a4a9",
-                "reference": "2e32a6d48972b2c1976ed5d8967145b6cec4a4a9",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/7462d5f123dfc080dfdf26897032a6513644fc95",
+                "reference": "7462d5f123dfc080dfdf26897032a6513644fc95",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
+                "php": "^7.2",
                 "phpdocumentor/reflection-common": "^2.0"
             },
             "require-dev": {
-                "ext-tokenizer": "^7.1",
-                "mockery/mockery": "~1",
-                "phpunit/phpunit": "^7.0"
+                "ext-tokenizer": "^7.2",
+                "mockery/mockery": "~1"
             },
             "type": "library",
             "extra": {
@@ -456,20 +455,20 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2019-08-22T18:11:29+00:00"
+            "time": "2020-02-18T18:59:58+00:00"
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.10.2",
+            "version": "v1.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9"
+                "reference": "451c3cd1418cf640de218914901e51b064abb093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/451c3cd1418cf640de218914901e51b064abb093",
+                "reference": "451c3cd1418cf640de218914901e51b064abb093",
                 "shasum": ""
             },
             "require": {
@@ -519,20 +518,20 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-01-20T15:57:02+00:00"
+            "time": "2020-03-05T15:02:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "8.0.0",
+            "version": "8.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "278b6e876467da2e6b5e5390a2310391618ebc10"
+                "reference": "31e94ccc084025d6abee0585df533eb3a792b96a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/278b6e876467da2e6b5e5390a2310391618ebc10",
-                "reference": "278b6e876467da2e6b5e5390a2310391618ebc10",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/31e94ccc084025d6abee0585df533eb3a792b96a",
+                "reference": "31e94ccc084025d6abee0585df533eb3a792b96a",
                 "shasum": ""
             },
             "require": {
@@ -583,7 +582,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-02-07T06:03:55+00:00"
+            "time": "2020-02-19T13:41:19+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1085,16 +1084,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "fea125c3bf7cab63a909990133d425e5a0a61e40"
+                "reference": "9bffdefa7810031a165ddd6275da6a2c1f6f2dfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/fea125c3bf7cab63a909990133d425e5a0a61e40",
-                "reference": "fea125c3bf7cab63a909990133d425e5a0a61e40",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/9bffdefa7810031a165ddd6275da6a2c1f6f2dfb",
+                "reference": "9bffdefa7810031a165ddd6275da6a2c1f6f2dfb",
                 "shasum": ""
             },
             "require": {
@@ -1134,7 +1133,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2020-02-07T06:10:11+00:00"
+            "time": "2020-02-19T13:40:20+00:00"
         },
         {
             "name": "sebastian/exporter",
