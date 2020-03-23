@@ -34,8 +34,8 @@ class FakePayPalGateway extends PayPalGateway
 
     public function __construct()
     {
-        $this->_Payment = new \PayPal\Api\Payment();
-        $this->_Refund = new \PayPal\Api\DetailedRefund();
+        $this->_Payment = new stdClass();
+        $this->_Refund = new stdClass();
         parent::__construct(true, null, null, null);
     }
 
