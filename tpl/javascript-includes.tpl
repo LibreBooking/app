@@ -51,7 +51,7 @@
     {/if}
 {/if}
 {if $Owl}
-    {jsfile src="js/owl-2.2.1/owl.carousel.min.js"}
+    {jsfile src="js/owl-2.3.4/owl.carousel.min.js"}
 {/if}
 {if $Clear}
     {jsfile src="search-clear.js"}

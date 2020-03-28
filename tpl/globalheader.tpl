@@ -113,8 +113,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <link rel='stylesheet' type='text/css' href='{$Path}scripts/css/fullcalendar.print.css' media='print'/>
     {/if}
     {if $Owl}
-        {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}
-        {cssfile src="scripts/js/owl-2.2.1/assets/owl.theme.default.css"}
+        {cssfile src="scripts/js/owl-2.3.4/assets/owl.carousel.min.css"}
+        {cssfile src="scripts/js/owl-2.3.4/assets/owl.theme.default.css"}
     {/if}
 
     {jsfile src="js/jquery-ui-timepicker-addon.js"}
