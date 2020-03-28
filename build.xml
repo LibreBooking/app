@@ -158,6 +158,8 @@
                 <exclude name="**/config.php"/>
                 <exclude name="**/*.config.php"/>
                 <exclude name="config/log4php.config.xml"/>
+                <exclude name="*phpunit*"/>
+                <exclude name="composer*"/>
                 <include name="**/qrconfig.php"/>
                 <include name="**/.htaccess"/>
             </fileset>

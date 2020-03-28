@@ -49,5 +49,6 @@ $conf['settings']['simplesamlphp.phone'] = 'telephoneNumber';
 $conf['settings']['simplesamlphp.organization'] = 'department';
 //SAML attriubute that is mapped to Booked Scheduler position
 $conf['settings']['simplesamlphp.position'] = 'title';
+$conf['settings']['simplesamlphp.groups'] = 'groups';
+$conf['settings']['simplesamlphp.sync.groups'] = 'false';
 $conf['settings']['simplesamlphp.return.to'] = '';
-?>

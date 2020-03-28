@@ -5,7 +5,7 @@
         <h5>
             {translate key=Checkout}
         </h5>
-        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+		<script src="https://www.paypal.com/sdk/js?client-id={$PayPalClientId}&intent=capture&currency={$Currency}&commit=true&disable-funding=credit"></script>
         <script src="https://checkout.stripe.com/checkout.js"></script>
 
         <div id="checkoutPage" class="col s12">
@@ -44,12 +44,12 @@
                             <div class="checkout-buttons">
                                 <div class="checkout-buttons">
                                     {if $PayPalEnabled}
-                                        <div class="col-xs-12 col-sm-3">
+                                        <div class="col s12 m3">
                                             <div id="paypal-button"></div>
                                         </div>
                                     {/if}
                                     {if $StripeEnabled}
-                                        <div class="col-xs-12 col-sm-9">
+                                        <div class="col s12 m9">
                                             <button id="stripe-button" class="btn btn-default"><span
                                                         class="fa fa-credit-card"></span> {translate key=PayWithCard}
                                             </button>
@@ -130,43 +130,69 @@
             {jsfile src="ajax-helpers.js"}
 
             <script type="text/javascript">
+				$(function () {
                 {if $PayPalEnabled}
 
                 var CREATE_PAYMENT_URL = '{$smarty.server.SCRIPT_NAME}?action=createPayPalPayment';
                 var EXECUTE_PAYMENT_URL = '{$smarty.server.SCRIPT_NAME}?action=executePayPalPayment';
 
-                paypal.Button.render({
-                    env: '{$PayPalEnvironment}',
-                    commit: true,
+					paypal.Buttons({
+						createOrder: function (data, actions) {
 
-                    payment: function () {
-                        return paypal.request.post(CREATE_PAYMENT_URL, {
-                            CSRF_TOKEN: $('#csrf_token').val()
+							const fd = new FormData();
+							fd.append("CSRF_TOKEN", $('#csrf_token').val());
+							// CSRF_TOKEN: $('#csrf_token').val()
+							return fetch(CREATE_PAYMENT_URL, {
+								method: 'POST', body: fd, credentials: "include",
                         }).then(function (res) {
-                            return res.id;
+								return res.json();
+							}).then(function (data) {
+								return data.id;
                         });
+							// return paypal.request.post(CREATE_PAYMENT_URL, {
+							//     CSRF_TOKEN: $('#csrf_token').val()
+							// }).then(function (res) {
+							//     return res.id;
+							// });
                     },
 
-                    onAuthorize: function (data) {
-                        return paypal.request.post(EXECUTE_PAYMENT_URL, {
-                            paymentID: data.paymentID,
-                            payerID: data.payerID,
-                            CSRF_TOKEN: $('#csrf_token').val()
-                        }).then(function (data) {
+						onApprove: function (data, actions) {
+							const fd = new FormData();
+							fd.append("CSRF_TOKEN", $('#csrf_token').val());
+							fd.append("paymentID", data.orderID);
+							return fetch(EXECUTE_PAYMENT_URL, {
+								method: 'POST', body: fd, credentials: "include"
+							}).then(function (res) {
+								return res.json();
+							}).then(function (res) {
                             $('#cart').addClass('no-show');
-                            if (data.state != "approved") {
+								if (res.status != "COMPLETED")
+								{
                                 $('#error').removeClass('no-show');
                             } else {
                                 $('#success').removeClass('no-show');
                             }
                         });
-                    },
-
-                    onError: function (err) {
-                        $('#error').removeClass('no-show');
                     }
+						// return paypal.request.post(EXECUTE_PAYMENT_URL, {
+						// 	paymentID: data.paymentID, payerID: data.payerID, CSRF_TOKEN: $('#csrf_token').val()
+						// }).then(function (data) {
+						// 	$('#cart').addClass('no-show');
+						// 	if (data.state != "approved")
+						// 	{
+						// 		$('#error').removeClass('no-show');
+						// 	}
+						// 	else
+						// 	{
+						// 		$('#success').removeClass('no-show');
+						// 	}
+						// });
 
-                }, '#paypal-button');
+						// onError: function (err) {
+						// 	$('#error').removeClass('no-show');
+						// }
+
+					}).render('#paypal-button');
 
                 {/if}
 
@@ -182,14 +208,14 @@
                     email: '{$Email}',
                     token: function (token) {
                         var data = {
-                            CSRF_TOKEN: $('#csrf_token').val(),
-                            STRIPE_TOKEN: token.id
+								CSRF_TOKEN: $('#csrf_token').val(), STRIPE_TOKEN: token.id
                         };
 
                         $.post(executeStripePaymentUrl, data, function (d) {
                             $('#cart').addClass('no-show');
 
-                            if (d.result != true) {
+								if (d.result != true)
+								{
                                 $('#error').removeClass('no-show');
                             } else {
                                 $('#success').removeClass('no-show');
@@ -200,9 +226,7 @@
 
                 document.getElementById('stripe-button').addEventListener('click', function (e) {
                     handler.open({
-                        name: '{translate key=BuyMoreCredits}',
-                        description: '{$Total}',
-                        amount: {$TotalUnformatted * 100}
+							name: '{translate key=BuyMoreCredits}', description: '{$Total}', amount: {$TotalUnformatted * 100}
                     });
                     e.preventDefault();
                 });
@@ -212,6 +236,7 @@
                 });
 
                 {/if}
+				});
             </script>
 
         </div>

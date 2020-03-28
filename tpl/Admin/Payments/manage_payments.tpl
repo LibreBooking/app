@@ -180,7 +180,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <h4 id="refundDialogLabel">{translate key=IssueRefund}</h4>
                 <div class="input-field">
                     <label for="refundAmount">{translate key='RefundAmount'}</label>
-                    <input type="number" id="refundAmount" min=".01" {formname key=REFUND_AMOUNT}/>
+                    <input type="number" id="refundAmount" min=".01" step="any" {formname key=REFUND_AMOUNT}/>
                     <input type="hidden" id="refundId" {formname key=REFUND_TRANSACTION_ID} />
                 </div>
             </div>

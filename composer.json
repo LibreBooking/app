@@ -1,8 +1,7 @@
 {
+  "description": "Booked Scheduler",
   "autoload": {
-    "classmap": [
-      "src/"
-    ]
+
   },
   "require-dev": {
     "phing/phing": "2.*",
