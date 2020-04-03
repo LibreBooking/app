@@ -793,6 +793,15 @@ class en_us extends Language
         $strings['Custom'] = 'Custom';
         $strings['AddDate'] = 'Add Date';
         $strings['RepeatOn'] = 'Repeat On';
+        $strings['GroupCredits'] = 'Credits';
+        $strings['Replenish'] = 'Replenish';
+        $strings['AddCredits'] = 'Add Credits';
+        $strings['ReplenishCredits'] = 'Replenish Credits';
+        $strings['AddCreditsEveryDays'] = 'Add %s credits every %s days';
+        $strings['AddCreditsDayOfMonth'] = 'Add %s credits on day %s of each month';
+        $strings['AutomaticallyAddCredits'] = 'Automatically add credits for all users in this group';
+        $strings['AddCreditsToGroup'] = 'Add credits to all users in this group';
+        $strings['AddNumberCreditsToGroup'] = 'Add %s credits to all users in this group';
         // End Strings
 
 		// Install

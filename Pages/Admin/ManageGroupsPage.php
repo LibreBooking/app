@@ -124,6 +124,26 @@ interface IManageGroupsPage extends IActionPage
      * @return int[]
      */
     public function GetScheduleAdminIds();
+
+    /**
+     * @return int
+     */
+    public function GetReplenishmentType();
+
+    /**
+     * @return int
+     */
+    public function GetReplenishmentAmount();
+
+    /**
+     * @return int
+     */
+    public function GetReplenishmentInterval();
+
+    /**
+     * @return int
+     */
+    public function GetReplenishmentDayOfMonth();
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -152,6 +172,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
         $this->presenter->PageLoad();
         $this->Set('chooseText', Resources::GetInstance()->GetString('Choose') . '...');
         $this->Set('CanChangeRoles', $this->CanChangeRoles);
+        $this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
         $this->Display('Admin/manage_groups.tpl');
     }
 
@@ -267,6 +288,46 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     public function GetScheduleAdminIds()
     {
         return $this->GetForm(FormKeys::SCHEDULE_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReplenishmentType()
+    {
+        return intval($this->GetForm(FormKeys::CREDITS_FREQUENCY));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReplenishmentAmount()
+    {
+        $type = $this->GetReplenishmentType();
+        if ($type == GroupCreditReplenishmentRuleType::INTERVAL) {
+            return intval($this->GetForm(FormKeys::CREDITS_AMOUNT_DAYS));
+        }
+        if ($type == GroupCreditReplenishmentRuleType::DAY_OF_MONTH) {
+            return intval($this->GetForm(FormKeys::CREDITS_AMOUNT_DAY_OF_MONTH));
+        }
+
+        return 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReplenishmentInterval()
+    {
+        return intval($this->GetForm(FormKeys::CREDITS_DAYS));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReplenishmentDayOfMonth()
+    {
+        return intval($this->GetForm(FormKeys::CREDITS_DAY_OF_MONTH));
     }
 }
 

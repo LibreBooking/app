@@ -206,13 +206,8 @@ class SchedulePresenterTests extends TestBase
 
         array_walk($reservationsAndBlackouts, function($i) {
             /** @param $i ReservationListItem */
-            $dtos[] = $i->AsDto($this->fakeUser->UserId);
+            $dtos[] = $i->AsDto($this->fakeUser->UserId, $this->fakeUser->Timezone);
         });
         $this->assertEquals($page->_BoundReservations, $dtos);
-    }
-
-    public function testGetsReservationsForSpecificDates()
-    {
-
     }
 }

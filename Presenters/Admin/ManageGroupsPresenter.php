@@ -39,6 +39,8 @@ class ManageGroupsActions
 	const AdminGroups = 'adminGroups';
 	const ResourceGroups = 'resourceGroups';
 	const ScheduleGroups = 'scheduleGroups';
+	const GetCreditReplenishment = 'getCreditReplenishment';
+	const UpdateCreditReplenishment = 'updateCreditReplenishment';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -91,6 +93,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::AdminGroups, 'ChangeAdminGroups');
 		$this->AddAction(ManageGroupsActions::ResourceGroups, 'ChangeResourceGroups');
 		$this->AddAction(ManageGroupsActions::ScheduleGroups, 'ChangeScheduleGroups');
+		$this->AddAction(ManageGroupsActions::UpdateCreditReplenishment, 'UpdateCreditReplenishment');
 	}
 
 	public function PageLoad()
@@ -199,6 +202,9 @@ class ManageGroupsPresenter extends ActionPresenter
 			case ManageGroupsActions::ScheduleGroups :
 				$response = $this->GetScheduleAdminGroups();
 				break;
+            case ManageGroupsActions::GetCreditReplenishment:
+                $response = $this->GetCreditReplenishment();
+                break;
 		}
 
 		$this->page->SetJsonResponse($response);
@@ -438,6 +444,23 @@ class ManageGroupsPresenter extends ActionPresenter
 			$this->scheduleRepository->Update($schedule);
 		}
 	}
+
+	public function GetCreditReplenishment() {
+	    $group = $this->groupRepository->LoadById($this->page->GetGroupId());
+	    return new GroupCreditReplenishment($group);
+    }
+
+    public function UpdateCreditReplenishment() {
+	    $groupId = $this->page->GetGroupId();
+        $type = $this->page->GetReplenishmentType();
+        $amount = $this->page->GetReplenishmentAmount();
+        $interval = $this->page->GetReplenishmentInterval();
+        $dayOfMonth = $this->page->GetReplenishmentDayOfMonth();
+
+        Log::Debug("Updating group credit replenishment rule. groupid=$groupId, type=$type, amount=$amount, interval=$interval, dayofMonth=$dayOfMonth");
+
+        $this->groupRepository->UpdateCreditsReplenishment($groupId, $type, $amount, $interval, $dayOfMonth);
+    }
 }
 
 class UserGroupResults
@@ -464,5 +487,24 @@ class UserGroupResults
 	 * @var AutocompleteUser[]
 	 */
 	public $Users;
+}
+
+class GroupCreditReplenishment
+{
+    public $type = 0;
+    public $amount = 0;
+    public $dayOfMonth = 0;
+    public $interval = 0;
+
+    public function __construct(Group $group)
+    {
+        $rule = $group->ReplenishmentRule();
+        if ($rule != null) {
+            $this->type = $rule->Type();
+            $this->amount = $rule->Amount();
+            $this->dayOfMonth = $rule->DayOfMonth();
+            $this->interval = $rule->Interval();
+        }
+    }
 }
 

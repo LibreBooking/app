@@ -65,6 +65,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <th>{translate key='GroupRoles'}</th>
             {/if}
             <th>{translate key='GroupAdmin'}</th>
+            {if $CreditsEnabled}
+                <th>{translate key='GroupCredits'}</th>{/if}
             <th class="action">{translate key='GroupAutomaticallyAdd'}</th>
             <th class="action">{translate key='Actions'}</th>
         </tr>
@@ -114,6 +116,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </td>
                 {/if}
                 <td><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:$chooseText}</a></td>
+                {if $CreditsEnabled}
+                    <td><a href="#" class="update credits-add">{translate key='Add'}</a> | <a href="#"
+                                                                                              class="update credits-replenish">{translate key='Replenish'}</a>
+                    </td>
+                {/if}
                 <td class="action">{if $group->IsDefault}
                         <span class="fa fa-check-circle-o"></span>
                     {else}
@@ -310,12 +317,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="title"><span class="count"></span> {translate key=Resources}</div>
                     {foreach from=$resources item=resource}
                         <div>
-                        <label for="resource{$resource->GetId()}">
-                            <input type="checkbox"
-                                   id="resource{$resource->GetId()}" {formname key=RESOURCE_ID multi=true}"
-                            value="{$resource->GetId()}" />
-                            <span>{$resource->GetName()}</span>
-                        </label>
+                            <label for="resource{$resource->GetId()}">
+                                <input type="checkbox"
+                                       id="resource{$resource->GetId()}" {formname key=RESOURCE_ID multi=true}"
+                                value="{$resource->GetId()}" />
+                                <span>{$resource->GetName()}</span>
+                            </label>
                         </div>
                     {/foreach}
                 </div>
@@ -415,6 +422,112 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
+    <div id="creditsAddDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
+         aria-labelledby="creditsAddDialogLabel"
+         aria-hidden="true">
+        <div class="modal-header">
+            <h4 class="modal-title left" id="creditsAddDialogLabel">{translate key=AddCredits}</h4>
+            <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+        </div>
+        <div class="modal-content">
+            <div>
+                {translate key=AddCreditsToGroup}
+            </div>
+            <div>
+                {capture name="add_credits" assign="add_credits"}
+                    <div class='input-field inline'>
+                        <input type='number' min='.01' step='any' id='credits-fixed-amount' style='width:150px'/>
+                        <label for='credits-fixed-amount'>credits</label>
+                    </div>
+                {/capture}
+                {translate key=AddNumberCreditsToGroup args="$add_credits"}
+            </div>
+        </div>
+        <div class="modal-footer">
+            {cancel_button}
+            {update_button}
+            {indicator}
+        </div>
+    </div>
+
+    <div id="creditsReplenishDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
+         aria-labelledby="creditsReplenishDialogLabel"
+         aria-hidden="true">
+        <form id="creditsReplenishForm" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title left" id="creditsReplenishDialogLabel">{translate key=ReplenishCredits}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="modal-content">
+                <div>
+                    {translate key=AutomaticallyAddCredits}
+                </div>
+
+                <div>
+                    <label for="credits-never">
+                        <input type="radio" id="credits-never" {formname key=CREDITS_FREQUENCY} class="with-gap"
+                               checked="checked" value="{GroupCreditReplenishmentRuleType::NONE}" />
+                        <span>Do not automatically add credits</span>
+                    </label>
+                </div>
+                <div>
+                    <label for="credits-days">
+                        <input type="radio" id="credits-days" {formname key=CREDITS_FREQUENCY} class="with-gap"
+                               rel="#credits-days-details" value="{GroupCreditReplenishmentRuleType::INTERVAL}" />
+                        <span>Add credits at a regular interval</span>
+                    </label>
+                    <div id="credits-days-details" class="no-show credits-details">
+                        {capture name="credits_days" assign="credits_days"}
+                            <div class='input-field inline'>
+                                <input type='number' min='1' step='1'
+                                       id='credits-days-amount' {formname key=CREDITS_AMOUNT_DAYS} style='width:150px'/>
+                                <label for='credits-days-amount'>credits</label>
+                            </div>
+                        {/capture}
+                        {capture name="days_days" assign="days_days"}
+                            <div class='input-field inline'>
+                                <input type='number' min='1' step='1' id='credits-days-days' {formname key=CREDITS_DAYS}
+                                       style='width:150px'/>
+                                <label for='credits-days-days'>days</label>
+                            </div>
+                        {/capture}
+                        {translate key="AddCreditsEveryDays" args="$credits_days,$days_days"}
+                    </div>
+                </div>
+                <div>
+                    <label for="credits-set-day">
+                        <input type="radio" id="credits-set-day" {formname key=CREDITS_FREQUENCY} class="with-gap"
+                               rel="#credits-set-day-details" value="{GroupCreditReplenishmentRuleType::DAY_OF_MONTH} "/>
+                        <span>Add credits on the same day every month</span>
+                    </label>
+                    <div id="credits-set-day-details" class="no-show credits-details">
+                        {capture name="set_day_credits" assign="set_day_credits"}
+                            <div class='input-field inline'>
+                                <input type='number' min='1' step='1'
+                                       id='credits-set-day-amount' {formname key=CREDITS_AMOUNT_DAY_OF_MONTH}
+                                       style='width:150px'/>
+                                <label for='credits-set-day-amount'>credits</label>
+                            </div>
+                        {/capture}
+                        {capture name="set_day_day" assign="set_day_day"}
+                            <div class='input-field inline'>
+                                <input type='number' min='1' max='31' step='1'
+                                       id='credits-set-day-days' {formname key=CREDITS_DAY_OF_MONTH}
+                                       style='width:150px'/>
+                                <label for='credits-set-day-days'>day</label>
+                            </div>
+                        {/capture}
+                        {translate key="AddCreditsDayOfMonth" args="$set_day_credits,$set_day_day"}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button submit=true}
+                {indicator}
+            </div>
+        </form>
+    </div>
     {csrf_token}
 
     {include file="javascript-includes.tpl"}
@@ -449,7 +562,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 groupAdmin: '{ManageGroupsActions::GroupAdmin}',
                 adminGroups: '{ManageGroupsActions::AdminGroups}',
                 resourceGroups: '{ManageGroupsActions::ResourceGroups}',
-                scheduleGroups: '{ManageGroupsActions::ScheduleGroups}'
+                scheduleGroups: '{ManageGroupsActions::ScheduleGroups}',
+                creditReplenishment: '{ManageGroupsActions::UpdateCreditReplenishment}'
             };
 
             var dataRequests = {
@@ -458,7 +572,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 groupMembers: 'groupMembers',
                 adminGroups: '{ManageGroupsActions::AdminGroups}',
                 resourceGroups: '{ManageGroupsActions::ResourceGroups}',
-                scheduleGroups: '{ManageGroupsActions::ScheduleGroups}'
+                scheduleGroups: '{ManageGroupsActions::ScheduleGroups}',
+                creditReplenishment: '{ManageGroupsActions::GetCreditReplenishment}'
             };
 
             var groupOptions = {

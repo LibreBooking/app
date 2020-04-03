@@ -105,7 +105,13 @@ class ParameterNames
 	const GROUP_ADMIN_ID = '@admin_group_id';
 	const GROUP_ISDEFAULT = '@isdefault';
 
-	const HOMEPAGE_ID = '@homepageid';
+    const GROUP_CREDIT_REPLENISHMENT_TYPE = "@type";
+    const GROUP_CREDIT_REPLENISHMENT_AMOUNT = "@amount";
+    const GROUP_CREDIT_REPLENISHMENT_INTERVAL = "@interval";
+    const GROUP_CREDIT_REPLENISHMENT_DAYOFMONTH = "@day_of_month";
+
+
+    const HOMEPAGE_ID = '@homepageid';
 
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';

@@ -212,10 +212,14 @@ function BeforeSerializeDecorator(onBeforeSerialize) {
 		{
 			onBeforeSerialize(jqForm, options);
 		}
-	}
+	};
 }
 function BeforeSerialize(jqForm, options) {
 	var csrf_token = $('#csrf_token');
+	if (csrf_token.length > 1) {
+	    csrf_token = csrf_token[0];
+    }
+
 	if (csrf_token.length != 0 && $(jqForm).find('#csrf_token').length == 0)
 	{
 		$(jqForm).append(csrf_token);

@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once (ROOT_DIR. 'Domain/Values/GroupCreditReplenishmentRule.php');
+
 class Group
 {
 	private $id;
@@ -38,6 +40,11 @@ class Group
     private $addedViewPermissions = array();
 
 	private $rolesChanged = false;
+
+    /**
+     * @var null|GroupCreditReplenishmentRule
+     */
+	private $replenishmentRule = null;
 
 	/**
 	 * @var array|int[]
@@ -394,6 +401,19 @@ class Group
 		}
 		$this->adminGroupId = $groupId;
 	}
+
+	public function WithReplenishment(GroupCreditReplenishmentRule $replenishmentRule)
+    {
+        $this->replenishmentRule = $replenishmentRule;
+    }
+
+    /**
+     * @return GroupCreditReplenishmentRule|null
+     */
+	public function ReplenishmentRule()
+    {
+        return $this->replenishmentRule;
+    }
 
 	public static function Null()
 	{

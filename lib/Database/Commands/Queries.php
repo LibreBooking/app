@@ -80,6 +80,9 @@ class Queries
     const ADD_GROUP_ROLE =
 			'INSERT IGNORE INTO `group_roles` (`group_id`, `role_id`) VALUES (@groupid, @roleid)';
 
+    const ADD_GROUP_CREDITS_REPLENISHMENT  = 'INSERT INTO `group_credit_replenishment_rule` (`group_id`, `type`, `amount`, `day_of_month`, `interval`) 
+            VALUES (@groupid, @type, @amount, @day_of_month, @interval)';
+
 	const ADJUST_USER_CREDITS =
         'INSERT INTO `credit_log` (`user_id`, `original_credit_count`, `credit_count`, `credit_note`, `date_created`) 
             SELECT `user_id`, `credit_count`, COALESCE(`credit_count`,0) - @credit_count, @credit_note, @dateCreated FROM `users` WHERE `user_id` = @userid;
@@ -266,6 +269,8 @@ class Queries
 			'DELETE	FROM `group_resource_permissions` WHERE `group_id` = @groupid AND `resource_id` = @resourceid';
 
 	const DELETE_GROUP_ROLE = 'DELETE FROM `group_roles` WHERE `group_id` = @groupid AND `role_id` = @roleid';
+
+	const DELETE_GROUP_CREDIT_REPLENISHMENT = 'DELETE FROM `group_credit_replenishment_rule` WHERE `group_id` = @groupid ';
 
 	const DELETE_ORPHAN_LAYOUTS = 'DELETE `l`.* FROM `layouts` `l` LEFT JOIN `schedules` `s` ON `l`.`layout_id` = `s`.`layout_id` WHERE `s`.`layout_id` IS NULL';
 
@@ -595,8 +600,9 @@ class Queries
 
 	const GET_GROUP_BY_ID =
 			'SELECT *
-		FROM `groups`
-		WHERE `group_id` = @groupid';
+		FROM `groups` `g`
+		LEFT JOIN `group_credit_replenishment_rule` `rule` ON `g`.`group_id` = `rule`.`group_id`
+		WHERE `g`.`group_id` = @groupid';
 
 	const GET_GROUPS_I_CAN_MANAGE = 'SELECT `g`.`group_id`, `g`.`name`
 		FROM `groups` `g`

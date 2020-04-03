@@ -96,10 +96,17 @@ class GroupRepositoryTests extends TestBase
         $isDefault = 1;
 
         $rows = array();
-        $rows[] = array(ColumnNames::GROUP_ID => $groupId,
+        $rows[] = array(
+            ColumnNames::GROUP_ID => $groupId,
             ColumnNames::GROUP_NAME => $groupName,
             ColumnNames::GROUP_ADMIN_GROUP_ID => $groupAdminId,
-            ColumnNames::GROUP_ISDEFAULT => $isDefault);
+            ColumnNames::GROUP_ISDEFAULT => $isDefault,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_ID => 1,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_TYPE => GroupCreditReplenishmentRuleType::INTERVAL,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT => 10,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL => 1,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH => null,
+        );
 
         $groupUsers = array(
             array(ColumnNames::USER_ID => 1),
@@ -140,6 +147,7 @@ class GroupRepositoryTests extends TestBase
         $this->assertFalse(in_array(3, $group->AllowedResourceIds()));
         $this->assertTrue(in_array(2, $group->RoleIds()));
         $this->assertFalse(in_array(4, $group->RoleIds()));
+        $this->assertEquals(GroupCreditReplenishmentRuleType::INTERVAL, $group->ReplenishmentRule()->Type());
     }
 
     public function testUpdateRemovesAllUsersMarked()

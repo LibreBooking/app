@@ -205,6 +205,19 @@ class AddGroupRoleCommand extends SqlCommand
     }
 }
 
+class AddGroupCreditsReplenishment extends SqlCommand
+{
+    public function __construct($groupId, $type, $amount, $interval, $dayOfMonth)
+    {
+        parent::__construct(Queries::ADD_GROUP_CREDITS_REPLENISHMENT);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_TYPE, $type));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_AMOUNT, $amount));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_INTERVAL, $interval));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_DAYOFMONTH, $dayOfMonth));
+    }
+}
+
 class AdjustUserCreditsCommand extends SqlCommand
 {
     public function __construct($userId, $creditsToDeduct, $note)
@@ -920,6 +933,14 @@ class DeleteGroupRoleCommand extends SqlCommand
         parent::__construct(Queries::DELETE_GROUP_ROLE);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
         $this->AddParameter(new Parameter(ParameterNames::ROLE_ID, $roleId));
+    }
+}
+
+class DeleteGroupCreditReplenishment extends SqlCommand {
+    public function __construct($groupId)
+    {
+        parent::__construct(Queries::DELETE_GROUP_CREDIT_REPLENISHMENT);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
     }
 }
 
