@@ -425,29 +425,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="creditsAddDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
          aria-labelledby="creditsAddDialogLabel"
          aria-hidden="true">
-        <div class="modal-header">
-            <h4 class="modal-title left" id="creditsAddDialogLabel">{translate key=AddCredits}</h4>
-            <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
-        </div>
-        <div class="modal-content">
-            <div>
-                {translate key=AddCreditsToGroup}
+        <form id="creditsAddForm" method="post">
+            <div class="modal-header">
+                <h4 class="modal-title left" id="creditsAddDialogLabel">{translate key=AddCredits}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
             </div>
-            <div>
-                {capture name="add_credits" assign="add_credits"}
-                    <div class='input-field inline'>
-                        <input type='number' min='.01' step='any' id='credits-fixed-amount' style='width:150px'/>
-                        <label for='credits-fixed-amount'>credits</label>
-                    </div>
-                {/capture}
-                {translate key=AddNumberCreditsToGroup args="$add_credits"}
+            <div class="modal-content">
+                <div>
+                    {translate key=AddCreditsToGroup} (<span id="addCreditsTotalUsers"></span> users)
+                </div>
+                <div>
+                    {capture name="add_credits" assign="add_credits"}
+                        <div class='input-field inline'>
+                            <input type='number' min='1' step='1' id='credits-fixed-amount' {formname key=CREDITS_AMOUNT} style='width:150px' required='required' />
+                            <label for='credits-fixed-amount'>credits</label>
+                        </div>
+                    {/capture}
+                    {translate key=AddNumberCreditsToGroup args="$add_credits"}
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            {cancel_button}
-            {update_button}
-            {indicator}
-        </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button submit=true key=AddCredits}
+                {indicator}
+            </div>
+        </form>
     </div>
 
     <div id="creditsReplenishDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
@@ -460,20 +462,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="modal-content">
                 <div>
-                    {translate key=AutomaticallyAddCredits}
+                    {translate key=AutomaticallyAddCredits} (<span id="replenishCreditsTotalUsers"></span> users)
                 </div>
 
                 <div>
                     <label for="credits-never">
                         <input type="radio" id="credits-never" {formname key=CREDITS_FREQUENCY} class="with-gap"
-                               checked="checked" value="{GroupCreditReplenishmentRuleType::NONE}" />
+                               checked="checked" value="{GroupCreditReplenishmentRuleType::NONE}"/>
                         <span>Do not automatically add credits</span>
                     </label>
                 </div>
                 <div>
                     <label for="credits-days">
                         <input type="radio" id="credits-days" {formname key=CREDITS_FREQUENCY} class="with-gap"
-                               rel="#credits-days-details" value="{GroupCreditReplenishmentRuleType::INTERVAL}" />
+                               rel="#credits-days-details" value="{GroupCreditReplenishmentRuleType::INTERVAL}"/>
                         <span>Add credits at a regular interval</span>
                     </label>
                     <div id="credits-days-details" class="no-show credits-details">
@@ -497,7 +499,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div>
                     <label for="credits-set-day">
                         <input type="radio" id="credits-set-day" {formname key=CREDITS_FREQUENCY} class="with-gap"
-                               rel="#credits-set-day-details" value="{GroupCreditReplenishmentRuleType::DAY_OF_MONTH} "/>
+                               rel="#credits-set-day-details"
+                               value="{GroupCreditReplenishmentRuleType::DAY_OF_MONTH} "/>
                         <span>Add credits on the same day every month</span>
                     </label>
                     <div id="credits-set-day-details" class="no-show credits-details">
@@ -563,7 +566,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 adminGroups: '{ManageGroupsActions::AdminGroups}',
                 resourceGroups: '{ManageGroupsActions::ResourceGroups}',
                 scheduleGroups: '{ManageGroupsActions::ScheduleGroups}',
-                creditReplenishment: '{ManageGroupsActions::UpdateCreditReplenishment}'
+                creditReplenishment: '{ManageGroupsActions::UpdateCreditReplenishment}',
+                creditAdd: '{ManageGroupsActions::AddCredits}'
             };
 
             var dataRequests = {

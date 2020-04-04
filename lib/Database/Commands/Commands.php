@@ -205,7 +205,23 @@ class AddGroupRoleCommand extends SqlCommand
     }
 }
 
-class AddGroupCreditsReplenishment extends SqlCommand
+class AddGroupUserCreditsCommand extends SqlCommand {
+    public function __construct($groupId, $amount, $note)
+    {
+        parent::__construct(Queries::ADD_GROUP_USER_CREDITS);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $amount));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_NOTE, $note));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+    }
+
+    public function IsMultiQuery()
+    {
+        return true;
+    }
+}
+
+class AddGroupCreditsReplenishmentCommand extends SqlCommand
 {
     public function __construct($groupId, $type, $amount, $interval, $dayOfMonth)
     {
@@ -936,7 +952,7 @@ class DeleteGroupRoleCommand extends SqlCommand
     }
 }
 
-class DeleteGroupCreditReplenishment extends SqlCommand {
+class DeleteGroupCreditReplenishmentCommand extends SqlCommand {
     public function __construct($groupId)
     {
         parent::__construct(Queries::DELETE_GROUP_CREDIT_REPLENISHMENT);

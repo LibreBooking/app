@@ -264,10 +264,15 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
     public function UpdateCreditsReplenishment($groupId, $type, $amount, $interval, $dayOfMonth)
     {
-        ServiceLocator::GetDatabase()->Execute(new DeleteGroupCreditReplenishment($groupId));
+        ServiceLocator::GetDatabase()->Execute(new DeleteGroupCreditReplenishmentCommand($groupId));
         if ($type != GroupCreditReplenishmentRuleType::NONE) {
-            ServiceLocator::GetDatabase()->Execute(new AddGroupCreditsReplenishment($groupId,  $type,  $amount,  $interval,  $dayOfMonth));
+            ServiceLocator::GetDatabase()->Execute(new AddGroupCreditsReplenishmentCommand($groupId,  $type,  $amount,  $interval,  $dayOfMonth));
         }
+    }
+
+    public function AddCreditsToUsers($groupId, $amount, $note)
+    {
+        ServiceLocator::GetDatabase()->Execute(new AddGroupUserCreditsCommand($groupId, $amount, $note));
     }
 }
 

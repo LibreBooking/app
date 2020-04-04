@@ -41,6 +41,7 @@ class ManageGroupsActions
 	const ScheduleGroups = 'scheduleGroups';
 	const GetCreditReplenishment = 'getCreditReplenishment';
 	const UpdateCreditReplenishment = 'updateCreditReplenishment';
+	const AddCredits = 'addCredits';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -94,6 +95,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::ResourceGroups, 'ChangeResourceGroups');
 		$this->AddAction(ManageGroupsActions::ScheduleGroups, 'ChangeScheduleGroups');
 		$this->AddAction(ManageGroupsActions::UpdateCreditReplenishment, 'UpdateCreditReplenishment');
+		$this->AddAction(ManageGroupsActions::AddCredits, 'AddCredits');
 	}
 
 	public function PageLoad()
@@ -460,6 +462,16 @@ class ManageGroupsPresenter extends ActionPresenter
         Log::Debug("Updating group credit replenishment rule. groupid=$groupId, type=$type, amount=$amount, interval=$interval, dayofMonth=$dayOfMonth");
 
         $this->groupRepository->UpdateCreditsReplenishment($groupId, $type, $amount, $interval, $dayOfMonth);
+    }
+
+    public function AddCredits() {
+        $groupId = $this->page->GetGroupId();
+        $amount = $this->page->GetAmountOfCreditsToAdd();
+
+        Log::Debug("Adding credits. groupid=$groupId, amount=$amount");
+
+        $note = Resources::GetInstance()->GetString('CreditsAddedByAdminNote');
+        $this->groupRepository->AddCreditsToUsers($groupId, $amount, $note);
     }
 }
 

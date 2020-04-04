@@ -45,7 +45,8 @@ function GroupManagement(opts) {
 
         creditsAddDialog: $('#creditsAddDialog'),
         creditsReplenishDialog: $('#creditsReplenishDialog'),
-        creditsReplenishForm: $('#creditsReplenishForm')
+        creditsReplenishForm: $('#creditsReplenishForm'),
+        creditsAddForm: $('#creditsAddForm')
     };
 
     var allUserList = null;
@@ -208,7 +209,12 @@ function GroupManagement(opts) {
         ConfigureAsyncForm(elements.changeAdminSchedulesForm, getSubmitCallback(options.actions.scheduleGroups), function () {
             elements.scheduleAdminDialog.modal('close');
         }, error);
-        ConfigureAsyncForm(elements.creditsReplenishForm, getSubmitCallback(options.actions.creditReplenishment), function(){elements.creditsReplenishDialog.modal("close")}, error);
+        ConfigureAsyncForm(elements.creditsReplenishForm, getSubmitCallback(options.actions.creditReplenishment), function () {
+            elements.creditsReplenishDialog.modal("close");
+        }, error);
+        ConfigureAsyncForm(elements.creditsAddForm, getSubmitCallback(options.actions.creditAdd), function () {
+            elements.creditsAddDialog.modal("close");
+        }, error);
     };
 
     var showAllUsersToAdd = function () {
@@ -333,24 +339,32 @@ function GroupManagement(opts) {
     };
 
     const addCredits = function () {
-        elements.creditsAddDialog.modal('open');
+        const groupId = getActiveId();
+        $.getJSON(opts.groupsUrl + '?dr=groupMembers', {gid: groupId}, function (data) {
+            $('#addCreditsTotalUsers').text(data.Total);
+            elements.creditsAddDialog.find('input[type="number"]').val('1');
+            elements.creditsAddDialog.modal('open');
+            M.updateTextFields();
+        });
     };
 
     const replenishCredits = function () {
         const groupId = getActiveId();
 
+        $.getJSON(opts.groupsUrl + '?dr=groupMembers', {gid: groupId}, function (data) {
+            $('#replenishCreditsTotalUsers').text(data.Total);
+        });
+
         elements.creditsReplenishDialog.find(':radio').removeAttr('checked');
         elements.creditsReplenishDialog.find('input[type="number"]').val('');
         var data = {dr: opts.dataRequests.creditReplenishment, gid: groupId};
-        $.get(opts.submitUrl, data, function (replenishment) {
-            console.log(replenishment);
+        $.getJSON(opts.submitUrl, data, function (replenishment) {
             let checkedRadio = $('#credits-never');
             if (replenishment.type === "1") {
                 $('#credits-days-amount').val(replenishment.amount);
                 $('#credits-days-days').val(replenishment.interval);
                 checkedRadio = $('#credits-days');
-            }
-            else if(replenishment.type === "2") {
+            } else if (replenishment.type === "2") {
                 $('#credits-set-day-amount').val(replenishment.amount);
                 $('#credits-set-day-days').val(replenishment.dayOfMonth);
                 checkedRadio = $('#credits-set-day');

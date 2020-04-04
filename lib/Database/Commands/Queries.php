@@ -80,6 +80,10 @@ class Queries
     const ADD_GROUP_ROLE =
 			'INSERT IGNORE INTO `group_roles` (`group_id`, `role_id`) VALUES (@groupid, @roleid)';
 
+    const ADD_GROUP_USER_CREDITS = 'INSERT INTO `credit_log` (`user_id`, `original_credit_count`, `credit_count`, `credit_note`, `date_created`) 
+            SELECT `user_id`, `credit_count`, COALESCE(`credit_count`,0) + @credit_count, @credit_note, @dateCreated FROM `users` WHERE `user_id` IN (SELECT `user_id` FROM `user_groups` WHERE `group_id` = @groupid);
+          UPDATE `users` SET `credit_count` = COALESCE(`credit_count`,0) + @credit_count WHERE `user_id` IN (SELECT `user_id` FROM `user_groups` WHERE `group_id` = @groupid)';
+
     const ADD_GROUP_CREDITS_REPLENISHMENT  = 'INSERT INTO `group_credit_replenishment_rule` (`group_id`, `type`, `amount`, `day_of_month`, `interval`) 
             VALUES (@groupid, @type, @amount, @day_of_month, @interval)';
 

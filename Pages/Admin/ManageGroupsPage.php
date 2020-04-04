@@ -144,6 +144,11 @@ interface IManageGroupsPage extends IActionPage
      * @return int
      */
     public function GetReplenishmentDayOfMonth();
+
+    /**
+     * @return int
+     */
+    public function GetAmountOfCreditsToAdd();
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -328,6 +333,11 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     public function GetReplenishmentDayOfMonth()
     {
         return intval($this->GetForm(FormKeys::CREDITS_DAY_OF_MONTH));
+    }
+
+    public function GetAmountOfCreditsToAdd()
+    {
+        return intval($this->GetForm(FormKeys::CREDITS_AMOUNT));
     }
 }
 
