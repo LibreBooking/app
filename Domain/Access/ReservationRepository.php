@@ -218,7 +218,9 @@ class ReservationRepository implements IReservationRepository
     {
         $database = ServiceLocator::GetDatabase();
 
-        $creditAdjustment = 0 - $existingReservationSeries->GetCreditsConsumed();
+//        $creditAdjustment = 0 - $existingReservationSeries->GetCreditsConsumed();
+//		$creditAdjustment = $existingReservationSeries->GetCreditsRequired() - $existingReservationSeries->GetOriginalCreditsConsumed();
+		$creditAdjustment = 0 - $existingReservationSeries->GetUnusedCreditBalance();
         if ($creditAdjustment != 0) {
             Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 

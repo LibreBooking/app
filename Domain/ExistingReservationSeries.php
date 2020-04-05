@@ -381,6 +381,7 @@ class ExistingReservationSeries extends ReservationSeries
 			foreach ($instances as $instance)
 			{
 				$this->RemoveInstance($instance);
+				$this->unusedCreditBalance += $instance->GetCreditsConsumed();
 			}
 		}
 		else
@@ -389,6 +390,10 @@ class ExistingReservationSeries extends ReservationSeries
 
 			$this->_seriesBeingDeleted = true;
 			$this->AddEvent(new SeriesDeletedEvent($this));
+			foreach ($this->instances as $instance)
+			{
+				$this->unusedCreditBalance += $instance->GetCreditsConsumed();
+			}
 		}
 	}
 
@@ -871,6 +876,15 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 
 		return $consumed;
+	}
+
+	/**
+	 * @var float
+	 */
+	protected $unusedCreditBalance = 0;
+
+	public function GetUnusedCreditBalance() {
+		return $this->unusedCreditBalance;
 	}
 
 	public function GetDeleteReason()

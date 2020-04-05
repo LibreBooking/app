@@ -792,6 +792,7 @@ class ReservationRepositoryTests extends TestBase
         $series->TestSetCreditsConsumed(10);
         $series->WithId($seriesId);
         $series->Delete($deletedBy);
+        $series->WithUnusedCreditBalance(10);
 
         $this->repository->Delete($series);
 
