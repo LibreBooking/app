@@ -152,10 +152,12 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
             if (isset($replenishmentRuleId) && $replenishmentRuleId != null) {
                 $group->WithReplenishment(new GroupCreditReplenishmentRule(
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_ID],
+                        $row[ColumnNames::GROUP_ID],
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_TYPE],
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT],
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH],
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL],
+                        Date::FromDatabase($row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE]),
                     )
                 );
             }
@@ -262,17 +264,57 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
         return $groups;
     }
 
-    public function UpdateCreditsReplenishment($groupId, $type, $amount, $interval, $dayOfMonth)
+    public function UpdateCreditsReplenishment($id, $groupId, $type, $amount, $interval, $dayOfMonth)
     {
-        ServiceLocator::GetDatabase()->Execute(new DeleteGroupCreditReplenishmentCommand($groupId));
-        if ($type != GroupCreditReplenishmentRuleType::NONE) {
-            ServiceLocator::GetDatabase()->Execute(new AddGroupCreditsReplenishmentCommand($groupId,  $type,  $amount,  $interval,  $dayOfMonth));
+        if ($type == GroupCreditReplenishmentRuleType::NONE) {
+            ServiceLocator::GetDatabase()->Execute(new DeleteGroupCreditReplenishmentCommand($groupId));
+            return;
         }
+
+        if (empty($id)) {
+            ServiceLocator::GetDatabase()->Execute(new AddGroupCreditsReplenishmentCommand($groupId, $type, $amount, $interval, $dayOfMonth));
+            return;
+        }
+
+        ServiceLocator::GetDatabase()->Execute(new UpdateGroupCreditReplenishmentRuleCommand($id, $groupId, $type, $amount, $interval, $dayOfMonth, null));
+
     }
 
     public function AddCreditsToUsers($groupId, $amount, $note)
     {
         ServiceLocator::GetDatabase()->Execute(new AddGroupUserCreditsCommand($groupId, $amount, $note));
+    }
+
+    public function GetAllReplenishmentRules()
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllGroupCreditReplenishmentRules());
+        $rules = array();
+        while ($row = $reader->GetRow()) {
+            $rules[] = new GroupCreditReplenishmentRule(
+                $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_ID],
+                $row[ColumnNames::GROUP_ID],
+                $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_TYPE],
+                $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT],
+                $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH],
+                $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL],
+                Date::FromDatabase($row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE]),
+            );
+        }
+        $reader->Free();
+
+        return $rules;
+    }
+
+    public function UpdateReplenishmentRule(GroupCreditReplenishmentRule $rule)
+    {
+        ServiceLocator::GetDatabase()->Execute(new UpdateGroupCreditReplenishmentRuleCommand(
+            $rule->Id(),
+            $rule->GroupId(),
+            $rule->Type(),
+            $rule->Amount(),
+            $rule->Interval(),
+            $rule->DayOfMonth(),
+            $rule->LastReplenishmentDate()));
     }
 }
 

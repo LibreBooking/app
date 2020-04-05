@@ -751,6 +751,14 @@ class Date
 	{
 		return $this->ApplyDifference($interval->Diff());
 	}
+
+    /**
+     * @return int
+     */
+    public function DayOfMonth()
+    {
+        return $this->parts['mday'];
+    }
 }
 
 class NullDate extends Date

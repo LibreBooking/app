@@ -625,6 +625,8 @@ class Queries
 		INNER JOIN `group_roles` `gr` ON `r`.`role_id` = `gr`.`role_id`
 		WHERE `gr`.`group_id` = @groupid';
 
+	const GET_ALL_GROUP_CREDIT_REPLENISHMENT_RULES = 'SELECT * from `group_credit_replenishment_rule`';
+
 	const GET_REMINDER_NOTICES = 'SELECT DISTINCT
 		`rs`.*,
 		`ri`.*,
@@ -1052,6 +1054,11 @@ class Queries
 			'UPDATE `groups`
 		SET `name` = @groupname, `admin_group_id` = @admin_group_id, `isdefault` = @isdefault
 		WHERE `group_id` = @groupid';
+
+	const UPDATE_GROUP_CREDIT_REPLENISHMENT = 'UPDATE `group_credit_replenishment_rule` SET
+        `group_id` = @groupid, `type` =  @type, `amount` = @amount, `day_of_month` = @day_of_month, `interval` = @interval, 
+         `last_replenishment_date` = COALESCE(@last_replenishment_date, `last_replenishment_date`)
+        WHERE `group_credit_replenishment_rule_id` = @rule_id';
 
 	const UPDATE_LOGINDATA = 'UPDATE `users` SET `lastlogin` = @lastlogin, `language` = @language WHERE `user_id` = @userid';
 

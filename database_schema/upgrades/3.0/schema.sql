@@ -9,6 +9,7 @@ CREATE TABLE `group_credit_replenishment_rule`
     `amount`                             DECIMAL(7, 2) UNSIGNED NOT NULL,
     `day_of_month`                       TINYINT UNSIGNED       NOT NULL DEFAULT 0,
     `interval`                           SMALLINT(5) UNSIGNED   NOT NULL DEFAULT 0,
+    `last_replenishment_date`            DATETIME,
     PRIMARY KEY (`group_credit_replenishment_rule_id`),
     FOREIGN KEY (`group_id`)
         REFERENCES `groups` (`group_id`)

@@ -333,6 +333,7 @@ class ColumnNames
     const GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT = 'amount';
     const GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH = 'day_of_month';
     const GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL = 'interval';
+    const GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE = 'last_replenishment_date';
 
     // dynamic
     const TOTAL = 'total';

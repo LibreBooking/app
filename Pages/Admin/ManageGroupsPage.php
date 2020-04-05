@@ -128,6 +128,11 @@ interface IManageGroupsPage extends IActionPage
     /**
      * @return int
      */
+    public function GetReplenishmentId();
+
+    /**
+     * @return int
+     */
     public function GetReplenishmentType();
 
     /**
@@ -293,6 +298,14 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     public function GetScheduleAdminIds()
     {
         return $this->GetForm(FormKeys::SCHEDULE_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function GetReplenishmentId()
+    {
+        return intval($this->GetForm(FormKeys::CREDITS_REPLENISHMENT_ID));
     }
 
     /**

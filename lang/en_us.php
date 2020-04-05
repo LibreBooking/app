@@ -803,6 +803,9 @@ class en_us extends Language
         $strings['AddCreditsToGroup'] = 'Add credits to all users in this group';
         $strings['AddNumberCreditsToGroup'] = 'Add %s credits to all users in this group';
         $strings['CreditsAddedByAdminNote'] = 'Credits added by admin';
+        $strings['AutoReplenishCreditsNot'] = 'Credits automatically replenished';
+        $strings['Never'] = 'Never';
+        $strings['LastReplenished'] = 'Last Replenished';
         // End Strings
 
 		// Install

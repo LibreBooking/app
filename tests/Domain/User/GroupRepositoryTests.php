@@ -105,7 +105,8 @@ class GroupRepositoryTests extends TestBase
             ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_TYPE => GroupCreditReplenishmentRuleType::INTERVAL,
             ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT => 10,
             ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL => 1,
-            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH => null,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH => 0,
+            ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE => null,
         );
 
         $groupUsers = array(
@@ -328,6 +329,32 @@ class GroupRepositoryTests extends TestBase
             ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
         );
     }
-}
 
-?>
+    public function testCreditsReplenishment_DayOfMonth()
+    {
+        $amount = 10;
+        $day = 3;
+
+        Date::_SetNow(Date::Create(2020, 4, $day, "UTC"));
+
+        $shouldRun = new GroupCreditReplenishmentRule(1, 1, GroupCreditReplenishmentRuleType::DAY_OF_MONTH, $amount, $day, 0, Date::Now());
+        $shouldNotRun = new GroupCreditReplenishmentRule(2, 1, GroupCreditReplenishmentRuleType::DAY_OF_MONTH, $amount, $day+1, 0, Date::Now());
+        
+        $this->assertTrue($shouldRun->ShouldBeRunOn(Date::Now()));
+        $this->assertFalse($shouldNotRun->ShouldBeRunOn(Date::Now()));
+    }
+
+    public function testCreditsReplenishment_Interval()
+    {
+        $amount = 10;
+        $interval = 3;
+
+        Date::_SetNow(Date::Create(2020, 4, 10, "UTC"));
+
+        $shouldRun = new GroupCreditReplenishmentRule(1, 1, GroupCreditReplenishmentRuleType::INTERVAL, $amount, 0, $interval, Date::Now()->AddDays($interval * -1));
+        $shouldNotRun = new GroupCreditReplenishmentRule(2, 1, GroupCreditReplenishmentRuleType::INTERVAL, $amount, 0, $interval, Date::Now()->AddDays(($interval+1) * -1));
+
+        $this->assertTrue($shouldRun->ShouldBeRunOn(Date::Now()));
+        $this->assertFalse($shouldNotRun->ShouldBeRunOn(Date::Now()));
+    }
+}

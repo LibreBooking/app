@@ -453,6 +453,7 @@ class ManageGroupsPresenter extends ActionPresenter
     }
 
     public function UpdateCreditReplenishment() {
+	    $id = $this->page->GetReplenishmentId();
 	    $groupId = $this->page->GetGroupId();
         $type = $this->page->GetReplenishmentType();
         $amount = $this->page->GetReplenishmentAmount();
@@ -461,7 +462,7 @@ class ManageGroupsPresenter extends ActionPresenter
 
         Log::Debug("Updating group credit replenishment rule. groupid=$groupId, type=$type, amount=$amount, interval=$interval, dayofMonth=$dayOfMonth");
 
-        $this->groupRepository->UpdateCreditsReplenishment($groupId, $type, $amount, $interval, $dayOfMonth);
+        $this->groupRepository->UpdateCreditsReplenishment($id, $groupId, $type, $amount, $interval, $dayOfMonth);
     }
 
     public function AddCredits() {
@@ -503,19 +504,27 @@ class UserGroupResults
 
 class GroupCreditReplenishment
 {
+    public $id = 0;
     public $type = 0;
     public $amount = 0;
     public $dayOfMonth = 0;
     public $interval = 0;
+    public $lastReplenishment = '';
 
     public function __construct(Group $group)
     {
         $rule = $group->ReplenishmentRule();
         if ($rule != null) {
+            $this->id = $rule->Id();
             $this->type = $rule->Type();
             $this->amount = $rule->Amount();
             $this->dayOfMonth = $rule->DayOfMonth();
             $this->interval = $rule->Interval();
+            $this->lastReplenishment = $rule->LastReplenishmentDate()->Format(Resources::GetInstance()->GeneralDateTimeFormat());
+        }
+
+        if ($this->lastReplenishment == "") {
+            $this->lastReplenishment = Resources::GetInstance()->GetString("Never");
         }
     }
 }

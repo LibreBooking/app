@@ -359,6 +359,9 @@ function GroupManagement(opts) {
         elements.creditsReplenishDialog.find('input[type="number"]').val('');
         var data = {dr: opts.dataRequests.creditReplenishment, gid: groupId};
         $.getJSON(opts.submitUrl, data, function (replenishment) {
+            $('#credits-replenishment-id').val(replenishment.id);
+            $('#credits-last-replenished').text(replenishment.lastReplenishment);
+
             let checkedRadio = $('#credits-never');
             if (replenishment.type === "1") {
                 $('#credits-days-amount').val(replenishment.amount);

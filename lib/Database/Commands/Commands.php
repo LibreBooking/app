@@ -1384,6 +1384,14 @@ class GetAllGroupRolesCommand extends SqlCommand
     }
 }
 
+class GetAllGroupCreditReplenishmentRules extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_GROUP_CREDIT_REPLENISHMENT_RULES);
+    }
+}
+
 class GetAllQuotasCommand extends SqlCommand
 {
     public function __construct()
@@ -2493,6 +2501,29 @@ class UpdateGroupCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ISDEFAULT, intval($isDefault)));
+    }
+}
+
+class UpdateGroupCreditReplenishmentRuleCommand extends SqlCommand {
+    /**
+     * @param int $id
+     * @param int $groupId
+     * @param GroupCreditReplenishmentRuleType|int $type
+     * @param int $amount
+     * @param int $interval
+     * @param int $dayOfMonth
+     * @param Date|null $lastReplenishment
+     */
+    public function __construct($id, $groupId, $type,  $amount,  $interval,  $dayOfMonth, $lastReplenishment = null)
+    {
+        parent::__construct(Queries::UPDATE_GROUP_CREDIT_REPLENISHMENT);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_ID, $id));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_TYPE, $type));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_AMOUNT, $amount));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_INTERVAL, $interval));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_DAYOFMONTH, $dayOfMonth));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_LAST_DATE, $lastReplenishment ? $lastReplenishment->ToDatabase() : null));
     }
 }
 

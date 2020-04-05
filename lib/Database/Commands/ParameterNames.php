@@ -109,7 +109,8 @@ class ParameterNames
     const GROUP_CREDIT_REPLENISHMENT_AMOUNT = "@amount";
     const GROUP_CREDIT_REPLENISHMENT_INTERVAL = "@interval";
     const GROUP_CREDIT_REPLENISHMENT_DAYOFMONTH = "@day_of_month";
-
+    const GROUP_CREDIT_REPLENISHMENT_ID = '@rule_id';
+    const GROUP_CREDIT_REPLENISHMENT_LAST_DATE = '@last_replenishment_date';
 
     const HOMEPAGE_ID = '@homepageid';
 

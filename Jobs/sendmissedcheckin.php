@@ -24,8 +24,8 @@
 
 This script must be executed every minute for to enable missed checkin email functionality
 
-* * * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
+0 0 * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
+0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
 
 */
 

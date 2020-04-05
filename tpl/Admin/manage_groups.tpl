@@ -523,6 +523,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {translate key="AddCreditsDayOfMonth" args="$set_day_credits,$set_day_day"}
                     </div>
                 </div>
+                <div>{translate key=LastReplenished}: <span id="credits-last-replenished"></span></div>
+                <input type="hidden" id="credits-replenishment-id" {formname key=CREDITS_REPLENISHMENT_ID} />
             </div>
             <div class="modal-footer">
                 {cancel_button}
