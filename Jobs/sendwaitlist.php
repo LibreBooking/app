@@ -42,6 +42,7 @@ try
     $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
     if (!$emailEnabled)
     {
+		Log::Debug('sendwaitlist.php exiting. Email not enabled.');
         return;
     }
 
