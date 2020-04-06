@@ -299,6 +299,9 @@ class ManageUsersPresenterTests extends TestBase
 		$phone = '123-123-1234';
 		$organization = 'ou';
 		$position = 'position';
+		$attributeId = 1;
+		$attributeValue = 'value';
+		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
 
 		$user = new FakeUser($userId);
 
@@ -337,6 +340,10 @@ class ManageUsersPresenterTests extends TestBase
 		$this->page->expects($this->once())
 				   ->method('GetPosition')
 				   ->will($this->returnValue($position));
+
+		$this->page->expects($this->once())
+				   ->method('GetAttributes')
+				   ->will($this->returnValue($attributeFormElements));
 
 		$extraAttributes = array(
 				UserAttribute::Organization => $organization,
@@ -457,10 +464,10 @@ class ManageUsersPresenterTests extends TestBase
 										$this->equalTo($timezone),
 										$this->equalTo($lang),
 										$this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
-										$this->equalTo( array(
-                                            UserAttribute::Organization => null,
-                                            UserAttribute::Phone => null,
-                                            UserAttribute::Position => null)),
+										$this->equalTo(array(
+															   UserAttribute::Organization => null,
+															   UserAttribute::Phone => null,
+															   UserAttribute::Position => null)),
 										$this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
 								 ->will($this->returnValue($user));
 

@@ -292,6 +292,14 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 											  $this->page->GetLastName(),
 											  $this->page->GetTimezone(),
 											  $extraAttributes);
+
+		$customAttributes = $this->GetAttributeValues();
+		$this->manageUsersService->ChangeAttributes($this->page->GetUserId(), $customAttributes);
+	}
+
+	public function ShowEditUser()
+	{
+		$this->page->ShowEditUser();
 	}
 
 	public function DeleteUser()
@@ -377,23 +385,31 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		if ($dataRequest == 'permissions')
 		{
 			$this->page->SetJsonResponse($this->GetUserResourcePermissions());
+			return;
 		}
-		elseif ($dataRequest == 'groups')
+		if ($dataRequest == 'groups')
 		{
 			$this->page->SetJsonResponse($this->GetUserGroups());
+			return;
 		}
-		elseif ($dataRequest == 'all')
+	   if ($dataRequest == 'all')
 		{
 			$users = $this->userRepository->GetAll();
 			$this->page->SetJsonResponse($users);
+			return;
 		}
-		elseif ($dataRequest == 'template')
+		if ($dataRequest == 'template')
 		{
 			$this->ShowTemplateCSV();
+			return;
 		}
-		elseif ($dataRequest == 'export')
+		if ($dataRequest == 'export')
 		{
 			$this->ExportUsers();
+			return;
+		}
+		if ($dataRequest == 'edit') {
+			$this->ShowEditUser();
 		}
 	}
 

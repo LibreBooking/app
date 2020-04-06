@@ -184,6 +184,8 @@ interface IManageUsersPage extends IPageable, IActionPage
      * @return bool
      */
     public function GetUpdateOnImport();
+
+	public function ShowEditUser();
 }
 
 class ManageUsersPage extends ActionPage implements IManageUsersPage
@@ -470,4 +472,9 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
     {
         return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
+
+	public function ShowEditUser()
+	{
+		$this->Display("Admin/Users/edit_user.tpl");
+	}
 }

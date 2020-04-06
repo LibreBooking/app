@@ -97,6 +97,7 @@ function AttributeManagement(opts) {
             elements.appliesToId.val('');
             elements.addDialog.modal('open');
             M.updateTextFields();
+            $('select').formSelect();
         });
 
         elements.attributeType.on('change', function () {
@@ -121,7 +122,7 @@ function AttributeManagement(opts) {
             e.preventDefault();
             activeAppliesTo = $(this);
 
-            showEntities($(this), elements.attributeCategory.val(), currentAttributeEntities.entityIds, 'ATTRIBUTE_ENTITY');
+            showEntities($(e.target), elements.attributeCategory.val(), currentAttributeEntities.entityIds, 'ATTRIBUTE_ENTITY');
 
             updateEntityCallback = function (selectedIds) {
                 currentAttributeEntities.entityIds = selectedIds;
@@ -303,6 +304,7 @@ function AttributeManagement(opts) {
 
         elements.editDialog.modal('open');
         M.updateTextFields();
+        $('select').formSelect();
     };
 
     var showDeleteDialog = function (selectedAttributeId) {
@@ -348,7 +350,8 @@ function AttributeManagement(opts) {
 
         selectedEntityChoices.empty();
         selectedEntityChoices.show();
-        selectedEntityChoices.css({left: linkPosition.left, top: linkOffset.top - element.height()});
+        // selectedEntityChoices.position({my:"top left", at: "bottom left", of: element});
+        selectedEntityChoices.css({left: linkPosition.left, top: linkPosition.top});
 
         $('<div class="ajax-indicator">&nbsp;</div>').appendTo(selectedEntityChoices).show();
 
