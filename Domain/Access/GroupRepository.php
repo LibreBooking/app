@@ -157,7 +157,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT],
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH],
                         $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL],
-                        Date::FromDatabase($row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE]),
+                        Date::FromDatabase($row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE])
                     )
                 );
             }
@@ -297,7 +297,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
                 $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_AMOUNT],
                 $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_DAY_OF_MONTH],
                 $row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_INTERVAL],
-                Date::FromDatabase($row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE]),
+                Date::FromDatabase($row[ColumnNames::GROUP_CREDIT_REPLENISHMENT_RULE_LAST_DATE])
             );
         }
         $reader->Free();

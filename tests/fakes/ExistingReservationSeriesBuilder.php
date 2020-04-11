@@ -270,4 +270,8 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
        $this->_WasCheckedIn = true;
        $this->_CheckedInBy = $checkedInBy;
     }
+
+    public function WithUnusedCreditBalance($balance) {
+		$this->unusedCreditBalance = $balance;
+	}
 }

@@ -38,6 +38,11 @@ Log::Debug('Running replenishcredits.php');
 JobCop::EnsureCommandLine();
 
 try {
+	if(!Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter())) {
+		Log::Debug('replenishcredits.php exiting. Credits not enabled.');
+		return;
+	}
+
     $groupRepository = new GroupRepository();
     $replenishmentRules = $groupRepository->GetAllReplenishmentRules();
 

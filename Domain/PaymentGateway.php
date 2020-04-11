@@ -288,13 +288,13 @@ class PayPalGateway implements IPaymentGateway
 
 			if (Log::DebugEnabled())
 			{
-				Log::Debug("PayPal Checkout/Orders Url: %s, Request: %s, Response: %s", $checkoutUrl, json_encode($body), json_encode($response->body));
+				Log::Debug("PayPal Checkout/Orders Url: %s, Request: %s, Response: %s", $checkoutUrl, $body, json_encode($response->body));
 			}
 
 			return $response->body;
 		} catch (Exception $exception)
 		{
-			Log::Error('PayPal Checkout/Orders error details. Data: %s, CartId/invoice number: %s, Total: %s, Error: %s', json_encode($body), $cart->Id(),
+			Log::Error('PayPal Checkout/Orders error details. Data: %s, CartId/invoice number: %s, Total: %s, Error: %s', $body, $cart->Id(),
 					   $cart->Total(), $exception);
 		}
 
@@ -374,13 +374,19 @@ class PayPalGateway implements IPaymentGateway
 
 		try
 		{
-			Log::Debug('PayPal Refund. TransactionId: %s, Total: %s', $log->TransactionId, $amount);
-			$refundUrl = "$baseUrl/v2/payments/captures/{$log->TransactionId}/refund";
+			Log::Debug('PayPal Refund. TransactionId: %s, InvoiceNumber: %s, Total: %s', $log->TransactionId, $log->InvoiceNumber, $amount);
+			$refundUrl = "$baseUrl/v2/payments/captures/{$log->InvoiceNumber}/refund";
+//			$refundUrl = "$baseUrl/v2/payments/captures/{$log->TransactionId}/refund";
 			$headers = array('Accept' => 'application/json', 'Accept-Language' => 'en_US', 'Content-Type' => 'application/json', "Authorization" => "Bearer $token");
 			$data = array('amount' => array('value' => "{$amount}", 'currency_code' => $log->Currency));
 			$body = Unirest\Request\Body::json($data);
 			Unirest\Request::verifyPeer(false);
 			$response = Unirest\Request::post($refundUrl, $headers, $body);
+
+			if (Log::DebugEnabled())
+			{
+				Log::Debug("PayPal Refund Url: %s, Request: %s, Response: %s", $refundUrl, $body, json_encode($response->body));
+			}
 
 			$self = "";
 			foreach ($response->body->links as $link)
@@ -396,18 +402,13 @@ class PayPalGateway implements IPaymentGateway
 			$logger->LogRefund($log->Id,
 							   $response->body->status,
 							   $response->body->id,
-							   $breakdown->total_refunded_amount->value,
-							   $breakdown->gross_amount->value,
-							   $breakdown->paypal_fee->value,
+							   $breakdown ? $breakdown->total_refunded_amount->value : $amount,
+							   $breakdown ? $breakdown->gross_amount->value : 0,
+							   $breakdown ? $breakdown->paypal_fee->value : 0,
 							   $self,
 							   Date::Now(),
-							   $response->body->create_time,
+							   $response->body->create_time ? $response->body->create_time : "",
 							   json_encode($response->body));
-
-			if (Log::DebugEnabled())
-			{
-				Log::Debug("PayPal Refund Url: %s, Response: %s", $refundUrl, json_encode($response->body));
-			}
 
 			return $response->body;
 		} catch (Exception $exception)
