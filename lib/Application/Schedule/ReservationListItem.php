@@ -196,8 +196,6 @@ class ReservationListItem
         $dto = new ReservationListItemDto();
         $dto->StartDate = $this->StartDate()->Timestamp();
         $dto->EndDate = $this->EndDate()->Timestamp();
-//        $dto->BufferedStartDate = $this->HasBufferTime() ? $this->BufferedStartDate()->Timestamp() : null;
-//        $dto->BufferedEndDate = $this->HasBufferTime() ? $this->BufferedEndDate()->Timestamp() : null;
         $dto->Id = $this->Id();
         $dto->ReferenceNumber = $this->ReferenceNumber();
         $dto->ResourceId = $this->ResourceId();
@@ -406,14 +404,6 @@ class ReservationListItemDto
      * @var Date
      */
     public $EndDate;
-    /**
-     * @var Date
-     */
-    public $BufferedStartDate;
-    /**
-     * @var Date
-     */
-    public $BufferedEndDate;
     /**
      * @var int
      */

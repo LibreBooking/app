@@ -130,8 +130,8 @@ function Schedule(opts, resourceGroups) {
                         if (Number.parseInt(t.data("resourceid")) !== Number.parseInt(res.ResourceId)) {
                             return;
                         }
-                        const startsBefore = res.BufferedStartDate < tableMin;
-                        const endsAfter = res.BufferedEndDate > tableMax;
+                        const startsBefore = res.StartDate < tableMin;
+                        const endsAfter = res.EndDate > tableMax;
                         let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
                         let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
                         const div = $(`<div 
