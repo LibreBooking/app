@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 

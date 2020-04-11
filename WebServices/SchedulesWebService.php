@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/SchedulesResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ScheduleResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Schedule/ScheduleSlotsResponse.php');
-require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
 class SchedulesWebService

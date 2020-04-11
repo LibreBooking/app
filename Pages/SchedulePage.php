@@ -19,7 +19,7 @@
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Presenters/Schedule/LoadReservationRequest.php');
 
 interface ISchedulePage extends IActionPage
@@ -609,7 +609,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         $itemsAsJson = [];
         foreach ($items as $item) {
-            $itemsAsJson[] = $item->AsDto($this->server->GetUserSession()->UserId, $this->server->GetUserSession()->Timezone);
+            $dtos = $item->AsDto($this->server->GetUserSession()->UserId, $this->server->GetUserSession()->Timezone);
+            foreach ($dtos as $dto) {
+                $itemsAsJson[] = $dto;
+            }
         }
         $this->SetJson($itemsAsJson);
     }

@@ -19,7 +19,7 @@
  */
 
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
-require_once(ROOT_DIR . 'Presenters/SchedulePageBuilder.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePageBuilder.php');
 
 class SchedulePageBuilderTests extends TestBase
 {
