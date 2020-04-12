@@ -100,40 +100,38 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <i class="fa fa-check-circle-o"></i>
         {translate key='Update'}
     </button>
-    <div class="modal fade" id="updateButtons" tabindex="-1" role="dialog" aria-labelledby="updateButtonsLabel"
+    <div class="modal modal-fixed-header modal-fixed-footer" id="updateButtons" tabindex="-1" role="dialog" aria-labelledby="updateButtonsLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
-                        <div>{translate key=DeleteReminderWarning}</div>
-                        <div class="input-field">
-                        <label for="deleteReasonRecurring">{translate key=Reason} ({translate key=Optional})</label>
-                        <textarea id="deleteReasonRecurring" class="materialize-textarea"></textarea>
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-primary save btnUpdateThisInstance waves-effect waves-light">
-                        <i class="fa fa-check"></i>
-                        {translate key='ThisInstance'}
-                    </button>
-                    <button type="button" class="btn btn-primary save btnUpdateAllInstances waves-effect waves-light">
-                        <i class="fa fa-check-square"></i>
-                        {translate key='AllInstances'}
-                    </button>
-                    <button type="button" class="btn btn-primary save btnUpdateFutureInstances waves-effect waves-light">
-                        <i class="fa fa-check-square-o"></i>
-                        {translate key='FutureInstances'}
-                    </button>
-                    <button type="button" class="btn btn-flat waves-effect waves-dark">
-                        {translate key='Cancel'}
-                    </button>
+        <div class="modal-header">
+            <h4 class="modal-title left" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
+             <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+        </div>
+        <div class="modal-content">
+            <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
+                <div>{translate key=DeleteReminderWarning}</div>
+                <div class="input-field">
+                <label for="deleteReasonRecurring">{translate key=Reason} ({translate key=Optional})</label>
+                <textarea id="deleteReasonRecurring" class="materialize-textarea"></textarea>
                 </div>
             </div>
         </div>
+        <div class="modal-footer">
+                <button type="button" class="btn btn-primary save btnUpdateThisInstance waves-effect waves-light">
+                    <i class="fa fa-check"></i>
+                    {translate key='ThisInstance'}
+                </button>
+                <button type="button" class="btn btn-primary save btnUpdateAllInstances waves-effect waves-light">
+                    <i class="fa fa-check-square"></i>
+                    {translate key='AllInstances'}
+                </button>
+                <button type="button" class="btn btn-primary save btnUpdateFutureInstances waves-effect waves-light">
+                    <i class="fa fa-check-square-o"></i>
+                    {translate key='FutureInstances'}
+                </button>
+                <button type="button" class="btn btn-flat waves-effect waves-dark">
+                    {translate key='Cancel'}
+                </button>
+            </div>
     </div>
 
 {else}
@@ -143,27 +141,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </button>
 {/if}
 
-    <div id="deleteButtonPrompt" class="modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="updateButtonsLabel">{translate key=Delete}</h4>
-            </div>
-            <div class="modal-body">
-                <div>{translate key=DeleteReminderWarning}</div>
-                <div>
-                    <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
-                    <textarea id="deleteReason" class="form-control"></textarea>
-                </div>
-             </div>
-            <div class="modal-footer">
-            {cancel_button id="cancelDelete" class="cancel"}
-                {delete_button id="confirmDelete" class="delete save"}
-           </div>
+    <div id="deleteButtonPrompt" class="modal modal-fixed-header modal-fixed-footer">
+        <div class="modal-header">
+            <h4 class="modal-title left" id="updateButtonsLabel">{translate key=Delete}</h4>
+             <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
         </div>
+        <div class="modal-content">
+            <div>{translate key=DeleteReminderWarning}</div>
+            <div class="input-field">
+                <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
+                <textarea id="deleteReason" class="materialize-textarea"></textarea>
+            </div>
+         </div>
+        <div class="modal-footer">
+        {cancel_button id="cancelDelete" class="cancel"}
+            {delete_button id="confirmDelete" class="delete save"}
+       </div>
     </div>
-</div>
+    </div>
 {/block}
 
 {block name="ajaxMessage"}
@@ -198,15 +193,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}"/>
 {/if}
 
-<div class="modal" id="emailReservationPrompt" tabindex="-1" role="dialog"
+<div class="modal modal-fixed-header modal-fixed-footer" id="emailReservationPrompt" tabindex="-1" role="dialog"
      aria-labelledby="emailReservationLabel" aria-hidden="true">
     <form id="emailReservationForm" method="post" role="form" onkeypress="return event.keyCode != 13;">
-    <div class="modal-dialog">
-        <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="emailReservationLabel">{translate key=EmailReservation}</h4>
+                 <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
             </div>
-            <div class="modal-body">
+            <div class="modal-content">
                 <div class="form-group">
                     <label for="emailUserAutocomplete" class="no-show">{translate key=User}</label>
                     <input type="search" id="emailUserAutocomplete"
@@ -225,8 +219,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </button>
                 {indicator}
             </div>
-        </div>
-    </div>
     </form>
 </div>
 {/block}

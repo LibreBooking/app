@@ -173,14 +173,14 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		$readOnly = $this->GetQuerystring(QueryStringKeys::READ_ONLY) == 1;
 
-//		if (!$readOnly && $this->IsApprovable && !$this->UpdatingBeforeApproving())
-//		{
-//			return 'Reservation/approve.tpl';
-//		}
-//		if (!$readOnly && $this->IsEditable)
-//		{
-//			return 'Reservation/edit.tpl';
-//		}
+		if (!$readOnly && $this->IsApprovable && !$this->UpdatingBeforeApproving())
+		{
+			return 'Reservation/approve.tpl';
+		}
+		if (!$readOnly && $this->IsEditable)
+		{
+			return 'Reservation/edit.tpl';
+		}
 		return 'Reservation/view.tpl';
 	}
 
