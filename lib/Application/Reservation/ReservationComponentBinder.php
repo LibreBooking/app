@@ -292,7 +292,6 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		}
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 
-
 		$participants = $this->reservationView->Participants;
 		$invitees = $this->reservationView->Invitees;
 
@@ -339,7 +338,9 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetCheckInRequired(false);
 		$this->page->SetCheckOutRequired(false);
 		$this->page->SetAutoReleaseMinutes(null);
-		if ($canBeEdited) {
+
+		$canCheckIn = $this->reservationAuthorization->CanViewDetails($this->reservationView, $currentUser);
+		if ($canCheckIn || $canBeEdited) {
             $this->SetCheckinRequired();
             $this->SetCheckoutRequired();
             $this->SetAutoReleaseMinutes();

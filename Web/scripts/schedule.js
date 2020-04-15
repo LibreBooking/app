@@ -93,6 +93,45 @@ function Schedule(opts, resourceGroups) {
             });
         }
 
+        function findClosestStart(tds, reservation) {
+            let startTd = null;
+
+            tds.each((i, v) => {
+                const td = $(v);
+                let tdMin = Number.parseInt(td.data('min'));
+                let resStart = Number.parseInt(reservation.StartDate);
+
+                if (tdMin <= resStart) {
+                    startTd = td;
+                }
+            });
+
+            if (!startTd) {
+                startTd = tds.first();
+            }
+
+            return startTd;
+        }
+
+        function findClosestEnd(tds, reservation) {
+            let endTd = null;
+
+            tds.each((i, v) => {
+                const td = $(v);
+                let tdMin = Number.parseInt(td.data('min'));
+                let resEnd = Number.parseInt(reservation.EndDate);
+
+                if (tdMin <= resEnd) {
+                    endTd = td;
+                }
+            });
+
+            if (!endTd) {
+                endTd = tds.last();
+            }
+
+            return endTd;
+        }
         ajaxPost($("#fetchReservationsForm"), options.reservationLoadUrl, null, function (reservationList) {
             const ScheduleStandard = "0";
             const ScheduleWide = "1";
@@ -122,7 +161,7 @@ function Schedule(opts, resourceGroups) {
                     const isNew = res.IsNew ? `<span class="reservation-new">${opts.newLabel}</span>` : "";
                     const isUpdated = res.IsUpdated ? `<span class="reservation-updated">${opts.updatedLabel}</span>` : "";
                     const isPending = res.IsPending ? "pending" : "";
-                    const isDraggable = res.IsOwner && res.IsReservation;// && !res.IsPast;
+                    const isDraggable = res.IsOwner && res.IsReservation && !res.IsPast;
                     const draggableAttribute = isDraggable ? 'draggable="true"' : "";
                     const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
 
@@ -153,10 +192,10 @@ function Schedule(opts, resourceGroups) {
                     let calculatedAdjustment = 0;
 
                     if (startTd.length === 0) {
-                        startTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').first();
+                        startTd = findClosestStart(t.find('td[data-resourceid="' + res.ResourceId + '"]'), res);
                     }
                     if (endTd.length === 0) {
-                        endTd = t.find('td[data-resourceid="' + res.ResourceId + '"]').last();
+                        endTd = findClosestEnd(t.find('td[data-resourceid="' + res.ResourceId + '"]'), res);
                         calculatedAdjustment = endTd.outerWidth();
                     }
                     if (startTd.length === 0 || endTd.length === 0) {
@@ -178,7 +217,7 @@ function Schedule(opts, resourceGroups) {
                                     class="${className} ${mine} ${past} ${participant} ${isPending} event" 
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
-                                    ${draggableAttribute}>
+                                    ${draggableAttribute}>${res.Id}
                                     ${isNew} ${isUpdated} ${res.Label}</div>`);
 
                     if (res.IsReservation) {
@@ -195,20 +234,9 @@ function Schedule(opts, resourceGroups) {
                                 referenceNumber: res.ReferenceNumber,
                                 resourceId: res.ResourceId
                             });
-                            // event.data.referenceNumber = res.ReferenceNumber;
-                            // event.data.sourceResourceId = res.ResourceId;
                             event.originalEvent.dataTransfer.setData("text", data);
                         });
-
-                        // div.on("drop", function(event) {
-                        //     dragging = false;
-                        // });
                     }
-
-
-                    // console.log("width", width);
-                    // div.css({left: startTd.position().left, top: startTd.position().top, width: width});
-
                 });
             });
 

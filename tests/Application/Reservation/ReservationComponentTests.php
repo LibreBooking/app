@@ -923,7 +923,7 @@ class ReservationComponentTests extends TestBase
 						  ->will($this->returnValue($this->fakeUser));
 
         $this->reservationAuthorization->expects($this->once())
-            ->method('CanEdit')
+            ->method('CanViewDetails')
             ->will($this->returnValue(true));
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,

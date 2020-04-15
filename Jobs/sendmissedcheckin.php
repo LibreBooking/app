@@ -33,35 +33,55 @@ define('ROOT_DIR', dirname(__FILE__) . '/../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Jobs/JobCop.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/MissedCheckinEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/MissedCheckinAdminEmail.php');
 
 Log::Debug('Running sendmissedcheckin.php');
 
 JobCop::EnsureCommandLine();
 
-try
-{
-    $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
-    if (!$emailEnabled)
-    {
+try {
+    $config = Configuration::Instance();
+    $emailEnabled = $config->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
+    if (!$emailEnabled) {
         return;
     }
 
+    $userRepository = new UserRepository();
+
+    $sendToAdmins = $config->GetSectionKey(ConfigSection::RESERVATION_NOTIFY, ConfigKeys::NOTIFY_MISSED_CHECKIN_APPLICATION_ADMINS, new BooleanConverter());
+    $sendToGroupAdmins = $config->GetSectionKey(ConfigSection::RESERVATION_NOTIFY, ConfigKeys::NOTIFY_MISSED_CHECKIN_GROUP_ADMINS, new BooleanConverter());
+    $sendToResourceAdmins = $config->GetSectionKey(ConfigSection::RESERVATION_NOTIFY, ConfigKeys::NOTIFY_MISSED_CHECKIN_RESOURCE_ADMINS, new BooleanConverter());
+    $sendToScheduleAdmins = false;
+
     $alreadySeen = array();
 
-	$reservationViewRepository = new ReservationViewRepository();
+    $reservationViewRepository = new ReservationViewRepository();
 
     $now = Date::Now();
     $onlyMissedCheckinReservations = new SqlFilterFreeForm(sprintf("%s=1 AND %s IS NULL AND %s BETWEEN '%s' AND '%s'",
         ColumnNames::ENABLE_CHECK_IN, ColumnNames::CHECKIN_DATE, ColumnNames::RESERVATION_START, $now->AddMinutes(-1)->ToDatabase(), $now->ToDatabase()));
-	$reservations = $reservationViewRepository->GetList(null, null, null, null, $onlyMissedCheckinReservations)->Results();
+    $reservations = $reservationViewRepository->GetList(null, null, null, null, $onlyMissedCheckinReservations)->Results();
 
-	/** @var ReservationItemView $reservation */
-	foreach ($reservations as $reservation)
-	{
-        if (array_key_exists($reservation->ReferenceNumber, $alreadySeen))
-        {
+    /** @var ReservationItemView $reservation */
+    foreach ($reservations as $reservation) {
+        if (array_key_exists($reservation->ReferenceNumber, $alreadySeen)) {
             continue;
         }
+
+        if ($sendToAdmins) {
+            $applicationAdmins = $userRepository->GetApplicationAdmins();
+        }
+        if ($sendToGroupAdmins) {
+            $groupAdmins = $userRepository->GetGroupAdmins($reservation->OwnerId);
+        }
+        if ($sendToResourceAdmins) {
+            $resourceAdmins = $userRepository->GetResourceAdmins($reservation->ResourceId);
+        }
+
+        $admins = array_merge($resourceAdmins, $applicationAdmins, $groupAdmins);
+//        if ($sendToScheduleAdmins) {
+//            $userRepository->GetScheduleAdmins
+//        }
 
         $alreadySeen[$reservation->ReferenceNumber] = 1;
 
@@ -69,11 +89,14 @@ try
             $reservation->ReferenceNumber, $reservation->UserId, $reservation->ResourceName);
 
         ServiceLocator::GetEmailService()->Send(new MissedCheckinEmail($reservation));
-	}
 
-} catch (Exception $ex)
-{
-	Log::Error('Error running sendmissedcheckin.php: %s', $ex);
+        foreach ($admins as $admin) {
+            ServiceLocator::GetEmailService()->Send(new MissedCheckinAdminEmail($reservation, $admin));
+        }
+    }
+
+} catch (Exception $ex) {
+    Log::Error('Error running sendmissedcheckin.php: %s', $ex);
 }
 
 Log::Debug('Finished running sendmissedcheckin.php');

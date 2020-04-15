@@ -107,6 +107,10 @@ class ConfigKeys
 	const NOTIFY_APPROVAL_APPLICATION_ADMINS = 'application.admin.approval';
 	const NOTIFY_APPROVAL_GROUP_ADMINS = 'group.admin.approval';
 
+	const NOTIFY_MISSED_CHECKIN_RESOURCE_ADMINS = 'resource.admin.missed.checkin';
+	const NOTIFY_MISSED_CHECKIN_APPLICATION_ADMINS = 'application.admin.missed.checkin';
+	const NOTIFY_MISSED_CHECKIN_GROUP_ADMINS = 'group.admin.missed.checkin';
+
 	const UPLOAD_ENABLE_RESERVATION_ATTACHMENTS = 'enable.reservation.attachments';
 	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachment.path';
 	const UPLOAD_RESERVATION_EXTENSIONS = 'reservation.attachment.extensions';
