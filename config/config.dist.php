@@ -85,6 +85,7 @@ $conf['settings']['reservation']['default.start.reminder'] = '';			// the defaul
 $conf['settings']['reservation']['default.end.reminder'] = '';				// the default end reservation reminder. format is ## interval. for example, 10 minutes, 2 hours, 6 days.
 $conf['settings']['reservation']['title.required'] = 'false';
 $conf['settings']['reservation']['description.required'] = 'false';
+$conf['settings']['reservation']['extend.if.not.checked.in'] = 'false';
 /**
  * Email notification configuration
  */
@@ -92,14 +93,17 @@ $conf['settings']['reservation.notify']['resource.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.delete'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.approval'] = 'false';
+$conf['settings']['reservation.notify']['resource.admin.missed.checkin'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.delete'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.approval'] = 'false';
+$conf['settings']['reservation.notify']['application.admin.missed.checkin'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.delete'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.approval'] = 'false';
+$conf['settings']['reservation.notify']['group.admin.missed.checkin'] = 'false';
 /**
  * File upload configuration
  */

@@ -18,7 +18,7 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
 class SchedulePresenterTests extends TestBase

@@ -53,30 +53,30 @@ function BuildQuery()
     $searchEnd = $now->AddDays(8)->ToDatabase();
 
     $instancesEnding = new AdHocCommand("SELECT
-  ri.reference_number, sub.last_date, sub.timezone, sub.language, sub.email
+  `ri`.`reference_number`, `sub`.`last_date`, `sub`.`timezone`, `sub`.`language`, `sub`.`email`
 FROM
-  reservation_instances ri
+  `reservation_instances` `ri`
 INNER JOIN
 (
   SELECT
-    ri.series_id, MAX(ri.start_date) AS last_date, u.timezone, u.language, u.email
+    `ri`.`series_id`, MAX(`ri`.`start_date`) AS `last_date`, `u`.`timezone`, `u`.`language`, `u`.`email`
   FROM
-   user_email_preferences uep
+   `user_email_preferences` `uep`
   INNER JOIN
-     reservation_series rs ON rs.owner_id = uep.user_id
+     `reservation_series` `rs` ON `rs`.`owner_id` = `uep`.`user_id`
   INNER JOIN
-    reservation_instances ri ON rs.series_id = ri.series_id
+    `reservation_instances` `ri` ON `rs`.`series_id` = `ri`.`series_id`
   INNER JOIN
-    users u ON rs.owner_id = u.user_id
+    `users` `u` ON `rs`.`owner_id` = `u`.`user_id`
   WHERE
-    repeat_type <> 'none' 
-    AND uep.event_category = @event_category 
-    AND uep.event_type = @event_type
+    `repeat_type` <> 'none' 
+    AND `uep`.`event_category` = @event_category 
+    AND `uep`.`event_type` = @event_type
   GROUP BY
-    ri.series_id
-) sub ON ri.series_id = sub.series_id and sub.last_date = ri.start_date
+    `ri`.`series_id`
+) sub ON `ri`.`series_id` = `sub`.`series_id` and `sub`.`last_date` = `ri`.`start_date`
 WHERE
-  sub.last_date BETWEEN @startDate AND @endDate");
+  `sub`.`last_date` BETWEEN @startDate AND @endDate");
     $instancesEnding->AddParameter(new Parameter(ParameterNames::START_DATE, $searchStart));
     $instancesEnding->AddParameter(new Parameter(ParameterNames::END_DATE, $searchEnd));
     $instancesEnding->AddParameter(new Parameter(ParameterNames::EVENT_CATEGORY, EventCategory::Reservation));

@@ -111,7 +111,7 @@ class LoadReservationRequestBuilder
     public function WithRange(Date $start, Date $end): LoadReservationRequestBuilder
     {
         $this->start = $start;
-        $this->end = $end;
+        $this->end = $end->AddDays(1);
         return $this;
     }
 

@@ -189,15 +189,13 @@ class ReservationListItem
     /**
      * @param $currentUserId int
      * @param $timezone string
-     * @return ReservationListItemDto
+     * @return ReservationListItemDto[]
      */
     public function AsDto(int $currentUserId, string $timezone)
     {
         $dto = new ReservationListItemDto();
         $dto->StartDate = $this->StartDate()->Timestamp();
         $dto->EndDate = $this->EndDate()->Timestamp();
-        $dto->BufferedStartDate = $this->BufferedStartDate()->Timestamp();
-        $dto->BufferedEndDate = $this->BufferedEndDate()->Timestamp();
         $dto->Id = $this->Id();
         $dto->ReferenceNumber = $this->ReferenceNumber();
         $dto->ResourceId = $this->ResourceId();
@@ -218,7 +216,33 @@ class ReservationListItem
         $dto->StartTime = $this->StartDate()->ToTimezone($timezone)->Format($format);
         $dto->EndTime =  $this->EndDate()->ToTimezone($timezone)->Format($format);
 
-        return $dto;
+        if ($this->HasBufferTime())
+        {
+            $pre = new ReservationListItemDto();
+            $pre->StartDate = $this->BufferedStartDate()->Timestamp();
+            $pre->StartTime = $this->BufferedStartDate()->ToTimezone($timezone)->Format($format);
+            $pre->EndDate = $this->StartDate()->Timestamp();
+            $pre->EndTime =  $this->StartDate()->ToTimezone($timezone)->Format($format);
+            $pre->IsReservation = false;
+            $pre->Id = $this->Id() . 'buffer-pre';
+            $pre->ReferenceNumber = $this->ReferenceNumber();
+            $pre->ResourceId = $this->ResourceId();
+            $pre->Label = "";
+
+            $post = new ReservationListItemDto();
+            $post->StartDate = $this->EndDate()->Timestamp();
+            $post->StartTime = $this->EndDate()->ToTimezone($timezone)->Format($format);
+            $post->EndDate = $this->BufferedEndDate()->Timestamp();
+            $post->EndTime =  $this->BufferedEndDate()->ToTimezone($timezone)->Format($format);
+            $post->IsReservation = false;
+            $post->Id = $this->Id() . 'buffer-post';
+            $post->ReferenceNumber = $this->ReferenceNumber();
+            $post->ResourceId = $this->ResourceId();
+            $post->Label = "";
+
+            return [$pre, $dto, $post];
+        }
+        return [$dto];
     }
 
     private function GetIsNew()
@@ -380,14 +404,6 @@ class ReservationListItemDto
      * @var Date
      */
     public $EndDate;
-    /**
-     * @var Date
-     */
-    public $BufferedStartDate;
-    /**
-     * @var Date
-     */
-    public $BufferedEndDate;
     /**
      * @var int
      */
