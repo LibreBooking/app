@@ -548,7 +548,7 @@ class it_it extends en_gb
 		$strings['SendAsEmail'] = 'Invia l\'email';
 		$strings['UsersInGroups'] = 'Utenti nel gruppo';
 		$strings['UsersWithAccessToResources'] = 'Utenti con accesso alle risorse';
-		$strings['AnnouncementSubject'] = 'Una nuovo comunicazione è stato pubblicato da %s';
+		$strings['AnnouncementSubject'] = 'Una nuova comunicazione è stata pubblicata da %s';
 		$strings['AnnouncementEmailNotice'] = 'la comunicazione sarà inviata agli utenti per posta elettronica';
 		$strings['Day'] = 'Giorno';
 		$strings['NotifyWhenAvailable'] = 'Avvisami quando disponibile';

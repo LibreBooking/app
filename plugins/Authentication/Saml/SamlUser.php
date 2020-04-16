@@ -60,7 +60,7 @@ class SamlUser
 			$this->groups = array();
 			if ($samlOptions->SyncGroups())
 			{
-				$this->groups = $this->GetAttributeValue($saml_attributes, $options, "ssphp_groups");
+				$this->groups = $this->GetAttributeValue($saml_attributes, $options, "ssphp_groups", true);
 			}
 		}
 	}
