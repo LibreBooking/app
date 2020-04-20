@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 class ExistingReservationDeleteTests extends TestBase
 {
@@ -196,5 +196,38 @@ class ExistingReservationDeleteTests extends TestBase
 		$this->assertEquals(1, count($events));
 		$this->assertTrue(in_array(new SeriesDeletedEvent($series), $events));
 	}
+
+	public function testReturnsCreditsForFutureInstanceDelete()
+	{
+		$current = new TestReservation();
+		$current->SetReservationDate(TestDateRange::CreateWithDays(1));
+		$current->WithCreditsConsumed(1);
+
+		$past = new TestReservation();
+		$past->SetReservationDate(TestDateRange::CreateWithDays(-1));
+		$past->WithCreditsConsumed(1);
+
+		$future1 = new TestReservation();
+		$future1->SetReservationDate(TestDateRange::CreateWithDays(2));
+		$future1->WithCreditsConsumed(1);
+
+		$future2 = new TestReservation();
+		$future2->SetReservationDate(TestDateRange::CreateWithDays(20));
+		$future2->WithCreditsConsumed(1);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($current);
+		$builder->WithInstance($past);
+		$builder->WithInstance($future1);
+		$builder->WithInstance($future2);
+
+		$series = $builder->Build();
+
+		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
+		$series->Delete($this->user);
+
+		$balance = $series->GetUnusedCreditBalance();
+
+		$this->assertEquals(3, $balance);
+	}
 }
-?>
