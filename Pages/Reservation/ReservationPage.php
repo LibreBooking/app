@@ -216,11 +216,12 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		$this->Set('MaxUploadCount', UploadedFile::GetMaxUploadCount());
-		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
-		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,  new BooleanConverter()));
-		$this->Set('AllowGuestParticipation', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS, new BooleanConverter()));
-		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_REMINDERS_ENABLED, new BooleanConverter());
-		$emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
+        $config = Configuration::Instance();
+        $this->Set('UploadsEnabled', $config->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
+		$this->Set('AllowParticipation', !$config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,  new BooleanConverter()));
+		$this->Set('AllowGuestParticipation', $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS, new BooleanConverter()));
+		$remindersEnabled = $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_REMINDERS_ENABLED, new BooleanConverter());
+		$emailEnabled = $config->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
 		$this->Set('RemindersEnabled', $remindersEnabled && $emailEnabled);
 
 		$this->Set('RepeatEveryOptions', range(1, 20));
@@ -243,10 +244,15 @@ abstract class ReservationPage extends Page implements IReservationPage
 							 )
 		);
 
-		$this->Set('TitleRequired', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_TITLE_REQUIRED, new BooleanConverter()));
-		$this->Set('DescriptionRequired', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_DESCRIPTION_REQUIRED, new BooleanConverter()));
+		$this->Set('TitleRequired', $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_TITLE_REQUIRED, new BooleanConverter()));
+		$this->Set('DescriptionRequired', $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_DESCRIPTION_REQUIRED, new BooleanConverter()));
 
-		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
+		$this->Set('CreditsEnabled', $config->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
+        $this->Set('MaximumResources', $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_MAXIMUM_RESOURCES, new IntConverter()));
+
+        if ($this->server->GetUserSession()->IsAdmin) {
+            $this->Set("MaximumResources", 0);
+        }
 
         if ($this->IsUnavailable())
         {

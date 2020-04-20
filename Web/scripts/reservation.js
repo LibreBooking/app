@@ -304,8 +304,7 @@ function Reservation(opts) {
                     checkbox.attr('requires-checkin', node.isCheckInEnabled);
                     checkbox.attr('autorelease-minutes', node.autoReleaseMinutes);
                     checkbox.addClass('additionalResourceCheckbox');
-                }
-                else {
+                } else {
                     checkbox.attr('group-id', node.id);
                     checkbox.addClass('additionalResourceGroupCheckbox');
                 }
@@ -467,6 +466,10 @@ function Reservation(opts) {
                 var requiresCheckin = $(checkbox).attr('requires-checkin') != '0';
                 var autoReleaseMinutes = $(checkbox).attr('autorelease-minutes');
 
+                if (!checkedResourceId) {
+                    $(checkbox).attr('disabled', true);
+                }
+
                 if (i === 0) {
                     primaryResourceContainer.find('.resourceName').remove();
                     displayDiv = primaryResourceContainer;
@@ -521,10 +524,23 @@ function Reservation(opts) {
                 handleAdditionalResourceChecked($(checkbox));
             });
         });
+
+        if (opts.maximumResources !== 0) {
+            elements.groupDiv.find(':not([resource-id])').attr("checked", false).attr("disabled", true);
+        }
     };
 
     var handleAdditionalResourceChecked = function (checkbox, event) {
         var isChecked = checkbox.is(':checked');
+
+        const resourceCheckboxes = elements.groupDiv.find("[resource-id]");
+        if (opts.maximumResources && elements.groupDiv.find(":checked").length >= opts.maximumResources)
+        {
+            elements.groupDiv.find(":not(:checked)").attr("disabled", true);
+        }
+        else {
+            elements.groupDiv.find("[resource-id]").attr("disabled", false);
+        }
 
         if (!checkbox[0].hasAttribute('resource-id')) {
             // if this is a group, check/uncheck all nested subitems
@@ -534,25 +550,26 @@ function Reservation(opts) {
                     handleAdditionalResourceChecked($(v));
                 }
             });
-        }
-        else {
-            // if all resources in a group are checked, check the group
-            var groupId = checkbox.attr('group-id');
-            var resourceId = checkbox.attr('resource-id');
-            var numberOfResources = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]').length;
-            var numberOfResourcesChecked = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]:checked').length;
+        } else {
+            if (!opts.maximumResources) {
 
-            elements.groupDiv.find('[resource-id="' + resourceId + '"]').prop('checked', isChecked);
+                // if all resources in a group are checked, check the group
+                var groupId = checkbox.attr('group-id');
+                var resourceId = checkbox.attr('resource-id');
+                var numberOfResources = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]').length;
+                var numberOfResourcesChecked = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]:checked').length;
 
-            elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked)
+                elements.groupDiv.find('[resource-id="' + resourceId + '"]').prop('checked', isChecked);
+
+                elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked)
+            }
         }
 
         if (elements.groupDiv.find('.additionalResourceCheckbox:checked').length == 0) {
             // if this is the only checked checkbox, don't allow 'done'
             elements.addResourcesConfirm.addClass('disabled');
             elements.addResourcesConfirm.attr('disabled', true);
-        }
-        else {
+        } else {
             elements.addResourcesConfirm.removeClass('disabled');
             elements.addResourcesConfirm.removeAttr('disabled');
         }
@@ -828,13 +845,11 @@ function Reservation(opts) {
                 if (item.isReservable) {
                     if (type == 'begin') {
                         items.push('<option value="' + item.begin + '">' + item.label + '</option>');
-                    }
-                    else {
+                    } else {
                         items.push('<option value="' + item.end + '">' + item.labelEnd + '</option>');
 
                     }
-                }
-                else {
+                } else {
                     if (type == 'end' && item.begin == '00:00:00' && previousDateEndsAtMidnight(scheduleId, dateElement.val())) {
                         selectedPeriod = null;
                         items.push('<option value="' + item.begin + '" selected="selected">' + item.label + '</option>');
@@ -846,8 +861,7 @@ function Reservation(opts) {
                 var nextDate = moment(dateElement.val()).add(1, 'days').toDate();
                 dateTextbox.datepicker("setDate", nextDate);
                 dateElement.trigger('change');
-            }
-            else {
+            } else {
                 var html = items.join('');
                 periodsCache[type][weekday] = html;
                 periodElement.html(html);
@@ -958,15 +972,13 @@ function Reservation(opts) {
                     var addbutton = $(v).find('.add-attachment');
                     if (i == allAttachments.length - 1) {
                         addbutton.show();
-                    }
-                    else {
+                    } else {
                         addbutton.hide();
                     }
 
                     $(v).find('.remove-attachment').show();
                 });
-            }
-            else {
+            } else {
                 elements.reservationAttachments.find('.add-attachment').show();
                 elements.reservationAttachments.find('.remove-attachment').hide();
             }
@@ -1092,14 +1104,14 @@ function Reservation(opts) {
             if (dateAsInt(elements.beginDate.val()) < dateAsInt(table.data('date'))) {
                 startCol = $(cols[0]);
             }
-            if (dateAsInt(elements.endDate.val())  > dateAsInt(table.data('date'))) {
+            if (dateAsInt(elements.endDate.val()) > dateAsInt(table.data('date'))) {
                 endCol = $(cols[cols.length - 1]);
             }
 
             var highlighter = $('<div class="availability-highlighter">&nbsp;</div>');
             elements.userAvailabilityBox.append(highlighter);
             highlighter.height(table.height() + 1);
-            highlighter.width(endCol.offset().left - startCol.offset().left + 2 + endCol.width() +  parseInt(startCol.css('padding-left')));
+            highlighter.width(endCol.offset().left - startCol.offset().left + 2 + endCol.width() + parseInt(startCol.css('padding-left')));
             highlighter.offset(
                 {
                     top: table.offset().top,

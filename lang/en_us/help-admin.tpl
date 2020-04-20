@@ -968,6 +968,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     description of a reservation
                     is required when creating or updating reservations. Default is false.</p>
 
+                <p class="setting"><span>$conf['settings']['reservation']['maximum.resources']</span>The maximum number
+                    of resources that can be included on a single reservation. This does not apply to application
+                    administrators. Default is no maximum.</p>
+
                 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or
                     not
                     to

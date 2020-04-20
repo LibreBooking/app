@@ -581,7 +581,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             creditsUrl: 'ajax/reservation_credits.php',
             creditsEnabled: '{$CreditsEnabled}',
             emailUrl: 'ajax/reservation_email.php?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}',
-            availabilityUrl: 'ajax/availability.php?{QueryStringKeys::SCHEDULE_ID}={$ScheduleId}'
+            availabilityUrl: 'ajax/availability.php?{QueryStringKeys::SCHEDULE_ID}={$ScheduleId}',
+            maximumResources: {$MaximumResources|default:0}
         };
 
         var reminderOpts = {
