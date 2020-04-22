@@ -37,12 +37,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             <div id="help-getting-started">
                 <h2>Getting Started</h2>
-                <p>{$AppTitle} lets you manage resources of any type. Conference rooms, tennis courts, rental cars,
-                    these
-                    are
-                    all examples of resources. Schedules are where available time slots are defined. All resources must
-                    be
-                    part of a schedule.</p>
+                <p>{$AppTitle} lets you schedule resources of any type. Conference rooms, tennis courts, lab equipment, or rental cars are all examples of resources.</p>
+				<p>Schedules are where available time slots are defined - the times that people can reserve your resources.</p>
                 <div>
                     <ol>
                         <li>
