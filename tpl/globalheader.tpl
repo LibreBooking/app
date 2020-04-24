@@ -320,9 +320,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="no-show">Configuration</span>
                                 <span class="fa fa-cog"></span>
-                                {if $ShowNewVersion}<span class="badge badge-new-version new-version"
-                                                          id="newVersionBadge">{translate key=NewVersion}</span>{/if}
                                 <b class="caret"></b>
+                                {if $ShowNewVersion}<span class="badge badge-new-version new-version" id="newVersionBadge">{translate key=NewVersion}</span>{/if}
                             </a>
                             <ul class="dropdown-menu">
                                 {if $EnableConfigurationPage}
@@ -357,10 +356,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Help"} <b
                                     class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li id="navHelp"><a href="{$Path}help.php">{translate key=Help}</a></li>
+                            <li id="navHelp"><a href="https://www.bookedscheduler.com/help/usage">{translate key=Help}</a></li>
                             {if $CanViewAdmin}
-                                <li id="navHelpAdmin"><a
-                                        href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>{/if}
+                                <li id="navHelpAdmin"><a href="https://www.bookedscheduler.com/help/administration">{translate key=Administration}</a></li>
+                            {/if}
                             <li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
                         </ul>
                     </li>
