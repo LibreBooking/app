@@ -97,6 +97,7 @@ class ResourceRepositoryTests extends TestBase
 		$peakCredits = 200;
         $minNoticeUpdate = 19291;
         $minNoticeDelete = 9919;
+        $autoExtend = true;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -126,6 +127,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetPeakCreditsPerSlot($peakCredits);
 		$resource->SetMinNoticeUpdate($minNoticeUpdate);
 		$resource->SetMinNoticeDelete($minNoticeDelete);
+		$resource->SetAutoExtendReservations($autoExtend);
 
 		$publicId = $resource->GetPublicId();
 
@@ -163,7 +165,8 @@ class ResourceRepositoryTests extends TestBase
 			$credits,
 			$peakCredits,
             new TimeInterval($minNoticeUpdate),
-            new TimeInterval($minNoticeDelete)
+            new TimeInterval($minNoticeDelete),
+            $autoExtend
 		);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];

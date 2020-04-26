@@ -942,13 +942,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </label>
                     <div class="no-show" id="autoReleaseMinutesDiv">
                         {capture name="txtAutoRelease" assign="txtAutoRelease"}
-                            <div class='input-field inline'>
+                            <div class='input-field inline no-margin'>
                                 <label for='autoReleaseMinutes' class='no-show'>Auto Release Minutes</label>
                                 <input type='number' max='99' min='0' id='autoReleaseMinutes'
-                                       class='minutes' {formname key=AUTO_RELEASE_MINUTES} />
+                                       class='minutes no-margin' {formname key=AUTO_RELEASE_MINUTES} />
                             </div>
                         {/capture}
                         {translate key='AutoReleaseNotification' args=$txtAutoRelease}
+                    </div>
+                    <div class="no-show" id="autoExtendDiv">
+                        <label for="enableAutoExtend">
+                            <input type="checkbox" {formname key=ENABLE_AUTO_EXTEND} id="enableAutoExtend"/>
+                            <span>{translate key=ReservationsAutomaticallyExtended}</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -1410,6 +1416,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {/capture}
                             {translate key='AutoReleaseNotification' args=$bulkEditTxtAutoRelease}
                         </div>
+                        <div class="no-show" id="bulkUpdateAutoExtendDiv">
+                            <label for="bulkEditEnableAutoExtend">
+                                <input type="checkbox" {formname key=ENABLE_AUTO_EXTEND} id="bulkEditEnableAutoExtend"/>
+                                <span>{translate key=ReservationsAutomaticallyExtended}</span>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="input-field">
@@ -1869,7 +1881,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 enableCheckin: '{$resource->IsCheckInEnabled()}',
                 autoReleaseMinutes: '{$resource->GetAutoReleaseMinutes()}',
                 credits: '{$resource->GetCreditsPerSlot()}',
-                peakCredits: '{$resource->GetPeakCreditsPerSlot()}'
+                peakCredits: '{$resource->GetPeakCreditsPerSlot()}',
+                enableAutoExtend: '{$resource->IsAutoExtendEnabled()}',
             };
 
             {if $resource->HasMinLength()}

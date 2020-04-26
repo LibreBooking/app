@@ -90,7 +90,8 @@ class FakeResourceAccess extends ResourceRepository
                          $creditCount = null,
                          $peakCreditCount = null,
                          $minNoticeUpdate = null,
-                         $minNoticeDelete = null
+                         $minNoticeDelete = null,
+                         $autoExtendReservations = 0
     )
     {
 
@@ -127,6 +128,7 @@ class FakeResourceAccess extends ResourceRepository
             ColumnNames::PEAK_CREDIT_COUNT => $peakCreditCount,
             ColumnNames::RESOURCE_MINNOTICE_UPDATE => $minNoticeUpdate,
             ColumnNames::RESOURCE_MINNOTICE_DELETE => $minNoticeDelete,
+            ColumnNames::RESOURCE_AUTO_EXTEND => $autoExtendReservations,
         );
 
         return $this;

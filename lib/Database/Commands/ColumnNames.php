@@ -158,6 +158,7 @@ class ColumnNames
     const RESOURCE_ALLOW_DISPLAY = 'allow_display';
     const RESOURCE_IMAGE_LIST = 'image_list';
     const PERMISSION_TYPE = 'permission_type';
+    const RESOURCE_AUTO_EXTEND = 'auto_extend_reservations';
 
     // RESERVATION RESOURCES
     const RESOURCE_LEVEL_ID = 'resource_level_id';

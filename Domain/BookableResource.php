@@ -577,6 +577,7 @@ class BookableResource implements IBookableResource
 	protected $_textColor;
 	protected $_creditsPerSlot;
 	protected $_peakCreditsPerSlot;
+	protected $_autoExtendReservations = false;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -720,6 +721,7 @@ class BookableResource implements IBookableResource
 		$resource->WithPeakCreditsPerSlot($row[ColumnNames::PEAK_CREDIT_COUNT]);
 		$resource->SetMinNoticeUpdate($row[ColumnNames::RESOURCE_MINNOTICE_UPDATE]);
 		$resource->SetMinNoticeDelete($row[ColumnNames::RESOURCE_MINNOTICE_DELETE]);
+        $resource->SetAutoExtendReservations(intval($row[ColumnNames::RESOURCE_AUTO_EXTEND]));
 
 		return $resource;
 	}
@@ -1399,8 +1401,9 @@ class BookableResource implements IBookableResource
 	/**
 	 * @param bool $enabled
 	 * @param int|null $autoReleaseMinutes
+	 * @param int|null $enableAutoExtend
 	 */
-	public function SetCheckin($enabled, $autoReleaseMinutes = null)
+	public function SetCheckin($enabled, $autoReleaseMinutes = null, $enableAutoExtend = false)
 	{
 		if ($autoReleaseMinutes <= 0)
 		{
@@ -1409,6 +1412,7 @@ class BookableResource implements IBookableResource
 
 		$this->_enableCheckIn = $enabled;
 		$this->_autoReleaseMinutes = $enabled ? $autoReleaseMinutes : null;
+		$this->_autoExtendReservations = $enabled ? $enableAutoExtend : false;
 	}
 
 	/**
@@ -1658,7 +1662,7 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @param $creditsPerSlot float|null
 	 */
 	protected function WithCreditsPerSlot($creditsPerSlot)
 	{
@@ -1666,7 +1670,7 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @param $creditsPerSlot float|null
 	 */
 	protected function WithPeakCreditsPerSlot($creditsPerSlot)
 	{
@@ -1674,20 +1678,23 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function GetCreditsPerSlot()
 	{
 		return empty($this->_creditsPerSlot) ? 0 : $this->_creditsPerSlot;
 	}
 
+    /**
+     * @return float
+     */
 	public function GetPeakCreditsPerSlot()
 	{
 		return empty($this->_peakCreditsPerSlot) ? 0 : $this->_peakCreditsPerSlot;
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @param $creditsPerSlot float|null
 	 */
 	public function SetCreditsPerSlot($creditsPerSlot)
 	{
@@ -1695,12 +1702,23 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @param $creditsPerSlot float|null
 	 */
 	public function SetPeakCreditsPerSlot($creditsPerSlot)
 	{
 		$this->_peakCreditsPerSlot = $creditsPerSlot;
 	}
+
+	public function SetAutoExtendReservations(bool $autoExtend) {
+        $this->_autoExtendReservations = $autoExtend;
+    }
+
+    /**
+     * @return bool
+     */
+    public function IsAutoExtendEnabled() {
+	    return $this->_autoExtendReservations;
+    }
 
 	public function AsCopy($name)
 	{

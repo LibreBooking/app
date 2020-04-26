@@ -18,3 +18,6 @@ CREATE TABLE `group_credit_replenishment_rule`
     ENGINE = InnoDB
     DEFAULT CHARACTER
         SET utf8;
+
+ALTER TABLE `resources`
+    ADD COLUMN `auto_extend_reservations` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;

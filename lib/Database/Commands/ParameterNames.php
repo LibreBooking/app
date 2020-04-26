@@ -226,6 +226,7 @@ class ParameterNames
 	const RESOURCE_STATUS_REASON_ID = '@resource_status_reason_id';
 	const RESOURCE_STATUS_REASON_DESCRIPTION = '@description';
 	const RESOURCE_BUFFER_TIME = '@buffer_time';
+	const RESOURCE_AUTO_EXTEND = '@auto_extend_reservations';
 
 	const RESOURCE_GROUP_ID = '@resourcegroupid';
 	const RESOURCE_GROUP_NAME = '@resourcegroupname';

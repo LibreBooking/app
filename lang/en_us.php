@@ -806,6 +806,8 @@ class en_us extends Language
         $strings['AutoReplenishCreditsNot'] = 'Credits automatically replenished';
         $strings['Never'] = 'Never';
         $strings['LastReplenished'] = 'Last Replenished';
+        $strings['ReservationsAutomaticallyExtended'] = 'Reservations are automatically extended if owner does not check out';
+        $strings['ReservationsNotAutomaticallyExtended'] = 'Reservations end if owner does not check out';
         // End Strings
 
 		// Install
