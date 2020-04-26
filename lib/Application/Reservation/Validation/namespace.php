@@ -68,3 +68,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/TermsOfServiceRu
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ScheduleAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/TitleRequiredRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/DescriptionRequiredRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceCountRule.php');

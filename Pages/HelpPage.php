@@ -36,19 +36,21 @@ class HelpPage extends Page
 		$this->Set('ReplenishmentPath', realpath(ROOT_DIR . 'Jobs/replenishcredits.php'));
 		$this->Set('ServerTimezone', date_default_timezone_get());
 
-		$helpType = $this->GetQuerystring('ht');
+		$this->DisplayLocalized('support-and-credits.tpl');
 
-		if ($helpType == 'about')
-		{
-			$this->DisplayLocalized('support-and-credits.tpl');
-		}
-		else if ($helpType == 'admin')
-		{
-			$this->DisplayLocalized('help-admin.tpl');
-		}
-		else
-		{
-			$this->DisplayLocalized('help.tpl');
-		}
+//		$helpType = $this->GetQuerystring('ht');
+//
+//		if ($helpType == 'about')
+//		{
+//
+//		}
+//		else if ($helpType == 'admin')
+//		{
+//			$this->DisplayLocalized('help-admin.tpl');
+//		}
+//		else
+//		{
+//			$this->DisplayLocalized('help.tpl');
+//		}
 	}
 }

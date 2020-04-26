@@ -616,6 +616,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             approvalTooltip: '{translate key=RequiresApproval|escape:javascript}',
             checkinTooltip: '{translate key=RequiresCheckInNotification|escape:javascript}',
             autoreleaseTooltip: '{translate key=AutoReleaseTooltip|escape:javascript}'
+            availabilityUrl: 'ajax/availability.php?{QueryStringKeys::SCHEDULE_ID}={$ScheduleId}',
+            maximumResources: {$MaximumResources|default:0}
         };
 
         var reminderOpts = {
