@@ -22,10 +22,10 @@
 /* Cron Example //
 //////////////////
 
-This script must be executed every day to enable session cleanup functionality
+This script must be executed every day to enable credit replenishment functionality
 
-0 0 * * * php /home/mydomain/public_html/booked/Jobs/sessioncleanup.php
-0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sessioncleanup.php
+0 0 * * * php /home/mydomain/public_html/booked/Jobs/replenish-credits.php
+0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/replenish-credits.php
 
 */
 
