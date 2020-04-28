@@ -24,12 +24,12 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
 class ManageUsersPresenterTests extends TestBase
 {
 	/**
-	 * @var IManageUsersPage|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeManageUsersPage
 	 */
 	private $page;
 
 	/**
-	 * @var UserRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeUserRepository
 	 */
 	public $userRepo;
 
@@ -72,8 +72,8 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		parent::setup();
 
-		$this->page = $this->createMock('IManageUsersPage');
-		$this->userRepo = $this->createMock('UserRepository');
+		$this->page = new FakeManageUsersPage();
+		$this->userRepo = new FakeUserRepository();
 		$this->resourceRepo = $this->createMock('IResourceRepository');
 		$this->encryption = $this->createMock('PasswordEncryption');
 		$this->manageUsersService = $this->createMock('IManageUsersService');
@@ -111,56 +111,19 @@ class ManageUsersPresenterTests extends TestBase
 
 		$attributeList = array(new FakeCustomAttribute(1, '1'));
 
-		$this->page
-				->expects($this->once())
-				->method('GetPageNumber')
-				->will($this->returnValue($pageNumber));
-
-		$this->page
-				->expects($this->once())
-				->method('GetPageSize')
-				->will($this->returnValue($pageSize));
-
-		$this->page
-				->expects($this->once())
-				->method('GetFilterStatusId')
-				->will($this->returnValue(AccountStatus::ALL));
-
-		$this->userRepo
-				->expects($this->once())
-				->method('GetList')
-				->with($this->equalTo($pageNumber), $this->equalTo($pageSize), $this->isNull(), $this->isNull(),
-					   $this->isNull(), $this->equalTo(AccountStatus::ALL))
-				->will($this->returnValue($userList));
-
 		$user = new FakeUser();
 
-		$this->userRepo
-				->expects($this->once())
-				->method('LoadById')
-				->with($this->fakeUser->UserId)
-				->will($this->returnValue($user));
+		$this->page->_PageNumber = $pageNumber;
+		$this->page->_PageSize = $pageSize;
+		$this->page->_FilterStatusId = AccountStatus::ALL;
 
-		$this->page
-				->expects($this->once())
-				->method('BindUsers')
-				->with($this->equalTo($userList->Results()));
-
-		$this->page
-				->expects($this->once())
-				->method('BindPageInfo')
-				->with($this->equalTo($userList->PageInfo()));
+		$this->userRepo->_UserList = $userList;
+		$this->userRepo->_User = $user;
 
 		$this->resourceRepo
 				->expects($this->once())
 				->method('GetResourceList')
 				->will($this->returnValue($resourceList));
-
-		$this->page
-				->expects($this->once())
-				->method('BindResources')
-				->with($this->equalTo($resourceList));
-
 
 		$this->attributeService
 				->expects($this->once())
@@ -168,10 +131,6 @@ class ManageUsersPresenterTests extends TestBase
 				->with($this->equalTo(CustomAttributeCategory::USER))
 				->will($this->returnValue($attributeList));
 
-		$this->page
-				->expects($this->once())
-				->method('BindAttributeList')
-				->with($this->equalTo($attributeList));
 
 		$groups = array(new GroupItemView(1, 'gn'));
 		$groupList = new PageableData($groups);
@@ -180,11 +139,13 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetList')
 				->will($this->returnValue($groupList));
 
-		$this->page->expects($this->once())
-				   ->method('BindGroups')
-				   ->with($this->equalTo($groups));
-
 		$this->presenter->PageLoad();
+
+		$this->assertEquals($groups, $this->page->_BoundGroups);
+		$this->assertEquals($userList->Results(), $this->page->_BoundUsers);
+		$this->assertEquals($userList->PageInfo(), $this->page->_BoundPageInfo);
+		$this->assertEquals($resourceList, $this->page->_BoundResources);
+		$this->assertEquals($attributeList, $this->page->_BoundAttributes);
 	}
 
 	public function testGetsSelectedResourcesFromPageAndAssignsPermission()
@@ -214,37 +175,21 @@ class ManageUsersPresenterTests extends TestBase
 		$adminUser->_ResourceAdminResourceIds = $allowedResourceIds;
 		$adminUser->_IsResourceAdmin = false;
 
-		$this->page->expects($this->atLeastOnce())
-				   ->method('GetUserId')
-				   ->will($this->returnValue($userId));
-
-		$this->page->expects($this->atLeastOnce())
-				   ->method('GetAllowedResourceIds')
-				   ->will($this->returnValue($submittedResourceIds));
+		$this->page->_UserId = $userId;
+		$this->page->_AllowedResourceIds = $submittedResourceIds;
 
 		$this->resourceRepo->expects($this->once())
 						   ->method('GetResourceList')
 						   ->will($this->returnValue($resources));
 
-		$this->userRepo->expects($this->at(0))
-					   ->method('LoadById')
-					   ->with($this->equalTo($adminUserId))
-					   ->will($this->returnValue($adminUser));
-
-		$this->userRepo->expects($this->at(1))
-					   ->method('LoadById')
-					   ->with($this->equalTo($userId))
-					   ->will($this->returnValue($user));
-
-		$this->userRepo->expects($this->once())
-					   ->method('Update')
-					   ->with($this->equalTo($user));
+		$this->userRepo->_UserById[$adminUserId] = $adminUser;
+		$this->userRepo->_UserById[$userId] = $user;
 
 		$this->presenter->ChangePermissions();
 
 		$actual = $user->GetAllowedResourceIds();
 		$this->assertEquals(sort($expectedResourceIds), sort($actual));
-
+		$this->assertEquals($this->userRepo->_UpdatedUser, $user);
 	}
 
 	public function testResetPasswordEncryptsAndUpdates()
@@ -254,13 +199,9 @@ class ManageUsersPresenterTests extends TestBase
 		$encrypted = 'encrypted';
 		$userId = 123;
 
-		$this->page->expects($this->atLeastOnce())
-				   ->method('GetUserId')
-				   ->will($this->returnValue($userId));
+		$this->page->_UserId = $userId;
 
-		$this->page->expects($this->once())
-				   ->method('GetPassword')
-				   ->will($this->returnValue($password));
+		$this->page->_Password = $password;
 
 		$this->encryption->expects($this->once())
 						 ->method('Salt')
@@ -273,19 +214,13 @@ class ManageUsersPresenterTests extends TestBase
 
 		$user = new User();
 
-		$this->userRepo->expects($this->once())
-					   ->method('LoadById')
-					   ->with($this->equalTo($userId))
-					   ->will($this->returnValue($user));
-
-		$this->userRepo->expects($this->once())
-					   ->method('Update')
-					   ->with($this->equalTo($user));
+		$this->userRepo->_User = $user;
 
 		$this->presenter->ResetPassword();
 
 		$this->assertEquals($encrypted, $user->encryptedPassword);
 		$this->assertEquals($salt, $user->passwordSalt);
+		$this->assertEquals($this->userRepo->_UpdatedUser, $user);
 	}
 
 	public function testCanUpdateUser()
@@ -302,41 +237,15 @@ class ManageUsersPresenterTests extends TestBase
 
 		$user = new FakeUser($userId);
 
-		$this->page->expects($this->atLeastOnce())
-				   ->method('GetUserId')
-				   ->will($this->returnValue($userId));
-
-		$this->page->expects($this->once())
-				   ->method('GetFirstName')
-				   ->will($this->returnValue($fname));
-
-		$this->page->expects($this->once())
-				   ->method('GetLastName')
-				   ->will($this->returnValue($lname));
-
-		$this->page->expects($this->once())
-				   ->method('GetUserName')
-				   ->will($this->returnValue($username));
-
-		$this->page->expects($this->once())
-				   ->method('GetEmail')
-				   ->will($this->returnValue($email));
-
-		$this->page->expects($this->once())
-				   ->method('GetTimezone')
-				   ->will($this->returnValue($timezone));
-
-		$this->page->expects($this->once())
-				   ->method('GetPhone')
-				   ->will($this->returnValue($phone));
-
-		$this->page->expects($this->once())
-				   ->method('GetOrganization')
-				   ->will($this->returnValue($organization));
-
-		$this->page->expects($this->once())
-				   ->method('GetPosition')
-				   ->will($this->returnValue($position));
+		$this->page->_UserId = $userId;
+		$this->page->_FirstName = $fname;
+		$this->page->_LastName = $lname;
+		$this->page->_UserName = $username;
+		$this->page->_Email = $email;
+		$this->page->_Timezone = $timezone;
+		$this->page->_Phone = $phone;
+		$this->page->_Organization = $organization;
+		$this->page->_Position = $position;
 
 		$extraAttributes = array(
 				UserAttribute::Organization => $organization,
@@ -360,9 +269,7 @@ class ManageUsersPresenterTests extends TestBase
 	public function testDeletesUser()
 	{
 		$userId = 809;
-		$this->page->expects($this->once())
-				   ->method('GetUserId')
-				   ->will($this->returnValue($userId));
+		$this->page->_UserId = $userId;
 
 		$this->manageUsersService->expects($this->once())
 								 ->method('DeleteUser')
@@ -374,9 +281,7 @@ class ManageUsersPresenterTests extends TestBase
 	public function testDeletesUsers()
 	{
 		$userIds = array(809, 909);
-		$this->page->expects($this->once())
-				   ->method('GetDeletedUserIds')
-				   ->will($this->returnValue($userIds));
+		$this->page->_DeletedUserIds = $userIds;
 
 		$this->manageUsersService->expects($this->at(0))
 								 ->method('DeleteUser')
@@ -413,39 +318,14 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 
-		$this->page->expects($this->once())
-				   ->method('GetFirstName')
-				   ->will($this->returnValue($fname));
-
-		$this->page->expects($this->once())
-				   ->method('GetLastName')
-				   ->will($this->returnValue($lname));
-
-		$this->page->expects($this->once())
-				   ->method('GetUserName')
-				   ->will($this->returnValue($username));
-
-		$this->page->expects($this->once())
-				   ->method('GetEmail')
-				   ->will($this->returnValue($email));
-
-		$this->page->expects($this->once())
-				   ->method('GetTimezone')
-				   ->will($this->returnValue($timezone));
-
-		$this->page->expects($this->once())
-				   ->method('GetPassword')
-				   ->will($this->returnValue($password));
-
-		$this->page
-				->expects($this->once())
-				->method('GetAttributes')
-				->will($this->returnValue($attributeFormElements));
-
-		$this->page
-				->expects($this->once())
-				->method('GetUserGroup')
-				->will($this->returnValue($groupId));
+		$this->page->_FirstName =$fname;
+		$this->page->_LastName =$lname;
+		$this->page->_UserName =$username;
+		$this->page->_Email =$email;
+		$this->page->_Timezone =$timezone;
+		$this->page->_Password =$password;
+		$this->page->_Attributes =$attributeFormElements;
+		$this->page->_UserGroup =$groupId;
 
 		$this->manageUsersService->expects($this->once())
 								 ->method('AddUser')
@@ -480,17 +360,12 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$users = array(new UserDto(1, 'f', 'l', 'e'));
 
-		$this->userRepo->expects($this->once())
-					   ->method('GetAll')
-					   ->will($this->returnValue($users));
-
-		$this->page->expects($this->once())
-				   ->method('SetJsonResponse')
-				   ->with($this->equalTo($users));
+		$this->userRepo->_AllUsers = $users;
 
 		$this->presenter->ProcessDataRequest('all');
-	}
 
+		$this->assertEquals($users, $this->page->_JsonResponse);
+	}
 
 	public function testParsesImportWithHeader()
 	{
@@ -499,7 +374,8 @@ class ManageUsersPresenterTests extends TestBase
 		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
-		$this->assertEquals(1, count($rows));
+
+		$this->assertCount(1, $rows);
 
 		$row1 = $rows[0];
 		$this->assertEquals("u1", $row1->username);
@@ -522,7 +398,7 @@ class ManageUsersPresenterTests extends TestBase
 		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
-		$this->assertEquals(1, count($rows));
+		$this->assertCount(1, $rows);
 
 		$row1 = $rows[0];
 		$this->assertEquals("u1", $row1->username);
@@ -545,7 +421,7 @@ class ManageUsersPresenterTests extends TestBase
 		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
-		$this->assertEquals(1, count($rows));
+		$this->assertCount(1, $rows);
 
 		$row1 = $rows[0];
 		$this->assertEquals("u1", $row1->username);
@@ -572,5 +448,279 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->assertEquals(0, count($rows));
 		$this->assertEquals(array(1, 2), $skippedRowNumbers);
+	}
+
+	public function testShowsUserUpdate()
+	{
+		$userId = 1;
+		$this->page->_UserId = $userId;
+
+		$this->presenter->ShowUpdate();
+	}
+}
+
+class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage {
+
+	/**
+	 * @var int
+	 */
+	public $_UserId;
+	/**
+	 * @var int
+	 */
+	public $_PageNumber;
+	/**
+	 * @var int
+	 */
+	public $_PageSize;
+	/**
+	 * @var PageInfo
+	 */
+	public $_BoundPageInfo;
+	/**
+	 * @var UserItemView[]
+	 */
+	public $_BoundUsers;
+	/**
+	 * @var BookableResource[]
+	 */
+	public $_BoundResources;
+	/**
+	 * @var GroupItemView[]
+	 */
+	public $_BoundGroups;
+	public $_BoundAttributes;
+	/**
+	 * @var int
+	 */
+	public $_FilterStatusId;
+	/**
+	 * @var int[]
+	 */
+	public $_AllowedResourceIds;
+	/**
+	 * @var string
+	 */
+	public $_Password;
+	/**
+	 * @var string
+	 */
+	public $_FirstName;
+	/**
+	 * @var string
+	 */
+	public $_LastName;
+	/**
+	 * @var string
+	 */
+	public $_UserName;
+	/**
+	 * @var string
+	 */
+	public $_Email;
+	/**
+	 * @var string
+	 */
+	public $_Timezone;
+	/**
+	 * @var string
+	 */
+	public $_Phone;
+	/**
+	 * @var string
+	 */
+	public $_Organization;
+	/**
+	 * @var string
+	 */
+	public $_Position;
+	/**
+	 * @var int[]
+	 */
+	public $_DeletedUserIds;
+	public $_Language;
+	/**
+	 * @var AttributeFormElement[]
+	 */
+	public $_Attributes;
+	/**
+	 * @var int
+	 */
+	public $_UserGroup;
+	public $_JsonResponse;
+
+	function GetPageNumber()
+	{
+		return $this->_PageNumber;
+	}
+
+	function GetPageSize()
+	{
+		return $this->_PageSize;
+	}
+
+	function BindPageInfo(PageInfo $pageInfo)
+	{
+		$this->_BoundPageInfo = $pageInfo;
+	}
+
+	function BindUsers($users)
+	{
+		$this->_BoundUsers = $users;
+	}
+
+	public function GetUserId()
+	{
+		return $this->_UserId;
+	}
+
+	public function BindResources($resources)
+	{
+		$this->_BoundResources = $resources;
+	}
+
+	public function SetJsonResponse($objectToSerialize)
+	{
+		$this->_JsonResponse = $objectToSerialize;
+	}
+
+	public function GetAllowedResourceIds()
+	{
+		return $this->_AllowedResourceIds;
+	}
+
+	public function GetPassword()
+	{
+		return $this->_Password;
+	}
+
+	public function GetEmail()
+	{
+		return $this->_Email;
+	}
+
+	public function GetUserName()
+	{
+		return $this->_UserName;
+	}
+
+	public function GetFirstName()
+	{
+		return $this->_FirstName;
+	}
+
+	public function GetLastName()
+	{
+		return $this->_LastName;
+	}
+
+	public function GetTimezone()
+	{
+		return $this->_Timezone;
+	}
+
+	public function GetPhone()
+	{
+		return $this->_Phone;
+	}
+
+	public function GetPosition()
+	{
+		return $this->_Position;
+	}
+
+	public function GetOrganization()
+	{
+		return $this->_Organization;
+	}
+
+	public function GetLanguage()
+	{
+		return $this->_Language;
+	}
+
+	public function BindAttributeList($attributeList)
+	{
+		$this->_BoundAttributes = $attributeList;
+	}
+
+	public function GetAttributes()
+	{
+		return $this->_Attributes;
+	}
+
+	public function GetFilterStatusId()
+	{
+		return $this->_FilterStatusId;
+	}
+
+	public function GetUserGroup()
+	{
+		return $this->_UserGroup;
+	}
+
+	public function BindGroups($groups)
+	{
+		$this->_BoundGroups = $groups;
+	}
+
+	public function GetReservationColor()
+	{
+		// TODO: Implement GetReservationColor() method.
+	}
+
+	public function GetValue()
+	{
+		// TODO: Implement GetValue() method.
+	}
+
+	public function GetName()
+	{
+		// TODO: Implement GetName() method.
+	}
+
+	public function ShowTemplateCSV($attributes)
+	{
+		// TODO: Implement ShowTemplateCSV() method.
+	}
+
+	public function GetImportFile()
+	{
+		// TODO: Implement GetImportFile() method.
+	}
+
+	public function SetImportResult($importResult)
+	{
+		// TODO: Implement SetImportResult() method.
+	}
+
+	public function GetInvitedEmails()
+	{
+		// TODO: Implement GetInvitedEmails() method.
+	}
+
+	public function ShowExportCsv()
+	{
+		// TODO: Implement ShowExportCsv() method.
+	}
+
+	public function BindStatusDescriptions()
+	{
+		// TODO: Implement BindStatusDescriptions() method.
+	}
+
+	public function GetDeletedUserIds()
+	{
+		return $this->_DeletedUserIds;
+	}
+
+	public function SendEmailNotification()
+	{
+		// TODO: Implement SendEmailNotification() method.
+	}
+
+	public function GetUpdateOnImport()
+	{
+		// TODO: Implement GetUpdateOnImport() method.
 	}
 }

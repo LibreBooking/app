@@ -59,7 +59,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	private $page;
 
 	/**
-	 * @var \UserRepository
+	 * @var IUserRepository
 	 */
 	private $userRepository;
 
@@ -152,7 +152,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	 * @param IGroupViewRepository $groupViewRepository
 	 */
 	public function __construct(IManageUsersPage $page,
-								UserRepository $userRepository,
+								IUserRepository $userRepository,
 								IResourceRepository $resourceRepository,
 								PasswordEncryption $passwordEncryption,
 								IManageUsersService $manageUsersService,
@@ -394,6 +394,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		elseif ($dataRequest == 'export')
 		{
 			$this->ExportUsers();
+		}
+		elseif ($dataRequest == 'update') {
+			$this->ShowUpdate();
 		}
 	}
 
@@ -743,5 +746,11 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		}
 
 		return AccountStatus::ACTIVE;
+	}
+
+	public function ShowUpdate() {
+		$userId = $this->page->GetUserId();
+
+//		$this->page->ShowUserUpdate($user, $attributes);
 	}
 }

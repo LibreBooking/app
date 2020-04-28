@@ -46,8 +46,20 @@ class FakeUserRepository implements IUserRepository
      * @var UserDto[]
      */
     public $_UserDtos;
+	/**
+	 * @var PageableData
+	 */
+	public $_UserList;
+	/**
+	 * @var User[]
+	 */
+	public $_UserById = [];
+	/**
+	 * @var UserDto[]
+	 */
+	public $_AllUsers = [];
 
-    public function __construct()
+	public function __construct()
 	{
 		$this->_User = new FakeUser(123);
 	}
@@ -57,6 +69,9 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function LoadById($userId)
 	{
+		if (array_key_exists($userId, $this->_UserById)) {
+			return $this->_UserById[$userId];
+		}
 		return $this->_User;
 	}
 
@@ -125,7 +140,7 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function GetAll()
 	{
-		// TODO: Implement GetAll() method.
+		return $this->_AllUsers;
 	}
 
 	/**
@@ -140,7 +155,7 @@ class FakeUserRepository implements IUserRepository
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null,
 							$accountStatus = AccountStatus::ALL)
 	{
-		// TODO: Implement GetList() method.
+		return $this->_UserList;
 	}
 
 	/**

@@ -13,7 +13,7 @@
 
     <available file="C:\wamp64\bin\mysql\mysql5.7.26" property="mysql.bin" value="C:\wamp64\bin\mysql\mysql5.7.26\bin"/>
     <available file="C:\wamp64\bin\mysql\mysql8.0.18" property="mysql.bin" value="C:\wamp64\bin\mysql\mysql8.0.18\bin"/>
-    
+
     <property name="mysql.username" value="root"/>
     <property name="mysql.password" value="password"/>
     <property name="mysql.server" value="localhost"/>
