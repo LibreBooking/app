@@ -599,7 +599,7 @@ class Queries
 			(SELECT GROUP_CONCAT(`ag`.`group_id`) FROM `announcement_groups` `ag` WHERE `ag`.`announcementid` = `a`.`announcementid`) as `group_ids`,
 			(SELECT GROUP_CONCAT(`ar`.`resource_id`) FROM `announcement_resources` `ar` WHERE `ar`.`announcementid` = `a`.`announcementid`) as `resource_ids`
 			FROM `announcements` `a`
-		WHERE ((`start_date` <= @current_date AND `end_date` >= @current_date) OR (`end_date` IS NULL)) AND (@display_page = -1 OR @display_page = `display_page`)
+		WHERE ((`start_date` <= @current_date AND `end_date` >= @current_date) OR (`end_date` IS NULL)) AND (@display_page = -1 OR`display_page` = @display_page)
 		ORDER BY `priority`, `start_date`, `end_date`';
 
 	const GET_GROUP_BY_ID =
