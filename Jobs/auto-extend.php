@@ -39,7 +39,6 @@ JobCop::EnsureCommandLine();
 
 try {
     $fiveMinAgo = Date::Now()->SubtractMinutes(-5);
-    $fiveMinAgo = Date::Now()->AddDays(-2);
     $now = Date::Now();
     $alreadySeen = array();
 
@@ -58,8 +57,8 @@ try {
     $missedCheckoutCommand = new AdHocCommand($missedCheckOutSql);
     $missedCheckoutCommand->AddParameter(new Parameter('@five_minutes_ago', $fiveMinAgo->ToDatabase()));
     $missedCheckoutCommand->AddParameter(new Parameter('@now', $now->ToDatabase()));
-
     $missedCheckoutReader = ServiceLocator::GetDatabase()->Query($missedCheckoutCommand);
+
     while ($missedCheckoutRow = $missedCheckoutReader->GetRow()) {
         $currentEndDate = Date::FromDatabase($missedCheckoutRow[ColumnNames::RESERVATION_END]);
         $reservationInstanceId = $missedCheckoutRow[ColumnNames::RESERVATION_INSTANCE_ID];
@@ -96,6 +95,8 @@ try {
 
         Log::Debug('Extended reservation end date for id %s from %s to %s', $reservationInstanceId, $currentEndDate, $newEndDate);
     }
+
+    $missedCheckoutReader->Free();
 } catch (Exception $ex) {
     Log::Error("Error running auto-extend.php. %s", $ex);
 }
