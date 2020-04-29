@@ -20,6 +20,12 @@
 
 interface IFirstRegistrationStrategy
 {
+    /**
+     * @param User $user
+     * @param IUserRepository $userRepository
+     * @param IGroupRepository $groupRepository
+     * @return User
+     */
 	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository);
 }
 
@@ -45,7 +51,11 @@ class SetAdminFirstRegistrationStrategy implements IFirstRegistrationStrategy
 			$adminGroup->ChangeRoles(array(RoleLevel::APPLICATION_ADMIN));
 			$adminGroup->AddUser($user->Id());
 			$groupRepository->Update($adminGroup);
+
+			return $userRepository->LoadById($user->Id());
 		}
+
+		return $user;
 	}
 
 	private function ReloadCachedConfig()
