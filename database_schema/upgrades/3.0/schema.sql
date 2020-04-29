@@ -19,5 +19,18 @@ CREATE TABLE `group_credit_replenishment_rule`
     DEFAULT CHARACTER
         SET utf8;
 
+
+DROP TABLE IF EXISTS `scheduled_job_status`;
+CREATE TABLE `scheduled_job_status`
+(
+    `job_name`      VARCHAR(255)     NOT NULL,
+    `last_run_date` DATETIME,
+    `status`        TINYINT UNSIGNED NOT NULL,
+    PRIMARY KEY (`job_name`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER
+        SET utf8;
+
 ALTER TABLE `resources`
     ADD COLUMN `auto_extend_reservations` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;

@@ -33,16 +33,20 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Jobs/JobCop.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationAvailableEmail.php');
 
-Log::Debug('Running sendwaitlist.php');
+const JOB_NAME = 'send-wait-list';
+
+Log::Debug('Running %s', JOB_NAME);
 
 JobCop::EnsureCommandLine();
+JobCop::EnforceSchedule(JOB_NAME, 1);
 
 try
 {
     $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
     if (!$emailEnabled)
     {
-		Log::Debug('sendwaitlist.php exiting. Email not enabled.');
+        Log::Debug('%s exiting. Email not enabled.', JOB_NAME);
+        JobCop::UpdateLastRun(JOB_NAME, false);
         return;
     }
 
@@ -79,9 +83,11 @@ try
             $waitlistRepository->Delete($r);
         }
     }
-} catch (Exception $ex)
-{
-	Log::Error('Error running sendwaitlist.php: %s', $ex);
+
+    JobCop::UpdateLastRun(JOB_NAME, true);
+} catch (Exception $ex) {
+    Log::Error('Error running %s: %s', JOB_NAME, $ex);
+    JobCop::UpdateLastRun(JOB_NAME, false);
 }
 
-Log::Debug('Finished running sendwaitlist.php');
+Log::Debug('Finished running %s', JOB_NAME);

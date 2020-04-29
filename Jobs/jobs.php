@@ -18,6 +18,26 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define('ROOT_DIR', dirname(__FILE__) . '/../');
+@define('ROOT_DIR', dirname(__FILE__) . '/../');
+require_once(ROOT_DIR . 'Jobs/JobCop.php');
 
-exec('php ' . ROOT_DIR . '/Jobs/test.php');
+JobCop::EnsureCommandLine();
+
+$phpExec = Configuration::Instance()->GetSectionKey(ConfigSection::JOBS, ConfigKeys::JOBS_PHP_EXEC_PATH);
+
+if (empty($phpExec)) {
+    Log::Debug('No path to PHP set in $conf[\'settings\'][\'jobs\'][\'php.exec.path\']. Defaulting to "php"');
+    $phpExec = "php";
+}
+
+Log::Debug("Executing all scheduled jobs");
+
+exec("$$phpExec " . ROOT_DIR . 'Jobs/auto-extend.php');
+exec("$$phpExec " . ROOT_DIR . 'Jobs/autorelease.php');
+exec("$$phpExec " . ROOT_DIR . 'Jobs/replenish-credits.php');
+exec("$$phpExec " . ROOT_DIR . 'Jobs/sendmissedcheckin.php');
+exec("$$phpExec " . ROOT_DIR . 'Jobs/sendreminders.php');
+exec("$$phpExec " . ROOT_DIR . 'Jobs/sendseriesend.php');
+exec("$$phpExec " . ROOT_DIR . 'Jobs/sessioncleanup.php');
+
+Log::Debug("Finished executing all scheduled jobs");

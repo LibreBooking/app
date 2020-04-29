@@ -34,12 +34,17 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Jobs/JobCop.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationSeriesEndingEmail.php');
 
-Log::Debug('Running sendseriesend.php');
+const JOB_NAME = 'send-series-end';
+
+Log::Debug('Running %s', JOB_NAME);
 
 JobCop::EnsureCommandLine();
+JobCop::EnforceSchedule(JOB_NAME, 1440);
 
 $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
 if (!$emailEnabled) {
+    Log::Error('%s exiting. Email not enabled.', JOB_NAME);
+    JobCop::UpdateLastRun(JOB_NAME, false);
     return;
 }
 
@@ -107,8 +112,10 @@ try {
     }
     $reader->Free();
 
+    JobCop::UpdateLastRun(JOB_NAME, true);
 } catch (Exception $ex) {
-    Log::Error('Error running sendseriesend.php: %s', $ex);
+    Log::Error('Error running %s: %s', JOB_NAME, $ex);
+    JobCop::UpdateLastRun(JOB_NAME, false);
 }
 
-Log::Debug('Finished running sendseriesend.php');
+Log::Debug('Finished running %s', JOB_NAME);
