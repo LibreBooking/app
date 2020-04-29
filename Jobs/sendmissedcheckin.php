@@ -24,8 +24,8 @@
 
 This script must be executed every minute for to enable missed checkin email functionality
 
-0 0 * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
-0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
+* * * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
+* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
 
 */
 
@@ -67,6 +67,7 @@ try {
         if (array_key_exists($reservation->ReferenceNumber, $alreadySeen)) {
             continue;
         }
+        $alreadySeen[$reservation->ReferenceNumber] = 1;
 
         if ($sendToAdmins) {
             $applicationAdmins = $userRepository->GetApplicationAdmins();
@@ -82,8 +83,6 @@ try {
 //        if ($sendToScheduleAdmins) {
 //            $userRepository->GetScheduleAdmins
 //        }
-
-        $alreadySeen[$reservation->ReferenceNumber] = 1;
 
         Log::Debug('Sending missed checkin email. ReferenceNumber=%s, User=%s, Resource=%s',
             $reservation->ReferenceNumber, $reservation->UserId, $reservation->ResourceName);

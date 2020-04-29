@@ -17,3 +17,87 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+//////////////////
+/* Cron Example //
+//////////////////
+
+This script must be executed every minute for to enable automatic reservation extension functionality
+
+* * * * * php /home/mydomain/public_html/booked/Jobs/auto-extend.php
+* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/auto-extend.php
+
+*/
+
+define('ROOT_DIR', dirname(__FILE__) . '/../');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Jobs/JobCop.php');
+
+Log::Debug('Running auto-extend.php');
+
+JobCop::EnsureCommandLine();
+
+try {
+    $fiveMinAgo = Date::Now()->SubtractMinutes(-5);
+    $fiveMinAgo = Date::Now()->AddDays(-2);
+    $now = Date::Now();
+    $alreadySeen = array();
+
+    $missedCheckOutSql = 'SELECT `ri`.`reservation_instance_id`, `r`.`resource_id`, `ri`.`end_date` 
+    FROM `reservation_instances` `ri` 
+    INNER JOIN `reservation_series` `rs` ON `rs`.`series_id` = `ri`.`series_id`
+    INNER JOIN `reservation_resources` `rr` ON `rs`.`series_id` = `rr`.`series_id`
+    INNER JOIN `resources` `r` ON `r`.`resource_id` = `rr`.`resource_id`
+    WHERE `r`.`enable_check_in` = 1 
+      AND `r`.`auto_extend_reservations` = 1
+      AND `ri`.`checkout_date` IS NULL 
+      AND `ri`.`end_date` >= @five_minutes_ago 
+      AND `ri`.`end_date` < @now
+      AND `rs`.`status_id` <> 2';
+
+    $missedCheckoutCommand = new AdHocCommand($missedCheckOutSql);
+    $missedCheckoutCommand->AddParameter(new Parameter('@five_minutes_ago', $fiveMinAgo->ToDatabase()));
+    $missedCheckoutCommand->AddParameter(new Parameter('@now', $now->ToDatabase()));
+
+    $missedCheckoutReader = ServiceLocator::GetDatabase()->Query($missedCheckoutCommand);
+    while ($missedCheckoutRow = $missedCheckoutReader->GetRow()) {
+        $currentEndDate = Date::FromDatabase($missedCheckoutRow[ColumnNames::RESERVATION_END]);
+        $reservationInstanceId = $missedCheckoutRow[ColumnNames::RESERVATION_INSTANCE_ID];
+
+        if (array_key_exists($reservationInstanceId, $alreadySeen)) {
+            continue;
+        }
+        $alreadySeen[$reservationInstanceId] = 1;
+
+        $nextReservationSql = 'SELECT `ri`.`start_date` 
+    FROM `reservation_instances` `ri` 
+    INNER JOIN `reservation_series` `rs` ON `rs`.`series_id` = `ri`.`series_id`
+    INNER JOIN `reservation_resources` `rr` ON `rs`.`series_id` = `rr`.`series_id`
+    WHERE `ri`.`start_date` > @endDate AND `rr`.`resource_id` = @resourceid
+    ORDER BY `ri`.`start_date` ASC
+    LIMIT 1';
+        $nextReservationCommand = new AdHocCommand($nextReservationSql);
+        $nextReservationCommand->AddParameter(new Parameter(ParameterNames::END_DATE, $currentEndDate->ToDatabase()));
+        $nextReservationCommand->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $missedCheckoutRow[ColumnNames::RESOURCE_ID]));
+
+        $nextReservationReader = ServiceLocator::GetDatabase()->Query($nextReservationCommand);
+        if ($nextReservationRow = $nextReservationReader->GetRow()) {
+            $newEndDate = Date::FromDatabase($nextReservationRow[ColumnNames::RESERVATION_START]);
+        }
+        else {
+            $newEndDate = $currentEndDate->AddMonths(1);
+        }
+
+        $updateEndDateCommand = new AdHocCommand('UPDATE `reservation_instances` SET `end_date` = @endDate WHERE `reservation_instance_id` = @reservationid');
+        $updateEndDateCommand->AddParameter(new Parameter(ParameterNames::END_DATE, $newEndDate->ToDatabase()));
+        $updateEndDateCommand->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $reservationInstanceId));
+
+        ServiceLocator::GetDatabase()->Execute($updateEndDateCommand);
+
+        Log::Debug('Extended reservation end date for id %s from %s to %s', $reservationInstanceId, $currentEndDate, $newEndDate);
+    }
+} catch (Exception $ex) {
+    Log::Error("Error running auto-extend.php. %s", $ex);
+}
+
+Log::Debug('Finished running auto-extend.php');
