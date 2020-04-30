@@ -34,7 +34,7 @@ class ManageUsersPresenterTests extends TestBase
 	public $userRepo;
 
 	/**
-	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeResourceRepository
 	 */
 	public $resourceRepo;
 
@@ -49,7 +49,7 @@ class ManageUsersPresenterTests extends TestBase
 	public $presenter;
 
 	/**
-	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeAttributeService
 	 */
 	public $attributeService;
 
@@ -74,10 +74,10 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->page = new FakeManageUsersPage();
 		$this->userRepo = new FakeUserRepository();
-		$this->resourceRepo = $this->createMock('IResourceRepository');
+		$this->resourceRepo = new FakeResourceRepository();
 		$this->encryption = $this->createMock('PasswordEncryption');
 		$this->manageUsersService = $this->createMock('IManageUsersService');
-		$this->attributeService = $this->createMock('IAttributeService');
+		$this->attributeService = new FakeAttributeService();
 		$this->groupRepository = $this->createMock('IGroupRepository');
 		$this->groupViewRepository = $this->createMock('IGroupViewRepository');
 
@@ -120,17 +120,9 @@ class ManageUsersPresenterTests extends TestBase
 		$this->userRepo->_UserList = $userList;
 		$this->userRepo->_User = $user;
 
-		$this->resourceRepo
-				->expects($this->once())
-				->method('GetResourceList')
-				->will($this->returnValue($resourceList));
+		$this->resourceRepo->_ResourceList = $resourceList;
 
-		$this->attributeService
-				->expects($this->once())
-				->method('GetByCategory')
-				->with($this->equalTo(CustomAttributeCategory::USER))
-				->will($this->returnValue($attributeList));
-
+		$this->attributeService->_ByCategory[CustomAttributeCategory::USER] = $attributeList;
 
 		$groups = array(new GroupItemView(1, 'gn'));
 		$groupList = new PageableData($groups);
@@ -178,9 +170,7 @@ class ManageUsersPresenterTests extends TestBase
 		$this->page->_UserId = $userId;
 		$this->page->_AllowedResourceIds = $submittedResourceIds;
 
-		$this->resourceRepo->expects($this->once())
-						   ->method('GetResourceList')
-						   ->will($this->returnValue($resources));
+		$this->resourceRepo->_ResourceList = $resources;
 
 		$this->userRepo->_UserById[$adminUserId] = $adminUser;
 		$this->userRepo->_UserById[$userId] = $user;
@@ -237,6 +227,9 @@ class ManageUsersPresenterTests extends TestBase
 
 		$user = new FakeUser($userId);
 
+		$attributeId = 1;
+		$attributeValue = 'value';
+		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
 		$this->page->_UserId = $userId;
 		$this->page->_FirstName = $fname;
 		$this->page->_LastName = $lname;
@@ -246,6 +239,7 @@ class ManageUsersPresenterTests extends TestBase
 		$this->page->_Phone = $phone;
 		$this->page->_Organization = $organization;
 		$this->page->_Position = $position;
+		$this->page->_Attributes = $attributeFormElements;
 
 		$extraAttributes = array(
 				UserAttribute::Organization => $organization,
@@ -260,7 +254,8 @@ class ManageUsersPresenterTests extends TestBase
 										$this->equalTo($fname),
 										$this->equalTo($lname),
 										$this->equalTo($timezone),
-										$this->equalTo($extraAttributes))
+										$this->equalTo($extraAttributes),
+										$this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
 								 ->will($this->returnValue($user));
 
 		$this->presenter->UpdateUser();
@@ -318,14 +313,14 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 
-		$this->page->_FirstName =$fname;
-		$this->page->_LastName =$lname;
-		$this->page->_UserName =$username;
-		$this->page->_Email =$email;
-		$this->page->_Timezone =$timezone;
-		$this->page->_Password =$password;
-		$this->page->_Attributes =$attributeFormElements;
-		$this->page->_UserGroup =$groupId;
+		$this->page->_FirstName = $fname;
+		$this->page->_LastName = $lname;
+		$this->page->_UserName = $username;
+		$this->page->_Email = $email;
+		$this->page->_Timezone = $timezone;
+		$this->page->_Password = $password;
+		$this->page->_Attributes = $attributeFormElements;
+		$this->page->_UserGroup = $groupId;
 
 		$this->manageUsersService->expects($this->once())
 								 ->method('AddUser')
@@ -337,10 +332,10 @@ class ManageUsersPresenterTests extends TestBase
 										$this->equalTo($timezone),
 										$this->equalTo($lang),
 										$this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
-										$this->equalTo( array(
-                                            UserAttribute::Organization => null,
-                                            UserAttribute::Phone => null,
-                                            UserAttribute::Position => null)),
+										$this->equalTo(array(
+															   UserAttribute::Organization => null,
+															   UserAttribute::Phone => null,
+															   UserAttribute::Position => null)),
 										$this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
 								 ->will($this->returnValue($user));
 
@@ -455,11 +450,22 @@ class ManageUsersPresenterTests extends TestBase
 		$userId = 1;
 		$this->page->_UserId = $userId;
 
+		$user = new FakeUser();
+		$this->userRepo->_User = $user;
+		$attributes = [1 => new FakeCustomAttribute(1)];
+		$entityAttributeList = new AttributeList();
+		$entityAttributeList->AddDefinition(new FakeCustomAttribute(1));
+		$this->attributeService->_EntityAttributeList = $entityAttributeList;
+
 		$this->presenter->ShowUpdate();
+
+		$this->assertEquals($this->page->_BoundUpdateUser, $user);
+		$this->assertEquals($this->page->_BoundUpdateAttributes, $attributes);
 	}
 }
 
-class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage {
+class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage
+{
 
 	/**
 	 * @var int
@@ -489,6 +495,9 @@ class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage
 	 * @var GroupItemView[]
 	 */
 	public $_BoundGroups;
+	/**
+	 * @var CustomAttribute[]
+	 */
 	public $_BoundAttributes;
 	/**
 	 * @var int
@@ -548,6 +557,14 @@ class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage
 	 */
 	public $_UserGroup;
 	public $_JsonResponse;
+	/**
+	 * @var User
+	 */
+	public $_BoundUpdateUser;
+	/**
+	 * @var CustomAttribute[]
+	 */
+	public $_BoundUpdateAttributes;
 
 	function GetPageNumber()
 	{
@@ -722,5 +739,11 @@ class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage
 	public function GetUpdateOnImport()
 	{
 		// TODO: Implement GetUpdateOnImport() method.
+	}
+
+	public function ShowUserUpdate(User $user, $attributes)
+	{
+		$this->_BoundUpdateUser = $user;
+		$this->_BoundUpdateAttributes = $attributes;
 	}
 }

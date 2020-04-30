@@ -58,6 +58,7 @@ class FakeUserRepository implements IUserRepository
 	 * @var UserDto[]
 	 */
 	public $_AllUsers = [];
+	public $_DeletedUserId;
 
 	public function __construct()
 	{
@@ -118,7 +119,7 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function DeleteById($userId)
 	{
-		// TODO: Implement DeleteById() method.
+		$this->_DeletedUserId = $userId;
 	}
 
 	/**

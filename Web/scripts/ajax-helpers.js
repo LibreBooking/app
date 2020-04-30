@@ -44,14 +44,14 @@ function HasResponseText(responseText) {
 }
 
 function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHandler, options) {
-	var validationSummary = formElement.find('.validationSummary');
+
 	var beforeSerialize = (options ? options.onBeforeSerialize : null);
 	var opts = $.extend(
 			{
 				dataType: null,
 				onBeforeSubmit: BeforeFormSubmit,
 				target: null,
-				validationSummary: validationSummary.length > 0 ? validationSummary : null
+				validationSummary: null
 			}, options);
 
 	opts.onBeforeSerialize = BeforeSerializeDecorator(beforeSerialize);
@@ -75,7 +75,8 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 				formElement.find('.indicator').addClass('no-show');
 				formElement.find('button').removeClass('no-show');
 
-				var validationSummary = opts.validationSummary;
+				var formValidationSummary = formElement.find('.validationSummary');
+				var validationSummary = opts.validationSummary || formValidationSummary;
 				var hasValidationSummary = validationSummary && validationSummary.length > 0;
 				var hasResponseText = HasResponseText(responseText);
 
@@ -109,7 +110,7 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 							}
 							else
 							{
-								validationSummary.find('ul').empty().append($('<li/>', {text: responseText.Messages[errorId]}))
+								validationSummary.find('ul').empty().append($('<li/>', {text: responseText.Messages[errorId]}));
 							}
 						}
 						errorElement.removeClass('no-show');

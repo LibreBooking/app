@@ -520,86 +520,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <h4 class="modal-title" id="userModalLabel">{translate key=Edit}</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="updateUserResults" class="alert alert-danger no-show">
-                            <ul>
-                                {async_validator id="emailformat" key="ValidEmailRequired"}
-                                {async_validator id="uniqueemail" key="UniqueEmailRequired"}
-                                {async_validator id="uniqueusername" key="UniqueUsernameRequired"}
-                            </ul>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-
-                            <div class="form-group has-feedback">
-                                <label for="username">{translate key="Username"}</label>
-                                <input type="text" {formname key="USERNAME"} class="required form-control" required
-                                       id="username"/>
-                                <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                                   data-bv-icon-for="username"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group has-feedback">
-                                <label for="email">{translate key="Email"}</label>
-                                <input type="text" {formname key="EMAIL"} class="required form-control" required
-                                       id="email"/>
-                                <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                                   data-bv-icon-for="email"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group has-feedback">
-                                <label for="fname">{translate key="FirstName"}</label>
-                                <input type="text" {formname key="FIRST_NAME"} class="required form-control" required
-                                       id="fname"/>
-                                <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                                   data-bv-icon-for="fname"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group has-feedback">
-                                <label for="lname">{translate key="LastName"}</label>
-                                <input type="text" {formname key="LAST_NAME"} class="required form-control" required
-                                       id="lname"/>
-                                <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                                   data-bv-icon-for="lname"></i>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="timezone">{translate key="Timezone"}</label>
-                                <select {formname key='TIMEZONE'} id='timezone' class="form-control">
-                                    {html_options values=$Timezones output=$Timezones}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-
-                            <div class="form-group">
-                                <label for="phone">{translate key="Phone"}</label>
-                                <input type="text" {formname key="PHONE"} class="form-control" id="phone"/>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="organization">{translate key="Organization"}</label>
-                                <input type="text" {formname key="ORGANIZATION"} class="form-control"
-                                       id="organization"/>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="position">{translate key="Position"}</label>
-                                <input type="text" {formname key="POSITION"} class="form-control" id="position"/>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
+                        <div id="update-user-placeholder"></div>
                     </div>
                     <div class="modal-footer">
                         {cancel_button}
@@ -780,7 +701,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
                 filterUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACCOUNT_STATUS}=',
                 actions: actions,
-                manageReservationsUrl: '{$ManageReservationsUrl}'
+                manageReservationsUrl: '{$ManageReservationsUrl}',
             };
 
             var userManagement = new UserManagement(userOptions);

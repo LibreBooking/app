@@ -226,7 +226,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->userRepository->Update($user);
 			$this->page->SetJsonResponse(Resources::GetInstance()->GetString('Inactive'));
 		}
-		else {
+		else
+		{
 			$this->page->SetJsonResponse(Resources::GetInstance()->GetString('Active'));
 		}
 	}
@@ -291,7 +292,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 											  $this->page->GetFirstName(),
 											  $this->page->GetLastName(),
 											  $this->page->GetTimezone(),
-											  $extraAttributes);
+											  $extraAttributes,
+											  $this->GetAttributeValues()
+		);
 	}
 
 	public function DeleteUser()
@@ -395,7 +398,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		{
 			$this->ExportUsers();
 		}
-		elseif ($dataRequest == 'update') {
+		elseif ($dataRequest == 'update')
+		{
 			$this->ShowUpdate();
 		}
 	}
@@ -446,6 +450,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 										   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId()));
 			$this->page->RegisterValidator('uniqueusername',
 										   new UniqueUserNameValidator($this->userRepository, $this->page->GetUserName(), $this->page->GetUserId()));
+			$this->page->RegisterValidator('updateAttributeValidator',
+										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER,
+																  $this->GetAttributeValues(), $this->page->GetUserId(), true, true));
 		}
 
 		if ($action == ManageUsersActions::AddUser)
@@ -748,9 +755,12 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		return AccountStatus::ACTIVE;
 	}
 
-	public function ShowUpdate() {
+	public function ShowUpdate()
+	{
 		$userId = $this->page->GetUserId();
+		$user = $this->userRepository->LoadById($userId);
+		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, array($userId));
 
-//		$this->page->ShowUserUpdate($user, $attributes);
+		$this->page->ShowUserUpdate($user, $attributes->GetDefinitions());
 	}
 }
