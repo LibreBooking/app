@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                    class="customAttribute {$class}"/>
             <input type="hidden" id="formatted{$attributeId}" name="{$attributeName}"
                    value="{formatdate date=$attributeValue key=system_datetime}"/>
-            <label class="customAttribute {if $searchmode}search{else}standard{/if}"
+            <label class="customAttribute active {if $searchmode}search{else}standard{/if}"
                    for="{$attributeId}">{$attribute->Label()}</label>
             {if $attribute->Required() && !$searchmode}
                 *

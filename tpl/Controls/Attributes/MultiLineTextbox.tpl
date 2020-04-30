@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <span class="attributeValue {$class}">{$attribute->Value()|nl2br}</span>
 {else}
     <div class="input-field">
-        <label class="customAttribute {if $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
+        <label class="customAttribute active {if $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
         {if $attribute->Required() && !$searchmode}
             *
         {/if}
