@@ -216,3 +216,7 @@ $conf['settings']['slack']['token'] = '';
  */
 $conf['settings']['tablet.view']['allow.guest.reservations'] = 'false';
 $conf['settings']['tablet.view']['auto.suggest.emails'] = 'false';
+/**
+ * Jobs
+ */
+$conf['settings']['jobs']['php.exec.path'] = "php";

@@ -35,15 +35,20 @@ require_once(ROOT_DIR . 'Domain/Reminder.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReminderEmail.php');
 require_once(ROOT_DIR . 'Jobs/JobCop.php');
 
-Log::Debug('Running sendreminders.php');
+const JOB_NAME = 'send-missed-check-in';
+
+Log::Debug('Running %s', JOB_NAME);
 
 JobCop::EnsureCommandLine();
+JobCop::EnforceSchedule(JOB_NAME, 1);
 
 try
 {
     $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
     if (!$emailEnabled)
     {
+        Log::Error('%s exiting. Email not enabled.', JOB_NAME);
+        JobCop::UpdateLastRun(JOB_NAME, false);
         return;
     }
 
@@ -63,9 +68,11 @@ try
 	{
 		ServiceLocator::GetEmailService()->Send(new ReminderEndEmail($notice));
 	}
-} catch (Exception $ex)
-{
-	Log::Error('Error running sendreminders.php: %s', $ex);
+
+    JobCop::UpdateLastRun(JOB_NAME, true);
+} catch (Exception $ex) {
+    Log::Error('Error running %s: %s', JOB_NAME, $ex);
+    JobCop::UpdateLastRun(JOB_NAME, false);
 }
 
-Log::Debug('Finished running sendreminders.php');
+Log::Debug('Finished running %s', JOB_NAME);

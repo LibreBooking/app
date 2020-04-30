@@ -24,8 +24,8 @@
 
 This script must be executed every day to enable session cleanup functionality
 
-* * * * * php /home/mydomain/public_html/booked/Jobs/sessioncleanup.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sessioncleanup.php
+0 0 * * * php /home/mydomain/public_html/booked/Jobs/sessioncleanup.php
+0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sessioncleanup.php
 
 */
 
@@ -33,9 +33,12 @@ define('ROOT_DIR', dirname(__FILE__) . '/../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Jobs/JobCop.php');
 
-Log::Debug('Running sessioncleanup.php');
+const JOB_NAME = 'session-cleanup';
+
+Log::Debug('Running %s', JOB_NAME);
 
 JobCop::EnsureCommandLine();
+JobCop::EnforceSchedule(JOB_NAME, 1440);
 
 try
 {
@@ -43,9 +46,10 @@ try
     $userSessionRepository->CleanUp();
     Log::Debug('Cleaning up stale user sessions');
 
-} catch (Exception $ex)
-{
-	Log::Error('Error running sessioncleanup.php: %s', $ex);
+    JobCop::UpdateLastRun(JOB_NAME, true);
+} catch (Exception $ex) {
+    Log::Error('Error running %s: %s', JOB_NAME, $ex);
+    JobCop::UpdateLastRun(JOB_NAME, false);
 }
 
-Log::Debug('Finished running sessioncleanup.php');
+Log::Debug('Finished running %s', JOB_NAME);

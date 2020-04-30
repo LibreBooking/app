@@ -205,7 +205,8 @@ class AddGroupRoleCommand extends SqlCommand
     }
 }
 
-class AddGroupUserCreditsCommand extends SqlCommand {
+class AddGroupUserCreditsCommand extends SqlCommand
+{
     public function __construct($groupId, $amount, $note)
     {
         parent::__construct(Queries::ADD_GROUP_USER_CREDITS);
@@ -952,7 +953,8 @@ class DeleteGroupRoleCommand extends SqlCommand
     }
 }
 
-class DeleteGroupCreditReplenishmentCommand extends SqlCommand {
+class DeleteGroupCreditReplenishmentCommand extends SqlCommand
+{
     public function __construct($groupId)
     {
         parent::__construct(Queries::DELETE_GROUP_CREDIT_REPLENISHMENT);
@@ -1127,6 +1129,7 @@ class DeleteSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
     }
 }
+
 class DeleteSeriesPermanantCommand extends SqlCommand
 {
     public function __construct($seriesId)
@@ -2399,7 +2402,8 @@ class AddUserPreferenceCommand extends SqlCommand
     }
 }
 
-class DeleteAllUserPreferences extends SqlCommand {
+class DeleteAllUserPreferences extends SqlCommand
+{
     public function __construct($userId)
     {
         parent::__construct(Queries::DELETE_ALL_USER_PREFERENCES);
@@ -2504,7 +2508,8 @@ class UpdateGroupCommand extends SqlCommand
     }
 }
 
-class UpdateGroupCreditReplenishmentRuleCommand extends SqlCommand {
+class UpdateGroupCreditReplenishmentRuleCommand extends SqlCommand
+{
     /**
      * @param int $id
      * @param int $groupId
@@ -2514,7 +2519,7 @@ class UpdateGroupCreditReplenishmentRuleCommand extends SqlCommand {
      * @param int $dayOfMonth
      * @param Date|null $lastReplenishment
      */
-    public function __construct($id, $groupId, $type,  $amount,  $interval,  $dayOfMonth, $lastReplenishment = null)
+    public function __construct($id, $groupId, $type, $amount, $interval, $dayOfMonth, $lastReplenishment = null)
     {
         parent::__construct(Queries::UPDATE_GROUP_CREDIT_REPLENISHMENT);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_CREDIT_REPLENISHMENT_ID, $id));
@@ -2646,7 +2651,8 @@ class UpdateResourceCommand extends SqlCommand
                                 $credits,
                                 $peakCredits,
                                 TimeInterval $minNoticeTimeUpdate,
-                                TimeInterval $minNoticeTimeDelete)
+                                TimeInterval $minNoticeTimeDelete,
+                                $autoExtendReservations)
     {
         parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2683,6 +2689,7 @@ class UpdateResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_UPDATE, $minNoticeTimeUpdate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_DELETE, $minNoticeTimeDelete->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_AUTO_EXTEND, (int)$autoExtendReservations));
     }
 }
 

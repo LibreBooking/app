@@ -267,6 +267,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $maxNotice = $this->page->GetEndNoticeMinutes();
         $enableCheckin = $this->page->GetEnableCheckin();
         $autoReleaseMinutes = $this->page->GetAutoReleaseMinutes();
+        $enableAutoExtend = $this->page->GetAutoExtend();
 
         $resource = $this->resourceRepository->LoadById($resourceId);
 
@@ -277,7 +278,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $resource->SetMinNoticeUpdate($minNoticeUpdate);
         $resource->SetMinNoticeDelete($minNoticeDelete);
         $resource->SetMaxNotice($maxNotice);
-        $resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
+        $resource->SetCheckin($enableCheckin, $autoReleaseMinutes, $enableAutoExtend);
 
         Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNoticeAdd=%s, minNoticeUpdate=%s, minNoticeDelete=%s, maxNotice=%s',
             $resourceId, $requiresApproval, $autoAssign, $minNoticeAdd, $minNoticeUpdate, $minNoticeDelete, $maxNotice);
@@ -636,6 +637,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $peakCredits = $this->page->GetPeakCredits();
         $maxCapacity = $this->page->GetMaxParticipants();
         $unlimitedCapacity = $this->page->GetMaxParticipantsUnlimited();
+        $enableAutoExtend = $this->page->GetAutoExtend();
 
         $resourceIds = $this->page->GetBulkUpdateResourceIds();
 
@@ -700,7 +702,7 @@ class ManageResourcesPresenter extends ActionPresenter
                     $resource->SetAutoAssign($autoAssign);
                 }
                 if ($this->ChangingDropDown($enableCheckin)) {
-                    $resource->SetCheckin($enableCheckin, $this->page->GetAutoReleaseMinutes());
+                    $resource->SetCheckin($enableCheckin, $this->page->GetAutoReleaseMinutes(), $enableAutoExtend);
                 }
                 if ($this->ChangingDropDown($allowSubscription)) {
                     if ($allowSubscription) {

@@ -176,10 +176,10 @@
     {/if}
 </ul>
 <ul id="view-help-nav{$suffix}" class="nav-content dropdown-content">
-    <li id="navHelp{$suffix}"><a href="{$Path}help.php">{translate key=Help}</a></li>
+    <li id="navHelp{$suffix}"><a href="https://www.bookedscheduler.com/help/usage" target="_blank" rel="noreferrer">{translate key=Help}</a></li>
     {if $CanViewAdmin}
         <li id="navHelpAdmin{$suffix}">
-            <a href="{$Path}help.php?ht=admin">{translate key=Administration}</a>
+            <a href="https://www.bookedscheduler.com/help/administration" target="_blank" rel="noreferrer">{translate key=Administration}</a>
         </li>
     {/if}
     <li id="navAbout{$suffix}">

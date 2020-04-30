@@ -20,6 +20,12 @@
 
 interface IFirstRegistrationStrategy
 {
+    /**
+     * @param User $user
+     * @param IUserRepository $userRepository
+     * @param IGroupRepository $groupRepository
+     * @return User
+     */
 	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository);
 }
 
@@ -40,6 +46,7 @@ class SetAdminFirstRegistrationStrategy implements IFirstRegistrationStrategy
 				$this->ReloadCachedConfig();
 			}
 
+<<<<<<< HEAD
 			$groups = $user->Groups();
 			if (count($groups) === 0)
 			{
@@ -49,7 +56,18 @@ class SetAdminFirstRegistrationStrategy implements IFirstRegistrationStrategy
 				$adminGroup->AddUser($user->Id());
 				$groupRepository->Update($adminGroup);
 			}
+=======
+			$groupId = $groupRepository->Add(new Group(0, 'Administrators'));
+			$adminGroup = $groupRepository->LoadById($groupId);
+			$adminGroup->ChangeRoles(array(RoleLevel::APPLICATION_ADMIN));
+			$adminGroup->AddUser($user->Id());
+			$groupRepository->Update($adminGroup);
+
+			return $userRepository->LoadById($user->Id());
+>>>>>>> d30f2ae084d687fba96d0f9ac346e20652f4edcc
 		}
+
+		return $user;
 	}
 
 	private function ReloadCachedConfig()

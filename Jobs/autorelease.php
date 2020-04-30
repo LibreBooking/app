@@ -33,9 +33,13 @@ define('ROOT_DIR', dirname(__FILE__) . '/../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Jobs/JobCop.php');
 
-Log::Debug('Running autorelease.php');
+const JOB_NAME = 'auto-release';
+
+Log::Debug('Running %s', JOB_NAME);
 
 JobCop::EnsureCommandLine();
+
+JobCop::EnforceSchedule(JOB_NAME, 1);
 
 try
 {
@@ -76,10 +80,11 @@ try
 			$reservationRepository->Delete($reservation);
 		}
 	}
-
+    JobCop::UpdateLastRun(JOB_NAME, true);
 } catch (Exception $ex)
 {
-	Log::Error('Error running autorelease.php: %s', $ex);
+	Log::Error('Error running %s: %s', JOB_NAME, $ex);
+    JobCop::UpdateLastRun(JOB_NAME, false);
 }
 
-Log::Debug('Finished running autorelease.php');
+Log::Debug('Finished running %s', JOB_NAME);

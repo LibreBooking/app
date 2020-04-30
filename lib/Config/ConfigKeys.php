@@ -164,6 +164,8 @@ class ConfigKeys
 	const TABLET_VIEW_AUTOCOMPLETE = 'auto.suggest.emails';
 
 	const USE_DATABASE_SESSION = 'use.database.session';
+
+	const JOBS_PHP_EXEC_PATH = 'php.exec.path';
 }
 
 class ConfigSection
@@ -191,4 +193,5 @@ class ConfigSection
     const PAYMENTS = 'payments';
     const SLACK = 'slack';
     const TABLET_VIEW = 'tablet.view';
+    const JOBS = 'jobs';
 }

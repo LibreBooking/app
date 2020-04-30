@@ -375,6 +375,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
     public function GetAutoReleaseMinutes();
 
     /**
+     * return bool
+     */
+    public function GetAutoExtend();
+
+    /**
      * @return int
      */
     public function GetCredits();
@@ -1105,6 +1110,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
     {
        $this->Set('resource', $resource);
        $this->Display('Admin/Resources/manage_resources_public.tpl');
+    }
+
+    public function GetAutoExtend()
+    {
+        return $this->GetCheckbox(FormKeys::ENABLE_AUTO_EXTEND);
     }
 }
 

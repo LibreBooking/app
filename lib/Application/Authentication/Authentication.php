@@ -140,7 +140,7 @@ class Authentication implements IAuthentication
 			$user->Login($loginTime, $language);
 			$this->userRepository->Update($user);
 
-			$this->GetFirstRegistrationStrategy()->HandleLogin($user, $this->userRepository, $this->groupRepository);
+			$user = $this->GetFirstRegistrationStrategy()->HandleLogin($user, $this->userRepository, $this->groupRepository);
 
 			return $this->GetUserSession($user, $loginTime);
 		}

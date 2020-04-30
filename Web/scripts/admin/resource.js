@@ -70,6 +70,8 @@ function ResourceManagement(opts) {
 		enableCheckIn: $('#enableCheckIn'),
 		autoReleaseMinutes: $('#autoReleaseMinutes'),
 		autoReleaseMinutesDiv: $('#autoReleaseMinutesDiv'),
+        autoExtendDiv: $('#autoExtendDiv'),
+        enableAutoExtend: $('#enableAutoExtend'),
 
 		colorForm: $('#colorForm'),
 		reservationColor: $('#reservationColor'),
@@ -310,11 +312,13 @@ function ResourceManagement(opts) {
 			if ($(this).val() == '1')
 			{
 				$('#bulkUpdateAutoReleaseMinutesDiv').removeClass('no-show');
+				$('#bulkUpdateAutoExtendDiv').removeClass('no-show');
 			}
 
 			if ($(this).val() == '0')
 			{
 				$('#bulkUpdateAutoReleaseMinutesDiv').addClass('no-show');
+				$('#bulkUpdateAutoExtendDiv').addClass('no-show');
 			}
 		});
 
@@ -652,6 +656,7 @@ function ResourceManagement(opts) {
 		elements.removeAllPermissions.addClass('no-show');
 
 		elements.enableCheckIn.prop('checked', resource.enableCheckin && resource.enableCheckin == "1");
+		elements.enableAutoExtend.prop('checked', resource.enableAutoExtend && resource.enableAutoExtend == "1");
 		elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
 		showHideAutoRelease();
 
@@ -662,10 +667,12 @@ function ResourceManagement(opts) {
 		if (!elements.enableCheckIn.is(':checked'))
 		{
 			elements.autoReleaseMinutesDiv.addClass('no-show');
+			elements.autoExtendDiv.addClass('no-show');
 		}
 		else
 		{
 			elements.autoReleaseMinutesDiv.removeClass('no-show');
+            elements.autoExtendDiv.removeClass('no-show');
 		}
 	};
 
@@ -728,6 +735,7 @@ function ResourceManagement(opts) {
 		var autoAssign = result.find('.autoAssign');
 		var enableCheckin = result.find('.enableCheckin');
 		var autoRelease = result.find('.autoRelease');
+		var autoExtend = result.find('.autoExtend');
 
 		setDuration(startNoticeAdd, resource.startNoticeAdd);
 		setDuration(startNoticeUpdate, resource.startNoticeUpdate);
@@ -737,6 +745,7 @@ function ResourceManagement(opts) {
 		resource.autoAssign = autoAssign.attr('data-value');
 
 		resource.enableCheckin = enableCheckin.attr('data-value');
+		resource.enableAutoExtend = autoExtend.attr('data-value');
 		resource.autoReleaseMinutes = autoRelease.attr('data-value');
 
 		elements.accessDialog.modal('close');

@@ -91,3 +91,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=AutoReleaseNotification args=$resource->GetAutoReleaseMinutes()}
 	{/if}
 </div>
+<div class="autoExtend"
+	 data-value="{$resource->IsAutoExtendEnabled()}">
+	{if $resource->IsAutoExtendEnabled()}
+		{translate key=ReservationsAutomaticallyExtended}
+    {else}
+        {translate key=ReservationsNotAutomaticallyExtended}
+	{/if}
+</div>

@@ -217,8 +217,7 @@ function Schedule(opts, resourceGroups) {
                                     class="${className} ${mine} ${past} ${participant} ${isPending} event" 
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
-                                    ${draggableAttribute}>${res.Id}
-                                    ${isNew} ${isUpdated} ${res.Label}</div>`);
+                                    ${draggableAttribute}>${isNew} ${isUpdated} ${res.Label}</div>`);
 
                     if (res.IsReservation) {
                         attachReservationEvents(div, res);
