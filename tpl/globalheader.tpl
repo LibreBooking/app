@@ -207,6 +207,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <li id="navHelpDropdownmobile">
                 <a class="dropdown-trigger" href="#" data-target="view-settings-navmobile">
                     <i class="material-icons {if $ShowNewVersion}new-version{/if}" id="newVersionBadge">settings</i>
+                                {if $ShowNewVersion}<span class="badge badge-new-version new-version" id="newVersionBadge">{translate key=NewVersion}</span>{/if}
                 </a>
             </li>
         {/if}

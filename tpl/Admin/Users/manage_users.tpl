@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {include file='globalheader.tpl' InlineEdit=true cssFiles='scripts/css/colorpicker.css'}
 
 <div id="page-manage-users" class="admin-page row">
@@ -531,82 +532,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <h4 class="modal-title left" id="userModalLabel">{translate key=Edit}</h4>
                 <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
             </div>
-
-            <div class="modal-content">
-                <div id="updateUserResults" class="card error no-show">
-                    <div class="card-content">
-                        <ul>
-                            {async_validator id="emailformat" key="ValidEmailRequired"}
-                            {async_validator id="uniqueemail" key="UniqueEmailRequired"}
-                            {async_validator id="uniqueusername" key="UniqueUsernameRequired"}
-                        </ul>
+                    <div class="modal-body">
+                        <div id="update-user-placeholder"></div>
                     </div>
-                </div>
-                <div class="col s12 m6">
-
-                    <div class="input-field">
-                        <label for="username">{translate key="Username"}</label>
-                        <input type="text" {formname key="USERNAME"} class="required" required
-                               id="username" autofocus/>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="email">{translate key="Email"}</label>
-                        <input type="text" {formname key="EMAIL"} class="required" required
-                               id="email"/>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="fname">{translate key="FirstName"}</label>
-                        <input type="text" {formname key="FIRST_NAME"} class="required" required
-                               id="fname"/>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="lname">{translate key="LastName"}</label>
-                        <input type="text" {formname key="LAST_NAME"} class="required" required
-                               id="lname"/>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="timezone" class="active">{translate key="Timezone"}</label>
-                        <select {formname key='TIMEZONE'} id='timezone' class="">
-                            {html_options values=$Timezones output=$Timezones}
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="phone">{translate key="Phone"}</label>
-                        <input type="text" {formname key="PHONE"} class="form-control" id="phone"/>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="organization">{translate key="Organization"}</label>
-                        <input type="text" {formname key="ORGANIZATION"} class="form-control"
-                               id="organization"/>
-                    </div>
-                </div>
-
-                <div class="col s12 m6">
-                    <div class="input-field">
-                        <label for="position">{translate key="Position"}</label>
-                        <input type="text" {formname key="POSITION"} class="form-control" id="position"/>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
             <div class="modal-footer">
                 {cancel_button}
                 {update_button}
@@ -780,7 +708,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
                 filterUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACCOUNT_STATUS}=',
                 actions: actions,
-                manageReservationsUrl: '{$ManageReservationsUrl}'
+                manageReservationsUrl: '{$ManageReservationsUrl}',
             };
 
             var userManagement = new UserManagement(userOptions);

@@ -397,18 +397,23 @@ function UserManagement(opts) {
 
 	var changeUserInfo = function () {
 		var user = getActiveUser();
+		var data = {dr: 'update', uid: user.id};
+		$.get(opts.submitUrl, data, (response) => {
+			$('#update-user-placeholder').html(response);
+		});
+		// var user = getActiveUser();
 
-		ClearAsyncErrors(elements.userDialog);
-
-		$('#username').val(user.username);
-		$('#fname').val(user.first);
-		$('#lname').val(user.last);
-		$('#email').val(user.email);
-		$('#timezone').val(user.timezone);
-
-		$('#phone').val(user.phone);
-		$('#organization').val(user.organization);
-		$('#position').val(user.position);
+		// ClearAsyncErrors(elements.userDialog);
+		//
+		// $('#username').val(user.username);
+		// $('#fname').val(user.first);
+		// $('#lname').val(user.last);
+		// $('#email').val(user.email);
+		// $('#timezone').val(user.timezone);
+		//
+		// $('#phone').val(user.phone);
+		// $('#organization').val(user.organization);
+		// $('#position').val(user.position);
 
 		elements.userDialog.modal('open');
         M.updateTextFields();

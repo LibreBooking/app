@@ -40,11 +40,15 @@ class SetAdminFirstRegistrationStrategy implements IFirstRegistrationStrategy
 				$this->ReloadCachedConfig();
 			}
 
-			$groupId = $groupRepository->Add(new Group(0, 'Administrators'));
-			$adminGroup = $groupRepository->LoadById($groupId);
-			$adminGroup->ChangeRoles(array(RoleLevel::APPLICATION_ADMIN));
-			$adminGroup->AddUser($user->Id());
-			$groupRepository->Update($adminGroup);
+			$groups = $user->Groups();
+			if (count($groups) === 0)
+			{
+				$groupId = $groupRepository->Add(new Group(0, 'Administrators'));
+				$adminGroup = $groupRepository->LoadById($groupId);
+				$adminGroup->ChangeRoles(array(RoleLevel::APPLICATION_ADMIN));
+				$adminGroup->AddUser($user->Id());
+				$groupRepository->Update($adminGroup);
+			}
 		}
 	}
 

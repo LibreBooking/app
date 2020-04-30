@@ -59,7 +59,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	private $page;
 
 	/**
-	 * @var \UserRepository
+	 * @var IUserRepository
 	 */
 	private $userRepository;
 
@@ -152,7 +152,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	 * @param IGroupViewRepository $groupViewRepository
 	 */
 	public function __construct(IManageUsersPage $page,
-								UserRepository $userRepository,
+								IUserRepository $userRepository,
 								IResourceRepository $resourceRepository,
 								PasswordEncryption $passwordEncryption,
 								IManageUsersService $manageUsersService,
@@ -226,7 +226,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->userRepository->Update($user);
 			$this->page->SetJsonResponse(Resources::GetInstance()->GetString('Inactive'));
 		}
-		else {
+		else
+		{
 			$this->page->SetJsonResponse(Resources::GetInstance()->GetString('Active'));
 		}
 	}
@@ -291,7 +292,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 											  $this->page->GetFirstName(),
 											  $this->page->GetLastName(),
 											  $this->page->GetTimezone(),
-											  $extraAttributes);
+											  $extraAttributes,
+											  $this->GetAttributeValues()
+		);
 
 		$customAttributes = $this->GetAttributeValues();
 		$this->manageUsersService->ChangeAttributes($this->page->GetUserId(), $customAttributes);
@@ -408,8 +411,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->ExportUsers();
 			return;
 		}
-		if ($dataRequest == 'edit') {
-			$this->ShowEditUser();
+		elseif ($dataRequest == 'update')
+		{
+			$this->ShowUpdate();
 		}
 	}
 
@@ -459,6 +463,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 										   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId()));
 			$this->page->RegisterValidator('uniqueusername',
 										   new UniqueUserNameValidator($this->userRepository, $this->page->GetUserName(), $this->page->GetUserId()));
+			$this->page->RegisterValidator('updateAttributeValidator',
+										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER,
+																  $this->GetAttributeValues(), $this->page->GetUserId(), true, true));
 		}
 
 		if ($action == ManageUsersActions::AddUser)
@@ -759,5 +766,14 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		}
 
 		return AccountStatus::ACTIVE;
+	}
+
+	public function ShowUpdate()
+	{
+		$userId = $this->page->GetUserId();
+		$user = $this->userRepository->LoadById($userId);
+		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, array($userId));
+
+		$this->page->ShowUserUpdate($user, $attributes->GetDefinitions());
 	}
 }

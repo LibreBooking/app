@@ -203,7 +203,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <div class="modal-content">
                 <div class="form-group">
                     <label for="emailUserAutocomplete" class="no-show">{translate key=User}</label>
-                    <input type="search" id="emailUserAutocomplete"
+                    <input type="search" id="emailUserAutocomplete" name="email"
                            class="form-control" placeholder="{translate key=Email}" autofocus="autofocus" />
                 </div>
 
