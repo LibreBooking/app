@@ -129,8 +129,9 @@ class SmartyPage extends Smarty
 		}
 		$localizedPath = ROOT_DIR . 'lang/' . $languageCode;
 		$defaultPath = ROOT_DIR . 'lang/en_us/';
+		$customTemplateName = str_replace('.tpl', '-custom.tpl', $templateName);
 
-		if (file_exists($localizedPath . '/' . $templateName))
+		if (file_exists($localizedPath . '/' . $templateName) || file_exists($localizedPath . '/' . $customTemplateName))
 		{
 		    $path = $localizedPath;
 			$this->AddTemplateDirectory($localizedPath);
@@ -141,7 +142,6 @@ class SmartyPage extends Smarty
 			$this->AddTemplateDirectory($defaultPath);
 		}
 
-        $customTemplateName = str_replace('.tpl', '-custom.tpl', $templateName);
         if (file_exists($path . '/' . $customTemplateName))
         {
             $templateName = $customTemplateName;
