@@ -24,58 +24,58 @@ REPLACE INTO `time_blocks` (`block_id`, `label`, `end_label`, `availability_code
 (21, NULL, NULL, 1, 1, '17:30:00', '18:00:00'),
 (22, NULL, NULL, 2, 1, '18:00:00', '00:00:00');
 
-REPLACE INTO `schedules` (`schedule_id`, `name`, `isdefault`, `weekdaystart`, `daysvisible`, `layout_id`, `legacyid`) VALUES
-(1, 'Default', 1, 0, 7, 1, NULL);
+REPLACE INTO `schedules` (`schedule_id`, `name`, `isdefault`, `weekdaystart`, `daysvisible`, `layout_id`,) VALUES
+(1, 'Default', 1, 0, 7, 1);
 
-REPLACE INTO `resources` (`resource_id`, `name`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time_add`, `max_notice_time`, `image_name`, `schedule_id`, `legacyid`) VALUES
-(1, 'Conference Room 1', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource1.jpg', 1, NULL),
-(2, 'Conference Room 2', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource2.jpg', 1, NULL);
+REPLACE INTO `resources` (`resource_id`, `name`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time_add`, `max_notice_time`, `image_name`, `schedule_id`) VALUES
+(1, 'Conference Room 1', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource1.jpg', 1),
+(2, 'Conference Room 2', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource2.jpg', 1);
 
-REPLACE INTO `users` (`user_id`, `fname`, `lname`, `username`, `email`, `password`, `salt`, `organization`, `position`, `phone`, `timezone`, `language`, `homepageid`, `date_created`, `last_modified`, `lastlogin`, `status_id`, `legacyid`, `legacypassword`) VALUES
-(1, 'User', 'User', 'user', 'user@example.com', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'XYZ Org Inc.', '', '1234', 'America/Chicago', 'en_us', 1, '2012-02-17 12:29:19', '2012-02-17 12:31:06', '2008-09-16 01:59:00', 1, NULL, NULL),
-(2, 'Admin', 'Admin', 'admin', 'admin@example.com', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'ABC Org Inc.', NULL, NULL, 'Europe/Helsinki', 'en_us', 1, '2012-02-17 12:29:19', '2012-02-17 12:50:57', '2012-02-17 12:50:57', 1, NULL, NULL);
+REPLACE INTO `users` (`user_id`, `fname`, `lname`, `username`, `email`, `password`, `salt`, `organization`, `position`, `phone`, `timezone`, `language`, `homepageid`, `date_created`, `last_modified`, `lastlogin`, `status_id`) VALUES
+(1, 'User', 'User', 'user', 'user@example.com', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'XYZ Org Inc.', '', '1234', 'America/Chicago', 'en_us', 1, '2012-02-17 12:29:19', '2012-02-17 12:31:06', '2008-09-16 01:59:00', 1),
+(2, 'Admin', 'Admin', 'admin', 'admin@example.com', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'ABC Org Inc.', NULL, NULL, 'Europe/Helsinki', 'en_us', 1, '2012-02-17 12:29:19', '2012-02-17 12:50:57', '2012-02-17 12:50:57', 1);
 
 
-INSERT INTO `reservation_series` (`series_id`, `date_created`, `last_modified`, `title`, `description`, `allow_participation`, `allow_anon_participation`, `type_id`, `status_id`, `repeat_type`, `repeat_options`, `owner_id`, `legacyid`) VALUES
-(1, '2012-02-18 04:15:35', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(2, '2012-02-18 04:15:50', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(3, '2012-02-18 04:16:00', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(4, '2012-02-18 04:16:09', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(5, '2012-02-18 04:16:19', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(6, '2012-02-18 04:16:28', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(7, '2012-02-18 04:17:02', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(8, '2012-02-18 04:17:11', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(9, '2012-02-18 04:17:24', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(10, '2012-02-18 04:18:20', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(11, '2012-02-18 04:18:30', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(12, '2012-02-18 04:18:39', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(13, '2012-02-18 04:18:50', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(14, '2012-02-18 04:19:10', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(15, '2012-02-18 04:19:26', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(16, '2012-02-18 04:19:35', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(17, '2012-02-18 04:19:46', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(18, '2012-02-18 04:19:54', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(19, '2012-02-18 04:20:14', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(20, '2012-02-18 04:20:23', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(21, '2012-02-18 04:20:36', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(22, '2012-02-18 04:20:45', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(23, '2012-02-18 04:20:54', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(24, '2012-02-18 04:21:04', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(25, '2012-02-18 04:21:12', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(26, '2012-02-18 04:21:21', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(27, '2012-02-18 04:21:31', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(28, '2012-02-18 04:21:40', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(29, '2012-02-18 04:22:13', NULL, '', '', 0, 0, 1, 1, 'none', '', 2, NULL),
-(30, '2012-02-18 04:22:24', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(31, '2012-02-18 04:22:41', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(32, '2012-02-18 05:06:11', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(33, '2012-02-18 05:10:34', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(34, '2012-02-18 05:11:02', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(35, '2012-02-18 05:11:14', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-12 22:00:00', 2, NULL),
-(36, '2012-02-18 05:11:31', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(37, '2012-02-18 05:12:03', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2, NULL),
-(38, '2012-02-18 05:14:11', NULL, '', '', 0, 0, 1, 1, 'none', '', 2, NULL),
-(39, '2012-02-18 05:15:54', NULL, '', '', 0, 0, 1, 1, 'none', '', 2, NULL);
+INSERT INTO `reservation_series` (`series_id`, `date_created`, `last_modified`, `title`, `description`, `allow_participation`, `allow_anon_participation`, `type_id`, `status_id`, `repeat_type`, `repeat_options`, `owner_id`) VALUES
+(1, '2012-02-18 04:15:35', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(2, '2012-02-18 04:15:50', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(3, '2012-02-18 04:16:00', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(4, '2012-02-18 04:16:09', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(5, '2012-02-18 04:16:19', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(6, '2012-02-18 04:16:28', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(7, '2012-02-18 04:17:02', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(8, '2012-02-18 04:17:11', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(9, '2012-02-18 04:17:24', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(10, '2012-02-18 04:18:20', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(11, '2012-02-18 04:18:30', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(12, '2012-02-18 04:18:39', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(13, '2012-02-18 04:18:50', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(14, '2012-02-18 04:19:10', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(15, '2012-02-18 04:19:26', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(16, '2012-02-18 04:19:35', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(17, '2012-02-18 04:19:46', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(18, '2012-02-18 04:19:54', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(19, '2012-02-18 04:20:14', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(20, '2012-02-18 04:20:23', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(21, '2012-02-18 04:20:36', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(22, '2012-02-18 04:20:45', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(23, '2012-02-18 04:20:54', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(24, '2012-02-18 04:21:04', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(25, '2012-02-18 04:21:12', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(26, '2012-02-18 04:21:21', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(27, '2012-02-18 04:21:31', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(28, '2012-02-18 04:21:40', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(29, '2012-02-18 04:22:13', NULL, '', '', 0, 0, 1, 1, 'none', '', 2),
+(30, '2012-02-18 04:22:24', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(31, '2012-02-18 04:22:41', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(32, '2012-02-18 05:06:11', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(33, '2012-02-18 05:10:34', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(34, '2012-02-18 05:11:02', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(35, '2012-02-18 05:11:14', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-12 22:00:00', 2),
+(36, '2012-02-18 05:11:31', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(37, '2012-02-18 05:12:03', NULL, '', '', 0, 0, 1, 1, 'daily', 'interval=1|termination=2012-02-28 22:00:00', 2),
+(38, '2012-02-18 05:14:11', NULL, '', '', 0, 0, 1, 1, 'none', '', 2),
+(39, '2012-02-18 05:15:54', NULL, '', '', 0, 0, 1, 1, 'none', '', 2);
 
 INSERT INTO `reservation_instances` (`reservation_instance_id`, `start_date`, `end_date`, `reference_number`, `series_id`) VALUES
 (1, '2012-02-11 23:30:00', '2012-02-12 00:00:00', '4f3f25e721075', 1),
