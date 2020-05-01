@@ -25,7 +25,7 @@ function UserManagement(opts) {
 		groupList: $('#groupList'),
 		addGroupForm: $('#addGroupForm'),
 		removeGroupForm: $('#removeGroupForm'),
-        groupCount: $('#groupCount'),
+		groupCount: $('#groupCount'),
 
 		colorDialog: $('#colorDialog'),
 		colorValue: $('#reservationColor'),
@@ -45,9 +45,9 @@ function UserManagement(opts) {
 		invitationForm: $('#invitationForm'),
 		inviteEmails: $('#inviteEmails'),
 
-        checkAllResourcesFull: $('#checkAllResourcesFull'),
-        checkAllResourcesView: $('#checkAllResourcesView'),
-        checkNoResources: $('#checkNoResources'),
+		checkAllResourcesFull: $('#checkAllResourcesFull'),
+		checkAllResourcesView: $('#checkAllResourcesView'),
+		checkNoResources: $('#checkNoResources'),
 
 		deleteMultiplePrompt: $('#delete-selected'),
 		deleteMultipleDialog: $('#deleteMultipleDialog'),
@@ -81,9 +81,9 @@ function UserManagement(opts) {
 		elements.userList.delegate('.resetPassword', 'click', function (e) {
 			elements.passwordDialog.modal('open');
 			var passwordInput = $("#updatePassword");
-            passwordInput.val('');
-            passwordInput.focus();
-            M.updateTextFields();
+			passwordInput.val('');
+			passwordInput.focus();
+			M.updateTextFields();
 		});
 
 		elements.userList.delegate('.changeColor', 'click', function (e) {
@@ -133,10 +133,10 @@ function UserManagement(opts) {
 			$('#removeGroupUserId').val(getActiveUserId());
 			elements.removeGroupForm.submit();
 
-            var count = elements.groupCount.text();
-            elements.groupCount.text(--count);
+			var count = elements.groupCount.text();
+			elements.groupCount.text(--count);
 
-            $(this).appendTo(elements.removedGroups);
+			$(this).appendTo(elements.removedGroups);
 		});
 
 		elements.removedGroups.delegate('div', 'click', function (e) {
@@ -145,26 +145,26 @@ function UserManagement(opts) {
 			$('#addGroupUserId').val(getActiveUserId());
 			elements.addGroupForm.submit();
 
-            var count = elements.groupCount.text();
-            elements.groupCount.text(++count);
+			var count = elements.groupCount.text();
+			elements.groupCount.text(++count);
 
 			$(this).appendTo(elements.addedGroups);
 		});
 
-        elements.checkAllResourcesFull.click(function(e){
-            e.preventDefault();
-            elements.permissionsDialog.find('.full').prop('selected', true);
-        });
+		elements.checkAllResourcesFull.click(function (e) {
+			e.preventDefault();
+			elements.permissionsDialog.find('.full').prop('selected', true);
+		});
 
-        elements.checkAllResourcesView.click(function(e){
-            e.preventDefault();
-            elements.permissionsDialog.find('.view').prop('selected', true);
-        });
+		elements.checkAllResourcesView.click(function (e) {
+			e.preventDefault();
+			elements.permissionsDialog.find('.view').prop('selected', true);
+		});
 
-        elements.checkNoResources.click(function(e){
-            e.preventDefault();
-            elements.permissionsDialog.find('.none').prop('selected', true);
-        });
+		elements.checkNoResources.click(function (e) {
+			e.preventDefault();
+			elements.permissionsDialog.find('.none').prop('selected', true);
+		});
 
 		$(".save").click(function () {
 			$(this).closest('form').submit();
@@ -190,12 +190,12 @@ function UserManagement(opts) {
 
 		$('#import-users').click(function (e) {
 			e.preventDefault();
-            $('#importErrors').empty().addClass('no-show');
+			$('#importErrors').empty().addClass('no-show');
 			$('#importResults').addClass('no-show');
 			elements.importUsersDialog.modal('open');
 		});
 
-		elements.deleteMultiplePrompt.click(function(e){
+		elements.deleteMultiplePrompt.click(function (e) {
 			e.preventDefault();
 			var checked = elements.userList.find('.delete-multiple:checked');
 			elements.deleteMultipleCount.text(checked.length);
@@ -204,14 +204,14 @@ function UserManagement(opts) {
 			elements.deleteMultipleDialog.modal('open');
 		});
 
-		elements.deleteMultipleSelectAll.click(function(e) {
+		elements.deleteMultipleSelectAll.click(function (e) {
 			e.stopPropagation();
 			var isChecked = elements.deleteMultipleSelectAll.is(":checked");
 			elements.deleteMultipleCheckboxes.prop('checked', isChecked);
 			elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
 		});
 
-		elements.deleteMultipleCheckboxes.click(function(e){
+		elements.deleteMultipleCheckboxes.click(function (e) {
 			e.stopPropagation();
 			var numberChecked = elements.userList.find('.delete-multiple:checked').length;
 			var allSelected = numberChecked == elements.userList.find('.delete-multiple').length;
@@ -261,7 +261,7 @@ function UserManagement(opts) {
 			}
 		};
 
-		var inviteHandler = function(responseText, form) {
+		var inviteHandler = function (responseText, form) {
 			elements.inviteEmails.val('');
 			elements.invitationDialog.modal('close');
 		};
@@ -276,8 +276,10 @@ function UserManagement(opts) {
 		ConfigureAsyncForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), hideDialogCallback(elements.addDialog));
 		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
 		ConfigureAsyncForm(elements.importUsersForm, defaultSubmitCallback(elements.importUsersForm), importHandler);
-		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm), function(){});
-		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm), function(){});
+		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm), function () {
+		});
+		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm), function () {
+		});
 		ConfigureAsyncForm(elements.invitationForm, defaultSubmitCallback(elements.invitationForm), inviteHandler);
 		ConfigureAsyncForm(elements.deleteMultipleUserForm, defaultSubmitCallback(elements.deleteMultipleUserForm));
 	};
@@ -348,15 +350,15 @@ function UserManagement(opts) {
 		$.get(opts.groupsUrl, data, function (groupIds) {
 			elements.groupList.find('.group-item').clone().appendTo(elements.removedGroups);
 
-            var count = 0;
+			var count = 0;
 
-            $.each(groupIds, function (index, value) {
+			$.each(groupIds, function (index, value) {
 				var groupLine = elements.removedGroups.find('div[groupId=' + value + ']');
 				groupLine.appendTo(elements.addedGroups);
-                count++;
+				count++;
 			});
 
-            elements.groupCount.text(count);
+			elements.groupCount.text(count);
 		});
 
 		elements.groupsDialog.modal('open');
@@ -372,19 +374,19 @@ function UserManagement(opts) {
 	var changePermissions = function () {
 		var user = getActiveUser();
 		var data = {dr: 'permissions', uid: user.id};
-        $.get(opts.permissionsUrl, data, function(permissions) {
-            elements.permissionsForm.find('.none').prop('selected', true);
+		$.get(opts.permissionsUrl, data, function (permissions) {
+			elements.permissionsForm.find('.none').prop('selected', true);
 
-            $.each(permissions.full, function(index, value) {
-                elements.permissionsForm.find('#permission_' + value).val(value + '_0');
-            });
+			$.each(permissions.full, function (index, value) {
+				elements.permissionsForm.find('#permission_' + value).val(value + '_0');
+			});
 
-            $.each(permissions.view, function(index, value) {
-                elements.permissionsForm.find('#permission_' + value).val(value + '_1');
-            });
+			$.each(permissions.view, function (index, value) {
+				elements.permissionsForm.find('#permission_' + value).val(value + '_1');
+			});
 
-            elements.permissionsDialog.modal('open');
-        });
+			elements.permissionsDialog.modal('open');
+		});
 	};
 
 	var changeColor = function () {
@@ -397,22 +399,14 @@ function UserManagement(opts) {
 
 	var changeUserInfo = function () {
 		var user = getActiveUser();
-
-		ClearAsyncErrors(elements.userDialog);
-
-		$('#username').val(user.username);
-		$('#fname').val(user.first);
-		$('#lname').val(user.last);
-		$('#email').val(user.email);
-		$('#timezone').val(user.timezone);
-
-		$('#phone').val(user.phone);
-		$('#organization').val(user.organization);
-		$('#position').val(user.position);
-
-		elements.userDialog.modal('open');
-        M.updateTextFields();
-        $('#username').focus();
+		var data = {dr: 'update', uid: user.id};
+		$.get(opts.submitUrl, data, (response) => {
+			$('#update-user-placeholder').html(response);
+			elements.userDialog.modal('open');
+			M.updateTextFields();
+			$('select').formSelect();
+			$('#username').focus();
+		});
 	};
 
 	var deleteUser = function () {

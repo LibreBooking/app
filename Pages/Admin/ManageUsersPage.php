@@ -185,7 +185,12 @@ interface IManageUsersPage extends IPageable, IActionPage
      */
     public function GetUpdateOnImport();
 
-	public function ShowEditUser();
+
+	/**
+	 * @param User $user
+	 * @param CustomAttribute[] $attributes
+	 */
+	public function ShowUserUpdate(User $user, $attributes);
 }
 
 class ManageUsersPage extends ActionPage implements IManageUsersPage
@@ -289,7 +294,8 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
     public function GetUserId()
     {
         $id = $this->GetQuerystring(QueryStringKeys::USER_ID);
-        if (empty($id)) {
+		if (empty($id))
+		{
             $id = $this->GetForm(FormKeys::PK);
         }
 
@@ -405,7 +411,8 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
     public function BindGroups($groups)
     {
         $gs = [];
-        foreach ($groups as $g) {
+		foreach ($groups as $g)
+		{
             $gs[$g->Id()] = $g;
         }
         $this->Set('Groups', $gs);
@@ -456,7 +463,8 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
     public function GetDeletedUserIds()
     {
         $ids = $this->GetForm(FormKeys::USER_ID);
-        if (!is_array($ids)) {
+		if (!is_array($ids))
+		{
             return array($ids);
         }
 
@@ -473,8 +481,12 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
         return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
 
-	public function ShowEditUser()
+	public function ShowUserUpdate(User $user, $attributes)
 	{
-		$this->Display("Admin/Users/edit_user.tpl");
+		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
+		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
+		$this->Set('User', $user);
+		$this->Set('Attributes', $attributes);
+		$this->Display('Admin/Users/user-update.tpl');
 	}
 }

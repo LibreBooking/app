@@ -29,15 +29,20 @@ class FakeAttributeService implements IAttributeService
      * @var AttributeServiceValidationResult
      */
     public $_ValidationResult;
+	/**
+	 * @var CustomAttribute[]
+	 */
+	public $_ByCategory = [];
+	public $_EntityAttributeList;
 
-    /**
+	/**
 	 * @param $category CustomAttributeCategory|int
 	 * @param $entityIds array|int[]|int
 	 * @return IEntityAttributeList
 	 */
 	public function GetAttributes($category, $entityIds = array())
 	{
-		// TODO: Implement GetAttributes() method.
+		return $this->_EntityAttributeList;
 	}
 
 	/**
@@ -59,7 +64,7 @@ class FakeAttributeService implements IAttributeService
 	 */
 	public function GetByCategory($category)
 	{
-		// TODO: Implement GetByCategory() method.
+		return $this->_ByCategory[$category];
 	}
 
 	/**
