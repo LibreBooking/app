@@ -149,8 +149,7 @@ class SortCommand extends SqlCommand
         $this->AddParameter(new ParameterRaw('@sort_params', $sortField));
 
         $query = $baseCommand->GetQuery();
-        $this->query = preg_replace('/ORDER BY\\s+[a-zA-Z0-9_,\\s\\-\\.]+$/', "ORDER BY @sort_params $sortDirection", $query, 1);
-    }
+        $this->query = preg_replace('/ORDER BY\\s+[`a-zA-Z0-9_,\\s\\-\\.]+$/', "ORDER BY @sort_params $sortDirection", $query, 1);    }
 
     public function GetQuery()
     {
