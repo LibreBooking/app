@@ -114,13 +114,13 @@ abstract class Page implements IPage
         if (file_exists($this->path . 'custom-favicon.png')) {
             $this->smarty->assign('FaviconUrl', 'custom-favicon.png');
         }
-        if (file_exists($this->path . 'img/custom-favicon.gif')) {
+        if (file_exists($this->path . 'custom-favicon.gif')) {
             $this->smarty->assign('FaviconUrl', 'custom-favicon.gif');
         }
-        if (file_exists($this->path . 'img/custom-favicon.jpg')) {
+        if (file_exists($this->path . 'custom-favicon.jpg')) {
             $this->smarty->assign('FaviconUrl', 'custom-favicon.jpg');
         }
-        if (file_exists($this->path . 'img/custom-favicon.ico')) {
+        if (file_exists($this->path . 'custom-favicon.ico')) {
             $this->smarty->assign('FaviconUrl', 'custom-favicon.ico');
         }
 
