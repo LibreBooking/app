@@ -58,17 +58,15 @@ class ForgotPwdPresenter
 		Log::Debug('Password reset request for email address %s requested from REMOTE_ADDR: %s REMOTE_HOST: %s', $emailAddress, $_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_HOST']);
 
 		$temporaryPassword = Password::GenerateRandom();
-
-		$passwordEncryption = new PasswordEncryption();
-		$salt = $passwordEncryption->Salt();
-		$encrypted = $passwordEncryption->Encrypt($temporaryPassword, $salt);
+		$password = new Password();
+		$encrypted = $password->Encrypt($temporaryPassword);
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->FindByEmail($emailAddress);
 
 		if ($user != null)
 		{
-			$user->ChangePassword($encrypted, $salt);
+			$user->ChangePassword($encrypted->EncryptedPassword());
 			$userRepository->Update($user);
 
 			$emailMessage = new ForgotPasswordEmail($user, $temporaryPassword);

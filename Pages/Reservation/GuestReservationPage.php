@@ -65,7 +65,7 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 	{
 		return new GuestReservationPresenter(
 					$this,
-					new GuestRegistration(new PasswordEncryption(), new UserRepository(), new GuestRegistrationNotificationStrategy(), new GuestReservationPermissionStrategy($this)),
+					new GuestRegistration(new Password(), new UserRepository(), new GuestRegistrationNotificationStrategy(), new GuestReservationPermissionStrategy($this)),
 					new WebAuthentication(PluginManager::Instance()->LoadAuthentication()),
 					$this->LoadInitializerFactory(),
 					new NewReservationPreconditionService());

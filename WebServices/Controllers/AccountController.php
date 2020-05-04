@@ -75,9 +75,9 @@ class AccountController implements IAccountController
      */
     private $userRepository;
     /**
-     * @var PasswordEncryption
+     * @var IPassword
      */
-    private $passwordEncryption;
+    private $password;
     /**
      * @var IAttributeService
      */
@@ -86,13 +86,13 @@ class AccountController implements IAccountController
     public function __construct(IRegistration $registration,
                                 IUserRepository $userRepository,
                                 IAccountRequestValidator $requestValidator,
-                                PasswordEncryption $passwordEncryption,
+                                IPassword $password,
                                 IAttributeService $attributeService)
     {
         $this->registration = $registration;
         $this->requestValidator = $requestValidator;
         $this->userRepository = $userRepository;
-        $this->passwordEncryption = $passwordEncryption;
+        $this->password = $password;
         $this->attributeService = $attributeService;
     }
 
@@ -163,8 +163,8 @@ class AccountController implements IAccountController
         }
 
         $user = $this->userRepository->LoadById($session->UserId);
-        $password = $this->passwordEncryption->EncryptPassword($request->newPassword);
-        $user->ChangePassword($password->EncryptedPassword(), $password->Salt());
+        $password = $this->password->Encrypt($request->newPassword);
+        $user->ChangePassword($password);
         $this->userRepository->Update($user);
 
         return new AccountControllerResult($user->Id());

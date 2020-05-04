@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
@@ -52,12 +52,7 @@ class AuthenticationTests extends TestBase
 	private $fakePassword;
 
 	/**
-	 * @var FakeMigration
-	 */
-	private $fakeMigration;
-
-	/**
-	 * @var IRoleService|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeAuthorizationService
 	 */
 	private $authorization;
 
@@ -72,11 +67,11 @@ class AuthenticationTests extends TestBase
 	private $user;
 
 	/**
-	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeUserRepository
 	 */
 	private $userRepository;
 	/**
-	 * @var IGroupRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeGroupRepository
 	 */
 	private $groupRepository;
 
@@ -117,34 +112,70 @@ class AuthenticationTests extends TestBase
 		$this->user->WithGroups($this->groups);
 
 		$this->fakePassword = new FakePassword();
-		$this->fakeMigration = new FakeMigration();
-		$this->fakeMigration->_Password = $this->fakePassword;
-
-		$this->authorization = $this->createMock('IRoleService');
-		$this->userRepository = $this->createMock('IUserRepository');
-		$this->groupRepository = $this->createMock('IGroupRepository');
+		$this->authorization = new FakeAuthorizationService();
+		$this->userRepository = new FakeUserRepository();
+		$this->groupRepository = new FakeGroupRepository();
 		$this->fakeFirstRegistration = new FakeFirstRegistrationStrategy();
 
 		$this->auth = new Authentication($this->authorization, $this->userRepository, $this->groupRepository);
-		$this->auth->SetMigration($this->fakeMigration);
+		$this->auth->SetPassword($this->fakePassword);
 		$this->auth->SetFirstRegistrationStrategy($this->fakeFirstRegistration);
 
 		$this->loginContext = new WebLoginContext(new LoginData());
 	}
 
-	function testValidateChecksAgainstDB()
+	function testValidateWhenUserExistsAndPasswordMatches()
 	{
 		$id = 10;
-		$oldPassword = 'oldpassword';
 
-		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
+		$encrypted = "encrypted";
+		$salt = "salt";
+		$hashVersion = 0;
+		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => $encrypted, ColumnNames::SALT => $salt, ColumnNames::PASSWORD_HASH_VERSION => $hashVersion));
 		$this->db->SetRows($rows);
 
-		$this->auth->Validate($this->username, $this->password);
+		$this->fakePassword->_ValidateResult = true;
 
-		$command = new AuthorizationCommand(strtolower($this->username), $this->password);
+		$isValid = $this->auth->Validate($this->username, $this->password);
+
+		$command = new AuthorizationCommand(strtolower($this->username));
 
 		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertEquals($isValid, $this->fakePassword->_ValidateResult);
+		$this->assertTrue($this->fakePassword->_MigrateCalled);
+		$this->assertTrue($this->fakePassword->_ValidateCalled);
+		$this->assertEquals($this->password, $this->fakePassword->_LastPlainText);
+		$this->assertEquals($this->password, $this->fakePassword->_MigratePlainText);
+		$this->assertEquals($encrypted, $this->fakePassword->_LastEncrypted);
+		$this->assertEquals($salt, $this->fakePassword->_LastSalt);
+		$this->assertEquals($hashVersion, $this->fakePassword->_LastHashVersion);
+		$this->assertEquals($hashVersion, $this->fakePassword->_MigrateHashVersion);
+		$this->assertEquals($id, $this->fakePassword->_MigrateUserId);
+	}
+
+	public function testWhenUserDoesNotExist()
+	{
+		$this->db->SetRows([]);
+
+		$isValid = $this->auth->Validate($this->username, $this->password);
+
+		$this->assertFalse($isValid);
+	}
+
+	public function testWhenPasswordIsNotValid()
+	{
+		$id = 10;
+
+		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::PASSWORD_HASH_VERSION => 0));
+		$this->db->SetRows($rows);
+
+		$this->fakePassword->_ValidateResult = false;
+
+		$isValid = $this->auth->Validate($this->username, $this->password);
+
+		$this->assertFalse($isValid);
+		$this->assertFalse($this->fakePassword->_MigrateCalled);
+		$this->assertTrue($this->fakePassword->_ValidateCalled);
 	}
 
 	function testLoginGetsUserDataFromDatabase()
@@ -152,38 +183,18 @@ class AuthenticationTests extends TestBase
 		CSRFToken::$_Token = 'token';
 		$language = 'en_gb';
 
-		$this->userRepository->expects($this->once())
-				->method('LoadByUsername')
-				->with($this->equalTo($this->username))
-				->will($this->returnValue($this->user));
+		$this->userRepository->_User = $this->user;
+
+		$this->fakeFirstRegistration->_User = $this->user;
 
 		LoginTime::$Now = time();
 
 		$this->user->Login(LoginTime::Now(), $language);
 
-		$this->userRepository->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($this->user));
-
-		$this->authorization->expects($this->once())
-				->method('IsApplicationAdministrator')
-				->with($this->equalTo($this->user))
-				->will($this->returnValue(true));
-
-		$this->authorization->expects($this->once())
-				->method('IsGroupAdministrator')
-				->with($this->equalTo($this->user))
-				->will($this->returnValue(true));
-
-		$this->authorization->expects($this->once())
-				->method('IsResourceAdministrator')
-				->with($this->equalTo($this->user))
-				->will($this->returnValue(true));
-
-		$this->authorization->expects($this->once())
-				->method('IsScheduleAdministrator')
-				->with($this->equalTo($this->user))
-				->will($this->returnValue(true));
+		$this->authorization->_IsApplicationAdministrator = true;
+		$this->authorization->_IsGroupAdministrator = true;
+		$this->authorization->_IsResourceAdministrator = true;
+		$this->authorization->_IsScheduleAdministrator = true;
 
 		$context = new WebLoginContext(new LoginData(false, $language));
 		$actualSession = $this->auth->Login($this->username, $context);
@@ -210,83 +221,22 @@ class AuthenticationTests extends TestBase
 		$this->assertEquals($user, $actualSession);
 
 		$this->assertTrue($this->fakeFirstRegistration->_Handled);
-	}
 
-	function testMigratesPasswordNewPasswordHasNotBeenSet()
-	{
-		$id = 1;
-		$password = 'plaintext';
-		$username = 'user';
-
-		$oldPassword = md5($password);
-
-		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
-		$this->db->SetRows($rows);
-
-		$this->fakePassword->_ValidateResult = true;
-
-		$this->auth->Validate($username, $password);
-
-		$this->assertTrue($this->fakeMigration->_CreateCalled);
-		$this->assertEquals($password, $this->fakeMigration->_LastPlainText);
-		$this->assertEquals($oldPassword, $this->fakeMigration->_LastOldPassword);
-		$this->assertEquals(null, $this->fakeMigration->_LastNewPassword);
-
-		$this->assertTrue($this->fakePassword->_ValidateCalled);
-		$this->assertTrue($this->fakePassword->_MigrateCalled);
-		$this->assertEquals(null, $this->fakePassword->_LastSalt);
-		$this->assertEquals($id, $this->fakePassword->_LastUserId);
-	}
-}
-
-class FakeMigration extends PasswordMigration
-{
-	public $_Password;
-	public $_CreateCalled = false;
-	public $_LastOldPassword;
-	public $_LastNewPassword;
-	public $_LastPlainText;
-
-	public function Create($plaintext, $old, $new)
-	{
-		$this->_CreateCalled = true;
-		$this->_LastPlainText = $plaintext;
-		$this->_LastOldPassword = $old;
-		$this->_LastNewPassword = $new;
-
-		return $this->_Password;
-	}
-}
-
-class FakePassword implements IPassword
-{
-	public $_ValidateCalled = false;
-	public $_MigrateCalled = false;
-	public $_LastSalt;
-	public $_LastUserId;
-	public $_ValidateResult = false;
-
-	public function Validate($salt)
-	{
-		$this->_ValidateCalled = true;
-		$this->_LastSalt = $salt;
-
-		return $this->_ValidateResult;
-	}
-
-	public function Migrate($userid)
-	{
-		$this->_MigrateCalled = true;
-		$this->_LastUserId = $userid;
+		$this->assertEquals($this->fakeFirstRegistration->_User, $this->userRepository->_UpdatedUser);
 	}
 }
 
 class FakeFirstRegistrationStrategy implements IFirstRegistrationStrategy
 {
 	public $_Handled;
+	/**
+	 * @var FakeUser
+	 */
+	public $_User;
 
 	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository)
 	{
 		$this->_Handled = true;
+		return $this->_User;
 	}
 }

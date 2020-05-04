@@ -26,17 +26,18 @@ class PasswordPresenterTests extends TestBase
 	public function testResetsPassword()
 	{
 		$page = $this->createMock('IPasswordPage');
-		$userRepo = $this->createMock('IUserRepository');
-		$encryption = $this->createMock('PasswordEncryption');
-		$user =  $this->createMock('User');
+		$userRepo = new FakeUserRepository();
+		$password = new FakePassword();
+		$user = new FakeUser();
 
 		$newPassword = 'new password';
 		$encryptedValue = 'enc';
-		$salt = 'salt';
 
-		$encryptedPassword = new EncryptedPassword($encryptedValue, $salt);
+		$encryptedPassword = new EncryptedPassword($encryptedValue);
+		$userRepo->_User = $user;
+				$password->_EncryptedPassword = $encryptedPassword;
 
-		$presenter = new PasswordPresenter($page, $userRepo, $encryption);
+		$presenter = new PasswordPresenter($page, $userRepo, $password);
 
 		$page->expects($this->once())
 				->method('ResettingPassword')
@@ -50,43 +51,26 @@ class PasswordPresenterTests extends TestBase
 				->method('GetPassword')
 				->will($this->returnValue($newPassword));
 
-		$userRepo->expects($this->atLeastOnce())
-				->method('LoadById')
-				->with($this->equalTo($this->fakeUser->UserId))
-				->will($this->returnValue($user));
-
-		$encryption->expects($this->once())
-				->method('EncryptPassword')
-				->with($this->equalTo($newPassword))
-				->will($this->returnValue($encryptedPassword));
-
-		$user->expects($this->once())
-				->method('ChangePassword')
-				->with($this->equalTo($encryptedValue), $this->equalTo($salt));
-
-		$userRepo->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($user));
-
 		$page->expects($this->once())
 				->method('ShowResetPasswordSuccess')
 				->will($this->returnValue(true));
 
 		$presenter->PageLoad();
+
+		$this->assertEquals($user, $userRepo->_UpdatedUser);
+		$this->assertEquals($encryptedPassword, $user->_Password);
+		$this->assertEquals($newPassword, $password->_LastPlainText);
 	}
 
 	public function testPasswordValidatorComparesStoredPasswordAgainstProvidedPassword()
 	{
-		$passwordEncryption = new PasswordEncryption();
-		$salt = $passwordEncryption->Salt();
+		$password = new Password();
 
 		$current = "some password";
 		$user = new User();
 
-		$encrypted = $passwordEncryption->Encrypt($current, $salt);
-
-		$user->encryptedPassword = $encrypted;
-		$user->passwordSalt = $salt;
+		$encrypted = $password->Encrypt($current);
+		$user->ChangePassword($encrypted);
 
 		$validator = new PasswordValidator($current, $user);
 
@@ -95,5 +79,3 @@ class PasswordPresenterTests extends TestBase
 		$this->assertTrue($validator->IsValid());
 	}
 }
-
-?>

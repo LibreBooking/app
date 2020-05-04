@@ -25,7 +25,7 @@ interface IManageUsersService
 	 * @param $email string
 	 * @param $firstName string
 	 * @param $lastName string
-	 * @param $password string
+	 * @param $plainTextPassword string
 	 * @param $timezone string
 	 * @param $language string
 	 * @param $homePageId int
@@ -38,7 +38,7 @@ interface IManageUsersService
 			$email,
 			$firstName,
 			$lastName,
-			$password,
+			$plainTextPassword,
 			$timezone,
 			$language,
 			$homePageId,
@@ -117,21 +117,21 @@ class ManageUsersService implements IManageUsersService
 	private $userViewRepository;
 
 	/**
-	 * @var PasswordEncryption
+	 * @var IPassword
 	 */
-	private $passwordEncryption;
+	private $password;
 
 	public function __construct(IRegistration $registration,
 								IUserRepository $userRepository,
 								IGroupRepository $groupRepository,
 								IUserViewRepository $userViewRepository,
-								PasswordEncryption $passwordEncryption)
+								IPassword $password)
 	{
 		$this->registration = $registration;
 		$this->userRepository = $userRepository;
 		$this->groupRepository = $groupRepository;
 		$this->userViewRepository = $userViewRepository;
-		$this->passwordEncryption = $passwordEncryption;
+		$this->password = $password;
 	}
 
 	public function AddUser(
@@ -139,25 +139,23 @@ class ManageUsersService implements IManageUsersService
 			$email,
 			$firstName,
 			$lastName,
-			$password,
+			$plainTextPassword,
 			$timezone,
 			$language,
 			$homePageId,
 			$extraAttributes,
 			$customAttributes)
 	{
-		$user = $this->registration->Register($username,
-											  $email,
-											  $firstName,
-											  $lastName,
-											  $password,
-											  $timezone,
-											  $language,
-											  $homePageId,
-											  $extraAttributes,
-											  $customAttributes);
-
-		return $user;
+		return $this->registration->Register($username,
+											 $email,
+											 $firstName,
+											 $lastName,
+											 $plainTextPassword,
+											 $timezone,
+											 $language,
+											 $homePageId,
+											 $extraAttributes,
+											 $customAttributes);
 	}
 
 	public function ChangeAttribute($userId, $attributeValue)
@@ -268,9 +266,9 @@ class ManageUsersService implements IManageUsersService
 	{
 		$user = $this->userRepository->LoadById($userId);
 
-		$encrypted = $this->passwordEncryption->EncryptPassword($password);
+		$encrypted = $this->password->Encrypt($password);
 
-		$user->ChangePassword($encrypted->EncryptedPassword(), $encrypted->Salt());
+		$user->ChangePassword($encrypted);
 
 		$this->userRepository->Update($user);
 	}

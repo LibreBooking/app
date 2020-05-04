@@ -30,6 +30,6 @@ class ManageUsersServiceFactory implements IManageUsersServiceFactory
 	public function CreateAdmin()
 	{
 		$userRepository = new UserRepository();
-		return new ManageUsersService(new AdminRegistration(), $userRepository, new GroupRepository(), $userRepository, new PasswordEncryption());
+		return new ManageUsersService(new AdminRegistration(), $userRepository, new GroupRepository(), $userRepository, new Password());
 	}
 }

@@ -52,7 +52,7 @@ interface IManageUsersPage extends IPageable, IActionPage
     public function SetJsonResponse($objectToSerialize);
 
     /**
-     * @return int[] resource ids the user has permission to
+     * @return string[] resource ids the user has permission to
      */
     public function GetAllowedResourceIds();
 
@@ -215,7 +215,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
             $this,
             new UserRepository(),
             new ResourceRepository(),
-            new PasswordEncryption(),
+            new Password(),
             $serviceFactory->CreateAdmin(),
             new AttributeService(new AttributeRepository()),
             $groupRepository,

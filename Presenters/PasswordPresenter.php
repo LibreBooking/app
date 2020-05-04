@@ -37,15 +37,15 @@ class PasswordPresenter
 	private $userRepository;
 
 	/**
-	 * @var \PasswordEncryption
+	 * @var \IPassword
 	 */
-	private $passwordEncryption;
+	private $password;
 
-	public function __construct(IPasswordPage $page, IUserRepository $userRepository, PasswordEncryption $passwordEncryption)
+	public function __construct(IPasswordPage $page, IUserRepository $userRepository, IPassword $password)
 	{
 		$this->page = $page;
 		$this->userRepository = $userRepository;
-		$this->passwordEncryption = $passwordEncryption;
+		$this->password = $password;
 	}
 
 	public function PageLoad()
@@ -61,9 +61,9 @@ class PasswordPresenter
 				$this->page->EnforceCSRFCheck();
 				$user = $this->GetUser();
 				$password = $this->page->GetPassword();
-				$encrypted = $this->passwordEncryption->EncryptPassword($password);
+				$encrypted = $this->password->Encrypt($password);
 
-				$user->ChangePassword($encrypted->EncryptedPassword(), $encrypted->Salt());
+				$user->ChangePassword($encrypted);
 				$this->userRepository->Update($user);
 
 				$this->page->ShowResetPasswordSuccess(true);

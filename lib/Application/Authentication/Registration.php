@@ -21,9 +21,9 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
 class Registration implements IRegistration
 {
     /**
-     * @var PasswordEncryption
+     * @var IPassword
      */
-    private $passwordEncryption;
+    private $password;
 
     /**
      * @var IUserRepository
@@ -45,20 +45,27 @@ class Registration implements IRegistration
      */
     private $groupRepository;
 
-    public function __construct($passwordEncryption = null,
+	/**
+	 * @param null|IPassword $password
+	 * @param null|IUserRepository $userRepository
+	 * @param null|IRegistrationNotificationStrategy $notificationStrategy
+	 * @param null|IRegistrationPermissionStrategy $permissionAssignmentStrategy
+	 * @param null|IGroupViewRepository $groupRepository
+	 */
+    public function __construct($password = null,
                                 $userRepository = null,
                                 $notificationStrategy = null,
                                 $permissionAssignmentStrategy = null,
                                 $groupRepository = null)
     {
-        $this->passwordEncryption = $passwordEncryption;
+        $this->password = $password;
         $this->userRepository = $userRepository;
         $this->notificationStrategy = $notificationStrategy;
         $this->permissionAssignmentStrategy = $permissionAssignmentStrategy;
         $this->groupRepository = $groupRepository;
 
-        if ($passwordEncryption == null) {
-            $this->passwordEncryption = new PasswordEncryption();
+        if ($password == null) {
+            $this->password = new Password();
         }
 
         if ($userRepository == null) {
@@ -78,20 +85,20 @@ class Registration implements IRegistration
         }
     }
 
-    public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-                             $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false)
+    public function Register($username, $email, $firstName, $lastName, $plainTextPassword, $timezone, $language,
+							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false)
     {
         $homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
-        $encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
+        $encryptedPassword = $this->password->Encrypt($plainTextPassword);
         $timezone = empty($timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $timezone;
 
         $attributes = new UserAttribute($additionalFields);
 
         if ($this->CreatePending()) {
-            $user = User::CreatePending($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
+            $user = User::CreatePending($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword, $homepageId);
         }
         else {
-            $user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
+            $user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword, $homepageId);
         }
 
         $user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
@@ -113,7 +120,7 @@ class Registration implements IRegistration
             $user->WithId($userId);
         }
         $this->permissionAssignmentStrategy->AddAccount($user);
-        $this->notificationStrategy->NotifyAccountCreated($user, $password);
+        $this->notificationStrategy->NotifyAccountCreated($user, $plainTextPassword);
 
         return $user;
     }
@@ -142,14 +149,16 @@ class Registration implements IRegistration
 
             $password = null;
             $salt = null;
+			$version = Password::$CURRENT_HASH_VERSION;
 
             if ($overwritePassword) {
-                $encryptedPassword = $this->passwordEncryption->EncryptPassword($user->Password());
+                $encryptedPassword = $this->password->Encrypt($user->Password());
                 $password = $encryptedPassword->EncryptedPassword();
                 $salt = $encryptedPassword->Salt();
+                $version = $encryptedPassword->Version();
             }
 
-            $command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $password, $salt, $user->Phone(), $user->Organization(), $user->Title());
+            $command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $password, $salt, $version, $user->Phone(), $user->Organization(), $user->Title());
             ServiceLocator::GetDatabase()->Execute($command);
 
             if ($this->GetUserGroups($user) != null) {

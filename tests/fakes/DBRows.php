@@ -631,6 +631,7 @@ class UserRow
             ColumnNames::POSITION => 'head honcho',
             ColumnNames::ORGANIZATION => 'earth',
             ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
+			ColumnNames::PASSWORD_HASH_VERSION => Password::$CURRENT_HASH_VERSION,
         );
 
         return $this;

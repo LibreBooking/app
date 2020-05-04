@@ -48,7 +48,7 @@ class PasswordPage extends SecurePage implements IPasswordPage
 	public function __construct()
 	{
 	    parent::__construct('ChangePassword');
-		$this->presenter = new PasswordPresenter($this, new UserRepository(), new PasswordEncryption());
+		$this->presenter = new PasswordPresenter($this, new UserRepository(), new Password());
 	}
 
 	public function PageLoad()

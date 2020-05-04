@@ -25,7 +25,6 @@ class AuthorizationCommandResults
 	public $UserId = 1;
 	public $Password = 'password';
 	public $Salt = 'salt';
-	public $OldPassword = 'oldpassword';
 
 	public static function ValidUser()
 	{
@@ -42,16 +41,15 @@ class AuthorizationCommandResults
 
 	private function AddDefaultUser()
 	{
-		$this->AddRow($this->UserId, $this->Password, $this->Salt, $this->OldPassword);
+		$this->AddRow($this->UserId, $this->Password, $this->Salt);
 	}
 
-	public function AddRow($userid, $password, $salt, $oldpassword)
+	public function AddRow($userid, $password, $salt)
 	{
 		$this->rows[] = array(
 			ColumnNames::USER_ID => $userid,
 			ColumnNames::PASSWORD => $password,
-			ColumnNames::SALT => $salt,
-			ColumnNames::OLD_PASSWORD => $oldpassword);
+			ColumnNames::SALT => $salt);
 	}
 
 	public function Rows()
@@ -59,4 +57,3 @@ class AuthorizationCommandResults
 		return $this->rows;
 	}
 }
-?>

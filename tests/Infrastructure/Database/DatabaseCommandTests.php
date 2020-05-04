@@ -57,9 +57,9 @@ class DatabaseCommandTests extends TestBase
 	{
 		$userid = 1;
 		$password = 'encrypted';
-		$salt = 'salt';
+		$version = 1;
 
-		$command = new MigratePasswordCommand($userid, $password, $salt);
+		$command = new MigratePasswordCommand($userid, $password, $version);
 
 		$this->assertEquals(Queries::MIGRATE_PASSWORD, $command->GetQuery());
 		$this->assertEquals(3, $command->Parameters->Count());
@@ -74,8 +74,8 @@ class DatabaseCommandTests extends TestBase
 		$this->assertEquals(ParameterNames::PASSWORD , $par2->Name);
 		$this->assertEquals($password, $par2->Value);
 
-		$this->assertEquals(ParameterNames::SALT , $par3->Name);
-		$this->assertEquals($salt, $par3->Value);
+		$this->assertEquals(ParameterNames::PASSWORD_HASH_VERSION , $par3->Name);
+		$this->assertEquals($version, $par3->Value);
 	}
 
 	function testCookieLoginCommand()
@@ -145,11 +145,12 @@ class DatabaseCommandTests extends TestBase
 		$phone = '123.123.1234';
 		$institution = 'inst';
 		$position = 'pos';
+		$version = 1;
 
-		$command = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $password, $salt, $phone, $institution, $position);
+		$command = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $password, $salt, $version, $phone, $institution, $position);
 
 		$this->assertEquals(Queries::UPDATE_USER_BY_USERNAME, $command->GetQuery());
-		$this->assertEquals(9, $command->Parameters->Count());
+		$this->assertEquals(10, $command->Parameters->Count());
 		$this->assertEquals(new Parameter(ParameterNames::USERNAME, $username), $command->Parameters->Items(0));
 		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(1));
 		$this->assertEquals(new Parameter(ParameterNames::FIRST_NAME, $fname), $command->Parameters->Items(2));
@@ -159,6 +160,7 @@ class DatabaseCommandTests extends TestBase
 		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(6));
 		$this->assertEquals(new Parameter(ParameterNames::ORGANIZATION, $institution), $command->Parameters->Items(7));
 		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(8));
+		$this->assertEquals(new Parameter(ParameterNames::PASSWORD_HASH_VERSION, $version), $command->Parameters->Items(9));
 	}
 
 	function testAutoAssignPermissionsCommand()

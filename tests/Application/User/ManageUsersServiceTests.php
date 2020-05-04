@@ -48,9 +48,9 @@ class ManageUsersServiceTests extends TestBase
 	private $userViewRepo;
 
 	/**
-	 * @var FakePasswordEncryption
+	 * @var FakePassword
 	 */
-	private $passwordEncryption;
+	private $password;
 
 	public function setUp(): void
 	{
@@ -60,14 +60,14 @@ class ManageUsersServiceTests extends TestBase
 		$this->userRepo = new FakeUserRepository();
 		$this->groupRepo = $this->createMock('IGroupRepository');
 		$this->userViewRepo = $this->createMock('IUserRepository');
-		$this->passwordEncryption = new FakePasswordEncryption();
+		$this->password = new FakePassword();
 
 		$this->service = new ManageUsersService(
 				$this->registration,
 				$this->userRepo,
 				$this->groupRepo,
 				$this->userViewRepo,
-				$this->passwordEncryption);
+				$this->password);
 	}
 
 	public function testAddsUser()
@@ -245,11 +245,11 @@ class ManageUsersServiceTests extends TestBase
 		$user = new FakeUser($userId);
 
 		$this->userRepo->_User = $user;
+		$this->password->_EncryptedPassword = new EncryptedPassword("blah");
 
 		$this->service->UpdatePassword($userId, $password);
 
-		$this->assertEquals($this->passwordEncryption->_Encrypted, $user->_Password);
-		$this->assertEquals($this->passwordEncryption->_Salt, $user->_Salt);
+		$this->assertEquals($this->password->_EncryptedPassword, $user->_Password);
 		$this->assertEquals($user, $this->userRepo->_UpdatedUser);
 	}
 }

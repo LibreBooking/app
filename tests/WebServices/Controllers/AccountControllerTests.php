@@ -43,9 +43,9 @@ class AccountControllerTests extends TestBase
      */
     private $userRepository;
     /**
-     * @var FakePasswordEncryption
+     * @var FakePassword
      */
-    private $passwordEncryption;
+    private $password;
     /**
      * @var FakeAttributeService
      */
@@ -59,13 +59,13 @@ class AccountControllerTests extends TestBase
         $this->registration = new FakeRegistration();
         $this->requestValidator = new FakeAccountRequestValidator();
         $this->userRepository = new FakeUserRepository();
-        $this->passwordEncryption = new FakePasswordEncryption();
+        $this->password = new FakePassword();
         $this->attributeService = new FakeAttributeService();
 
         $this->controller = new AccountController($this->registration,
             $this->userRepository,
             $this->requestValidator,
-            $this->passwordEncryption,
+            $this->password,
             $this->attributeService);
     }
 
@@ -167,9 +167,8 @@ class AccountControllerTests extends TestBase
 
         $this->assertTrue($result->WasSuccessful());
         $this->assertEquals($this->session->UserId, $result->UserId());
-        $this->assertEquals($request->newPassword, $this->passwordEncryption->_LastPassword);
-        $this->assertEquals($this->passwordEncryption->_Encrypted, $user->_Password);
-        $this->assertEquals($this->passwordEncryption->_Salt, $user->_Salt);
+        $this->assertEquals($request->newPassword, $this->password->_LastPlainText);
+        $this->assertEquals($this->password->_EncryptedPassword, $user->_Password);
     }
 
     public function testWhenPasswordValidationFails()

@@ -21,7 +21,7 @@ interface IRegistration
 	 * @param string $email
 	 * @param string $firstName
 	 * @param string $lastName
-	 * @param string $password unencrypted password
+	 * @param string $plainTextPassword unencrypted password
 	 * @param string $timezone name of user timezone
 	 * @param string $language preferred language code
 	 * @param int $homepageId lookup id of the page to redirect the user to on login
@@ -31,7 +31,7 @@ interface IRegistration
 	 * @param bool $acceptTerms
 	 * @return User
 	 */
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false);
+	public function Register($login, $email, $firstName, $lastName, $plainTextPassword, $timezone, $language, $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false);
 
 	/**
 	 * @param string $loginName

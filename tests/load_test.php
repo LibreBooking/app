@@ -43,7 +43,7 @@ $db->Execute(new AdHocCommand("delete from users where fname ='load' and lname =
 $userRepo = new UserRepository();
 for ($i = 0; $i < $numberOfUsers; $i++)
 {
-	$user = User::Create("load$i", "test$i", "email $i", "username $i", "en_us", "America/Chicago", "7b6aec38ff9b7650d64d0374194307bdde711425", "3b3dbb9b");
+	$user = User::Create("load$i", "test$i", "email $i", "username $i", "en_us", "America/Chicago", new EncryptedPassword("7b6aec38ff9b7650d64d0374194307bdde711425", "3b3dbb9b", 0));
 	$userId = $userRepo->Add($user);
 	$users[] = $user;
 }

@@ -28,9 +28,9 @@ class RegistrationTests extends TestBase
     private $registration;
 
     /**
-     * @var FakePasswordEncryption
+     * @var FakePassword
      */
-    private $fakeEncryption;
+    private $fakePassword;
 
     /**
      * @var IUserRepository
@@ -65,8 +65,9 @@ class RegistrationTests extends TestBase
         $this->userRepository = $this->createMock('IUserRepository');
         $this->groupRepository = new FakeGroupViewRepository();
 
-        $this->fakeEncryption = new FakePasswordEncryption();
-        $this->registration = new Registration($this->fakeEncryption, $this->userRepository, null, null, $this->groupRepository);
+        $this->fakePassword = new FakePassword();
+		$this->fakePassword->_EncryptedPassword = new EncryptedPassword("encrypted");
+        $this->registration = new Registration($this->fakePassword, $this->userRepository, null, null, $this->groupRepository);
 
         $this->additionalFields = array('phone' => $this->phone, 'organization' => $this->organization, 'position' => $this->position);
         $this->attributes = array(new AttributeValue(1, 1));
@@ -90,8 +91,7 @@ class RegistrationTests extends TestBase
             $this->login,
             $this->language,
             $this->timezone,
-            $this->fakeEncryption->_Encrypted,
-            $this->fakeEncryption->_Salt,
+            $this->fakePassword->_EncryptedPassword,
             $this->homepageId);
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
@@ -117,8 +117,8 @@ class RegistrationTests extends TestBase
             $this->groups,
             $this->acceptTerms);
 
-        $this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
-        $this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
+        $this->assertTrue($this->fakePassword->_EncryptCalled);
+        $this->assertEquals($this->password, $this->fakePassword->_LastPlainText);
         $this->assertEquals($user, $registeredUser);
     }
 
@@ -132,8 +132,7 @@ class RegistrationTests extends TestBase
             $this->login,
             $this->language,
             $this->timezone,
-            $this->fakeEncryption->_Encrypted,
-            $this->fakeEncryption->_Salt,
+            $this->fakePassword->_EncryptedPassword,
             $this->homepageId);
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
@@ -155,8 +154,8 @@ class RegistrationTests extends TestBase
             $this->additionalFields,
             $this->attributes);
 
-        $this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
-        $this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
+		$this->assertTrue($this->fakePassword->_EncryptCalled);
+	        $this->assertEquals($this->password, $this->fakePassword->_LastPlainText);
         $this->assertEquals($user, $registeredUser);
     }
 
@@ -170,8 +169,7 @@ class RegistrationTests extends TestBase
             $this->login,
             $this->language,
             $this->timezone,
-            $this->fakeEncryption->_Encrypted,
-            $this->fakeEncryption->_Salt,
+            $this->fakePassword->_EncryptedPassword,
             $this->homepageId);
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
@@ -181,7 +179,7 @@ class RegistrationTests extends TestBase
             ->method('Add')
             ->with($this->equalTo($user));
 
-        $adminRegistration = new AdminRegistration($this->fakeEncryption, $this->userRepository);
+        $adminRegistration = new AdminRegistration($this->fakePassword, $this->userRepository);
 
         $registeredUser = $adminRegistration->Register(
             $this->login,
@@ -195,8 +193,8 @@ class RegistrationTests extends TestBase
             $this->additionalFields,
             $this->attributes);
 
-        $this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
-        $this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
+		$this->assertTrue($this->fakePassword->_EncryptCalled);
+	        $this->assertEquals($this->password, $this->fakePassword->_LastPlainText);
         $this->assertEquals($user, $registeredUser);
     }
 
@@ -226,8 +224,7 @@ class RegistrationTests extends TestBase
             $this->login,
             $this->language,
             $this->timezone,
-            $this->fakeEncryption->_Encrypted,
-            $this->fakeEncryption->_Salt,
+            $this->fakePassword->_EncryptedPassword,
             $this->homepageId);
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
@@ -259,8 +256,7 @@ class RegistrationTests extends TestBase
         $phone = 'ph';
         $inst = 'or';
         $title = 'title';
-        $encryptedPassword = $this->fakeEncryption->_Encrypted;
-        $salt = $this->fakeEncryption->_Salt;
+        $encryptedPassword = $this->fakePassword->_EncryptedPassword;
         $groups = array(new UserGroup(1, '1'), new UserGroup(2, '2'));
 
         $this->groupRepository->_AddGroup(new GroupItemView(1,'1'));
@@ -285,7 +281,7 @@ class RegistrationTests extends TestBase
             ->will($this->returnValue($updatedUser));
 
         $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, array('1', '2'));
-        $expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
+        $expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $encryptedPassword->Version(), $phone, $inst, $title);
 
         $this->registration->Synchronize($user);
 
@@ -309,8 +305,7 @@ class RegistrationTests extends TestBase
         $this->groupRepository->_AddGroup(new GroupItemView(1, 'group1'));
         $this->groupRepository->_AddGroup(new GroupItemView(2, 'g2'));
 
-        $encryptedPassword = $this->fakeEncryption->_Encrypted;
-        $salt = $this->fakeEncryption->_Salt;
+        $encryptedPassword = $this->fakePassword->_EncryptedPassword;
 
         $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title, $groups);
 
@@ -321,7 +316,6 @@ class RegistrationTests extends TestBase
             $langCode,
             $timezone,
             $encryptedPassword,
-            $salt,
             Pages::DEFAULT_HOMEPAGE_ID);
 
         $expectedUser->ChangeAttributes($phone, $inst, $title);
@@ -373,7 +367,7 @@ class RegistrationTests extends TestBase
         $this->groupRepository->_AddGroup(new GroupItemView(3, 'Group3'));
         $this->groupRepository->_AddGroup(new GroupItemView(4, 'Group4'));
 
-        $registration = new Registration($this->fakeEncryption, $userRepository, null, null, $this->groupRepository);
+        $registration = new Registration($this->fakePassword, $userRepository, null, null, $this->groupRepository);
 
         $registration->Synchronize($user);
 

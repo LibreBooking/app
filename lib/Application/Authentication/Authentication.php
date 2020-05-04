@@ -24,9 +24,9 @@ require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 class Authentication implements IAuthentication
 {
 	/**
-	 * @var PasswordMigration
+	 * @var IPassword
 	 */
-	private $passwordMigration = null;
+	private $password = null;
 
 	/**
 	 * @var IRoleService
@@ -54,22 +54,22 @@ class Authentication implements IAuthentication
 		$this->groupRepository = $groupRepository;
 	}
 
-	public function SetMigration(PasswordMigration $migration)
+	public function SetPassword(IPassword $password)
 	{
-		$this->passwordMigration = $migration;
+		$this->password = $password;
 	}
 
 	/**
-	 * @return PasswordMigration
+	 * @return IPassword
 	 */
-	private function GetMigration()
+	private function GetPassword()
 	{
-		if (is_null($this->passwordMigration))
+		if (is_null($this->password))
 		{
-			$this->passwordMigration = new PasswordMigration();
+			$this->password = new Password();
 		}
 
-		return $this->passwordMigration;
+		return $this->password;
 	}
 
 	public function SetFirstRegistrationStrategy(IFirstRegistrationStrategy $migration)
@@ -106,14 +106,12 @@ class Authentication implements IAuthentication
 		if ($row = $reader->GetRow())
 		{
 			Log::Debug('User was found: %s', $username);
-			$migration = $this->GetMigration();
-			$password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
-			$salt = $row[ColumnNames::SALT];
+			$pw = $this->GetPassword();
+			$valid = $pw->Validate($password, $row[ColumnNames::PASSWORD] . '', $row[ColumnNames::PASSWORD_HASH_VERSION], $row[ColumnNames::SALT]);
 
-			if ($password->Validate($salt))
+			if ($valid)
 			{
-				$password->Migrate($row[ColumnNames::USER_ID]);
-				$valid = true;
+				$pw->Migrate($row[ColumnNames::USER_ID], $password, $row[ColumnNames::PASSWORD_HASH_VERSION]);
 			}
 		}
 

@@ -2164,18 +2164,18 @@ class LoginCommand extends SqlCommand
 
 class MigratePasswordCommand extends SqlCommand
 {
-    public function __construct($userId, $password, $salt)
+    public function __construct($userId, $password, $version)
     {
         parent::__construct(Queries::MIGRATE_PASSWORD);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
-        $this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
+        $this->AddParameter(new Parameter(ParameterNames::PASSWORD_HASH_VERSION, $version));
     }
 }
 
 class RegisterUserCommand extends SqlCommand
 {
-    public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
+    public function __construct($username, $email, $fname, $lname, $password, $passwordHashVersion, $timezone, $language, $homepageId,
                                 $phone, $organization, $position, $userStatusId, $publicId, $scheduleId, $termsAcceptedDate)
     {
         parent::__construct(Queries::REGISTER_USER);
@@ -2187,7 +2187,6 @@ class RegisterUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
         $this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
         $this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
-        $this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
         $this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
@@ -2199,6 +2198,7 @@ class RegisterUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptedDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::PASSWORD_HASH_VERSION, $passwordHashVersion));
     }
 }
 
@@ -2221,16 +2221,6 @@ class RemoveAttributeEntityCommand extends SqlCommand
 
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
-    }
-}
-
-class RemoveLegacyPasswordCommand extends SqlCommand
-{
-    public function __construct($userId)
-    {
-        parent::__construct(Queries::REMOVE_LEGACY_PASSWORD);
-
-        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
     }
 }
 
@@ -2775,6 +2765,7 @@ class UpdateUserCommand extends SqlCommand
         $statusId,
         $encryptedPassword,
         $passwordSalt,
+        $passwordHashVersion,
         $firstName,
         $lastName,
         $emailAddress,
@@ -2793,6 +2784,7 @@ class UpdateUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $statusId));
         $this->AddParameter(new Parameter(ParameterNames::PASSWORD, $encryptedPassword));
         $this->AddParameter(new Parameter(ParameterNames::SALT, $passwordSalt));
+        $this->AddParameter(new Parameter(ParameterNames::PASSWORD_HASH_VERSION, $passwordHashVersion));
         $this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $firstName));
         $this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lastName));
         $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));
@@ -2830,7 +2822,7 @@ class UpdateUserAttributesCommand extends SqlCommand
 
 class UpdateUserFromLdapCommand extends SqlCommand
 {
-    public function __construct($username, $email, $fname, $lname, $password, $salt, $phone, $organization, $position)
+    public function __construct($username, $email, $fname, $lname, $password, $salt, $passwordHashVersion, $phone, $organization, $position)
     {
         parent::__construct(Queries::UPDATE_USER_BY_USERNAME);
         $this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
@@ -2842,6 +2834,7 @@ class UpdateUserFromLdapCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
         $this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
         $this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
+        $this->AddParameter(new Parameter(ParameterNames::PASSWORD_HASH_VERSION, $passwordHashVersion));
     }
 }
 

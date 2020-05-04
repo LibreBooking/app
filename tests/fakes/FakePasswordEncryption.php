@@ -26,6 +26,7 @@ class FakePasswordEncryption extends PasswordEncryption
 	public $_LastPassword;
 	public $_LastSalt;
 	public $_Encrypted = 'encryptedpw';
+	public $_Version = 1;
 
 	public function Encrypt($password, $salt)
 	{
@@ -41,7 +42,7 @@ class FakePasswordEncryption extends PasswordEncryption
 		$this->_EncryptPasswordCalled = true;
 		$this->_LastPassword = $password;
 
-		return new EncryptedPassword($this->_Encrypted, $this->_Salt);
+		return new EncryptedPassword($this->_Encrypted, $this->_Salt, $this->_Version);
 	}
 
 	public function Salt()
@@ -49,4 +50,3 @@ class FakePasswordEncryption extends PasswordEncryption
 		return $this->_Salt;
 	}
 }
-?>

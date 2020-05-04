@@ -54,9 +54,9 @@ class ManageUsersPresenterTests extends TestBase
 	public $attributeService;
 
 	/**
-	 * @var PasswordEncryption
+	 * @var FakePassword
 	 */
-	public $encryption;
+	public $password;
 
 	/**
 	 * @var IGroupRepository|PHPUnit_Framework_MockObject_MockObject
@@ -75,7 +75,7 @@ class ManageUsersPresenterTests extends TestBase
 		$this->page = new FakeManageUsersPage();
 		$this->userRepo = new FakeUserRepository();
 		$this->resourceRepo = new FakeResourceRepository();
-		$this->encryption = $this->createMock('PasswordEncryption');
+		$this->password = new FakePassword();
 		$this->manageUsersService = $this->createMock('IManageUsersService');
 		$this->attributeService = new FakeAttributeService();
 		$this->groupRepository = $this->createMock('IGroupRepository');
@@ -84,7 +84,7 @@ class ManageUsersPresenterTests extends TestBase
 		$this->presenter = new ManageUsersPresenter($this->page,
 													$this->userRepo,
 													$this->resourceRepo,
-													$this->encryption,
+													$this->password,
 													$this->manageUsersService,
 													$this->attributeService,
 													$this->groupRepository,
@@ -144,7 +144,7 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$resourcesThatShouldRemainUnchanged = array(5, 10);
 		$allowedResourceIds = array(1, 2, 4, 20, 30);
-		$submittedResourceIds = array(1, 4);
+		$submittedResourceIds = array("1_0", "4_0");
 		$currentResourceIds = array(1, 20, 30);
 
 		$expectedResourceIds = array(1, 4, 5, 10);
@@ -193,14 +193,7 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->page->_Password = $password;
 
-		$this->encryption->expects($this->once())
-						 ->method('Salt')
-						 ->will($this->returnValue($salt));
-
-		$this->encryption->expects($this->once())
-						 ->method('Encrypt')
-						 ->with($this->equalTo($password), $this->equalTo($salt))
-						 ->will($this->returnValue($encrypted));
+		$this->password->_EncryptedPassword = new EncryptedPassword($encrypted);
 
 		$user = new User();
 
@@ -208,9 +201,10 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->presenter->ResetPassword();
 
-		$this->assertEquals($encrypted, $user->encryptedPassword);
-		$this->assertEquals($salt, $user->passwordSalt);
+		$this->assertEquals($this->password->_EncryptedPassword, $user->GetEncryptedPassword());
 		$this->assertEquals($this->userRepo->_UpdatedUser, $user);
+		$this->assertTrue($this->password->_EncryptCalled);
+		$this->assertEquals($password, $this->password->_LastPlainText);
 	}
 
 	public function testCanUpdateUser()
@@ -243,10 +237,6 @@ class ManageUsersPresenterTests extends TestBase
 		$this->page->_Organization = $organization;
 		$this->page->_Position = $position;
 		$this->page->_Attributes = $attributeFormElements;
-
-		$this->page->expects($this->once())
-				   ->method('GetAttributes')
-				   ->will($this->returnValue($attributeFormElements));
 
 		$extraAttributes = array(
 				UserAttribute::Organization => $organization,

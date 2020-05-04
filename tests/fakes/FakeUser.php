@@ -25,7 +25,6 @@ class FakeUser extends User
     public $_ResourceAdminResourceIds = array();
     public $_WantsEmail;
     public $_Password;
-    public $_Salt;
     public $_CurrentCredits;
 
     public function __construct($userId = null, $email = 'test@test.com')
@@ -37,6 +36,8 @@ class FakeUser extends User
 		$this->statusId = AccountStatus::ACTIVE;
 		$this->homepageId = Pages::CALENDAR;
         $this->preferences = new UserPreferences();
+        $this->_Password = new EncryptedPassword("password");
+        $this->encryptedPassword = $this->_Password;
 	}
 
 	public function SetStatus($statusId)
@@ -88,9 +89,9 @@ class FakeUser extends User
         return $this->_WantsEmail;
     }
 
-    public function ChangePassword($encryptedPassword, $salt)
+    public function ChangePassword($encryptedPassword)
     {
        $this->_Password = $encryptedPassword;
-       $this->_Salt = $salt;
+       parent::ChangePassword($encryptedPassword);
     }
 }

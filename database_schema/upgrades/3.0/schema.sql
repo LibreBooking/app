@@ -42,6 +42,9 @@ ALTER TABLE `users`
 	CHANGE `password` `password` VARCHAR(255) NOT NULL;
 
 ALTER TABLE `users`
+	CHANGE `salt` `salt` VARCHAR(85) NULL;
+
+ALTER TABLE `users`
 	DROP COLUMN `legacyid`;
 
 ALTER TABLE `users`

@@ -424,7 +424,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 		$id = $db->ExecuteInsert(new RegisterUserCommand($user->Username(), $user->EmailAddress(), $user->FirstName(),
-														 $user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
+														 $user->LastName(), $user->GetEncryptedPassword()->EncryptedPassword(), $user->GetEncryptedPassword()->Version(), $user->Timezone(), $user->Language(),
 														 $user->Homepage(), $user->GetAttribute(UserAttribute::Phone),
 														 $user->GetAttribute(UserAttribute::Organization),
 														 $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId(),
@@ -486,8 +486,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		$db = ServiceLocator::GetDatabase();
 		$updateUserCommand = new UpdateUserCommand($user->Id(),
 												   $user->StatusId(),
-												   $user->encryptedPassword,
-												   $user->passwordSalt,
+												   $user->GetEncryptedPassword()->EncryptedPassword(),
+												   $user->GetEncryptedPassword()->Salt(),
+												   $user->GetEncryptedPassword()->Version(),
 												   $user->FirstName(),
 												   $user->LastName(),
 												   $user->EmailAddress(),

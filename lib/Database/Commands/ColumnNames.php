@@ -32,8 +32,8 @@ class ColumnNames
     const FIRST_NAME = 'fname';
     const LAST_NAME = 'lname';
     const PASSWORD = 'password';
-    const OLD_PASSWORD = 'legacypassword';
-    const USER_CREATED = 'date_created';
+    const PASSWORD_HASH_VERSION = 'password_hash_version';
+	const USER_CREATED = 'date_created';
     const USER_MODIFIED = 'last_modified';
     const USER_STATUS_ID = 'status_id';
     const HOMEPAGE_ID = 'homepageid';

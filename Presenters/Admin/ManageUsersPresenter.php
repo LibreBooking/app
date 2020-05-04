@@ -69,9 +69,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	private $resourceRepository;
 
 	/**
-	 * @var PasswordEncryption
+	 * @var IPassword
 	 */
-	private $passwordEncryption;
+	private $password;
 
 	/**
 	 * @var IManageUsersService
@@ -145,7 +145,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	 * @param IManageUsersPage $page
 	 * @param UserRepository $userRepository
 	 * @param IResourceRepository $resourceRepository
-	 * @param PasswordEncryption $passwordEncryption
+	 * @param IPassword $password
 	 * @param IManageUsersService $manageUsersService
 	 * @param IAttributeService $attributeService
 	 * @param IGroupRepository $groupRepository
@@ -154,7 +154,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	public function __construct(IManageUsersPage $page,
 								IUserRepository $userRepository,
 								IResourceRepository $resourceRepository,
-								PasswordEncryption $passwordEncryption,
+								IPassword $password,
 								IManageUsersService $manageUsersService,
 								IAttributeService $attributeService,
 								IGroupRepository $groupRepository,
@@ -165,7 +165,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->page = $page;
 		$this->userRepository = $userRepository;
 		$this->resourceRepository = $resourceRepository;
-		$this->passwordEncryption = $passwordEncryption;
+		$this->password = $password;
 		$this->manageUsersService = $manageUsersService;
 		$this->attributeService = $attributeService;
 		$this->groupRepository = $groupRepository;
@@ -364,11 +364,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function ResetPassword()
 	{
-		$salt = $this->passwordEncryption->Salt();
-		$encryptedPassword = $this->passwordEncryption->Encrypt($this->page->GetPassword(), $salt);
+		$encryptedPassword = $this->password->Encrypt($this->page->GetPassword());
 
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$user->ChangePassword($encryptedPassword, $salt);
+		$user->ChangePassword($encryptedPassword);
 		$this->userRepository->Update($user);
 	}
 
@@ -634,7 +633,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 				}
 
 				$timezone = empty($row->timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $row->timezone;
-				$password = empty($row->password) ? 'password' : $row->password;
+				$encrypted = empty($row->password) ? 'password' : $row->password;
 				$language = empty($row->language) ? 'en_us' : $row->language;
 				$status = empty($row->status) ? AccountStatus::ACTIVE : $this->DetermineStatus($row->status);
 
@@ -648,8 +647,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 					else
 					{
 						$user->ChangeName($row->firstName, $row->lastName);
-						$password = $this->passwordEncryption->EncryptPassword($row->password);
-						$user->ChangePassword($password->EncryptedPassword(), $password->Salt());
+						$encrypted = $this->password->Encrypt($row->password);
+						$user->ChangePassword($encrypted);
 						$user->ChangeTimezone($timezone);
 						$user->ChangeAttributes($row->phone, $row->organization, $row->position);
 						if ($status == AccountStatus::ACTIVE)
@@ -665,7 +664,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 				}
 				if (!$shouldUpdate)
 				{
-					$user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $password, $timezone, $language,
+					$user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $row->password, $timezone, $language,
 															   Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE),
 															   array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position),
 															   array());

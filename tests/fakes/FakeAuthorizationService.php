@@ -23,6 +23,7 @@ class FakeAuthorizationService implements IAuthorizationService
 	public $_IsApplicationAdministrator = false;
 	public $_IsResourceAdministrator = false;
 	public $_IsGroupAdministrator = false;
+	public $_IsScheduleAdministrator = false;
 	public $_CanReserveForOthers = false;
 	public $_CanReserveFor = false;
 	public $_CanApproveFor = false;
@@ -67,7 +68,7 @@ class FakeAuthorizationService implements IAuthorizationService
 	 */
 	public function IsScheduleAdministrator(User $user)
 	{
-		return $this->_IsGroupAdministrator;
+		return $this->_IsScheduleAdministrator;
 	}
 
 	/**

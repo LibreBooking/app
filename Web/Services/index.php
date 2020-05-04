@@ -219,9 +219,9 @@ function RegisterAccounts(SlimServer $server, SlimWebServiceRegistry $registry)
 {
     $userRepository = new UserRepository();
     $attributeService = new AttributeService(new AttributeRepository());
-    $passwordEncryption = new PasswordEncryption();
-    $registration = new Registration($passwordEncryption, $userRepository, new RegistrationNotificationStrategy(), new RegistrationPermissionStrategy(), new GroupRepository());
-    $controller = new AccountController($registration, $userRepository, new AccountRequestValidator($attributeService, $userRepository), $passwordEncryption, $attributeService);
+    $password = new Password();
+    $registration = new Registration($password, $userRepository, new RegistrationNotificationStrategy(), new RegistrationPermissionStrategy(), new GroupRepository());
+    $controller = new AccountController($registration, $userRepository, new AccountRequestValidator($attributeService, $userRepository), $password, $attributeService);
 
     $webService = new AccountWebService($server, $controller);
 

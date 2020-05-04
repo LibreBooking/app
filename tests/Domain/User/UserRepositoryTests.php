@@ -259,7 +259,7 @@ class UserRepositoryTests extends TestBase
 		$user = new User();
 		$user->WithId($userId);
 
-		$password = 'password';
+		$password = new EncryptedPassword('password', "salt", 1);
 		$salt = 'salt';
 		$homepageId = 19;
 		$fname = 'f';
@@ -270,7 +270,7 @@ class UserRepositoryTests extends TestBase
 		$scheduleId = 99;
 		$credits = 100;
 
-		$user->ChangePassword($password, $salt);
+		$user->ChangePassword($password);
 		$user->ChangeName($fname, $lname);
 		$user->ChangeEmailAddress($email);
 		$user->ChangeUsername($username);
@@ -283,7 +283,7 @@ class UserRepositoryTests extends TestBase
 
 		$publicId = $user->GetPublicId();
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime,
+		$command = new UpdateUserCommand($userId, $user->StatusId(), "password", "salt", 1, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime,
 										 true, $publicId, $language, $scheduleId, $credits);
 
 		$repo = new UserRepository();
@@ -297,6 +297,7 @@ class UserRepositoryTests extends TestBase
 		$userId = 987;
 		$user = new User();
 		$user->WithId($userId);
+		$user->ChangePassword(new EncryptedPassword("pw"));
 
 		$preferences = new UserPreferences();
 		$preferences->Add('pref1', 'val1');
@@ -321,6 +322,7 @@ class UserRepositoryTests extends TestBase
 		$userId = 987;
 		$user = new User();
 		$user->WithId($userId);
+		$user->ChangePassword(new EncryptedPassword("pw"));
 		$user->WithAllowedPermissions(array(1, 2, 3, 5));
 		$user->ChangeAllowedPermissions(array(2, 3, 4, 6));
         $user->WithViewablePermission(array(7, 8, 9));
@@ -362,7 +364,7 @@ class UserRepositoryTests extends TestBase
 
 		$user = new User();
 		$user->WithId($userId);
-
+		$user->ChangePassword(new EncryptedPassword("pw"));
 		$user->ChangeAttributes($phone, $organization, $position);
 
 		$repo = new UserRepository();
@@ -381,6 +383,7 @@ class UserRepositoryTests extends TestBase
 
 		$user = new User();
 		$user->WithId($userId);
+		$user->ChangePassword(new EncryptedPassword("pw"));
 		$user->WithAttribute($unchanged);
 		$user->WithAttribute(new AttributeValue(100, 'should be removed'));
 		$user->WithAttribute(new AttributeValue(2, 'new value'));
@@ -419,6 +422,7 @@ class UserRepositoryTests extends TestBase
 		$id = 123;
 		$user = new User();
 		$user->WithId($id);
+		$user->ChangePassword(new EncryptedPassword("pw"));
 		$emailPreferences = new EmailPreferences();
 		$emailPreferences->Add(EventCategory::Reservation, ReservationEvent::Updated);
 		$user->WithEmailPreferences($emailPreferences);
@@ -448,8 +452,7 @@ class UserRepositoryTests extends TestBase
 		$userName = 'u';
 		$language = 'la';
 		$timezone = 't';
-		$password = 'p';
-		$passwordSalt = 'ps';
+		$password = new EncryptedPassword('p');
 		$phone = 'ph';
 		$organization = 'o';
 		$position = 'po';
@@ -458,7 +461,7 @@ class UserRepositoryTests extends TestBase
 		$attr1 = new AttributeValue(3, 'value');
 		$attr2 = new AttributeValue(4, 'value');
 
-		$user = User::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt);
+		$user = User::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password);
 		$user->ChangeAttributes($phone, $organization, $position);
 		$user->ChangeCustomAttributes(array($attr1, $attr2));
 		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
@@ -471,7 +474,7 @@ class UserRepositoryTests extends TestBase
 		$repo = new UserRepository();
 		$newId = $repo->Add($user);
 
-		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
+		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password->EncryptedPassword(), $password->Version(),
 										   $timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE,
 										   $publicId, $scheduleId, Date::Now());
 
@@ -626,6 +629,7 @@ class UserRepositoryTests extends TestBase
 	{
         $user = new User();
         $user->WithId(1);
+		$user->ChangePassword(new EncryptedPassword("pw"));
         $user->WithCredits(10);
         $user->ChangeCurrentCredits(5, 'message');
 

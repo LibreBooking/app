@@ -68,11 +68,11 @@ class QuartzyImportPage extends ActionPage
 	{
 		return $this->server->GetFile('quartzyFile');
 	}
-	
+
 	public function GetIncludeBookings()
 	{
 		$include = $this->GetForm('includeBookings');
-		
+
 		return !empty($include);
 	}
 }
@@ -267,7 +267,8 @@ class QuartzyImportPresenter extends ActionPresenter
 		if ($resourceId == 0)
 		{
 			$adminGroupId = $this->AddResourceAdmin($managedBy, $name);
-			$resource = new BookableResource(0, htmlspecialchars($name), htmlspecialchars($location), null, $url, null, null, true, false, true, null, null, null, $description, $scheduleId,
+			$resource = new BookableResource(0, htmlspecialchars($name), htmlspecialchars($location), null, $url, null, null, true, false, true, null, null,
+											 null, $description, $scheduleId,
 											 $adminGroupId);
 			if ($enabled != 'YES')
 			{
@@ -285,7 +286,7 @@ class QuartzyImportPresenter extends ActionPresenter
 		{
 			return;
 		}
-		
+
 		ServiceLocator::GetDatabase()
 					  ->Execute(new AdHocCommand('delete rs from reservation_series rs inner join reservation_resources rr on rs.series_id = rr.series_id where rr.resource_id = ' . $resourceId));
 		$lines = $this->GetCsvData($resourceDirectory . '/Booking Calendar.csv');
@@ -344,11 +345,10 @@ class QuartzyImportPresenter extends ActionPresenter
 		$userId = $user->Id();
 		if (empty($userId))
 		{
-			$enc = new PasswordEncryption();
-			$password = $enc->EncryptPassword('p@ssw0rd!');
-			$userId = $this->userRepository->Add(User::Create(htmlspecialchars($firstName), htmlspecialchars($lastName), htmlspecialchars($email), htmlspecialchars($email), 'en_us',
-															  Configuration::Instance()->GetDefaultTimezone(),
-															  $password->EncryptedPassword(), $password->Salt()));
+			$enc = new Password();
+			$password = $enc->Encrypt('p@ssw0rd!');
+			$userId = $this->userRepository->Add(User::Create(htmlspecialchars($firstName), htmlspecialchars($lastName), htmlspecialchars($email),
+															  htmlspecialchars($email), 'en_us', Configuration::Instance()->GetDefaultTimezone(), $password));
 		}
 
 		return $userId;
@@ -377,13 +377,14 @@ class QuartzyImportPresenter extends ActionPresenter
 		}
 		$userId = $this->AddUser($email, $nameParts[0], $nameParts[1]);
 
-		$series = ReservationSeries::Create($userId, $resource, htmlspecialchars($name), htmlspecialchars($note), new DateRange($startDate, $endDate), new RepeatNone(),
+		$series = ReservationSeries::Create($userId, $resource, htmlspecialchars($name), htmlspecialchars($note), new DateRange($startDate, $endDate),
+											new RepeatNone(),
 											ServiceLocator::GetServer()->GetUserSession());
 		$this->reservationRepository->Add($series);
 	}
 
 	private function CleanName($name)
 	{
-		return str_replace('*', '_', str_replace('/','_', str_replace('.', '_', $name)));
+		return str_replace('*', '_', str_replace('/', '_', str_replace('.', '_', $name)));
 	}
 }

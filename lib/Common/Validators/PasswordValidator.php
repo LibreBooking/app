@@ -34,8 +34,9 @@ class PasswordValidator extends ValidatorBase implements IValidator
 
 	public function Validate()
 	{
-		$pw = new Password($this->currentPasswordPlainText, $this->user->encryptedPassword);
-		$this->isValid = $pw->Validate($this->user->passwordSalt);
+		$pw = new Password();
+		$encrypted = $this->user->GetEncryptedPassword();
+		$this->isValid = $pw->Validate($this->currentPasswordPlainText, $encrypted->EncryptedPassword(), $encrypted->Version(), $encrypted->Salt());
 
         if (!$this->isValid)
         {

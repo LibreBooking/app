@@ -35,7 +35,6 @@ interface IAuthenticationPage
 interface IAuthentication extends IAuthenticationPromptOptions, IAuthenticationActionOptions
 {
 	/**
-	 * @abstract
 	 * @param string $username
 	 * @param string $password
 	 * @return bool If user is valid
@@ -43,7 +42,6 @@ interface IAuthentication extends IAuthenticationPromptOptions, IAuthenticationA
 	public function Validate($username, $password);
 
 	/**
-	 * @abstract
 	 * @param string $username
 	 * @param ILoginContext $loginContext
 	 * @return UserSession

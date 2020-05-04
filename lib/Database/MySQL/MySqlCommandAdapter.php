@@ -60,12 +60,13 @@ class MySqlCommandAdapter
 				}
 				$values = implode("','", $escapedValues);
 				$inClause = "'$values'";
-				$query = str_replace($curParam->Name, $inClause, $query);
+				$query = preg_replace('/' . $curParam->Name . '\b/', str_replace('$', '\$', $inClause), $query);
 			}
 			else
 			{
+
 				$escapedValue = mysqli_real_escape_string($this->_db, $curParam->Value);
-				$query = str_replace($curParam->Name, $curParam->QuotedValue($escapedValue), $query);
+				$query = preg_replace('/' .$curParam->Name . '\b/',  str_replace('$', '\$', $curParam->QuotedValue($escapedValue)), $query);
 			}
 		}
 

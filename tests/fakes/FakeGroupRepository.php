@@ -20,6 +20,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
+class FakeGroupRepository implements IGroupRepository {
+
+	public function LoadById($groupId)
+	{
+		// TODO: Implement LoadById() method.
+	}
+
+	public function Add(Group $group)
+	{
+		// TODO: Implement Add() method.
+	}
+
+	public function Update(Group $group)
+	{
+		// TODO: Implement Update() method.
+	}
+
+	public function Remove(Group $group)
+	{
+		// TODO: Implement Remove() method.
+	}
+}
+
 class FakeGroupViewRepository implements IGroupViewRepository
 {
 	private $_groupList = array();

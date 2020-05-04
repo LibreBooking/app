@@ -50,12 +50,6 @@ class Saml extends Authentication implements IAuthentication
 	 * @var IRegistration
 	 */
 	private $_registration;
-
-	/**
-	 * @var PasswordEncryption
-	 */
-	private $_encryption;
-
 	/**
 	 * @var SamlUser
 	 */
@@ -86,22 +80,6 @@ class Saml extends Authentication implements IAuthentication
 
 		return $this->_registration;
 	}
-
-	public function SetEncryption($passwordEncryption)
-	{
-		$this->_encryption = $passwordEncryption;
-	}
-
-	private function GetEncryption()
-	{
-		if ($this->_encryption == null)
-		{
-			$this->_encryption = new PasswordEncryption();
-		}
-
-		return $this->_encryption;
-	}
-
 
 	/**
 	 * @param IAuthentication $authentication Authentication class to decorate

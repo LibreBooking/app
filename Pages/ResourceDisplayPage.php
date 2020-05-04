@@ -156,7 +156,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
             new ScheduleRepository(),
             new DailyLayoutFactory(),
             new GuestUserService(PluginManager::Instance()->LoadAuthentication(),
-                new GuestRegistration(new PasswordEncryption(),
+                new GuestRegistration(new Password(),
                     new UserRepository(),
                     new GuestRegistrationNotificationStrategy(),
                     new GuestReservationPermissionStrategy($this))),

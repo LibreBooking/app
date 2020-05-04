@@ -951,15 +951,15 @@ class Queries
 			'UPDATE
 			`users`
 		SET
-			`password` = @password, `legacypassword` = null, `salt` = @salt
+			`password` = @password, `salt` = null, `password_hash_version` = @password_hash_version
 		WHERE
 			`user_id` = @userid';
 
 	const REGISTER_USER =
 			'INSERT INTO
-			`users` (`email`, `password`, `fname`, `lname`, `phone`, `organization`, `position`, `username`, `salt`, `timezone`, `language`, `homepageid`, `status_id`, `date_created`, `public_id`, `default_schedule_id`, `terms_date_accepted`)
+			`users` (`email`, `password`, `fname`, `lname`, `phone`, `organization`, `position`, `username`, `password_hash_version`, `timezone`, `language`, `homepageid`, `status_id`, `date_created`, `public_id`, `default_schedule_id`, `terms_date_accepted`)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @password_hash_version, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
 
 	const REMOVE_ATTRIBUTE_ENTITY =
 			'DELETE FROM `custom_attribute_entities` WHERE `custom_attribute_id` = @custom_attribute_id AND `entity_id` = @entity_id';
@@ -972,8 +972,6 @@ class Queries
 	const DELETE_REMINDER_BY_USER = 'DELETE FROM `reminders` WHERE `user_id` = @user_id';
 
 	const DELETE_REMINDER_BY_REFNUMBER = 'DELETE FROM `reminders` WHERE `refnumber` = @refnumber';
-
-	const REMOVE_LEGACY_PASSWORD = 'UPDATE `users` SET `legacypassword` = null WHERE `user_id` = @user_id';
 
 	const REMOVE_RESERVATION_ACCESSORY =
 			'DELETE FROM `reservation_accessories` WHERE `accessory_id` = @accessoryid AND `series_id` = @seriesid';
@@ -1175,6 +1173,7 @@ class Queries
 			`status_id` = @user_statusid,
 			`password` = @password,
 			`salt` = @salt,
+			`password_hash_version` = @password_hash_version,
 			`fname` = @fname,
 			`lname` = @lname,
 			`email` = @email,
@@ -1210,7 +1209,8 @@ class Queries
 			`lname` = COALESCE(@lname, `lname`),
 			`phone` = COALESCE(@phone, `phone`),
 			`organization` = COALESCE(@organization, `organization`),
-			`position` = COALESCE(@position, `position`)
+			`position` = COALESCE(@position, `position`),
+			`password_hash_version` = @password_hash_version
 		WHERE
 			`username` = @username OR `email` = @email';
 
@@ -1224,7 +1224,7 @@ class Queries
 		WHERE `user_id` = @userid AND `session_token` = @session_token';
 
 	const VALIDATE_USER =
-			'SELECT `user_id`, `password`, `salt`, `legacypassword`
+			'SELECT `user_id`, `password`, `salt`, `password_hash_version`
 		FROM `users`
 		WHERE (`username` = @username OR `email` = @username) AND `status_id` = 1';
 }
