@@ -78,6 +78,9 @@ class Paths
      */
     public static function EmailTemplates($language)
     {
-        return dirname(__FILE__) . '/' .ROOT_DIR . "lang/$language/";
+        if (AvailableLanguages::Contains($language)) {
+            return dirname(__FILE__) . '/' . ROOT_DIR . "lang/$language/";
+        }
+        return dirname(__FILE__) . '/' . ROOT_DIR . "lang/en_us/";
     }
 }

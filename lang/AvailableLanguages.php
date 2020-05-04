@@ -39,7 +39,7 @@ class AvailableLanguages
             'en_us' => new AvailableLanguage('en_us', 'en_us.php', 'English US'),
             'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
             'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
-			'ee_ee' => new AvailableLanguage('ee_ee', 'ee_ee.php', 'Estonian'),
+            'ee_ee' => new AvailableLanguage('ee_ee', 'ee_ee.php', 'Estonian'),
             'fi_fi' => new AvailableLanguage('fi_fi', 'fi_fi.php', 'Suomi'),
             'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
             'hr_hr' => new AvailableLanguage('hr_hr', 'hr_hr.php', 'Hrvatski'),
@@ -60,9 +60,16 @@ class AvailableLanguages
             'th_th' => new AvailableLanguage('th_th', 'th_th.php', 'Thai'),
             'tr_tr' => new AvailableLanguage('tr_tr', 'tr_tr.php', 'Türkçe'),
             'sv_sv' => new AvailableLanguage('sv_sv', 'sv_sv.php', 'Swedish'),
-			'vn_vn' => new AvailableLanguage('vn_vn', 'vn_vn.php', 'Tiếng Việt'),
+            'vn_vn' => new AvailableLanguage('vn_vn', 'vn_vn.php', 'Tiếng Việt'),
             'zh_cn' => new AvailableLanguage('zh_cn', 'zh_cn.php', '简体中文'),
             'zh_tw' => new AvailableLanguage('zh_tw', 'zh_tw.php', '繁體中文'),
         );
+    }
+
+    public static function Contains($language)
+    {
+        $languages = self::GetAvailableLanguages();
+
+        return array_key_exists(strtolower($language), $languages);
     }
 }
