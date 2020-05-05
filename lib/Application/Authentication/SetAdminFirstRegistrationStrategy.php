@@ -20,12 +20,12 @@
 
 interface IFirstRegistrationStrategy
 {
-    /**
-     * @param User $user
-     * @param IUserRepository $userRepository
-     * @param IGroupRepository $groupRepository
-     * @return User
-     */
+	/**
+	 * @param User $user
+	 * @param IUserRepository $userRepository
+	 * @param IGroupRepository $groupRepository
+	 * @return User
+	 */
 	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository);
 }
 
