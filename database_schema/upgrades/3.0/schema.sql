@@ -67,3 +67,6 @@ ALTER TABLE `blackout_series`
 
 ALTER TABLE `accessories`
 	DROP COLUMN `legacyid`;
+
+ALTER TABLE `groups`
+	CHANGE `name` `name` VARCHAR(255) NOT NULL;
