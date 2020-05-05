@@ -269,6 +269,7 @@ class UserRepositoryTests extends TestBase
 		$timezone = 'America/New_York';
 		$scheduleId = 99;
 		$credits = 100;
+		$mustChangePassword = true;
 
 		$user->ChangePassword($password);
 		$user->ChangeName($fname, $lname);
@@ -280,11 +281,12 @@ class UserRepositoryTests extends TestBase
 		$user->Login($loginTime, $language);
 		$user->ChangeDefaultSchedule($scheduleId);
 		$user->ChangeCurrentCredits($credits);
+		$user->SetMustChangePassword($mustChangePassword);
 
 		$publicId = $user->GetPublicId();
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), "password", "salt", 1, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime,
-										 true, $publicId, $language, $scheduleId, $credits);
+		$command = new UpdateUserCommand($userId, $user->StatusId(), "password", "salt", 1, $fname, $lname, $email, $username, $homepageId, $timezone,
+										 $loginTime, true, $publicId, $language, $scheduleId, $credits, $mustChangePassword);
 
 		$repo = new UserRepository();
 		$repo->Update($user);
@@ -314,7 +316,6 @@ class UserRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand(new DeleteAllUserPreferences($userId)));
 		$this->assertTrue($this->db->ContainsCommand(new AddUserPreferenceCommand($userId, 'pref2', 'val3')));
 		$this->assertTrue($this->db->ContainsCommand(new AddUserPreferenceCommand($userId, 'pref3', 'val4')));
-
 	}
 
 	public function testOnlyUpdatesPermissionsIfTheyHaveChanged()
@@ -325,7 +326,7 @@ class UserRepositoryTests extends TestBase
 		$user->ChangePassword(new EncryptedPassword("pw"));
 		$user->WithAllowedPermissions(array(1, 2, 3, 5));
 		$user->ChangeAllowedPermissions(array(2, 3, 4, 6));
-        $user->WithViewablePermission(array(7, 8, 9));
+		$user->WithViewablePermission(array(7, 8, 9));
 		$user->ChangeViewPermissions(array(7, 5, 10));
 
 		$deletePermissionsCommand1 = new DeleteUserResourcePermission($userId, 1);
@@ -443,7 +444,7 @@ class UserRepositoryTests extends TestBase
 
 	public function testAddsUser()
 	{
-	    Date::_SetNow(Date::Now());
+		Date::_SetNow(Date::Now());
 
 		$expectedId = 999;
 		$firstName = 'f';
@@ -627,32 +628,32 @@ class UserRepositoryTests extends TestBase
 
 	public function testLogsCreditChanges()
 	{
-        $user = new User();
-        $user->WithId(1);
+		$user = new User();
+		$user->WithId(1);
 		$user->ChangePassword(new EncryptedPassword("pw"));
-        $user->WithCredits(10);
-        $user->ChangeCurrentCredits(5, 'message');
+		$user->WithCredits(10);
+		$user->ChangeCurrentCredits(5, 'message');
 
-        $repo = new UserRepository();
-        $repo->Update($user);
+		$repo = new UserRepository();
+		$repo->Update($user);
 
-        $command = new LogCreditActivityCommand(1, 10, 5, 'message');
+		$command = new LogCreditActivityCommand(1, 10, 5, 'message');
 
-        $this->assertTrue($this->db->ContainsCommand($command));
+		$this->assertTrue($this->db->ContainsCommand($command));
 	}
 
 	public function testAdminOnlyAttributesAreUnchangedOnUpdateIfNotProvided()
 	{
-	    $regularAttribute = new AttributeValue(1, 'regular');
-	    $adminAttribute = new AttributeValue(2, 'admin');
-	    $user = User::FromRow($this->GetUserRow());
-	    $user->WithAttribute($regularAttribute, false);
-	    $user->WithAttribute($adminAttribute, true);
+		$regularAttribute = new AttributeValue(1, 'regular');
+		$adminAttribute = new AttributeValue(2, 'admin');
+		$user = User::FromRow($this->GetUserRow());
+		$user->WithAttribute($regularAttribute, false);
+		$user->WithAttribute($adminAttribute, true);
 
-	    $user->ChangeCustomAttributes(array($regularAttribute));
+		$user->ChangeCustomAttributes(array($regularAttribute));
 
-	    $this->assertEquals('admin', $user->GetAttributeValue(2));
-	    $this->assertEquals(0, count($user->GetRemovedAttributes()));
+		$this->assertEquals('admin', $user->GetAttributeValue(2));
+		$this->assertEquals(0, count($user->GetRemovedAttributes()));
 	}
 
 	private function GetUserRow($userId = 1,
@@ -665,48 +666,48 @@ class UserRepositoryTests extends TestBase
 								$statusId = AccountStatus::ACTIVE,
 								$scheduleId = 123,
 								$preferences = null,
-								$creditCount = null)
+								$creditCount = null,
+								$passwordHashVersion = 0,
+								$forcePasswordReset = 0
+	)
 	{
-		$row =
-				array(
-						ColumnNames::USER_ID => $userId,
-						ColumnNames::USERNAME => $userName,
-						ColumnNames::FIRST_NAME => $first,
-						ColumnNames::LAST_NAME => $last,
-						ColumnNames::EMAIL => $email,
-						ColumnNames::LAST_LOGIN => $lastLogin,
-						ColumnNames::LANGUAGE_CODE => 'en_us',
-						ColumnNames::TIMEZONE_NAME => $timezone,
-						ColumnNames::USER_STATUS_ID => $statusId,
-						ColumnNames::PASSWORD => 'encryptedPassword',
-						ColumnNames::SALT => 'passwordsalt',
-						ColumnNames::HOMEPAGE_ID => 3,
-						ColumnNames::PHONE_NUMBER => '123-456-7890',
-						ColumnNames::POSITION => 'head honcho',
-						ColumnNames::ORGANIZATION => 'earth',
-						ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
-						ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
-						ColumnNames::PUBLIC_ID => uniqid(),
-						ColumnNames::DEFAULT_SCHEDULE_ID => $scheduleId,
-						ColumnNames::USER_PREFERENCES => $preferences,
-						ColumnNames::CREDIT_COUNT => $creditCount
-				);
-
-		return $row;
+		return array(
+				ColumnNames::USER_ID => $userId,
+				ColumnNames::USERNAME => $userName,
+				ColumnNames::FIRST_NAME => $first,
+				ColumnNames::LAST_NAME => $last,
+				ColumnNames::EMAIL => $email,
+				ColumnNames::LAST_LOGIN => $lastLogin,
+				ColumnNames::LANGUAGE_CODE => 'en_us',
+				ColumnNames::TIMEZONE_NAME => $timezone,
+				ColumnNames::USER_STATUS_ID => $statusId,
+				ColumnNames::PASSWORD => 'encryptedPassword',
+				ColumnNames::SALT => 'passwordsalt',
+				ColumnNames::HOMEPAGE_ID => 3,
+				ColumnNames::PHONE_NUMBER => '123-456-7890',
+				ColumnNames::POSITION => 'head honcho',
+				ColumnNames::ORGANIZATION => 'earth',
+				ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
+				ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
+				ColumnNames::PUBLIC_ID => uniqid(),
+				ColumnNames::DEFAULT_SCHEDULE_ID => $scheduleId,
+				ColumnNames::USER_PREFERENCES => $preferences,
+				ColumnNames::CREDIT_COUNT => $creditCount,
+				ColumnNames::PASSWORD_HASH_VERSION => $passwordHashVersion,
+				ColumnNames::FORCE_PASSWORD_RESET => $forcePasswordReset,
+		);
 	}
 
-	private function GetEmailPrefRows()
+	private	function GetEmailPrefRows()
 	{
-		$row = array
+		return array
 		(
 				array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Created),
 				array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Updated),
 		);
-
-		return $row;
 	}
 
-	private function GetPermissionsRows()
+	private	function GetPermissionsRows()
 	{
 		return array(
 				array(ColumnNames::RESOURCE_ID => 1, ColumnNames::PERMISSION_TYPE => ResourcePermissionType::Full),
@@ -715,7 +716,7 @@ class UserRepositoryTests extends TestBase
 		);
 	}
 
-	private function GetGroupsRows()
+	private	function GetGroupsRows()
 	{
 		$groupId1 = 98017;
 		$groupId2 = 128736;
@@ -726,7 +727,7 @@ class UserRepositoryTests extends TestBase
 		);
 	}
 
-	private function GetOwnedGroupRows()
+	private	function GetOwnedGroupRows()
 	{
 		return array(
 				array(ColumnNames::GROUP_ID => 10000, ColumnNames::GROUP_NAME => 'G1'),
@@ -734,7 +735,7 @@ class UserRepositoryTests extends TestBase
 		);
 	}
 
-	private function GetPreferenceRows()
+	private	function GetPreferenceRows()
 	{
 		return array(
 				array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n1', ColumnNames::PREFERENCE_VALUE => 'v1'),
@@ -742,7 +743,7 @@ class UserRepositoryTests extends TestBase
 		);
 	}
 
-	private function GetAttributeRows()
+	private	function GetAttributeRows()
 	{
 		$car = new CustomAttributeValueRow();
 		$car->With(1, 'value')
@@ -750,5 +751,3 @@ class UserRepositoryTests extends TestBase
 		return $car->Rows();
 	}
 }
-
-?>

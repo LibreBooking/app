@@ -550,6 +550,7 @@ class User
 		$user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
 
 		$user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
+		$user->mustChangePassword = $row[ColumnNames::FORCE_PASSWORD_RESET] == 1;
 
 		return $user;
 	}
@@ -624,6 +625,28 @@ class User
 	public function ChangePassword($encryptedPassword)
 	{
 		$this->encryptedPassword = $encryptedPassword;
+		$this->mustChangePassword = false;
+	}
+
+	/**
+	 * @var bool
+	 */
+	private $mustChangePassword = false;
+
+	/**
+	 * @return bool
+	 */
+	public function MustChangePassword()
+	{
+		return $this->mustChangePassword;
+	}
+
+	/**
+	 * @param bool $mustChange
+	 */
+	public function SetMustChangePassword($mustChange)
+	{
+		$this->mustChangePassword = $mustChange;
 	}
 
 	public function ChangeName($firstName, $lastName)

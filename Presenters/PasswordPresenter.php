@@ -66,6 +66,10 @@ class PasswordPresenter
 				$user->ChangePassword($encrypted);
 				$this->userRepository->Update($user);
 
+				$session = ServiceLocator::GetServer()->GetUserSession();
+				$session->ForcePasswordReset = $user->MustChangePassword();
+				ServiceLocator::GetServer()->SetUserSession($session);
+
 				$this->page->ShowResetPasswordSuccess(true);
 			}
 		}
@@ -76,6 +80,7 @@ class PasswordPresenter
 		$this->page->RegisterValidator('currentpassword', new PasswordValidator($this->page->GetCurrentPassword(), $this->GetUser()));
 		$this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirmation()));
 		$this->page->RegisterValidator('passwordcomplexity', new PasswordComplexityValidator($this->page->GetPassword()));
+		$this->page->RegisterValidator('passwordold', new PasswordNewSameAsOldValidator($this->page->GetCurrentPassword(), $this->page->GetPassword()));
 	}
 
 	/**

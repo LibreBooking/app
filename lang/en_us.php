@@ -808,6 +808,7 @@ class en_us extends Language
         $strings['LastReplenished'] = 'Last Replenished';
         $strings['ReservationsAutomaticallyExtended'] = 'Reservations are automatically extended if owner does not check out';
         $strings['ReservationsNotAutomaticallyExtended'] = 'Reservations end if owner does not check out';
+        $strings['PasswordResetForced'] = 'You must update your password';
         // End Strings
 
 		// Install
@@ -904,6 +905,7 @@ class en_us extends Language
 		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
 		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		$strings['InvalidNumberOfResourcesError'] = 'The maximum number of resources that can be reserved in a single reservation is %s';
+		$strings['NewPasswordCannotBeTheSameAsOld'] = 'The new password cannot be the same as the old password';
 		// End Errors
 
 		// Page Titles

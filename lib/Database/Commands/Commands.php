@@ -2777,7 +2777,8 @@ class UpdateUserCommand extends SqlCommand
         $publicId,
         $language,
         $scheduleId,
-        $currentCreditCount)
+        $currentCreditCount,
+		$mustChangePassword)
     {
         parent::__construct(Queries::UPDATE_USER);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -2798,6 +2799,7 @@ class UpdateUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCreditCount));
+        $this->AddParameter(new Parameter(ParameterNames::FORCE_PASSWORD_RESET, intval($mustChangePassword)));
 
     }
 }

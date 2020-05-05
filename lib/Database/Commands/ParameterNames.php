@@ -96,6 +96,7 @@ class ParameterNames
 	const FILE_SIZE = '@file_size';
 	const FILE_EXTENSION = '@file_extension';
 	const FIRST_NAME = '@fname';
+	const FORCE_PASSWORD_RESET = '@force_password_reset';
 
     const GATEWAY_TYPE = '@gateway_type';
     const GATEWAY_SETTING_NAME = '@setting_name';

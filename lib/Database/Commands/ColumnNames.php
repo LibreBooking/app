@@ -47,6 +47,7 @@ class ColumnNames
     const DEFAULT_SCHEDULE_ID = 'default_schedule_id';
     const USER_PREFERENCES = 'preferences';
     const USER_STATUS = 'status_id';
+    const FORCE_PASSWORD_RESET = 'force_password_reset';
 
     // USER_ADDRESSES //
     const ADDRESS_ID = 'address_id';

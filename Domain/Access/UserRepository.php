@@ -151,7 +151,7 @@ class UserFilter
 
 		if (!empty($this->attributes))
 		{
-			$attributeFilter = AttributeFilter::Create('`'. TableNames::USERS_ALIAS . '`.`' . ColumnNames::USER_ID . '`', $this->attributes);
+			$attributeFilter = AttributeFilter::Create('`' . TableNames::USERS_ALIAS . '`.`' . ColumnNames::USER_ID . '`', $this->attributes);
 
 			if ($attributeFilter != null)
 			{
@@ -424,7 +424,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 		$id = $db->ExecuteInsert(new RegisterUserCommand($user->Username(), $user->EmailAddress(), $user->FirstName(),
-														 $user->LastName(), $user->GetEncryptedPassword()->EncryptedPassword(), $user->GetEncryptedPassword()->Version(), $user->Timezone(), $user->Language(),
+														 $user->LastName(), $user->GetEncryptedPassword()->EncryptedPassword(),
+														 $user->GetEncryptedPassword()->Version(), $user->Timezone(), $user->Language(),
 														 $user->Homepage(), $user->GetAttribute(UserAttribute::Phone),
 														 $user->GetAttribute(UserAttribute::Organization),
 														 $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId(),
@@ -500,7 +501,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 												   $user->GetPublicId(),
 												   $user->Language(),
 												   $user->GetDefaultScheduleId(),
-												   $user->GetCurrentCredits());
+												   $user->GetCurrentCredits(),
+												   $user->MustChangePassword());
 		$db->Execute($updateUserCommand);
 
 		$removedPermissions = $user->GetRemovedPermissions();
@@ -552,9 +554,10 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		}
 
 		$db->Execute(new DeleteAllUserPreferences($user->Id()));
-		foreach ($user->GetPreferences()->All() as $name => $value) {
-            $db->Execute(new AddUserPreferenceCommand($user->Id(), $name, $value));
-        }
+		foreach ($user->GetPreferences()->All() as $name => $value)
+		{
+			$db->Execute(new AddUserPreferenceCommand($user->Id(), $name, $value));
+		}
 
 		foreach ($user->GetRemovedGroups() as $removed)
 		{
@@ -578,8 +581,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	{
 		$deleteUserCommand = new DeleteUserCommand($userId);
 		ServiceLocator::GetDatabase()->Execute($deleteUserCommand);
-        $this->_cache->Remove($userId);
-    }
+		$this->_cache->Remove($userId);
+	}
 
 	public function LoadEmailPreferences($userId)
 	{

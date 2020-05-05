@@ -183,8 +183,9 @@ class AuthenticationTests extends TestBase
 		CSRFToken::$_Token = 'token';
 		$language = 'en_gb';
 
-		$this->userRepository->_User = $this->user;
+		$this->user->SetMustChangePassword(true);
 
+		$this->userRepository->_User = $this->user;
 		$this->fakeFirstRegistration->_User = $this->user;
 
 		LoginTime::$Now = time();
@@ -214,6 +215,8 @@ class AuthenticationTests extends TestBase
 		$user->PublicId = $this->publicId;
 		$user->ScheduleId = $this->scheduleId;
 		$user->CSRFToken = CSRFToken::$_Token;
+		$user->ForcePasswordReset = $this->user->MustChangePassword();
+
 		foreach ($this->groups as $group)
 		{
 			$user->Groups[] = $group->GroupId;

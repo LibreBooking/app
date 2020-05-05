@@ -39,6 +39,9 @@ ALTER TABLE `users`
 	ADD COLUMN `password_hash_version` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
 ALTER TABLE `users`
+	ADD COLUMN `force_password_reset` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+
+ALTER TABLE `users`
 	CHANGE `password` `password` VARCHAR(255) NOT NULL;
 
 ALTER TABLE `users`

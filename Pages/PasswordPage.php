@@ -53,6 +53,7 @@ class PasswordPage extends SecurePage implements IPasswordPage
 
 	public function PageLoad()
 	{
+		$this->Set("ForcePasswordReset", !empty($this->GetQuerystring("force")));
 		$this->presenter->PageLoad();
 		$this->Display('MyAccount/password.tpl');
 	}

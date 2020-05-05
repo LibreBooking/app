@@ -1186,7 +1186,8 @@ class Queries
 			`language` = @language,
 			`lastlogin` = @lastlogin,
 			`default_schedule_id` = @scheduleid,
-			`credit_count` = @credit_count
+			`credit_count` = @credit_count,
+			`force_password_reset` = @force_password_reset
 		WHERE
 			`user_id` = @userid';
 
