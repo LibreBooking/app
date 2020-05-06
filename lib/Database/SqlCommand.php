@@ -89,6 +89,11 @@ class SqlCommand implements ISqlCommand
     {
         return false;
     }
+
+    public function GetParameters()
+	{
+		return $this->Parameters;
+	}
 }
 
 class AdHocCommand extends SqlCommand

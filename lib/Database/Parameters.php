@@ -16,6 +16,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class Parameters
 {
+	/**
+	 * @var array|Parameter[]
+	 */
 	private $_parameters = array();
 	private $_count = 0;
 
@@ -55,5 +58,13 @@ class Parameters
 	public function Count()
 	{
 		return $this->_count;
+	}
+
+	/**
+	 * @return array|Parameter[]
+	 */
+	public function All()
+	{
+		return $this->_parameters;
 	}
 }

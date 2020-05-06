@@ -44,4 +44,9 @@ interface ISqlCommand
      * @return bool
      */
 	public function IsMultiQuery();
+
+	/**
+	 * @return Parameters
+	 */
+	public function GetParameters();
 }

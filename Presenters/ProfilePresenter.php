@@ -24,6 +24,7 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class ProfileActions
 {

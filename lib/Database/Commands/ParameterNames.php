@@ -127,7 +127,7 @@ class ParameterNames
 	const ORGANIZATION = '@organization';
 	const ORIGINAL_CREDIT_COUNT = '@original_credit_count';
 
-	const PASSWORD = '@password';
+	const PASSWORD = '@password_value';
 	const PASSWORD_HASH_VERSION = '@password_hash_version';
 	const PARTICIPANT_ID = '@participant_id';
 	const PAYMENT_STATUS = '@status';

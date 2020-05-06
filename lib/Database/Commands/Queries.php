@@ -951,7 +951,7 @@ class Queries
 			'UPDATE
 			`users`
 		SET
-			`password` = @password, `salt` = null, `password_hash_version` = @password_hash_version
+			`password` = @password_value, `salt` = null, `password_hash_version` = @password_hash_version
 		WHERE
 			`user_id` = @userid';
 
@@ -959,7 +959,7 @@ class Queries
 			'INSERT INTO
 			`users` (`email`, `password`, `fname`, `lname`, `phone`, `organization`, `position`, `username`, `password_hash_version`, `timezone`, `language`, `homepageid`, `status_id`, `date_created`, `public_id`, `default_schedule_id`, `terms_date_accepted`)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @password_hash_version, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
+			(@email, @password_value, @fname, @lname, @phone, @organization, @position, @username, @password_hash_version, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
 
 	const REMOVE_ATTRIBUTE_ENTITY =
 			'DELETE FROM `custom_attribute_entities` WHERE `custom_attribute_id` = @custom_attribute_id AND `entity_id` = @entity_id';
@@ -1171,7 +1171,7 @@ class Queries
 			'UPDATE `users`
 		SET
 			`status_id` = @user_statusid,
-			`password` = @password,
+			`password` = @password_value,
 			`salt` = @salt,
 			`password_hash_version` = @password_hash_version,
 			`fname` = @fname,
@@ -1204,7 +1204,7 @@ class Queries
 			'UPDATE `users`
 		SET
 			`email` = COALESCE(@email, `email`),
-			`password` = COALESCE(@password, `password`),
+			`password` = COALESCE(@password_value, `password`),
 			`salt` = COALESCE(@salt, `salt`),
 			`fname` = COALESCE(@fname, `fname`),
 			`lname` = COALESCE(@lname, `lname`),
