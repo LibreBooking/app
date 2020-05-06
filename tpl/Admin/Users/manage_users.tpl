@@ -461,8 +461,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
-					<label for="password" class="active">{translate key=Password}</label>
+					<label for="password" class="active">{translate key=Password} *</label>
                     {textbox type="password" name="PASSWORD" class="required" value="" id="updatePassword" autofocus="autofocus"}
+				</div>
+				<div>
+					<label for="mustChange">
+						<input id="mustChange" type="checkbox" {formname key=MUST_CHANGE_PASSWORD} value="1"/>
+						<span>{translate key=ForceChangePassword}</span>
+					</label>
+				</div>
+				<div>
+					<label for="sendToUser">
+						<input id="sendToUser" type="checkbox" {formname key=SEND_AS_EMAIL} value="1"/>
+						<span>{translate key=NotifyUserPasswordChange}</span>
+					</label>
 				</div>
 			</div>
 			<div class="modal-footer">

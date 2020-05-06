@@ -83,6 +83,7 @@ function UserManagement(opts) {
 			var passwordInput = $("#updatePassword");
 			passwordInput.val('');
 			passwordInput.focus();
+			elements.passwordDialog.find(':checkbox').prop('checked', false);
 			M.updateTextFields();
 		});
 

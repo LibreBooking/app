@@ -160,6 +160,7 @@ class FormKeys
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
 	const MIN_CAPACITY = 'MIN_CAPACITY';
+	const MUST_CHANGE_PASSWORD = 'MUST_CHANGE_PASSWORD';
 
 	const NAME = 'name';
 	const NOTES = 'notes';

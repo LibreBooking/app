@@ -809,6 +809,8 @@ class en_us extends Language
         $strings['ReservationsAutomaticallyExtended'] = 'Reservations are automatically extended if owner does not check out';
         $strings['ReservationsNotAutomaticallyExtended'] = 'Reservations end if owner does not check out';
         $strings['PasswordResetForced'] = 'You must update your password';
+        $strings['ForceChangePassword'] = 'Force the user to change their password next time they log in';
+        $strings['NotifyUserPasswordChange'] = 'Send the user an email with the new password';
         // End Strings
 
 		// Install
@@ -1028,6 +1030,7 @@ class en_us extends Language
 		$strings['ReservationParticipantAccept'] = '%s Has Accepted Your Reservation Invitation for %s on %s';
 		$strings['ReservationParticipantDecline'] = '%s Has Declined Your Reservation Invitation for %s on %s';
 		$strings['ReservationParticipantJoin'] = '%s Has Joined Your Reservation for %s on %s';
+		$strings['PasswordUpdatedByAdminSubject'] = 'Your %s password has been changed';
 		// End Email Subjects
 
 		$this->Strings = $strings;

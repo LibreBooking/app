@@ -26,6 +26,7 @@ require_once(ROOT_DIR . 'lib/Application/Admin/UserImportCsv.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/InviteUserEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/AccountCreationForUserEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/PasswordUpdatedByAdminEmail.php');
 
 class ManageUsersActions
 {
@@ -300,11 +301,6 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->manageUsersService->ChangeAttributes($this->page->GetUserId(), $customAttributes);
 	}
 
-	public function ShowEditUser()
-	{
-		$this->page->ShowEditUser();
-	}
-
 	public function DeleteUser()
 	{
 		$userId = $this->page->GetUserId();
@@ -364,11 +360,28 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function ResetPassword()
 	{
-		$encryptedPassword = $this->password->Encrypt($this->page->GetPassword());
+		$password = $this->page->GetPassword();
+		$mustChange = $this->page->GetUserMustChangePassword();
+		$userId = $this->page->GetUserId();
+		$sendToUser = $this->page->GetSendPasswordInEmail();
 
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$user->ChangePassword($encryptedPassword);
-		$this->userRepository->Update($user);
+		if (!empty($password))
+		{
+			Log::Debug("Updating user password. UserId: %s, Force Update: %s", $userId, $mustChange);
+			$encryptedPassword = $this->password->Encrypt($password);
+			$user = $this->userRepository->LoadById($userId);
+			$user->ChangePassword($encryptedPassword);
+			$user->SetMustChangePassword($mustChange);
+			$this->userRepository->Update($user);
+
+			if ($sendToUser) {
+				ServiceLocator::GetEmailService()->Send(new PasswordUpdatedByAdminEmail($user, $password));
+			}
+		}
+		else {
+			Log::Error("Cannot update user password to empty string");
+			throw new Exception("Cannot update user password to empty string");
+		}
 	}
 
 	public function ChangeAttribute()
@@ -394,7 +407,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->page->SetJsonResponse($this->GetUserGroups());
 			return;
 		}
-	   if ($dataRequest == 'all')
+		if ($dataRequest == 'all')
 		{
 			$users = $this->userRepository->GetAll();
 			$this->page->SetJsonResponse($users);
@@ -664,7 +677,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 				}
 				if (!$shouldUpdate)
 				{
-					$user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $row->password, $timezone, $language,
+					$user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $row->password, $timezone,
+															   $language,
 															   Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE),
 															   array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position),
 															   array());

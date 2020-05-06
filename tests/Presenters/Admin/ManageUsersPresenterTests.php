@@ -185,18 +185,17 @@ class ManageUsersPresenterTests extends TestBase
 	public function testResetPasswordEncryptsAndUpdates()
 	{
 		$password = 'password';
-		$salt = 'salt';
 		$encrypted = 'encrypted';
 		$userId = 123;
 
 		$this->page->_UserId = $userId;
-
 		$this->page->_Password = $password;
+		$this->page->_MustChangePassword = true;
+		$this->page->_SendPasswordInEmail = true;
 
 		$this->password->_EncryptedPassword = new EncryptedPassword($encrypted);
 
-		$user = new User();
-
+		$user = new FakeUser();
 		$this->userRepo->_User = $user;
 
 		$this->presenter->ResetPassword();
@@ -205,6 +204,9 @@ class ManageUsersPresenterTests extends TestBase
 		$this->assertEquals($this->userRepo->_UpdatedUser, $user);
 		$this->assertTrue($this->password->_EncryptCalled);
 		$this->assertEquals($password, $this->password->_LastPlainText);
+		$this->assertEquals($this->password->_EncryptedPassword, $user->GetEncryptedPassword());
+		$this->assertTrue($user->MustChangePassword());
+		$this->assertTrue($this->fakeEmailService->_LastMessage != null);
 	}
 
 	public function testCanUpdateUser()
@@ -562,6 +564,14 @@ class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage
 	 * @var CustomAttribute[]
 	 */
 	public $_BoundUpdateAttributes;
+	/**
+	 * @var bool
+	 */
+	public $_MustChangePassword = false;
+	/**
+	 * @var bool
+	 */
+	public $_SendPasswordInEmail = false;
 
 	function GetPageNumber()
 	{
@@ -742,5 +752,15 @@ class FakeManageUsersPage extends FakeActionPageBase implements IManageUsersPage
 	{
 		$this->_BoundUpdateUser = $user;
 		$this->_BoundUpdateAttributes = $attributes;
+	}
+
+	public function GetUserMustChangePassword()
+	{
+		return $this->_MustChangePassword;
+	}
+
+	public function GetSendPasswordInEmail()
+	{
+		return $this->_SendPasswordInEmail;
 	}
 }
