@@ -412,7 +412,7 @@ abstract class Page implements IPage
 		}
 		elseif ($this->ForcePasswordUpdate())
 		{
-			$this->Redirect(Configuration::Instance()->GetScriptUrl() . "/password.php?force=true");
+			$this->Redirect("password.php?force=true");
 		}
 		else
 		{

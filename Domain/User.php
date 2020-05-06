@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 require_once(ROOT_DIR . 'Domain/Values/EmailPreferences.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class User
 {

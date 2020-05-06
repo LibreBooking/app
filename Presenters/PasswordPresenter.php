@@ -72,6 +72,9 @@ class PasswordPresenter
 
 				$this->page->ShowResetPasswordSuccess(true);
 			}
+			else {
+				$this->page->ShowError();
+			}
 		}
 	}
 
