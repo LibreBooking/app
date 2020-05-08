@@ -505,7 +505,7 @@ class it_it extends en_gb
 		$strings['RowsImported'] = 'Righe importate';
 		$strings['RowsSkipped'] = 'Righe scartate';
 		$strings['Columns'] = 'Colonne';
-		$strings['Reserve'] = 'Riservato';
+		$strings['Reserve'] = 'Prenota';
 		$strings['AllDay'] = 'Tutto il giorno';
 		$strings['Everyday'] = 'Ogni giorno';
 		$strings['IncludingCompletedReservations'] = 'incluse le prenotazioni già effettuate';

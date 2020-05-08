@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col s12">
             <div>
-                <h5 class="underline">{translate key=YourCredits}
+                <h1 class="page-title underline">{translate key=YourCredits}
                     <span class="badge">{$CurrentCredits}</span>
-                </h5>
+                </h1>
             </div>
 
             <div>

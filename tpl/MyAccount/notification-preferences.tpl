@@ -42,7 +42,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         {else}
             <div id="notification-preferences-box" class="col s12 m8 offset-m2 ">
-                <h1 class="page-title">{translate key=NotificationPreferences}</h1>
+                <h1 class="page-title underline">{translate key=NotificationPreferences}</h1>
 
                 <form id="notification-preferences-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
@@ -144,7 +144,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     <div class="clearfix">&nbsp;</div>
 
-                    <div class="col s12">
+                    <div class="col s12 margin-top-25">
                         <button type="submit" class="btn btn-primary waves-effect waves-light update prompt right" name="{Actions::SAVE}">
                             {translate key='Update'}
                         </button>

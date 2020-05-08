@@ -113,6 +113,13 @@ class Authentication implements IAuthentication
 			{
 				$pw->Migrate($row[ColumnNames::USER_ID], $password, $row[ColumnNames::PASSWORD_HASH_VERSION]);
 			}
+
+			if (!$valid) {
+				Log::Error("Failed authentication - invalid password. username: %s", $username);
+			}
+		}
+		else {
+			Log::Error("Failed authentication - invalid username. username: %s", $username);
 		}
 
 		Log::Debug('User: %s, was validated: %d', $username, $valid);

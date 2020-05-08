@@ -313,7 +313,7 @@ class en_us extends Language
 		$strings['AddAccessory'] = 'Add Accessory';
 		$strings['AddBlackout'] = 'Add Blackout';
 		$strings['AllResourcesOn'] = 'All Resources On';
-		$strings['Reason'] = 'Reason';
+		$strings['Reason'] = 'Status Reason';
 		$strings['BlackoutShowMe'] = 'Show me conflicting reservations';
 		$strings['BlackoutDeleteConflicts'] = 'Delete conflicting reservations';
 		$strings['Filter'] = 'Filter';
@@ -748,7 +748,7 @@ class en_us extends Language
         $strings['Refresh'] = 'Refresh';
         $strings['ViewReservation'] = 'View Reservation';
         $strings['PublicId'] = 'Public Id';
-        $strings['Public'] = 'Public';
+        $strings['Public'] = 'Public Visibility';
         $strings['AtomFeedTitle'] = '%s Reservations';
         $strings['DefaultStyle'] = 'Default Style';
         $strings['Standard'] = 'Standard';
@@ -811,6 +811,9 @@ class en_us extends Language
         $strings['PasswordResetForced'] = 'You must update your password';
         $strings['ForceChangePassword'] = 'Force the user to change their password next time they log in';
         $strings['NotifyUserPasswordChange'] = 'Send the user an email with the new password';
+        $strings['MakeDefaultSchedule'] = 'Make this my default schedule';
+        $strings['ManageResourceStatuses'] = 'Manage Resource Statuses';
+        $strings['AddStatusReason'] = 'Add Resource Status Reason';
         // End Strings
 
 		// Install

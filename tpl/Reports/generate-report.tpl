@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl' cssFiles="css/Chart-2.8.0.min.css" Select2=true}
+{include file='globalheader.tpl' cssFiles="css/Chart-2.8.0.min.css" Select2=true FullWidth=true}
 
 <div id="page-generate-report" class="page-report row">
     <div id="customReportInput-container">

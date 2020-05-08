@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
@@ -34,30 +34,30 @@ class LoginPresenter
 	 */
 	private $authentication = null;
 
-    /**
-     * @var ICaptchaService
-     */
-    private $captchaService;
+	/**
+	 * @var ICaptchaService
+	 */
+	private $captchaService;
 
-    /**
-     * @var IAnnouncementRepository
-     */
-    private $announcementRepository;
+	/**
+	 * @var IAnnouncementRepository
+	 */
+	private $announcementRepository;
 
-    /**
-     * @param ILoginPage $page
-     * @param IWebAuthentication $authentication
-     * @param ICaptchaService $captchaService
-     * @param IAnnouncementRepository $announcementRepository
-     */
+	/**
+	 * @param ILoginPage $page
+	 * @param IWebAuthentication $authentication
+	 * @param ICaptchaService $captchaService
+	 * @param IAnnouncementRepository $announcementRepository
+	 */
 	public function __construct(ILoginPage &$page, $authentication = null, $captchaService = null, $announcementRepository = null)
 	{
-		$this->_page = & $page;
+		$this->_page = &$page;
 		$this->SetAuthentication($authentication);
-        $this->SetCaptchaService($captchaService);
-        $this->SetAnnouncementRepository($announcementRepository);
+		$this->SetCaptchaService($captchaService);
+		$this->SetAnnouncementRepository($announcementRepository);
 
-        $this->LoadValidators();
+		$this->LoadValidators();
 	}
 
 	/**
@@ -75,37 +75,37 @@ class LoginPresenter
 		}
 	}
 
-    /**
-     * @param ICaptchaService $captchaService
-     */
-    private function SetCaptchaService($captchaService)
-    {
-        if (is_null($captchaService))
-        {
-            $this->captchaService = CaptchaService::Create();
-        }
-        else
-        {
-            $this->captchaService = $captchaService;
-        }
-    }
+	/**
+	 * @param ICaptchaService $captchaService
+	 */
+	private function SetCaptchaService($captchaService)
+	{
+		if (is_null($captchaService))
+		{
+			$this->captchaService = CaptchaService::Create();
+		}
+		else
+		{
+			$this->captchaService = $captchaService;
+		}
+	}
 
-    /**
-     * @param IAnnouncementRepository $announcementRepository
-     */
-    private function SetAnnouncementRepository($announcementRepository)
-    {
-        if (is_null($announcementRepository))
-        {
-            $this->announcementRepository = new AnnouncementRepository();
-        }
-        else
-        {
-            $this->announcementRepository = $announcementRepository;
-        }
-    }
+	/**
+	 * @param IAnnouncementRepository $announcementRepository
+	 */
+	private function SetAnnouncementRepository($announcementRepository)
+	{
+		if (is_null($announcementRepository))
+		{
+			$this->announcementRepository = new AnnouncementRepository();
+		}
+		else
+		{
+			$this->announcementRepository = $announcementRepository;
+		}
+	}
 
-    public function PageLoad()
+	public function PageLoad()
 	{
 		if ($this->authentication->IsLoggedIn())
 		{
@@ -134,12 +134,13 @@ class LoginPresenter
 		}
 
 		$allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
-		$allowAnonymousSchedule = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,  ConfigKeys::PRIVACY_VIEW_SCHEDULES, new BooleanConverter());
+		$allowAnonymousSchedule = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_SCHEDULES, new BooleanConverter());
 		$allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING, new BooleanConverter());
 		$this->_page->SetShowRegisterLink($allowRegistration);
 		$this->_page->SetShowScheduleLink($allowAnonymousSchedule || $allowGuestBookings);
 
-		$hideLogin = Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT, new BooleanConverter());
+		$hideLogin = Configuration::Instance()
+								  ->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT, new BooleanConverter());
 
 		$this->_page->ShowForgotPasswordPrompt(!Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET, new BooleanConverter()) &&
 											   $this->authentication->ShowForgotPasswordPrompt() &&
@@ -156,10 +157,10 @@ class LoginPresenter
 
 	public function Login()
 	{
-	    if (!$this->_page->IsValid())
-        {
-            return;
-        }
+		if (!$this->_page->IsValid())
+		{
+			return;
+		}
 
 		$id = $this->_page->GetEmailAddress();
 
@@ -171,9 +172,15 @@ class LoginPresenter
 		}
 		else
 		{
+			$this->PreventBruteForce();
 			$this->authentication->HandleLoginFailure($this->_page);
 			$this->_page->SetShowLoginError();
 		}
+	}
+
+	private function PreventBruteForce()
+	{
+		sleep(2);
 	}
 
 	public function ChangeLanguage()
@@ -243,10 +250,11 @@ class LoginPresenter
 		$resources->SetLanguage($languageCode);
 	}
 
-    protected function LoadValidators()
-    {
-        if (Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_CAPTCHA_ON_LOGIN, new BooleanConverter())) {
-            $this->_page->RegisterValidator('captcha', new CaptchaValidator($this->_page->GetCaptcha(), $this->captchaService));
-        }
-    }
+	protected function LoadValidators()
+	{
+		if (Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_CAPTCHA_ON_LOGIN, new BooleanConverter()))
+		{
+			$this->_page->RegisterValidator('captcha', new CaptchaValidator($this->_page->GetCaptcha(), $this->captchaService));
+		}
+	}
 }

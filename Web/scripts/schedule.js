@@ -7,6 +7,7 @@ function Schedule(opts, resourceGroups) {
     var multidateselect = $('#multidateselect');
 
     this.init = function () {
+        $('.dropdown-trigger').dropdown();
         this.initUserDefaultSchedule();
         this.initRotateSchedule();
         this.initResourceFilter();
@@ -380,7 +381,7 @@ function Schedule(opts, resourceGroups) {
     this.initRotateSchedule = function () {
         $('#schedule-actions .schedule-style').click(function (e) {
             e.preventDefault();
-            createCookie(opts.cookieName, $(this).attr('schedule-display'), 30, opts.scriptUrl);
+            createCookie(opts.cookieName, $(this).data('schedule-display'), 30, opts.scriptUrl);
             window.location.reload();
         });
     };

@@ -13,6 +13,9 @@ nav ul a {
 .tabs {
   background-color: inherit;
 }
+.pagination li.active {
+  background-color: #b39ddb;
+}
 @media only screen and (min-width: 601px) {
   nav li,
   nav a,
@@ -744,6 +747,9 @@ ul.jqtree-tree ul {
 body {
   margin-top: 70px;
 }
+.container-full-width {
+  margin: 0 1rem;
+}
 .ui-datepicker {
   z-index: 10000 !important;
 }
@@ -754,6 +760,10 @@ body {
 .form-control-feedback {
   color: #e91e1e;
   font-size: small;
+}
+.underline {
+  border-bottom: solid 1px #BCBCBC;
+  padding: 0.7rem 0;
 }
 .scrollable-modal-content {
   max-height: 80vh;
@@ -1623,10 +1633,19 @@ td.dropped {
   text-align: center;
   vertical-align: top;
 }
+.schedule-style span {
+  width: 20px;
+}
 .schedule-dates {
-  text-align: center;
-  font-size: 1.5em;
+  text-align: right;
+  font-size: 1.5rem;
   padding-bottom: 10px;
+}
+.schedule-dates a {
+  color: #53577F;
+}
+.schedule-dates a:hover {
+  color: #878bb1;
 }
 .ui-datepicker {
   margin-left: auto;
@@ -1739,8 +1758,11 @@ ul.jqtree-tree .jqtree-toggler {
 #calendar_toggle:hover {
   color: #72716d;
 }
-#calendar_toggle span {
-  font-size: 16pt;
+#make_default {
+  color: #ffc194;
+}
+#make_default:hover {
+  color: #ff862e;
 }
 #loading-schedule {
   position: fixed;
@@ -1760,9 +1782,6 @@ ul.jqtree-tree .jqtree-toggler {
   display: inline-block;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-}
-#page-schedule {
-  margin: 0 -5%;
 }
 #page-schedule a {
   text-decoration: none;
@@ -1784,6 +1803,7 @@ ul.jqtree-tree .jqtree-toggler {
 }
 a.toggle-sidebar {
   color: #585754;
+  padding-right: 3px;
 }
 .no-resource-warning {
   padding: 10px;
@@ -2790,6 +2810,25 @@ td.update {
   justify-content: space-between;
   align-items: center;
 }
+.resource-available {
+  color: #4caf50;
+}
+.resource-unavailable {
+  color: #ff9800;
+}
+.resource-hidden {
+  color: #e53935;
+}
+.reason-item {
+  padding: 1rem;
+}
+.resource-status-badge {
+  padding: 1rem;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-color: #9BC2C2;
+}
 #groupsDialog .title {
   font-weight: 600;
 }
@@ -3305,8 +3344,4 @@ ul.jqtree-tree .jqtree-toggler {
 }
 .notification-row.alt {
   background-color: #E9E9E9;
-}
-.underline {
-  border-bottom: solid 1px #BCBCBC;
-  padding-bottom: 7px;
 }

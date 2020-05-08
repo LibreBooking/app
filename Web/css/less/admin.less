@@ -580,6 +580,7 @@ td.update {
   padding: 2rem;
   margin: 1rem;
 }
+
 /// page level overrides
 
 .admin-page, #page-manage-blackouts, #page-manage-reservations, #page-manage-resources, #page-manage-users, #page-manage-quotas {
@@ -608,6 +609,28 @@ td.update {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.resource-available {
+  color: #4caf50;
+}
+
+.resource-unavailable {
+  color: #ff9800;
+}
+
+.resource-hidden {
+  color: #e53935;
+}
+
+.reason-item {
+  padding: 1rem;
+}
+
+.resource-status-badge {
+  padding: 1rem;
+  .rounded();
+  background-color: @muted-blue;
 }
 
 #groupsDialog {
@@ -677,5 +700,5 @@ td.update {
   }
 }
 
-#page-manage-groups{
+#page-manage-groups {
 }

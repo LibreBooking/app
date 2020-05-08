@@ -277,9 +277,9 @@ function ResourceManagement(opts) {
 			elements.bulkDeleteList.find('input:checkbox').prop('checked', false);
 		});
 
-		$(".save").click(function () {
-			$(this).closest('form').submit();
-		});
+		// $(".save").click(function () {
+		// 	$(this).closest('form').submit();
+		// });
 
 		$(".cancel").click(function () {
 			$(this).closest('.modal').modal('close');
@@ -309,13 +309,13 @@ function ResourceManagement(opts) {
 		wireUpCheckboxToggle(elements.bulkUpdateDialog);
 
 		$('#bulkEditEnableCheckIn').change(function () {
-			if ($(this).val() == '1')
+			if ($(this).val() === '1')
 			{
 				$('#bulkUpdateAutoReleaseMinutesDiv').removeClass('no-show');
 				$('#bulkUpdateAutoExtendDiv').removeClass('no-show');
 			}
 
-			if ($(this).val() == '0')
+			if ($(this).val() === '0')
 			{
 				$('#bulkUpdateAutoReleaseMinutesDiv').addClass('no-show');
 				$('#bulkUpdateAutoExtendDiv').addClass('no-show');
@@ -517,6 +517,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 		ConfigureAsyncForm(elements.importForm, defaultSubmitCallback(elements.importForm), importHandler);
         ConfigureAsyncForm(elements.bulkDeleteForm, defaultSubmitCallback(elements.bulkDeleteForm));
+		ConfigureAsyncForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -784,12 +785,9 @@ function ResourceManagement(opts) {
 
 	var showStatusPrompt = function (e) {
 		var resource = getActiveResource();
-		var statusForm = $('#statusForm');
 
-		var statusOptions = statusForm.find(elements.statusOptions);
-		var statusReasons = statusForm.find(elements.statusReasons);
-		var addStatusReason = statusForm.find(elements.addStatusReason);
-		var saveButton = statusForm.find('.save');
+		var statusOptions = elements.statusForm.find(elements.statusOptions);
+		var statusReasons = elements.statusForm.find(elements.statusReasons);
 
 		statusOptions.val(resource.statusId);
 		statusReasons.val(resource.reasonId);
@@ -801,36 +799,10 @@ function ResourceManagement(opts) {
 
 		populateReasonOptions(statusOptions.val(), statusReasons);
 
-		addStatusReason.unbind();
-		addStatusReason.click(function (e) {
-			e.preventDefault();
-			statusForm.find(elements.newStatusReason).toggleClass('no-show');
-			statusForm.find(elements.existingStatusReason).toggleClass('no-show');
-
-			if (statusForm.find(elements.newStatusReason).hasClass('no-show'))
-			{
-				statusForm.find(elements.statusReasons).data('prev', statusReasons.val());
-				statusForm.find(elements.statusReasons).val('');
-				statusForm.find(elements.resourceStatusReason).focus();
-			}
-			else
-			{
-				statusForm.find(elements.statusReasons).val(statusReasons.data('prev'));
-				statusForm.find(elements.statusReasons).focus();
-			}
-
-		});
-
-		saveButton.unbind();
-
-		ConfigureAsyncForm(statusForm, defaultSubmitCallback(statusForm));
-
-		saveButton.click(function () {
-			statusForm.submit();
-		});
-
         elements.statusDialog.modal('open');
 		statusOptions.focus();
+
+		$('select').formSelect();
 	};
 
 	function populateReasonOptions(statusId, reasonsElement) {

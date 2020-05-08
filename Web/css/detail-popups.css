@@ -654,6 +654,9 @@ ul.jqtree-tree ul {
 body {
   margin-top: 70px;
 }
+.container-full-width {
+  margin: 0 1rem;
+}
 .ui-datepicker {
   z-index: 10000 !important;
 }
@@ -664,6 +667,10 @@ body {
 .form-control-feedback {
   color: #e91e1e;
   font-size: small;
+}
+.underline {
+  border-bottom: solid 1px #BCBCBC;
+  padding: 0.7rem 0;
 }
 .scrollable-modal-content {
   max-height: 80vh;

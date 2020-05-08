@@ -61,7 +61,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
             {/if}
 			<div id="password-reset-box" class="col s12 m8 offset-m2">
-				<h1 class="page-title">{translate key="ChangePassword"}</h1>
+				<h1 class="page-title underline">{translate key="ChangePassword"}</h1>
 
 
 				<form id="password-reset-form" method="post" action="{$smarty.server.SCRIPT_NAME}">

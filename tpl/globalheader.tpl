@@ -62,6 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             $.fn.datepicker = jqueryDatepicker;
             $.fn.autocomplete = jqueryAutocomplete;
         </script>
+        <script src="https://kit.fontawesome.com/cedfa7fbf2.js" crossorigin="anonymous"></script>
     {/if}
 
     <!-- End JavaScript -->
@@ -72,7 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {cssfile src="scripts/css/smoothness/jquery-ui-1.12.1.min.css"}
         {cssfile src="scripts/css/smoothness/jquery-ui.structure-1.12.1..min.css"}
         {cssfile src="scripts/css/smoothness/jquery-ui.theme-1.12.1..min.css"}
-        {cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css"}
+        {cssfile src="css/font-awesome-5.13.0/css/all.css"}
         {cssfile src="css/materialize-1.0.0.min.css"}
         {cssfile src="css/materialize/material-icons.css"}
 
@@ -89,8 +90,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet"
               href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
-              type="text/css"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
               type="text/css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -230,4 +229,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </ul>
 {/if}
 
-<div id="main" class="{if !$HideNavBar}container{/if}" {if $HideNavBar == true}style="padding-top:0;margin-top:0;"{/if}>
+<div id="main" class="{if !$HideNavBar && !$FullWidth}container{/if}{if $FullWidth}container-full-width{/if}" {if $HideNavBar == true}style="padding-top:0;margin-top:0;"{/if}>
