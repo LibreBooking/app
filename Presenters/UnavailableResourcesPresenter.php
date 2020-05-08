@@ -54,8 +54,9 @@ class UnavailableResourcesPresenter
 	{
 		$duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
 									  $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
-		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin(), $duration->GetEnd(), array(ReservationViewRepository::ALL_RESOURCES));
+		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin(), $duration->GetEnd(), ReservationViewRepository::ALL_RESOURCES);
 
+		Log::Debug("%s", var_export($reserved, true));
 		$concurrentScheduleIds = $this->GetConcurrentScheduleIds();
 
 		$unavailable = array();
