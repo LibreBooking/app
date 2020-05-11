@@ -226,11 +226,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="date">{formatdate date=$reservation->StartDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="date">{formatdate date=$reservation->EndDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="duration">{$reservation->GetDuration()->__toString()}</td>
-				{if !$IsDesktop}
+                {if !$IsDesktop}
 					<td>
-					<a href="#" class="update edit"><span class="far icon fa-edit"></span></span></a>
+						<a href="#" class="update edit"><span class="far icon fa-edit"></span></span></a>
 					</td>
-				{/if}
+                {/if}
 				<td class="action">
                     {if $reservation->RequiresApproval}
 						<a href="#" class="update approve"><span class="fa fa-check icon add"></span></a>
@@ -259,39 +259,39 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</tr>
 			<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}"
 				data-refnum="{$reservation->ReferenceNumber}">
-                <td colspan="{$colCount}">
-                    <div class="reservation-list-dates">
-                        <div>
-                            <label>{translate key='Created'}</label>
-                            <span>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}</span>
-                        </div>
-                        <div>
-                            <label>{translate key='LastModified'}</label>
-                            <span>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}</span>
-                        </div>
-                        <div>
-                            <label>{translate key='CheckInTime'}</label>
-                            <span>{formatdate date=$reservation->CheckinDate timezone=$Timezone key=short_datetime}</span>
-                        </div>
-                        <div>
-                            <label>{translate key='CheckOutTime'}</label>
-                            <span>{formatdate date=$reservation->CheckoutDate timezone=$Timezone key=short_datetime}</span>
-                        </div>
-                        <div>
-                            <label>{translate key='OriginalEndDate'}</label>
-                            <span>{if $reservation->OriginalEndDate->Timestamp() == 0}{formatdate date=$reservation->EndDate timezone=$Timezone key=short_datetime}{else}{formatdate date=$reservation->OriginalEndDate timezone=$Timezone key=short_datetime}{/if}</span>
-                        </div>
-                        <div>
-                            <label>{translate key='ReferenceNumber'}</label>
-                            <span>{$reservation->ReferenceNumber}</span>
-                        </div>
+				<td colspan="{$colCount}">
+					<div class="reservation-list-dates">
+						<div>
+							<label>{translate key='Created'}</label>
+							<span>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}</span>
+						</div>
+						<div>
+							<label>{translate key='LastModified'}</label>
+							<span>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}</span>
+						</div>
+						<div>
+							<label>{translate key='CheckInTime'}</label>
+							<span>{formatdate date=$reservation->CheckinDate timezone=$Timezone key=short_datetime}</span>
+						</div>
+						<div>
+							<label>{translate key='CheckOutTime'}</label>
+							<span>{formatdate date=$reservation->CheckoutDate timezone=$Timezone key=short_datetime}</span>
+						</div>
+						<div>
+							<label>{translate key='OriginalEndDate'}</label>
+							<span>{if $reservation->OriginalEndDate->Timestamp() == 0}{formatdate date=$reservation->EndDate timezone=$Timezone key=short_datetime}{else}{formatdate date=$reservation->OriginalEndDate timezone=$Timezone key=short_datetime}{/if}</span>
+						</div>
+						<div>
+							<label>{translate key='ReferenceNumber'}</label>
+							<span>{$reservation->ReferenceNumber}</span>
+						</div>
                         {if $CreditsEnabled}
 							<div>
 								<label>{translate key='Credits'}</label>
-                    		<span>{$reservation->CreditsConsumed}</span>
-                        	</div>
+								<span>{$reservation->CreditsConsumed}</span>
+							</div>
                         {/if}
-                    </div>
+					</div>
                     {if $ReservationAttributes|count > 0}
 						<div class="reservation-list-attributes">
                             {foreach from=$ReservationAttributes item=attribute}
@@ -301,9 +301,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 url="{$smarty.server.SCRIPT_NAME}?action={ManageReservationsActions::UpdateAttribute}"
                                 }
                             {/foreach}
-                        </div>
+						</div>
                     {/if}
-                </td>
+				</td>
 			</tr>
         {/foreach}
 		</tbody>
@@ -322,13 +322,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {pagination pageInfo=$PageInfo}
 
-	<div class="modal" id="deleteInstanceDialog" tabindex="-1" role="dialog"
+	<div class="modal modal-fixed-header modal-fixed-footer" id="deleteInstanceDialog" tabindex="-1" role="dialog"
 		 aria-labelledby="deleteInstanceDialogLabel" aria-hidden="true">
 		<form id="deleteInstanceForm" method="post">
+			<div class="modal-header">
+				<h4 class="modal-title left" id="deleteInstanceDialogLabel">{translate key=Delete}</h4>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			</div>
 			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="deleteInstanceDialogLabel">{translate key=Delete}</h4>
-				</div>
 				<div class="modal-body">
 					<div class="delResResponse"></div>
 					<div class="alert alert-warning">
@@ -348,13 +349,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div class="modal" id="deleteSeriesDialog" tabindex="-1" role="dialog"
+	<div class="modal modal-fixed-header modal-fixed-footer" id="deleteSeriesDialog" tabindex="-1" role="dialog"
 		 aria-labelledby="deleteSeriesDialogLabel"
 		 aria-hidden="true">
 		<form id="deleteSeriesForm" method="post">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
+					<h4 class="modal-title left" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
+					<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-warning">
@@ -366,7 +368,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="modal-footer">
                 {cancel_button}
-
 				<button type="button" class="btn btn-primary saveSeries btnUpdateThisInstance waves-effect waves-light"
 						id="btnUpdateThisInstance">
                     {translate key='ThisInstance'}
@@ -385,15 +386,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="deleteMultipleDialog" class="modal" tabindex="-1" role="dialog"
+	<div id="deleteMultipleDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
 		 aria-labelledby="deleteMultipleModalLabel"
 		 aria-hidden="true">
 		<form id="deleteMultipleForm" method="post" ajaxAction="{ManageReservationsActions::DeleteMultiple}">
+			<div class="modal-header">
+				<h4 class="modal-title left" id="deleteMultipleModalLabel">{translate key=Delete} (<span
+							id="deleteMultipleCount"></span>)</h4>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			</div>
 			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span
-								id="deleteMultipleCount"></span>)</h4>
-				</div>
 				<div class="modal-body">
 					<div class="alert alert-warning">
 						<div>{translate key=DeleteWarning}</div>
@@ -412,12 +414,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="inlineUpdateErrorDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel"
+	<div id="inlineUpdateErrorDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel"
 		 aria-hidden="true">
+		<div class="modal-header">
+			<h4 class="modal-title left" id="inlineErrorLabel">{translate key=Error}</h4>
+			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+		</div>
 		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="inlineErrorLabel">{translate key=Error}</h4>
-			</div>
+
 			<div class="modal-body">
 				<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
 				<div id="reservationAccessError" class="hidden error"></div>
@@ -430,16 +434,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<div id="importReservationsDialog" class="modal" tabindex="-1" role="dialog"
+	<div id="importReservationsDialog" class="modal modal-fixed-header modal-fixed-footer" tabindex="-1" role="dialog"
 		 aria-labelledby="importReservationsModalLabel"
 		 aria-hidden="true">
 		<form id="importReservationsForm" class="form" role="form" method="post" enctype="multipart/form-data"
 			  ajaxAction="{ManageReservationsActions::Import}">
-
+			<div class="modal-header">
+				<h4 class="modal-title left" id="importReservationsModalLabel">{translate key=Import}</h4>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			</div>
 			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="importReservationsModalLabel">{translate key=Import}</h4>
-				</div>
+
 				<div class="modal-body">
 					<div id="importUserResults" class="validationSummary alert alert-danger no-show">
 						<ul>
@@ -478,9 +483,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="modal-footer">
 				<a href="{$smarty.server.SCRIPT_NAME}?dr=template"
-										   download="{$smarty.server.SCRIPT_NAME}?dr=template"
-										   class="btn btn-flat waves-effect waves-light black-text left"
-										   target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+				   download="{$smarty.server.SCRIPT_NAME}?dr=template"
+				   class="btn btn-flat waves-effect waves-light black-text left"
+				   target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
                 {cancel_button}
                 {add_button key=Import}
                 {indicator}
@@ -488,13 +493,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div class="modal" id="termsOfServiceDialog" tabindex="-1" role="dialog"
+	<div class="modal modal-fixed-header modal-fixed-footer" id="termsOfServiceDialog" tabindex="-1" role="dialog"
 		 aria-labelledby="termsOfServiceDialogLabel" aria-hidden="true">
 		<form id="termsOfServiceForm" method="post" ajaxAction="termsOfService" enctype="multipart/form-data">
+			<div class="modal-header">
+				<h4 class="modal-title left" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			</div>
 			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
-				</div>
+
 				<div class="modal-body">
 					<div>
 						<div class="inline-block">

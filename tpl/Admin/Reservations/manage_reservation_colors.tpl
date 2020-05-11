@@ -31,38 +31,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<h1 class="page-title underline">{translate key=ReservationColors}</h1>
 		</div>
 
-        {*		<div id="add-rule-dialog" class="modal modal-large modal-fixed-header modal-fixed-footer" tabindex="-1"*}
-        {*			 role="dialog"*}
-        {*			 aria-labelledby="addRuleLabel"*}
-        {*			 aria-hidden="true">*}
-        {*			<div class="modal-header">*}
-        {*				<h4 class="modal-title left" id="addResourceModalLabel">{translate key=AddNewResource}</h4>*}
-        {*				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>*}
-        {*			</div>*}
-        {*			<form>*}
-        {*				<div class="modal-content">*}
-        {*					<div class="input-field">*}
-        {*						<label for="attributeOption" class="active">{translate key=Attribute}</label>*}
-        {*						<select class="" id="attributeOption">*}
-        {*                            {foreach from=$Attributes item=attribute}*}
-        {*								<option value="{$attribute->Id()}">{$attribute->Label()}</option>*}
-        {*                            {/foreach}*}
-        {*						</select>*}
-
-        {*						<button type="button" class="btn btn-primary waves-effect waves-light" id="addRuleButton">*}
-        {*							<i class="fa fa-plus"></i> {translate key='AddRule'}*}
-        {*						</button>*}
-        {*					</div>*}
-        {*				</div>*}
-        {*				<div class="modal-footer">*}
-        {*                    {cancel_button}*}
-        {*                    {add_button submit=true}*}
-        {*                    {indicator}*}
-        {*				</div>*}
-        {*			</form>*}
-        {*		</div>*}
-
-
 		<table class="table" id="reservationTable">
 			<thead>
 			<tr>

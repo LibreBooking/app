@@ -14,10 +14,6 @@ function ReservationColorManagement(opts) {
     };
 
     ReservationColorManagement.prototype.init = function () {
-        // $(".save").click(function () {
-        //     $(this).closest('form').submit();
-        // });
-
         $(".cancel").click(function () {
             $(this).closest('.modal').modal("close");
         });
@@ -27,13 +23,6 @@ function ReservationColorManagement(opts) {
             elements.deleteDialog.modal('open');
         });
 
-        // $('#addRuleButton').click(function (e) {
-        //     var attrId = '#attribute' + elements.attributeOption.val();
-        //     $('#attributeFillIn').empty();
-        //     $('#attributeFillIn').append($(attrId).clone().removeClass('hidden'));
-        //     elements.addDialog.modal('open');
-        // });
-
         elements.attributeOption.on('change', function(){
             var attrId = '#attribute' + elements.attributeOption.val();
             $('.attribute-option').addClass('no-show');
@@ -41,9 +30,6 @@ function ReservationColorManagement(opts) {
             $(attrId).find('select').val('');
             $(attrId).removeClass('no-show');
             $('select').formSelect();
-            // $('#attributeFillIn').empty();
-            // $('#attributeFillIn').append($(attrId).clone().removeClass('hidden'));
-
         });
 
         $('#add-rule-prompt-btn').click(function() {
