@@ -16,9 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="{$class} {if !$searchmode && $attribute->Required()}has-feedback{/if}">
-    <label class="customAttribute {if $readonly}readonly{elseif $searchmode}search{else}standard{/if}"
-           for="{$attributeId}">{$attribute->Label()}</label>
+<div class="{$class}">
 	{if $readonly}
         <label class="customAttribute readonly">{$attribute->Label()}</label>
         <span class="attributeValue {$class}">{$attribute->Value()}</span>
@@ -34,5 +32,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </select>
         </div>
 	{/if}
-    {/if}
 </div>

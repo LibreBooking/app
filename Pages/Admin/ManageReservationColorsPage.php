@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2014-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2014-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
@@ -39,6 +39,11 @@ interface IManageReservationColorsPage extends IActionPage
 	 * @return array|AttributeFormElement[]
 	 */
 	public function GetAttributes();
+
+	/**
+	 * @return int
+	 */
+	public function GetAttributeId();
 
 	/**
 	 * @return string
@@ -96,12 +101,18 @@ class ManageReservationColorsPresenter extends ActionPresenter
 
 	public function Add()
 	{
+		$attributeId = $this->page->GetAttributeId();
+		Log::Debug("Adding reservation color rule. Attribute Id: %s", $attributeId);
 		$attributes = $this->page->GetAttributes();
-		if (count($attributes) == 1)
+		foreach ($attributes as $attribute)
 		{
-			$colorRule = ReservationColorRule::Create($attributes[0]->Id, $attributes[0]->Value, $this->page->GetColor());
-			$this->reservationRepository->AddReservationColorRule($colorRule);
+			if ($attribute->Id == $attributeId)
+			{
+				$colorRule = ReservationColorRule::Create($attribute->Id, $attribute->Value, $this->page->GetColor());
+				$this->reservationRepository->AddReservationColorRule($colorRule);
+			}
 		}
+
 	}
 
 	public function Delete()
@@ -152,17 +163,11 @@ class ManageReservationColorsPage extends ActionPage implements IManageReservati
 		$this->Set('Rules', $rules);
 	}
 
-	/**
-	 * @return array|AttributeFormElement[]
-	 */
 	public function GetAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetColor()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_COLOR);
@@ -171,5 +176,10 @@ class ManageReservationColorsPage extends ActionPage implements IManageReservati
 	public function GetRuleId()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_COLOR_RULE_ID);
+	}
+
+	public function GetAttributeId()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_ID);
 	}
 }
