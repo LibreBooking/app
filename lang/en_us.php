@@ -815,7 +815,8 @@ class en_us extends Language
         $strings['ManageResourceStatuses'] = 'Manage Resource Statuses';
         $strings['AddStatusReason'] = 'Add Resource Status Reason';
         $strings['FindResources'] = 'Find Resources';
-        $strings['ManageResourceGroups'] = 'Manage resource groups';
+        $strings['ManageResourceGroupsHelp'] = 'Manage resource groups';
+        $strings['UserSearchPlaceholder'] = 'User name or email';
         // End Strings
 
 		// Install

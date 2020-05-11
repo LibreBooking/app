@@ -69,6 +69,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 			</ul>
 		</div>
+		<div class="right">
+			<button class="add-link add-resource btn btn-flat waves-effect waves-light">{translate key="AddResource"}
+				<span class="fas fa-plus-circle icon add"></span>
+			</button>
+		</div>
 		<h1 class="page-title underline">{translate key='ManageResources'}</h1>
 	</div>
 
@@ -173,13 +178,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="card admin-panel" id="list-resources-panel">
 		<div class="card-content">
-			<div class="panel-heading">
-				<button class="add-link add-resource btn btn-flat waves-effect waves-light">{translate key="AddResource"}
-					<span class="fas fa-plus-circle icon add"></span>
-				</button>
-			</div>
 			<div class="panel-body no-padding" id="resourceList">
-
                 {foreach from=$Resources item=resource}
                     {assign var=id value=$resource->GetResourceId()}
 					<div class="resourceDetails" data-resourceId="{$id}">
@@ -994,11 +993,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<select id="addStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID}
 							class="reasonId"></select>
 				</div>
-				<div>
-					<a href="{$ScriptUrl}/admin/manage_resource_status.php">{translate key=ManageResourceStatuses}</a>
-				</div>
 			</div>
 			<div class="modal-footer">
+				<div class="left">
+					<a class="btn btn-flat blue-text waves-effect" href="{$ScriptUrl}/admin/manage_resource_status.php">{translate key=ManageResourceStatuses}</a>
+				</div>
                 {cancel_button}
                 {update_button submit=true}
                 {indicator}
@@ -1488,11 +1487,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<li>{translate key=DeleteResourceWarningReservations}</li>
 							<li>{translate key=DeleteResourceWarningPermissions}</li>
 						</ul>
-
                         {translate key=DeleteResourceWarningReassign}
 					</div>
-
-
 				</div>
 
 				<div>{translate key=Select}
@@ -1519,12 +1515,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div class="modal-content">
 			<div class="input-field">
-				<label for="userSearch">{translate key=AddUser}</label>
+				<label for="userSearch">{translate key=UserSearchPlaceholder}</label>
 				<input type="text" id="userSearch" class="form-control"/>
 			</div>
 			<a href="#" id="browseUsers">{translate key=Browse}</a>
 			<div id="resourceUserList"></div>
-
 		</div>
 		<div class="modal-footer">
             {cancel_button}
@@ -1556,11 +1551,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
-				<a href="#" id="browseGroups">{translate key=AllGroups}</a>
 				<div class="input-field">
 					<label for="groupSearch">{translate key=GroupName}</label>
 					<input type="text" id="groupSearch" class="form-control"/>
 				</div>
+				<a href="#" id="browseGroups">{translate key=Browse}</a>
 				<div id="resourceGroupList"></div>
 			</div>
 			<div class="modal-footer">
@@ -1598,18 +1593,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
-				<div><a href="{$ScriptUrl}/admin/manage_resource_groups.php">{translate key=ManageResourceGroups}</a></div>
-				<div>{translate key=ResourceGroups</div>
-				{foreach from=$ResourceGroupList item=group}
+
+				<div>{translate key=ResourceGroups}</div>
+                {foreach from=$ResourceGroupList item=group}
 					<div>
 						<label for="group{$group->id}">
-							<input type="checkbox" value="{$group->id}" id="group{$group->id}" />
+							<input type="checkbox" value="{$group->id}" id="group{$group->id}"/>
 							<span>{$group->name}</span>
 						</label>
 					</div>
-				{/foreach}
+                {/foreach}
 			</div>
 			<div class="modal-footer">
+				<div class="left"><a class="btn btn-flat blue-text waves-effect" href="{$ScriptUrl}/admin/manage_resource_groups.php">{translate key=ManageResourceGroupsHelp}</a></div>
                 {cancel_button}
                 {update_button submit=true}
                 {indicator}
