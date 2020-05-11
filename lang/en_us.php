@@ -817,6 +817,7 @@ class en_us extends Language
         $strings['FindResources'] = 'Find Resources';
         $strings['ManageResourceGroupsHelp'] = 'Manage resource groups';
         $strings['UserSearchPlaceholder'] = 'User name or email';
+        $strings['FindReservations'] = 'Find Reservations';
         // End Strings
 
 		// Install
