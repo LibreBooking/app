@@ -29,13 +29,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<ul id="dropdown-menu" class="dropdown-content" role="menu" aria-labelledby="moreReservationActions">
                 {if $CanViewAdmin}
 					<li>
-						<a href="#" id="import-reservations" class="add-link">{translate key=Import}
+						<a href="#" id="import-reservations">{translate key=Import}
 							<span class="fa fa-upload"></span>
 						</a>
 					</li>
                 {/if}
 				<li>
-					<a href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="add-link"
+					<a href="{$CsvExportUrl}" download="{$CsvExportUrl}"
 					   target="_blank">{translate key=Export}
 						<span class="fa fa-download"></span>
 					</a>
@@ -43,13 +43,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {if $CanViewAdmin}
 					<li class="divider"></li>
 					<li>
-						<a href="#" id="addTermsOfService" class="add-link">{translate key=TermsOfService}
+						<a href="#" id="addTermsOfService">{translate key=TermsOfService}
 							<span class="fa fa-book"></span>
 						</a>
 					</li>
 					<li>
-						<a href="manage_reservation_colors.php" id="addTermsOfService"
-						   class="add-link">{translate key=ReservationColors}
+						<a href="manage_reservation_colors.php" id="addTermsOfService">{translate key=ReservationColors}
 							<span class="fa fa-paint-brush"></span>
 						</a>
 					</li>
@@ -473,13 +472,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div id="importInstructions">
 						<div class="note">{translate key=ReservationImportInstructions}</div>
-						<a href="{$smarty.server.SCRIPT_NAME}?dr=template"
-						   download="{$smarty.server.SCRIPT_NAME}?dr=template"
-						   target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
+				<a href="{$smarty.server.SCRIPT_NAME}?dr=template"
+										   download="{$smarty.server.SCRIPT_NAME}?dr=template"
+										   class="btn btn-flat waves-effect waves-light black-text left"
+										   target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
                 {cancel_button}
                 {add_button key=Import}
                 {indicator}

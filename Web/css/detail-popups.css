@@ -117,7 +117,7 @@ a.btn-flat:hover {
 }
 .btn-link,
 a.btn-link {
-  color: #669999;
+  color: #64b5f6;
   background-color: transparent;
 }
 .btn-link:hover,
@@ -126,7 +126,7 @@ a.btn-link:hover,
 .btn-link:focus,
 a.btn-link:active,
 a.btn-link:focus {
-  color: #428181;
+  color: #1976d2;
   background-color: transparent;
 }
 button:active,
@@ -143,15 +143,15 @@ body {
 }
 a,
 a:visited {
-  color: #669999;
+  color: #64b5f6;
+}
+a:hover {
+  color: #1976d2;
 }
 a.btn,
 a.btn:hover,
 a.btn:visited {
   color: #fff;
-}
-a:hover {
-  color: #428181;
 }
 .footer {
   text-align: center;

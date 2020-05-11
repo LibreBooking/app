@@ -73,10 +73,10 @@
 }
 .booked-agenda-date a,
 .booked-agenda-date a:visited {
-  color: #669999;
+  color: #64b5f6;
 }
 .booked-agenda-date a:hover {
-  color: #428181;
+  color: #1976d2;
 }
 .booked-calendar-week,
 .booked-weekday-names {
