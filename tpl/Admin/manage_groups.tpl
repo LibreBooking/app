@@ -144,7 +144,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
          aria-hidden="true">
         <div class="modal-header">
             <h4 class="modal-title left" id="membersDialogLabel">{translate key=GroupMembers}</h4>
-            <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
         </div>
         <div class="modal-content">
             <div class="input-field">
@@ -169,7 +169,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
          aria-hidden="true">
         <div class="modal-header">
             <h4 class="modal-title left" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
-            <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
         </div>
         <div class="modal-content">
             <div id="allUsersList"></div>
@@ -182,7 +182,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="permissionsForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="permissionsDialogLabel">{translate key=Permissions}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <a href="#" id="checkNoResources">{translate key=None}</a> |
@@ -229,7 +229,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="deleteGroupForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="deleteDialogLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="card warning">
@@ -254,7 +254,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="editGroupForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="editDialogLabel">{translate key=Update}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="input-field">
@@ -284,7 +284,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <form id="rolesForm" method="post">
                 <div class="modal-header">
                     <h4 class="modal-title left" id="rolesDialogLabel">{translate key=WhatRolesApplyToThisGroup}</h4>
-                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                    <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
                 </div>
                 <div class="modal-content">
                     {foreach from=$Roles item=role}
@@ -311,7 +311,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="modal-header">
                     <h4 class="modal-title left"
                         id="resourceAdminDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
-                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                    <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
                 </div>
                 <div class="modal-content">
                     <div class="title"><span class="count"></span> {translate key=Resources}</div>
@@ -340,7 +340,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="modal-header">
                     <h4 class="modal-title left"
                         id="groupAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
-                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                    <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
                 </div>
                 <div class="modal-content">
                     <div class="title"><span class="count"></span> {translate key=Groups}</div>
@@ -369,7 +369,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="modal-header">
                     <h4 class="modal-title left"
                         id="scheduleAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
-                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                    <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
                 </div>
                 <div class="modal-content">
                     <div class="title"><span class="count"></span> {translate key=Schedules}</div>
@@ -401,7 +401,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <div class="modal-header">
                 <h4 class="modal-title left"
                     id="groupAdminDialogLabel">{translate key=WhoCanManageThisGroup}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="input-field">
@@ -428,7 +428,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="creditsAddForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="creditsAddDialogLabel">{translate key=AddCredits}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div>
@@ -458,7 +458,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="creditsReplenishForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="creditsReplenishDialogLabel">{translate key=ReplenishCredits}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div>

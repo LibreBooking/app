@@ -99,7 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addForm" method="post" ajaxAction="{ManageResourceStatusActions::Add}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="addResourceModalLabel">{translate key=AddStatusReason}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -122,7 +122,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="editForm" method="post" ajaxAction="{ManageResourceStatusActions::Update}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="editDialogLabel">{translate key=Edit}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -145,7 +145,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="deleteForm" method="post" ajaxAction="{ManageResourceStatusActions::Delete}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteDialogLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="card error">

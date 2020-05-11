@@ -19,10 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="dashboard dashboard availabilityDashboard" id="availabilityDashboard">
     <div class="dashboardHeader">
-        <div class="pull-left">{translate key="ResourceAvailability"}</div>
-        <div class="pull-right">
+        <div class="left">{translate key="ResourceAvailability"}</div>
+        <div class="right">
             <a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
-                <i class="fa fa-chevron-down"></i>
+                <i class="fas fa-chevron-down"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
         </div>

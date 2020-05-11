@@ -108,14 +108,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {if $AllowGoogleLogin}
                                 <div class="social-login" id="socialLoginGoogle">
                                     <a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state={$GoogleState}&redirect_uri=https://www.social.twinkletoessoftware.com/googleresume.php&response_type=code&client_id=531675809673-3sfvrchh6svd9bfl7m55dao8n4s6cqpc.apps.googleusercontent.com">
-                                        <i class="fa fa-google"></i> {translate key=SignInGoogle}
+                                        <i class="fab fa-google"></i> {translate key=SignInGoogle}
                                     </a>
                                 </div>
                             {/if}
                             {if $AllowFacebookLogin}
                                 <div class="social-login" id="socialLoginFacebook">
                                     <a href="https://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
-                                        <i class="fa fa-facebook"></i> {translate key=SignInFacebook}
+                                        <i class="fab fa-facebook-square"></i> {translate key=SignInFacebook}
                                     </a>
                                 </div>
                             {/if}

@@ -603,7 +603,7 @@ class Queries
 		ORDER BY `priority`, `start_date`, `end_date`';
 
 	const GET_GROUP_BY_ID =
-			'SELECT *
+			'SELECT `g`.*, `rule`.`type`, `rule`.`amount`, `rule`.`day_of_month`, `rule`.`interval`, `rule`.`last_replenishment_date`
 		FROM `groups` `g`
 		LEFT JOIN `group_credit_replenishment_rule` `rule` ON `g`.`group_id` = `rule`.`group_id`
 		WHERE `g`.`group_id` = @groupid';

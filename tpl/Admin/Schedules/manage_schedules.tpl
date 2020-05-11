@@ -242,7 +242,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title left" id="addScheduleDialogLabel">{translate key=AddSchedule}</h4>
-                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                    <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
                 </div>
                 <div class="modal-body">
                     <div class="input-field">
@@ -315,7 +315,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title left" id="changeLayoutDialogLabel">{translate key=ChangeLayout}</h4>
-                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                    <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
                 </div>
                 <div class="modal-body">
                     <div class="validationSummary card error no-show">
@@ -649,7 +649,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title left" id="customLayoutDialogLabel">{translate key=ChangeLayout}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="clearfix"></div>
             <div class="modal-body">

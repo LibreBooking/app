@@ -814,6 +814,8 @@ class en_us extends Language
         $strings['MakeDefaultSchedule'] = 'Make this my default schedule';
         $strings['ManageResourceStatuses'] = 'Manage Resource Statuses';
         $strings['AddStatusReason'] = 'Add Resource Status Reason';
+        $strings['FindResources'] = 'Find Resources';
+        $strings['ManageResourceGroups'] = 'Manage resource groups';
         // End Strings
 
 		// Install

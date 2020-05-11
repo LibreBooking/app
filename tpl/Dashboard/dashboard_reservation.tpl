@@ -11,14 +11,14 @@
     {if $checkin}
         <div class="col s12 m1">
             <button title="{translate key=CheckIn}" type="button" class="btn btn-small col s12 btn-success btnCheckin" data-referencenumber="{$reservation->ReferenceNumber}" data-url="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
-                <i class="fa fa-sign-in"> {translate key=CheckIn}</i>
+				<i class="fas fa-sign-in-alt"></i> {translate key=CheckIn}
             </button>
         </div>
     {/if}
     {if $checkout}
         <div class="col s12 m1">
             <button title="{translate key=CheckOut}" type="button" class="btn btn-small col s12  btn-success btnCheckin" data-referencenumber="{$reservation->ReferenceNumber}" data-url="ajax/reservation_checkin.php?action={ReservationAction::Checkout}">
-                <i class="fa fa-sign-out"> {translate key=CheckOut}</i>
+				<i class="fas fa-sign-out-alt"></i> {translate key=CheckOut}
             </button>
         </div>
     {/if}

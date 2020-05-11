@@ -21,7 +21,7 @@ function Dashboard(opts) {
     };
 	Dashboard.prototype.init = function () {
 		function setIcon(dash, targetIcon) {
-			var iconSpan = dash.find('.dashboardHeader').find('a>.fa');
+			var iconSpan = dash.find('.dashboardHeader').find('a>.fas');
 			iconSpan.removeClass('fa-chevron-up');
 			iconSpan.removeClass('fa-chevron-down');
 			iconSpan.addClass(targetIcon);

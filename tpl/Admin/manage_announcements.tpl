@@ -138,7 +138,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="deleteForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="deleteDialogLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="card warning">
@@ -161,7 +161,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="editForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="editDialogLabel">{translate key=Edit}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="input-field">
@@ -217,7 +217,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="emailForm" method="post">
             <div class="modal-header">
                 <h4 class="modal-title left" id="emailDialogLabel">{translate key=SendAsEmail}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="card info">

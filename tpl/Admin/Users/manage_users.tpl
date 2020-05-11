@@ -233,7 +233,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageUsersActions::AddUser}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="addUserModalLabel">{translate key=AddUser}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div id="addUserResults" class="validationSummary alert alert-danger no-show">
@@ -343,7 +343,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageUsersActions::ImportUsers}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="importUsersModalLabel">{translate key=Import}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div id="importUserResults" class="validationSummary alert alert-danger no-show">
@@ -414,7 +414,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="permissionsForm" method="post" ajaxAction="{ManageUsersActions::Permissions}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="permissionsModalLabel">{translate key=Permissions}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="card warning">
@@ -457,7 +457,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="passwordModalLabel">{translate key=Password}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -491,7 +491,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="invitationForm" method="post" ajaxAction="{ManageUsersActions::InviteUsers}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="invitationModalLabel">{translate key=InviteUsers}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -516,7 +516,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="userForm" method="post" ajaxAction="{ManageUsersActions::UpdateUser}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="userModalLabel">{translate key=Edit}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div id="update-user-placeholder"></div>
@@ -535,7 +535,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="deleteUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteUser}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteModalLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="card warning">
@@ -560,7 +560,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="deleteMultipleUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteMultipleUsers}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteMultipleModalLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="card warning">
@@ -585,7 +585,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		 aria-hidden="true">
 		<div class="modal-header">
 			<h4 class="modal-title left" id="groupsModalLabel">{translate key=Groups}</h4>
-			<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 		</div>
 
 		<div class="modal-content">
@@ -624,7 +624,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="colorForm" method="post" ajaxAction="{ManageUsersActions::ChangeColor}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="colorModalLabel">{translate key=Color}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
 			</div>
 			<div class="modal-content">
 				<div class="input-group">

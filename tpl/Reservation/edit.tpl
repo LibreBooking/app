@@ -104,7 +104,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
          aria-hidden="true">
         <div class="modal-header">
             <h4 class="modal-title left" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
-             <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+             <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
         </div>
         <div class="modal-content">
             <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
@@ -144,7 +144,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="deleteButtonPrompt" class="modal modal-fixed-header modal-fixed-footer">
         <div class="modal-header">
             <h4 class="modal-title left" id="updateButtonsLabel">{translate key=Delete}</h4>
-             <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+             <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
         </div>
         <div class="modal-content">
             <div>{translate key=DeleteReminderWarning}</div>
@@ -198,7 +198,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <form id="emailReservationForm" method="post" role="form" onkeypress="return event.keyCode != 13;">
             <div class="modal-header">
                 <h4 class="modal-title" id="emailReservationLabel">{translate key=EmailReservation}</h4>
-                 <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                 <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
             </div>
             <div class="modal-content">
                 <div class="form-group">

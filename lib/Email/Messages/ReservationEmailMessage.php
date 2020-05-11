@@ -143,6 +143,8 @@ abstract class ReservationEmailMessage extends EmailMessage
 		}
 		$this->Set('ResourceNames', $resourceNames);
 		$this->Set('Accessories', $this->reservationSeries->Accessories());
+		$this->Set('Resources', $this->reservationSeries->AllResources());
+		$this->Set('PrimaryResource', $this->primaryResource);
 
 		$attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
 		$attributeValues = array();
@@ -199,6 +201,7 @@ abstract class ReservationEmailMessage extends EmailMessage
 
         $this->Set('CreditsCurrent', $currentInstance->GetCreditsRequired());
         $this->Set('CreditsTotal', $this->reservationSeries->GetCreditsRequired());
+        $this->Set('Location', $this->primaryResource->GetLocation());
 	}
 
 	private function GetFullImagePath($img)
