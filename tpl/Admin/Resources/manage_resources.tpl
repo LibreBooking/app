@@ -70,8 +70,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 		</div>
 		<div class="right">
-			<button class="add-link add-resource btn btn-flat waves-effect waves-light">{translate key="AddResource"}
-				<span class="fas fa-plus-circle icon add"></span>
+			<button class="add-resource btn admin-action-button waves-effect waves-light">
+				{translate key="AddResource"}
+				<span class="fas fa-plus-circle icon"></span>
 			</button>
 		</div>
 		<h1 class="page-title underline">{translate key='ManageResources'}</h1>
@@ -166,8 +167,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 			<div class="card-action align-right">
-                {reset_button id="clearFilter" class="btn-sm"}
-                {filter_button id="filter" class="btn-sm"}
+                {reset_button id="clearFilter" class="btn-small"}
+                {filter_button id="filter" class="btn-small"}
 			</div>
 		</form>
 	</div>

@@ -19,10 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div>
 	{if $Successful}
 		<h5>{translate key=$SuccessKey}</h5>
-		<button class="reload btn btn-primary">{translate key="OK"}</button>
+		<div><button class="reload btn btn-primary">{translate key="OK"}</button></div>
 	{else}
 		<h5>{translate key=$FailKey}</h5>
-		<button class="unblock btn btn-primary">{translate key="OK"}</button>
+		<div><button class="unblock btn btn-primary">{translate key="OK"}</button></div>
 	{/if}
 
 	{if !empty($Message)}
@@ -31,9 +31,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if !empty($Blackouts)}
 		<strong>{translate key=BlackoutConflicts}</strong>
-		{foreach from=$Blackouts item=blackout}
+		<div>{foreach from=$Blackouts item=blackout}
 			{format_date date=$blackout->StartDate timezone=$Timezone}
 		{/foreach}
+		</div>
 	{/if}
 
 	{if !empty($Reservations)}

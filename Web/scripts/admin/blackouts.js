@@ -27,7 +27,10 @@ function BlackoutManagement(opts) {
 		deleteMultipleCheckboxes: $('.delete-multiple'),
 		deleteMultipleSelectAll: $('#delete-all'),
 		deleteMultipleCount: $('#deleteMultipleCount'),
-		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder')
+		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder'),
+
+		addPromptButton: $('#add-blackout-prompt'),
+		addDialog: $('#add-blackout-dialog')
 	};
 
 	var blackoutId;
@@ -35,10 +38,10 @@ function BlackoutManagement(opts) {
 	BlackoutManagement.prototype.init = function () {
 
 		wireUpUpdateButtons();
-
-		$(".save").click(function () {
-			$(this).closest('form').submit();
-		});
+		//
+		// $(".save").click(function () {
+		// 	$(this).closest('form').submit();
+		// });
 
 		$(".cancel").click(function () {
 			$(this).closest('.modal').modal("close");
@@ -53,43 +56,11 @@ function BlackoutManagement(opts) {
 			$.unblockUI();
 		});
 
-        ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl);
+		ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl);
 
 		elements.blackoutTable.find('.edit').click(function (e) {
-			$('#update-spinner').show();
-			var tr = $(this).parents('tr');
-			var id = tr.attr('data-blackout-id');
-
-			var updateDiv = $('#update-contents');
-
-            $('#editBlackoutDialog').modal('open');
-
-			updateDiv.empty();
-            $('#update-spinner').removeClass('no-show');
-			updateDiv.load(opts.editUrl + id, function () {
-
-                M.updateTextFields();
-                $('#update-spinner').addClass('no-show');
-
-                updateDiv.find('select').each(function(i, select){
-                    $(select).formSelect();
-                });
-
-				wireUpUpdateButtons();
-
-                $(".save").unbind('click');
-				$(".save").click(function () {
-					$(this).closest('form').submit();
-				});
-
-				$('.blackoutResources').click(function (e) {
-					if ($(".blackoutResources input:checked").length == 0)
-					{
-						e.preventDefault();
-					}
-				});
-				wireUpTimePickers();
-			});
+			const id = $(e.currentTarget ).data('blackout-id');
+			handleEditClicked(id);
 		});
 
 		handleBlackoutApplicabilityChange();
@@ -146,11 +117,15 @@ function BlackoutManagement(opts) {
 			e.stopPropagation();
 			const thisChecked = $(e.target).is(":checked");
 			const blackoutId = $(e.target).attr("value");
-			elements.blackoutTable.find('.delete-multiple[value="' +  blackoutId +'"]').attr('checked', thisChecked);
-            const numberChecked = elements.blackoutTable.find('.delete-multiple:checked').length;
-            const  allSelected = numberChecked === elements.blackoutTable.find('.delete-multiple').length;
+			elements.blackoutTable.find('.delete-multiple[value="' + blackoutId + '"]').attr('checked', thisChecked);
+			const numberChecked = elements.blackoutTable.find('.delete-multiple:checked').length;
+			const allSelected = numberChecked === elements.blackoutTable.find('.delete-multiple').length;
 			elements.deleteMultipleSelectAll.prop('checked', allSelected);
 			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked === 0);
+		});
+
+		elements.addPromptButton.click(function (e) {
+			elements.addDialog.modal('open');
 		});
 
 		ConfigureAsyncForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {
@@ -164,6 +139,49 @@ function BlackoutManagement(opts) {
 		});
 		ConfigureAsyncForm(elements.deleteMultipleForm);
 	};
+
+	function handleEditClicked(id) {
+		const spinner = $('#update-spinner');
+		spinner.show();
+
+		$('#editBlackoutDialog').modal('open');
+
+		var updateDiv = $('#update-contents');
+		updateDiv.empty();
+		spinner.removeClass('no-show');
+
+		updateDiv.load(opts.editUrl + id, function () {
+
+			spinner.addClass('no-show');
+
+			M.updateTextFields();
+
+			updateDiv.find('select').each(function (i, select) {
+				$(select).formSelect();
+			});
+
+			wireUpUpdateButtons();
+
+			$(".save").unbind('click');
+			$(".save").click(function () {
+				$(this).closest('form').submit();
+			});
+
+			$('.blackoutResources').click(function (e) {
+				if ($(".blackoutResources input:checked").length == 0)
+				{
+					e.preventDefault();
+				}
+			});
+			wireUpTimePickers();
+
+			var form = $('#editBlackoutForm');
+			form.unbind('submit');
+			ConfigureAsyncForm(form, getUpdateUrl, onAddSuccess, null, {
+				onBeforeSubmit: onBeforeAddSubmit, target: '#result'
+			});
+		});
+	}
 
 	function showDeleteBlackout() {
 		elements.deleteDialog.modal('open');
@@ -210,7 +228,7 @@ function BlackoutManagement(opts) {
 	}
 
 	function onDeleteSuccess() {
-        $('.modal').modal('close');
+		$('.modal').modal('close');
 		location.reload();
 	}
 
@@ -249,13 +267,13 @@ function BlackoutManagement(opts) {
 				elements.addResourceId.removeAttr('disabled');
 			}
 
-            elements.addResourceId.formSelect();
-            elements.addScheduleId.formSelect();
+			elements.addResourceId.formSelect();
+			elements.addScheduleId.formSelect();
 		});
 	}
 
 	function wireUpTimePickers() {
-        $('.timepicker').unbind('timepicker');
+		$('.timepicker').unbind('timepicker');
 		$('.timepicker').timepicker({
 			timeFormat: options.timeFormat
 		});
@@ -266,12 +284,12 @@ function BlackoutManagement(opts) {
 	}
 
 	function wireUpUpdateButtons() {
-        $('.btnUpdateThisInstance').unbind('click');
+		$('.btnUpdateThisInstance').unbind('click');
 		$('.btnUpdateThisInstance').click(function () {
 			ChangeUpdateScope(options.scopeOpts.instance);
 		});
 
-        $('.btnUpdateAllInstances').unbind('click');
+		$('.btnUpdateAllInstances').unbind('click');
 		$('.btnUpdateAllInstances').click(function () {
 			ChangeUpdateScope(options.scopeOpts.full);
 		});

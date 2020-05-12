@@ -210,7 +210,7 @@ a.btn-flat:hover {
 }
 .btn-link,
 a.btn-link {
-  color: #64b5f6;
+  color: #1976d2;
   background-color: transparent;
 }
 .btn-link:hover,
@@ -219,7 +219,7 @@ a.btn-link:hover,
 .btn-link:focus,
 a.btn-link:active,
 a.btn-link:focus {
-  color: #1976d2;
+  color: #64b5f6;
   background-color: transparent;
 }
 button:active,
@@ -236,10 +236,10 @@ body {
 }
 a,
 a:visited {
-  color: #64b5f6;
+  color: #1976d2;
 }
 a:hover {
-  color: #1976d2;
+  color: #64b5f6;
 }
 a.btn,
 a.btn:hover,
@@ -2343,6 +2343,15 @@ span.error {
   width: 75%;
   border: solid 1px #000000;
   padding: 0;
+}
+.admin-action-button {
+  background-color: #64b5f6;
+  color: #fff;
+  font-weight: 600;
+}
+.admin-action-button:hover,
+.admin-action-button:active {
+  background-color: #90caf9;
 }
 .admin-panel .title {
   font-size: 1.4em;

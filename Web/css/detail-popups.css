@@ -117,7 +117,7 @@ a.btn-flat:hover {
 }
 .btn-link,
 a.btn-link {
-  color: #64b5f6;
+  color: #1976d2;
   background-color: transparent;
 }
 .btn-link:hover,
@@ -126,7 +126,7 @@ a.btn-link:hover,
 .btn-link:focus,
 a.btn-link:active,
 a.btn-link:focus {
-  color: #1976d2;
+  color: #64b5f6;
   background-color: transparent;
 }
 button:active,
@@ -143,10 +143,10 @@ body {
 }
 a,
 a:visited {
-  color: #64b5f6;
+  color: #1976d2;
 }
 a:hover {
-  color: #1976d2;
+  color: #64b5f6;
 }
 a.btn,
 a.btn:hover,

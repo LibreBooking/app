@@ -277,9 +277,9 @@ function ResourceManagement(opts) {
 			elements.bulkDeleteList.find('input:checkbox').prop('checked', false);
 		});
 
-		// $(".save").click(function () {
-		// 	$(this).closest('form').submit();
-		// });
+		$(".save").click(function () {
+			$(this).closest('form').submit();
+		});
 
 		$(".cancel").click(function () {
 			$(this).closest('.modal').modal('close');
