@@ -147,7 +147,7 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 		));
 		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('timepicker'));
 
-		$this->Display('Admin/manage_quotas.tpl');
+		$this->Display('Admin/Quotas/manage_quotas.tpl');
 	}
 
 	public function ProcessAction()

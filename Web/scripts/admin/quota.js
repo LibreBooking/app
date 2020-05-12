@@ -11,7 +11,9 @@ function QuotaManagement(opts) {
 		enforceEveryDayToggle: $('#enforce-every-day'),
 		enforceDays: $('#enforce-days'),
 		enforceStartTime: $('#enforce-time-start'),
-		enforceEndTime: $('#enforce-time-end')
+		enforceEndTime: $('#enforce-time-end'),
+		addDialog: $("#add-quota-dialog"),
+		addQuotaPrompt: $("#add-quota-prompt")
 	};
 
 	var activeQuotaId = null;
@@ -22,13 +24,17 @@ function QuotaManagement(opts) {
 			setActiveQuotaId($(this).attr('quotaId'));
 			elements.deleteDialog.modal('open');
 		});
-
-		$(".save").click(function () {
-			$(this).closest('form').submit();
-		});
+		//
+		// $(".save").click(function () {
+		// 	$(this).closest('form').submit();
+		// });
 
 		$(".cancel").click(function () {
 			$(this).closest('.dialog').modal("close");
+		});
+
+		elements.addQuotaPrompt.on('click', function(e){
+			elements.addDialog.modal('open');
 		});
 
 		elements.enforceAllDayToggle.click(function (e) {
@@ -84,6 +90,9 @@ function QuotaManagement(opts) {
 	};
 
 	var validateTimes = function () {
+		elements.addForm.find('.indicator').removeClass('no-show');
+		$(jqForm).find('button').addClass('no-show');
+
 		$('#timeError').addClass('no-show');
 		if (!elements.enforceAllDayToggle.is(':checked'))
 		{
@@ -93,8 +102,11 @@ function QuotaManagement(opts) {
 
 			if (!valid)
 			{
+				elements.addForm.find('.indicator').addClass('no-show');
+				$(jqForm).find('button').removeClass('no-show');
 				$('#timeError').removeClass('no-show');
 			}
+
 			return valid;
 		}
 		return true;

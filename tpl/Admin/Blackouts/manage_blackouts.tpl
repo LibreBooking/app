@@ -31,7 +31,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<form class="form" role="form">
-		<div class="card" id="add-blackout-panel">
+		<div class="card" id="filter-blackout-panel">
 			<div class="card-content">
 				<div class="card-title">{translate key="FindBlackouts"} {showhide_icon}</div>
 				<div class="panel-body">
@@ -399,7 +399,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var blackoutManagement = new BlackoutManagement(blackoutOpts);
 			blackoutManagement.init();
 
-			$('#add-blackout-panel').showHidePanel();
+			$('#filter-blackout-panel').showHidePanel();
 		});
 
 		$.blockUI.defaults.css.width = '60%';

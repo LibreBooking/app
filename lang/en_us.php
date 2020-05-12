@@ -819,6 +819,7 @@ class en_us extends Language
         $strings['UserSearchPlaceholder'] = 'User name or email';
         $strings['FindReservations'] = 'Find Reservations';
         $strings['FindBlackouts'] = 'Find Blackouts';
+        $strings['UsersInGroup'] = 'Users In Group';
         // End Strings
 
 		// Install
