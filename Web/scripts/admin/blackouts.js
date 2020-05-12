@@ -36,12 +36,7 @@ function BlackoutManagement(opts) {
 	var blackoutId;
 
 	BlackoutManagement.prototype.init = function () {
-
 		wireUpUpdateButtons();
-		//
-		// $(".save").click(function () {
-		// 	$(this).closest('form').submit();
-		// });
 
 		$(".cancel").click(function () {
 			$(this).closest('.modal').modal("close");
@@ -125,6 +120,7 @@ function BlackoutManagement(opts) {
 		});
 
 		elements.addPromptButton.click(function (e) {
+			elements.addBlackoutForm.trigger('reset');
 			elements.addDialog.modal('open');
 		});
 
