@@ -87,6 +87,7 @@ class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
 
         $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
         $this->Set('Enabled', $this->IsEnabled());
+        $this->Set('ShouldLogout', false);
     }
 
     public function ProcessAction()
