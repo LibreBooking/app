@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-manage-quotas" class="admin-page row">
 	<div>
 		<div class="right">
-			<button class="btn admin-action-button waves-effect waves-light" id="add-quota-prompt">
+			<button class="btn add-quota-prompt admin-action-button waves-effect waves-light" id="add-quota-prompt">
                 {translate key="AddQuota"}
 				<span class="fas fa-plus-circle icon"></span>
 			</button>
@@ -29,12 +29,99 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<h1 class="page-title underline">{translate key=ManageQuotas}</h1>
 	</div>
 
+	<div id="quota-list">
+        {foreach from=$Quotas item=quota}
+            {capture name="scheduleName" assign="scheduleName"}
+				<span class='bold'>{if $quota->ScheduleName ne ""}
+                        {$quota->ScheduleName|replace:',':' '}
+                    {else}
+                        {translate key="AllSchedules"}
+                    {/if}
+					</span>
+            {/capture}
+            {capture name="resourceName" assign="resourceName"}
+				<span class='bold'>{if $quota->ResourceName ne ""}
+                        {$quota->ResourceName|replace:',':' '}
+                    {else}
+                        {translate key="AllResources"}
+                    {/if}
+					</span>
+            {/capture}
+            {capture name="groupName" assign="groupName"}
+				<span class='bold'>
+						{if $quota->GroupName ne ""}
+                            {$quota->GroupName|replace:',':' '}
+                        {else}
+                            {translate key="AllGroups"}
+                        {/if}
+					</span>
+            {/capture}
+            {capture name="amount" assign="amount"}
+				<span class='bold'>{$quota->Limit}</span>
+            {/capture}
+            {capture name="unit" assign="unit"}
+				<span class='bold'>{translate key=$quota->Unit}</span>
+            {/capture}
+            {capture name="duration" assign="duration"}
+				<span class='bold'>{translate key=$quota->Duration}</span>
+            {/capture}
+            {capture name="enforceHours" assign="enforceHours"}
+				<span class='bold'>
+					{if $quota->AllDay}
+                        {translate key=AllDay}
+                    {else}
+                        {translate key=Between} {formatdate date=$quota->EnforcedStartTime key=period_time} - {formatdate date=$quota->EnforcedEndTime key=period_time}
+                    {/if}
+					</span>
+            {/capture}
+            {capture name="enforceDays" assign="enforceDays"}
+				<span class='bold'>
+					{if $quota->Everyday}
+                        {translate key=Everyday}
+                    {else}
+                        {foreach from=$quota->EnforcedDays item=day}
+                            {translate key=$DayNames[$day]}
+                        {/foreach}
+                    {/if}
+					</span>
+            {/capture}
+            {capture name="scope" assign="scope"}
+                {if $quota->Scope == QuotaScope::IncludeCompleted}
+                    {translate key=IncludingCompletedReservations}
+                {else}
+                    {translate key=NotCountingCompletedReservations}
+                {/if}
+            {/capture}
+            {cycle values='row0,row1' assign=rowCss}
+			<div class="quotaItem {$rowCss}" data-quota-id="{$quota->Id}">
+                {translate key=QuotaConfiguration args="$scheduleName,$resourceName,$groupName,$amount,$unit,$duration"}
+				<span class="bold">{$scope}</span>.
+                {translate key=QuotaEnforcement args="$enforceHours,$enforceDays"}
+				<button quotaId="{$quota->Id}" class="btn btn-flat icon delete right" title="{translate key=Delete}">
+					<span class="fa fa-trash icon remove"></span>
+				</button>
+			</div>
+            {foreachelse}
+			<div class="card warning">
+				<div class="card-content">
+					<div class="center">{translate key=NoQuotasWarning}</div>
+					<div class="center">
+						<button class="btn add-quota-prompt btn-flat waves-effect waves-light">
+                            {translate key="AddQuota"}
+							<span class="fas fa-plus-circle icon"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+        {/foreach}
+	</div>
+
 	<div class="modal modal-large modal-fixed-header modal-fixed-footer" id="add-quota-dialog" tabindex="-1" role="dialog" aria-labelledby="add-quota-label"
 		 aria-hidden="true">
-		<form id="addQuotaForm" method="post" role="form">
+		<form id="addQuotaForm" method="post" role="form" ajaxAction="{ManageQuotasActions::AddQuota}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="add-quota-label">{translate key=AddQuota}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                {close_modal}
 			</div>
 
 			<div class="modal-content">
@@ -70,7 +157,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div>
-					Are limited to
+                    {translate key=AreLimitedTo}
 					<div class='input-field inline'>
 						<label for='quotaLimit'></label>
 						<input id='quotaLimit' type='number' step='any' class='mid-number' min='0' max='10000'
@@ -86,7 +173,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</select>
 					</div>
 
-					per
+                    {translate key=Per}
 
 					<div class='input-field inline'>
 						<label for='quotaFrequency'></label>
@@ -181,110 +268,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="modal-footer">
 				<div class="note left">{translate key=QuotaReminder}</div>
-				{indicator}
+                {indicator}
                 {cancel_button}
                 {add_button submit=true}
 			</div>
 		</form>
 	</div>
 
-
-	<div class="">
-        {foreach from=$Quotas item=quota}
-            {capture name="scheduleName" assign="scheduleName"}
-				<span class='bold'>{if $quota->ScheduleName ne ""}
-                        {$quota->ScheduleName|replace:',':' '}
-                    {else}
-                        {translate key="AllSchedules"}
-                    {/if}
-					</span>
-            {/capture}
-            {capture name="resourceName" assign="resourceName"}
-				<span class='bold'>{if $quota->ResourceName ne ""}
-                        {$quota->ResourceName|replace:',':' '}
-                    {else}
-                        {translate key="AllResources"}
-                    {/if}
-					</span>
-            {/capture}
-            {capture name="groupName" assign="groupName"}
-				<span class='bold'>
-						{if $quota->GroupName ne ""}
-                            {$quota->GroupName|replace:',':' '}
-                        {else}
-                            {translate key="AllGroups"}
-                        {/if}
-					</span>
-            {/capture}
-            {capture name="amount" assign="amount"}
-				<span class='bold'>{$quota->Limit}</span>
-            {/capture}
-            {capture name="unit" assign="unit"}
-				<span class='bold'>{translate key=$quota->Unit}</span>
-            {/capture}
-            {capture name="duration" assign="duration"}
-				<span class='bold'>{translate key=$quota->Duration}</span>
-            {/capture}
-            {capture name="enforceHours" assign="enforceHours"}
-				<span class='bold'>
-					{if $quota->AllDay}
-                        {translate key=AllDay}
-                    {else}
-                        {translate key=Between} {formatdate date=$quota->EnforcedStartTime key=period_time} - {formatdate date=$quota->EnforcedEndTime key=period_time}
-                    {/if}
-					</span>
-            {/capture}
-            {capture name="enforceDays" assign="enforceDays"}
-				<span class='bold'>
-					{if $quota->Everyday}
-                        {translate key=Everyday}
-                    {else}
-                        {foreach from=$quota->EnforcedDays item=day}
-                            {translate key=$DayNames[$day]}
-                        {/foreach}
-                    {/if}
-					</span>
-            {/capture}
-            {capture name="scope" assign="scope"}
-                {if $quota->Scope == QuotaScope::IncludeCompleted}
-                    {translate key=IncludingCompletedReservations}
-                {else}
-                    {translate key=NotCountingCompletedReservations}
-                {/if}
-            {/capture}
-            {cycle values='row0,row1' assign=rowCss}
-			<div class="quotaItem {$rowCss}">
-                {translate key=QuotaConfiguration args="$scheduleName,$resourceName,$groupName,$amount,$unit,$duration"}
-				<span class="bold">{$scope}</span>.
-                {translate key=QuotaEnforcement args="$enforceHours,$enforceDays"}
-				<a href="#" quotaId="{$quota->Id}" class="delete pull-right"><span
-							class="fa fa-trash icon remove"></span></a>
-			</div>
-            {foreachelse}
-            {translate key=None}
-        {/foreach}
-	</div>
-
-	<div class="modal" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+	<div class="modal modal-fixed-header modal-fixed-footer" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 		 aria-hidden="true">
+		<div class="modal-header">
+			<h4 class="modal-title left" id="deleteModalLabel">{translate key=Delete}</h4>
+            {close_modal}
+		</div>
 		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
-			</div>
-			<div class="modal-body">
-				<div class="card warning">
-					<div class="card-content">
-                        {translate key=DeleteWarning}
-					</div>
+			<div class="card warning">
+				<div class="card-content">
+                    {translate key=DeleteWarning}
 				</div>
 			</div>
-			<div class="modal-footer">
-				<form id="deleteQuotaForm" method="post">
-                    {cancel_button}
-                    {delete_button}
-                    {indicator}
-				</form>
-			</div>
+		</div>
+		<div class="modal-footer">
+			<form id="deleteQuotaForm" method="post">
+                {cancel_button}
+                {delete_button submit=true}
+                {indicator}
+			</form>
 		</div>
 	</div>
 
@@ -300,7 +309,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			$('div.modal').modal();
 
 			var actions = {
-				addQuota: '{ManageQuotasActions::AddQuota}', deleteQuota: '{ManageQuotasActions::DeleteQuota}'
+				addQuota: '{ManageQuotasActions::AddQuota}',
+				deleteQuota: '{ManageQuotasActions::DeleteQuota}'
 			};
 
 			var quotaOptions = {

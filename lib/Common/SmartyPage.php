@@ -189,6 +189,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'showhide_icon', array($this, 'ShowHideIcon'));
 		$this->registerPlugin('function', 'sort_column', array($this, 'SortColumn'));
 		$this->registerPlugin('function', 'formatcurrency', array($this, 'FormatCurrency'));
+		$this->registerPlugin('function', 'close_modal', array($this, 'CloseModal'));
 
 		/**
 		 * PageValidators
@@ -969,5 +970,9 @@ class SmartyPage extends Smarty
 			$fmt = new NumberFormatter($this->Resources->CurrentLanguage, NumberFormatter::CURRENCY);
 			echo $fmt->formatCurrency($amount, $currency);
 		}
+	}
+
+	public function CloseModal($params, &$smarty) {
+		return '<button class="modal-close btn btn-flat right black-text"><i class="fas fa-times"></i></button>';
 	}
 }

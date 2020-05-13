@@ -44,7 +44,6 @@ function HasResponseText(responseText) {
 }
 
 function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHandler, options) {
-
 	var beforeSerialize = (options ? options.onBeforeSerialize : null);
 	var opts = $.extend(
 			{

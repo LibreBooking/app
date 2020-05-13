@@ -68,8 +68,8 @@ a.btn-primary:focus {
 }
 .btn-warning,
 a.btn-warning {
-  background-color: #FA6900;
-  border-color: #943e00;
+  background-color: #e65100;
+  border-color: #802d00;
 }
 .btn-warning:hover,
 .btn-warning:active,
@@ -77,8 +77,8 @@ a.btn-warning {
 a.btn-warning:hover,
 a.btn-warning:active,
 a.btn-warning:focus {
-  background-color: #ff7715;
-  border-color: #FA6900;
+  background-color: #ff5a00;
+  border-color: #e65100;
 }
 .btn-info,
 a.btn-info {
@@ -296,9 +296,9 @@ a.btn:visited {
   color: #fff;
 }
 .card.warning {
-  background: #ff9547;
-  border: solid 1px #FA6900;
-  color: #7a3300;
+  background: #ffb74d;
+  border: solid 1px #e65100;
+  color: #000;
 }
 .card.notice {
   background: #cbdfdf;
@@ -819,8 +819,8 @@ textarea.textarea-highlight {
 .alert-warning,
 .alert-danger {
   padding: 1rem;
-  background-color: #ffc194;
-  border: solid 1px #FA6900;
+  background-color: #ffad80;
+  border: solid 1px #e65100;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;

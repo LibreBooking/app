@@ -820,6 +820,9 @@ class en_us extends Language
         $strings['FindReservations'] = 'Find Reservations';
         $strings['FindBlackouts'] = 'Find Blackouts';
         $strings['UsersInGroup'] = 'Users In Group';
+        $strings['AreLimitedTo'] = 'Are limited to';
+        $strings['Per'] = 'per';
+        $strings['NoQuotasWarning'] = 'There are no quotas defined';
         // End Strings
 
 		// Install

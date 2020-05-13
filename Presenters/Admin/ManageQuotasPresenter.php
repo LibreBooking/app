@@ -49,6 +49,10 @@ class ManageQuotasPresenter extends ActionPresenter
 	 * @var \IQuotaViewRepository
 	 */
 	private $quotaRepository;
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
 
 	/**
 	 * @param IManageQuotasPage $page

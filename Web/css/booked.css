@@ -161,8 +161,8 @@ a.btn-primary:focus {
 }
 .btn-warning,
 a.btn-warning {
-  background-color: #FA6900;
-  border-color: #943e00;
+  background-color: #e65100;
+  border-color: #802d00;
 }
 .btn-warning:hover,
 .btn-warning:active,
@@ -170,8 +170,8 @@ a.btn-warning {
 a.btn-warning:hover,
 a.btn-warning:active,
 a.btn-warning:focus {
-  background-color: #ff7715;
-  border-color: #FA6900;
+  background-color: #ff5a00;
+  border-color: #e65100;
 }
 .btn-info,
 a.btn-info {
@@ -389,9 +389,9 @@ a.btn:visited {
   color: #fff;
 }
 .card.warning {
-  background: #ff9547;
-  border: solid 1px #FA6900;
-  color: #7a3300;
+  background: #ffb74d;
+  border: solid 1px #e65100;
+  color: #000;
 }
 .card.notice {
   background: #cbdfdf;
@@ -912,8 +912,8 @@ textarea.textarea-highlight {
 .alert-warning,
 .alert-danger {
   padding: 1rem;
-  background-color: #ffc194;
-  border: solid 1px #FA6900;
+  background-color: #ffad80;
+  border: solid 1px #e65100;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -1759,10 +1759,10 @@ ul.jqtree-tree .jqtree-toggler {
   color: #72716d;
 }
 #make_default {
-  color: #ffc194;
+  color: #ffad80;
 }
 #make_default:hover {
-  color: #ff862e;
+  color: #ff6b1a;
 }
 #loading-schedule {
   position: fixed;
@@ -2156,7 +2156,7 @@ a.remove {
   color: #AA3939;
 }
 #reservation-response-image .warning {
-  color: #FA6900;
+  color: #e65100;
 }
 #reservation-response-image .success {
   color: #88CC88;
@@ -2634,9 +2634,12 @@ ul.jqtree-tree .group-resource .jqtree-title {
 #reservationTable tr.editable td {
   cursor: pointer;
 }
-.table .icon,
-#list-quotas-panel .icon {
-  font-size: 1.4em;
+.admin-page .icon,
+.admin-page button.icon {
+  font-size: 1.4rem;
+}
+.admin-page .admin-action-button .icon {
+  font-size: 1rem;
 }
 .inlineUpdate {
   cursor: pointer;

@@ -13,7 +13,8 @@ function QuotaManagement(opts) {
 		enforceStartTime: $('#enforce-time-start'),
 		enforceEndTime: $('#enforce-time-end'),
 		addDialog: $("#add-quota-dialog"),
-		addQuotaPrompt: $("#add-quota-prompt")
+		addQuotaPrompt: $(".add-quota-prompt"),
+		quotaList: $("#quota-list")
 	};
 
 	var activeQuotaId = null;
@@ -24,10 +25,6 @@ function QuotaManagement(opts) {
 			setActiveQuotaId($(this).attr('quotaId'));
 			elements.deleteDialog.modal('open');
 		});
-		//
-		// $(".save").click(function () {
-		// 	$(this).closest('form').submit();
-		// });
 
 		$(".cancel").click(function () {
 			$(this).closest('.dialog').modal("close");
@@ -45,8 +42,8 @@ function QuotaManagement(opts) {
 			handleEnforceEveryDayToggle(e);
 		});
 
-		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError, {onBeforeSubmit: validateTimes});
-		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteQuota), null, handleAddError);
+		ConfigureAsyncForm(elements.addForm, null, null, handleAddError, {onBeforeSubmit: validateTimes});
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteQuota), removeQuotaRow, handleAddError);
 	};
 
 	var getSubmitCallback = function (action) {
@@ -55,12 +52,17 @@ function QuotaManagement(opts) {
 		};
 	};
 
+	function removeQuotaRow() {
+		elements.quotaList.find(`[data-quota-id='${activeQuotaId}']`).remove();
+		elements.deleteDialog.modal('close');
+	}
+
 	var handleAddError = function (responseText) {
 		alert(responseText);
 	};
 
 	var setActiveQuotaId = function (quotaId) {
-		activeQuotaId = quotaId
+		activeQuotaId = quotaId;
 	};
 
 	var getActiveQuotaId = function () {
@@ -91,7 +93,7 @@ function QuotaManagement(opts) {
 
 	var validateTimes = function () {
 		elements.addForm.find('.indicator').removeClass('no-show');
-		$(jqForm).find('button').addClass('no-show');
+		elements.addForm.find('button').addClass('no-show');
 
 		$('#timeError').addClass('no-show');
 		if (!elements.enforceAllDayToggle.is(':checked'))
@@ -103,7 +105,7 @@ function QuotaManagement(opts) {
 			if (!valid)
 			{
 				elements.addForm.find('.indicator').addClass('no-show');
-				$(jqForm).find('button').removeClass('no-show');
+				elements.addForm.find('button').removeClass('no-show');
 				$('#timeError').removeClass('no-show');
 			}
 

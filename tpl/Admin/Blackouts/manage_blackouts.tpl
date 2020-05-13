@@ -110,14 +110,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="date">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 				<td>{$blackout->Title}</td>
 				<td style="max-width:150px;">{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
-				<td class="update"><a href="#" data-blackout-id="{$id}" class="edit"><span class="fa fa-edit icon"></span></a></td>
+				<td class="update">
+					<button data-blackout-id="{$id}" class="edit btn btn-flat" title="{translate key=Update}"><span class="fa fa-edit icon"></span></button></td>
                 {if $blackout->IsRecurring}
 					<td class="update">
-						<a href="#" class="update delete-recurring"><span class="fa fa-trash icon remove"></span></a>
+						<button class="btn btn-flat update delete-recurring" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></button>
 					</td>
                 {else}
 					<td class="update">
-						<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+						<button class="btn btn-flat update delete" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></button>
 					</td>
                 {/if}
 				<td class="action-delete">
@@ -136,9 +137,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tr>
 			<td colspan="7"></td>
 			<td class="action-delete">
-				<a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">
+				<button id="delete-selected" class="btn btn-flat no-show" title="{translate key=Delete}">
 					<span class="fa fa-trash icon remove"></span>
-				</a>
+				</button>
 			</td>
 		</tr>
 		</tfoot>
