@@ -1494,7 +1494,7 @@ table.reservations th {
 }
 table.reservations td {
   border: solid #36648B 1px;
-  height: 30px;
+  height: 40px;
   display: table-cell;
   padding: 0;
 }
@@ -1589,10 +1589,11 @@ table.reservations.mobile div.reservable {
   overflow: hidden;
   position: absolute;
   background-color: #000;
-  height: 30px;
+  height: 40px;
   border-top: solid 1px #36648B;
   border-left: solid 1px #36648B;
   z-index: 2;
+  font-size: 0.8rem;
 }
 .unreservable {
   background-color: #CF9D9B;

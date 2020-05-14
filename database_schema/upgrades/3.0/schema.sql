@@ -73,3 +73,6 @@ ALTER TABLE `accessories`
 
 ALTER TABLE `groups`
 	CHANGE `name` `name` VARCHAR(255) NOT NULL;
+
+ALTER TABLE `custom_attributes`
+	CHANGE `display_label` `display_label` VARCHAR(255) NOT NULL;
