@@ -1,4 +1,3 @@
-
 /**
 materialize overrides
  */
@@ -83,19 +82,22 @@ div.clearfix {
 .modal.modal-large {
   width: 75% !important;
   max-height: 90% !important;
-  top:5% !important;
+  top: 5% !important;
 }
 
 .modal {
   background-color: #fff;
+
   &.modal-fixed-header {
     padding: 0;
     height: 70%;
+
     .modal-header {
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       position: absolute;
       top: 0;
     }
+
     .modal-header {
       border-radius: 0 0 2px 2px;
       //background-color: #fafafa;
@@ -103,9 +105,10 @@ div.clearfix {
       height: 56px;
       width: 100%;
     }
+
     .modal-content {
       position: absolute;
-      top:56px;
+      top: 56px;
       height: calc(100% - 56px);
       max-height: 100%;
       width: 100%;
@@ -116,5 +119,51 @@ div.clearfix {
 
 strong {
   font-weight: 600;
+}
+
+@input-hilite-color: #2196f3;
+
+input:not([type]):focus:not([readonly]),
+input[type="text"]:not(.browser-default):focus:not([readonly]),
+ input[type="password"]:not(.browser-default):focus:not([readonly]),
+ input[type="email"]:not(.browser-default):focus:not([readonly]),
+ input[type="url"]:not(.browser-default):focus:not([readonly]),
+ input[type="time"]:not(.browser-default):focus:not([readonly]),
+ input[type="date"]:not(.browser-default):focus:not([readonly]),
+ input[type="datetime"]:not(.browser-default):focus:not([readonly]),
+ input[type="datetime-local"]:not(.browser-default):focus:not([readonly]),
+ input[type="tel"]:not(.browser-default):focus:not([readonly]),
+ input[type="number"]:not(.browser-default):focus:not([readonly]),
+ input[type="search"]:not(.browser-default):focus:not([readonly]),
+ textarea.materialize-textarea:focus:not([readonly])
+{
+  border-bottom-color: @input-hilite-color;
+  box-shadow: @input-hilite-color;
+}
+
+
+input:not([type]):focus:not([readonly]) + label,
+ input[type="text"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="password"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="email"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="url"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="time"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="date"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="datetime"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="datetime-local"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="tel"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="number"]:not(.browser-default):focus:not([readonly]) + label,
+ input[type="search"]:not(.browser-default):focus:not([readonly]) + label,
+ textarea.materialize-textarea:focus:not([readonly]) + label {
+  color:@input-hilite-color;
+}
+
+.input-field .prefix.active {
+  color: @input-hilite-color;
+}
+
+[type="checkbox"]:checked + span:not(.lever)::before {
+  border-right-color: @input-hilite-color;
+  border-bottom-color: @input-hilite-color;
 }
 /** end materialize overrides**/

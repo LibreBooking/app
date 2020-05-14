@@ -80,14 +80,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {/if}
 
                     {if $ShowUsernamePrompt && $ShowPasswordPrompt}
-                        <div class="col s12 justify-space-between-align-center login-action">
-                            <label for="rememberMe">
-                                <input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
+                        <div class="col m6 s12 login-action">
+                            <label for="remember-me">
+                                <input id="remember-me" type="checkbox" {formname key=PERSIST_LOGIN}>
                                 <span>{translate key=RememberMe}</span>
                             </label>
-
-                            <button type="submit" class="btn btn-primary waves-effect waves-light"
+                        </div>
+                        <div class="col m6 s12 login-action">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light btn-block"
                                     name="{Actions::LOGIN}"
+                                    id="login-button"
                                     value="submit">{translate key='LogIn'}</button>
                             <input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
                         </div>
