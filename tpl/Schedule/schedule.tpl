@@ -105,22 +105,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {assign var=titleWidth value="m5"}
 					<div id="schedule-actions" class="col s12 m3">
                         {block name="actions"}
-							<a class="dropdown-trigger btn btn-flat black-text" href="#" data-target="change-display-dropdown">Change Display <span class="fas fa-caret-down"></span></a>
+							<a class="dropdown-trigger btn btn-flat black-text" href="#" data-target="change-display-dropdown">{translate key=ChangeDisplayStyle} <span class="fas fa-caret-down"></span></a>
 							<ul id="change-display-dropdown" class="dropdown-content">
 							    <li><a href="#" class="schedule-style" id="schedule_standard" data-schedule-display="{ScheduleStyle::Standard}"><span class="fas fa-table"></span> Standard</a></li>
 							    <li><a href="#" class="schedule-style" id="schedule_tall" data-schedule-display="{ScheduleStyle::Tall}"><span class="fas fa-arrows-alt-v"></span> Tall</a></li>
 							    <li><a href="#" class="schedule-style" id="schedule_wide" data-schedule-display="{ScheduleStyle::Wide}"><span class="fas fa-arrows-alt-h"></span> Wide</a></li>
 							    <li><a href="#" class="schedule-style" id="schedule_week" data-schedule-display="{ScheduleStyle::CondensedWeek}"><span class="fas fa-calendar-week"></span> Condensed</a></li>
 							  </ul>
-
-                            {*                            <a href="#" class="schedule-style" id="schedule_standard"*}
-                            {*                               schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>*}
-                            {*                            <a href="#" class="schedule-style" id="schedule_tall"*}
-                            {*                               schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>*}
-                            {*                            <a href="#" class="schedule-style hidden-sm hidden-xs" id="schedule_wide"*}
-                            {*                               schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>*}
-                            {*                            <a href="#" class="schedule-style hidden-sm hidden-xs" id="schedule_week"*}
-                            {*                               schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>*}
 							<div>
                                 {if $SubscriptionUrl != null && $ShowSubscription}
 									<i class="material-icons">rss_feed</i>

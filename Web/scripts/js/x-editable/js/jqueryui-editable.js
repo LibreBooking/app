@@ -3211,7 +3211,7 @@ $(function(){
         @property tpl 
         @default <select></select>
         **/         
-        tpl:'<select class="browser-default"></select>'
+        tpl:'<select></select>'
     });
 
     $.fn.editabletypes.select = Select;      

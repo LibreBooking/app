@@ -351,7 +351,7 @@ class en_us extends Language
 		$strings['ChangeLayout'] = 'Change Layout';
 		$strings['AddSchedule'] = 'Add Schedule';
 		$strings['StartsOn'] = 'Starts On';
-		$strings['NumberOfDaysVisible'] = 'Number of Days Visible';
+		$strings['NumberOfDaysVisible'] = 'Number of Days to Show';
 		$strings['UseSameLayoutAs'] = 'Use Same Layout As';
 		$strings['Format'] = 'Format';
 		$strings['OptionalLabel'] = 'Optional Label';
@@ -781,8 +781,8 @@ class en_us extends Language
         $strings['AddOrRemoveAccessories'] = 'Add or remove accessories';
         $strings['AutoReleaseTooltip'] = 'Automatically released if not checked in';
         $strings['ViewAvailability'] = 'View Availability';
-        $strings['ViewAvailability'] = 'View Availability';
         $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
         $strings['StartTime'] = 'Start Time';
         $strings['EndTime'] = 'End Time';
         $strings['New'] = 'New';
@@ -823,6 +823,7 @@ class en_us extends Language
         $strings['AreLimitedTo'] = 'Are limited to';
         $strings['Per'] = 'per';
         $strings['NoQuotasWarning'] = 'There are no quotas defined';
+        $strings['ChangeDisplayStyle'] = 'Change Display Style';
         // End Strings
 
 		// Install
@@ -982,6 +983,7 @@ class en_us extends Language
 		$strings['ViewCalendar'] = 'View Calendar';
 		$strings['DataCleanup'] = 'Data Cleanup';
 		$strings['ManageEmailTemplates'] = 'Manage Email Templates';
+		$strings['View'] = 'View';
 		// End Page Titles
 
 		// Day representations

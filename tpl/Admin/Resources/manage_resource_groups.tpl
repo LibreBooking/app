@@ -70,7 +70,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="renameForm" method="post" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
             <div class="modal-header">
                 <h4 class="modal-title left" id="addResourceModalLabel">{translate key=Rename}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="input-field">
@@ -93,7 +93,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="deleteForm" method="post" ajaxAction="{ManageResourceGroupsActions::DeleteGroup}">
             <div class="modal-header">
                 <h4 class="modal-title left" id="addResourceModalLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="card error">
@@ -116,7 +116,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="addChildForm" method="post" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
             <div class="modal-header">
                 <h4 class="modal-title left" id="addResourceModalLabel">{translate key=AddNewGroup}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="input-field">

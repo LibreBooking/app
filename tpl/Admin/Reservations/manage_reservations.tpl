@@ -326,7 +326,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="deleteInstanceForm" method="post">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteInstanceDialogLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="modal-body">
@@ -355,7 +355,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title left" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
-					<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+					 {close_modal}
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-warning">
@@ -392,7 +392,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteMultipleModalLabel">{translate key=Delete} (<span
 							id="deleteMultipleCount"></span>)</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="modal-body">
@@ -417,7 +417,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		 aria-hidden="true">
 		<div class="modal-header">
 			<h4 class="modal-title left" id="inlineErrorLabel">{translate key=Error}</h4>
-			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			 {close_modal}
 		</div>
 		<div class="modal-content">
 
@@ -440,7 +440,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageReservationsActions::Import}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="importReservationsModalLabel">{translate key=Import}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 
@@ -497,7 +497,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="termsOfServiceForm" method="post" ajaxAction="termsOfService" enctype="multipart/form-data">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 

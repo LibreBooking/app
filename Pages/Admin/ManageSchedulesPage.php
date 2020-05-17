@@ -282,6 +282,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
             ScheduleStyle::Tall => $resources->GetString('Tall'),
             ScheduleStyle::CondensedWeek => $resources->GetString('Week'),
             ));
+        $this->Set('NumberOfDaysVisible', range(1, 30));
         $this->Display('Admin/Schedules/manage_schedules.tpl');
     }
 

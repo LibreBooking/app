@@ -52,9 +52,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {if $ShowUsernamePrompt}
                         <div class="col s12">
                             <div class="input-field margin-bottom-25">
+                                <label for="email">{translate key=UsernameOrEmail}</label>
                                 <i class="material-icons prefix">account_circle</i>
                                 <input type="text" required="required" id="email" {formname key=EMAIL}/>
-                                <label for="email">{translate key=UsernameOrEmail}</label>
+
                             </div>
                         </div>
                     {/if}
@@ -62,9 +63,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {if $ShowPasswordPrompt}
                         <div class="col s12">
                             <div class="input-field margin-bottom-25">
+                                <label for="password">{translate key=Password}</label>
                                 <i class="material-icons prefix">lock_outline</i>
                                 <input type="password" required="required" id="password" {formname key=PASSWORD}/>
-                                <label for="password">{translate key=Password}</label>
                             </div>
                         </div>
                     {/if}

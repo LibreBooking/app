@@ -153,7 +153,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addBlackoutForm" role="form" method="post">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="imageModalLabel">{translate key=AddBlackout}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="col s6">
@@ -258,7 +258,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		 aria-hidden="true">
 		<div class="modal-header">
 			<h4 class="modal-title left" id="deleteModalLabel">{translate key=Delete}</h4>
-			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			 {close_modal}
 		</div>
 		<div class="modal-content">
 			<div class="modal-body">
@@ -284,7 +284,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-body">
 				<div class="card warning">
@@ -321,7 +321,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  action="{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE_MULTIPLE}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="modal-body">

@@ -62,7 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action=add" method="post">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="addDialogLabel">{translate key=AddReservationColorRule}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -100,7 +100,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="deleteForm" action="{$smarty.server.SCRIPT_NAME}?action=delete" method="post">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteDialogLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="alert alert-warning">

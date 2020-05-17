@@ -48,7 +48,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             <div class="modal-header">
                 <h4 class="modal-title left" id="addLabel">{translate key=AddAttribute}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="input-field">

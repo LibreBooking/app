@@ -494,7 +494,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageResourcesActions::ActionAdd}" enctype="multipart/form-data">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="addResourceModalLabel">{translate key=AddNewResource}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="card warning no-show">
@@ -578,7 +578,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="imageModalLabel">{translate key=ResourceImages}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div id="resource-images">
@@ -610,7 +610,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageResourcesActions::ActionCopyResource}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="copyModalLabel">{translate key=Copy}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -633,7 +633,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="durationForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeDuration}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="durationModalLabel">{translate key=Duration}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="editMinDuration">
@@ -784,7 +784,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="accessForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeAccess}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="accessModalLabel">{translate key=Access}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="editStartNoticeAdd">
@@ -976,7 +976,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="accessModalLabel">{translate key=Status}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -1012,7 +1012,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=Delete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="card error">
@@ -1045,7 +1045,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  role="form">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="bulkUpdateLabel">{translate key=BulkResourceUpdate}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div id="bulkUpdateErrors" class="error no-show">
@@ -1477,7 +1477,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  role="form">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=BulkResourceDelete}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="card error">
@@ -1512,7 +1512,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		 aria-hidden="true">
 		<div class="modal-header">
 			<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=Users}</h4>
-			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			 {close_modal}
 		</div>
 		<div class="modal-content">
 			<div class="input-field">
@@ -1532,7 +1532,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		 aria-hidden="true">
 		<div class="modal-header">
 			<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=AllUsers}</h4>
-			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			 {close_modal}
 		</div>
 		<div class="modal-content">
 			<div id="allUsersList"></div>
@@ -1549,7 +1549,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="modal-dialog">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=AllGroups}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div class="input-field">
@@ -1570,7 +1570,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		 aria-hidden="true">
 		<div class="modal-header">
 			<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=Groups}</h4>
-			<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+			 {close_modal}
 		</div>
 		<div class="modal-content">
 			<div id="allGroupsList"></div>
@@ -1591,7 +1591,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="resourceGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceGroups}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=ResourceGroups}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 
@@ -1624,7 +1624,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="creditsForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeCredits}">
 			<div class="modal-header">
 				<h4 class="modal-title left" id="creditsModalLabel">{translate key=Credits}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 
@@ -1662,7 +1662,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ajaxAction="{ManageResourcesActions::ImportResources}">
 			<div class="modal-header">
 				<h4 class="modal-title left">{translate key=Import}</h4>
-				<a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+				 {close_modal}
 			</div>
 			<div class="modal-content">
 				<div id="importResults" class="validationSummary alert alert-danger no-show">

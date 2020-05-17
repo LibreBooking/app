@@ -65,7 +65,7 @@
         <form id="deleteReservationsForm" method="post" ajaxAction="deleteReservations">
             <div class="modal-header">
                 <h4 class="modal-title left" id="deleteReservationsDialogLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="card warning">
@@ -91,7 +91,7 @@
         <form id="purgeReservationsForm" method="post" ajaxAction="purge">
             <div class="modal-header">
                 <h4 class="modal-title left" id="purgeReservationsDialogLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="card warning">
@@ -116,7 +116,7 @@
         <form id="deleteBlackoutsForm" method="post" ajaxAction="deleteBlackouts">
             <div class="modal-header">
                 <h4 class="modal-title left" id="deleteBlackoutDialogLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="card warning">
@@ -143,7 +143,7 @@
         <form id="deleteUsersForm" method="post" ajaxAction="deleteUsers">
             <div class="modal-header">
                 <h4 class="modal-title left" id="deleteUsersDialogLabel">{translate key=Delete}</h4>
-                <a href="#" class="modal-close right black-text"><i class="fas fa-times"></i></a>
+                 {close_modal}
             </div>
             <div class="modal-content">
                 <div class="card warning">
