@@ -1,7 +1,9 @@
 function inlineEdit(element, edit) {
-
+	function isSelectElement() {
+		return element.data('type') === 'select';
+	}
 	function cleanupMaterializeFormSelect() {
-		if (element.data('type') === 'select')
+		if (isSelectElement())
 		{
 			try
 			{
@@ -12,19 +14,7 @@ function inlineEdit(element, edit) {
 		}
 	}
 
-	element.on('click', function (e) {
-
-		e.preventDefault();
-
-		cleanupMaterializeFormSelect();
-
-		element.addClass('no-show');
-		const editableElement = $(edit.editableElement);
-		const div = $("<div class='inline-block'/>");
-		const save = $("<button class='btn btn-flat'><i class=\"far fa-check-circle\"></i></button>");
-		const cancel = $("<button class='btn btn-flat'><i class=\"far fa-times-circle\"></i></button>");
-		const editableCopy = editableElement.clone();
-
+	function setEditableValue(editableElement) {
 		if (element.data('type') === 'select')
 		{
 			editableElement.find('select').val(element.data('value'));
@@ -34,11 +24,30 @@ function inlineEdit(element, edit) {
 		{
 			editableElement.find('input').val(element.data('value'));
 		}
+	}
 
-		save.on('click', function (e) {
+	function showEditable(editableElement, editableCopy) {
+		const div = $("<div class='inline-block'/>");
+		const form = $(`<form method='post' action='${edit.url}'/>`);
+		const save = $("<button class='btn btn-flat' type='submit'><i class=\"far fa-check-circle\"></i></button>");
+		const cancel = $("<button class='btn btn-flat'><i class=\"far fa-times-circle\"></i></button>");
+
+		cancel.on('click', function (e) {
+			e.preventDefault();
+			if (isSelectElement())
+			{
+				editableElement.find('select').formSelect('destroy');
+			}
+			$(edit.editableElement).remove();
+			div.remove();
+			editableCopy.insertAfter(element);
+			element.removeClass('no-show');
+		});
+
+		form.on('submit', function (e) {
 			e.preventDefault();
 			var value = editableElement.find('input').val();
-			if (element.data('type') === 'select')
+			if (isSelectElement())
 			{
 				value = editableElement.find("option:selected").text();
 			}
@@ -57,25 +66,26 @@ function inlineEdit(element, edit) {
 			}
 		});
 
-		cancel.on('click', function (e) {
-			e.preventDefault();
-			if (element.data('type') === 'select')
-			{
-				editableElement.find('select').formSelect('destroy');
-			}
-			$(edit.editableElement).remove();
-			div.remove();
-			editableCopy.insertAfter(element);
-			element.removeClass('no-show');
-		});
-
-
 		editableElement.removeClass('no-show');
 		editableElement.addClass('inline-block');
-		div.append(editableElement);
-		div.append(save);
-		div.append(cancel);
+		form.append(editableElement);
+		form.append(save);
+		form.append(cancel);
+		div.append(form);
 		div.insertAfter(element);
+	}
+
+	element.on('click', function (e) {
+		e.preventDefault();
+		element.addClass('no-show');
+
+		cleanupMaterializeFormSelect();
+
+		const editableElement = $(edit.editableElement);
+		const editableCopy = editableElement.clone();
+
+		setEditableValue(editableElement);
+		showEditable(editableElement, editableCopy);
 	});
 }
 
