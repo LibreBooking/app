@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							  data-value='{$schedule->GetDaysVisible()}'>{$schedule->GetDaysVisible()}</span>
 						<div class='input-field no-show' id='days-visible-edit'>
 							<label for='days-visible-select' class='active'>{translate key=days}</label>
-							<select id='days-visible-select'>
+							<select id='days-visible-select' {formname key=SCHEDULE_DAYS_VISIBLE}>
                                 {foreach from=$NumberOfDaysVisible item=n}
 									<option value='{$n}'>{$n}</option>
                                 {/foreach}

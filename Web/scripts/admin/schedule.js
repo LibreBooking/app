@@ -1,7 +1,10 @@
 function inlineEdit(element, edit) {
+	let outsideClickArea;
+
 	function isSelectElement() {
 		return element.data('type') === 'select';
 	}
+
 	function cleanupMaterializeFormSelect() {
 		if (isSelectElement())
 		{
@@ -26,43 +29,84 @@ function inlineEdit(element, edit) {
 		}
 	}
 
+	function outsideClickHandler(event) {
+		if (outsideClickArea && $(event.target).closest('.active-inline-editable').length === 0)
+		{
+			onCancel(outsideClickArea.editableElement, outsideClickArea.editableCopy, outsideClickArea.div);
+			$(document).off('click', outsideClickHandler);
+			outsideClickArea = undefined;
+		}
+	}
+
+	function handleClickOutside(editableElement, editableCopy, div) {
+		outsideClickArea = {editableElement, editableCopy, div};
+		$(document).on("click", outsideClickHandler);
+	}
+
+	function onCancel(editableElement, editableCopy, div) {
+		if (isSelectElement(editableElement, editableCopy))
+		{
+			editableElement.find('select').formSelect('destroy');
+		}
+		$(edit.editableElement).remove();
+		div.remove();
+		editableCopy.insertAfter(element);
+		element.removeClass('no-show');
+	}
+
 	function showEditable(editableElement, editableCopy) {
-		const div = $("<div class='inline-block'/>");
+		const div = $("<div class='inline-block active-inline-editable'/>");
 		const form = $(`<form method='post' action='${edit.url}'/>`);
 		const save = $("<button class='btn btn-flat' type='submit'><i class=\"far fa-check-circle\"></i></button>");
 		const cancel = $("<button class='btn btn-flat'><i class=\"far fa-times-circle\"></i></button>");
+		const spinner = $("<span class='fas fa-spinner fa-spin indicator no-show'></span>");
 
-		cancel.on('click', function (e) {
+		cancel.on('click', (e) => {
 			e.preventDefault();
-			if (isSelectElement())
-			{
-				editableElement.find('select').formSelect('destroy');
-			}
-			$(edit.editableElement).remove();
-			div.remove();
-			editableCopy.insertAfter(element);
-			element.removeClass('no-show');
+			onCancel(editableElement, div);
 		});
 
-		form.on('submit', function (e) {
-			e.preventDefault();
+		function onBeforePost() {
+			form.addClass('no-show');
+			spinner.removeClass('no-show');
+		}
+
+		function onAfterPost(data, textStatus, jqXHR) {
+			div.remove();
+			editableCopy.insertAfter(element);
 			var value = editableElement.find('input').val();
 			if (isSelectElement())
 			{
 				value = editableElement.find("option:selected").text();
 			}
+			element.data('value', value);
+			element.text(value);
+			element.removeClass('no-show');
+		}
 
-			if (!edit.validate || edit.validate(value))
+		function onPostFail(jqXHR, textStatus, errorThrown) {
+
+		}
+
+		form.on('submit', (e) => {
+			e.preventDefault();
+
+			const invalidItems = form.find('[invalid]');
+			if (invalidItems.length === 0)
 			{
-				element.data('value', value);
-				element.text(value);
-				div.remove();
-				editableCopy.insertAfter(element);
-				element.removeClass('no-show');
+				ajaxPost(form, form.attr('action'), onBeforePost, onAfterPost, onPostFail);
+			}
+		});
+
+		form.on('change', '[required]', (e) => {
+			const formElement = $(e.target);
+			if (formElement.val().trim() === '')
+			{
+				formElement.attr('invalid', 'invalid');
 			}
 			else
 			{
-				div.addClass('inline-edit-error');
+				formElement.removeAttr('invalid');
 			}
 		});
 
@@ -72,11 +116,15 @@ function inlineEdit(element, edit) {
 		form.append(save);
 		form.append(cancel);
 		div.append(form);
+		div.append(spinner);
 		div.insertAfter(element);
+
+		handleClickOutside(editableElement, editableCopy, div);
 	}
 
 	element.on('click', function (e) {
 		e.preventDefault();
+		e.stopPropagation();
 		element.addClass('no-show');
 
 		cleanupMaterializeFormSelect();
