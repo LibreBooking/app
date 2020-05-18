@@ -526,7 +526,7 @@ class ManageSchedulesPresenter extends ActionPresenter
      */
     public function ChangeDaysVisible()
     {
-        $this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), null, $this->page->GetValue());
+        $this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), null, $this->page->GetDaysVisible());
     }
 
     /**
@@ -538,8 +538,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         $timezone = $this->page->GetLayoutTimezone();
         $usingSingleLayout = $this->page->GetUsingSingleLayout();
 
-        Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone,
-            $usingSingleLayout);
+        Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone, $usingSingleLayout);
         if ($usingSingleLayout) {
             $reservableSlots = $this->page->GetReservableSlots();
             $blockedSlots = $this->page->GetBlockedSlots();

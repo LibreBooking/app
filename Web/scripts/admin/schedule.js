@@ -1,4 +1,8 @@
-function inlineEdit(element, edit) {
+$.fn.inlineEdit = function (options) {
+	return this.each((i, container) => inlineEdit($(container), options));
+};
+
+function inlineEdit(container, options) {
 	let outsideClickArea;
 
 	function isSelectElement() {
@@ -10,7 +14,7 @@ function inlineEdit(element, edit) {
 		{
 			try
 			{
-				$(edit.editableElement).find('select').formSelect('destroy');
+				$(container).find('select').formSelect('destroy');
 			} catch (ex)
 			{
 			}
@@ -48,7 +52,7 @@ function inlineEdit(element, edit) {
 		{
 			editableElement.find('select').formSelect('destroy');
 		}
-		$(edit.editableElement).remove();
+		editableElement.remove();
 		div.remove();
 		editableCopy.insertAfter(element);
 		element.removeClass('no-show');
@@ -56,17 +60,19 @@ function inlineEdit(element, edit) {
 
 	function showEditable(editableElement, editableCopy) {
 		const div = $("<div class='inline-block active-inline-editable'/>");
-		const form = $(`<form method='post' action='${edit.url}'/>`);
+		const form = $(`<form method='post' action='${options.url}'/>`);
 		const save = $("<button class='btn btn-flat' type='submit'><i class=\"far fa-check-circle\"></i></button>");
 		const cancel = $("<button class='btn btn-flat'><i class=\"far fa-times-circle\"></i></button>");
 		const spinner = $("<span class='fas fa-spinner fa-spin indicator no-show'></span>");
+		const idInput = $(`<input type="hidden" name="pk" value="${element.data('pk')}" />`);
 
 		cancel.on('click', (e) => {
 			e.preventDefault();
-			onCancel(editableElement, div);
+			onCancel(editableElement, editableCopy, div);
 		});
 
 		function onBeforePost() {
+			form.remove('.inline-edit-error');
 			form.addClass('no-show');
 			spinner.removeClass('no-show');
 		}
@@ -85,7 +91,7 @@ function inlineEdit(element, edit) {
 		}
 
 		function onPostFail(jqXHR, textStatus, errorThrown) {
-
+			form.append(`<span class="inline-edit-error">${textStatus}</span>`);
 		}
 
 		form.on('submit', (e) => {
@@ -112,6 +118,7 @@ function inlineEdit(element, edit) {
 
 		editableElement.removeClass('no-show');
 		editableElement.addClass('inline-block');
+		form.append(idInput)
 		form.append(editableElement);
 		form.append(save);
 		form.append(cancel);
@@ -122,14 +129,17 @@ function inlineEdit(element, edit) {
 		handleClickOutside(editableElement, editableCopy, div);
 	}
 
-	element.on('click', function (e) {
+	const element = container.find('.inline-edit-display');
+	const activator = container.find('.inline-edit-activator');
+
+	activator.on('click', function (e) {
 		e.preventDefault();
 		e.stopPropagation();
 		element.addClass('no-show');
 
 		cleanupMaterializeFormSelect();
 
-		const editableElement = $(edit.editableElement);
+		const editableElement = container.find('.inline-edit-editable');
 		const editableCopy = editableElement.clone();
 
 		setEditableValue(editableElement);

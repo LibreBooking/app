@@ -41,17 +41,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {*													data-value="{$schedule->GetDaysVisible()}">{$schedule->GetDaysVisible()}</span>{/capture} *}
 
                     {capture name=daysVisible}
-						<span id='days-visible' class='propertyValue daysVisible inlineUpdate' data-type='select'
+						<div class='inline-edit-container inline-edit-days-visible'>
+							<span
+							  class='propertyValue daysVisible inlineUpdate inline-edit-display inline-edit-activator'
+							  data-type='select'
 							  data-pk='{$id}'
 							  data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'
 							  data-value='{$schedule->GetDaysVisible()}'>{$schedule->GetDaysVisible()}</span>
-						<div class='input-field no-show' id='days-visible-edit'>
-							<label for='days-visible-select' class='active'>{translate key=days}</label>
-							<select id='days-visible-select' {formname key=SCHEDULE_DAYS_VISIBLE}>
-                                {foreach from=$NumberOfDaysVisible item=n}
-									<option value='{$n}'>{$n}</option>
-                                {/foreach}
-							</select>
+							<div class='input-field no-show inline-edit-editable'>
+								<label for='days-visible-select-{$id}' class='active'>{translate key=days}</label>
+								<select id='days-visible-select-{$id}' {formname key=SCHEDULE_DAYS_VISIBLE}>
+                                    {foreach from=$NumberOfDaysVisible item=n}
+										<option value='{$n}'>{$n}</option>
+                                    {/foreach}
+								</select>
+							</div>
 						</div>
                     {/capture}
                     {assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
@@ -65,11 +69,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<input type="hidden" class="daysVisible" value="{$daysVisible}"/>
 							<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
 							<div>
-					            <span class="title scheduleName" data-type="text" data-pk="{$id}"
+					            <span id="schedule-name" class="title scheduleName"
+									  data-type="text"
+									  data-pk="{$id}"
 									  data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
-								<a class="update renameButton" href="#"><span
-											class="no-show">{translate key=Rename}</span><span
-											class="fa fa-pencil-square-o"></span></a>
+								<button id="" class="btn btn-flat update renameButton" title="{translate key=Rename}">
+									<span class="far fa-edit"></span>
+								</button>
+								<div class='input-field no-show' id='schedule-name-edit'>
+									<label for='schedule-name-edit-input' class='active'>{translate key=ScheduleName}</label>
+									<input type="text" required="required" id="schedule-name-edit-input"/>
+								</div>
 							</div>
 
 							<div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
@@ -740,9 +750,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				}
 			});
 
-			inlineEdit($("#days-visible"), {
-				url: updateUrl + '{ManageSchedules::ActionChangeDaysVisible}', editableElement: "#days-visible-edit",
-			})
+			$(".inline-edit-days-visible").inlineEdit({
+				url: updateUrl + '{ManageSchedules::ActionChangeDaysVisible}',
+			});
 
 			$('.dayName').editable({
 				url: updateUrl + '{ManageSchedules::ActionChangeStartDay}', source: [{
