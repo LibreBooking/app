@@ -372,7 +372,7 @@ class en_us extends Language
 		$strings['ViewAll'] = 'View All';
 		$strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
 		$strings['TurnOffSubscription'] = 'Hide from public';
-		$strings['TurnOnSubscription'] = 'Show to public (RSS, iCalendar)';
+		$strings['TurnOnSubscription'] = 'Allow public viewing';
 		$strings['SubscribeToCalendar'] = 'Subscribe to this Calendar';
 		$strings['SubscriptionsAreDisabled'] = 'The administrator has disabled calendar subscriptions';
 		$strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
@@ -824,6 +824,10 @@ class en_us extends Language
         $strings['Per'] = 'per';
         $strings['NoQuotasWarning'] = 'There are no quotas defined';
         $strings['ChangeDisplayStyle'] = 'Change Display Style';
+        $strings['Embed'] = 'Embed';
+        $strings['EmbedHelp'] = 'To quickly embed this calendar into your website, copy and paste the following JavaScript snippet into your page HTML where you want the calendar displayed.';
+        $strings['ICalendarHelp'] = 'iCalendar files can be used to sync Booked events into external calendars such as Outlook or Google Calendar';
+        $strings['AtomHelp'] = 'Get upcoming reservations for this schedule in an RSS feed.';
         // End Strings
 
 		// Install

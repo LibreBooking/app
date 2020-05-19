@@ -119,6 +119,13 @@ a.btn-flat:hover {
 a.btn-link {
   color: #1976d2;
   background-color: transparent;
+  height: auto;
+  line-height: inherit;
+  padding: 0;
+  vertical-align: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: inherit;
 }
 .btn-link:hover,
 .btn-link:active,

@@ -5,6 +5,9 @@ $.fn.inlineEdit = function (options) {
 function inlineEdit(container, options) {
 	let outsideClickArea;
 
+	const element = container.find('.inline-edit-display');
+	const activator = container.find('.inline-edit-activator');
+
 	function isSelectElement() {
 		return element.data('type') === 'select';
 	}
@@ -24,12 +27,15 @@ function inlineEdit(container, options) {
 	function setEditableValue(editableElement) {
 		if (element.data('type') === 'select')
 		{
-			editableElement.find('select').val(element.data('value'));
-			editableElement.find('select').formSelect();
+			const input = editableElement.find('select');
+			input.val(element.data('value'));
+			input.formSelect();
 		}
 		else
 		{
-			editableElement.find('input').val(element.data('value'));
+			const input = editableElement.find('input');
+			input.val(element.data('value'));
+			M.updateTextFields();
 		}
 	}
 
@@ -50,12 +56,18 @@ function inlineEdit(container, options) {
 	function onCancel(editableElement, editableCopy, div) {
 		if (isSelectElement(editableElement, editableCopy))
 		{
-			editableElement.find('select').formSelect('destroy');
+			try
+			{
+				editableElement.find('select').formSelect('destroy');
+			} catch (error)
+			{
+			}
 		}
 		editableElement.remove();
 		div.remove();
 		editableCopy.insertAfter(element);
 		element.removeClass('no-show');
+		activator.removeClass('no-show');
 	}
 
 	function showEditable(editableElement, editableCopy) {
@@ -88,6 +100,7 @@ function inlineEdit(container, options) {
 			element.data('value', value);
 			element.text(value);
 			element.removeClass('no-show');
+			activator.removeClass('no-show');
 		}
 
 		function onPostFail(jqXHR, textStatus, errorThrown) {
@@ -97,28 +110,28 @@ function inlineEdit(container, options) {
 		form.on('submit', (e) => {
 			e.preventDefault();
 
-			const invalidItems = form.find('[invalid]');
+			const invalidItems = form.find('.invalid');
 			if (invalidItems.length === 0)
 			{
 				ajaxPost(form, form.attr('action'), onBeforePost, onAfterPost, onPostFail);
 			}
 		});
 
-		form.on('change', '[required]', (e) => {
+		form.on('keyup', '[required]', (e) => {
 			const formElement = $(e.target);
 			if (formElement.val().trim() === '')
 			{
-				formElement.attr('invalid', 'invalid');
+				formElement.addClass('invalid');
 			}
 			else
 			{
-				formElement.removeAttr('invalid');
+				formElement.removeClass('invalid');
 			}
 		});
 
 		editableElement.removeClass('no-show');
 		editableElement.addClass('inline-block');
-		form.append(idInput)
+		form.append(idInput);
 		form.append(editableElement);
 		form.append(save);
 		form.append(cancel);
@@ -126,16 +139,16 @@ function inlineEdit(container, options) {
 		div.append(spinner);
 		div.insertAfter(element);
 
+		div.find('input, select').focus();
+
 		handleClickOutside(editableElement, editableCopy, div);
 	}
-
-	const element = container.find('.inline-edit-display');
-	const activator = container.find('.inline-edit-activator');
 
 	activator.on('click', function (e) {
 		e.preventDefault();
 		e.stopPropagation();
 		element.addClass('no-show');
+		activator.addClass('no-show')
 
 		cleanupMaterializeFormSelect();
 
@@ -221,7 +234,7 @@ function ScheduleManagement(opts) {
 	ScheduleManagement.prototype.init = function () {
 		$('.scheduleDetails').each(function () {
 			var details = $(this);
-			var id = details.find(':hidden.id').val();
+			var id = details.data('schedule-id');
 			var reservable = details.find('.reservableSlots');
 			var blocked = details.find('.blockedSlots');
 			var timezone = details.find('.timezone');
@@ -229,21 +242,30 @@ function ScheduleManagement(opts) {
 			var dayOfWeek = details.find('.dayOfWeek');
 			var usesDailyLayouts = details.find('.usesDailyLayouts');
 
-			details.find('a.update').click(function () {
+			details.find('.update').click(function (e) {
 				setActiveScheduleId(id);
 			});
 
-			details.find('.renameButton').click(function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-				details.find('.scheduleName').editable('toggle');
+			details.find('.show-qtip-next').each(function () {
+				$(this).qtip({
+					content: {
+						text: $(this).next('div')
+					}, style: {
+						classes: 'qtip-light qtip-bootstrap'
+					}, position: {
+						my: 'bottom middle', at: 'top middle', effect: false, viewport: $(window)
+					}, hide: {
+						fixed: true, delay: 500
+					},
+				});
 			});
 
-			details.find('.dayName').click(function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-				$(this).editable('toggle');
-			});
+
+			// details.find('.renameButton').click(function (e) {
+			// 	e.stopPropagation();
+			// 	e.preventDefault();
+			// 	details.find('.scheduleName').editable('toggle');
+			// });
 
 			// details.find('.daysVisible').click(function (e) {
 			// 	e.stopPropagation();
@@ -251,11 +273,11 @@ function ScheduleManagement(opts) {
 			// 	$(this).editable('toggle');
 			// });
 
-			details.find('.changeScheduleAdmin').click(function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-				details.find('.scheduleAdmin').editable('toggle');
-			});
+			// details.find('.changeScheduleAdmin').click(function (e) {
+			// 	e.stopPropagation();
+			// 	e.preventDefault();
+			// 	details.find('.scheduleAdmin').editable('toggle');
+			// });
 
 			details.find('.changeLayoutButton').click(function (e) {
 				if ($(e.target).data('layout-type') == 0)

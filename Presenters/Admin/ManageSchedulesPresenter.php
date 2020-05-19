@@ -510,7 +510,7 @@ class ManageSchedulesPresenter extends ActionPresenter
      */
     public function Rename()
     {
-        $this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetValue());
+        $this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetScheduleName());
     }
 
     /**
@@ -518,7 +518,7 @@ class ManageSchedulesPresenter extends ActionPresenter
      */
     public function ChangeStartDay()
     {
-        $this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetValue(), null);
+        $this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetStartDay(), null);
     }
 
     /**
@@ -707,7 +707,7 @@ class ManageSchedulesPresenter extends ActionPresenter
     public function ChangeDefaultStyle()
     {
         $scheduleId = $this->page->GetScheduleId();
-        $style = $this->page->GetValue();
+        $style = $this->page->GetDefaultStyle();
 
         Log::Debug('Changing default style. Schedule %s, Style %s', $scheduleId, $style);
 

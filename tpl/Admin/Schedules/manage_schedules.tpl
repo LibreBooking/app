@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true}
+{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true Qtip=true}
 
 <div id="page-manage-schedules" class="admin-page row">
 
@@ -35,19 +35,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="panel-body" id="scheduleList">
                 {foreach from=$Schedules item=schedule}
                     {assign var=id value=$schedule->GetId()}
-                    {*                    {capture name=daysVisible}<span class='propertyValue daysVisible inlineUpdate' data-type='select'*}
-                    {*													data-pk='{$id}'*}
-                    {*													data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'*}
-                    {*													data-value="{$schedule->GetDaysVisible()}">{$schedule->GetDaysVisible()}</span>{/capture} *}
-
                     {capture name=daysVisible}
 						<div class='inline-edit-container inline-edit-days-visible'>
-							<span
-							  class='propertyValue daysVisible inlineUpdate inline-edit-display inline-edit-activator'
-							  data-type='select'
-							  data-pk='{$id}'
-							  data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'
-							  data-value='{$schedule->GetDaysVisible()}'>{$schedule->GetDaysVisible()}</span>
+							<span class='propertyValue daysVisible inlineUpdate inline-edit-display inline-edit-activator'
+								  data-type='select'
+								  data-pk='{$id}'
+								  data-value='{$schedule->GetDaysVisible()}'
+								  title='{translate key=Edit}'>{$schedule->GetDaysVisible()}</span>
 							<div class='input-field no-show inline-edit-editable'>
 								<label for='days-visible-select-{$id}' class='active'>{translate key=days}</label>
 								<select id='days-visible-select-{$id}' {formname key=SCHEDULE_DAYS_VISIBLE}>
@@ -59,51 +53,74 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
                     {/capture}
                     {assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
-                    {capture name=dayName}<span class='propertyValue dayName inlineUpdate' data-type='select'
-												data-pk='{$id}'
-												data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
-												data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
+                    {capture name=dayName}
+						<div class='inline-edit-container inline-edit-start-day'>
+							<span class='propertyValue dayName inlineUpdate inline-edit-display inline-edit-activator'
+								  data-type='select'
+								  data-pk='{$id}'
+								  data-value='{$dayOfWeek}'
+								  title='{translate key=Edit}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>
+							<div class='input-field no-show inline-edit-editable'>
+								<label for='start-day-select-{$id}' class='active'>{translate key=day}</label>
+								<select id='start-day-select-{$id}' {formname key=SCHEDULE_WEEKDAY_START}>
+									<option value='{Schedule::Today}'>{$Today}</option>
+                                    {foreach from=$DayNames item='dayName' key='dayIndex'}
+										<option value='{$dayIndex}'>{$dayName|escape}</option>
+                                    {/foreach}
+								</select>
+							</div>
+						</div>
+                    {/capture}
 					<div class="scheduleDetails" data-schedule-id="{$id}">
 						<div class="col s12 m6">
 							<input type="hidden" class="id" value="{$id}"/>
 							<input type="hidden" class="daysVisible" value="{$daysVisible}"/>
 							<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
-							<div>
-					            <span id="schedule-name" class="title scheduleName"
+							<div class='inline-edit-container inline-edit-schedule-name'>
+								<span class="title scheduleName inline-edit-display"
 									  data-type="text"
 									  data-pk="{$id}"
-									  data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
-								<button id="" class="btn btn-flat update renameButton" title="{translate key=Rename}">
+									  data-value="{$schedule->GetName()}">{$schedule->GetName()}
+								</span>
+								<button class="btn btn-flat btn-link inline-edit-activator" title="{translate key=Rename}">
 									<span class="far fa-edit"></span>
 								</button>
-								<div class='input-field no-show' id='schedule-name-edit'>
-									<label for='schedule-name-edit-input' class='active'>{translate key=ScheduleName}</label>
-									<input type="text" required="required" id="schedule-name-edit-input"/>
+
+								<div class='input-field no-show inline-edit-editable'>
+									<label for='schedule-name-edit-input-{$id}' class='active'>{translate key=Name}</label>
+									<input type="text" required="required" id="schedule-name-edit-input-{$id}" {formname key=SCHEDULE_NAME}/>
 								</div>
 							</div>
 
 							<div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
 
 							<div>{translate key='ScheduleAdministrator'}
-								<span class="propertyValue scheduleAdmin"
-									  data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
-									  data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
-                                {if $AdminGroups|count > 0}
-									<a class="update changeScheduleAdmin" href="#">
-										<span class="no-show">{translate key='ScheduleAdministrator'}</span>
-										<span class="fa fa-pencil-square-o"></span>
-									</a>
-                                {/if}
+								<div class='inline-edit-container inline-edit-schedule-admin'>
+									<span class="propertyValue scheduleAdmin inlineUpdate inline-edit-display inline-edit-activator"
+										  data-type="select"
+										  data-pk="{$id}"
+										  data-value="{$schedule->GetAdminGroupId()}"
+										  title="{translate key=Edit}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name|default:{translate key=None}}</span>
+
+									<div class='input-field no-show inline-edit-editable'>
+										<label for='schedule-admin-select-{$id}' class='active'>{translate key=ScheduleAdministrator}</label>
+										<select id='schedule-admin-select-{$id}' {formname key=SCHEDULE_ADMIN_GROUP_ID}>
+											<option value="">{translate key=None}</option>
+                                            {foreach from=$AdminGroups item=group}
+												<option value="{$group->Id()}">{$group->Name()|escape}</option>
+                                            {/foreach}
+										</select>
+									</div>
+								</div>
 							</div>
 
 							<div>
 								<div class="availabilityPlaceHolder inline-block">
                                     {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
 								</div>
-								<a class="update changeAvailability inline-block" href="#">
-									<span class="no-show">Change Availability</span>
-									<span class="fa fa-pencil-square-o"></span>
-								</a>
+								<button class="update changeAvailability btn btn-flat btn-link inline-edit-activator" title="Change Availability">
+									<span class="far fa-edit"></span>
+								</button>
 							</div>
 
 							<div class="concurrentContainer">
@@ -114,28 +131,40 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							<div>
-                                {translate key=DefaultStyle}
-								<span class="propertyValue defaultScheduleStyle inlineUpdate" data-type="select"
-									  data-pk="{$id}"
-									  data-name="{FormKeys::SCHEDULE_DEFAULT_STYLE}"
-									  data-value="{$schedule->GetDefaultStyle()}">{$StyleNames[$schedule->GetDefaultStyle()]}</span>
+								<div class='inline-edit-container inline-edit-style'>
+                                    {translate key=DefaultStyle}
+									<span class="propertyValue defaultScheduleStyle inlineUpdate inline-edit-display inline-edit-activator"
+										  data-type="select"
+										  data-pk="{$id}"
+										  data-value="{$schedule->GetDefaultStyle()}">{$StyleNames[$schedule->GetDefaultStyle()]}</span>
+
+									<div class='input-field no-show inline-edit-editable'>
+										<label for='style-select-{$id}' class='active'>{translate key=DefaultStyle}</label>
+										<select id='style-select-{$id}' {formname key=SCHEDULE_DEFAULT_STYLE}>
+                                            {foreach from=$StyleNames item="styleName" key="styleIndex"}
+												<option value="{$styleIndex}">{$styleName}</option>
+                                            {/foreach}
+										</select>
+									</div>
+								</div>
 							</div>
 
                             {if $CreditsEnabled}
 								<span>{translate key=PeakTimes}</span>
-								<a class="update changePeakTimes" href="#">
-									<span class="no-show">{translate key=PeakTimes}</span>
-									<span class="fa fa-pencil-square-o"></span>
-								</a>
+								<button class="update changePeakTimes btn btn-flat btn-link" title="Change Peak Times">
+									<span class="far fa-edit"></span>
+								</button>
 								<div class="peakPlaceHolder">
                                     {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
 								</div>
                             {/if}
 
 							<div>{translate key=Resources}
+                                {if array_key_exists($id, $Resources)}
+									<a href="manage_resources.php?scheduleId={$id}" title="{translate key=View}"><span class="fas fa-search"></span></a>
+                                {/if}
 								<span class="propertyValue">
                             {if array_key_exists($id, $Resources)}
-								<a href="manage_resources.php?scheduleId={$id}">{translate key=View}</a>
                                 {foreach from=$Resources[$id] item=r name=resources_loop}
                                     {$r->GetName()|escape}{if !$smarty.foreach.resources_loop.last}, {/if}
                                 {/foreach}
@@ -171,11 +200,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 							<div>
                                 {translate key=ScheduleLayout args=$schedule->GetTimezone()}
-								<a class="update changeLayoutButton" href="#" title="{translate key=ChangeLayout}">
-                                <span class="fa fa-pencil-square-o"
-									  data-layout-type="{$Layouts[$id]->GetType()}"></span>
-									<span class="no-show">{translate key=ChangeLayout}</span>
-								</a>
+								<button class="update changeLayoutButton btn btn-flat btn-link" title="{translate key=ChangeLayout}">
+									<span class="far fa-edit" data-layout-type="{$Layouts[$id]->GetType()}"></span>
+								</button>
 							</div>
 							<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
 
@@ -245,11 +272,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<a class="update enableSubscription" href="#">{translate key=TurnOnSubscription}</a>
                             {/if}
                             {if $schedule->GetIsCalendarSubscriptionAllowed()}
-                                {html_image src="feed.png"}
-								<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
-								|
-								<a target="_blank"
-								   href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+								<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}" class="show-qtip-next"><span class="fas fa-rss"></span> Atom</a>
+								<div class="atom-help-help-div hidden">
+									<div>{translate key=AtomHelp} <a href="https://www.bookedscheduler.com/help/usage/#Subscribing_to_Calendars" target="_blank" title="{translate key=Help}"><span class="fas fa-info-circle"></span></a></div>
+									<div><a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">{$schedule->GetSubscriptionUrl()->GetAtomUrl()}</a></div>
+								</div>
+								<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}" class="show-qtip-next"><span class="far fa-calendar-alt"></span> iCalendar</a>
+								<div class="ical-help-help-div hidden">
+									<div>{translate key=ICalendarHelp} <a href="https://www.bookedscheduler.com/help/usage/#Subscribing_to_Calendars" target="_blank" title="{translate key=Help}"><span class="fas fa-info-circle"></span></a></div>
+									<div><a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}</a></div>
+								</div>
+								<button class="btn btn-flat btn-link show-qtip-next"><span class="fas fa-code"></span> {translate key=Embed}</button>
+								<div class="embed-help-div hidden">
+									<div>{translate key=EmbedHelp} <a href="https://www.bookedscheduler.com/help/usage/#Embedding_a_Calendar_Externally" target="_blank" title="{translate key=Help}"><span class="fas fa-info-circle"></span></a></div>
+									<div><code>&lt;script async src=&quot;{$ScriptUrl}/scripts/embed-calendar.js?sid={$schedule->GetPublicId()}&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</code></div>
+								</div>
                             {/if}
                             {indicator id="action-indicator"}
 							<div class="clearfix"></div>
@@ -718,7 +755,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 
     {csrf_token}
-    {include file="javascript-includes.tpl" InlineEdit=true Fullcalendar=true Timepicker=true}
+    {include file="javascript-includes.tpl" InlineEdit=true Fullcalendar=true Timepicker=true Qtip=true}
     {jsfile src="ajax-helpers.js"}
     {jsfile src="admin/schedule.js"}
     {jsfile src="js/jquery.form-3.09.min.js"}
@@ -729,63 +766,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		$('#slotsTabs').tabs();
 
-
 		function setUpEditables() {
-			$.fn.editable.defaults.mode = 'inline';
-			$.fn.editable.defaults.toggle = 'manual';
-			$.fn.editable.defaults.emptyclass = '';
-			$.fn.editable.defaults.params = function (params) {
-				params.CSRF_TOKEN = $('#csrf_token').val();
-				return params;
-			};
-
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
-			$('.scheduleName').editable({
-				url: updateUrl + '{ManageSchedules::ActionRename}', validate: function (value) {
-					if ($.trim(value) == '')
-					{
-						return '{translate key=RequiredValue|escape:'javascript'}';
-					}
-				}
+			$('.inline-edit-schedule-name').inlineEdit({
+				url: updateUrl + '{ManageSchedules::ActionRename}'
 			});
 
 			$(".inline-edit-days-visible").inlineEdit({
 				url: updateUrl + '{ManageSchedules::ActionChangeDaysVisible}',
 			});
 
-			$('.dayName').editable({
-				url: updateUrl + '{ManageSchedules::ActionChangeStartDay}', source: [{
-					value: '{Schedule::Today}', text: '{$Today|escape:'javascript'}'
-				},
-                    {foreach from=$DayNames item="dayName" key="dayIndex"}
-					{
-						value:{$dayIndex}, text: '{$dayName|escape:'javascript'}'
-					},
-                    {/foreach}
-				]
+			$('.inline-edit-start-day').inlineEdit({
+				url: updateUrl + '{ManageSchedules::ActionChangeStartDay}'
 			});
 
-			$('.defaultScheduleStyle').editable({
-				url: updateUrl + '{ManageSchedules::ActionChangeDefaultStyle}', source: [
-                    {foreach from=$StyleNames item="styleName" key="styleIndex"}
-					{
-						value: '{$styleIndex}', text: '{$styleName|escape:'javascript'}'
-					},
-                    {/foreach}
-				]
+			$('.inline-edit-style').inlineEdit({
+				url: updateUrl + '{ManageSchedules::ActionChangeDefaultStyle}'
 			});
 
-			$('.scheduleAdmin').editable({
-				url: updateUrl + '{ManageSchedules::ChangeAdminGroup}', emptytext: '{{translate key=None}|escape:'javascript'}', source: [{
-					value: '0', text: '{{translate key=None}|escape:'javascript'}'
-				},
-                    {foreach from=$AdminGroups item=group}
-					{
-						value:{$group->Id()}, text: '{$group->Name()|escape:'javascript'}'
-					},
-                    {/foreach}
-				]
+			$('.inline-edit-schedule-admin').inlineEdit({
+				url: updateUrl + '{ManageSchedules::ChangeAdminGroup}'
 			});
 		}
 
