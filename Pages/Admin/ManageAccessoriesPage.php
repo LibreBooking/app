@@ -86,7 +86,7 @@ class ManageAccessoriesPage extends ActionPage implements IManageAccessoriesPage
 	{
 		$this->presenter->PageLoad();
 
-		$this->Display('Admin/manage_accessories.tpl');
+		$this->Display('Admin/Accessories/manage_accessories.tpl');
 	}
 
 	public function BindAccessories($accessories)

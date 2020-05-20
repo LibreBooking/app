@@ -7,15 +7,17 @@ function AccessoryManagement(opts) {
 
 		addUnlimited: $('#chkUnlimitedAdd'),
 		addQuantity: $('#addQuantity'),
-		
+
 		editName: $('#editName'),
 		editUnlimited: $('#chkUnlimitedEdit'),
 		editQuantity: $('#editQuantity'),
-		
+
 		editDialog: $('#editDialog'),
 		deleteDialog: $('#deleteDialog'),
 		accessoryResourcesDialog: $('#accessoryResourcesDialog'),
 
+		addPromptButton: $('#add-accessory-prompt'),
+		addDialog: $('#addDialog'),
 		addForm: $('#addForm'),
 		form: $('#editForm'),
 		deleteForm: $('#deleteForm'),
@@ -24,36 +26,35 @@ function AccessoryManagement(opts) {
 
 	var accessories = new Object();
 
-	AccessoryManagement.prototype.init = function() {
+	AccessoryManagement.prototype.init = function () {
 
-		elements.accessoryList.delegate('a.update', 'click', function(e) {
+		elements.accessoryList.on('click', '.update', function (e) {
 			setActiveId($(this));
-			e.preventDefault();
 		});
 
-		elements.accessoryList.delegate('.edit', 'click', function() {
+		elements.accessoryList.on('click', '.edit', function () {
 			editAccessory();
 		});
 
-		elements.accessoryList.delegate('.delete', 'click', function() {
+		elements.accessoryList.on('click', '.delete', function () {
 			deleteAccessory();
 		});
 
-		elements.accessoryList.delegate('.resources', 'click', function() {
+		elements.accessoryList.on('click', '.resources', function () {
 			showAccessoryResources();
 		});
 
-		$(".save").click(function() {
-			$(this).closest('form').submit();
+		$(".cancel").click(function () {
+			$(this).closest('.modal').modal('close');
 		});
 
-		$(".cancel").click(function() {
-            $(this).closest('.modal').modal('close');
-		});
-
-
-		elements.accessoryResourcesDialog.delegate('.resourceCheckbox', 'click', function() {
+		elements.accessoryResourcesDialog.delegate('.resourceCheckbox', 'click', function () {
 			handleAccessoryResourceClick($(this));
+		});
+
+		elements.addPromptButton.on('click', function (e) {
+			elements.addDialog.modal('open');
+			$("#accessoryName").focus();
 		});
 
 		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.add));
@@ -65,19 +66,18 @@ function AccessoryManagement(opts) {
 		WireUpUnlimited(elements.editUnlimited, elements.editQuantity);
 	};
 
-	var getSubmitCallback = function(action) {
-		return function() {
+	var getSubmitCallback = function (action) {
+		return function () {
 			return options.submitUrl + "?aid=" + getActiveId() + "&action=" + action;
 		};
 	};
 
-	var defaultSubmitCallback = function (form)
-	{
+	var defaultSubmitCallback = function (form) {
 		return options.submitUrl + "?aid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
 	};
 
 	function setActiveId(activeElement) {
-		var id = activeElement.closest('tr').attr('data-accessory-id');
+		var id = activeElement.closest('tr').data('accessory-id');
 		elements.activeId.val(id);
 	}
 
@@ -85,7 +85,7 @@ function AccessoryManagement(opts) {
 		return elements.activeId.val();
 	}
 
-	var editAccessory = function() {
+	var editAccessory = function () {
 		var accessory = getActiveAccessory();
 		elements.editName.val(accessory.name);
 		elements.editQuantity.val(accessory.quantity);
@@ -102,11 +102,10 @@ function AccessoryManagement(opts) {
 		elements.editUnlimited.trigger('change');
 		elements.editDialog.modal('open');
 
-        M.updateTextFields();
+		M.updateTextFields();
 	};
 
-	function handleAccessoryResourceClick(checkbox)
-	{
+	function handleAccessoryResourceClick(checkbox) {
 		var quantities = checkbox.closest('div[resource-id]').find('.quantities');
 
 		if (checkbox.is(':checked'))
@@ -119,16 +118,14 @@ function AccessoryManagement(opts) {
 		}
 	}
 
-	var showAccessoryResources = function()
-	{
+	var showAccessoryResources = function () {
 		var accessory = getActiveAccessory();
 
-		$.get(opts.submitUrl + '?dr=accessoryResources&aid=' + accessory.id, function(data)
-		{
+		$.get(opts.submitUrl + '?dr=accessoryResources&aid=' + accessory.id, function (data) {
 			elements.accessoryResourcesDialog.find(':checkbox').prop('checked', false);
 			elements.accessoryResourcesDialog.find('.hidden').hide();
 
-			$.each(data, function(idx, resource){
+			$.each(data, function (idx, resource) {
 				var div = elements.accessoryResourcesDialog.find('[resource-id="' + resource.ResourceId + '"]');
 				var checkbox = div.find(':checkbox');
 				checkbox.prop('checked', true);
@@ -142,18 +139,16 @@ function AccessoryManagement(opts) {
 		});
 	};
 
-	var deleteAccessory = function() {
+	var deleteAccessory = function () {
 		elements.deleteDialog.modal('open');
 	};
 
-	var getActiveAccessory = function ()
-	{
+	var getActiveAccessory = function () {
 		return accessories[getActiveId()];
 	};
 
-	var WireUpUnlimited = function(checkbox, quantity)
-	{
-		checkbox.change(function(){
+	var WireUpUnlimited = function (checkbox, quantity) {
+		checkbox.change(function () {
 			if (checkbox.is(":checked"))
 			{
 				quantity.val('');
@@ -162,12 +157,12 @@ function AccessoryManagement(opts) {
 			else
 			{
 				quantity.removeAttr('disabled');
+				quantity.focus();
 			}
 		});
 	};
 
-	AccessoryManagement.prototype.addAccessory = function(id, name, quantity)
-	{
+	AccessoryManagement.prototype.addAccessory = function (id, name, quantity) {
 		accessories[id] = {id: id, name: name, quantity: quantity};
 	};
 }

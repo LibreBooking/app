@@ -587,6 +587,9 @@ div.center {
 .margin-top-25 {
   margin-top: 25px;
 }
+.margin-left-1 {
+  margin-left: 1rem;
+}
 .horizontal-list ul {
   display: block;
   width: 100%;
