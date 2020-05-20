@@ -104,9 +104,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if $Select2}
         {cssfile src="css/select2-materialize.css"}
     {/if}
-    {if $Timepicker}
-        {cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
-    {/if}
     {if $Fullcalendar}
         {cssfile src="scripts/css/fullcalendar.min.css"}
         <link rel='stylesheet' type='text/css' href='{$Path}scripts/css/fullcalendar.print.css' media='print'/>
@@ -116,8 +113,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {cssfile src="scripts/js/owl-2.3.4/assets/owl.theme.default.css"}
     {/if}
 
-    {jsfile src="js/jquery-ui-timepicker-addon.js"}
-    {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
     {cssfile src="booked.css"}
     {if $cssFiles neq ''}
         {assign var='CssFileList' value=','|explode:$cssFiles}

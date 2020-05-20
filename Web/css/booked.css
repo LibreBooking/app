@@ -2069,6 +2069,28 @@ span.error {
   background-color: #fcfcfc;
   line-height: 40px;
 }
+.admin-page .slot-heading {
+  font-weight: 600;
+}
+.admin-page .autofillBlocked {
+  margin-left: 1rem;
+}
+.admin-page #changeLayoutDialog {
+  height: 100%;
+}
+.admin-page #changeLayoutDialog .modal-content {
+  padding-top: 0;
+}
+.admin-page #changeLayoutDialog #dailySlots,
+.admin-page #changeLayoutDialog #staticSlots {
+  margin: 1rem 0;
+}
+.admin-page #changeLayoutDialog #slotsTabs {
+  margin-bottom: 1rem;
+}
+.admin-page #customLayoutDialog {
+  height: 100%;
+}
 .noImage {
   line-height: 16px;
   text-align: center;
@@ -2481,6 +2503,9 @@ td.update {
 .slotTimezone {
   margin: 5px 0;
 }
+.slotHelpText {
+  text-align: left;
+}
 .slotHelpText span {
   font-family: Courier new, serif;
 }
@@ -2627,9 +2652,17 @@ td.update {
 #page-manage-schedules .slotHelpText {
   font-size: 0.9em;
 }
+#page-manage-schedules .slotWizard {
+  border: solid 1px #bbbbbb;
+  background-color: #e3f2fd;
+  border-radius: 0.25rem;
+}
 #page-manage-schedules .input-sm {
   font-size: 13px;
   height: 2rem;
+}
+#page-manage-schedules .modal .note {
+  margin-top: 1rem;
 }
 #page-change-theme h4 {
   font-size: 1rem;

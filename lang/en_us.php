@@ -825,9 +825,13 @@ class en_us extends Language
         $strings['NoQuotasWarning'] = 'There are no quotas defined';
         $strings['ChangeDisplayStyle'] = 'Change Display Style';
         $strings['Embed'] = 'Embed';
-        $strings['EmbedHelp'] = 'To quickly embed this calendar into your website, copy and paste the following JavaScript snippet into your page HTML where you want the calendar displayed.';
+        $strings['EmbedHelp'] = 'This calendar can be embedded into your website by copying and pasting the following JavaScript snippet into your page HTML where you want the calendar displayed.';
         $strings['ICalendarHelp'] = 'iCalendar files can be used to sync Booked events into external calendars such as Outlook or Google Calendar';
         $strings['AtomHelp'] = 'Get upcoming reservations for this schedule in an RSS feed.';
+        $strings['AvailabilityHelp'] = 'Setting the availability for a schedule controls which parts of the year the resources can be booked.';
+        $strings['PeakTimesHelp'] = 'Peak times can be used to charge different credit amounts at different times of the day.';
+        $strings['StandardLayoutHelp'] = 'Standard layouts create an interval based schedule for each day of the week.';
+        $strings['CustomLayoutHelp'] = 'Custom layouts have completely unique slots every day and require every slot to be defined independently. This can be useful for appointment booking.';
         // End Strings
 
 		// Install

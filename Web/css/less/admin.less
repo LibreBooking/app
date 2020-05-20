@@ -30,6 +30,34 @@ span.error {
     background-color: #fcfcfc;
     line-height: 40px;
   }
+
+  .slot-heading {
+    font-weight: 600;
+  }
+
+  .autofillBlocked {
+    margin-left: 1rem;
+  }
+
+  #changeLayoutDialog {
+    height: 100%;
+
+    .modal-content {
+      padding-top: 0;
+    }
+
+    #dailySlots, #staticSlots {
+      margin: 1rem 0;
+    }
+
+    #slotsTabs {
+      margin-bottom: 1rem;
+    }
+  }
+
+  #customLayoutDialog {
+    height: 100%;
+  }
 }
 
 .noImage {
@@ -67,6 +95,7 @@ span.error {
   color: #fff;
   font-weight: 600;
 }
+
 .admin-action-button:hover, .admin-action-button:active, .admin-action-button:focus {
   background-color: #90caf9;
 }
@@ -423,7 +452,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 
 .admin-page {
   .icon, button.icon {
-    font-size:1.4rem;
+    font-size: 1.4rem;
   }
 
   .admin-action-button .icon {
@@ -536,6 +565,9 @@ td.update {
 
 .slotTimezone {
   margin: 5px 0;
+}
+.slotHelpText {
+  text-align: left;
 }
 
 .slotHelpText span {
@@ -701,9 +733,19 @@ td.update {
     font-size: .9em;
   }
 
+  .slotWizard {
+    border: solid 1px #bbbbbb;
+    background-color: #e3f2fd;
+    border-radius: .25rem;
+  }
+
   .input-sm {
     font-size: 13px;
     height: 2rem;
+  }
+
+  .modal .note {
+    margin-top: 1rem;
   }
 }
 

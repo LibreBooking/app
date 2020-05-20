@@ -35,17 +35,14 @@
     {/if}
 {/if}
 {if $Select2}
-    {jsfile src="js/select2-4.0.5.min.js"}
-{/if}
-{if $Timepicker}
-    {jsfile src="js/jquery.timePicker.min.js"}
-    {jsfile src="js/jquery-ui-timepicker-addon.js"}
+    {jsfile src="js/select2-4.0.13.min.js"}
 {/if}
 {if $FloatThead}
     {jsfile src="js/jquery.floatThead.min.js"}
 {/if}
 {if $Fullcalendar}
-    {jsfile src="js/fullcalendar.js"}
+    <!-- FULL CALENDAR -->
+    {jsfile src="js/fullcalendar.min.js"}
     {if $HtmlLang != 'en'}
     {jsfile src="js/fullcalendarLang/$HtmlLang.js"}
     {/if}

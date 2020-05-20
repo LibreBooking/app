@@ -238,8 +238,6 @@ function ScheduleManagement(opts) {
 			var reservable = details.find('.reservableSlots');
 			var blocked = details.find('.blockedSlots');
 			var timezone = details.find('.timezone');
-			var daysVisible = details.find('.daysVisible');
-			var dayOfWeek = details.find('.dayOfWeek');
 			var usesDailyLayouts = details.find('.usesDailyLayouts');
 
 			details.find('.update').click(function (e) {
@@ -259,25 +257,6 @@ function ScheduleManagement(opts) {
 					},
 				});
 			});
-
-
-			// details.find('.renameButton').click(function (e) {
-			// 	e.stopPropagation();
-			// 	e.preventDefault();
-			// 	details.find('.scheduleName').editable('toggle');
-			// });
-
-			// details.find('.daysVisible').click(function (e) {
-			// 	e.stopPropagation();
-			// 	e.preventDefault();
-			// 	$(this).editable('toggle');
-			// });
-
-			// details.find('.changeScheduleAdmin').click(function (e) {
-			// 	e.stopPropagation();
-			// 	e.preventDefault();
-			// 	details.find('.scheduleAdmin').editable('toggle');
-			// });
 
 			details.find('.changeLayoutButton').click(function (e) {
 				if ($(e.target).data('layout-type') == 0)
@@ -565,7 +544,8 @@ function ScheduleManagement(opts) {
 			$('#' + $(val).attr('ref')).val(slots);
 		});
 
-		elements.layoutTimezone.changeDropdown(timezone.val());
+		elements.layoutTimezone.val(timezone.val());
+		elements.layoutTimezone.trigger('change');
 		elements.usesSingleLayout.prop('checked', false);
 
 		if (usesSingleLayout)
@@ -575,6 +555,7 @@ function ScheduleManagement(opts) {
 		elements.usesSingleLayout.trigger('change');
 
 		elements.layoutDialog.modal('open');
+		M.updateTextFields();
 	};
 
 	var toggleLayoutChange = function (useSingleLayout) {
@@ -587,6 +568,8 @@ function ScheduleManagement(opts) {
 		{
 			$('#staticSlots').hide();
 			$('#dailySlots').show();
+			$('#slotsTabs').tabs();
+			$('#slotsTabs').select("tabs-0");
 		}
 	};
 
@@ -594,7 +577,7 @@ function ScheduleManagement(opts) {
 		var scheduleId = getActiveScheduleId();
 		elements.deleteDestinationScheduleId.children().removeAttr('disabled');
 		elements.deleteDestinationScheduleId.children('option[value="' + scheduleId + '"]').attr('disabled', 'disabled');
-		elements.deleteDestinationScheduleId.val('');
+		elements.deleteDestinationScheduleId.formSelect();
 
 		elements.deleteDialog.modal('open');
 	};
@@ -768,10 +751,6 @@ function ScheduleManagement(opts) {
 
 	var _fullCalendar = null;
 	var showChangeCustomLayout = function (scheduleId) {
-		var customLayoutScheduleId = scheduleId;
-
-		$('#customLayoutDialog').unbind();
-
 		function updateEvent(event) {
 			elements.slotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
 			elements.slotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
@@ -781,75 +760,76 @@ function ScheduleManagement(opts) {
 			});
 		}
 
-		$('#customLayoutDialog').modal('open');
-
-		// $('#customLayoutDialog').unbind('shown.bs.modal');
-		// $('#customLayoutDialog').on('shown.bs.modal', function () {
-		if (_fullCalendar != null)
-		{
-			_fullCalendar.fullCalendar('destroy');
-		}
-		var calendar = $('#calendar');
-		_fullCalendar = calendar.fullCalendar({
-			header: {
-				left: 'prev,next,today', center: 'title', right: 'month,agendaWeek,agendaDay'
-			},
-			buttonText: opts.calendarOptions.buttonText,
-			allDaySlot: false,
-			defaultDate: opts.calendarOptions.defaultDate,
-			defaultView: 'month',
-			eventSources: [{
-				url: opts.calendarOptions.eventsUrl, type: 'GET', data: {
-					dr: 'events', sid: scheduleId
-				}
-			}],
-			dayClick: function (date, jsEvent, view) {
-				if (view.name == 'month')
-				{
-					calendar.fullCalendar('changeView', 'agendaDay');
-					calendar.fullCalendar('gotoDate', date);
-				}
-			},
-			selectable: true,
-			selectHelper: true,
-			editable: true,
-			droppable: true,
-			eventOverlap: false,
-			select: function (start, end, jsEvent, view) {
-				if (view.name != 'month')
-				{
-					elements.confirmCreateSlotDialog.show();
-					elements.confirmCreateSlotDialog.position({
+		const showFullCalendar = function() {
+			if (_fullCalendar != null)
+			{
+				_fullCalendar.fullCalendar('destroy');
+			}
+			var calendar = $('#calendar');
+			_fullCalendar = calendar.fullCalendar({
+				header: {
+					left: 'prev,next,today', center: 'title', right: 'month,agendaWeek,agendaDay'
+				},
+				buttonText: opts.calendarOptions.buttonText,
+				allDaySlot: false,
+				defaultDate: opts.calendarOptions.defaultDate,
+				defaultView: 'month',
+				eventSources: [{
+					url: opts.calendarOptions.eventsUrl, type: 'GET', data: {
+						dr: 'events', sid: scheduleId
+					}
+				}],
+				dayClick: function (date, jsEvent, view) {
+					if (view.name == 'month')
+					{
+						calendar.fullCalendar('changeView', 'agendaDay');
+						calendar.fullCalendar('gotoDate', date);
+					}
+				},
+				selectable: true,
+				selectHelper: true,
+				editable: true,
+				droppable: true,
+				eventOverlap: false,
+				select: function (start, end, jsEvent, view) {
+					if (view.name != 'month')
+					{
+						elements.confirmCreateSlotDialog.show();
+						elements.confirmCreateSlotDialog.position({
+							my: 'left bottom', at: 'left top', of: jsEvent
+						});
+						$('#confirmCreateOK').unbind('click');
+						$('#confirmCreateOK').click(function (e) {
+							elements.slotStartDate.val(start.format('YYYY-MM-DD HH:mm'));
+							elements.slotEndDate.val(end.format('YYYY-MM-DD HH:mm'));
+							ajaxPost(elements.layoutSlotForm, options.submitUrl + '?action=' + options.addLayoutSlot + '&sid=' + getActiveScheduleId(), null, function () {
+								_fullCalendar.fullCalendar('refetchEvents');
+								elements.confirmCreateSlotDialog.hide();
+							});
+						});
+					}
+				},
+				eventClick: function (event, jsEvent, view) {
+					elements.deleteSlotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
+					elements.deleteSlotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
+					elements.deleteCustomLayoutDialog.show();
+					elements.deleteCustomLayoutDialog.position({
 						my: 'left bottom', at: 'left top', of: jsEvent
 					});
-					$('#confirmCreateOK').unbind('click');
-					$('#confirmCreateOK').click(function (e) {
-						elements.slotStartDate.val(start.format('YYYY-MM-DD HH:mm'));
-						elements.slotEndDate.val(end.format('YYYY-MM-DD HH:mm'));
-						ajaxPost(elements.layoutSlotForm, options.submitUrl + '?action=' + options.addLayoutSlot + '&sid=' + getActiveScheduleId(), null, function () {
-							_fullCalendar.fullCalendar('refetchEvents');
-							elements.confirmCreateSlotDialog.hide();
-						});
-					});
+				},
+				eventDrop: function (event, delta, revertFunc) {
+					updateEvent(event);
+				},
+				eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
+					updateEvent(event);
 				}
-			},
-			eventClick: function (event, jsEvent, view) {
-				elements.deleteSlotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
-				elements.deleteSlotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
-				elements.deleteCustomLayoutDialog.show();
-				elements.deleteCustomLayoutDialog.position({
-					my: 'left bottom', at: 'left top', of: jsEvent
-				});
-			},
-			eventDrop: function (event, delta, revertFunc) {
-				updateEvent(event);
-			},
-			eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
-				updateEvent(event);
-			}
-		});
-		// });
+			});
+		};
 
+		$('#customLayoutDialog').modal({
+					onOpenEnd: showFullCalendar
+				});
+		$('#customLayoutDialog').modal('open');
 
 	};
 

@@ -7,11 +7,6 @@ function Profile() {
 
         wireUpValidation(messages);
 
-        // $("#btnUpdate").click(function (e) {
-        // 	e.preventDefault();
-        // 	elements.form.submit();
-        // });
-
         elements.form.bind('onValidationFailed', onValidationFailed);
 
         var opts = {
