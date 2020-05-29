@@ -29,6 +29,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<h1 class="page-title underline">{translate key=ManageAccessories}</h1>
 	</div>
 
+	{pagination pageInfo=$PageInfo showCount=true}
+
 	<table class="table" id="accessoriesTable">
 		<thead>
 		<tr>
@@ -45,8 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>{$accessory->Name}</td>
 				<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
 				<td>
-					<a href="#"
-					   class="update resources">{if $accessory->AssociatedResources == 0}{translate key=All}{else}{$accessory->AssociatedResources}{/if}</a>
+					<button class="btn btn-flat btn-link update resources">{if $accessory->AssociatedResources == 0}{translate key=All}{else}{$accessory->AssociatedResources}{/if}</button>
 				</td>
 				<td class="action">
 					<button class="btn btn-flat btn-link update edit" title="{translate key=Edit}">
@@ -59,6 +60,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/foreach}
 		</tbody>
 	</table>
+
+	{pagination pageInfo=$PageInfo showCount=true}
 
 	<input type="hidden" id="activeId"/>
 
@@ -197,7 +200,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="modal-footer">
                 {cancel_button}
-                {update_button}
+                {update_button submit=true}
                 {indicator}
 			</div>
 		</form>
