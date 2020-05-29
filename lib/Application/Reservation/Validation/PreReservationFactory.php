@@ -219,6 +219,7 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new SchedulePeriodRule($this->scheduleRepository, $userSession));
 		$ruleProcessor->AddRule(new AdminExcludedRule(new CustomAttributeValidationRule(new AttributeService(new AttributeRepository()), $this->userRepository), $userSession, $this->userRepository));
 		$ruleProcessor->AddRule(new AdminExcludedRule(new CreditsRule($this->userRepository, $userSession), $userSession, $this->userRepository));
+		$ruleProcessor->AddRule(new AdminExcludedRule(new ScheduleTotalConcurrentReservationsRule($this->scheduleRepository, $this->reservationRepository, $userSession->Timezone), $userSession, $this->userRepository));
 		$ruleProcessor->AddRule(new AccessoryResourceRule($this->accessoryRepository));
         $ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, $userSession->Timezone));
         $ruleProcessor->AddRule(new ScheduleAvailabilityRule($this->scheduleRepository));

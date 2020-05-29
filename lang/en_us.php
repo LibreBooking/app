@@ -879,6 +879,7 @@ class en_us extends Language
 		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
 		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		$strings['InvalidNumberOfResourcesError'] = 'The maximum number of resources that can be reserved in a single reservation is %s';
+		$strings['ScheduleTotalReservationsError'] = 'This schedule only allows %s resources to be reserved concurrently. This reservation would violate that limit on the following dates:';
 		// End Errors
 
 		// Page Titles
