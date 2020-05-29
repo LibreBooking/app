@@ -28,67 +28,87 @@ interface IUpdateSchedulePage
     /**
      * @return int
      */
-    function GetScheduleId();
+	public function GetScheduleId();
 
     /**
      * @return string
      */
-    function GetScheduleName();
+	public function GetScheduleName();
 
     /**
      * @return string
      */
-    function GetStartDay();
+	public function GetStartDay();
 
     /**
      * @return string
      */
-    function GetDaysVisible();
+	public function GetDaysVisible();
 
     /**
      * @return string
      */
-    function GetReservableSlots();
+	public function GetReservableSlots();
 
     /**
      * @return string
      */
-    function GetBlockedSlots();
+	public function GetBlockedSlots();
 
     /**
      * @return string[]
      */
-    function GetDailyReservableSlots();
+	public function GetDailyReservableSlots();
 
     /**
      * @return string[]
      */
-    function GetDailyBlockedSlots();
+	public function GetDailyBlockedSlots();
 
     /**
      * @return string
      */
-    function GetLayoutTimezone();
+	public function GetLayoutTimezone();
 
     /**
      * @return bool
      */
-    function GetUsingSingleLayout();
+	public function GetUsingSingleLayout();
 
     /**
      * @return int
      */
-    function GetSourceScheduleId();
+	public function GetSourceScheduleId();
 
     /**
      * @return int
      */
-    function GetTargetScheduleId();
+	public function GetTargetScheduleId();
 
     /**
      * @return string
      */
-    function GetValue();
+	public function GetValue();
+
+	/**
+	 * @return int
+	 */
+	public function GetMaximumConcurrentReservations();
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsUnlimitedConcurrentReservations();
+
+	/**
+	 * @return int
+	 */
+	public function GetMaximumResourcesPerReservation();
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsUnlimitedMaximumResourcesPerReservation();
 }
 
 interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageable
@@ -315,7 +335,8 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     public function GetScheduleId()
     {
         $id = $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-        if (empty($id)) {
+		if (empty($id))
+		{
             $id = $this->GetForm(FormKeys::PK);
         }
 
@@ -350,7 +371,8 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     public function GetDailyReservableSlots()
     {
         $slots = array();
-        foreach (DayOfWeek::Days() as $day) {
+		foreach (DayOfWeek::Days() as $day)
+		{
             $slots[$day] = $this->server->GetForm(FormKeys::SLOTS_RESERVABLE . "_$day");
         }
         return $slots;
@@ -359,7 +381,8 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     public function GetDailyBlockedSlots()
     {
         $slots = array();
-        foreach (DayOfWeek::Days() as $day) {
+		foreach (DayOfWeek::Days() as $day)
+		{
             $slots[$day] = $this->server->GetForm(FormKeys::SLOTS_BLOCKED . "_$day");
         }
         return $slots;
@@ -399,7 +422,8 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     {
         $this->Set('AdminGroups', $groups);
         $groupLookup = array();
-        foreach ($groups as $group) {
+		foreach ($groups as $group)
+		{
             $groupLookup[$group->Id] = $group;
         }
         $this->Set('GroupLookup', $groupLookup);
@@ -428,7 +452,8 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     {
         $pageSize = $this->pageablePage->GetPageSize();
 
-        if ($pageSize > 10) {
+		if ($pageSize > 10)
+		{
             return 10;
         }
         return $pageSize;
@@ -453,37 +478,44 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
         $days = array();
 
         $sun = $this->GetForm(FormKeys::REPEAT_SUNDAY);
-        if (!empty($sun)) {
+		if (!empty($sun))
+		{
             $days[] = 0;
         }
 
         $mon = $this->GetForm(FormKeys::REPEAT_MONDAY);
-        if (!empty($mon)) {
+		if (!empty($mon))
+		{
             $days[] = 1;
         }
 
         $tue = $this->GetForm(FormKeys::REPEAT_TUESDAY);
-        if (!empty($tue)) {
+		if (!empty($tue))
+		{
             $days[] = 2;
         }
 
         $wed = $this->GetForm(FormKeys::REPEAT_WEDNESDAY);
-        if (!empty($wed)) {
+		if (!empty($wed))
+		{
             $days[] = 3;
         }
 
         $thu = $this->GetForm(FormKeys::REPEAT_THURSDAY);
-        if (!empty($thu)) {
+		if (!empty($thu))
+		{
             $days[] = 4;
         }
 
         $fri = $this->GetForm(FormKeys::REPEAT_FRIDAY);
-        if (!empty($fri)) {
+		if (!empty($fri))
+		{
             $days[] = 5;
         }
 
         $sat = $this->GetForm(FormKeys::REPEAT_SATURDAY);
-        if (!empty($sat)) {
+		if (!empty($sat))
+		{
             $days[] = 6;
         }
 
@@ -620,4 +652,24 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     {
        return $this->GetForm(FormKeys::SCHEDULE_DEFAULT_STYLE);
     }
+
+	public function GetMaximumConcurrentReservations()
+	{
+		return intval($this->GetForm(FormKeys::MAXIMUM_CONCURRENT_RESERVATIONS));
+	}
+
+	public function GetIsUnlimitedConcurrentReservations()
+	{
+		return $this->GetCheckbox(FormKeys::MAXIMUM_CONCURRENT_UNLIMITED);
+	}
+
+	public function GetMaximumResourcesPerReservation()
+	{
+		return intval($this->GetForm(FormKeys::MAXIMUM_RESOURCES_PER_RESERVATION));
+	}
+
+	public function GetIsUnlimitedMaximumResourcesPerReservation()
+	{
+		return $this->GetCheckbox(FormKeys::MAXIMUM_RESOURCES_PER_RESERVATION_UNLIMITED);
+	}
 }

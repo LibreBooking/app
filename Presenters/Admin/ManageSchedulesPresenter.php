@@ -44,6 +44,8 @@ class ManageSchedules
     const ActionUpdateLayoutSlot = 'updateLayoutSlot';
     const ActionDeleteLayoutSlot = 'deleteLayoutSlot';
     const ActionChangeDefaultStyle = 'changeDefaultStyle';
+	const ActionChangeMaximumConcurrent = 'changeMaximumConcurrent';
+	const ActionChangeResourcesPerReservation = 'changeResourcesPerReservation';
 }
 
 class ManageScheduleService
@@ -74,7 +76,8 @@ class ManageScheduleService
      */
     public function GetAll()
     {
-        if (is_null($this->_all)) {
+		if (is_null($this->_all))
+		{
             $this->_all = $this->scheduleRepository->GetAll();
         }
         return $this->_all;
@@ -129,11 +132,13 @@ class ManageScheduleService
     {
         Log::Debug('Changing scheduleId %s, WeekdayStart: %s, DaysVisible %s', $scheduleId, $startDay, $daysVisible);
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
-        if (!is_null($startDay)) {
+		if (!is_null($startDay))
+		{
             $schedule->SetWeekdayStart($startDay);
         }
 
-        if (!is_null($daysVisible)) {
+		if (!is_null($daysVisible))
+		{
             $schedule->SetDaysVisible($daysVisible);
         }
 
@@ -182,7 +187,8 @@ class ManageScheduleService
     public function Delete($scheduleId, $moveResourcesToThisScheduleId)
     {
         $resources = $this->resourceRepository->GetScheduleResources($scheduleId);
-        foreach ($resources as $resource) {
+		foreach ($resources as $resource)
+		{
             $resource->SetScheduleId($moveResourcesToThisScheduleId);
             $this->resourceRepository->Update($resource);
         }
@@ -265,7 +271,8 @@ class ManageScheduleService
 
         $all = $this->resourceRepository->GetResourceList();
         /** @var BookableResource $resource */
-        foreach ($all as $resource) {
+		foreach ($all as $resource)
+		{
             $resources[$resource->GetScheduleId()][] = $resource;
         }
 
@@ -319,14 +326,18 @@ class ManageScheduleService
      */
     public function SwitchLayoutType($scheduleId, $layoutType)
     {
+		Log::Debug("Switching layout type. ScheduleId %s", $scheduleId);
+
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $targetTimezone = $schedule->GetTimezone();
-        if ($layoutType == ScheduleLayout::Standard) {
+		if ($layoutType == ScheduleLayout::Standard)
+		{
             $layout = new ScheduleLayout($targetTimezone);
             $layout->AppendPeriod(Time::Parse('00:00', $targetTimezone), Time::Parse('00:00', $targetTimezone));
             $this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
         }
-        else {
+		else
+		{
             $this->scheduleRepository->AddScheduleLayout($scheduleId, new CustomScheduleLayout($targetTimezone, $scheduleId, $this->scheduleRepository));
         }
     }
@@ -343,8 +354,11 @@ class ManageScheduleService
      */
     public function AddCustomLayoutPeriod($scheduleId, $start, $end)
     {
+		Log::Debug("Adding custom layout period. ScheduleId %s", $scheduleId);
+
         $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
-        if ($overlappingPeriod == null) {
+		if ($overlappingPeriod == null)
+		{
             $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
         }
     }
@@ -357,6 +371,7 @@ class ManageScheduleService
      */
     public function UpdateCustomLayoutPeriod($scheduleId, $start, $end, $originalStart)
     {
+		Log::Debug("Updating custom layout period. ScheduleId %s", $scheduleId);
 //        $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
 //        if ($overlappingPeriod != null) {
 //
@@ -391,8 +406,10 @@ class ManageScheduleService
     {
         $overlaps = null;
         $periods = $this->scheduleRepository->GetCustomLayoutPeriodsInRange($start, $end, $scheduleId);
-        foreach ($periods as $period) {
-            if ($start->LessThanOrEqual($period->BeginDate()) && $end->GreaterThan($period->BeginDate())) {
+		foreach ($periods as $period)
+		{
+			if ($start->LessThanOrEqual($period->BeginDate()) && $end->GreaterThan($period->BeginDate()))
+			{
                 $overlaps = $period;
             }
         }
@@ -405,6 +422,20 @@ class ManageScheduleService
         $schedule->SetDefaultStyle($defaultStyle);
         $this->scheduleRepository->Update($schedule);
     }
+
+	public function ChangeConcurrentReservationMaximum($scheduleId, $max, $unlimited)
+	{
+		$schedule = $this->scheduleRepository->LoadById($scheduleId);
+		$schedule->SetTotalConcurrentReservations($unlimited ? 0 : intval($max));
+		$this->scheduleRepository->Update($schedule);
+}
+
+	public function ChangeResourcesPerReservation($scheduleId, $max, $unlimited)
+	{
+		$schedule = $this->scheduleRepository->LoadById($scheduleId);
+		$schedule->SetMaxResourcesPerReservation($unlimited ? 0 : intval($max));
+		$this->scheduleRepository->Update($schedule);
+	}
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -451,6 +482,8 @@ class ManageSchedulesPresenter extends ActionPresenter
         $this->AddAction(ManageSchedules::ActionUpdateLayoutSlot, 'UpdateLayoutSlot');
         $this->AddAction(ManageSchedules::ActionDeleteLayoutSlot, 'DeleteLayoutSlot');
         $this->AddAction(ManageSchedules::ActionChangeDefaultStyle, 'ChangeDefaultStyle');
+		$this->AddAction(ManageSchedules::ActionChangeMaximumConcurrent, 'ChangeMaximumConcurrentReservations');
+		$this->AddAction(ManageSchedules::ActionChangeResourcesPerReservation, 'ChangeResourcesPerReservation');
     }
 
     public function PageLoad()
@@ -463,7 +496,8 @@ class ManageSchedulesPresenter extends ActionPresenter
 
         $layouts = array();
         /* @var $schedule Schedule */
-        foreach ($schedules as $schedule) {
+		foreach ($schedules as $schedule)
+		{
             $layout = $this->manageSchedulesService->GetLayout($schedule);
             $layouts[$schedule->GetId()] = $layout;
         }
@@ -482,7 +516,8 @@ class ManageSchedulesPresenter extends ActionPresenter
         $timezoneValues = array();
         $timezoneOutput = array();
 
-        foreach ($GLOBALS['APP_TIMEZONES'] as $timezone) {
+		foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
+		{
             $timezoneValues[] = $timezone;
             $timezoneOutput[] = $timezone;
         }
@@ -539,12 +574,14 @@ class ManageSchedulesPresenter extends ActionPresenter
         $usingSingleLayout = $this->page->GetUsingSingleLayout();
 
         Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone, $usingSingleLayout);
-        if ($usingSingleLayout) {
+		if ($usingSingleLayout)
+		{
             $reservableSlots = $this->page->GetReservableSlots();
             $blockedSlots = $this->page->GetBlockedSlots();
             $this->manageSchedulesService->ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
         }
-        else {
+		else
+		{
             $reservableSlots = $this->page->GetDailyReservableSlots();
             $blockedSlots = $this->page->GetDailyBlockedSlots();
             $this->manageSchedulesService->ChangeDailyLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
@@ -590,10 +627,12 @@ class ManageSchedulesPresenter extends ActionPresenter
         $scheduleId = $this->page->GetScheduleId();
         $deletePeak = $this->page->GetDeletePeakTimes();
 
-        if ($deletePeak) {
+		if ($deletePeak)
+		{
             $layout = $this->manageSchedulesService->DeletePeakTimes($scheduleId);
         }
-        else {
+		else
+		{
             $allDay = $this->page->GetPeakAllDay();
             $beginTime = $this->page->GetPeakBeginTime();
             $endTime = $this->page->GetPeakEndTime();
@@ -621,10 +660,12 @@ class ManageSchedulesPresenter extends ActionPresenter
         $scheduleId = $this->page->GetScheduleId();
         $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 
-        if ($availableAllYear || empty($start) || empty($end)) {
+		if ($availableAllYear || empty($start) || empty($end))
+		{
             $schedule = $this->manageSchedulesService->DeleteAvailability($scheduleId);
         }
-        else {
+		else
+		{
             $schedule = $this->manageSchedulesService->UpdateAvailability($scheduleId, Date::Parse($start, $timezone), Date::Parse($end, $timezone));
         }
 
@@ -646,7 +687,8 @@ class ManageSchedulesPresenter extends ActionPresenter
 
     public function ProcessDataRequest($dataRequest)
     {
-        if ($dataRequest == 'events') {
+		if ($dataRequest == 'events')
+		{
             $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
             $start = Date::Parse($this->page->GetCustomLayoutStartRange(), $timezone);
             $end = Date::Parse($this->page->GetCustomLayoutEndRange(), $timezone);
@@ -656,7 +698,8 @@ class ManageSchedulesPresenter extends ActionPresenter
 
             $events = array();
             $dateFormat = Resources::GetInstance()->GetDateFormat('fullcalendar');
-            foreach ($periods as $period) {
+			foreach ($periods as $period)
+			{
                 $events[] = array(
                     'id' => $period->BeginDate()->ToTimezone($timezone)->Format(Date::SHORT_FORMAT),
                     'start' => $period->BeginDate()->ToTimezone($timezone)->Format($dateFormat),
@@ -714,15 +757,40 @@ class ManageSchedulesPresenter extends ActionPresenter
         $this->manageSchedulesService->ChangeDefaultStyle($scheduleId, $style);
     }
 
+	public function ChangeMaximumConcurrentReservations()
+	{
+		$scheduleId = $this->page->GetScheduleId();
+		$max = $this->page->GetMaximumConcurrentReservations();
+		$unlimited = $this->page->GetIsUnlimitedConcurrentReservations();
+
+		Log::Debug('Changing maximum number of concurrent reservations. Schedule %s, Max %s, Unlimited %s', $scheduleId, $max, $unlimited);
+
+		$this->manageSchedulesService->ChangeConcurrentReservationMaximum($scheduleId, $max, $unlimited);
+	}
+
+	public function ChangeResourcesPerReservation()
+	{
+		$scheduleId = $this->page->GetScheduleId();
+		$max = $this->page->GetMaximumResourcesPerReservation();
+		$unlimited = $this->page->GetIsUnlimitedMaximumResourcesPerReservation();
+
+		Log::Debug('Changing maximum number of resources per reservation. Schedule %s, Max %s, Unlimited %s', $scheduleId, $max, $unlimited);
+
+		$this->manageSchedulesService->ChangeResourcesPerReservation($scheduleId, $max, $unlimited);
+	}
+
     protected function LoadValidators($action)
     {
-        if ($action == ManageSchedules::ActionChangeLayout) {
+		if ($action == ManageSchedules::ActionChangeLayout)
+		{
             $validateSingle = $this->page->GetUsingSingleLayout();
-            if ($validateSingle) {
+			if ($validateSingle)
+			{
                 $reservableSlots = $this->page->GetReservableSlots();
                 $blockedSlots = $this->page->GetBlockedSlots();
             }
-            else {
+			else
+			{
                 $reservableSlots = $this->page->GetDailyReservableSlots();
                 $blockedSlots = $this->page->GetDailyBlockedSlots();
             }

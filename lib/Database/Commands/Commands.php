@@ -314,7 +314,8 @@ class AddPaymentTransactionLogCommand extends SqlCommand
      * @param string $gatewayDateCreated
      * @param string $gatewayResponse
      */
-    public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
+	public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref,
+								$dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
     {
         parent::__construct(Queries::ADD_PAYMENT_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -397,7 +398,8 @@ class AddRefundTransactionLogCommand extends SqlCommand
      * @param string $gatewayDateCreated
      * @param string $refundResponse
      */
-    public function __construct($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse)
+	public function __construct($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref,
+								$dateCreated, $gatewayDateCreated, $refundResponse)
     {
         parent::__construct(Queries::ADD_REFUND_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $paymentTransactionLogId));
@@ -430,7 +432,8 @@ class AddReservationSeriesCommand extends SqlCommand
     {
         parent::__construct(Queries::ADD_RESERVATION_SERIES);
 
-        if ($termsAcceptanceDate == null) {
+		if ($termsAcceptanceDate == null)
+		{
             $termsAcceptanceDate = new NullDate();
         }
 
@@ -2728,7 +2731,10 @@ class UpdateScheduleCommand extends SqlCommand
                                 Date $availabilityBegin,
                                 Date $availabilityEnd,
                                 $allowConcurrentReservations,
-                                $defaultStyle)
+								$defaultStyle,
+								$totalConcurrentReservations,
+								$maxResourcesPerReservation
+	)
     {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -2744,6 +2750,8 @@ class UpdateScheduleCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS, (int)$allowConcurrentReservations));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DEFAULT_STYLE, (int)$defaultStyle));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_TOTAL_CONCURRENT_RESERVATIONS, (int)$totalConcurrentReservations));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_MAX_RESOURCES_PER_RESERVATION, (int)$maxResourcesPerReservation));
     }
 }
 

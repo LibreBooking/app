@@ -217,6 +217,16 @@ function ScheduleManagement(opts) {
 		switchLayoutForm: $('#switchLayoutForm'),
 		switchLayoutDialog: $('#switchLayoutDialog'),
 
+		concurrentMaximumForm: $('#concurrentMaximumForm'),
+		concurrentMaximumDialog: $('#concurrentMaximumDialog'),
+		maximumConcurrentUnlimited: $('#maximumConcurrentUnlimited'),
+		maximumConcurrent: $('#maximumConcurrent'),
+
+		resourcesPerReservationForm: $('#resourcesPerReservationForm'),
+		resourcesPerReservationDialog: $('#resourcesPerReservationDialog'),
+		resourcesPerReservationUnlimited: $('#resourcesPerReservationUnlimited'),
+		resourcesPerReservationResources: $('#resourcesPerReservationResources'),
+
 		layoutSlotForm: $('#layoutSlotForm'),
 		slotStartDate: $('#slotStartDate'),
 		slotEndDate: $('#slotEndDate'),
@@ -319,6 +329,24 @@ function ScheduleManagement(opts) {
 				$('#switchLayoutTypeId').val($(e.target).data('switch-to'));
 				elements.switchLayoutDialog.modal('open');
 			});
+
+			details.find('.changeScheduleConcurrentMaximum').click(function (e) {
+				e.preventDefault();
+				var concurrent = $(e.target).closest('.maximumConcurrentContainer').data('concurrent');
+				elements.maximumConcurrentUnlimited.attr('checked', concurrent == "0");
+				elements.maximumConcurrent.val(concurrent);
+				elements.maximumConcurrent.attr('disabled', concurrent == "0");
+				elements.concurrentMaximumDialog.modal('show');
+		});
+
+			details.find('.changeResourcesPerReservation').click(function (e) {
+				e.preventDefault();
+				var maximum = $(e.target).closest('.resourcesPerReservationContainer').data('maximum');
+				elements.resourcesPerReservationUnlimited.attr('checked', maximum == "0");
+				elements.resourcesPerReservationResources.val(maximum);
+				elements.resourcesPerReservationResources.attr('disabled', maximum == "0");
+				elements.resourcesPerReservationDialog.modal('show');
+			});
 		});
 
 		elements.deletePeakTimesButton.click(function (e) {
@@ -385,6 +413,24 @@ function ScheduleManagement(opts) {
 			elements.confirmCreateSlotDialog.hide();
 		});
 
+		elements.maximumConcurrentUnlimited.on('click', function (e) {
+			if (elements.maximumConcurrentUnlimited.is(":checked")) {
+				elements.maximumConcurrent.attr('disabled', true);
+			}
+			else {
+				elements.maximumConcurrent.attr('disabled', false);
+			}
+		});
+
+		elements.resourcesPerReservationUnlimited.on('click', function (e) {
+			if (elements.resourcesPerReservationUnlimited.is(":checked")) {
+				elements.resourcesPerReservationResources.attr('disabled', true);
+			}
+			else {
+				elements.resourcesPerReservationResources.attr('disabled', false);
+			}
+		});
+
 		$('.autofillBlocked').click(function (e) {
 			e.preventDefault();
 			autoFillBlocked();
@@ -402,6 +448,8 @@ function ScheduleManagement(opts) {
 		});
 		ConfigureAsyncForm(elements.switchLayoutForm, getSubmitCallback(options.switchLayout));
 		ConfigureAsyncForm(elements.deleteCustomTimeSlotForm, getSubmitCallback(options.deleteLayoutSlot), afterDeleteSlot);
+		ConfigureAsyncForm(elements.concurrentMaximumForm, getSubmitCallback(options.maximumConcurrentAction));
+		ConfigureAsyncForm(elements.resourcesPerReservationForm, getSubmitCallback(options.maximumResourcesAction));
 	};
 
 	var getSubmitCallback = function (action) {

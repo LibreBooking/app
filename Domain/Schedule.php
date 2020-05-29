@@ -90,6 +90,8 @@ class Schedule implements ISchedule
     protected $_allowConcurrent = false;
     protected $_defaultStyle;
     protected $_layoutType;
+    protected $_totalConcurrentReservations = 0;
+    protected $_maxResourcesPerReservation = 0;
 
     const Today = 100;
 
@@ -114,6 +116,8 @@ class Schedule implements ISchedule
         $this->_allowConcurrent = false;
         $this->_defaultStyle = ScheduleStyle::Standard;
         $this->_layoutType = ScheduleLayout::Standard;
+        $this->_totalConcurrentReservations = 0;
+        $this->_maxResourcesPerReservation = 0;
     }
 
     public function GetId()
@@ -356,6 +360,8 @@ class Schedule implements ISchedule
         $schedule->SetAllowConcurrentReservations($row[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
         $schedule->SetDefaultStyle($row[ColumnNames::SCHEDULE_DEFAULT_STYLE]);
         $schedule->SetLayoutType($row[ColumnNames::LAYOUT_TYPE]);
+        $schedule->SetTotalConcurrentReservations($row[ColumnNames::TOTAL_CONCURRENT_RESERVATIONS]);
+        $schedule->SetMaxResourcesPerReservation($row[ColumnNames::MAX_RESOURCES_PER_RESERVATION]);
         return $schedule;
     }
 
@@ -382,20 +388,73 @@ class Schedule implements ISchedule
         return new CalendarSubscriptionUrl(null, $this->GetPublicId(), null);
     }
 
+	/**
+	 * @param $layoutType int
+	 */
     public function SetLayoutType($layoutType)
     {
         $this->_layoutType = $layoutType;
     }
 
+	/**
+	 * @return int
+	 */
     public function GetLayoutType()
     {
         return $this->_layoutType;
     }
 
+	/**
+	 * @return bool
+	 */
     public function HasCustomLayout()
     {
         return $this->_layoutType == ScheduleLayout::Custom;
     }
+
+	/**
+	 * @param $totalConcurrent int
+	 */
+    public function SetTotalConcurrentReservations($totalConcurrent) {
+    	$total = intval($totalConcurrent);
+    	$this->_totalConcurrentReservations = min(65535, max($total, 0));
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetTotalConcurrentReservations() {
+    	return $this->_totalConcurrentReservations;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function EnforceConcurrentReservationMaximum() {
+    	return $this->_totalConcurrentReservations > 0;
+	}
+
+	/**
+	 * @param $max int
+	 */
+    public function SetMaxResourcesPerReservation($max) {
+    	$total = intval($max);
+    	$this->_maxResourcesPerReservation = min(65535, max($total, 0));
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetMaxResourcesPerReservation() {
+    	return $this->_maxResourcesPerReservation;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function EnforceMaxResourcesPerReservation() {
+    	return $this->_maxResourcesPerReservation > 0;
+	}
 }
 
 class NullSchedule extends Schedule

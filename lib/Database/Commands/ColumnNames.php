@@ -177,6 +177,8 @@ class ColumnNames
     const SCHEDULE_AVAILABLE_END_DATE = 'end_date';
     const SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS = 'allow_concurrent_bookings';
     const SCHEDULE_DEFAULT_STYLE = 'default_layout';
+	const TOTAL_CONCURRENT_RESERVATIONS = 'total_concurrent_reservations';
+	const MAX_RESOURCES_PER_RESERVATION = 'max_resources_per_reservation';
 
     // EMAIL PREFERENCES //
     const EVENT_CATEGORY = 'event_category';

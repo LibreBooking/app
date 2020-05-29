@@ -71,7 +71,6 @@ class ConfigKeys
 	const RESERVATION_END_REMINDER = 'default.end.reminder';
 	const RESERVATION_TITLE_REQUIRED = 'title.required';
 	const RESERVATION_DESCRIPTION_REQUIRED = 'description.required';
-	const RESERVATION_MAXIMUM_RESOURCES = 'maximum.resources';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     const IMAGE_UPLOAD_URL = 'image.upload.url';

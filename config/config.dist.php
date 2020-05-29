@@ -86,7 +86,6 @@ $conf['settings']['reservation']['default.end.reminder'] = '';				// the default
 $conf['settings']['reservation']['title.required'] = 'false';
 $conf['settings']['reservation']['description.required'] = 'false';
 $conf['settings']['reservation']['extend.if.not.checked.in'] = 'false';
-$conf['settings']['reservation']['maximum.resources'] = '0';
 /**
  * Email notification configuration
  */

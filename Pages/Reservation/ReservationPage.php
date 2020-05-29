@@ -170,6 +170,11 @@ interface IReservationPage extends IPage
      * @param bool $accepted
      */
     public function SetTermsAccepted($accepted);
+
+	/**
+	 * @param int $maximum
+	 */
+    public function SetMaximumResources($maximum);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -248,11 +253,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('DescriptionRequired', $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_DESCRIPTION_REQUIRED, new BooleanConverter()));
 
 		$this->Set('CreditsEnabled', $config->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
-        $this->Set('MaximumResources', $config->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_MAXIMUM_RESOURCES, new IntConverter()));
-
-        if ($this->server->GetUserSession()->IsAdmin) {
-            $this->Set("MaximumResources", 0);
-        }
 
         if ($this->IsUnavailable())
         {
@@ -436,4 +436,9 @@ abstract class ReservationPage extends Page implements IReservationPage
     {
         $this->Set('Terms', $termsOfService);
     }
+
+    public function SetMaximumResources($maximum)
+	{
+		$this->Set('MaximumResources', $this->server->GetUserSession()->IsAdmin ? 0 : $maximum);
+	}
 }

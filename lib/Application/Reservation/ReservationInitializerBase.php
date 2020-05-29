@@ -132,6 +132,11 @@ interface IReservationComponentInitializer
 	public function SetReservationResource($resource);
 
 	/**
+	 * @param $maximum int
+	 */
+	public function SetMaximumResources($maximum);
+
+	/**
 	 * @param $attribute CustomAttribute
 	 * @param $value mixed
 	 */
@@ -464,8 +469,12 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		return true;
 	}
 
+	public function SetMaximumResources($maximum)
+	{
+		$this->basePage->SetMaximumResources($maximum);
+	}
 
-    private function SetTermsOfService()
+	private function SetTermsOfService()
     {
         $termsOfService = $this->termsRepository->Load();
         if ($termsOfService != null && $termsOfService->AppliesToReservation()) {

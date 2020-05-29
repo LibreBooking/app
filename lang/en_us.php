@@ -793,6 +793,13 @@ class en_us extends Language
         $strings['Custom'] = 'Custom';
         $strings['AddDate'] = 'Add Date';
         $strings['RepeatOn'] = 'Repeat On';
+        $strings['ScheduleConcurrentMaximum'] = 'A total of <b>%s</b> resources may be reserved concurrently';
+        $strings['ScheduleConcurrentMaximumNone'] = 'There is no limit to the number of concurrent reserved resources';
+        $strings['ScheduleMaximumConcurrent'] = 'Maximum number of resources reserved concurrently';
+        $strings['ScheduleMaximumConcurrentNote'] = 'When set, the total number of resources that can be reserved concurrently for this schedule will be limited.';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Each reservation is limited to a maximum of <b>%s</b> resources';
+        $strings['ScheduleResourcesPerReservationNone'] = 'There is no limit to the number of resources per reservation';
+        $strings['ScheduleResourcesPerReservation'] = 'Maximum number of resources per reservation';
         $strings['GroupCredits'] = 'Credits';
         $strings['Replenish'] = 'Replenish';
         $strings['AddCredits'] = 'Add Credits';
@@ -929,6 +936,7 @@ class en_us extends Language
 		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		$strings['InvalidNumberOfResourcesError'] = 'The maximum number of resources that can be reserved in a single reservation is %s';
 		$strings['NewPasswordCannotBeTheSameAsOld'] = 'The new password cannot be the same as the old password';
+		$strings['ScheduleTotalReservationsError'] = 'This schedule only allows %s resources to be reserved concurrently. This reservation would violate that limit on the following dates:';
 		// End Errors
 
 		// Page Titles

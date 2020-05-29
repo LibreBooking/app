@@ -277,4 +277,9 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
     {
         // TODO: Implement SetCustomRepeatDates() method.
     }
+
+	public function SetMaximumResources($maximum)
+	{
+		// TODO: Implement SetMaximumResources() method.
+	}
 }
