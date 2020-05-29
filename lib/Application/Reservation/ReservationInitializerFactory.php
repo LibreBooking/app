@@ -43,7 +43,9 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
     private $userRepository;
 
     public function __construct(
-        IScheduleRepository $scheduleRepository, IUserRepository $userRepository, IResourceService $resourceService,
+        IScheduleRepository $scheduleRepository,
+		IUserRepository $userRepository,
+		IResourceService $resourceService,
         IReservationAuthorization $reservationAuthorization
     )
     {
@@ -52,7 +54,7 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 
         $this->userBinder = new ReservationUserBinder($userRepository, $reservationAuthorization);
         $this->dateBinder = new ReservationDateBinder($scheduleRepository);
-        $this->resourceBinder = new ReservationResourceBinder($resourceService);
+        $this->resourceBinder = new ReservationResourceBinder($resourceService, $scheduleRepository);
     }
 
     public function GetNewInitializer(INewReservationPage $page)

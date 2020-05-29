@@ -177,10 +177,15 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	 * @var IResourceService
 	 */
 	private $resourceService;
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
 
-	public function __construct(IResourceService $resourceService)
+	public function __construct(IResourceService $resourceService, IScheduleRepository $scheduleRepository)
 	{
 		$this->resourceService = $resourceService;
+		$this->scheduleRepository = $scheduleRepository;
 	}
 
 	public function Bind(IReservationComponentInitializer $initializer)
@@ -204,12 +209,14 @@ class ReservationResourceBinder implements IReservationComponentBinder
 			return;
 		}
 
+		$schedule = $this->scheduleRepository->LoadById($requestedScheduleId);
 		$initializer->BindResourceGroups($groups);
 		$initializer->BindAvailableResources($resources);
 		$accessories = $this->resourceService->GetAccessories();
 		$initializer->BindAvailableAccessories($accessories);
 		$initializer->ShowAdditionalResources($bindableResourceData->NumberAccessible > 0);
 		$initializer->SetReservationResource($bindableResourceData->ReservationResource);
+		$initializer->SetMaximumResources($schedule->GetMaxResourcesPerReservation());
 	}
 
 	/**

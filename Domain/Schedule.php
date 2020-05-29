@@ -91,6 +91,7 @@ class Schedule implements ISchedule
     protected $_defaultStyle;
     protected $_layoutType;
     protected $_totalConcurrentReservations = 0;
+    protected $_maxResourcesPerReservation = 0;
 
     const Today = 100;
 
@@ -116,6 +117,7 @@ class Schedule implements ISchedule
         $this->_defaultStyle = ScheduleStyle::Standard;
         $this->_layoutType = ScheduleLayout::Standard;
         $this->_totalConcurrentReservations = 0;
+        $this->_maxResourcesPerReservation = 0;
     }
 
     public function GetId()
@@ -359,6 +361,7 @@ class Schedule implements ISchedule
         $schedule->SetDefaultStyle($row[ColumnNames::SCHEDULE_DEFAULT_STYLE]);
         $schedule->SetLayoutType($row[ColumnNames::LAYOUT_TYPE]);
         $schedule->SetTotalConcurrentReservations($row[ColumnNames::TOTAL_CONCURRENT_RESERVATIONS]);
+        $schedule->SetMaxResourcesPerReservation($row[ColumnNames::MAX_RESOURCES_PER_RESERVATION]);
         return $schedule;
     }
 
@@ -429,6 +432,28 @@ class Schedule implements ISchedule
 	 */
 	public function EnforceConcurrentReservationMaximum() {
     	return $this->_totalConcurrentReservations > 0;
+	}
+
+	/**
+	 * @param $max int
+	 */
+    public function SetMaxResourcesPerReservation($max) {
+    	$total = intval($max);
+    	$this->_maxResourcesPerReservation = min(65535, max($total, 0));
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetMaxResourcesPerReservation() {
+    	return $this->_maxResourcesPerReservation;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function EnforceMaxResourcesPerReservation() {
+    	return $this->_maxResourcesPerReservation > 0;
 	}
 }
 

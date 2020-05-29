@@ -30,7 +30,7 @@ class ReservationComponentTests extends TestBase
 	private $userId;
 
 	/**
-	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeScheduleRepository
 	 */
 	private $scheduleRepository;
 
@@ -85,7 +85,7 @@ class ReservationComponentTests extends TestBase
 
 		$this->userId = 9999;
 
-		$this->scheduleRepository = $this->createMock('IScheduleRepository');
+		$this->scheduleRepository = new FakeScheduleRepository();
 		$this->attributeRepository = $this->createMock('IAttributeRepository');
 		$this->userRepository = $this->createMock('IUserRepository');
 
@@ -145,6 +145,7 @@ class ReservationComponentTests extends TestBase
 	{
 		$requestedScheduleId = 10;
 		$requestedResourceId = 90;
+		$maxResources = 1000;
 
 		$this->initializer->expects($this->atLeastOnce())
 						  ->method('GetScheduleId')
@@ -169,6 +170,9 @@ class ReservationComponentTests extends TestBase
 
 		$groups = new FakeResourceGroupTree();
 		$groups->WithAllResources($resourceList);
+
+		$this->scheduleRepository->_Schedule = new FakeSchedule();
+		$this->scheduleRepository->_Schedule->SetMaxResourcesPerReservation($maxResources);
 
 		$this->resourceService->expects($this->once())
 							  ->method('GetResourceGroups')
@@ -197,7 +201,11 @@ class ReservationComponentTests extends TestBase
 						  ->method('SetReservationResource')
 						  ->with($this->equalTo($bookedResource));
 
-		$binder = new ReservationResourceBinder($this->resourceService);
+		$this->initializer->expects($this->once())
+						  ->method('SetMaximumResources')
+						  ->with($this->equalTo($maxResources));
+
+		$binder = new ReservationResourceBinder($this->resourceService, $this->scheduleRepository);
 		$binder->Bind($this->initializer);
 	}
 
@@ -231,7 +239,7 @@ class ReservationComponentTests extends TestBase
 						  ->method('RedirectToError')
 						  ->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
 
-		$binder = new ReservationResourceBinder($this->resourceService);
+		$binder = new ReservationResourceBinder($this->resourceService, $this->scheduleRepository);
 		$binder->Bind($this->initializer);
 	}
 
@@ -286,16 +294,8 @@ class ReservationComponentTests extends TestBase
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
 		$layout = $this->createMock('IScheduleLayout');
 
-		$this->scheduleRepository->expects($this->once())
-								 ->method('GetLayout')
-								 ->with($this->equalTo($scheduleId),
-										$this->equalTo(new ReservationLayoutFactory($timezone)))
-								 ->will($this->returnValue($layout));
-
-        $this->scheduleRepository->expects($this->once())
-            ->method('LoadById')
-            ->with($this->equalTo($scheduleId))
-            ->will($this->returnValue($schedule));
+		$this->scheduleRepository->_Layout = $layout;
+        $this->scheduleRepository->_Schedule = $schedule;
 
 		$layout->expects($this->at(0))
 			   ->method('GetLayout')
@@ -371,15 +371,8 @@ class ReservationComponentTests extends TestBase
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
 		$layout = $this->createMock('IScheduleLayout');
 
-		$this->scheduleRepository->expects($this->once())
-								 ->method('GetLayout')
-								 ->with($this->equalTo($scheduleId),
-										$this->equalTo(new ReservationLayoutFactory($timezone)))
-								 ->will($this->returnValue($layout));
-        $this->scheduleRepository->expects($this->once())
-            ->method('LoadById')
-            ->with($this->equalTo($scheduleId))
-            ->will($this->returnValue(new FakeSchedule()));
+		$this->scheduleRepository->_Layout = $layout;
+        $this->scheduleRepository->_Schedule = new FakeSchedule();
 
 		$layout->expects($this->at(0))
 			   ->method('GetLayout')
@@ -452,16 +445,8 @@ class ReservationComponentTests extends TestBase
 		$endPeriods = array($periods[1], $periods[0]);
 		$layout = $this->createMock('IScheduleLayout');
 
-		$this->scheduleRepository->expects($this->once())
-								 ->method('GetLayout')
-								 ->with($this->equalTo($scheduleId),
-										$this->equalTo(new ReservationLayoutFactory($timezone)))
-								 ->will($this->returnValue($layout));
-
-        $this->scheduleRepository->expects($this->once())
-            ->method('LoadById')
-            ->with($this->equalTo($scheduleId))
-            ->will($this->returnValue(new FakeSchedule()));
+		$this->scheduleRepository->_Layout = $layout;
+        $this->scheduleRepository->_Schedule =new FakeSchedule();
 
 		$layout->expects($this->any())
 			   ->method('GetLayout')

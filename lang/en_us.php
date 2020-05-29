@@ -787,6 +787,9 @@ class en_us extends Language
         $strings['ScheduleConcurrentMaximumNone'] = 'There is no limit to the number of concurrent reserved resources';
         $strings['ScheduleMaximumConcurrent'] = 'Maximum number of resources reserved concurrently';
         $strings['ScheduleMaximumConcurrentNote'] = 'When set, the total number of resources that can be reserved concurrently for this schedule will be limited.';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Each reservation is limited to a maximum of <b>%s</b> resources';
+        $strings['ScheduleResourcesPerReservationNone'] = 'There is no limit to the number of resources per reservation';
+        $strings['ScheduleResourcesPerReservation'] = 'Maximum number of resources per reservation';
         // End Strings
 
 		// Install

@@ -56,6 +56,7 @@ class ManageConfigurationPresenter extends ActionPresenter
     private $deletedSectionSettings = array(
         ConfigSection::AUTHENTICATION => array('allow.social.login'),
         ConfigSection::ICS => array('require.login', 'import', 'import.key'),
+		ConfigSection::RESERVATION => array('maximum.resources')
     );
 
     /**

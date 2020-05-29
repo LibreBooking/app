@@ -97,6 +97,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</a>
 						</div>
 
+						<div class="resourcesPerReservationContainer" data-maximum="{$schedule->GetMaxResourcesPerReservation()}">
+                            {if $schedule->EnforceMaxResourcesPerReservation()}
+                                {translate key=ScheduleResourcesPerReservationMaximum args=$schedule->GetMaxResourcesPerReservation()}
+                            {else}
+                                {translate key=ScheduleResourcesPerReservationNone}
+                            {/if}
+							<a href="#" class="update changeResourcesPerReservation">
+								<span class="no-show">{translate key='ScheduleResourcesPerReservation'}</span>
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
+						</div>
+
 						<div>
                             {translate key=DefaultStyle}
 							<span class="propertyValue defaultScheduleStyle inlineUpdate" data-type="select"
@@ -726,6 +738,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
+	<div id="resourcesPerReservationDialog" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="resourcesPerReservationDialogLabel"
+		 aria-hidden="true">
+		<form id="resourcesPerReservationForm" method="post">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="resourcesPerReservationDialogLabel">{translate key=ScheduleResourcesPerReservation}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="checkbox">
+							<input type="checkbox" id="resourcesPerReservationUnlimited" {formname key=MAXIMUM_RESOURCES_PER_RESERVATION_UNLIMITED}/>
+							<label for="resourcesPerReservationUnlimited">{translate key=Unlimited}</label>
+						</div>
+						<div class="form-group">
+							<label for="resourcesPerReservationResources">{translate key=Resources}</label>
+							<input type="number" class="form-control required" min="0" id="resourcesPerReservationResources" {formname key=MAXIMUM_RESOURCES_PER_RESERVATION}/>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="modal-footer">
+                        {cancel_button}
+                        {update_button submit=true}
+                        {indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
     {control type="DatePickerSetupControl" ControlId="availabilityStartDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 
@@ -816,6 +859,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				updateLayoutSlot: '{ManageSchedules::ActionUpdateLayoutSlot}',
 				deleteLayoutSlot: '{ManageSchedules::ActionDeleteLayoutSlot}',
 				maximumConcurrentAction: '{ManageSchedules::ActionChangeMaximumConcurrent}',
+				maximumResourcesAction: '{ManageSchedules::ActionChangeResourcesPerReservation}',
 				calendarOptions: {
 					buttonText: {
 						today: '{{translate key=Today}|escape:'javascript'}',

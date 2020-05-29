@@ -133,7 +133,8 @@ class FakeScheduleRepository implements IScheduleRepository
 			$availableStart = null,
 			$availableEnd = null,
 			$allowConcurrent = false,
-			$totalConcurrentReservations = 0)
+			$totalConcurrentReservations = 0,
+			$maxResourcesPerReservation = 0)
 	{
 		return array(
 				ColumnNames::SCHEDULE_ID => $id,
@@ -152,6 +153,7 @@ class FakeScheduleRepository implements IScheduleRepository
 				ColumnNames::SCHEDULE_DEFAULT_STYLE => ScheduleStyle::Standard,
 				ColumnNames::LAYOUT_TYPE => ScheduleLayout::Standard,
 				ColumnNames::TOTAL_CONCURRENT_RESERVATIONS => $totalConcurrentReservations,
+				ColumnNames::MAX_RESOURCES_PER_RESERVATION => $maxResourcesPerReservation,
 		);
 	}
 

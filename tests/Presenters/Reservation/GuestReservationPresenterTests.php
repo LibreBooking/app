@@ -313,4 +313,9 @@ class FakeGuestReservationPage implements IGuestReservationPage
     {
         return true;
     }
+
+	public function SetMaximumResources($maximum)
+	{
+		// TODO: Implement SetMaximumResources() method.
+	}
 }

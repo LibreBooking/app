@@ -45,6 +45,7 @@ class ManageSchedules
 	const ActionDeleteLayoutSlot = 'deleteLayoutSlot';
 	const ActionChangeDefaultStyle = 'changeDefaultStyle';
 	const ActionChangeMaximumConcurrent = 'changeMaximumConcurrent';
+	const ActionChangeResourcesPerReservation = 'changeResourcesPerReservation';
 }
 
 class ManageScheduleService
@@ -325,6 +326,8 @@ class ManageScheduleService
 	 */
 	public function SwitchLayoutType($scheduleId, $layoutType)
 	{
+		Log::Debug("Switching layout type. ScheduleId %s", $scheduleId);
+
 		$schedule = $this->scheduleRepository->LoadById($scheduleId);
 		$targetTimezone = $schedule->GetTimezone();
 		if ($layoutType == ScheduleLayout::Standard)
@@ -351,6 +354,8 @@ class ManageScheduleService
 	 */
 	public function AddCustomLayoutPeriod($scheduleId, $start, $end)
 	{
+		Log::Debug("Adding custom layout period. ScheduleId %s", $scheduleId);
+
 		$overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
 		if ($overlappingPeriod == null)
 		{
@@ -366,6 +371,7 @@ class ManageScheduleService
 	 */
 	public function UpdateCustomLayoutPeriod($scheduleId, $start, $end, $originalStart)
 	{
+		Log::Debug("Updating custom layout period. ScheduleId %s", $scheduleId);
 //        $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
 //        if ($overlappingPeriod != null) {
 //
@@ -423,6 +429,13 @@ class ManageScheduleService
 		$schedule->SetTotalConcurrentReservations($unlimited ? 0 : intval($max));
 		$this->scheduleRepository->Update($schedule);
 	}
+
+	public function ChangeResourcesPerReservation($scheduleId, $max, $unlimited)
+	{
+		$schedule = $this->scheduleRepository->LoadById($scheduleId);
+		$schedule->SetMaxResourcesPerReservation($unlimited ? 0 : intval($max));
+		$this->scheduleRepository->Update($schedule);
+	}
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -470,6 +483,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$this->AddAction(ManageSchedules::ActionDeleteLayoutSlot, 'DeleteLayoutSlot');
 		$this->AddAction(ManageSchedules::ActionChangeDefaultStyle, 'ChangeDefaultStyle');
 		$this->AddAction(ManageSchedules::ActionChangeMaximumConcurrent, 'ChangeMaximumConcurrentReservations');
+		$this->AddAction(ManageSchedules::ActionChangeResourcesPerReservation, 'ChangeResourcesPerReservation');
 	}
 
 	public function PageLoad()
@@ -755,6 +769,16 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$this->manageSchedulesService->ChangeConcurrentReservationMaximum($scheduleId, $max, $unlimited);
 	}
 
+	public function ChangeResourcesPerReservation()
+	{
+		$scheduleId = $this->page->GetScheduleId();
+		$max = $this->page->GetMaximumResourcesPerReservation();
+		$unlimited = $this->page->GetIsUnlimitedMaximumResourcesPerReservation();
+
+		Log::Debug('Changing maximum number of resources per reservation. Schedule %s, Max %s, Unlimited %s', $scheduleId, $max, $unlimited);
+
+		$this->manageSchedulesService->ChangeResourcesPerReservation($scheduleId, $max, $unlimited);
+	}
 
 	protected function LoadValidators($action)
 	{
