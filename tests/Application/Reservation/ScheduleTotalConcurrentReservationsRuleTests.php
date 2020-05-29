@@ -43,7 +43,7 @@ class ScheduleTotalConcurrentReservationsRuleTests extends TestBase
 		$this->scheduleRepository->_Schedule = new FakeSchedule();
 		$this->reservationViewRepository = new FakeReservationViewRepository();
 
-		$this->rule = new ScheduleTotalConcurrentReservationsRule($this->scheduleRepository, $this->reservationViewRepository);
+		$this->rule = new ScheduleTotalConcurrentReservationsRule($this->scheduleRepository, $this->reservationViewRepository, "UTC");
 	}
 
 	public function testValidWhenScheduleIsUnlimited()
@@ -73,7 +73,7 @@ class ScheduleTotalConcurrentReservationsRuleTests extends TestBase
 		$series = (new ExistingReservationSeriesBuilder())->WithPrimaryResource(new FakeBookableResource($resourceId))
 														  ->WithCurrentInstance(new TestReservation($refNum, new DateRange($start, $end)))->Build();
 
-		$this->scheduleRepository->_Schedule->SetTotalConcurrentReservations(1);
+		$this->scheduleRepository->_Schedule->SetTotalConcurrentReservations(count($series->AllResourceIds()));
 
 		$result = $this->rule->Validate($series, null);
 

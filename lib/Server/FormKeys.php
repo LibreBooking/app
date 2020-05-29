@@ -151,6 +151,8 @@ class FormKeys
 	const MIN_NOTICE_NONE_DELETE = 'minNoticeNoneDelete';
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
+	const MAXIMUM_CONCURRENT_UNLIMITED = 'MAXIMUM_CONCURRENT_UNLIMITED';
+	const MAXIMUM_CONCURRENT_RESERVATIONS = 'MAXIMUM_CONCURRENT_RESERVATIONS';
 
 	const NAME = 'name';
 	const NOTES = 'notes';

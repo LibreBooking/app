@@ -1140,7 +1140,8 @@ class Queries
 			`start_date` = @start_date,
 			`end_date` = @end_date,
 			`allow_concurrent_bookings` = @allow_concurrent_bookings,
-			`default_layout` = @default_layout
+			`default_layout` = @default_layout,
+			`total_concurrent_reservations` = @total_concurrent_reservations
 		WHERE
 			`schedule_id` = @scheduleid';
 

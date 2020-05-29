@@ -89,6 +89,16 @@ interface IUpdateSchedulePage
      * @return string
      */
     function GetValue();
+
+	/**
+	 * @return int
+	 */
+	function GetMaximumConcurrentReservations();
+
+	/**
+	 * @return bool
+	 */
+	function GetIsUnlimitedConcurrentReservations();
 }
 
 interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageable
@@ -619,4 +629,14 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     {
        return $this->GetForm(FormKeys::SCHEDULE_DEFAULT_STYLE);
     }
+
+	public function GetMaximumConcurrentReservations()
+	{
+		return intval($this->GetForm(FormKeys::MAXIMUM_CONCURRENT_RESERVATIONS));
+	}
+
+	public function GetIsUnlimitedConcurrentReservations()
+	{
+		return $this->GetCheckbox(FormKeys::MAXIMUM_CONCURRENT_UNLIMITED);
+	}
 }

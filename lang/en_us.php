@@ -783,6 +783,10 @@ class en_us extends Language
         $strings['Custom'] = 'Custom';
         $strings['AddDate'] = 'Add Date';
         $strings['RepeatOn'] = 'Repeat On';
+        $strings['ScheduleConcurrentMaximum'] = 'A total of <b>%s</b> resources may be reserved concurrently';
+        $strings['ScheduleConcurrentMaximumNone'] = 'There is no limit to the number of concurrent reserved resources';
+        $strings['ScheduleMaximumConcurrent'] = 'Maximum number of resources reserved concurrently';
+        $strings['ScheduleMaximumConcurrentNote'] = 'When set, the total number of resources that can be reserved concurrently for this schedule will be limited.';
         // End Strings
 
 		// Install

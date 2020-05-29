@@ -2663,7 +2663,9 @@ class UpdateScheduleCommand extends SqlCommand
                                 Date $availabilityBegin,
                                 Date $availabilityEnd,
                                 $allowConcurrentReservations,
-                                $defaultStyle)
+                                $defaultStyle,
+								$totalConcurrentReservations
+)
     {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -2679,6 +2681,7 @@ class UpdateScheduleCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS, (int)$allowConcurrentReservations));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DEFAULT_STYLE, (int)$defaultStyle));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_TOTAL_CONCURRENT_RESERVATIONS, (int)$totalConcurrentReservations));
     }
 }
 
