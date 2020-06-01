@@ -567,8 +567,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function SetAllowConcurrent($allowConcurrentReservations)
     {
         $this->Set('AllowConcurrentReservations', $allowConcurrentReservations);
-        $hide = $this->GetVar('HideSchedule');
-        $this->Set('HideSchedule', $hide || $allowConcurrentReservations);
     }
 
     /**

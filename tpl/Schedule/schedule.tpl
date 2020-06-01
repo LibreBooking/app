@@ -226,16 +226,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
         {/if}
 
-        {if $AllowConcurrentReservations}
-			<div class="col s12 m8 offset-m2 card warning">
-				<div class="card-content">
-					<strong>
-						<a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}{translate key=OnlyViewedCalendar}</a>
-					</strong>
-				</div>
-			</div>
-        {/if}
-
         {if !$HideSchedule}
             {block name="legend"}
 				<div class="hide-on-small-only row col m12 schedule-legend">
