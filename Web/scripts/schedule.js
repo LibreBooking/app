@@ -216,8 +216,9 @@ function Schedule(opts, resourceGroups) {
 
 
 					let numberOfConflicts = 0;
+					let conflictIds = [];
 
-					t.find('div.event').each((i, div) => {
+					t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
 						let divMin = Number.parseInt($(div).data('start'));
 						let divMax = Number.parseInt($(div).data('end'));
 						let resStart = Number.parseInt(res.StartDate);
@@ -242,8 +243,17 @@ function Schedule(opts, resourceGroups) {
 						if (overlaps || conflictsStart || conflictsEnd)
 						{
 							numberOfConflicts++;
+							if (!conflictIds.includes(res.ReferenceNumber))
+							{
+								conflictIds.push(res.ReferenceNumber);
+							}
+							if (!conflictIds.includes($(div).data('resid')))
+							{
+								conflictIds.push($(div).data('resid'));
+							}
 						}
 					});
+
 					let width = 0;
 					let height = 0;
 					let top = startTd.position().top;
@@ -252,12 +262,6 @@ function Schedule(opts, resourceGroups) {
 					{
 						width = startTd.outerWidth();
 						height = endTd.position().top - startTd.position().top;
-						// if (numberOfConflicts > 0)
-						// {
-						// 	// startTd.css('width', 40 * (numberOfConflicts + 1) + "px");
-						// 	width = startTd.outerWidth() / numberOfConflicts+1;
-						// 	left = startTd.position().left + (width * numberOfConflicts+1);
-						// }
 					}
 					else
 					{
@@ -288,6 +292,19 @@ function Schedule(opts, resourceGroups) {
 					}
 
 					t.append(div);
+
+					if (conflictIds.length > 0 && opts.scheduleStyle === ScheduleTall)
+					{
+						console.log(conflictIds)
+						width = startTd.outerWidth() / conflictIds.length;
+						conflictIds.forEach((conflict, index) => {
+							left = startTd.position().left + (width * index);
+							console.log(index, conflict, left, startTd.position().left);
+							const div = t.find(`[data-resid="${conflict}"]`);
+							div.css('width', width + "px");
+							div.css('left', left + "px");
+						})
+					}
 
 					if (isDraggable)
 					{
