@@ -336,7 +336,7 @@ function ScheduleManagement(opts) {
 				elements.maximumConcurrentUnlimited.attr('checked', concurrent == "0");
 				elements.maximumConcurrent.val(concurrent);
 				elements.maximumConcurrent.attr('disabled', concurrent == "0");
-				elements.concurrentMaximumDialog.modal('show');
+				elements.concurrentMaximumDialog.modal('open');
 		});
 
 			details.find('.changeResourcesPerReservation').click(function (e) {
@@ -345,7 +345,7 @@ function ScheduleManagement(opts) {
 				elements.resourcesPerReservationUnlimited.attr('checked', maximum == "0");
 				elements.resourcesPerReservationResources.val(maximum);
 				elements.resourcesPerReservationResources.attr('disabled', maximum == "0");
-				elements.resourcesPerReservationDialog.modal('show');
+				elements.resourcesPerReservationDialog.modal('open');
 			});
 		});
 

@@ -839,6 +839,9 @@ class en_us extends Language
         $strings['PeakTimesHelp'] = 'Peak times can be used to charge different credit amounts at different times of the day.';
         $strings['StandardLayoutHelp'] = 'Standard layouts create an interval based schedule for each day of the week.';
         $strings['CustomLayoutHelp'] = 'Custom layouts have completely unique slots every day and require every slot to be defined independently. This can be useful for appointment booking.';
+        $strings['ChangeAvailability'] = 'Change Availability';
+        $strings['ChangeMaximumConcurrent'] = 'Change Maximum Concurrent Reservations';
+        $strings['ChangeScheduleResourcesPerReservation'] = 'Change Maximum Resources per Reservation';
         // End Strings
 
 		// Install
