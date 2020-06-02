@@ -150,11 +150,11 @@ class EmbeddedCalendarPresenter
     private function GetDaysToShow()
     {
         $days = $this->page->GetDaysToShow();
-        if (empty($days) || !is_integer($days)) {
+        if (empty($days)) {
             return 7;
         }
 
-        return min(30, $days);
+        return max(1, min(30, $days));
     }
 
     private function Display()
