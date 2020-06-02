@@ -77,14 +77,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</a>
 						</div>
 
-						<div class="concurrentContainer">
-							<span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentYes}</span>
-							<span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentNo}</span>
-							<a class="update toggleConcurrent" href="#"
-							   data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
-						</div>
-
-
 						<div class="maximumConcurrentContainer" data-concurrent="{$schedule->GetTotalConcurrentReservations()}">
                             {if $schedule->EnforceConcurrentReservationMaximum()}
                                 {translate key=ScheduleConcurrentMaximum args=$schedule->GetTotalConcurrentReservations()}
@@ -678,9 +670,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<form id="concurrentForm" method="post">
-	</form>
-
 	<form id="layoutSlotForm" method="post">
 		<input type="hidden" id="slotStartDate" {formname key=BEGIN_DATE} />
 		<input type="hidden" id="slotEndDate" {formname key=END_DATE} />
@@ -853,7 +842,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				availabilityAction: '{ManageSchedules::ActionChangeAvailability}',
 				enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
 				disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}',
-				toggleConcurrentReservations: '{ManageSchedules::ActionToggleConcurrentReservations}',
 				switchLayout: '{ManageSchedules::ActionSwitchLayoutType}',
 				addLayoutSlot: '{ManageSchedules::ActionAddLayoutSlot}',
 				updateLayoutSlot: '{ManageSchedules::ActionUpdateLayoutSlot}',

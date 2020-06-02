@@ -2667,7 +2667,6 @@ class UpdateScheduleCommand extends SqlCommand
 								$adminGroupId,
 								Date $availabilityBegin,
 								Date $availabilityEnd,
-								$allowConcurrentReservations,
 								$defaultStyle,
 								$totalConcurrentReservations,
 								$maxResourcesPerReservation
@@ -2685,7 +2684,6 @@ class UpdateScheduleCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_BEGIN, $availabilityBegin->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS, (int)$allowConcurrentReservations));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DEFAULT_STYLE, (int)$defaultStyle));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_TOTAL_CONCURRENT_RESERVATIONS, (int)$totalConcurrentReservations));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_MAX_RESOURCES_PER_RESERVATION, (int)$maxResourcesPerReservation));

@@ -123,7 +123,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		{
 			$page->SetSubscriptionUrl(new CalendarSubscriptionUrl(null, $currentSchedule->GetPublicId(), null));
 		}
-		$page->SetAllowConcurrent($currentSchedule->GetAllowConcurrentReservations());
 	}
 
 	/**

@@ -207,11 +207,6 @@ interface ISchedulePage extends IActionPage
 	public function BindScheduleAvailability($availability, $tooEarly);
 
 	/**
-	 * @param bool $allowConcurrentReservations
-	 */
-	public function SetAllowConcurrent($allowConcurrentReservations);
-
-	/**
 	 * @return LoadReservationRequest
 	 */
 	public function GetReservationRequest();
@@ -582,11 +577,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('ScheduleAvailabilityStart', $availability->GetBegin());
 		$this->Set('ScheduleAvailabilityEnd', $availability->GetEnd());
 		$this->Set('HideSchedule', true);
-	}
-
-	public function SetAllowConcurrent($allowConcurrentReservations)
-	{
-		$this->Set('AllowConcurrentReservations', $allowConcurrentReservations);
 	}
 
 	public function GetReservationRequest()

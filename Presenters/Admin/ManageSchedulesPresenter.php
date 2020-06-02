@@ -38,7 +38,6 @@ class ManageSchedules
 	const ChangeAdminGroup = 'changeAdminGroup';
 	const ActionChangePeakTimes = 'ActionChangePeakTimes';
 	const ActionChangeAvailability = 'ActionChangeAvailability';
-	const ActionToggleConcurrentReservations = 'ToggleConcurrentReservations';
 	const ActionSwitchLayoutType = 'ActionSwitchLayoutType';
 	const ActionAddLayoutSlot = 'addLayoutSlot';
 	const ActionUpdateLayoutSlot = 'updateLayoutSlot';
@@ -308,18 +307,6 @@ class ManageScheduleService
 		return $schedule;
 	}
 
-	public function ToggleConcurrentReservations($scheduleId)
-	{
-		Log::Debug('Toggling concurrent reservations. schedule %s', $scheduleId);
-
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$allow = $schedule->GetAllowConcurrentReservations();
-
-		$schedule->SetAllowConcurrentReservations(!$allow);
-
-		$this->scheduleRepository->Update($schedule);
-	}
-
 	/**
 	 * @param int $scheduleId
 	 * @param int $layoutType
@@ -476,7 +463,6 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$this->AddAction(ManageSchedules::ChangeAdminGroup, 'ChangeAdminGroup');
 		$this->AddAction(ManageSchedules::ActionChangePeakTimes, 'ChangePeakTimes');
 		$this->AddAction(ManageSchedules::ActionChangeAvailability, 'ChangeAvailability');
-		$this->AddAction(ManageSchedules::ActionToggleConcurrentReservations, 'ToggleConcurrentReservations');
 		$this->AddAction(ManageSchedules::ActionSwitchLayoutType, 'SwitchLayoutType');
 		$this->AddAction(ManageSchedules::ActionAddLayoutSlot, 'AddLayoutSlot');
 		$this->AddAction(ManageSchedules::ActionUpdateLayoutSlot, 'UpdateLayoutSlot');
@@ -671,12 +657,6 @@ class ManageSchedulesPresenter extends ActionPresenter
 		}
 
 		$this->page->DisplayAvailability($schedule, $timezone);
-	}
-
-	public function ToggleConcurrentReservations()
-	{
-		$scheduleId = $this->page->GetScheduleId();
-		$this->manageSchedulesService->ToggleConcurrentReservations($scheduleId);
 	}
 
 	public function SwitchLayoutType()

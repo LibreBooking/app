@@ -63,11 +63,6 @@ interface ISchedule
     public function HasAvailability();
 
     /**
-     * @return bool
-     */
-    public function GetAllowConcurrentReservations();
-
-    /**
      * @return int
      */
     public function GetDefaultStyle();
@@ -87,7 +82,6 @@ class Schedule implements ISchedule
     protected $_adminGroupId;
     protected $_availabilityBegin;
     protected $_availabilityEnd;
-    protected $_allowConcurrent = false;
     protected $_defaultStyle;
     protected $_layoutType;
     protected $_totalConcurrentReservations = 0;
@@ -113,7 +107,6 @@ class Schedule implements ISchedule
         $this->_layoutId = $layoutId;
         $this->_availabilityBegin = new NullDate();
         $this->_availabilityEnd = new NullDate();
-        $this->_allowConcurrent = false;
         $this->_defaultStyle = ScheduleStyle::Standard;
         $this->_layoutType = ScheduleLayout::Standard;
         $this->_totalConcurrentReservations = 0;
@@ -298,22 +291,6 @@ class Schedule implements ISchedule
     }
 
     /**
-     * @param bool $allowConcurrent
-     */
-    public function SetAllowConcurrentReservations($allowConcurrent)
-    {
-        $this->_allowConcurrent = (bool)$allowConcurrent;
-    }
-
-    /**
-     * @return bool
-     */
-    public function GetAllowConcurrentReservations()
-    {
-        return $this->_allowConcurrent;
-    }
-
-    /**
      * @return int|ScheduleStyle
      */
     public function GetDefaultStyle()
@@ -357,7 +334,6 @@ class Schedule implements ISchedule
         $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
         $schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
         $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
-        $schedule->SetAllowConcurrentReservations($row[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
         $schedule->SetDefaultStyle($row[ColumnNames::SCHEDULE_DEFAULT_STYLE]);
         $schedule->SetLayoutType($row[ColumnNames::LAYOUT_TYPE]);
         $schedule->SetTotalConcurrentReservations($row[ColumnNames::TOTAL_CONCURRENT_RESERVATIONS]);

@@ -291,9 +291,6 @@ function ScheduleManagement(opts) {
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 		ConfigureAsyncForm(elements.peakTimesForm, getSubmitCallback(options.peakTimesAction), refreshPeakTimes);
 		ConfigureAsyncForm(elements.availabilityForm, getSubmitCallback(options.availabilityAction), refreshAvailability);
-		ConfigureAsyncForm(elements.concurrentForm, getSubmitCallback(options.toggleConcurrentReservations), function () {
-		}, function () {
-		});
 		ConfigureAsyncForm(elements.switchLayoutForm, getSubmitCallback(options.switchLayout));
 		ConfigureAsyncForm(elements.deleteCustomTimeSlotForm, getSubmitCallback(options.deleteLayoutSlot), afterDeleteSlot);
 		ConfigureAsyncForm(elements.concurrentMaximumForm, getSubmitCallback(options.maximumConcurrentAction));
