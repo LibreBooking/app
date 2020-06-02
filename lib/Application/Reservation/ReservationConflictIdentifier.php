@@ -53,15 +53,10 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 	 * @var IResourceAvailabilityStrategy
 	 */
 	private $strategy;
-	/**
-	 * @var IScheduleRepository
-	 */
-	private $scheduleRepository;
 
-	public function __construct(IResourceAvailabilityStrategy $strategy, IScheduleRepository $scheduleRepository)
+	public function __construct(IResourceAvailabilityStrategy $strategy)
 	{
 		$this->strategy = $strategy;
-		$this->scheduleRepository = $scheduleRepository;
 	}
 
 	/**
@@ -70,12 +65,6 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 	 */
 	public function GetConflicts($reservationSeries)
 	{
-		$schedule = $this->scheduleRepository->LoadById($reservationSeries->ScheduleId());
-		if ($schedule->GetAllowConcurrentReservations())
-		{
-			return [];
-		}
-
 		/** @var IdentifiedConflict[] $conflicts */
 		$conflicts = array();
 
@@ -84,14 +73,20 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 		$bufferTime = $reservationSeries->MaxBufferTime();
 
 		$keyedResources = array();
+		$maxConcurrentReservations = 1000;
 		foreach ($reservationSeries->AllResources() as $resource)
 		{
 			$keyedResources[$resource->GetId()] = $resource;
+			if ($resource->GetMaxConcurrentReservations() < $maxConcurrentReservations)
+			{
+				$maxConcurrentReservations = $resource->GetMaxConcurrentReservations();
+			}
 		}
 
 		/** @var Reservation $reservation */
 		foreach ($reservations as $reservation)
 		{
+			$instanceConflicts = array();
 			Log::Debug("Checking for reservation conflicts, reference number %s on %s", $reservation->ReferenceNumber(), $reservation->StartDate());
 
 			$startDate = $reservation->StartDate();
@@ -122,8 +117,13 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 					Log::Debug("Reference number %s conflicts with existing %s with id %s on %s",
 							   $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId(), $reservation->StartDate());
 
-					$conflicts[] = new IdentifiedConflict($reservation, $existingItem);
+					$instanceConflicts[] = new IdentifiedConflict($reservation, $existingItem);
 				}
+			}
+
+			if (count($instanceConflicts) >= $maxConcurrentReservations)
+			{
+				$conflicts = array_merge($conflicts, $instanceConflicts);
 			}
 		}
 

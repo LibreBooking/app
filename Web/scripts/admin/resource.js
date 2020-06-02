@@ -62,7 +62,7 @@ function ResourceManagement(opts) {
 
 		resourceGroupDialog: $('#resourceGroupDialog'),
 		resourceGroupForm: $('#resourceGroupForm'),
-        changeGroupForm: $('#changeGroupForm'),
+		changeGroupForm: $('#changeGroupForm'),
 		groupDiv: $('#resourceGroups'),
 		autoAssign: $('#autoAssign'),
 		removeAllPermissions: $('#autoAssignRemoveAllPermissions'),
@@ -92,12 +92,16 @@ function ResourceManagement(opts) {
 		removeImageName: $('#removeImageName'),
 		defaultImageName: $('#defaultImageName'),
 
-        bulkDeletePromptButton: $('#bulkDeletePromptButton'),
-        bulkDeleteDialog: $('#bulkDeleteDialog'),
-        bulkDeleteList: $('#bulkDeleteList'),
-        bulkDeleteForm: $('#bulkDeleteForm'),
-        checkAllDeleteResources: $('#checkAllDeleteResources'),
-        checkNoDeleteResources: $('#checkNoDeleteResources')
+		bulkDeletePromptButton: $('#bulkDeletePromptButton'),
+		bulkDeleteDialog: $('#bulkDeleteDialog'),
+		bulkDeleteList: $('#bulkDeleteList'),
+		bulkDeleteForm: $('#bulkDeleteForm'),
+		checkAllDeleteResources: $('#checkAllDeleteResources'),
+		checkNoDeleteResources: $('#checkNoDeleteResources'),
+
+		checkAllowConcurrent: $('#allowConcurrentChk'),
+		maxConcurrent: $('#maxConcurrentReservations'),
+		allowConcurrentDiv: $('#allowConcurrentDiv'),
 	};
 
 	var resources = {};
@@ -244,15 +248,15 @@ function ResourceManagement(opts) {
 				elements.creditsDialog.modal('show');
 			});
 
-            details.delegate('.enableSubscription', 'click', function (e) {
-                e.preventDefault();
-                PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
-            });
+			details.delegate('.enableSubscription', 'click', function (e) {
+				e.preventDefault();
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
+			});
 
-            details.delegate('.disableSubscription', 'click', function (e) {
-                e.preventDefault();
-                PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
-            });
+			details.delegate('.disableSubscription', 'click', function (e) {
+				e.preventDefault();
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
+			});
 		});
 
 		elements.checkAllResources.click(function (e) {
@@ -357,43 +361,42 @@ function ResourceManagement(opts) {
 		});
 
 		elements.browseUsersButton.click(function (e) {
-            e.preventDefault();
+			e.preventDefault();
 			showAllUsersToAdd();
 		});
 
-        elements.resourceUserList.delegate('.change-permission-type', 'change', function (e) {
-            e.preventDefault();
-            var userId = $(this).data('user-id');
-            var type = $(this).val();
-            changeUserPermission(userId, type);
-        });
+		elements.resourceUserList.delegate('.change-permission-type', 'change', function (e) {
+			e.preventDefault();
+			var userId = $(this).data('user-id');
+			var type = $(this).val();
+			changeUserPermission(userId, type);
+		});
 
-        elements.allUsersList.delegate('.change-permission-type', 'change', function (e) {
-            e.preventDefault();
-            var userId = $(this).data('user-id');
-            var type = $(this).val();
-            changeUserPermission(userId, type);
-        });
+		elements.allUsersList.delegate('.change-permission-type', 'change', function (e) {
+			e.preventDefault();
+			var userId = $(this).data('user-id');
+			var type = $(this).val();
+			changeUserPermission(userId, type);
+		});
 
-        elements.browseGroupsButton.click(function (e) {
-            e.preventDefault();
-            showAllGroupsToAdd();
-        });
+		elements.browseGroupsButton.click(function (e) {
+			e.preventDefault();
+			showAllGroupsToAdd();
+		});
 
-        elements.resourceGroupList.delegate('.change-permission-type', 'change', function (e) {
-            e.preventDefault();
-            var groupId = $(this).data('group-id');
-            var type = $(this).val();
-            changeGroupPermission(groupId, type);
-        });
+		elements.resourceGroupList.delegate('.change-permission-type', 'change', function (e) {
+			e.preventDefault();
+			var groupId = $(this).data('group-id');
+			var type = $(this).val();
+			changeGroupPermission(groupId, type);
+		});
 
-        elements.allGroupsList.delegate('.change-permission-type', 'change', function (e) {
-            e.preventDefault();
-            var groupId = $(this).data('group-id');
-            var type = $(this).val();
-            changeGroupPermission(groupId, type);
-        });
-
+		elements.allGroupsList.delegate('.change-permission-type', 'change', function (e) {
+			e.preventDefault();
+			var groupId = $(this).data('group-id');
+			var type = $(this).val();
+			changeGroupPermission(groupId, type);
+		});
 
 		elements.autoAssign.on('click', function () {
 			elements.removeAllPermissions.find('input').prop('checked', false);
@@ -409,6 +412,10 @@ function ResourceManagement(opts) {
 
 		elements.enableCheckIn.on('click', function () {
 			showHideAutoRelease();
+		});
+
+		elements.checkAllowConcurrent.on('click', function () {
+			showHideConcurrent();
 		});
 
 		wireUpCheckboxToggle(elements.durationForm);
@@ -512,7 +519,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 		ConfigureAsyncForm(elements.importForm, defaultSubmitCallback(elements.importForm), importHandler);
-        ConfigureAsyncForm(elements.bulkDeleteForm, defaultSubmitCallback(elements.bulkDeleteForm));
+		ConfigureAsyncForm(elements.bulkDeleteForm, defaultSubmitCallback(elements.bulkDeleteForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -655,6 +662,10 @@ function ResourceManagement(opts) {
 		elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
 		showHideAutoRelease();
 
+		elements.checkAllowConcurrent.prop('checked', resource.allowConcurrent && resource.allowConcurrent == "1");
+		elements.maxConcurrent.val(Math.max(2, Number.parseInt(resource.maxConcurrent)));
+		showHideConcurrent();
+
 		elements.accessDialog.modal('show');
 	};
 
@@ -669,6 +680,16 @@ function ResourceManagement(opts) {
 		}
 	};
 
+	var showHideConcurrent = function () {
+		if (elements.checkAllowConcurrent.is(':checked'))
+		{
+			elements.allowConcurrentDiv.removeClass('no-show');
+		}
+		else
+		{
+			elements.allowConcurrentDiv.addClass('no-show');
+		}
+	}
 	var setDuration = function (container, resourceDuration) {
 		var emptyIfZero = function (val) {
 			if (val == 0)
@@ -728,6 +749,7 @@ function ResourceManagement(opts) {
 		var autoAssign = result.find('.autoAssign');
 		var enableCheckin = result.find('.enableCheckin');
 		var autoRelease = result.find('.autoRelease');
+		var maxConcurrent = result.find('.allowConcurrent');
 
 		setDuration(startNoticeAdd, resource.startNoticeAdd);
 		setDuration(startNoticeUpdate, resource.startNoticeUpdate);
@@ -738,6 +760,9 @@ function ResourceManagement(opts) {
 
 		resource.enableCheckin = enableCheckin.attr('data-value');
 		resource.autoReleaseMinutes = autoRelease.attr('data-value');
+
+		resource.maxConcurrent = maxConcurrent.data('max-concurrent');
+		resource.allowConcurrent = maxConcurrent.data('allow-concurrent');
 
 		elements.accessDialog.modal('hide');
 	};
@@ -891,13 +916,13 @@ function ResourceManagement(opts) {
 		var resourceId = getActiveResourceId();
 		$.get(opts.permissionsUrl + '?dr=users', {rid: resourceId}, function (data) {
 			elements.resourceUserList.html(data);
-            $('.user-permission-spinner').addClass('no-show');
+			$('.user-permission-spinner').addClass('no-show');
 		});
 	};
 
 	var changeUserPermission = function (userId, type) {
-        $('.user-permission-spinner').removeClass('no-show');
-	    $('#changeUserId').val(userId);
+		$('.user-permission-spinner').removeClass('no-show');
+		$('#changeUserId').val(userId);
 		$('#changeUserType').val(type);
 		elements.changeUserForm.submit();
 	};
@@ -906,10 +931,10 @@ function ResourceManagement(opts) {
 		elements.userDialog.modal('hide');
 		elements.allUsersList.empty();
 
-        var resourceId = getActiveResourceId();
-        $.get(opts.permissionsUrl + '?dr=usersAll', {rid: resourceId}, function (data) {
-            elements.allUsersList.html(data);
-        });
+		var resourceId = getActiveResourceId();
+		$.get(opts.permissionsUrl + '?dr=usersAll', {rid: resourceId}, function (data) {
+			elements.allUsersList.html(data);
+		});
 
 		elements.browseUserDialog.modal('show');
 	};
@@ -917,26 +942,26 @@ function ResourceManagement(opts) {
 	var changeGroupPermissions = function () {
 		var resourceId = getActiveResourceId();
 		$.get(opts.permissionsUrl + '?dr=groups', {rid: resourceId}, function (data) {
-            elements.resourceGroupList.html(data);
-            $('.group-permission-spinner').addClass('no-show');
-        });
+			elements.resourceGroupList.html(data);
+			$('.group-permission-spinner').addClass('no-show');
+		});
 	};
 
-    var changeGroupPermission = function (groupId, type) {
-        $('.group-permission-spinner').removeClass('no-show');
-        $('#changeGroupId').val(groupId);
-        $('#changeGroupType').val(type);
-        elements.changeGroupForm.submit();
-    };
+	var changeGroupPermission = function (groupId, type) {
+		$('.group-permission-spinner').removeClass('no-show');
+		$('#changeGroupId').val(groupId);
+		$('#changeGroupType').val(type);
+		elements.changeGroupForm.submit();
+	};
 
 	var showAllGroupsToAdd = function () {
 		elements.groupDialog.modal('hide');
 		elements.allGroupsList.empty();
 
-        var resourceId = getActiveResourceId();
-        $.get(opts.permissionsUrl + '?dr=groupsAll', {rid: resourceId}, function (data) {
-            elements.allGroupsList.html(data);
-        });
+		var resourceId = getActiveResourceId();
+		$.get(opts.permissionsUrl + '?dr=groupsAll', {rid: resourceId}, function (data) {
+			elements.allGroupsList.html(data);
+		});
 
 		elements.browseGroupDialog.modal('show');
 	};

@@ -47,7 +47,8 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			foreach ($reviewableConflicts as $conflict)
 			{
 				Log::Debug("Skipping conflicting reservation. Reference number %s conflicts with existing %s with id %s on %s",
-						   $conflict->Reservation->ReferenceNumber(), get_class($conflict->Conflict), $conflict->Conflict->GetId(), $conflict->Reservation->StartDate());
+						   $conflict->Reservation->ReferenceNumber(), get_class($conflict->Conflict), $conflict->Conflict->GetId(),
+						   $conflict->Reservation->StartDate());
 
 				$skipped = $reservationSeries->RemoveInstance($conflict->Reservation);
 
@@ -58,12 +59,31 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			}
 		}
 
-		$thereAreConflicts = count($conflicts) > 0;
+		$numberOfConflicts = count($conflicts);
+		$thereAreConflicts = $numberOfConflicts > 0;
+
+//		if ($thereAreConflicts)
+//		{
+//			$newConflictList = array();
+//			$conflictsPerInstance = array();
+//			$maxConflictsForSeries = 0;
+//			foreach ($conflicts as $conflict) {
+//				$conflict->Reservation->ReferenceNumber();
+//			}
+//
+//			foreach ($reservationSeries->AllResources() as $resource)
+//			{
+//				if ($maxConflictsForSeries >= $resource->GetMaxConcurrentReservations())
+//				{
+//					$thereAreConflicts = false;
+//				}
+//			}
+//		}
 
 		if ($thereAreConflicts)
 		{
 			$numberOfReservationDates = count($reservationSeries->Instances());
-			$shouldRetry = count($conflicts) < $numberOfReservationDates;
+			$shouldRetry = $numberOfConflicts < $numberOfReservationDates;
 			$canJoinWaitlist = $numberOfReservationDates == 1;
 			return new ReservationRuleResult(false,
 											 $this->GetErrorString($conflicts),

@@ -268,7 +268,6 @@ class ScheduleRepositoryTests extends TestBase
 		$publicId = '123';
 		$start = Date::Now();
 		$end = Date::Now()->AddDays(1);
-		$allowConcurrent = 1;
 
 		$fakeSchedules = new FakeScheduleRepository();
 		$expectedSchedule = new Schedule($id,
@@ -281,11 +280,9 @@ class ScheduleRepositoryTests extends TestBase
 		$expectedSchedule->WithSubscription($allowSubscription);
 		$expectedSchedule->WithPublicId($publicId);
 		$expectedSchedule->SetAvailability($start, $end);
-		$expectedSchedule->SetAllowConcurrentReservations($allowConcurrent);
 
 		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone,
-														$layoutId, $allowSubscription, $publicId, null, $start->ToDatabase(), $end->ToDatabase(),
-														$allowConcurrent)));
+														$layoutId, $allowSubscription, $publicId, null, $start->ToDatabase(), $end->ToDatabase())));
 
 		$actualSchedule = $this->scheduleRepository->LoadById($id);
 
@@ -331,7 +328,6 @@ class ScheduleRepositoryTests extends TestBase
 		$publicId = $schedule->GetPublicId();
 		$schedule->SetAdminGroupId($adminGroupId);
 		$schedule->SetAvailability($begin, $end);
-		$schedule->SetAllowConcurrentReservations($allowConcurrent);
 		$schedule->SetDefaultStyle($style);
 		$schedule->SetTotalConcurrentReservations($maxConcurrent);
 		$schedule->SetMaxResourcesPerReservation($maxResources);
@@ -339,7 +335,7 @@ class ScheduleRepositoryTests extends TestBase
 		$this->scheduleRepository->Update($schedule);
 
 		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId, $adminGroupId,
-													  $begin, $end, $allowConcurrent, $style, $maxConcurrent, $maxResources),
+													  $begin, $end, $style, $maxConcurrent, $maxResources),
 							$this->db->_LastCommand);
 	}
 

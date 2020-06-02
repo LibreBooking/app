@@ -1117,7 +1117,8 @@ class Queries
 			`allow_display` = @allow_display,
 			`credit_count` = @credit_count,
 			`peak_credit_count` = @peak_credit_count,
-			`last_modified` = @dateModified
+			`last_modified` = @dateModified,
+			`additional_properties` = @additional_properties
 		WHERE
 			`resource_id` = @resourceid';
 

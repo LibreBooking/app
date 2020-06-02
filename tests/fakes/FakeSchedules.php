@@ -73,7 +73,7 @@ class FakeScheduleRepository implements IScheduleRepository
 	{
 		return array(
 				self::GetRow($this->_DefaultScheduleId, 'schedule 1', 1, $this->_DefaultDayStart, $this->_DefaultDaysVisible, 'America/Chicago', null, false,
-							 null, null, '2018-01-01', '2019-01-1', false),
+							 null, null, '2018-01-01', '2019-01-1'),
 				self::GetRow(2, 'schedule 2', 0, 0, 5, 'America/Chicago'),
 		);
 	}
@@ -96,7 +96,6 @@ class FakeScheduleRepository implements IScheduleRepository
 			$schedule->SetAdminGroupId($item[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
 			$schedule->SetAvailability(Date::FromDatabase($item[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]),
 									   Date::FromDatabase($item[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
-			$schedule->SetAllowConcurrentReservations($item[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
 			$expected[] = $schedule;
 		}
 
@@ -132,7 +131,6 @@ class FakeScheduleRepository implements IScheduleRepository
 			$adminId = null,
 			$availableStart = null,
 			$availableEnd = null,
-			$allowConcurrent = false,
 			$totalConcurrentReservations = 0,
 			$maxResourcesPerReservation = 0)
 	{
@@ -149,7 +147,6 @@ class FakeScheduleRepository implements IScheduleRepository
 				ColumnNames::SCHEDULE_ADMIN_GROUP_ID => $adminId,
 				ColumnNames::SCHEDULE_AVAILABLE_START_DATE => $availableStart,
 				ColumnNames::SCHEDULE_AVAILABLE_END_DATE => $availableEnd,
-				ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS => $allowConcurrent,
 				ColumnNames::SCHEDULE_DEFAULT_STYLE => ScheduleStyle::Standard,
 				ColumnNames::LAYOUT_TYPE => ScheduleLayout::Standard,
 				ColumnNames::TOTAL_CONCURRENT_RESERVATIONS => $totalConcurrentReservations,

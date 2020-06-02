@@ -37,17 +37,17 @@ class UnavailableResourcesPresenter
 	 */
 	private $userSession;
 	/**
-	 * @var IScheduleRepository
+	 * @var IResourceRepository
 	 */
-	private $scheduleRepository;
+	private $resourceRepository;
 
 	public function __construct(IAvailableResourcesPage $page, IResourceAvailabilityStrategy $resourceAvailability, UserSession $userSession,
-								IScheduleRepository $scheduleRepository)
+								IResourceRepository $resourceRepository)
 	{
 		$this->page = $page;
 		$this->resourceAvailability = $resourceAvailability;
 		$this->userSession = $userSession;
-		$this->scheduleRepository = $scheduleRepository;
+		$this->resourceRepository = $resourceRepository;
 	}
 
 	public function PageLoad()
@@ -55,9 +55,20 @@ class UnavailableResourcesPresenter
 		$duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
 									  $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
 		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin(), $duration->GetEnd(), ReservationViewRepository::ALL_RESOURCES);
+		if (empty($reserved)) {
+			$this->page->BindUnavailable([]);
+			return;
+		}
 
-		Log::Debug("%s", var_export($reserved, true));
-		$concurrentScheduleIds = $this->GetConcurrentScheduleIds();
+		$resources = $this->resourceRepository->GetResourceList();
+
+		$resourceConflicts = array();
+		$indexedResources = array();
+		foreach ($resources as $resource)
+		{
+			$resourceConflicts[$resource->GetId()] = 0;
+			$indexedResources[$resource->GetId()] = $resource;
+		}
 
 		$unavailable = array();
 
@@ -68,34 +79,18 @@ class UnavailableResourcesPresenter
 				continue;
 			}
 
-			if (in_array($reservation->GetScheduleId(), $concurrentScheduleIds))
-			{
-				continue;
-			}
-
 			if ($reservation->BufferedTimes()->Overlaps($duration))
 			{
-				$unavailable[] = $reservation->GetResourceId();
+				$resourceConflicts[$reservation->GetResourceId()]++;
+			}
+		}
+
+		foreach($resourceConflicts as $resourceId => $conflicts) {
+			if ($conflicts >= $indexedResources[$resourceId]->GetMaxConcurrentReservations()) {
+				$unavailable[] = $resourceId;
 			}
 		}
 
 		$this->page->BindUnavailable(array_unique($unavailable));
-	}
-
-	/**
-	 * @return int[]
-	 */
-	private function GetConcurrentScheduleIds()
-	{
-		$schedules = $this->scheduleRepository->GetAll();
-		$concurrentScheduleIds = array();
-		foreach ($schedules as $s)
-		{
-			if ($s->GetAllowConcurrentReservations())
-			{
-				$concurrentScheduleIds[] = $s->GetId();
-			}
-		}
-		return $concurrentScheduleIds;
 	}
 }

@@ -163,7 +163,8 @@ class ResourceRepositoryTests extends TestBase
 			$credits,
 			$peakCredits,
             new TimeInterval($minNoticeUpdate),
-            new TimeInterval($minNoticeDelete)
+            new TimeInterval($minNoticeDelete),
+			ResourceProperties::FromResource($resource)->Serialize()
 		);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];

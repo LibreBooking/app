@@ -59,6 +59,7 @@ class ParameterNames
 	const ATTRIBUTE_SECONDARY_ENTITY_IDS = '@secondary_entity_ids';
 	const ATTRIBUTE_IS_PRIVATE = '@is_private';
 	const AUTO_RELEASE_MINUTES = '@auto_release_minutes';
+	const ADDITIONAL_PROPERTIES = '@additional_properties';
 
 	const BLACKOUT_SERIES_ID = '@blackout_series_id';
 	const BLACKOUT_INSTANCE_ID = '@blackout_instance_id';

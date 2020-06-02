@@ -577,6 +577,7 @@ class BookableResource implements IBookableResource
 	protected $_textColor;
 	protected $_creditsPerSlot;
 	protected $_peakCreditsPerSlot;
+	protected $_maxConcurrentReservations = 1;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -720,6 +721,7 @@ class BookableResource implements IBookableResource
 		$resource->WithPeakCreditsPerSlot($row[ColumnNames::PEAK_CREDIT_COUNT]);
 		$resource->SetMinNoticeUpdate($row[ColumnNames::RESOURCE_MINNOTICE_UPDATE]);
 		$resource->SetMinNoticeDelete($row[ColumnNames::RESOURCE_MINNOTICE_DELETE]);
+		$resource->DeserializeProperties($row[ColumnNames::RESOURCE_ADDITIONAL_PROPERTIES]);
 
 		return $resource;
 	}
@@ -868,7 +870,8 @@ class BookableResource implements IBookableResource
 				array_shift($this->_imageNames);
 			}
 		}
-		else {
+		else
+		{
 			$index = array_search($imageName, $this->_imageNames);
 			if ($index !== false)
 			{
@@ -893,7 +896,7 @@ class BookableResource implements IBookableResource
 			}
 			$this->_imageNames[] = $this->_imageName;
 
-			$this->_imageName = ''.$imageName;
+			$this->_imageName = '' . $imageName;
 		}
 	}
 
@@ -1353,10 +1356,10 @@ class BookableResource implements IBookableResource
 		$this->SetIsCalendarSubscriptionAllowed(false);
 	}
 
-    public function GetSubscriptionUrl()
-    {
-        return new CalendarSubscriptionUrl(null, null, $this->GetPublicId());
-    }
+	public function GetSubscriptionUrl()
+	{
+		return new CalendarSubscriptionUrl(null, null, $this->GetPublicId());
+	}
 
 	public function EnableDisplay()
 	{
@@ -1702,6 +1705,49 @@ class BookableResource implements IBookableResource
 		$this->_peakCreditsPerSlot = $creditsPerSlot;
 	}
 
+	/**
+	 * @param $max int
+	 */
+	public function SetMaxConcurrentReservations($max)
+	{
+		$val = !empty($max) ? $max : 1;
+		$this->_maxConcurrentReservations = min(max(1, $val), 99);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetAllowConcurrentReservations()
+	{
+		return $this->GetMaxConcurrentReservations() > 1;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetMaxConcurrentReservations()
+	{
+		return max($this->_maxConcurrentReservations, 1);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetSerializedProperties()
+	{
+		$properties = ResourceProperties::FromResource($this);
+		return $properties->Serialize();
+	}
+
+	/**
+	 * @param $propertiesAsJson string
+	 */
+	public function DeserializeProperties($propertiesAsJson)
+	{
+		$properties = ResourceProperties::Deserialize($propertiesAsJson);
+		$this->SetMaxConcurrentReservations($properties->MaxConcurrentReservations);
+	}
+
 	public function AsCopy($name)
 	{
 		$this->SetResourceId(null);
@@ -1710,5 +1756,38 @@ class BookableResource implements IBookableResource
 		$this->SetImage(null);
 		$this->WithPublicId(null);
 	}
+}
 
+class ResourceProperties
+{
+	/**
+	 * @var int
+	 */
+	public $MaxConcurrentReservations;
+
+	public static function FromResource(BookableResource $resource)
+	{
+		$obj = new ResourceProperties();
+		$obj->MaxConcurrentReservations = $resource->GetMaxConcurrentReservations();
+
+		return $obj;
+	}
+
+	public static function Deserialize($propertiesAsJson)
+	{
+
+		$obj = new ResourceProperties();
+		$decoded = json_decode($propertiesAsJson);
+		if (isset($decoded->MaxConcurrentReservations))
+		{
+			$obj->MaxConcurrentReservations = $decoded->MaxConcurrentReservations;
+		}
+
+		return $obj;
+	}
+
+	public function Serialize()
+	{
+		return json_encode($this);
+	}
 }

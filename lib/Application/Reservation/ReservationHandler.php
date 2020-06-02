@@ -93,7 +93,7 @@ class ReservationHandler implements IReservationHandler
 		$notificationService = $notificationFactory->Create($reservationAction, $session);
 
 		$scheduleRepository = new ScheduleRepository();
-		$retryOptions = new ReservationRetryOptions(new ReservationConflictIdentifier(new ResourceAvailability(new ReservationViewRepository()), $scheduleRepository), $scheduleRepository);
+		$retryOptions = new ReservationRetryOptions(new ReservationConflictIdentifier(new ResourceAvailability(new ReservationViewRepository())), $scheduleRepository);
 
 		return new ReservationHandler($persistenceService, $validationService, $notificationService, $retryOptions);
 	}

@@ -180,7 +180,6 @@ class SchedulePresenterTests extends TestBase
 		$weekdayStart = 4;
 
 		$schedule = new FakeSchedule($activeId, $activeName, true, $weekdayStart);
-		$schedule->SetAllowConcurrentReservations(true);
 
 		$page = $this->createMock('ISchedulePage');
 
@@ -214,11 +213,6 @@ class SchedulePresenterTests extends TestBase
 				->expects($this->once())
 				->method('SetScheduleStyle')
 				->with($this->equalTo(ScheduleStyle::Tall));
-
-		$page
-				->expects($this->once())
-				->method('SetAllowConcurrent')
-				->with($this->equalTo($schedule->GetAllowConcurrentReservations()));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);

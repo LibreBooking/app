@@ -22,75 +22,77 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class FakeResourceAccess extends ResourceRepository
 {
-    public $_GetForScheduleCalled = false;
-    public $_LastScheduleId;
-    public $_Resources = array();
-    public $_NamedResources = array();
-    private $rows = array();
+	public $_GetForScheduleCalled = false;
+	public $_LastScheduleId;
+	public $_Resources = array();
+	public $_NamedResources = array();
+	private $rows = array();
 
-    public function __construct()
-    {
-        $this->FillRows();
-    }
+	public function __construct()
+	{
+		$this->FillRows();
+	}
 
-    public function GetScheduleResources($scheduleId)
-    {
-        $this->_GetForScheduleCalled = true;
-        $this->_LastScheduleId = $scheduleId;
+	public function GetScheduleResources($scheduleId)
+	{
+		$this->_GetForScheduleCalled = true;
+		$this->_LastScheduleId = $scheduleId;
 
-        return $this->_Resources;
-    }
+		return $this->_Resources;
+	}
 
-    public function LoadByName($name)
-    {
-        return $this->_NamedResources[$name];
-    }
+	public function LoadByName($name)
+	{
+		return $this->_NamedResources[$name];
+	}
 
-    private function FillRows()
-    {
-        $rows = $this->GetRows();
-        foreach ($rows as $row) {
-            $this->_Resources[] = BookableResource::Create($row);
-        }
-    }
+	private function FillRows()
+	{
+		$rows = $this->GetRows();
+		foreach ($rows as $row)
+		{
+			$this->_Resources[] = BookableResource::Create($row);
+		}
+	}
 
-    public function Rows()
-    {
-        return $this->rows;
-    }
+	public function Rows()
+	{
+		return $this->rows;
+	}
 
-    public function With($id,
-                         $name,
-                         $location = null,
-                         $contact = null,
-                         $notes = null,
-                         $minDuration = null,
-                         $maxDuration = null,
-                         $autoAssign = 0,
-                         $approval = 0,
-                         $multiDay = 0,
-                         $participants = null,
-                         $minNoticeAdd = null,
-                         $maxNotice = null,
-                         $description = null,
-                         $scheduleId = 1,
-                         $image = null,
-                         $adminGroup = null,
-                         $allowSubscription = 0,
-                         $publicId = null,
-                         $scheduleAdminId = null,
-                         $sortOrder = 1,
-                         $typeId = null,
-                         $statusId = ResourceStatus::AVAILABLE,
-                         $reasonId = null,
-                         $bufferTime = null,
-                         $color = null,
-                         $enableCheckin = null,
-                         $autoReleaseMinutes = null,
-                         $creditCount = null,
-                         $peakCreditCount = null,
-                         $minNoticeUpdate = null,
-                         $minNoticeDelete = null
+	public function With($id,
+						 $name,
+						 $location = null,
+						 $contact = null,
+						 $notes = null,
+						 $minDuration = null,
+						 $maxDuration = null,
+						 $autoAssign = 0,
+						 $approval = 0,
+						 $multiDay = 0,
+						 $participants = null,
+						 $minNoticeAdd = null,
+						 $maxNotice = null,
+						 $description = null,
+						 $scheduleId = 1,
+						 $image = null,
+						 $adminGroup = null,
+						 $allowSubscription = 0,
+						 $publicId = null,
+						 $scheduleAdminId = null,
+						 $sortOrder = 1,
+						 $typeId = null,
+						 $statusId = ResourceStatus::AVAILABLE,
+						 $reasonId = null,
+						 $bufferTime = null,
+						 $color = null,
+						 $enableCheckin = null,
+						 $autoReleaseMinutes = null,
+						 $creditCount = null,
+						 $peakCreditCount = null,
+						 $minNoticeUpdate = null,
+						 $minNoticeDelete = null,
+						 $additionalProperties = null
     )
     {
 
@@ -127,42 +129,44 @@ class FakeResourceAccess extends ResourceRepository
             ColumnNames::PEAK_CREDIT_COUNT => $peakCreditCount,
             ColumnNames::RESOURCE_MINNOTICE_UPDATE => $minNoticeUpdate,
             ColumnNames::RESOURCE_MINNOTICE_DELETE => $minNoticeDelete,
+            ColumnNames::RESOURCE_ADDITIONAL_PROPERTIES => $additionalProperties,
         );
 
         return $this;
     }
 
-    public function GetRows()
-    {
-        $this->With(1, 'resource 1', null, null, 'notes 1', null, null, 0, 0, 0, null, null, null, null, 10, null, null,
-            1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null, 60 * 30, '000000', true, 20);
+public
+function GetRows()
+{
+	$this->With(1, 'resource 1', null, null, 'notes 1', null, null, 0, 0, 0, null, null, null, null, 10, null, null,
+				1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null, 60 * 30, '000000', true, 20);
 
-        $this->With(2, 'resource 2',
-            'here 2',
-            '2',
-            'notes 1',
-            10,
-            100,
-            1,
-            1,
-            1,
-            10,
-            30,
-            400,
-            null,
-            11,
-            'something.gif',
-            1,
-            0,
-            null,
-            9292,
-            null,
-            null,
-            ResourceStatus::UNAVAILABLE,
-            98,
-            null
-        );
+	$this->With(2, 'resource 2',
+				'here 2',
+				'2',
+				'notes 1',
+				10,
+				100,
+				1,
+				1,
+				1,
+				10,
+				30,
+				400,
+				null,
+				11,
+				'something.gif',
+				1,
+				0,
+				null,
+				9292,
+				null,
+				null,
+				ResourceStatus::UNAVAILABLE,
+				98,
+				null
+	);
 
-        return $this->rows;
-    }
+	return $this->rows;
+}
 }

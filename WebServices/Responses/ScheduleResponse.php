@@ -29,7 +29,6 @@ class ScheduleResponse extends RestResponse
 	public $icsUrl;
 	public $availabilityStart;
 	public $availabilityEnd;
-	public $allowConcurrentReservations;
 
 	/**
 	 * @var array|SchedulePeriodResponse[]
@@ -46,7 +45,6 @@ class ScheduleResponse extends RestResponse
 		$this->weekdayStart = $schedule->GetWeekdayStart();
 		$this->availabilityStart = $schedule->GetAvailabilityBegin()->ToIso();
 		$this->availabilityEnd = $schedule->GetAvailabilityEnd()->ToIso();
-		$this->allowConcurrentReservations = $schedule->GetAllowConcurrentReservations();
 
 		if ($schedule->GetIsCalendarSubscriptionAllowed())
 		{

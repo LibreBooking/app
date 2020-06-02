@@ -161,6 +161,16 @@ interface IUpdateResourcePage
      * @return int
      */
     public function GetResourceTypeId();
+
+	/**
+	 * @return bool
+	 */
+    public function GetAllowConcurrentReservations();
+
+	/**
+	 * @return int
+	 */
+    public function GetMaxConcurrentReservations();
 }
 
 interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageable
@@ -439,6 +449,16 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
      * @param BookableResource $resource
      */
     public function DisplayPublicSettings($resource);
+
+	/**
+	 * @return bool
+	 */
+    public function GetAllowConcurrentReservations();
+
+	/**
+	 * @return int
+	 */
+    public function GetMaxConcurrentReservations();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -1106,6 +1126,17 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
        $this->Set('resource', $resource);
        $this->Display('Admin/Resources/manage_resources_public.tpl');
     }
+
+	public function GetAllowConcurrentReservations()
+	{
+		return $this->GetCheckbox(FormKeys::ALLOW_CONCURRENT_RESERVATIONS);
+	}
+
+	public function GetMaxConcurrentReservations()
+	{
+		$val = $this->GetForm(FormKeys::MAX_CONCURRENT_RESERVATIONS);
+		return intval($val);
+	}
 }
 
 class ResourceFilterValues

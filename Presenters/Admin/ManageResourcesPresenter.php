@@ -267,6 +267,8 @@ class ManageResourcesPresenter extends ActionPresenter
         $maxNotice = $this->page->GetEndNoticeMinutes();
         $enableCheckin = $this->page->GetEnableCheckin();
         $autoReleaseMinutes = $this->page->GetAutoReleaseMinutes();
+        $allowConcurrent = $this->page->GetAllowConcurrentReservations();
+        $maxConcurrent = $allowConcurrent ? $this->page->GetMaxConcurrentReservations() : 1;
 
         $resource = $this->resourceRepository->LoadById($resourceId);
 
@@ -278,9 +280,10 @@ class ManageResourcesPresenter extends ActionPresenter
         $resource->SetMinNoticeDelete($minNoticeDelete);
         $resource->SetMaxNotice($maxNotice);
         $resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
+        $resource->SetMaxConcurrentReservations($maxConcurrent);
 
-        Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNoticeAdd=%s, minNoticeUpdate=%s, minNoticeDelete=%s, maxNotice=%s',
-            $resourceId, $requiresApproval, $autoAssign, $minNoticeAdd, $minNoticeUpdate, $minNoticeDelete, $maxNotice);
+        Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNoticeAdd=%s, minNoticeUpdate=%s, minNoticeDelete=%s, maxNotice=%s, maxConcurrent=%s',
+            $resourceId, $requiresApproval, $autoAssign, $minNoticeAdd, $minNoticeUpdate, $minNoticeDelete, $maxNotice, $maxConcurrent);
 
         $this->resourceRepository->Update($resource);
 
