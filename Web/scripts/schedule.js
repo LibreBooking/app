@@ -266,7 +266,7 @@ function Schedule(opts, resourceGroups) {
 					else
 					{
 
-						height = startTd.outerHeight();
+						height = 40;
 						width = endTd.position().left - startTd.position().left + calculatedAdjustment;
 						top = startTd.position().top+ (40 * numberOfConflicts);
 						if (numberOfConflicts > 0)
