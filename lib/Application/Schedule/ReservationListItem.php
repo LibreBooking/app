@@ -17,136 +17,132 @@
 
 class ReservationListItem
 {
-	/**
-	 * @var IReservedItemView
-	 */
-	protected $item;
+    /**
+     * @var IReservedItemView
+     */
+    protected $item;
 
-	public function __construct(IReservedItemView $reservedItem)
-	{
-		$this->item = $reservedItem;
-	}
+    public function __construct(IReservedItemView $reservedItem)
+    {
+        $this->item = $reservedItem;
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function StartDate()
-	{
-		return $this->item->GetStartDate();
-	}
+    /**
+     * @return Date
+     */
+    public function StartDate()
+    {
+        return $this->item->GetStartDate();
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function EndDate()
-	{
-		return $this->item->GetEndDate();
-	}
+    /**
+     * @return Date
+     */
+    public function EndDate()
+    {
+        return $this->item->GetEndDate();
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function BufferedStartDate()
-	{
-	    if ($this->HasBufferTime())
-        {
+    /**
+     * @return Date
+     */
+    public function BufferedStartDate()
+    {
+        if ($this->HasBufferTime()) {
             return $this->item->BufferedTimes()->GetBegin();
         }
-		return $this->item->GetStartDate();
-	}
+        return $this->item->GetStartDate();
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function BufferedEndDate()
-	{
-        if ($this->HasBufferTime())
-        {
+    /**
+     * @return Date
+     */
+    public function BufferedEndDate()
+    {
+        if ($this->HasBufferTime()) {
             return $this->item->BufferedTimes()->GetEnd();
         }
-		return $this->item->GetEndDate();
-	}
+        return $this->item->GetEndDate();
+    }
 
-	public function OccursOn(Date $date)
-	{
-		return $this->item->OccursOn($date);
-	}
+    public function OccursOn(Date $date)
+    {
+        return $this->item->OccursOn($date);
+    }
 
-	/**
-	 * @param SchedulePeriod $start
-	 * @param SchedulePeriod $end
-	 * @param Date $displayDate
-	 * @param int $span
-	 * @return IReservationSlot
-	 */
-	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
-	{
-		return new ReservationSlot($start, $end, $displayDate, $span, $this->item);
-	}
+    /**
+     * @param SchedulePeriod $start
+     * @param SchedulePeriod $end
+     * @param Date $displayDate
+     * @param int $span
+     * @return IReservationSlot
+     */
+    public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
+    {
+        return new ReservationSlot($start, $end, $displayDate, $span, $this->item);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function ResourceId()
-	{
-		return $this->item->GetResourceId();
-	}
+    /**
+     * @return int
+     */
+    public function ResourceId()
+    {
+        return $this->item->GetResourceId();
+    }
 
-	/**
-	 * @return int
-	 */
-	public function Id()
-	{
-		return $this->item->GetId();
-	}
+    /**
+     * @return int
+     */
+    public function Id()
+    {
+        return $this->item->GetId();
+    }
 
-	public function IsReservation()
-	{
-		return true;
-	}
+    public function IsReservation()
+    {
+        return true;
+    }
 
-	public function ReferenceNumber()
-	{
-		return $this->item->GetReferenceNumber();
-	}
+    public function ReferenceNumber()
+    {
+        return $this->item->GetReferenceNumber();
+    }
 
-	/**
-	 * @return null|TimeInterval
-	 */
-	public function BufferTime()
-	{
-		return $this->item->GetBufferTime();
-	}
+    /**
+     * @return null|TimeInterval
+     */
+    public function BufferTime()
+    {
+        return $this->item->GetBufferTime();
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function HasBufferTime()
-	{
-		$bufferTime = $this->BufferTime();
-		return !empty($bufferTime) && $bufferTime->TotalSeconds() > 0;
-	}
+    /**
+     * @return bool
+     */
+    public function HasBufferTime()
+    {
+        $bufferTime = $this->BufferTime();
+        return !empty($bufferTime) && $bufferTime->TotalSeconds() > 0;
+    }
 
-	/**
-	 * @param Date $date
-	 * @return bool
-	 */
-	public function CollidesWith(Date $date)
-	{
-		if ($this->HasBufferTime())
-		{
-			$range = new DateRange($this->StartDate()->SubtractInterval($this->BufferTime()),
-								   $this->EndDate()->AddInterval($this->BufferTime()));
-		}
-		else
-		{
-			$range = new DateRange($this->StartDate(), $this->EndDate());
-		}
+    /**
+     * @param Date $date
+     * @return bool
+     */
+    public function CollidesWith(Date $date)
+    {
+        if ($this->HasBufferTime()) {
+            $range = new DateRange($this->StartDate()->SubtractInterval($this->BufferTime()),
+                $this->EndDate()->AddInterval($this->BufferTime()));
+        }
+        else {
+            $range = new DateRange($this->StartDate(), $this->EndDate());
+        }
 
-		return $range->Contains($date, false);
-	}
+        return $range->Contains($date, false);
+    }
 
-	public function GetColor()
+    public function GetColor()
     {
         return $this->item->GetColor();
     }
@@ -189,96 +185,185 @@ class ReservationListItem
     {
         return $this->item->RequiresCheckin();
     }
+
+    /**
+     * @param $currentUserId int
+     * @param $timezone string
+     * @return ReservationListItemDto[]
+     */
+    public function AsDto(int $currentUserId, string $timezone)
+    {
+        $dto = new ReservationListItemDto();
+        $dto->StartDate = $this->StartDate()->Timestamp();
+        $dto->EndDate = $this->EndDate()->Timestamp();
+        $dto->Id = $this->Id();
+        $dto->ReferenceNumber = $this->ReferenceNumber();
+        $dto->ResourceId = $this->ResourceId();
+        $dto->RequiresCheckin = $this->RequiresCheckin();
+        $dto->BorderColor = $this->GetBorderColor();
+        $dto->BackgroundColor = $this->GetColor();
+        $dto->TextColor = $this->GetTextColor();
+        $dto->IsReservation = $this->IsReservation();
+        $dto->Label = $this->GetTitle();
+        $dto->IsPending = $this->GetPending();
+        $dto->IsNew = $this->GetIsNew();
+        $dto->IsUpdated = $this->GetIsUpdated();
+        $dto->IsOwner = $this->GetIsOwner($currentUserId);
+        $dto->IsParticipant = $this->GetIsParticipant($currentUserId);
+        $dto->Label = $this->GetLabel();
+        $dto->IsPast = $this->BufferedEndDate()->LessThan(Date::Now());
+        $format = Resources::GetInstance()->GetDateFormat('period_time');
+        $dto->StartTime = $this->StartDate()->ToTimezone($timezone)->Format($format);
+        $dto->EndTime =  $this->EndDate()->ToTimezone($timezone)->Format($format);
+
+        if ($this->HasBufferTime())
+        {
+            $pre = new ReservationListItemDto();
+            $pre->StartDate = $this->BufferedStartDate()->Timestamp();
+            $pre->StartTime = $this->BufferedStartDate()->ToTimezone($timezone)->Format($format);
+            $pre->EndDate = $this->StartDate()->Timestamp();
+            $pre->EndTime =  $this->StartDate()->ToTimezone($timezone)->Format($format);
+            $pre->IsReservation = false;
+            $pre->Id = $this->Id() . 'buffer-pre';
+            $pre->ReferenceNumber = $this->ReferenceNumber();
+            $pre->ResourceId = $this->ResourceId();
+            $pre->Label = "";
+
+            $post = new ReservationListItemDto();
+            $post->StartDate = $this->EndDate()->Timestamp();
+            $post->StartTime = $this->EndDate()->ToTimezone($timezone)->Format($format);
+            $post->EndDate = $this->BufferedEndDate()->Timestamp();
+            $post->EndTime =  $this->BufferedEndDate()->ToTimezone($timezone)->Format($format);
+            $post->IsReservation = false;
+            $post->Id = $this->Id() . 'buffer-post';
+            $post->ReferenceNumber = $this->ReferenceNumber();
+            $post->ResourceId = $this->ResourceId();
+            $post->Label = "";
+
+            return [$pre, $dto, $post];
+        }
+        return [$dto];
+    }
+
+    private function GetIsNew()
+    {
+        $newMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_UPDATE_HIGHLIGHT_MINUTES, new IntConverter());
+        return $this->item->GetIsNew($newMinutes);
+    }
+
+    private function GetIsUpdated()
+    {
+        $updatedMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_UPDATE_HIGHLIGHT_MINUTES, new IntConverter());
+        return $this->item->GetIsUpdated($updatedMinutes);
+    }
+
+    private function GetPending()
+    {
+        return $this->item->IsPending();
+    }
+
+    private function GetIsOwner(int $userId)
+    {
+        return $this->item->IsOwner($userId);
+    }
+
+    private function GetLabel()
+    {
+        return $this->item->GetLabel();
+    }
+
+    private function GetIsParticipant(int $currentUserId)
+    {
+        return $this->item->IsUserParticipating($currentUserId);
+    }
 }
 
 class BufferItem extends ReservationListItem
 {
-	const LOCATION_BEFORE = 'begin';
-	const LOCATION_AFTER = 'end';
+    const LOCATION_BEFORE = 'begin';
+    const LOCATION_AFTER = 'end';
 
-	/**
-	 * @var string
-	 */
-	private $location;
+    /**
+     * @var string
+     */
+    private $location;
 
-	/**
-	 * @var Date
-	 */
-	private $startDate;
+    /**
+     * @var Date
+     */
+    private $startDate;
 
-	/**
-	 * @var Date
-	 */
-	private $endDate;
+    /**
+     * @var Date
+     */
+    private $endDate;
 
-	public function __construct(ReservationListItem $item, $location)
-	{
-		parent::__construct($item->item);
-		$this->item = $item;
-		$this->location = $location;
+    public function __construct(ReservationListItem $item, $location)
+    {
+        parent::__construct($item->item);
+        $this->item = $item;
+        $this->location = $location;
 
-		if ($this->IsBefore())
-		{
-			$this->startDate = $this->item->StartDate()->SubtractInterval($this->item->BufferTime());
-			$this->endDate = $this->item->StartDate();
-		}
-		else
-		{
-			$this->startDate = $this->item->EndDate();
-			$this->endDate = $this->item->EndDate()->AddInterval($this->item->BufferTime());
-		}
-	}
+        if ($this->IsBefore()) {
+            $this->startDate = $this->item->StartDate()->SubtractInterval($this->item->BufferTime());
+            $this->endDate = $this->item->StartDate();
+        }
+        else {
+            $this->startDate = $this->item->EndDate();
+            $this->endDate = $this->item->EndDate()->AddInterval($this->item->BufferTime());
+        }
+    }
 
-	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
-	{
-		return new BufferSlot($start, $end, $displayDate, $span, $this->item->item);
-	}
+    public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
+    {
+        return new BufferSlot($start, $end, $displayDate, $span, $this->item->item);
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function StartDate()
-	{
-		return $this->startDate;
-	}
+    /**
+     * @return Date
+     */
+    public function StartDate()
+    {
+        return $this->startDate;
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function EndDate()
-	{
-		return $this->endDate;
-	}
+    /**
+     * @return Date
+     */
+    public function EndDate()
+    {
+        return $this->endDate;
+    }
 
-	private function IsBefore()
-	{
-		return $this->location == self::LOCATION_BEFORE;
-	}
+    private function IsBefore()
+    {
+        return $this->location == self::LOCATION_BEFORE;
+    }
 
-	public function OccursOn(Date $date)
-	{
-		return $this->item->OccursOn($date);
-	}
+    public function OccursOn(Date $date)
+    {
+        return $this->item->OccursOn($date);
+    }
 
-	public function Id()
-	{
-		return $this->Id() . 'buffer_' . $this->location;
-	}
+    public function Id()
+    {
+        return $this->Id() . 'buffer_' . $this->location;
+    }
 
-	public function IsReservation()
-	{
-		return false;
-	}
+    public function IsReservation()
+    {
+        return false;
+    }
 
-	public function HasBufferTime()
-	{
-		return false;
-	}
+    public function HasBufferTime()
+    {
+        return false;
+    }
 
-	public function BufferTime()
-	{
-		return 0;
-	}
+    public function BufferTime()
+    {
+        return 0;
+    }
 }
 
 class BlackoutListItem extends ReservationListItem
@@ -288,23 +373,103 @@ class BlackoutListItem extends ReservationListItem
     public function __construct(BlackoutItemView $item)
     {
         $this->blackoutItem = $item;
-		parent::__construct($item);
+        parent::__construct($item);
     }
 
-	/**
-	 * @param SchedulePeriod $start
-	 * @param SchedulePeriod $end
-	 * @param Date $displayDate
-	 * @param int $span
-	 * @return IReservationSlot
-	 */
-	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
-	{
-		return new BlackoutSlot($start, $end, $displayDate, $span, $this->blackoutItem);
-	}
+    /**
+     * @param SchedulePeriod $start
+     * @param SchedulePeriod $end
+     * @param Date $displayDate
+     * @param int $span
+     * @return IReservationSlot
+     */
+    public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
+    {
+        return new BlackoutSlot($start, $end, $displayDate, $span, $this->blackoutItem);
+    }
 
-	public function IsReservation()
-	{
-		return false;
-	}
+    public function IsReservation()
+    {
+        return false;
+    }
+}
+
+class ReservationListItemDto
+{
+    /**
+     * @var Date
+     */
+    public $StartDate;
+    /**
+     * @var Date
+     */
+    public $EndDate;
+    /**
+     * @var int
+     */
+    public $Id;
+    /**
+     * @var string
+     */
+    public $ReferenceNumber;
+    /**
+     * @var int
+     */
+    public $ResourceId;
+    /**
+     * @var bool
+     */
+    public $RequiresCheckin;
+    /**
+     * @var string
+     */
+    public $BorderColor;
+    /**
+     * @var string|null
+     */
+    public $BackgroundColor;
+    /**
+     * @var string
+     */
+    public $TextColor;
+    /**
+     * @var bool
+     */
+    public $IsReservation;
+    /**
+     * @var string
+     */
+    public $Label;
+    /**
+     * @var bool
+     */
+    public $IsPending;
+    /**
+     * @var bool
+     */
+    public $IsNew;
+    /**
+     * @var bool
+     */
+    public $IsUpdated;
+    /**
+     * @var bool
+     */
+    public $IsOwner;
+    /**
+     * @var bool
+     */
+    public $IsPast;
+    /**
+     * @var string
+     */
+    public $StartTime;
+    /**
+     * @var string
+     */
+    public $EndTime;
+    /**
+     * @var bool
+     */
+    public $IsParticipant;
 }

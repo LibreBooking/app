@@ -9,94 +9,8 @@ function Schedule(opts, resourceGroups) {
 	this.init = function () {
 		this.initUserDefaultSchedule();
 		this.initRotateSchedule();
-		this.initReservations();
 		this.initResourceFilter();
-
-		var reservations = $('#reservations');
-
-		reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function () {
-			$(this).siblings('.resourcename').toggleClass('hilite');
-			var ref = $(this).attr('ref');
-			reservations.find('td[ref="' + ref + '"]').addClass('hilite');
-		});
-
-		reservations.delegate('.clickres:not(.reserved)', 'mouseleave', function () {
-			$(this).siblings('.resourcename').removeClass('hilite');
-			var ref = $(this).attr('ref');
-			reservations.find('td[ref="' + ref + '"]').removeClass('hilite');
-			$(this).removeClass('hilite');
-		});
-
-		reservations.delegate('.clickres', 'mousedown', function () {
-			$(this).addClass('clicked');
-		});
-
-		reservations.delegate('.clickres', 'mouseup', function () {
-			$(this).removeClass('clicked');
-		});
-
-		reservations.delegate('.reservable', 'click', function () {
-			var sd = '';
-			var ed = '';
-
-			var start = $(this).attr('data-start');
-			if (start)
-			{
-				sd = start;
-			}
-			var end = $(this).attr('data-end');
-			if (end)
-			{
-				ed = end;
-			}
-
-			var link = $(this).attr('data-href');
-			window.location = link + "&sd=" + sd + "&ed=" + ed;
-		});
-
-		// var isOldIE = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0);
-		// if (opts.lockTableHead && !isOldIE)
-		// {
-		// 	{
-		// 		var reservationTables = reservations.find('table.reservations');
-		// 		reservationTables.floatThead({
-		// 			position: 'auto', top: 50, zIndex: 998
-		// 		});
-		//
-		// 		var onPrinting = function () {
-		// 			reservationTables.floatThead('destroy');
-		// 		};
-		//
-		// 		var onScreen = function () {
-		// 			reservationTables.floatThead({
-		// 				position: 'auto', top: 50, zIndex: 998
-		// 			});
-		// 		};
-		//
-		// 		//WebKit print detection
-		// 		if (window.matchMedia)
-		// 		{
-		// 			var mediaQueryList = window.matchMedia('print');
-		// 			mediaQueryList.addListener(function (mql) {
-		// 				if (mql.matches)
-		// 				{
-		// 					onPrinting();
-		// 				}
-		// 				else
-		// 				{
-		// 					onScreen();
-		// 				}
-		// 			});
-		// 		}
-		//
-		// 		//IE print detection
-		// 		window.onbeforeprint = onPrinting;
-		// 		window.onafterprint = onScreen;
-		//
-		// 		onScreen();
-		// 	}
-		// }
-
+		renderEvents();
 		this.initResources();
 		this.initNavigation();
 
@@ -107,7 +21,303 @@ function Schedule(opts, resourceGroups) {
 				scrollTop: today.offset().top - 50
 			}, 500);
 		}
+
+		$(window).resize(function () {
+			renderEvents(true);
+		});
+
+		setInterval(function () {
+			renderEvents(true);
+		}, 300000);
 	};
+
+
+	function renderEvents(clear = false) {
+		$("#loading-schedule").removeClass("no-show");
+
+		if (clear)
+		{
+			$("#reservations").find("div.event").remove();
+		}
+
+		function attachReservationEvents(div, reservation) {
+			var reservations = $('#reservations');
+			var resid = reservation.ReferenceNumber;
+			var pattern = 'div.reserved[data-resid="' + resid + '"]';
+
+			div.click(function (e) {
+				var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
+				window.location = reservationUrl;
+			});
+
+			if (opts.isMobileView)
+			{
+				return;
+			}
+
+			div.hover(function (e) {
+				$(pattern, reservations).addClass('hilite');
+			}, function (e) {
+				$(pattern, reservations).removeClass('hilite');
+			});
+
+			var qTipElement = div;
+
+			qTipElement.qtip({
+				position: {
+					my: 'bottom left', at: 'top left', effect: false, viewport: $(window)
+				},
+
+				content: {
+					text: function (event, api) {
+						$.ajax({url: options.summaryPopupUrl, data: {id: resid}})
+								.done(function (html) {
+									api.set('content.text', html);
+								})
+								.fail(function (xhr, status, error) {
+									api.set('content.text', status + ': ' + error);
+								});
+
+						return 'Loading...';
+					}
+				},
+
+				show: {
+					delay: 700, effect: false,
+				},
+
+				hide: {
+					fixed: true, delay: 500
+				},
+
+				style: {
+					classes: 'qtip-light qtip-bootstrap'
+				}
+			});
+		}
+
+		function findClosestStart(tds, reservation) {
+			let startTd = null;
+
+			tds.each((i, v) => {
+				const td = $(v);
+				let tdMin = Number.parseInt(td.data('min'));
+				let resStart = Number.parseInt(reservation.StartDate);
+
+				if (tdMin <= resStart)
+				{
+					startTd = td;
+				}
+			});
+
+			if (!startTd)
+			{
+				startTd = tds.first();
+			}
+
+			return startTd;
+		}
+
+		function findClosestEnd(tds, reservation) {
+			let endTd = null;
+
+			tds.each((i, v) => {
+				const td = $(v);
+				let tdMin = Number.parseInt(td.data('min'));
+				let resEnd = Number.parseInt(reservation.EndDate);
+
+				if (tdMin <= resEnd)
+				{
+					endTd = td;
+				}
+			});
+
+			if (!endTd)
+			{
+				endTd = tds.last();
+			}
+
+			return endTd;
+		}
+
+		ajaxPost($("#fetchReservationsForm"), options.reservationLoadUrl, null, function (reservationList) {
+			const ScheduleStandard = "0";
+			const ScheduleWide = "1";
+			const ScheduleTall = "2";
+			const ScheduleCondensed = "3";
+
+			reservationList.forEach(res => {
+				$('#reservations').find(".reservations").each(function () {
+					const t = $(this);
+					const tableMin = Number.parseInt(t.data("min"));
+					const tableMax = Number.parseInt(t.data("max"));
+
+					const rendersWithin = ((res.StartDate >= tableMin && res.StartDate < tableMax) || (res.EndDate > tableMin && res.EndDate <= tableMax) || (res.StartDate <= tableMin && res.EndDate >= tableMax));
+
+					if (!rendersWithin)
+					{
+						return;
+					}
+
+					const className = res.IsReservation ? "reserved" : "unreservable";
+					const mine = res.IsOwner ? "mine" : "";
+					const participant = res.IsParticipant ? "participating" : "";
+					const past = res.IsPast ? "past" : "";
+					const isNew = res.IsNew ? `<span class="reservation-new">${opts.newLabel}</span>` : "";
+					const isUpdated = res.IsUpdated ? `<span class="reservation-updated">${opts.updatedLabel}</span>` : "";
+					const isPending = res.IsPending ? "pending" : "";
+					const isDraggable = res.IsOwner && res.IsReservation && !res.IsPast;
+					const draggableAttribute = isDraggable ? 'draggable="true"' : "";
+					const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
+
+					if (opts.scheduleStyle === ScheduleCondensed || (opts.isMobileView === "1" && opts.scheduleStyle === ScheduleStandard))
+					{
+						if (Number.parseInt(t.data("resourceid")) !== Number.parseInt(res.ResourceId))
+						{
+							return;
+						}
+						const startsBefore = res.StartDate < tableMin;
+						const endsAfter = res.EndDate > tableMax;
+						let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
+						let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
+						const div = $(`<div 
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event" 
+                                    style="${color}"
+                                    data-resid="${res.ReferenceNumber}">
+                                    <span>${startTime}-${endTime}</span>
+                                    ${isNew} ${isUpdated} ${res.Label}</div>`);
+
+						t.append(div);
+						if (res.IsReservation)
+						{
+							attachReservationEvents(div, res);
+						}
+						return;
+					}
+
+					let startTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.StartDate + '"]:first');
+					let endTd = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res.EndDate + '"]:first');
+					let calculatedAdjustment = 0;
+
+					if (startTd.length === 0)
+					{
+						startTd = findClosestStart(t.find('td[data-resourceid="' + res.ResourceId + '"]'), res);
+					}
+					if (endTd.length === 0)
+					{
+						endTd = findClosestEnd(t.find('td[data-resourceid="' + res.ResourceId + '"]'), res);
+						calculatedAdjustment = endTd.outerWidth();
+					}
+					if (startTd.length === 0 || endTd.length === 0)
+					{
+						// does not fit in this reservation table
+						return;
+					}
+
+
+					let numberOfConflicts = 0;
+					let conflictIds = [];
+
+					t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
+						let divMin = Number.parseInt($(div).data('start'));
+						let divMax = Number.parseInt($(div).data('end'));
+						let resStart = Number.parseInt(res.StartDate);
+						let resEnd = Number.parseInt(res.EndDate);
+
+						const overlaps = resStart <= divMin && resEnd >= divMax;
+						const conflictsStart = resStart >= divMin && resStart < divMax;
+						const conflictsEnd = resEnd > divMin && resEnd <= divMax;
+
+						console.log({
+							divMin, divMax, resStart, resEnd, overlaps, conflictsStart, conflictsEnd, divid: $(div).data('resid'), resid: res.ReferenceNumber
+						});
+
+						if (overlaps || conflictsStart || conflictsEnd)
+						{
+							numberOfConflicts++;
+							if (!conflictIds.includes(res.ReferenceNumber))
+							{
+								conflictIds.push(res.ReferenceNumber);
+							}
+							if (!conflictIds.includes($(div).data('resid')))
+							{
+								conflictIds.push($(div).data('resid'));
+							}
+						}
+					});
+
+					let width = 0;
+					let height = 0;
+					let top = startTd.position().top;
+					let left = startTd.position().left
+					if (opts.scheduleStyle === ScheduleTall)
+					{
+						width = startTd.outerWidth();
+						height = endTd.position().top - startTd.position().top;
+					}
+					else
+					{
+						height = 40;
+						width = endTd.position().left - startTd.position().left + calculatedAdjustment;
+						top = startTd.position().top + (40 * numberOfConflicts);
+						if (numberOfConflicts > 0)
+						{
+							startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
+							height = 40;
+						}
+					}
+
+					const style = `left:${left}px; top:${top}px; width:${width}px; height:${height}px;`;
+					const div = $(`<div 
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
+                                    style="${style} ${color}"
+                                    data-resid="${res.ReferenceNumber}"
+                                    data-resourceid="${res.ResourceId}"
+                                    data-start="${startTd.data('min')}"
+                                    data-end="${endTd.data('min')}"
+                                    ${draggableAttribute}>${isNew} ${isUpdated} ${res.Label}</div>`);
+
+					if (res.IsReservation)
+					{
+						attachReservationEvents(div, res);
+					}
+
+					t.append(div);
+
+					if (conflictIds.length > 0 && opts.scheduleStyle === ScheduleTall)
+					{
+						console.log(conflictIds)
+						width = startTd.outerWidth() / conflictIds.length;
+						conflictIds.forEach((conflict, index) => {
+							left = startTd.position().left + (width * index);
+							console.log(index, conflict, left, startTd.position().left);
+							const div = t.find(`[data-resid="${conflict}"]`);
+							div.css('width', width + "px");
+							div.css('left', left + "px");
+						})
+					}
+
+					if (isDraggable)
+					{
+						div.on('dragstart', function (event) {
+							div.qtip("hide");
+							$(event.target).removeClass('clicked');
+							const data = JSON.stringify({
+								referenceNumber: res.ReferenceNumber, resourceId: res.ResourceId
+							});
+							event.originalEvent.dataTransfer.setData("text", data);
+						});
+					}
+				});
+			});
+
+			initReservable();
+
+			$("#loading-schedule").addClass("no-show");
+		});
+	}
+
+	this.renderEvents = renderEvents;
 
 	this.initResources = function () {
 		$('.resourceNameSelector').each(function () {
@@ -246,11 +456,11 @@ function Schedule(opts, resourceGroups) {
 			var changeDefaultUrl = options.setDefaultScheduleUrl.replace("[scheduleId]", scheduleId);
 
 
-				$.ajax({
-					url: changeDefaultUrl, success: function (data) {
-						defaultSetMessage.show().delay(5000).fadeOut();
-					}
-				});
+			$.ajax({
+				url: changeDefaultUrl, success: function (data) {
+					defaultSetMessage.show().delay(5000).fadeOut();
+				}
+			});
 		});
 	};
 
@@ -293,6 +503,8 @@ function Schedule(opts, resourceGroups) {
 			{
 				show();
 			}
+
+			renderEvents(true);
 		}
 
 		$('.toggle-sidebar').on('click', function () {
@@ -307,139 +519,169 @@ function Schedule(opts, resourceGroups) {
 		}
 	};
 
-	this.initReservations = function () {
-		var reservations = $('#reservations');
+	function initReservable() {
+		let selectingTds = false;
+		const reservations = $('#reservations');
 
-		if (options.disableSelectable != '1') {
-            this.makeSlotsSelectable(reservations);
-            this.makeReservationsMoveable(reservations);
-        }
 
-		$('.reserved', reservations).each(function () {
-			var resid = $(this).attr('resid');
-			var pattern = 'td[resid="' + resid + '"]';
+		function openReservation(startTd, endTd) {
+			let sd = '';
+			let ed = '';
 
-			$(this).hover(function () {
-				$(pattern, reservations).addClass('hilite');
-			}, function () {
-				$(pattern, reservations).removeClass('hilite');
-			});
-
-			$(this).click(function (e) {
-				e.stopPropagation();
-				var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
-				window.location = reservationUrl;
-			});
-
-			var qTipElement = $(this);
-
-			if ($(this).is('div'))
+			const start = startTd.data('start');
+			if (start)
 			{
-				var fa = $(this).find('.fa');
-				if (fa.length > 0)
-				{
-					qTipElement = $(this).find('.fa');
-
-					qTipElement.click(function (e) {
-						e.stopPropagation();
-					});
-				}
+				sd = start;
+			}
+			const end = endTd.data('end');
+			if (end)
+			{
+				ed = end;
 			}
 
-			qTipElement.qtip({
-				position: {
-					my: 'bottom left', at: 'top left', effect: false,
-					viewport: $(window)
-				},
+			const link = startTd.data('href');
+			window.location = link + "&sd=" + sd + "&ed=" + ed;
+		}
 
-				content: {
-					text: function (event, api) {
-						$.ajax({url: options.summaryPopupUrl, data: {id: resid}})
-								.done(function (html) {
-									api.set('content.text', html);
-								})
-								.fail(function (xhr, status, error) {
-									api.set('content.text', status + ': ' + error);
-								});
+		if (options.disableSelectable != '1')
+		{
+			let firstTd;
+			let lastTd;
+			let tds = [];
 
-						return 'Loading...';
-					}
-				},
-
-				show: {
-					delay: 700, effect: false
-				},
-
-				hide: {
-					fixed: true, delay: 500
-				},
-
-				style: {
-					classes: 'qtip-light qtip-bootstrap'
-				}
-			});
-		});
-	};
-
-	this.makeSlotsSelectable = function (reservationsElement) {
-		var startHref = '';
-		var startDate = '';
-		var endDate = '';
-		var href = '';
-		var select = function (element) {
-			href = element.attr('data-href');
-			if (startHref == '')
-			{
-				startDate = element.attr('data-start');
-				startHref = href;
+			function isSequentialReservation(td) {
+				const resourceId = td.data('resourceid');
+				const firstMinTime = Number.parseInt(firstTd.data("min"));
+				const minTime = Number.parseInt(td.data('min'));
+				const lastResourceId = lastTd.data('resourceid');
+				const lastMinTime = Number.parseInt(lastTd.data('min'));
+				const isSequential = resourceId === lastResourceId && minTime > firstMinTime && minTime > lastMinTime;
+				return isSequential;
 			}
-			endDate = element.attr('data-end');
-		};
 
-		reservationsElement.selectable({
-			filter: 'td.reservable',
-			cancel: 'td.reserved',
-			distance: 20,
-			start: function (event, ui) {
-				startHref = '';
-			}, selecting: function (event, ui) {
-				select($(ui.selecting));
-			}, unselecting: function (event, ui) {
-				select($(ui.unselecting));
-			}, stop: function (event, ui) {
-				if (href != '' && startDate != '' && endDate != '')
-				{
-					var start = moment(decodeURIComponent(startDate));
-					var end = moment(decodeURIComponent(endDate));
+			function add(td) {
+				tds.push(td);
+			}
 
-					// the user dragged right to left
-					if (end < start)
+			function removeIfNonSequential(td) {
+				tds.forEach(i => {
+					if (Number.parseInt(i.data("min")) > Number.parseInt(td.data("min")) || i.data("resourceid") !== firstTd.data("resourceid"))
 					{
-						window.location = href + "&sd=" + endDate + "&ed=" + startDate;
+						i.removeClass("hilite")
+					}
+				});
+				tds = tds.filter(i => Number.parseInt(i.data("min")) <= Number.parseInt(td.data("min")));
+			}
+
+			reservations.on("mousedown", "td.reservable", e => {
+				selectingTds = true;
+				firstTd = $(e.target);
+				lastTd = $(e.target);
+				add(firstTd);
+				return false;
+			});
+
+			reservations.on("mouseenter", "td.reservable", e => {
+				let td = $(e.target);
+				td.addClass("hilite");
+				td.siblings('.resourcename').toggleClass('hilite');
+
+				if (selectingTds)
+				{
+					removeIfNonSequential(td);
+					if (isSequentialReservation(td))
+					{
+						add(td);
+					}
+					lastTd = td;
+					e.stopPropagation();
+					return false;
+				}
+			});
+
+			reservations.on("mouseleave", "td.reservable", e => {
+				let td = $(e.target);
+
+				td.siblings('.resourcename').removeClass('hilite');
+				if (selectingTds && tds.find(i => i.data("ref") === td.data("ref")) !== undefined)
+				{
+					e.stopPropagation();
+				}
+				else
+				{
+					td.removeClass("hilite");
+				}
+			});
+
+			reservations.on("mouseup", "td.reservable", e => {
+				if (selectingTds)
+				{
+					e.stopPropagation();
+					if (Number.parseInt(firstTd.data("min")) < Number.parseInt(lastTd.data("min")) && firstTd.data("resourceid") === lastTd.data("resourceid"))
+					{
+						openReservation(firstTd, lastTd);
 					}
 					else
 					{
-						window.location = href + "&sd=" + startDate + "&ed=" + endDate;
+						reservations.find("td.hilite, td.clicked").each((i, e) => $(e).removeClass("hilite clicked"));
 					}
 				}
-			}
+				selectingTds = false;
+			});
+
+			reservations.find("td.reservable").on("selectstart", e => {
+				return false;
+			});
+
+			makeReservationsMoveable(reservations);
+		}
+
+		/**
+         reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function () {
+            if (selectingTds) {
+                return;
+            }
+            $(this).siblings('.resourcename').toggleClass('hilite');
+            var ref = $(this).attr('ref');
+            reservations.find('td[ref="' + ref + '"]').addClass('hilite');
+        });
+
+         reservations.delegate('.clickres:not(.reserved)', 'mouseleave', function () {
+            if (selectingTds) {
+                return;
+            }
+
+            $(this).siblings('.resourcename').removeClass('hilite');
+            var ref = $(this).attr('ref');
+            reservations.find('td[ref="' + ref + '"]').removeClass('hilite');
+            $(this).removeClass('hilite');
+        });
+		 */
+
+		reservations.delegate('.clickres', 'mousedown', function (e) {
+			$(e.target).addClass('clicked');
 		});
-	};
 
-	this.makeReservationsMoveable = function (reservations) {
-		var sourceResourceId = null;
-		var referenceNumber = null;
-
-		reservations.find('td[draggable="true"]').on('dragstart', function (event) {
-			$(event.target).removeClass('clicked');
-			referenceNumber = $(event.target).attr('resid');
-			sourceResourceId = $(event.target).attr('data-resourceId');
-
-			event.originalEvent.dataTransfer.setData("text", event.target.id);
+		reservations.delegate('.clickres', 'mouseup', function (e) {
+			$(e.target).removeClass('clicked');
 		});
 
+		reservations.delegate('.reservable', 'click', function (e) {
+			console.log("clicked");
+			openReservation($(e.target), $(e.target));
+		});
+	}
+
+	this.initReservable = initReservable;
+
+	function makeReservationsMoveable(reservations) {
 		reservations.find('td.reservable').on('dragover dragleave drop', function (event) {
 			event.preventDefault();
+			event.stopPropagation();
+
+			const data = JSON.parse(event.originalEvent.dataTransfer.getData("text"));
+			var referenceNumber = data.referenceNumber;
+			var sourceResourceId = data.resourceId;
 
 			var targetSlot = $(event.target);
 
@@ -453,9 +695,9 @@ function Schedule(opts, resourceGroups) {
 			}
 			else if (event.type === 'drop')
 			{
-			    var droppedCell = $(event.target);
-                droppedCell.addClass('dropped');
-                droppedCell.html('<i class="fa fa-spin fa-spinner" aria-hidden="true"></i>');
+				var droppedCell = $(event.target);
+				droppedCell.addClass('dropped');
+				droppedCell.html('<i class="fa fa-spin fa-spinner" aria-hidden="true"></i>');
 
 				var targetResourceId = targetSlot.attr('data-resourceId');
 				var startDate = decodeURIComponent(targetSlot.attr('data-start'));
@@ -471,15 +713,15 @@ function Schedule(opts, resourceGroups) {
 					}
 					else
 					{
-                        droppedCell.removeClass('dropped');
-                        droppedCell.html('');
+						droppedCell.removeClass('dropped');
+						droppedCell.html('');
 
-                        return false;
+						return false;
 					}
 				});
 			}
 		});
-	};
+	}
 
 	this.initResourceFilter = function () {
 
@@ -554,7 +796,7 @@ function ChangeGroup(node) {
 
 	$resourceGroups.find('input[group-id="' + groupId + '"]').click();
 
-	_.each(node.children, function(i) {
+	_.each(node.children, function (i) {
 		if (i.type == 'group')
 		{
 			ChangeGroup(i);

@@ -19,58 +19,52 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {* All of the slot display formatting *}
 
-{function name=displayGeneralReserved}
-    {if $Slot->IsPending()}
-        {assign var=class value='pending'}
-    {elseif $Slot->HasCustomColor()}
-        {assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;"'}
-    {/if}
-    {assign var=badge value=''}
-    {if $Slot->IsNew()}{assign var=badge value='<span class="reservation-new">'|cat:{translate key="New"}|cat:'</span>'}{/if}
-    {if $Slot->IsUpdated()}{assign var=badge value='<span class="reservation-updated">'|cat:{translate key="Updated"}|cat:'</span>'}{/if}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} {$OwnershipClass} clickres slot"
-        resid="{$Slot->Id()}" {$color} {if $Draggable}draggable="true"{/if} data-resourceId="{$ResourceId}"
-        id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$badge}{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
-{/function}
-
-{function name=displayMyReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='mine' Draggable=true ResourceId=$ResourceId}
-{/function}
-
-{function name=displayAdminReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='admin' Draggable=true ResourceId=$ResourceId}
-{/function}
-
-{function name=displayMyParticipating}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='participating' ResourceId=$ResourceId}
-{/function}
-
-{function name=displayReserved}
-    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='' Draggable="{$CanViewAdmin}" ResourceId=$ResourceId}
-{/function}
-
 {function name=displayPastTime}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}"
-        class="pasttime slot" draggable="{$CanViewAdmin}" resid="{$Slot->Id()}"
-        data-resourceId="{$ResourceId}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
+	<td ref="{$slotRef}"
+		class="pasttime slot"
+		data-href="{$href}"
+		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-min="{$Slot->BeginDate()->Timestamp()}"
+		data-max="{$Slot->EndDate()->Timestamp()}"
+		data-resourceId="{$resourceId}">&nbsp;
+	</td>
 {/function}
 
 {function name=displayReservable}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot"
-        data-href="{$Href}"
-        data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-resourceId="{$ResourceId}">&nbsp;
-    </td>
+	<td class="reservable clickres slot"
+		ref="{$slotRef}"
+		data-href="{$href}"
+		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-min="{$Slot->BeginDate()->Timestamp()}"
+		data-max="{$Slot->EndDate()->Timestamp()}"
+		data-resourceId="{$resourceId}">&nbsp;
+	</td>
 {/function}
 
 {function name=displayRestricted}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>
+	<td ref="{$slotRef}"
+		class="restricted slot"
+		data-href="{$href}"
+		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-min="{$Slot->BeginDate()->Timestamp()}"
+		data-max="{$Slot->EndDate()->Timestamp()}"
+		data-resourceId="{$resourceId}">&nbsp;
+	</td>
 {/function}
 
 {function name=displayUnreservable}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}"
-        class="unreservable slot">{$Slot->Label($SlotLabelFactory)|escape}</td>
+	<td ref="{$slotRef}"
+		class="unreservable slot"
+		data-href="{$href}"
+		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-min="{$Slot->BeginDate()->Timestamp()}"
+		data-max="{$Slot->EndDate()->Timestamp()}"
+		data-resourceId="{$resourceId}">&nbsp;
+	</td>
 {/function}
 
 {function name=displaySlot}
@@ -80,7 +74,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-    {include file='globalheader.tpl' Qtip=true FloatThead=true Select2=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
+    {include file='globalheader.tpl' Qtip=true Select2=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
 <div id="page-schedule">
@@ -239,14 +233,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         {/if}
 
-        {if $AllowConcurrentReservations}
-            <div class="alert alert-warning center">
-                <strong>
-                    <a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}{translate key=OnlyViewedCalendar}</a>
-                </strong>
-            </div>
-        {/if}
-
         {if !$HideSchedule}
             {block name="legend"}
                 <div class="hidden-xs row col-sm-12 schedule-legend">
@@ -368,7 +354,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {csrf_token}
 </form>
 
-{include file="javascript-includes.tpl" Qtip=true FloatThead=true Select2=true}
+
+<form id="fetchReservationsForm">
+	<input type="hidden" {formname key=BEGIN_DATE} value="{formatdate date=$FirstDate key=system}"/>
+	<input type="hidden" {formname key=END_DATE} value="{formatdate date=$LastDate key=system}"/>
+	<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+    {foreach from=$SpecificDates item=d}
+		<input type="hidden" {formname key=SPECIFIC_DATES multi=true} value="{formatdate date=$d key=system}"/>
+    {/foreach}
+	<input type="hidden" {formname key=MIN_CAPACITY} value="{$MinCapacityFilter}"/>
+	<input type="hidden" {formname key=RESOURCE_TYPE_ID} value="{$ResourceTypeIdFilter}"/>
+    {foreach from=$ResourceAttributes item=attribute}
+		<input type="hidden" name="RESOURCE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}"/>
+    {/foreach}
+    {foreach from=$ResourceTypeAttributes item=attribute}
+		<input type="hidden" name="RESOURCE_TYPE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}"/>
+    {/foreach}
+    {foreach from=$ResourceIds item=id}
+		<input type="hidden" {formname key=RESOURCE_ID multi=true} value="{$id}"/>
+    {/foreach}
+    {csrf_token}
+</form>
+
+<div id="loading-schedule" class="no-show">Loading reservations...</div>
+
+{include file="javascript-includes.tpl" Qtip=true Select2=true}
 
 {block name="scripts-before"}
 
@@ -384,73 +394,57 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {jsfile src="ajax-helpers.js"}
     <script type="text/javascript">
 
-        {if $LoadViewOnly}
-        $(document).ready(function () {
-            var scheduleOptions = {
-                reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-                summaryPopupUrl: "ajax/respopup.php",
-                cookieName: "{$CookieName}",
-                scheduleId: "{$ScheduleId}",
-                scriptUrl: '{$ScriptUrl}',
-                selectedResources: [{','|implode:$ResourceIds}],
-                specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-                disableSelectable: '{$IsMobile}'
-            };
-            var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
-            {if $AllowGuestBooking}
-            schedule.init();
-            schedule.initUserDefaultSchedule(true);
+    		var scheduleOpts = {
+    			reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+    			summaryPopupUrl: "{$Path}ajax/respopup.php",
+    			setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
+    			cookieName: "{$CookieName}",
+    			scheduleId: "{$ScheduleId|escape:'javascript'}",
+    			scriptUrl: '{$ScriptUrl}',
+    			selectedResources: [{','|implode:$ResourceIds}],
+    			specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
+    			updateReservationUrl: "{$Path}ajax/reservation_move.php",
+    			lockTableHead: "{$LockTableHead}",
+    			disableSelectable: "{$IsMobile}",
+    			reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
+    			scheduleStyle: "{$ScheduleStyle}",
+    			midnightLabel: "{formatdate date=Date::Now()->GetDate() key=period_time}",
+    			isMobileView: "{$IsMobile && !$IsTablet}",
+    			newLabel: "{translate key=New}",
+    			updatedLabel: "{translate key=Updated}"
+    		};
+
+            {if $LoadViewOnly}
+    		$(document).ready(function () {
+    			scheduleOpts.reservationUrlTemplate = "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]";
+    			scheduleOpts.reservationLoadUrl = "{$Path}{Pages::VIEW_SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations";
+
+    			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
+                {if $AllowGuestBooking}
+    			schedule.init();
+    			schedule.initUserDefaultSchedule(true);
+                {else}
+    			schedule.initNavigation();
+    			schedule.initRotateSchedule();
+    			schedule.initReservable();
+    			schedule.initResourceFilter();
+    			schedule.initResources();
+    			schedule.initUserDefaultSchedule(true);
+                {/if}
+    		});
             {else}
-            schedule.initNavigation();
-            schedule.initRotateSchedule();
-            schedule.initReservations();
-            schedule.initResourceFilter();
-            schedule.initResources();
-            schedule.initUserDefaultSchedule(true);
+    		$(document).ready(function () {
+    			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
+    			schedule.init();
+    		});
             {/if}
-        });
-        {else}
-        $(document).ready(function () {
-            var scheduleOpts = {
-                reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-                summaryPopupUrl: "{$Path}ajax/respopup.php",
-                setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
-                cookieName: "{$CookieName}",
-                scheduleId: "{$ScheduleId|escape:'javascript'}",
-                scriptUrl: '{$ScriptUrl}',
-                selectedResources: [{','|implode:$ResourceIds}],
-                specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-                updateReservationUrl: "{$Path}ajax/reservation_move.php",
-                lockTableHead: {$LockTableHead},
-                disableSelectable: '{$IsMobile}'
-            };
 
-            var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
-            schedule.init();
-        });
-        {/if}
-
-        $('#schedules').select2({
+			$('#schedules').select2({
             width: 'resolve'
         });
 
-        var pageLoadTime = {round($endTime-$startTime)};
-        var resourceCount = {$Resources|count};
-        var dayCount = {$BoundDates|count};
 
-        if (pageLoadTime > 10 && !cookies.isDismissed('slow-schedule-warning')) {
-            $('#slow-schedule-warning').removeClass('no-show');
-            $('#warning-time').text(pageLoadTime);
-            $('#warning-resources').text(resourceCount);
-            $('#warning-days').text(dayCount);
-        }
-
-        $('#slow-schedule-warning').find('.close-forever').on('click', function (e) {
-            cookies.dismiss('slow-schedule-warning', '{$ScriptUrl}');
-            $('#slow-schedule-warning').addClass('no-show');
-        });
-
-    </script>
+    	</script>
 {/block}
 
 {block name="scripts-after"}

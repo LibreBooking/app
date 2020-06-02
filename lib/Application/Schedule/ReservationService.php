@@ -1,18 +1,18 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 class ReservationService implements IReservationService
 {
@@ -34,27 +34,29 @@ class ReservationService implements IReservationService
 
 	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
 	{
-	    $filterResourcesInCode = $resourceIds != null && count($resourceIds) > 100;
-	    $resourceKeys = array();
-	    if ($filterResourcesInCode)
-        {
-            $resourceKeys = array_combine($resourceIds, $resourceIds);
-        }
+		$filterResourcesInCode = $resourceIds != null && count($resourceIds) > 100;
+		$resourceKeys = array();
+		if ($filterResourcesInCode)
+		{
+			$resourceKeys = array_combine($resourceIds, $resourceIds);
+		}
 		$reservationListing = $this->_coordinatorFactory->CreateReservationListing($targetTimezone, $dateRangeUtc);
 
-		$reservations = $this->_repository->GetReservations($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId, ($filterResourcesInCode ? array() : $resourceIds));
-		Log::Debug("Found %s reservations for schedule %s between %s and %s", count($reservations), $scheduleId, $dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd());
+		$reservations = $this->_repository->GetReservations($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId,
+				($filterResourcesInCode ? array() : $resourceIds));
+		Log::Debug("Found %s reservations for schedule %s between %s and %s", count($reservations), $scheduleId, $dateRangeUtc->GetBegin(),
+				   $dateRangeUtc->GetEnd());
 
 		foreach ($reservations as $reservation)
 		{
-		    if ($filterResourcesInCode && array_key_exists($reservation->ResourceId, $resourceKeys))
-            {
-                $reservationListing->Add($reservation);
-            }
-            else
-            {
-                $reservationListing->Add($reservation);
-            }
+			if ($filterResourcesInCode && array_key_exists($reservation->ResourceId, $resourceKeys))
+			{
+				$reservationListing->Add($reservation);
+			}
+			else
+			{
+				$reservationListing->Add($reservation);
+			}
 		}
 
 		$blackouts = $this->_repository->GetBlackoutsWithin($dateRangeUtc, $scheduleId);
@@ -67,6 +69,25 @@ class ReservationService implements IReservationService
 
 		return $reservationListing;
 	}
+
+	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null)
+	{
+		$reservations = $this->_repository->GetReservations($dateRange->GetBegin(), $dateRange->GetEnd(), null, null, $scheduleId, $resourceIds);
+		$blackouts = $this->_repository->GetBlackoutsWithin($dateRange, $scheduleId, $resourceIds);
+
+		/** @var ReservationListItem[] $items */
+		$items = [];
+		foreach ($reservations as $i)
+		{
+			$items[] = new ReservationListItem($i);
+		}
+		foreach ($blackouts as $i)
+		{
+			$items[] = new BlackoutListItem($i);
+		}
+
+		return $items;
+	}
 }
 
 interface IReservationService
@@ -78,5 +99,13 @@ interface IReservationService
 	 * @param null|int $resourceIds
 	 * @return IReservationListing
 	 */
-	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null);
+	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null);
+
+	/**
+	 * @param DateRange $dateRange
+	 * @param int $scheduleId
+	 * @param null|int[] $resourceIds
+	 * @return ReservationListItem[]
+	 */
+	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null);
 }

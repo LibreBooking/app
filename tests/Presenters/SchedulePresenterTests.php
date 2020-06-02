@@ -18,7 +18,7 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
 class SchedulePresenterTests extends TestBase
@@ -52,8 +52,6 @@ class SchedulePresenterTests extends TestBase
 	{
 		$user = $this->fakeServer->GetUserSession();
 		$resources = array();
-		$reservations = $this->createMock('IReservationListing');
-		$layout = $this->createMock('IScheduleLayout');
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
 		$groups = new ResourceGroupTree();
 		$resourceTypes = array(new ResourceType(1, 'n', 'd'));
@@ -65,10 +63,9 @@ class SchedulePresenterTests extends TestBase
 		$resourceService = $this->createMock('IResourceService');
 		$pageBuilder = $this->createMock('ISchedulePageBuilder');
 		$reservationService = $this->createMock('IReservationService');
-		$dailyLayoutFactory = $this->createMock('IDailyLayoutFactory');
 		$dailyLayout = $this->createMock('IDailyLayout');
 
-		$presenter = new SchedulePresenter($page, $scheduleService, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
+		$presenter = new SchedulePresenter($page, $scheduleService, $resourceService, $pageBuilder, $reservationService);
 
 		$page
 				->expects($this->once())
@@ -142,17 +139,10 @@ class SchedulePresenterTests extends TestBase
 				->method('BindDisplayDates')
 				->with($this->equalTo($page), $this->equalTo($bindingDates), $this->equalTo($this->schedules[0]));
 
-		$reservationService
-				->expects($this->once())
-				->method('GetReservations')
-				->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId),
-					   $this->equalTo($user->Timezone))
-				->will($this->returnValue($reservations));
-
 		$scheduleService
 				->expects($this->once())
 				->method('GetDailyLayout')
-				->with($this->equalTo($this->scheduleId), new ScheduleLayoutFactory($user->Timezone), $reservations)
+				->with($this->equalTo($this->scheduleId), new ScheduleLayoutFactory($user->Timezone), new EmptyReservationListing())
 				->will($this->returnValue($dailyLayout));
 
 		$pageBuilder
@@ -914,11 +904,20 @@ class FakeSchedulePage implements ISchedulePage
 	public $_ResourceTypeAttributes = array();
 	public $_ResourceIds = array();
 	public $_SelectedDates = array();
-    public $_ScheduleAvailability;
-    public $_ScheduleTooEarly;
-    public $_ScheduleTooLate;
+	public $_ScheduleAvailability;
+	public $_ScheduleTooEarly;
+	public $_ScheduleTooLate;
+	/**
+	 * @var LoadReservationRequest
+	 */
+	public $_LoadReservationRequest;
 
-    public function TakingAction()
+	/**
+	 * @var ReservationListItem[]
+	 */
+	public $_BoundReservations = [];
+
+	public function TakingAction()
 	{
 	}
 
@@ -1207,26 +1206,39 @@ class FakeSchedulePage implements ISchedulePage
 	{
 	}
 
-    public function GetSortField()
-    {
-    }
+	public function GetSortField()
+	{
+	}
 
-    public function GetSortDirection()
-    {
-    }
+	public function GetSortDirection()
+	{
+	}
 
-    public function FilterCleared()
-    {
-    }
+	public function FilterCleared()
+	{
+	}
 
-    public function BindScheduleAvailability($availability, $tooEarly)
-    {
-        $this->_ScheduleAvailability = $availability;
-        $this->_ScheduleTooEarly = $tooEarly;
-        $this->_ScheduleTooLate = !$tooEarly;
-    }
+	public function BindScheduleAvailability($availability, $tooEarly)
+	{
+		$this->_ScheduleAvailability = $availability;
+		$this->_ScheduleTooEarly = $tooEarly;
+		$this->_ScheduleTooLate = !$tooEarly;
+	}
 
-    public function SetAllowConcurrent($allowConcurrentReservations)
-    {
-    }
+	public function SetAllowConcurrent($allowConcurrentReservations)
+	{
+	}
+
+
+	public function GetReservationRequest()
+	{
+		return $this->_LoadReservationRequest;
+	}
+
+	public function BindReservations(array $items)
+	{
+		$this->_BoundReservations = $items;
+	}
+
+
 }

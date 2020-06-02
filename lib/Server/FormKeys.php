@@ -149,6 +149,7 @@ class FormKeys
 	const MIN_NOTICE_NONE_ADD = 'minNoticeNoneAdd';
 	const MIN_NOTICE_NONE_UPDATE = 'minNoticeNoneUpdate';
 	const MIN_NOTICE_NONE_DELETE = 'minNoticeNoneDelete';
+	const MIN_CAPACITY = 'MIN_CAPACITY';
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
 	const MAXIMUM_CONCURRENT_UNLIMITED = 'MAXIMUM_CONCURRENT_UNLIMITED';
@@ -270,6 +271,7 @@ class FormKeys
 	const SLACK_TEXT = 'text';
 	const SLACK_TOKEN = 'token';
 	const SPECIFIC_TIME = 'SPECIFIC_TIME';
+	const SPECIFIC_DATES = 'SPECIFIC_DATES';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';

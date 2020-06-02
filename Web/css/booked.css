@@ -1119,6 +1119,74 @@ table.reservations {
   width: 100%;
   font-size: 0.85em;
   border: solid #36648B 1px;
+  position: relative;
+}
+table.reservations thead td {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  z-index: 100;
+}
+table.reservations td,
+table.reservations th {
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topright: 0;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-topleft: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+table.reservations td {
+  border: solid #36648B 1px;
+  height: 40px;
+  display: table-cell;
+  padding: 0;
+}
+table.reservations td.resourcename {
+  padding: 1px 3px;
+  background-color: #EDEDED;
+  color: #999999;
+  width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+table.reservations td.resourcename a {
+  color: #0772A1;
+  text-decoration: none;
+}
+table.reservations td.resourcename a:hover {
+  color: #3BA3D0;
+}
+table.reservations td.resdate {
+  width: 150px;
+  padding: 0 3px;
+  background-color: #36648B;
+  color: #F0F0F0;
+}
+table.reservations tr.today td.resdate,
+table.reservations td.today {
+  color: #FFFFFF;
+  background-color: #5199d1;
+}
+table.reservations tr.today td.reslabel {
+  background-color: #cfcfcf;
+}
+table.reservations td.reslabel {
+  padding-left: 2px;
+  background-color: #EDEDED;
+  color: #333333;
+}
+table.reservations tr.today td.reslabel {
+  color: #000000;
 }
 table.reservations.mobile {
   table-layout: fixed;
@@ -1127,13 +1195,8 @@ table.reservations.mobile div.reservable {
   border: dashed 1px #585754;
   color: #585754;
   line-height: 20px;
-  background-color: #fff !important;
+  background-color: #fff;
   padding-left: 3px;
-}
-table.reservations td {
-  border: solid #36648B 1px;
-  height: 30px;
-  display: table-cell;
 }
 .reservations.condensed td.resdate {
   width: auto;
@@ -1152,79 +1215,52 @@ table.reservations td {
 .reservations.condensed div.reservable {
   border: dashed 1px #585754;
   color: #585754;
-  line-height: 30px;
-  background-color: #fff !important;
+  background-color: #fff;
 }
 .reservations.condensed div.reservable:hover {
-  background-color: #E9E9E9 !important;
-}
-td.resourcename {
-  padding: 1px 3px;
-  background-color: #EDEDED !important;
-  color: #999999 !important;
-  width: 150px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-td.resourcename a {
-  color: #0772A1 !important;
-  text-decoration: none;
-}
-td.resourcename a:hover {
-  color: #3BA3D0 !important;
-}
-td.resdate {
-  width: 150px;
-  padding: 0 3px;
-  background-color: #36648B !important;
-  color: #F0F0F0 !important;
-}
-tr.today td.resdate,
-td.today {
-  color: #FFFFFF !important;
-  background-color: #5199d1 !important;
+  background-color: #E9E9E9;
 }
 #reservations .mobile {
   font-size: 0.8em;
 }
 #reservations .mobile .resdate {
-  background-color: #4279A5 !important;
+  background-color: #4279A5;
   width: auto;
 }
 #reservations .mobile td.today {
-  background-color: #5199d1 !important;
+  background-color: #5199d1;
 }
 #reservations .mobile .slot {
   padding: 2px;
-}
-tr.today td.reslabel {
-  background-color: #cfcfcf !important;
 }
 .slot {
   min-width: 1px;
   max-width: 1px;
   overflow: hidden;
 }
-td.reslabel {
-  padding-left: 2px;
-  background-color: #EDEDED !important;
-  color: #333333 !important;
-}
-tr.today td.reslabel {
-  color: #000000 !important;
+.event {
+  overflow: hidden;
+  position: absolute;
+  background-color: #000;
+  height: 40px;
+  border-top: solid 1px #36648B;
+  border-left: solid 1px #36648B;
+  z-index: 2;
+  font-size: 0.8rem;
 }
 .unreservable {
-  background-color: #CF9D9B !important;
-  color: #fff !important;
+  background-color: #CF9D9B;
+  color: #fff;
+  border-color: #482423;
 }
 td.reservable,
 div.reservable {
-  background-color: #FFF !important;
-  color: #333 !important;
+  background-color: #FFF;
+  color: #333;
 }
 .reserved {
-  background-color: #408AD2 !important;
-  color: #fff !important;
+  background-color: #408AD2;
+  color: #fff;
 }
 td.reserved {
   padding-left: 1px;
@@ -1232,54 +1268,57 @@ td.reserved {
 @keyframes droppedpulse {
   0%,
   100% {
-    background-color: #6F9BAE !important;
+    background-color: #6F9B;
   }
   50% {
-    background-color: transparent !important;
+    background-color: transparent;
   }
 }
 td.dropped {
   animation: droppedpulse 1s infinite;
 }
 .reserved.hilite {
-  background-color: #59A8EF !important;
+  background-color: #59A8EF;
 }
 .reserved.mine {
-  background-color: #6F9BAE !important;
+  background-color: #6F9BAE;
 }
 .reserved.mine.hilite {
-  background-color: #63AFD0 !important;
-  color: #ffffff !important;
+  background-color: #63AFD0;
+  color: #ffffff;
 }
 .reserved.participating {
-  background-color: #875cae !important;
+  background-color: #875cae;
 }
 .reserved.participating.hilite {
-  background-color: #a979d1 !important;
+  background-color: #a979d1;
+}
+.past {
+  opacity: 0.6;
 }
 .reserved.pending {
-  background-color: #ffb540 !important;
-  color: black !important;
+  background-color: #ffb540;
+  color: black;
 }
 .reserved.pending.hilite {
-  background-color: #ffc973 !important;
+  background-color: #ffc973;
 }
 .reservable.hilite,
 #reservations .ui-selecting {
-  background-color: #23BF35 !important;
+  background-color: #23BF35;
 }
 .hilite {
-  cursor: pointer !important;
+  cursor: pointer;
 }
 .reservable.clicked,
 #reservations .ui-selected {
-  background-color: #259433 !important;
+  background-color: #259433;
 }
 .reserved.clicked {
-  background-color: #1979CF !important;
+  background-color: #1979CF;
 }
 .pasttime {
-  background-color: #BDBDBD !important;
+  background-color: #BDBDBD;
 }
 .restricted {
   background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient(to bottom, #eee, #999);
@@ -1311,8 +1350,8 @@ td.dropped {
   color: #ffb540;
   font-weight: bold;
 }
-td.resourcename.hilite {
-  background-color: #fbffc2 !important;
+table.reservations td.resourcename.hilite {
+  background-color: #fbffc2;
 }
 div.legend {
   line-height: 22px;
@@ -1325,9 +1364,6 @@ div.legend {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-}
-#reservations-left {
-  padding: 0;
 }
 .reservations-left-header {
   border-bottom: solid 1px #E9E9E9;
@@ -1362,20 +1398,17 @@ ul.jqtree-tree .jqtree-toggler {
   height: 100%;
   width: 100%;
 }
-#reservations-left .textbox {
-  width: 120px;
-}
-#reservations-left select.textbox,
-#reservations-left textarea,
-#reservations-left .button {
-  width: 128px;
-}
-#reservations-left {
-  font-size: 0.9em;
-}
 .advancedFilterTitle {
   margin-top: 10px;
   text-align: center;
+}
+#reservations-left {
+  padding: 0;
+  font-size: 0.9em;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  z-index: 100;
 }
 #reservations-left hr {
   border: 0;
@@ -1384,6 +1417,14 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #reservations-left .btn {
   width: 100%;
+}
+#reservations-left .textbox {
+  width: 120px;
+}
+#reservations-left select.textbox,
+#reservations-left textarea,
+#reservations-left .button {
+  width: 128px;
 }
 #reservations-left .form-group {
   margin-bottom: 3px;
@@ -1405,6 +1446,25 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #calendar_toggle span {
   font-size: 16pt;
+}
+#loading-schedule {
+  position: fixed;
+  height: 30px;
+  background-color: rgba(76, 175, 80, 0.7);
+  border: solid 2px rgba(32, 65, 32, 0.7);
+  top: 75px;
+  left: 50%;
+  z-index: 101;
+  width: auto;
+  padding: 0 30px;
+  line-height: 30px;
+  text-align: center;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  display: inline-block;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 #page-schedule a {
   text-decoration: none;
@@ -1456,12 +1516,17 @@ a.toggle-sidebar {
   text-transform: uppercase;
   background-color: #88CC88;
   padding: 2px;
-  margin: 0 1px;
+  margin: 1px;
   color: #000;
+  display: inline-block;
+  line-height: 1rem;
 }
 .reservation-updated {
   background-color: #D5DED9;
   color: #000;
+}
+#reservations {
+  position: relative;
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;

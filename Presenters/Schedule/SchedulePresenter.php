@@ -25,7 +25,7 @@ require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'Presenters/SchedulePageBuilder.php');
+require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePageBuilder.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
 interface ISchedulePresenter {
@@ -121,14 +121,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
         $resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $user, $filter);
 
-		$rids = array();
-		foreach ($resources as $resource)
-		{
-			$rids[] = $resource->Id;
-		}
-//		$rids= array();
-        $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone, $rids);
-        $dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), $reservationListing);
+		$dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), new EmptyReservationListing());
 
         $this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
     }
@@ -145,4 +138,11 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
 		$this->_page->SetLayoutResponse(new ScheduleLayoutSerializable($periods));
 	}
+
+	public function LoadReservations()
+    {
+        $filter = $this->_page->GetReservationRequest();
+        $items = $this->_reservationService->Search($filter->DateRange(), $filter->ScheduleId(), $filter->ResourceIds());
+        $this->_page->BindReservations($items);
+    }
 }
