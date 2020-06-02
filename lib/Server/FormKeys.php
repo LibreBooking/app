@@ -157,6 +157,7 @@ class FormKeys
 	const MIN_NOTICE_NONE_ADD = 'minNoticeNoneAdd';
 	const MIN_NOTICE_NONE_UPDATE = 'minNoticeNoneUpdate';
 	const MIN_NOTICE_NONE_DELETE = 'minNoticeNoneDelete';
+	const MIN_CAPACITY = 'MIN_CAPACITY';
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
 	const MIN_CAPACITY = 'MIN_CAPACITY';
