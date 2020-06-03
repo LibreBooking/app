@@ -111,19 +111,19 @@ interface IReservedItemView
      * @param int $newMinutes
      * @return bool
      */
-    public function GetIsNew(int $newMinutes);
+    public function GetIsNew($newMinutes);
 
     /**
      * @param int $updatedMinutes
      * @return bool
      */
-    public function GetIsUpdated(int $updatedMinutes);
+    public function GetIsUpdated($updatedMinutes);
 
     /**
      * @param int $userId
      * @return bool
      */
-    public function IsOwner(int $userId);
+    public function IsOwner($userId);
 
     /**
      * @return string
@@ -1002,7 +1002,7 @@ class ReservationItemView implements IReservedItemView
         return $this->RequiresApproval;
     }
 
-    public function GetIsNew(int $newMinutes)
+    public function GetIsNew($newMinutes)
     {
         $modifiedDate = $this->ModifiedDate;
         return
@@ -1011,7 +1011,7 @@ class ReservationItemView implements IReservedItemView
             ($this->CreatedDate->AddMinutes($newMinutes)->GreaterThanOrEqual(Date::Now()));
     }
 
-    public function GetIsUpdated(int $updatedMinutes)
+    public function GetIsUpdated($updatedMinutes)
     {
         $modifiedDate = $this->ModifiedDate;
         return
@@ -1020,7 +1020,7 @@ class ReservationItemView implements IReservedItemView
             ($this->ModifiedDate->AddMinutes($updatedMinutes)->GreaterThanOrEqual(Date::Now()));
     }
 
-    public function IsOwner(int $userId)
+    public function IsOwner($userId)
     {
         return $this->IsUserOwner($userId);
     }
@@ -1300,17 +1300,17 @@ class BlackoutItemView extends ReservationItemView
         return false;
     }
 
-    public function GetIsNew(int $newMinutes)
+    public function GetIsNew($newMinutes)
     {
         return false;
     }
 
-    public function GetIsUpdated(int $updatedMinutes)
+    public function GetIsUpdated($updatedMinutes)
     {
         return false;
     }
 
-    public function IsOwner(int $userId)
+    public function IsOwner($userId)
     {
         return false;
     }

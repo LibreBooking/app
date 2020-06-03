@@ -180,7 +180,6 @@ table.reservations.mobile div.reservable {
   border-top: solid 1px #36648B;
   border-left: solid 1px #36648B;
   z-index: 2;
-  font-size: 0.8rem;
 }
 .unreservable {
   background-color: #CF9D9B;
