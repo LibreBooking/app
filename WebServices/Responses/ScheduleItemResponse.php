@@ -28,6 +28,8 @@ class ScheduleItemResponse extends RestResponse
 	public $weekdayStart;
 	public $availabilityBegin;
 	public $availabilityEnd;
+	public $maxResourcesPerReservation;
+	public $totalConcurrentReservationsAllowed;
 
 	public function __construct(IRestServer $server, Schedule $schedule)
 	{
@@ -39,6 +41,8 @@ class ScheduleItemResponse extends RestResponse
 		$this->weekdayStart = $schedule->GetWeekdayStart();
 		$this->availabilityBegin = $schedule->GetAvailabilityBegin()->ToIso();
 		$this->availabilityEnd = $schedule->GetAvailabilityBegin()->ToIso();
+		$this->maxResourcesPerReservation = $schedule->GetMaxResourcesPerReservation();
+		$this->totalConcurrentReservationsAllowed = $schedule->GetTotalConcurrentReservations();
 
 		$this->AddService($server, WebServices::GetSchedule, array(WebServiceParams::ScheduleId => $schedule->GetId()));
 	}
@@ -61,6 +65,8 @@ class ExampleScheduleItemResponse extends ScheduleItemResponse
 		$this->weekdayStart = 0;
 		$this->availabilityBegin = Date::Now()->ToIso();
 		$this->availabilityEnd = Date::Now()->AddDays(20)->ToIso();
+		$this->maxResourcesPerReservation = 10;
+		$this->totalConcurrentReservationsAllowed = 0;
 	}
 }
 
