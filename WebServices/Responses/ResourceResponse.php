@@ -50,6 +50,7 @@ class ResourceResponse extends RestResponse
     public $color;
     public $creditsPerSlot;
     public $peakCreditsPerSlot;
+    public $maxConcurrentReservations;
 
     /**
 	 * @param IRestServer $server
@@ -85,6 +86,7 @@ class ResourceResponse extends RestResponse
         $this->color = $resource->GetColor();
         $this->creditsPerSlot = $resource->GetCreditsPerSlot();
         $this->peakCreditsPerSlot = $resource->GetPeakCreditsPerSlot();
+        $this->maxConcurrentReservations = $resource->GetMaxConcurrentReservations();
 
 		$attributeValues = $attributes->GetAttributes($resourceId);
 
@@ -141,6 +143,7 @@ class ExampleResourceResponse extends ResourceResponse
         $this->color = '#ffffff';
         $this->creditsPerSlot = 3;
         $this->peakCreditsPerSlot = 6;
+        $this->maxConcurrentReservations = 1;
 
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 	}

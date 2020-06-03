@@ -116,6 +116,10 @@ class ResourceRequest extends JsonRequest
      * @var int|null
      */
     public $peakCreditsPerSlot;
+	/**
+	 * @var int|null
+	 */
+	public $maxConcurrentReservations;
 
     /**
      * @return ExampleResourceRequest
@@ -164,5 +168,6 @@ class ExampleResourceRequest extends ResourceRequest
         $this->color = '#ffffff';
         $this->creditsPerSlot = 3;
         $this->peakCreditsPerSlot = 6;
+        $this->maxConcurrentReservations = 1;
     }
 }
