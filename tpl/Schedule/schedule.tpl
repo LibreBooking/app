@@ -20,50 +20,50 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* All of the slot display formatting *}
 
 {function name=displayPastTime}
-	<td ref="{$slotRef}"
+	<td ref="{$SlotRef}"
 		class="pasttime slot"
-		data-href="{$href}"
+		data-href="{$Href}"
 		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-min="{$Slot->BeginDate()->Timestamp()}"
 		data-max="{$Slot->EndDate()->Timestamp()}"
-		data-resourceId="{$resourceId}">&nbsp;
+		data-resourceId="{$ResourceId}">&nbsp;
 	</td>
 {/function}
 
 {function name=displayReservable}
 	<td class="reservable clickres slot"
-		ref="{$slotRef}"
-		data-href="{$href}"
+		ref="{$SlotRef}"
+		data-href="{$Href}"
 		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-min="{$Slot->BeginDate()->Timestamp()}"
 		data-max="{$Slot->EndDate()->Timestamp()}"
-		data-resourceId="{$resourceId}">&nbsp;
+		data-resourceId="{$ResourceId}">&nbsp;
 	</td>
 {/function}
 
 {function name=displayRestricted}
-	<td ref="{$slotRef}"
+	<td ref="{$SlotRef}"
 		class="restricted slot"
-		data-href="{$href}"
+		data-href="{$Href}"
 		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-min="{$Slot->BeginDate()->Timestamp()}"
 		data-max="{$Slot->EndDate()->Timestamp()}"
-		data-resourceId="{$resourceId}">&nbsp;
+		data-resourceId="{$ResourceId}">&nbsp;
 	</td>
 {/function}
 
 {function name=displayUnreservable}
-	<td ref="{$slotRef}"
+	<td ref="{$SlotRef}"
 		class="unreservable slot"
-		data-href="{$href}"
+		data-href="{$Href}"
 		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
 		data-min="{$Slot->BeginDate()->Timestamp()}"
 		data-max="{$Slot->EndDate()->Timestamp()}"
-		data-resourceId="{$resourceId}">&nbsp;
+		data-resourceId="{$ResourceId}">&nbsp;
 	</td>
 {/function}
 

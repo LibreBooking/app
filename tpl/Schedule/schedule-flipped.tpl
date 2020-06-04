@@ -17,11 +17,12 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{extends file="Schedule/schedule.tpl"}
-
-{function name=displaySlot}
+{function name=displaySlotTall}
     {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef ResourceId=$ResourceId}
 {/function}
+
+{extends file="Schedule/schedule.tpl"}
+
 
 {block name="reservations"}
 
@@ -36,11 +37,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <td class="resourcename" resourceId="{$resource->Id}"
                     {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
                     {if $resource->CanAccess}
-                        <a href="{$href}" resourceId="{$resource->Id}"
+                        <a href="{$href}" resourceId="{$resourceId}"
                            class="resourceNameSelector"
                            {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
                     {else}
-                        <span resourceId="{$resource->Id}" resourceId="{$resource->Id}" class="resourceNameSelector"
+                        <span resourceId="{$resourceId}" resourceId="{$resourceId}" class="resourceNameSelector"
                               {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
                     {/if}
                 </td>
@@ -67,13 +68,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {$smarty.capture.resources}
             </thead>
             <tbody>
+            <!-- tall -->
             {foreach from=$periods.$ts item=period name=period_loop}
                 <tr class="slots" id="{$period->Id()}">
                     <td class="reslabel">{$period->Label($date)}</td>
                     {foreach from=$Resources item=resource name=resource_loop}
                         {assign var=resourceId value=$resource->Id}
                         {assign var=slotRef value="{$period->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                        {displaySlot Slot=$period Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
+                        {assign var=slotHref value="{$CreateReservationPage}?rid={$resourceId}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
+                        {displaySlotTall Slot=$period Href=$slotHref AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
                     {/foreach}
                 </tr>
             {/foreach}
