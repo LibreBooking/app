@@ -92,8 +92,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
 </div>
 <div class="allowConcurrent"
-	 data-allow-concurrent="{$resource->GetMaxConcurrentReservations()}"
-	 data-max-concurrent="{$resource->GetAllowConcurrentReservations()}">
+	 data-allow-concurrent="{$resource->GetAllowConcurrentReservations()}"
+	 data-max-concurrent="{$resource->GetMaxConcurrentReservations()}">
     {if $resource->GetAllowConcurrentReservations()}
         {translate key=ResourceConcurrentReservations args=$resource->GetMaxConcurrentReservations()}
     {else}
