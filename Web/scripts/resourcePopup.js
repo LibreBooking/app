@@ -22,6 +22,11 @@ $.fn.bindResourceDetails = function (resourceId, options) {
 
     var owl;
 
+    var showEvent = $(this).data('show-event');
+    if (!showEvent) {
+        showEvent = 'mouseenter';
+    }
+
     $(this).removeAttr('resource-details-bound');
     bindResourceDetails($(this));
 
@@ -63,7 +68,7 @@ $.fn.bindResourceDetails = function (resourceId, options) {
 
         var hoverTimer;
 
-        resourceNameElement.mouseenter(function () {
+        resourceNameElement.on(showEvent, function () {
             if (hoverTimer) {
                 clearTimeout(hoverTimer);
                 hoverTimer = null;

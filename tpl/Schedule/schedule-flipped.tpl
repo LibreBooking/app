@@ -29,24 +29,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {assign var=TodaysDate value=Date::Now()}
 
     {capture name="resources"}
-        <tr>
-            <td class="resourcename">&nbsp;</td>
+		<tr>
+			<td class="resourcename">&nbsp;</td>
             {foreach from=$Resources item=resource name=resource_loop}
                 {assign var=resourceId value=$resource->Id}
                 {assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}"}
-                <td class="resourcename" resourceId="{$resource->Id}"
+				<td class="resourcename" resourceId="{$resource->Id}"
                     {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
                     {if $resource->CanAccess}
-                        <a href="{$href}" resourceId="{$resourceId}"
-                           class="resourceNameSelector"
+						<span resourceId="{$resourceId}" class="visible-sm-inline-block hidden-md resourceNameSelector fa fa-info-circle" data-show-event="click"
+						                              {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}></span>
+						<a href="{$href}" resourceId="{$resourceId}"
+						   class="resourceNameSelector"
                            {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
+
                     {else}
-                        <span resourceId="{$resourceId}" resourceId="{$resourceId}" class="resourceNameSelector"
+						<span resourceId="{$resourceId}" class="resourceNameSelector"
                               {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
                     {/if}
-                </td>
+				</td>
             {/foreach}
-        </tr>
+		</tr>
     {/capture}
 
     {foreach from=$BoundDates item=date}
@@ -56,33 +59,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
         {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
         {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
-        <table class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
-            <thead>
+		<table class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
+			<thead>
             {if $date->DateEquals($TodaysDate)}
-                <tr class="today">
+				<tr class="today">
                     {else}
-            <tr>
+			<tr>
                 {/if}
-                <td class="resdate" colspan="{$Resources|@count+1}">{formatdate date=$date key="schedule_daily"}</td>
-            </tr>
+				<td class="resdate" colspan="{$Resources|@count+1}">{formatdate date=$date key="schedule_daily"}</td>
+			</tr>
             {$smarty.capture.resources}
-            </thead>
-            <tbody>
-            <!-- tall -->
+			</thead>
+			<tbody>
+			<!-- tall -->
             {foreach from=$periods.$ts item=period name=period_loop}
-                <tr class="slots" id="{$period->Id()}">
-                    <td class="reslabel">{$period->Label($date)}</td>
+				<tr class="slots" id="{$period->Id()}">
+					<td class="reslabel">{$period->Label($date)}</td>
                     {foreach from=$Resources item=resource name=resource_loop}
                         {assign var=resourceId value=$resource->Id}
                         {assign var=slotRef value="{$period->BeginDate()->Format('YmdHis')}{$resourceId}"}
                         {assign var=slotHref value="{$CreateReservationPage}?rid={$resourceId}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
                         {displaySlotTall Slot=$period Href=$slotHref AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
                     {/foreach}
-                </tr>
+				</tr>
             {/foreach}
-            </tbody>
+			</tbody>
             {$smarty.capture.resources}
-        </table>
+		</table>
     {/foreach}
 
 {/block}

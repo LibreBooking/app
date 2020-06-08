@@ -102,7 +102,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<td class="resourcename"
                         {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
                         {if $resource->CanAccess}
-							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle"
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" data-show-event="click"
                                {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}></i>
 							<a href="{$href}" resourceId="{$resourceId}"
                                {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>

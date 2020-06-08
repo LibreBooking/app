@@ -18,6 +18,9 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// uncomment to allow self signed and untrusted certs for ldaps
+//putenv('LDAPTLS_REQCERT=never');
+
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/namespace.php');
 

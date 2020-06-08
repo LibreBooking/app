@@ -1531,6 +1531,9 @@ a.toggle-sidebar {
 #reservations {
   position: relative;
 }
+#resourceDetailsPopup h4 {
+  float: left;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;
@@ -1539,12 +1542,17 @@ a.toggle-sidebar {
 #resourceDetailsPopup ul {
   margin-left: 25px;
 }
-#resourceDetailsPopup h4,
+#resourceDetailsPopup .resourceNameTitle,
 #userDetailsPopup #userDetailsName {
   border-bottom: solid 1px #000;
   font-size: 1.2em;
   margin-bottom: 3px;
   font-weight: bold;
+}
+#resourceDetailsPopup .hideResourceDetailsPopup {
+  float: right;
+  font-size: 1em;
+  font-weight: normal;
 }
 #resourceDetailsPopup .customAttribute,
 #userDetailsPopup .customAttribute {

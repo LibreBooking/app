@@ -34,6 +34,8 @@
                 <td class="resourcename"
                     {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
                     {if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
+                        <span resourceId="{$resourceId}" class="visible-sm-inline-block hidden-md resourceNameSelector fa fa-info-circle" data-show-event="click"
+                        						                              {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}></span>
                         <a href="{$href}" resourceId="{$resource->Id}"
                            class="resourceNameSelector"
                            {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>

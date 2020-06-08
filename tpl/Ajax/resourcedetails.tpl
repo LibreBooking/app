@@ -21,9 +21,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if !empty($color)}
         {assign var=h4Style value=" style=\"background-color:{$color};color:{$textColor};padding:5px 3px;\""}
     {/if}
-    <div>
+    <div class="resourceNameTitle">
         <h4 {$h4Style}>{$resourceName}</h4>
-        <a href="#" class="visible-sm hideResourceDetailsPopup">{translate key=Close}</a>
+        <a href="#" class="visible-sm-inline-block hideResourceDetailsPopup">{translate key=Close}</a>
+        <div class="clearfix"></div>
     </div>
     {assign var=class value='col-xs-6'}
 
@@ -85,7 +86,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             {/foreach}
         {/if}
-        {if $ResourceTypeAttributes|count > 0}
+        {if $ResourceTypeAttributes && $ResourceTypeAttributes|count > 0}
             {foreach from=$ResourceTypeAttributes item=attribute}
                 <div>
                     {control type="AttributeControl" attribute=$attribute readonly=true}
