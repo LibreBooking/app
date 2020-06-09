@@ -34,7 +34,7 @@ class ReservationService implements IReservationService
 
 	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
 	{
-		$filterResourcesInCode = $resourceIds != null && count($resourceIds) > 100;
+		$filterResourcesInCode = $resourceIds != null && is_array($resourceIds) && count($resourceIds) > 100;
 		$resourceKeys = array();
 		if ($filterResourcesInCode)
 		{
