@@ -127,7 +127,7 @@ class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
 
     public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources, $format)
     {
-        $this->Set('DisplaySlotFactory', new DisplaySlotFactory());
+        $this->Set('DisplaySlotFactory', new StaticDisplaySlotFactory());
         $this->Set('BoundDates', $range->Dates());
         $this->Set('DailyLayout', $layout);
         $this->Set('Resources', $resources);

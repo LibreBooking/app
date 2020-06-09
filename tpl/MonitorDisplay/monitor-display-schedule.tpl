@@ -53,7 +53,7 @@
 <h1 id="scheduleName" class="center"></h1>
 
 {if $Format == 1}
-    {include file="Schedule/schedule-reservations-grid.tpl"}
+    {include file="Schedule/schedule-reservations-grid-static.tpl"}
 {else}
     {assign var=TodaysDate value=Date::Now()}
     {foreach from=$BoundDates item=date}
