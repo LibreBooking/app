@@ -68,6 +68,10 @@ table.reservations {
   }
 }
 
+@media only screen and (max-width: 768px) {
+  table.reservations thead td {top: 0;}
+}
+
 table.reservations.mobile {
   table-layout: fixed;
 
@@ -77,6 +81,8 @@ table.reservations.mobile {
     line-height: 20px;
     background-color: #fff;
     padding-left: 3px;
+    margin: 2px;
+    .rounded();
   }
 }
 

@@ -311,7 +311,10 @@ function Schedule(opts, resourceGroups) {
 				});
 			});
 
-			initReservable();
+			if (options.isReservable)
+			{
+				initReservable();
+			}
 
 			$("#loading-schedule").addClass("no-show");
 		});
@@ -522,7 +525,6 @@ function Schedule(opts, resourceGroups) {
 	function initReservable() {
 		let selectingTds = false;
 		const reservations = $('#reservations');
-
 
 		function openReservation(startTd, endTd) {
 			let sd = '';

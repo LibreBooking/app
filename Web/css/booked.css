@@ -1188,6 +1188,11 @@ table.reservations td.reslabel {
 table.reservations tr.today td.reslabel {
   color: #000000;
 }
+@media only screen and (max-width: 768px) {
+  table.reservations thead td {
+    top: 0;
+  }
+}
 table.reservations.mobile {
   table-layout: fixed;
 }
@@ -1197,6 +1202,10 @@ table.reservations.mobile div.reservable {
   line-height: 20px;
   background-color: #fff;
   padding-left: 3px;
+  margin: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .reservations.condensed td.resdate {
   width: auto;
