@@ -100,13 +100,13 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 
 			$existingItems = $this->strategy->GetItemsBetween($startDate, $endDate, array_keys($keyedResources));
 
+			$anyConflictsAreBlackouts = false;
 			/** @var IReservedItemView $existingItem */
 			foreach ($existingItems as $existingItem)
 			{
 				if (
 						($bufferTime == null || $reservationSeries->BookedBy()->IsAdmin) &&
-						($existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
-								$existingItem->GetEndDate()->Equals($reservation->StartDate()))
+						($existingItem->GetStartDate()->Equals($reservation->EndDate()) || $existingItem->GetEndDate()->Equals($reservation->StartDate()))
 				)
 				{
 					continue;
@@ -114,14 +114,15 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 
 				if ($this->IsInConflict($reservation, $reservationSeries, $existingItem, $keyedResources))
 				{
-					Log::Debug("Reference number %s conflicts with existing %s with id %s on %s",
-							   $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId(), $reservation->StartDate());
+					Log::Debug("Reference number %s conflicts with existing %s with id %s, referenceNumber %s on %s",
+							   $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId(), $existingItem->GetReferenceNumber(), $reservation->StartDate());
 
 					$instanceConflicts[] = new IdentifiedConflict($reservation, $existingItem);
 				}
+				$anyConflictsAreBlackouts = $anyConflictsAreBlackouts || $existingItem->GetReferenceNumber() == "";
 			}
 
-			if (count($instanceConflicts) >= $maxConcurrentReservations)
+			if ((count($instanceConflicts) >= $maxConcurrentReservations) || $anyConflictsAreBlackouts)
 			{
 				$conflicts = array_merge($conflicts, $instanceConflicts);
 			}

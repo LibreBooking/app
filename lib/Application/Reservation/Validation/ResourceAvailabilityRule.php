@@ -60,25 +60,16 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		}
 
 		$numberOfConflicts = count($conflicts);
-		$thereAreConflicts = $numberOfConflicts > 0;
-
-//		if ($thereAreConflicts)
-//		{
-//			$newConflictList = array();
-//			$conflictsPerInstance = array();
-//			$maxConflictsForSeries = 0;
-//			foreach ($conflicts as $conflict) {
-//				$conflict->Reservation->ReferenceNumber();
-//			}
-//
-//			foreach ($reservationSeries->AllResources() as $resource)
-//			{
-//				if ($maxConflictsForSeries >= $resource->GetMaxConcurrentReservations())
-//				{
-//					$thereAreConflicts = false;
-//				}
-//			}
-//		}
+		$anyConflictsAreBlackouts = false;
+		foreach ($conflicts as $c)
+		{
+			if ($c->Conflict->GetReferenceNumber() == "")
+			{
+				$anyConflictsAreBlackouts = true;
+				break;
+			}
+		}
+		$thereAreConflicts = $numberOfConflicts > 0 || $anyConflictsAreBlackouts;
 
 		if ($thereAreConflicts)
 		{
