@@ -127,6 +127,7 @@ class Saml extends Authentication implements IAuthentication
 
 	public function Validate($username, $password)
 	{
+
 		$this->saml->Connect();
 		$isValid = $this->saml->Authenticate();
 
@@ -163,8 +164,8 @@ class Saml extends Authentication implements IAuthentication
 
 	public function Logout(UserSession $user)
 	{
-		$this->saml->Logout();
         $this->authToDecorate->Logout($user);
+	    $this->saml->Logout();
 	}
 
 	public function AreCredentialsKnown()
@@ -203,7 +204,7 @@ class Saml extends Authentication implements IAuthentication
 
 	public function ShowPasswordPrompt()
 	{
-		return false;
+		return true;
 	}
 
 	public function ShowPersistLoginPrompt()
@@ -213,8 +214,9 @@ class Saml extends Authentication implements IAuthentication
 
 	public function ShowUsernamePrompt()
 	{
-		return false;
+		return true;
 	}
+
 
     public function AllowUsernameChange()
     {

@@ -29,9 +29,9 @@ class SamlUser
 	 * @param array of SAML user attributes
 	 * @param SamlOptions $samlOptions
 	 */
-	public function __construct($saml_attributes, $samlOptions)
+	public function __construct($saml_attributes = array(), $samlOptions)
 	{
-		Log::Debug('Inside construct SamlUser %s', var_export($saml_attributes, true));
+		Log::Debug('Inside construct SamlUser');
 		$options = $samlOptions->AdSamlOptions();
 		if (count($options) > 0)
 		{
