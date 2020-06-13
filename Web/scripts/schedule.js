@@ -228,10 +228,6 @@ function Schedule(opts, resourceGroups) {
 						const conflictsStart = resStart >= divMin && resStart < divMax;
 						const conflictsEnd = resEnd > divMin && resEnd <= divMax;
 
-						console.log({
-							divMin, divMax, resStart, resEnd, overlaps, conflictsStart, conflictsEnd, divid: $(div).data('resid'), resid: res.ReferenceNumber
-						});
-
 						if (overlaps || conflictsStart || conflictsEnd)
 						{
 							numberOfConflicts++;
@@ -510,7 +506,8 @@ function Schedule(opts, resourceGroups) {
 			renderEvents(true);
 		}
 
-		$('.toggle-sidebar').on('click', function () {
+		$('.toggle-sidebar').on('click', function (e) {
+		    e.preventDefault();
 			toggle();
 		});
 
