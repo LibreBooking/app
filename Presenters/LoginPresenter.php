@@ -172,6 +172,7 @@ class LoginPresenter
 		}
 		else
 		{
+		    sleep(2);
 			$this->authentication->HandleLoginFailure($this->_page);
 			$this->_page->SetShowLoginError();
 		}
