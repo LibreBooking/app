@@ -117,8 +117,6 @@ class adSAML
 		{
 			//obtain an array of attributes associated with this user
 			$this->userAttributes = $this->authSimple->getAttributes();
-			print_r($this->userAttributes);
-			die('redirecting');
 			$returnValue = true;
 		}
 		return $returnValue;

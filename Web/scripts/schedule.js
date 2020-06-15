@@ -208,10 +208,14 @@ function Schedule(opts, resourceGroups) {
                     let conflictIds = [];
 
                     t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
+                        if ($(div).hasClass('unreservable')) {
+                            return false;
+                        }
                         let divMin = Number.parseInt($(div).data('start'));
                         let divMax = Number.parseInt($(div).data('end'));
                         let resStart = Number.parseInt(res.StartDate);
                         let resEnd = Number.parseInt(res.EndDate);
+
 
                         const overlaps = resStart <= divMin && resEnd >= divMax;
                         const conflictsStart = resStart >= divMin && resStart < divMax;
