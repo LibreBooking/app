@@ -384,6 +384,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {/block}
 
+{jsfile src="js/html2canvas.min.js"}
 {jsfile src="js/moment.min.js"}
 {jsfile src="schedule.js"}
 {jsfile src="resourcePopup.js"}
