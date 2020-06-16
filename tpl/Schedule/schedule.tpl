@@ -78,7 +78,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 <div id="page-schedule">
-
     {assign var=startTime value=microtime(true)}
 
     {if $ShowResourceWarning}
@@ -118,6 +117,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {assign var=titleWidth value="col-sm-6 col-xs-12"}
 					<div id="schedule-actions" class="col-sm-3 col-xs-12">
                         {block name="actions"}
+							<a href="#" id="print_schedule" title="{translate key=Print}"><span class="fa fa-print"></span></a>
 							<a href="#" id="make_default"
 							   style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
 							<a href="#" class="schedule-style" id="schedule_standard"

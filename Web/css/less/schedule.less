@@ -5,8 +5,9 @@ table.reservations {
   border-collapse: collapse;
   width: 100%;
   font-size: .85em;
-  border: solid #36648B 1px;
   position: relative;
+
+  table-layout: fixed;
 
   thead td {position: -webkit-sticky; position: sticky; top: 50px; z-index: 100;}
 
@@ -162,6 +163,7 @@ td.reservable, div.reservable {
 .reserved {
   background-color: #408AD2;
   color: #fff;
+  cursor: pointer;
 }
 
 td.reserved {

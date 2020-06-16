@@ -1,8 +1,4 @@
-table.reservations {
-	font-size:14px;
-}
-
-#schedule-actions, #calendar_toggle, #reservations-left, .change-date, #restore-sidebar {
+#schedule-actions, #calendar_toggle, #reservations-left, .change-date, #restore-sidebar, .schedule-legend {
 	display:none;
 }
 
@@ -10,4 +6,37 @@ table.reservations {
 	a[href]:after {
 		content: "" !important;
 	}
+}
+
+.past {
+  opacity: 1;
+}
+
+table.reservations {
+	page-break-after: always;
+}
+
+table {
+	table-layout: fixed;
+}
+
+table.reservations thead td {position: relative; top: 0; z-index: 1;}
+
+td.resourcename {
+	background-color: #EDEDED !important;
+}
+
+td.resdate {
+	background-color: #36648B !important;
+	color: #F0F0F0 !important;
+}
+
+.reserved {
+  background-color: #408AD2 !important;
+  color: #fff !important;
+}
+
+.unreservable {
+  background-color: #CF9D9B !important;
+  color: #fff !important;
 }

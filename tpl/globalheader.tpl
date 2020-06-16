@@ -29,6 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
     <link rel="shortcut icon" href="{$Path}{$FaviconUrl}"/>
     <link rel="icon" href="{$Path}{$FaviconUrl}"/>
+    {jsfile src="js/html2canvas.min.js"}
     <!-- JavaScript -->
     {if $UseLocalJquery}
         {jsfile src="js/jquery-3.3.1.min.js"}

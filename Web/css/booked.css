@@ -1118,8 +1118,8 @@ table.reservations {
   border-collapse: collapse;
   width: 100%;
   font-size: 0.85em;
-  border: solid #36648B 1px;
   position: relative;
+  table-layout: fixed;
 }
 table.reservations thead td {
   position: -webkit-sticky;
@@ -1269,6 +1269,7 @@ div.reservable {
 .reserved {
   background-color: #408AD2;
   color: #fff;
+  cursor: pointer;
 }
 td.reserved {
   padding-left: 1px;
