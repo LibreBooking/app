@@ -30,6 +30,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <span>{translate key=PublicId}</span>
         <span class="propertyValue">{$resource->GetPublicId()}</span>
     </div>
+    <div>
+        <span>Resource Display</span>
+        <span class="propertyValue">{$ScriptUrl}/{Pages::DISPLAY_RESOURCE}?{QueryStringKeys::RESOURCE_ID}={$resource->GetPublicId()}</span>
+    </div>
 {else}
     <div>
         <a class="update enableSubscription subscriptionButton"

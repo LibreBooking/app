@@ -122,14 +122,12 @@ class ResourceDisplayPresenter extends ActionPresenter
     public function PageLoad()
     {
         $resourceId = $this->page->GetPublicResourceId();
-        $loggedIn = ServiceLocator::GetServer()->GetUserSession()->IsLoggedIn();
-
-        if (empty($resourceId) || !$loggedIn) {
-            $this->page->DisplayLogin();
-        }
         if (!empty($resourceId)) {
             $this->page->DisplayResourceShell();
         }
+        else {
+        	$this->page->DisplayInstructions();
+		}
     }
 
     public function Login()
@@ -171,7 +169,7 @@ class ResourceDisplayPresenter extends ActionPresenter
     {
         $resource = $this->resourceRepository->LoadByPublicId($resourcePublicId);
 
-        if (!$resource->GetIsDisplayEnabled()) {
+        if (!$resource->GetIsCalendarSubscriptionAllowed()) {
 
             $this->page->DisplayNotEnabled();
             return;

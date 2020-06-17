@@ -371,7 +371,7 @@ class en_us extends Language
 		$strings['ViewAll'] = 'View All';
 		$strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
 		$strings['TurnOffSubscription'] = 'Hide from public';
-		$strings['TurnOnSubscription'] = 'Show to public (RSS, iCalendar)';
+		$strings['TurnOnSubscription'] = 'Show to public (RSS, iCalendar, Tablet, Monitor)';
 		$strings['SubscribeToCalendar'] = 'Subscribe to this Calendar';
 		$strings['SubscriptionsAreDisabled'] = 'The administrator has disabled calendar subscriptions';
 		$strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
@@ -793,6 +793,7 @@ class en_us extends Language
         $strings['ResourceConcurrentReservations'] = 'Allow %s concurrent reservations';
         $strings['ResourceConcurrentReservationsNone'] = 'Do not allow concurrent reservations';
         $strings['AllowConcurrentReservations'] = 'Allow concurrent reservations';
+        $strings['ResourceDisplayInstructions'] = 'No resource has been selected. You can find the URL to display a resource in Application Management, Resources. The resource must be publicly accessible.';
         // End Strings
 
 		// Install

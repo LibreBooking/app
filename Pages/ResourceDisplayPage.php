@@ -135,6 +135,8 @@ interface IResourceDisplayPage extends IPage, IActionPage
      * @return bool
      */
     public function GetTermsOfServiceAcknowledgement();
+
+	public function DisplayInstructions();
 }
 
 class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IRequestedResourcePage
@@ -337,4 +339,9 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     {
         return $this->GetCheckbox(FormKeys::TOS_ACKNOWLEDGEMENT);
     }
+
+	public function DisplayInstructions()
+	{
+		$this->Display('ResourceDisplay/resource-display-instructions.tpl');
+	}
 }

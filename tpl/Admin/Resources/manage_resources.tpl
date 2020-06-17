@@ -441,7 +441,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="clearfix">&nbsp;</div>
 						</div>
 
-						<div class="col-sm-6 col-xs-12">
+						<div class="col-xs-12">
 							<h5 class="inline">{translate key='Public'}</h5>
 							<div class="publicSettingsPlaceHolder">
                                 {include file="Admin/Resources/manage_resources_public.tpl" resource=$resource}
