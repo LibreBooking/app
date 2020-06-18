@@ -380,6 +380,11 @@ class SearchAvailabilityPresenterTests extends TestBase
         $this->assertEquals($expectedOpenings, $this->page->_Openings);
     }
 
+    public function testWhenResourceAllowsConcurrent()
+    {
+
+    }
+
     /**
      * @param Date $date
      * @param string $start

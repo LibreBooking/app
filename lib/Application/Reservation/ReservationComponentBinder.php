@@ -293,10 +293,12 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetRepeatMonthlyType($this->reservationView->RepeatMonthlyType);
 		$this->page->SetCustomRepeatDates($this->reservationView->CustomRepeatDates);
 
-		$this->page->SetRepeatTerminationDate($this->reservationView->EndDate);
 		if ($this->reservationView->RepeatTerminationDate != null && $this->reservationView->RepeatTerminationDate->Timestamp() != 0)
 		{
 			$this->page->SetRepeatTerminationDate($this->reservationView->RepeatTerminationDate->ToTimezone($initializer->GetTimezone()));
+		}
+		else {
+			$this->page->SetRepeatTerminationDate($this->reservationView->EndDate);
 		}
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 

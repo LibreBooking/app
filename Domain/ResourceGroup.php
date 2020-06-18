@@ -80,13 +80,22 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
-			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name, true, true,
-																		 $assignment->GetScheduleId(), $assignment->GetMinimumLength(),
-																		 $assignment->GetResourceTypeId(), $assignment->GetAdminGroupId(),
-																		 $assignment->GetScheduleAdminGroupId(), $assignment->GetStatusId(),
-																		 $assignment->GetRequiresApproval(), $assignment->IsCheckInEnabled(),
-																		 $assignment->IsAutoReleased(), $assignment->GetAutoReleaseMinutes(),
-																		 $assignment->GetColor());
+			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id,
+																		 $assignment->resource_name,
+																		 true,
+																		 true,
+																		 $assignment->GetScheduleId(),
+																		 $assignment->GetMinimumLength(),
+																		 $assignment->GetResourceTypeId(),
+																		 $assignment->GetAdminGroupId(),
+																		 $assignment->GetScheduleAdminGroupId(),
+																		 $assignment->GetStatusId(),
+																		 $assignment->GetRequiresApproval(),
+																		 $assignment->IsCheckInEnabled(),
+																		 $assignment->IsAutoReleased(),
+																		 $assignment->GetAutoReleaseMinutes(),
+																		 $assignment->GetColor(),
+																		 $assignment->GetMaxConcurrentReservations());
 			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
@@ -273,9 +282,10 @@ class ResourceGroupAssignment implements IBookableResource
 	public $resourceTypeId;
 	public $color;
 	public $textColor;
+	public $maxConcurrentReservations;
 
 	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId,
-								$requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $minLength, $resourceTypeId, $color)
+								$requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $minLength, $resourceTypeId, $color, $maxConcurrentReservations)
 	{
 		$this->group_id = $group_id;
 		$this->resource_name = $resource_name;
@@ -299,6 +309,7 @@ class ResourceGroupAssignment implements IBookableResource
 			$textColor = new ContrastingColor($color);
 			$this->textColor = $textColor->__toString();
 		}
+		$this->maxConcurrentReservations = $maxConcurrentReservations;
 	}
 
 	public function GetId()
@@ -374,5 +385,10 @@ class ResourceGroupAssignment implements IBookableResource
 	public function GetTextColor()
 	{
 		return $this->textColor;
+	}
+
+	public function GetMaxConcurrentReservations()
+	{
+		return $this->maxConcurrentReservations;
 	}
 }

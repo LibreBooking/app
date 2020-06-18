@@ -37,9 +37,11 @@ class TestResourceDto extends ResourceDto
 								$isCheckInEnabled = false,
 								$isAutoReleased = false,
 								$autoReleaseMinutes = null,
-								$color = null)
+								$color = null,
+								$maxConcurrentReservations = null)
 	{
-		parent::__construct($id, $name, $canAccess, $canBook, $scheduleId, ($minLength == null ? TimeInterval::None() : $minLength), $resourceTypeId, $adminGroupId,
-							$scheduleAdminGroupId, $statusId, $requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $color);
+		parent::__construct($id, $name, $canAccess, $canBook, $scheduleId, ($minLength == null ? TimeInterval::None() : $minLength), $resourceTypeId,
+							$adminGroupId,
+							$scheduleAdminGroupId, $statusId, $requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $color, $maxConcurrentReservations);
 	}
 }

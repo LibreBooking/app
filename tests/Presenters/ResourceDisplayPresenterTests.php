@@ -124,56 +124,6 @@ class ResourceDisplayPresenterTests extends TestBase
             $this->termsOfServiceRepository);
     }
 
-    public function testShowsLoginIfNotLoggedInAndNoResource()
-    {
-        $this->fakeServer->UserSession = new NullUserSession();
-
-        $this->presenter->PageLoad();
-
-        $this->assertTrue($this->page->_DisplayLoginCalled);
-    }
-
-    public function testSuccessfulLoginLoadsResources()
-    {
-        $this->page->_Username = 'u';
-        $this->page->_Password = 'p';
-
-        $this->resourceRepository->_ResourceList = array(new FakeBookableResource(1), new FakeBookableResource(2));
-        $this->authorizationService->_CanEditForResource = true;
-        $this->authentication->_ValidateResult = true;
-
-        $this->presenter->Login();
-
-        $this->assertFalse($this->page->_BoundInvalidLogin);
-        $this->assertEquals($this->resourceRepository->_ResourceList, $this->page->_BoundResourceList);
-    }
-
-    public function testUnsuccessfulLoginBindsError()
-    {
-        $this->page->_Username = 'u';
-        $this->page->_Password = 'p';
-
-        $this->authentication->_ValidateResult = false;
-
-        $this->presenter->Login();
-
-        $this->assertTrue($this->page->_BoundInvalidLogin);
-    }
-
-    public function testActivatingResourceTurnsOnDisplay()
-    {
-        $this->page->_ResourceId = '123';
-        $this->authorizationService->_CanEditForResource = true;
-        $resource = new FakeBookableResource(1);
-
-        $this->resourceRepository->_Resource = $resource;
-
-        $this->presenter->Activate();
-
-        $this->assertEquals($resource->GetPublicId(), $this->page->_ActivatedResourceId);
-        $this->assertEquals($this->resourceRepository->_Resource, $this->resourceRepository->_UpdatedResource);
-    }
-
     public function testDisplaysReservationsIfResourceAllowsDisplay()
     {
         Date::_SetNow(new Date('2016-03-07 11:28', 'UTC'));
@@ -183,7 +133,7 @@ class ResourceDisplayPresenterTests extends TestBase
 
         $publicId = 'publicId';
         $resource = new FakeBookableResource(1);
-        $resource->EnableDisplay();
+        $resource->EnableSubscription();
         $resource->SetScheduleId($scheduleId);
         $this->resourceRepository->_Resource = $resource;
         $schedule = new FakeSchedule($scheduleId);
@@ -313,7 +263,7 @@ class ResourceDisplayPresenterTests extends TestBase
 
         $publicId = 'publicId';
         $resource = new FakeBookableResource(1);
-        $resource->EnableDisplay();
+        $resource->EnableSubscription();
         $resource->SetScheduleId($scheduleId);
         $this->resourceRepository->_Resource = $resource;
         $schedule = new FakeSchedule($scheduleId);
@@ -393,7 +343,7 @@ class ResourceDisplayPresenterTests extends TestBase
         $timezone = 'America/Chicago';
         $scheduleId = 10;
         $resource = new FakeBookableResource(1);
-        $resource->EnableDisplay();
+        $resource->EnableSubscription();
         $resource->SetCheckin($requiresCheckin, $checkinMin);
         $resource->SetScheduleId($scheduleId);
         $this->resourceRepository->_Resource = $resource;
@@ -626,4 +576,9 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     {
         // TODO: Implement GetTermsOfServiceAcknowledgement() method.
     }
+
+	public function DisplayInstructions()
+	{
+		// TODO: Implement DisplayInstructions() method.
+	}
 }

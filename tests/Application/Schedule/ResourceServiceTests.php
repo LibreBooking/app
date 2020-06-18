@@ -60,7 +60,8 @@ class ResourceServiceTests extends TestBase
 		$this->userRepository = $this->createMock('IUserRepository');
 		$this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
-		$this->resourceService = new ResourceService($this->resourceRepository, $this->permissionService, $this->attributeService, $this->userRepository, $this->accessoryRepository);
+		$this->resourceService = new ResourceService($this->resourceRepository, $this->permissionService, $this->attributeService, $this->userRepository,
+													 $this->accessoryRepository);
 
 		parent::setup();
 	}
@@ -132,17 +133,25 @@ class ResourceServiceTests extends TestBase
 				->will($this->returnValue(false));
 
 		$resourceDto1 = new ResourceDto(1, 'resource1', true, true, $resource1->GetScheduleId(), $resource1->GetMinLength(), $resource1->GetResourceTypeId(),
-														$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(), $resource1->GetRequiresApproval(),
-														$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(), $resource1->GetColor());
+										$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(),
+										$resource1->GetRequiresApproval(),
+										$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(),
+										$resource1->GetColor(), $resource1->GetMaxConcurrentReservations());
 		$resourceDto2 = new ResourceDto(2, 'resource2', true, true, $resource2->GetScheduleId(), $resource2->GetMinLength(), $resource2->GetResourceTypeId(),
-														$resource2->GetAdminGroupId(), $resource2->GetScheduleAdminGroupId(), $resource2->GetStatusId(), $resource2->GetRequiresApproval(),
-														$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes(), $resource2->GetColor());
+										$resource2->GetAdminGroupId(), $resource2->GetScheduleAdminGroupId(), $resource2->GetStatusId(),
+										$resource2->GetRequiresApproval(),
+										$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes(),
+										$resource2->GetColor(), $resource2->GetMaxConcurrentReservations());
 		$resourceDto3 = new ResourceDto(3, 'resource3', true, true, $resource3->GetScheduleId(), $resource3->GetMinLength(), $resource3->GetResourceTypeId(),
-														$resource3->GetAdminGroupId(), $resource3->GetScheduleAdminGroupId(), $resource3->GetStatusId(), $resource3->GetRequiresApproval(),
-														$resource3->IsCheckInEnabled(), $resource3->IsAutoReleased(), $resource3->GetAutoReleaseMinutes(), $resource3->GetColor());
+										$resource3->GetAdminGroupId(), $resource3->GetScheduleAdminGroupId(), $resource3->GetStatusId(),
+										$resource3->GetRequiresApproval(),
+										$resource3->IsCheckInEnabled(), $resource3->IsAutoReleased(), $resource3->GetAutoReleaseMinutes(),
+										$resource3->GetColor(), $resource3->GetMaxConcurrentReservations());
 		$resourceDto4 = new ResourceDto(4, 'resource4', false, false, $resource4->GetScheduleId(), $resource4->GetMinLength(), $resource4->GetResourceTypeId(),
-														$resource4->GetAdminGroupId(), $resource4->GetScheduleAdminGroupId(), $resource4->GetStatusId(), $resource4->GetRequiresApproval(),
-														$resource4->IsCheckInEnabled(), $resource4->IsAutoReleased(), $resource4->GetAutoReleaseMinutes(), $resource4->GetColor());
+										$resource4->GetAdminGroupId(), $resource4->GetScheduleAdminGroupId(), $resource4->GetStatusId(),
+										$resource4->GetRequiresApproval(),
+										$resource4->IsCheckInEnabled(), $resource4->IsAutoReleased(), $resource4->GetAutoReleaseMinutes(),
+										$resource4->GetColor(), $resource4->GetMaxConcurrentReservations());
 		$expected = array($resourceDto1, $resourceDto2, $resourceDto3, $resourceDto4);
 
 		$actual = $this->resourceService->GetScheduleResources($scheduleId, true, $user);
@@ -188,16 +197,20 @@ class ResourceServiceTests extends TestBase
 				->will($this->returnValue(true));
 
 		$this->userRepository->expects($this->any())
-							->method('LoadById')
-							->with($this->equalTo($session->UserId))
-							->will($this->returnValue($user));
+							 ->method('LoadById')
+							 ->with($this->equalTo($session->UserId))
+							 ->will($this->returnValue($user));
 
 		$resourceDto1 = new ResourceDto(1, 'resource1', false, false, $resource1->GetScheduleId(), $resource1->GetMinLength(), $resource1->GetResourceTypeId(),
-														$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(), $resource1->GetRequiresApproval(),
-														$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(), $resource1->GetColor());
+										$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(),
+										$resource1->GetRequiresApproval(),
+										$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(),
+										$resource1->GetColor(), $resource1->GetMaxConcurrentReservations());
 		$resourceDto2 = new ResourceDto(2, 'resource2', true, true, $resource2->GetScheduleId(), $resource2->GetMinLength(), $resource2->GetResourceTypeId(),
-														$resource2->GetAdminGroupId(), $resource2->GetScheduleAdminGroupId(), $resource2->GetStatusId(), $resource2->GetRequiresApproval(),
-														$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes(), $resource1->GetColor());
+										$resource2->GetAdminGroupId(), $resource2->GetScheduleAdminGroupId(), $resource2->GetStatusId(),
+										$resource2->GetRequiresApproval(),
+										$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes(),
+										$resource2->GetColor(), $resource2->GetMaxConcurrentReservations());
 
 		$expected = array($resourceDto1, $resourceDto2);
 
@@ -232,13 +245,15 @@ class ResourceServiceTests extends TestBase
 				->will($this->returnValue(true));
 
 		$this->userRepository->expects($this->any())
-					->method('LoadById')
-					->with($this->equalTo($session->UserId))
-					->will($this->returnValue($user));
+							 ->method('LoadById')
+							 ->with($this->equalTo($session->UserId))
+							 ->will($this->returnValue($user));
 
 		$resourceDto1 = new ResourceDto(1, 'resource1', false, false, $resource1->GetScheduleId(), $resource1->GetMinLength(), $resource1->GetResourceTypeId(),
-										$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(), $resource1->GetRequiresApproval(),
-										$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(), $resource1->GetColor());
+										$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(),
+										$resource1->GetRequiresApproval(),
+										$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(),
+										$resource1->GetColor(), $resource1->GetMaxConcurrentReservations());
 
 		$expected = array($resourceDto1);
 

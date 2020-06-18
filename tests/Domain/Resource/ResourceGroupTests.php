@@ -65,10 +65,10 @@ class ResourceGroupTests extends TestBase
 		$resourceGroupTree->AddGroup($group1a);
 		$resourceGroupTree->AddGroup($group1a1);
 
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource1', 1, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource2', 2, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a->id, 'resource3', 3, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1->id, 'resource4', 4, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource1', 1, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource2', 2, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a->id, 'resource3', 3, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1->id, 'resource4', 4, null, 1, ResourceStatus::AVAILABLE, null, false, false, false, null, null, 1, null, null));
 
 		$this->assertEquals($group1, $resourceGroupTree->GetGroup(1));
 		$this->assertEquals($group1a, $resourceGroupTree->GetGroup(2));
