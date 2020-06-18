@@ -25,387 +25,533 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php'
 
 class SearchAvailabilityPresenter extends ActionPresenter
 {
-    /**
-     * @var ISearchAvailabilityPage
-     */
-    private $page;
-    /**
-     * @var IResourceService
-     */
-    private $resourceService;
-    /**
-     * @var IReservationService
-     */
-    private $reservationService;
+	/**
+	 * @var ISearchAvailabilityPage
+	 */
+	private $page;
+	/**
+	 * @var IResourceService
+	 */
+	private $resourceService;
+	/**
+	 * @var IReservationService
+	 */
+	private $reservationService;
 
-    /**
-     * @var UserSession
-     */
-    private $user;
-    /**
-     * @var IScheduleService
-     */
-    private $scheduleService;
+	/**
+	 * @var UserSession
+	 */
+	private $user;
+	/**
+	 * @var IScheduleService
+	 */
+	private $scheduleService;
 
-    /**
-     * @var ScheduleLayout[]
-     */
-    private $_layouts = array();
+	/**
+	 * @var ScheduleLayout[]
+	 */
+	private $_layouts = array();
 
-    public function __construct(ISearchAvailabilityPage $page,
-                                UserSession $user,
-                                IResourceService $resourceService,
-                                IReservationService $reservationService,
-                                IScheduleService $scheduleService)
-    {
-        parent::__construct($page);
+	public function __construct(ISearchAvailabilityPage $page,
+								UserSession $user,
+								IResourceService $resourceService,
+								IReservationService $reservationService,
+								IScheduleService $scheduleService)
+	{
+		parent::__construct($page);
 
-        $this->page = $page;
-        $this->user = $user;
-        $this->resourceService = $resourceService;
-        $this->reservationService = $reservationService;
-        $this->scheduleService = $scheduleService;
+		$this->page = $page;
+		$this->user = $user;
+		$this->resourceService = $resourceService;
+		$this->reservationService = $reservationService;
+		$this->scheduleService = $scheduleService;
 
-        $this->AddAction('search', 'SearchAvailability');
-    }
+		$this->AddAction('search', 'SearchAvailability');
+	}
 
-    public function PageLoad()
-    {
-        $this->page->SetResources($this->resourceService->GetAllResources(false, $this->user));
-        $this->page->SetResourceTypes($this->resourceService->GetResourceTypes());
-        $this->page->SetResourceAttributes($this->resourceService->GetResourceAttributes());
-        $this->page->SetResourceTypeAttributes($this->resourceService->GetResourceTypeAttributes());
-    }
+	public function PageLoad()
+	{
+		$this->page->SetResources($this->resourceService->GetAllResources(false, $this->user));
+		$this->page->SetResourceTypes($this->resourceService->GetResourceTypes());
+		$this->page->SetResourceAttributes($this->resourceService->GetResourceAttributes());
+		$this->page->SetResourceTypeAttributes($this->resourceService->GetResourceTypeAttributes());
+	}
 
-    public function SearchAvailability()
-    {
-        $openings = array();
-        $dateRange = $this->GetSearchRange();
-        $specificTime = $this->page->SearchingSpecificTime();
+	public function SearchAvailability()
+	{
+		$openings = array();
+		$dateRange = $this->GetSearchRange();
+		$specificTime = $this->page->SearchingSpecificTime();
 
-        $timezone = $this->user->Timezone;
-        if (!$specificTime) {
-            $requestedLength = $this->GetRequestedLength();
-            $startTime = null;
-        }
-        else {
-            $startTime = Time::Parse($this->page->GetStartTime(), $timezone);
-            $endTime = Time::Parse($this->page->GetEndTime(), $timezone);
+		$timezone = $this->user->Timezone;
+		if (!$specificTime)
+		{
+			$requestedLength = $this->GetRequestedLength();
+			$startTime = null;
+		}
+		else
+		{
+			$startTime = Time::Parse($this->page->GetStartTime(), $timezone);
+			$endTime = Time::Parse($this->page->GetEndTime(), $timezone);
 
-            $now = Date::Now()->ToTimezone($timezone);
-            $requestedLength = DateDiff::BetweenDates($now->SetTimeString($startTime), $now->SetTimeString($endTime));
-        }
+			$now = Date::Now()->ToTimezone($timezone);
+			$requestedLength = DateDiff::BetweenDates($now->SetTimeString($startTime), $now->SetTimeString($endTime));
+		}
 
-        $resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter(), null, 100);
-        $roFactory = new RepeatOptionsFactory();
+		$resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter(), null, 100);
+		$roFactory = new RepeatOptionsFactory();
 
-        $repeatOptions = $roFactory->CreateFromComposite($this->page, $timezone);
-        $repeatDates = $repeatOptions->GetDates($dateRange);
-        $searchingForMoreThan24Hours = $requestedLength->TotalSeconds() > 86400;
+		$repeatOptions = $roFactory->CreateFromComposite($this->page, $timezone);
+		$repeatDates = $repeatOptions->GetDates($dateRange);
 
-        /** @var ResourceDto $resource */
-        foreach ($resources as $resource) {
-            $scheduleId = $resource->GetScheduleId();
-            $resourceId = $resource->GetResourceId();
+		/** @var ResourceDto $resource */
+		foreach ($resources as $resource)
+		{
+			$scheduleId = $resource->GetScheduleId();
+			$resourceId = $resource->GetResourceId();
+			$searchingForMoreThan24Hours = $requestedLength->TotalSeconds() > 86400;
+			$reservations = $this->reservationService->Search($dateRange, $scheduleId, array($resourceId));
 
-            $targetTimezone = $timezone;
-            $layout = $this->GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId);
+			$targetTimezone = $timezone;
+			$layout = $this->GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId);
 
-            foreach ($dateRange->Dates() as $date) {
+			foreach ($dateRange->Dates() as $date)
+			{
+				if ($searchingForMoreThan24Hours)
+				{
+					$endDate = $date->ApplyDifference($requestedLength);
+					if ($endDate->LessThanOrEqual($dateRange->GetEnd()))
+					{
+						$slotRange = new DateRange($date, $endDate);
+						$slots = array();
+						/** @var PotentialSlot[] $potentialSlots */
+						$potentialSlots = array();
+						foreach ($slotRange->Dates() as $slotDate)
+						{
+							$slots = array_merge($slots, $layout->GetLayout($slotDate));
+						}
 
-                if ($searchingForMoreThan24Hours) {
-                    $endDate = $date->ApplyDifference($requestedLength);
-                    if ($endDate->LessThanOrEqual($dateRange->GetEnd())) {
+						foreach ($slots as $slot)
+						{
+							$potentialSlot = new PotentialSlot($slot);
+							foreach ($reservations as $reservation)
+							{
+								$potentialSlot->AddReservedItem($reservation);
+							}
 
-                        $slotRange = new DateRange($date, $endDate);
-                        $slots = array();
-                        foreach ($slotRange->Dates() as $slotDate) {
-                            $slots = array_merge($slots, $layout->GetLayout($slotDate, $resourceId));
-                        }
+							$potentialSlots[] = $potentialSlot;
+						}
 
-                        /** @var IReservationSlot $slot */
-                        for ($i = 0; $i < count($slots); $i++) {
-                            $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
+						for ($i = 0; $i < count($potentialSlots); $i++)
+						{
+							$opening = $this->GetSlot($i, $i, $potentialSlots, $requestedLength, $resource);
 
-                            if ($opening != null) {
-                                $openings[] = $opening;
-                            }
-                        }
-                    }
-                }
-                else {
-                    $slots = $layout->GetLayout($date, $resourceId);
-                    /** @var IReservationSlot $slot */
-                    for ($i = 0; $i < count($slots); $i++) {
-                        $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
+							if ($opening != null)
+							{
+								$openings[] = $opening;
+							}
+						}
+					}
+				}
+				else
+				{
+					/** @var PotentialSlot[] $potentialSlots */
+					$potentialSlots = array();
+					$slots = $layout->GetLayout($date);
+					foreach ($slots as $slot)
+					{
+						$potentialSlot = new PotentialSlot($slot);
+						foreach ($reservations as $reservation)
+						{
+							$potentialSlot->AddReservedItem($reservation);
+						}
 
-                        if ($opening != null && (is_null($startTime) || $startTime->Equals($opening->Start()->GetTime()))) {
-                            if ($this->AllDaysAreOpen($opening, $repeatDates, $resource, $requestedLength)) {
-                                $openings[] = $opening;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+						$potentialSlots[] = $potentialSlot;
+					}
 
-        Log::Debug('Searching for available openings found %s times', count($openings));
+					for ($i = 0; $i < count($potentialSlots); $i++)
+					{
+						if (is_null($startTime) || $startTime->Equals($potentialSlots[$i]->BeginDate()->GetTime()))
+						{
+							$opening = $this->GetSlot($i, $i, $potentialSlots, $requestedLength, $resource);
 
-        $this->page->ShowOpenings($openings);
-    }
+							if ($opening != null)
+							{
+								if ($this->AllDaysAreOpen($opening, $repeatDates, $resource, $requestedLength))
+								{
+									$openings[] = $opening;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-    /**
-     * @param int $startIndex
-     * @param int $currentIndex
-     * @param IReservationSlot[] $slots
-     * @param DateDiff $requestedLength
-     * @param ResourceDto $resource
-     * @return AvailableOpeningView|null
-     */
-    private function GetSlot($startIndex, $currentIndex, $slots, $requestedLength, $resource)
-    {
-        if ($currentIndex >= count($slots)) {
-            return null;
-        }
+		Log::Debug('Searching for available openings found %s times', count($openings));
 
-        $startSlot = $slots[$startIndex];
-        $currentSlot = $slots[$currentIndex];
+		$this->page->ShowOpenings($openings);
+	}
 
-        if ($currentSlot == null || !$currentSlot->IsReservable() || $currentSlot->BeginDate()->LessThan(Date::Now())) {
-            return null;
-        }
+	/**
+	 * @param int $startIndex
+	 * @param int $currentIndex
+	 * @param PotentialSlot[] $potentialSlots
+	 * @param DateDiff $requestedLength
+	 * @param ResourceDto $resource
+	 * @return AvailableOpeningView|null
+	 */
+	private function GetSlot($startIndex, $currentIndex, $potentialSlots, $requestedLength, $resource)
+	{
+		if ($currentIndex >= count($potentialSlots))
+		{
+			return null;
+		}
 
-        $length = DateDiff::BetweenDates($startSlot->BeginDate(), $currentSlot->EndDate());
-        if ($length->GreaterThanOrEqual($requestedLength)) {
-            return new AvailableOpeningView($resource, $startSlot->BeginDate(), $currentSlot->EndDate());
-        }
+		$startSlot = $potentialSlots[$startIndex];
+		$currentSlot = $potentialSlots[$currentIndex];
 
-        return $this->GetSlot($startIndex, $currentIndex + 1, $slots, $requestedLength, $resource);
-    }
+		if ($currentSlot == null || !$currentSlot->IsReservable() || $currentSlot->BeginDate()->LessThan(Date::Now()))
+		{
+			return null;
+		}
 
-    /**
-     * @return DateRange
-     */
-    private function GetSearchRange()
-    {
-        $range = $this->page->GetRequestedRange();
-        $timezone = $this->user->Timezone;
+		$length = DateDiff::BetweenDates($startSlot->BeginDate(), $currentSlot->EndDate());
+		if ($length->GreaterThanOrEqual($requestedLength) && $this->SlotRangeHasAvailability($startIndex, $currentIndex, $potentialSlots, $resource))
+		{
+			return new AvailableOpeningView($resource, $startSlot->BeginDate(), $currentSlot->EndDate());
+		}
 
-        $today = Date::Now()->ToTimezone($timezone);
+		return $this->GetSlot($startIndex, $currentIndex + 1, $potentialSlots, $requestedLength, $resource);
+	}
 
-        if ($range == 'tomorrow') {
-            return new DateRange($today->AddDays(1)->GetDate(), $today->AddDays(2)->GetDate());
-        }
+	/**
+	 * @return DateRange
+	 */
+	private function GetSearchRange()
+	{
+		$range = $this->page->GetRequestedRange();
+		$timezone = $this->user->Timezone;
 
-        if ($range == 'thisweek') {
-            $weekday = $today->Weekday();
-            $adjustedDays = (0 - $weekday);
+		$today = Date::Now()->ToTimezone($timezone);
 
-            if ($weekday < 0) {
-                $adjustedDays = $adjustedDays - 7;
-            }
+		if ($range == 'tomorrow')
+		{
+			return new DateRange($today->AddDays(1)->GetDate(), $today->AddDays(2)->GetDate());
+		}
 
-            $startDate = $today->AddDays($adjustedDays)->GetDate();
+		if ($range == 'thisweek')
+		{
+			$weekday = $today->Weekday();
+			$adjustedDays = (0 - $weekday);
 
-            return new DateRange($startDate, $startDate->AddDays(6));
-        }
+			if ($weekday < 0)
+			{
+				$adjustedDays = $adjustedDays - 7;
+			}
 
-        if ($range == 'daterange') {
-            $start = $this->page->GetRequestedStartDate();
-            $end = $this->page->GetRequestedEndDate();
+			$startDate = $today->AddDays($adjustedDays)->GetDate();
 
-            if (empty($start)) {
-                $start = Date::Now()->ToTimezone($timezone);
-            }
-            if (empty($end)) {
-                $end = Date::Now()->ToTimezone($timezone)->AddDays(1);
-            }
-            return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone));
-        }
+			return new DateRange($startDate, $startDate->AddDays(6));
+		}
 
-        return new DateRange($today->GetDate(), $today->AddDays(1)->GetDate());
-    }
+		if ($range == 'daterange')
+		{
+			$start = $this->page->GetRequestedStartDate();
+			$end = $this->page->GetRequestedEndDate();
 
-    /**
-     * @return DateDiff
-     */
-    private function GetRequestedLength()
-    {
-        $hourSeconds = 3600 * $this->page->GetRequestedHours();
-        $minuteSeconds = 60 * $this->page->GetRequestedMinutes();
-        return new DateDiff($hourSeconds + $minuteSeconds);
-    }
+			if (empty($start))
+			{
+				$start = Date::Now()->ToTimezone($timezone);
+			}
+			if (empty($end))
+			{
+				$end = Date::Now()->ToTimezone($timezone)->AddDays(1);
+			}
+			return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone));
+		}
 
-    /**
-     * @return ScheduleResourceFilter
-     */
-    private function GetFilter()
-    {
-        return new ScheduleResourceFilter(null,
-            $this->page->GetResourceType(),
-            $this->page->GetMaxParticipants(),
-            $this->AsAttributeValues($this->page->GetResourceAttributeValues()),
-            $this->AsAttributeValues($this->page->GetResourceTypeAttributeValues()),
-            $this->page->GetResources());
-    }
+		return new DateRange($today->GetDate(), $today->AddDays(1)->GetDate());
+	}
 
-    /**
-     * @param $attributeFormElements AttributeFormElement[]
-     * @return AttributeValue[]
-     */
-    private function AsAttributeValues($attributeFormElements)
-    {
-        $vals = array();
-        foreach ($attributeFormElements as $e) {
-            if (!empty($e->Value) || (is_numeric($e->Value) && $e->Value == 0)) {
-                $vals[] = new AttributeValue($e->Id, $e->Value);
-            }
-        }
-        return $vals;
-    }
+	/**
+	 * @return DateDiff
+	 */
+	private function GetRequestedLength()
+	{
+		$hourSeconds = 3600 * $this->page->GetRequestedHours();
+		$minuteSeconds = 60 * $this->page->GetRequestedMinutes();
+		return new DateDiff($hourSeconds + $minuteSeconds);
+	}
 
-    /**
-     * @param AvailableOpeningView $availableOpening
-     * @param DateRange[] $repeatDates
-     * @param ResourceDto $resource
-     * @param DateDiff $requestedLength
-     * @return bool
-     */
-    private function AllDaysAreOpen(AvailableOpeningView $availableOpening, $repeatDates, ResourceDto $resource, $requestedLength)
-    {
-        if (empty($repeatDates)) {
-            return true;
-        }
+	/**
+	 * @return ScheduleResourceFilter
+	 */
+	private function GetFilter()
+	{
+		return new ScheduleResourceFilter(null,
+										  $this->page->GetResourceType(),
+										  $this->page->GetMaxParticipants(),
+										  $this->AsAttributeValues($this->page->GetResourceAttributeValues()),
+										  $this->AsAttributeValues($this->page->GetResourceTypeAttributeValues()),
+										  $this->page->GetResources());
+	}
 
-        $targetTimezone = $this->user->Timezone;
-        $resourceId = $resource->GetResourceId();
-        $scheduleId = $resource->GetScheduleId();
+	/**
+	 * @param $attributeFormElements AttributeFormElement[]
+	 * @return AttributeValue[]
+	 */
+	private function AsAttributeValues($attributeFormElements)
+	{
+		$vals = array();
+		foreach ($attributeFormElements as $e)
+		{
+			if (!empty($e->Value) || (is_numeric($e->Value) && $e->Value == 0))
+			{
+				$vals[] = new AttributeValue($e->Id, $e->Value);
+			}
+		}
+		return $vals;
+	}
 
-        foreach ($repeatDates as $dateRange) {
-            $layout = $this->GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId);
-            $foundMatch = false;
+	/**
+	 * @param AvailableOpeningView $availableOpening
+	 * @param DateRange[] $repeatDates
+	 * @param ResourceDto $resource
+	 * @param DateDiff $requestedLength
+	 * @return bool
+	 */
+	private function AllDaysAreOpen(AvailableOpeningView $availableOpening, $repeatDates, ResourceDto $resource, $requestedLength)
+	{
+		if (empty($repeatDates))
+		{
+			return true;
+		}
 
-            foreach ($dateRange->Dates() as $date) {
-                $slots = $layout->GetLayout($date, $resourceId);
+		$targetTimezone = $this->user->Timezone;
+		$resourceId = $resource->GetResourceId();
+		$scheduleId = $resource->GetScheduleId();
 
-                /** @var IReservationSlot $slot */
-                for ($i = 0; $i < count($slots); $i++) {
-                    if ($slots[$i]->Begin()->Equals($availableOpening->Start()->GetTime())) {
-                        $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
-                        if ($opening != null) {
-                            $foundMatch = true;
-                        }
-                    }
-                }
+		foreach ($repeatDates as $dateRange)
+		{
+			$layout = $this->GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId);
+			$foundMatch = false;
+			$reservations = $this->reservationService->Search($dateRange, $scheduleId, array($resourceId));
 
-                if (!$foundMatch) {
-                    return false;
-                }
-            }
-        }
+			foreach ($dateRange->Dates() as $date)
+			{
+				/** @var PotentialSlot[] $potentialSlots */
+				$potentialSlots = array();
+				$slots = $layout->GetLayout($date);
+				foreach ($slots as $slot)
+				{
+					$potentialSlot = new PotentialSlot($slot);
+					foreach ($reservations as $reservation)
+					{
+						$potentialSlot->AddReservedItem($reservation);
+					}
 
-        return true;
+					$potentialSlots[] = $potentialSlot;
+				}
 
-    }
+				for ($i = 0; $i < count($potentialSlots); $i++)
+				{
+					if ($slots[$i]->Begin()->Equals($availableOpening->Start()->GetTime()))
+					{
+						$opening = $this->GetSlot($i, $i, $potentialSlots, $requestedLength, $resource);
+						if ($opening != null)
+						{
+							$foundMatch = true;
+						}
+					}
+				}
 
-    /**
-     * @param $dateRange
-     * @param $scheduleId
-     * @param $targetTimezone
-     * @param $resourceId
-     * @return IDailyLayout
-     */
-    private function GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId)
-    {
-        $layout = $this->GetCachedLayout($dateRange, $scheduleId, $resourceId);
-        if ($layout == null) {
-            $reservations = $this->reservationService->GetReservations($dateRange, $scheduleId, $targetTimezone, $resourceId);
-            $layout = $this->scheduleService->GetDailyLayout($scheduleId, new ScheduleLayoutFactory($targetTimezone), $reservations);
-            $this->SetCachedLayout($dateRange, $scheduleId, $resourceId, $layout);
-        }
+				if (!$foundMatch)
+				{
+					return false;
+				}
+			}
+		}
 
-        return $layout;
-    }
+		return true;
 
-    /**
-     * @param DateRange $dateRange
-     * @param int $scheduleId
-     * @param int $resourceId
-     * @return ScheduleLayout|null
-     */
-    private function GetCachedLayout($dateRange, $scheduleId, $resourceId)
-    {
-        $key = $dateRange->ToString() . $scheduleId . $resourceId;
-        if (array_key_exists($key, $this->_layouts)) {
-            return $this->_layouts[$key];
-        }
+	}
 
-        return null;
-    }
+	/**
+	 * @param $dateRange
+	 * @param $scheduleId
+	 * @param $targetTimezone
+	 * @param $resourceId
+	 * @return IScheduleLayout
+	 */
+	private function GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId)
+	{
+		$layout = $this->GetCachedLayout($dateRange, $scheduleId, $resourceId);
+		if ($layout == null)
+		{
+			$layout = $this->scheduleService->GetLayout($scheduleId, new ScheduleLayoutFactory($targetTimezone));
+			$this->SetCachedLayout($dateRange, $scheduleId, $resourceId, $layout);
+		}
 
-    /**
-     * @param DateRange $dateRange
-     * @param int $scheduleId
-     * @param int $resourceId
-     * @param ScheduleLayout $layout
-     */
-    private function SetCachedLayout($dateRange, $scheduleId, $resourceId, $layout)
-    {
-        $this->_layouts[$dateRange->ToString() . $scheduleId . $resourceId] = $layout;
-    }
+		return $layout;
+	}
+
+	/**
+	 * @param DateRange $dateRange
+	 * @param int $scheduleId
+	 * @param int $resourceId
+	 * @return IScheduleLayout|null
+	 */
+	private function GetCachedLayout($dateRange, $scheduleId, $resourceId)
+	{
+		$key = $dateRange->ToString() . $scheduleId . $resourceId;
+		if (array_key_exists($key, $this->_layouts))
+		{
+			return $this->_layouts[$key];
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param DateRange $dateRange
+	 * @param int $scheduleId
+	 * @param int $resourceId
+	 * @param IScheduleLayout $layout
+	 */
+	private function SetCachedLayout($dateRange, $scheduleId, $resourceId, $layout)
+	{
+		$this->_layouts[$dateRange->ToString() . $scheduleId . $resourceId] = $layout;
+	}
+
+	/**
+	 * @param int $startIndex
+	 * @param int $currentIndex
+	 * @param PotentialSlot[] $potentialSlots
+	 * @param ResourceDto $resource
+	 * @return bool
+	 */
+	private function SlotRangeHasAvailability($startIndex, $currentIndex, $potentialSlots, $resource)
+	{
+		for ($i = $startIndex; $i <= $currentIndex; $i++)
+		{
+			if (!$potentialSlots[$i]->IsReservable() || $potentialSlots[$i]->ReservationCount() >= $resource->GetMaxConcurrentReservations())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+}
+
+class PotentialSlot
+{
+	/**
+	 * @var SchedulePeriod
+	 */
+	private $slot;
+	/**
+	 * @var int
+	 */
+	private $reservationCount = 0;
+	/**
+	 * @var bool
+	 */
+	private $isBlackout = false;
+
+	public function __construct(SchedulePeriod $slot)
+	{
+		$this->slot = $slot;
+		$this->isBlackout = !$slot->IsReservable();
+	}
+
+	public function AddReservedItem(ReservationListItem $item)
+	{
+		if (!$item->IsReservation())
+		{
+			$this->isBlackout = true;
+			return;
+		}
+
+		if ($item->CollidesWithRange(new DateRange($this->slot->BeginDate(), $this->slot->EndDate())))
+		{
+			$this->reservationCount++;
+		}
+	}
+
+	public function IsReservable()
+	{
+		return !$this->isBlackout;
+	}
+
+	public function BeginDate()
+	{
+		return $this->slot->BeginDate();
+	}
+
+	public function EndDate()
+	{
+		return $this->slot->EndDate();
+	}
+
+	public function ReservationCount()
+	{
+		return $this->reservationCount;
+	}
 }
 
 class AvailableOpeningView
 {
-    /**
-     * @var ResourceDto
-     */
-    private $resource;
-    /**
-     * @var Date
-     */
-    private $start;
-    /**
-     * @var Date
-     */
-    private $end;
+	/**
+	 * @var ResourceDto
+	 */
+	private $resource;
+	/**
+	 * @var Date
+	 */
+	private $start;
+	/**
+	 * @var Date
+	 */
+	private $end;
 
-    public function __construct(ResourceDto $resource, Date $start, Date $end)
-    {
-        $this->resource = $resource;
-        $this->start = $start;
-        $this->end = $end;
-    }
+	public function __construct(ResourceDto $resource, Date $start, Date $end)
+	{
+		$this->resource = $resource;
+		$this->start = $start;
+		$this->end = $end;
+	}
 
-    /**
-     * @return ResourceDto
-     */
-    public function Resource()
-    {
-        return $this->resource;
-    }
+	/**
+	 * @return ResourceDto
+	 */
+	public function Resource()
+	{
+		return $this->resource;
+	}
 
-    /**
-     * @return Date
-     */
-    public function Start()
-    {
-        return $this->start;
-    }
+	/**
+	 * @return Date
+	 */
+	public function Start()
+	{
+		return $this->start;
+	}
 
-    /**
-     * @return Date
-     */
-    public function End()
-    {
-        return $this->end;
-    }
+	/**
+	 * @return Date
+	 */
+	public function End()
+	{
+		return $this->end;
+	}
 
-    /**
-     * @return bool
-     */
-    public function SameDate()
-    {
-        return $this->Start()->DateEquals($this->End());
-    }
+	/**
+	 * @return bool
+	 */
+	public function SameDate()
+	{
+		return $this->Start()->DateEquals($this->End());
+	}
 }
