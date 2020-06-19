@@ -356,7 +356,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
 
 				for ($i = 0; $i < count($potentialSlots); $i++)
 				{
-					if ($slots[$i]->Begin()->Equals($availableOpening->Start()->GetTime()))
+				//	if ($potentialSlots[$i]->BeginDate()->CompareTimes($availableOpening->Start()->GetTime()) == 0)
 					{
 						$opening = $this->GetSlot($i, $i, $potentialSlots, $requestedLength, $resource);
 						if ($opening != null)
