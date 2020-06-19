@@ -74,7 +74,11 @@ class SearchReservationsPresenterTests extends TestBase
 		$description = 'description';
 		$referenceNumber = 'refnum';
 		$range = 'today';
-		$reservations = array(new ReservationItemView());
+		$r1 = new ReservationItemView();
+		$r1->ResourceId = 1;
+		$r2= new ReservationItemView();
+		$r2->ResourceId = 2;
+		$reservations = array($r1);
 
 		$this->page->_UserId = $userId;
 		$this->page->_ResourceIds = $resourceIds;
@@ -84,6 +88,7 @@ class SearchReservationsPresenterTests extends TestBase
 		$this->page->_ReferenceNumber = $referenceNumber;
 		$this->page->_Range = $range;
 
+		$this->resourceService->_AllResources = array(new TestResourceDto(1));
 		$this->reservationRepository->_FilterResults = new PageableData($reservations);
 
 		$this->presenter->SearchReservations();
@@ -93,7 +98,7 @@ class SearchReservationsPresenterTests extends TestBase
 		$expectedFilter = ReservationsSearchFilter::GetFilter($today, $tomorrow, $userId, $resourceIds, $scheduleIds, $title, $description, $referenceNumber);
 
 		$this->assertEquals($expectedFilter, $this->reservationRepository->_Filter);
-		$this->assertEquals($reservations, $this->page->_Reservations);
+		$this->assertEquals(array($r1), $this->page->_Reservations, "no permission to the other one");
 	}
 }
 

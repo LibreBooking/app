@@ -85,7 +85,15 @@ class SearchReservationsPresenter extends ActionPresenter
 
 		$list = $this->reservationViewRepository->GetList(0, 100, null, null, $filter);
 
-		$this->page->ShowReservations($list->Results(), $this->user->Timezone);
+		$rids = $this->GetAllowedResourceIds();
+		$results = [];
+		/** @var ReservationItemView $r */
+		foreach ($list->Results() as $r) {
+			if (in_array($r->ResourceId, $rids)) {
+				$results[] = $r;
+			}
+		}
+		$this->page->ShowReservations($results, $this->user->Timezone);
 	}
 
 	/**
@@ -135,6 +143,17 @@ class SearchReservationsPresenter extends ActionPresenter
 		}
 
 		return new DateRange($today->GetDate(), $today->AddDays(1)->GetDate());
+	}
+
+	private function GetAllowedResourceIds()
+	{
+		$resources = $this->resourceService->GetAllResources(false, $this->user);
+		$rids = [];
+		foreach($resources as $r) {
+			$rids[] = $r->Id;
+		}
+
+		return $rids;
 	}
 
 }
