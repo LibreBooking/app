@@ -610,12 +610,15 @@ class SchedulePage extends ActionPage implements ISchedulePage
 				->Build();
 	}
 
-	public function BindReservations(array $items)
+    /**
+     * @param ReservationListItem[] $items
+     */
+	public function BindReservations($items)
 	{
 		$itemsAsJson = [];
 		foreach ($items as $item)
 		{
-			$dtos = $item->AsDto($this->server->GetUserSession()->UserId, $this->server->GetUserSession()->Timezone);
+			$dtos = $item->AsDto($this->server->GetUserSession());
 			foreach ($dtos as $dto)
 			{
 				$itemsAsJson[] = $dto;

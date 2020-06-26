@@ -169,7 +169,7 @@ function Schedule(opts, resourceGroups) {
 					const isNew = res.IsNew ? `<span class="reservation-new">${opts.newLabel}</span>` : "";
 					const isUpdated = res.IsUpdated ? `<span class="reservation-updated">${opts.updatedLabel}</span>` : "";
 					const isPending = res.IsPending ? "pending" : "";
-					const isDraggable = res.IsOwner && res.IsReservation && !res.IsPast;
+					const isDraggable = res.IsReservation && ((res.IsOwner && !res.IsPast) || res.IsAdmin);
 					const draggableAttribute = isDraggable ? 'draggable="true"' : "";
 					const color = res.BorderColor !== "" ? `border-color:${res.BorderColor};background-color:${res.BackgroundColor};color:${res.TextColor};` : "";
 

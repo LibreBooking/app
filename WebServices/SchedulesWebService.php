@@ -34,7 +34,7 @@ class SchedulesWebService
 	private $server;
 
 	/**
-	 * @var IScheduleRepository
+	 * @var IScheduleRepositorRCOI
 	 */
 	private $scheduleRepository;
 

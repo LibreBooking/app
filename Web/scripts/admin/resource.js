@@ -689,7 +689,8 @@ function ResourceManagement(opts) {
 		{
 			elements.allowConcurrentDiv.addClass('no-show');
 		}
-	}
+	};
+
 	var setDuration = function (container, resourceDuration) {
 		var emptyIfZero = function (val) {
 			if (val == 0)
