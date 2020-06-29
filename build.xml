@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="booked" default="package">
-    <property name="version" value="2.8.2"/>
+    <property name="version" value="2.8.3"/>
     <property name="is.pre.release" value="false"/>
     <property name="packagename" value="booked-${version}"/>
     <property name="root.dir" value="../.."/>
