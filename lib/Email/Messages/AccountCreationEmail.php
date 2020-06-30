@@ -15,6 +15,7 @@
  */
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
+require_once(ROOT_DIR . 'Domain/namespace.php');
 
 class AccountCreationEmail extends EmailMessage
 {
@@ -40,8 +41,13 @@ class AccountCreationEmail extends EmailMessage
 	 */
 	function To()
 	{
-		return new EmailAddress(Configuration::Instance()->GetAdminEmail(),
-								Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE));
+		$userRepo = new UserRepository();
+		$admins = $userRepo->GetApplicationAdmins();
+		$emails = [];
+		foreach ($admins as $admin) {
+			$emails[] = new EmailAddress($admin->EmailAddress, $admin->FullName);
+		}
+		return $emails;
 	}
 
 	/**
