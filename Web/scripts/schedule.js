@@ -217,7 +217,6 @@ function Schedule(opts, resourceGroups) {
 						return;
 					}
 
-
 					let numberOfConflicts = 0;
 					let conflictIds = [];
 
@@ -230,7 +229,6 @@ function Schedule(opts, resourceGroups) {
 						let divMax = Number.parseInt($(div).data('end'));
 						let resStart = Number.parseInt(res.StartDate);
 						let resEnd = Number.parseInt(res.EndDate);
-
 
 						const overlaps = resStart <= divMin && resEnd >= divMax;
 						const conflictsStart = resStart >= divMin && resStart < divMax;
@@ -257,7 +255,7 @@ function Schedule(opts, resourceGroups) {
 					if (opts.scheduleStyle === ScheduleTall)
 					{
 						width = startTd.outerWidth();
-						height = endTd.position().top - startTd.position().top;
+						height = endTd.outerHeight();
 					}
 					else
 					{

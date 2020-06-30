@@ -1188,6 +1188,9 @@ table.reservations td.reslabel {
 table.reservations tr.today td.reslabel {
   color: #000000;
 }
+table.reservations.reservations-tall {
+  table-layout: auto;
+}
 @media only screen and (max-width: 768px) {
   table.reservations thead td {
     top: 0;
