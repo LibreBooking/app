@@ -214,7 +214,7 @@ interface ISchedulePage extends IActionPage
 	/**
 	 * @param ReservationListItem[] $items
 	 */
-	public function BindReservations(array $items);
+	public function BindReservations($items);
 }
 
 class SchedulePage extends ActionPage implements ISchedulePage

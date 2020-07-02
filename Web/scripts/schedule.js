@@ -257,7 +257,7 @@ function Schedule(opts, resourceGroups) {
 					if (opts.scheduleStyle === ScheduleTall)
 					{
 						width = startTd.outerWidth();
-						height = endTd.position().top - startTd.position().top;
+                        height = endTd.outerHeight();
 					}
 					else
 					{
@@ -732,7 +732,7 @@ function Schedule(opts, resourceGroups) {
 				ajaxPost($('#moveReservationForm'), options.updateReservationUrl, null, function (updateResult) {
 					if (updateResult.success)
 					{
-						document.location.reload();
+						renderEvents(true);
 					}
 					else
 					{

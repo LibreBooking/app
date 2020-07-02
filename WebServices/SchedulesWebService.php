@@ -558,7 +558,7 @@ class ScheduleWebServiceView implements ISchedulePage
         return null;
     }
 
-    public function BindReservations(array $items)
+    public function BindReservations($items)
     {
         // no-op
     }

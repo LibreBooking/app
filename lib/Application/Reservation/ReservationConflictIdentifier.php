@@ -73,11 +73,11 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 		$bufferTime = $reservationSeries->MaxBufferTime();
 
 		$keyedResources = array();
-		$maxConcurrentReservations = 1000;
+		$maxConcurrentReservations = 1;
 		foreach ($reservationSeries->AllResources() as $resource)
 		{
 			$keyedResources[$resource->GetId()] = $resource;
-			if ($resource->GetMaxConcurrentReservations() < $maxConcurrentReservations)
+			if ($resource->GetMaxConcurrentReservations() > $maxConcurrentReservations)
 			{
 				$maxConcurrentReservations = $resource->GetMaxConcurrentReservations();
 			}

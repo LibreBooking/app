@@ -108,7 +108,7 @@ class LoadReservationRequestBuilder
      */
     private $specificDates = [];
 
-    public function WithRange(Date $start, Date $end): LoadReservationRequestBuilder
+    public function WithRange(Date $start, Date $end)
     {
         $this->start = $start;
         $this->end = $end->AddDays(1);
@@ -119,14 +119,14 @@ class LoadReservationRequestBuilder
      * @param $resourceIds int[]
      * @return LoadReservationRequestBuilder
      */
-    public function WithResources($resourceIds): LoadReservationRequestBuilder
+    public function WithResources($resourceIds)
     {
         $this->resourceIds = $resourceIds;
         return $this;
     }
 
 
-    public function WithScheduleId(int $scheduleId): LoadReservationRequestBuilder
+    public function WithScheduleId($scheduleId)
     {
         $this->scheduleId = $scheduleId;
         return $this;
@@ -136,7 +136,7 @@ class LoadReservationRequestBuilder
      * @param Date[] $dates
      * @return LoadReservationRequestBuilder
      */
-    public function WithSpecificDates($dates): LoadReservationRequestBuilder
+    public function WithSpecificDates($dates)
     {
         $this->specificDates = $dates;
         return $this;
