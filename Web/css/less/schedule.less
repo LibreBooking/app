@@ -9,7 +9,12 @@ table.reservations {
 
   table-layout: fixed;
 
-  thead td {position: -webkit-sticky; position: sticky; top: 50px; z-index: 100;}
+  thead td {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 50px;
+    z-index: 100;
+  }
 
   td, th {
     .border-radius();
@@ -69,8 +74,14 @@ table.reservations {
   }
 }
 
+table.reservations.reservations-tall {
+  table-layout: auto;
+}
+
 @media only screen and (max-width: 768px) {
-  table.reservations thead td {top: 0;}
+  table.reservations thead td {
+    top: 0;
+  }
 }
 
 table.reservations.mobile {
@@ -239,12 +250,12 @@ td.dropped {
 
 .restricted {
   background: repeating-linear-gradient(45deg,
-          transparent,
-          transparent 10px,
-          #ccc 10px,
+  transparent,
+  transparent 10px,
+  #ccc 10px,
   #ccc 20px),
   linear-gradient(to bottom,
-          #eee,
+  #eee,
   #999);
   color: black;
 }
@@ -271,6 +282,7 @@ td.dropped {
 
 .res_popup_details {
   min-width: 450px;
+
   .summary {
     font-style: italic;
   }
@@ -367,24 +379,27 @@ ul.jqtree-tree .jqtree-toggler {
     height: 1px;
     background-color: @mid-gray;
   }
+
   .btn {
     width: 100%;
   }
 
   .textbox {
-     width: 120px;
-   }
+    width: 120px;
+  }
 
   select.textbox, textarea, .button {
-      width: 128px;
-    }
+    width: 128px;
+  }
 
   .form-group {
     margin-bottom: 3px;
   }
+
   .btn-clear {
     margin-top: 3px;
   }
+
   ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
     background-color: transparent;
     background: none;
@@ -410,14 +425,14 @@ ul.jqtree-tree .jqtree-toggler {
   background-color: rgba(76, 175, 80, 0.7);
   border: solid 2px rgba(32, 65, 32, 0.7);
   top: 75px;
-  left:50%;
+  left: 50%;
   z-index: 101;
   width: auto;
   padding: 0 30px;
   line-height: 30px;
   text-align: center;
   .rounded();
-  display:inline-block;
+  display: inline-block;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
@@ -455,6 +470,7 @@ a.toggle-sidebar {
 
 #individualDatesList {
   display: none;
+
   div {
     display: inline-block;
     padding-right: 5px;
@@ -473,7 +489,7 @@ a.toggle-sidebar {
   font-size: .9rem;
   text-transform: uppercase;
   background-color: @primary-green;
-  padding:2px;
+  padding: 2px;
   margin: 1px;
   color: #000;
   display: inline-block;

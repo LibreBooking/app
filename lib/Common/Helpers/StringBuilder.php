@@ -40,6 +40,6 @@ class StringBuilder
 
 	public function ToString()
 	{
-		return join('', $this->_string);
+		return join(', ', $this->_string);
 	}
 }

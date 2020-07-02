@@ -59,7 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
         {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
         {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
-		<table class="reservations" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
+		<table class="reservations reservations-tall" border="1" cellpadding="0" width="100%" data-min="{$min}" data-max="{$max}">
 			<thead>
             {if $date->DateEquals($TodaysDate)}
 				<tr class="today">

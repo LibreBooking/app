@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="booked" default="package">
-    <property name="version" value="2.8.2"/>
+    <property name="version" value="2.8.3"/>
     <property name="is.pre.release" value="false"/>
     <property name="packagename" value="booked-${version}"/>
     <property name="root.dir" value="../.."/>
@@ -15,12 +15,12 @@
     <available file="C:\wamp64\bin\mysql\mysql8.0.18" property="mysql.bin" value="C:\wamp64\bin\mysql\mysql8.0.18\bin"/>
 
     <property name="mysql.username" value="root"/>
-    <property name="mysql.password" value="password"/>
-    <property name="mysql.server" value="localhost"/>
+    <property name="mysql.password" value="root"/>
+    <property name="mysql.server" value="127.0.0.1"/>
     <property name="mysql.database" value="booked"/>
     <property name="sql.file.create.db" value="database_schema/create-db.sql"/>
     <property name="sql.file.create.schema" value="database_schema/create-schema.sql"/>
-    <property name="sql.file.create.user" value="database_schema/create-user.sql"/>
+<!--    <property name="sql.file.create.user" value="database_schema/create-user.sql"/>-->
     <property name="sql.file.data" value="database_schema/create-data.sql"/>
     <property name="sql.file.full" value="database_schema/full-install.sql"/>
     <property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
@@ -63,10 +63,10 @@
               checkreturn="true"
               dir="${mysql.bin}"/>
 
-        <echo message="Create user file: ${sql.file.create.user}"/>
-        <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.user}"
-              checkreturn="true"
-              dir="${mysql.bin}"/>
+<!--        <echo message="Create user file: ${sql.file.create.user}"/>-->
+<!--        <exec command="${mysql.bin}\mysql &#45;&#45;user=${mysql.username} &#45;&#45;password=${mysql.password} &#45;&#45;host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.user}"-->
+<!--              checkreturn="true"-->
+<!--              dir="${mysql.bin}"/>-->
 
     </target>
 
