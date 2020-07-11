@@ -1683,17 +1683,18 @@ class GetFullGroupReservationListCommand extends GetFullReservationListCommand
 
 class GetReservationListCommand extends SqlCommand
 {
-	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId, $scheduleIds, $resourceIds)
+	public function __construct(Date $startDate, Date $endDate, $userIds, $userLevelId, $scheduleIds, $resourceIds)
 	{
 		parent::__construct(QueryBuilder::GET_RESERVATION_LIST());
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userIds));
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleIds));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceIds));
 		$this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceIds)));
 		$this->AddParameter(new Parameter(ParameterNames::ALL_SCHEDULES, (int)empty($scheduleIds)));
+		$this->AddParameter(new Parameter(ParameterNames::All_OWNERS, (int)empty($userIds)));
 	}
 
 	public function ContainsGroupConcat()

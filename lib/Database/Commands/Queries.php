@@ -1253,7 +1253,7 @@ class QueryBuilder
 	public static function GET_RESERVATION_LIST()
 	{
 		return self::Build(self::$SELECT_LIST_FRAGMENT, null, 'AND ' . self::$DATE_FRAGMENT . ' AND
-					(@userid = -1 OR `ru`.`user_id` = @userid) AND
+					(@all_owners = 1 OR `ru`.`user_id` IN (@userid) ) AND
 					(@levelid = 0 OR `ru`.`reservation_user_level` = @levelid) AND
 					(@all_schedules = 1 OR `resources`.`schedule_id` IN (@scheduleid)) AND
 					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid))');

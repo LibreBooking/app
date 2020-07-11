@@ -34,6 +34,8 @@ class ParameterNames
 
 	const ALL_RESOURCES = '@all_resources';
 	const ALL_SCHEDULES = '@all_schedules';
+	const All_OWNERS = '@all_owners';
+	const All_PARTICIPANTS = '@all_participants';
 	const ALLOW_CALENDAR_SUBSCRIPTION = '@allow_calendar_subscription';
 	const ALLOW_PARTICIPATION = '@allow_participation';
 

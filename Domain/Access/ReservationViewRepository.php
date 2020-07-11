@@ -44,7 +44,7 @@ interface IReservationViewRepository
     /**
      * @param Date $startDate
      * @param Date $endDate
-     * @param int|null $userId
+     * @param int|null|int[] $userIds
      * @param int|ReservationUserLevel|null $userLevel
      * @param int|int[]|null $scheduleIds
      * @param int|int[]|null $resourceIds
@@ -54,7 +54,7 @@ interface IReservationViewRepository
     public function GetReservations(
         Date $startDate,
         Date $endDate,
-        $userId = ReservationViewRepository::ALL_USERS,
+        $userIds = ReservationViewRepository::ALL_USERS,
         $userLevel = ReservationUserLevel::OWNER,
         $scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
         $resourceIds = ReservationViewRepository::ALL_RESOURCES,
@@ -172,14 +172,14 @@ class ReservationViewRepository implements IReservationViewRepository
     public function GetReservations(
         Date $startDate,
         Date $endDate,
-        $userId = self::ALL_USERS,
+        $userIds = self::ALL_USERS,
         $userLevel = ReservationUserLevel::OWNER,
         $scheduleIds = self::ALL_SCHEDULES,
         $resourceIds = self::ALL_RESOURCES,
         $consolidateByReferenceNumber = false)
     {
-        if (empty($userId)) {
-            $userId = self::ALL_USERS;
+        if (empty($userIds)) {
+            $userIds = self::ALL_USERS;
         }
         if (is_null($userLevel)) {
             $userLevel = ReservationUserLevel::OWNER;
@@ -196,6 +196,9 @@ class ReservationViewRepository implements IReservationViewRepository
         if ($scheduleIds == self::ALL_SCHEDULES) {
             $scheduleIds = null;
         }
+        if ($userIds == self::ALL_USERS) {
+            $userIds = null;
+        }
 
         if (!empty($resourceIds) && $resourceIds != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceIds)) {
             $resourceIds = array($resourceIds);
@@ -203,8 +206,11 @@ class ReservationViewRepository implements IReservationViewRepository
         if (!empty($scheduleIds) && $scheduleIds != ReservationViewRepository::ALL_SCHEDULES && !is_array($scheduleIds)) {
             $scheduleIds = array($scheduleIds);
         }
+        if (!empty($userIds) && $userIds != ReservationViewRepository::ALL_USERS && !is_array($userIds)) {
+            $userIds = array($userIds);
+        }
 
-        $getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleIds, $resourceIds);
+        $getReservations = new GetReservationListCommand($startDate, $endDate, $userIds, $userLevel, $scheduleIds, $resourceIds);
 
         $reader = ServiceLocator::GetDatabase()->Query($getReservations);
 
