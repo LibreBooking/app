@@ -254,11 +254,16 @@ function Schedule(opts, resourceGroups) {
 					let left = startTd.position().left
 					if (opts.scheduleStyle === ScheduleTall)
 					{
-						width = startTd.outerWidth();						height = endTd.outerHeight();
+						width = startTd.outerWidth();
+						height = endTd.position().top - startTd.position().top;
+
+						if (height === 0) {
+                            height= endTd.outerHeight();
+                        }
 					}
 					else
 					{
-						height = 40;
+						height = startTd.outerHeight();
 						width = endTd.position().left - startTd.position().left + calculatedAdjustment;
 						top = startTd.position().top + (40 * numberOfConflicts);
 						if (numberOfConflicts > 0)
@@ -287,11 +292,9 @@ function Schedule(opts, resourceGroups) {
 
 					if (conflictIds.length > 0 && opts.scheduleStyle === ScheduleTall)
 					{
-						console.log(conflictIds)
 						width = startTd.outerWidth() / conflictIds.length;
 						conflictIds.forEach((conflict, index) => {
 							left = startTd.position().left + (width * index);
-							console.log(index, conflict, left, startTd.position().left);
 							const div = t.find(`[data-resid="${conflict}"]`);
 							div.css('width', width + "px");
 							div.css('left', left + "px");

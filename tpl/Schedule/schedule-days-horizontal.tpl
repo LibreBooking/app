@@ -25,7 +25,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="reservations"}
     {assign var=TodaysDate value=Date::Now()}
-    <table class="reservations" border="1" cellpadding="0" style="width:auto;" data-min="0" data-max="999999999999999">
+    {assign var=min value=$BoundDates[0]->TimeStamp()}
+    {assign var=firstPeriods value=$DailyLayout->GetPeriods($BoundDates[0])}
+    {assign var=lastPeriods value=$DailyLayout->GetPeriods($BoundDates[$BoundDates|count-1])}
+    {assign var=min value=$firstPeriods[0]->BeginDate()->TimeStamp()}
+    {assign var=max value=$lastPeriods[$lastPeriods|count-1]->EndDate()->TimeStamp()}
+    <table class="reservations" border="1" cellpadding="0" style="width:auto;" data-min="{$min}" data-max="{$max}">
         <thead>
         <tr>
             <td rowspan="2">&nbsp;</td>

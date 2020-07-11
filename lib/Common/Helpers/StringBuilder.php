@@ -38,8 +38,8 @@ class StringBuilder
 		return count($this->_string);
 	}
 
-	public function ToString()
+	public function ToString($glue = '')
 	{
-		return join(', ', $this->_string);
+		return join($glue, $this->_string);
 	}
 }
