@@ -252,7 +252,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/block}
 			<div class="row">
 				<div id="reservations-left" class="col-md-2 col-sm-12 default-box">
-					<div class="reservations-left-header">{translate key=ResourceFilter}
+					<div class="reservations-left-header">{translate key=Filter}
 						<a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i
 									class="glyphicon glyphicon-remove"></i>
 							<span class="no-show">Hide Reservation Filter</span>

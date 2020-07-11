@@ -35,17 +35,17 @@ class FakeReservationViewRepository implements IReservationViewRepository
 
     public $_LastRange;
 
-	/**
-	 * @var AccessoryReservation[]
-	 */
-	public $_AccessoryReservations = array();
+    /**
+     * @var AccessoryReservation[]
+     */
+    public $_AccessoryReservations = array();
 
-	public $_Filter;
+    public $_Filter;
 
-	/**
-	 * @var PageableData
-	 */
-	public $_FilterResults;
+    /**
+     * @var PageableData
+     */
+    public $_FilterResults;
 
     /**
      * @var int
@@ -67,7 +67,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
     public function __construct()
     {
         $this->_ReservationView = new ReservationView();
-        $this->_FilterResults= new PageableData();
+        $this->_FilterResults = new PageableData();
     }
 
     public function GetReservationForEditing($referenceNumber)
@@ -82,7 +82,8 @@ class FakeReservationViewRepository implements IReservationViewRepository
         $userLevel = ReservationUserLevel::OWNER,
         $scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
         $resourceIds = ReservationViewRepository::ALL_RESOURCES,
-        $consolidateByReferenceNumber = false)
+        $consolidateByReferenceNumber = false,
+        $participantIds = ReservationViewRepository::ALL_USERS)
     {
         $this->_LastScheduleIds = $scheduleIds;
         $this->_LastResourceIds = $resourceIds;
@@ -102,7 +103,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
 
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
     {
-    	$this->_Filter = $filter;
+        $this->_Filter = $filter;
         return $this->_FilterResults;
     }
 

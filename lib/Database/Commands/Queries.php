@@ -1256,7 +1256,8 @@ class QueryBuilder
 					(@all_owners = 1 OR `ru`.`user_id` IN (@userid) ) AND
 					(@levelid = 0 OR `ru`.`reservation_user_level` = @levelid) AND
 					(@all_schedules = 1 OR `resources`.`schedule_id` IN (@scheduleid)) AND
-					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid))');
+					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid)) AND
+					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3)))');
 	}
 
 	public static function GET_RESERVATION_LIST_FULL()

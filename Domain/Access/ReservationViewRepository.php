@@ -36,8 +36,8 @@ require_once(ROOT_DIR . 'Domain/ReservationAccessoryView.php');
 interface IReservationViewRepository
 {
     /**
-     * @var $referenceNumber string
      * @return ReservationView
+     * @var $referenceNumber string
      */
     public function GetReservationForEditing($referenceNumber);
 
@@ -48,6 +48,7 @@ interface IReservationViewRepository
      * @param int|ReservationUserLevel|null $userLevel
      * @param int|int[]|null $scheduleIds
      * @param int|int[]|null $resourceIds
+     * @param int|int[]|null $participantIds
      * @param bool $consolidateByReferenceNumber
      * @return ReservationItemView[]
      */
@@ -58,7 +59,8 @@ interface IReservationViewRepository
         $userLevel = ReservationUserLevel::OWNER,
         $scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
         $resourceIds = ReservationViewRepository::ALL_RESOURCES,
-        $consolidateByReferenceNumber = false);
+        $consolidateByReferenceNumber = false,
+        $participantIds = ReservationViewRepository::ALL_USERS);
 
     /**
      * @param Date $startDate
@@ -165,7 +167,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $this->SetCustomRepeatDates($reservationView);
         }
 
-		$reader->Free();
+        $reader->Free();
         return $reservationView;
     }
 
@@ -176,7 +178,8 @@ class ReservationViewRepository implements IReservationViewRepository
         $userLevel = ReservationUserLevel::OWNER,
         $scheduleIds = self::ALL_SCHEDULES,
         $resourceIds = self::ALL_RESOURCES,
-        $consolidateByReferenceNumber = false)
+        $consolidateByReferenceNumber = false,
+        $participantIds = self::ALL_USERS)
     {
         if (empty($userIds)) {
             $userIds = self::ALL_USERS;
@@ -190,6 +193,9 @@ class ReservationViewRepository implements IReservationViewRepository
         if (empty($resourceIds)) {
             $resourceIds = self::ALL_RESOURCES;
         }
+        if (empty($participantIds)) {
+            $participantIds = self::ALL_USERS;
+        }
         if ($resourceIds == self::ALL_RESOURCES) {
             $resourceIds = null;
         }
@@ -198,6 +204,9 @@ class ReservationViewRepository implements IReservationViewRepository
         }
         if ($userIds == self::ALL_USERS) {
             $userIds = null;
+        }
+        if ($participantIds == self::ALL_USERS) {
+            $participantIds = null;
         }
 
         if (!empty($resourceIds) && $resourceIds != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceIds)) {
@@ -209,8 +218,11 @@ class ReservationViewRepository implements IReservationViewRepository
         if (!empty($userIds) && $userIds != ReservationViewRepository::ALL_USERS && !is_array($userIds)) {
             $userIds = array($userIds);
         }
+        if (!empty($participantIds) && $participantIds != ReservationViewRepository::ALL_USERS && !is_array($participantIds)) {
+            $participantIds = array($participantIds);
+        }
 
-        $getReservations = new GetReservationListCommand($startDate, $endDate, $userIds, $userLevel, $scheduleIds, $resourceIds);
+        $getReservations = new GetReservationListCommand($startDate, $endDate, $userIds, $userLevel, $scheduleIds, $resourceIds, $participantIds);
 
         $reader = ServiceLocator::GetDatabase()->Query($getReservations);
 
@@ -328,7 +340,7 @@ class ReservationViewRepository implements IReservationViewRepository
             }
         }
 
-		$reader->Free();
+        $reader->Free();
     }
 
     private function SetAccessories(ReservationView $reservationView)
@@ -416,7 +428,8 @@ class ReservationViewRepository implements IReservationViewRepository
         $reader->Free();
     }
 
-    private function SetCustomRepeatDates(ReservationView $reservationView) {
+    private function SetCustomRepeatDates(ReservationView $reservationView)
+    {
         if ($reservationView->RepeatType == RepeatType::Custom) {
             $getRepeatDates = new GetReservationRepeatDatesCommand($reservationView->SeriesId);
             $reader = ServiceLocator::GetDatabase()->Query($getRepeatDates);
