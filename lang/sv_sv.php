@@ -1,6 +1,10 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel, Boris Vatin
+Copyright 2011-2019 Nick Korbel, Boris Vatin
+
+****************************************************************************************
+Version för ordenshuset. Alla ändringar kommenterade för lätt uppgradering nästa gång!!! 
+****************************************************************************************
 
 This file is part of Booked Scheduler.
 
@@ -28,6 +32,39 @@ class sv_sv extends en_gb
         parent::__construct();
     }
     
+	/**
+	 * @return array
+	 */
+
+	// Väldigt oklart om detta just _LoadDates används längre, får stå kvar
+
+	protected function _LoadDates()
+	{
+		$dates = parent::_LoadDates();
+
+		$dates['general_date'] = 'Y-m-d';
+        $dates['general_datetime'] = 'Y-m-d H:i';
+		$dates['short_datetime'] = 'Y-m-d H:i';
+        $dates['schedule_daily'] = 'l j\/n Y';
+        $dates['reservation_email'] = 'l j M Y \k\l\. H:i';
+        $dates['res_popup'] = 'D j\/n -y H:i';
+		$dates['res_popup_time'] = 'D j\/n -y H:i';
+		$dates['short_reservation_date'] = 'D j\/n -y H:i';
+        $dates['dashboard'] = 'D j\/n -y H:i';
+        $dates['period_time'] = 'H: i';
+		$dates['mobile_reservation_date'] = 'm/d H:i';
+		$dates['general_date_js'] = 'yy-mm-dd';
+		$dates['general_time_js'] = 'h:mm tt';
+		$dates['momentjs_datetime'] = 'yy-mm-dd h:mm';
+		$dates['calendar_time'] = 'HH:mm';
+		$dates['calendar_dates'] = 'd/M';
+		$dates['full_week'] = '\V\e\c\k\a W Y';		// tillagt ar
+		$dates['full_month'] = 'F Y';		// tillagt ar
+
+
+		$this->Dates = $dates;
+	}
+
     protected function _LoadStrings()
     {
         $strings = parent::_LoadStrings();
@@ -35,7 +72,7 @@ class sv_sv extends en_gb
         $strings['FirstName'] = 'Förnamn';
         $strings['LastName'] = 'Efternamn';
         $strings['Timezone'] = 'Tidzon';
-        $strings['Edit'] = 'Ändra';
+        $strings['Edit'] = 'Redigera'; 	// ändrad AR
         $strings['Change'] = 'Byt';
         $strings['Rename'] = 'Ändra namn';
         $strings['Remove'] = 'Avlägsna';
@@ -57,6 +94,8 @@ class sv_sv extends en_gb
         $strings['CaptchaMustMatch'] = 'Ange bokstäverna från säkerhetesbilden exakt som de visas.';
         $strings['Today'] = 'Idag';
         $strings['Week'] = 'Vecka';
+		$strings['day'] = 'Dag';
+		$strings['Day'] = 'Dag';
         $strings['Month'] = 'Månad';
         $strings['BackToCalendar'] = 'Tillbaka till kalendern';
         $strings['BeginDate'] = 'Börjar';
@@ -72,12 +111,25 @@ class sv_sv extends en_gb
         $strings['Announcements'] = 'Meddelanden';
         $strings['NoUpcomingReservations'] = 'Det finns inga bokningar';
         $strings['UpcomingReservations'] = 'Kommande bokningar';
+
+		$strings['ResourceAvailability'] = 'Tillgängliga lokaler';		// tillagt AR
+		$strings['UnavailableAllDay'] = 'Bokat hela dagen';		// tillagt AR
+		$strings['AvailableUntil'] = 'Ledigt tills';		// tillagt AR
+		$strings['AvailableBeginningAt'] = 'Ledigt från';		// tillagt AR
+		$strings['Available'] = 'Ledigt';	// tillagt AR
+		$strings['Unavailable'] = 'Bokat';	// tillagt AR
+		$strings['Reserve'] = 'Boka';	// tillagt AR
+        $strings['ViewAvailability'] = 'Visa tillgängliga lokaler';	// tillagt AR
+		$strings['Dates'] = 'Datum';
+		$strings['ReservationRequiresApproval'] = 'Bokningen är ännu <b>inte bekräftad</b>. Vi återkommer när den är godkänd och klar.';
+
+
         $strings['ShowHide'] = 'Visa/Dölj';
         $strings['Error'] = 'Fel';
         $strings['ReturnToPreviousPage'] = 'Tillbaka till föregående sida';
         $strings['UnknownError'] = 'Okänt fel';
-        $strings['InsufficientPermissionsError'] = 'Du har inte behörighet att komma åt denna tjänst';
-        $strings['MissingReservationResourceError'] = 'En tjänst har inte valts';
+        $strings['InsufficientPermissionsError'] = 'Du har inte behörighet att komma åt denna lokal'; // tjänst --> lokal
+        $strings['MissingReservationResourceError'] = 'En lokal har inte valts'; // tjänst --> lokal
         $strings['MissingReservationScheduleError'] = 'Ett schema har inte valts';
         $strings['DoesNotRepeat'] = 'Upprepas inte';
         $strings['Daily'] = 'Dagligen';
@@ -97,43 +149,43 @@ class sv_sv extends en_gb
         $strings['repeatDayOfMonth'] = 'dag i månad';
         $strings['repeatDayOfWeek'] = 'dag i vecka';
         $strings['RepeatUntilPrompt'] = 'Till';
-        $strings['RepeatEveryPrompt'] = 'Under';
+        $strings['RepeatEveryPrompt'] = 'Repetera var(t)';	// helt tokigt i tidigare övers.
         $strings['RepeatDaysPrompt'] = 'På';
         $strings['CreateReservationHeading'] = 'Ny bokning';
         $strings['EditReservationHeading'] = 'Redigera bokning %s';
         $strings['ViewReservationHeading'] = 'Visa bokning %s';
-        $strings['ReservationErrors'] = 'Ändra bokning';
+        $strings['ReservationErrors'] = 'Redigera bokning'; // ändrad AR
         $strings['Create'] = 'Skapa';
-        $strings['ThisInstance'] = 'Bara denna instans';
-        $strings['AllInstances'] = 'Alla instanser';
-        $strings['FutureInstances'] = 'Framtida instanser';
+        $strings['ThisInstance'] = 'Bara denna bokning';	// bokningar hellre än instans
+        $strings['AllInstances'] = 'Alla bokningar';	// bokningar hellre än instans
+        $strings['FutureInstances'] = 'Framtida bokningar'; // bokningar hellre än instans
         $strings['Print'] = 'Skriv ut';
-        $strings['ShowHideNavigation'] = 'Visa / Dölj Navigering';
-        $strings['ReferenceNumber'] = 'Referens nummer';
+        $strings['ShowHideNavigation'] = 'Visa/dölj navigering'; // ort, bokningar hellre än instans
+        $strings['ReferenceNumber'] = 'Bokningsnummer';
         $strings['Tomorrow'] = 'Imorgon';
         $strings['LaterThisWeek'] = 'Senare denna vecka';
         $strings['NextWeek'] = 'Nästa vecka';
         $strings['SignOut'] = 'Logga ut';
         $strings['LayoutDescription'] = 'Börja på %s, visar %s dagar i sänder';
-        $strings['AllResources'] = 'Alla tjänster';
+        $strings['AllResources'] = 'Alla lokaler';	// tjänst --> lokal
 		$strings['AllAccessories'] = 'Alla tillbehör';
 		$strings['List'] = 'Lista';
-		$strings['TotalTime'] = 'Total Tid';
+		$strings['TotalTime'] = 'Total tid';
 		$strings['Count'] = 'Räkna';
 		$strings['Group'] = 'Grupp';
-		$strings['CurrentMonth'] = 'Denna Månad';
-		$strings['CurrentWeek'] = 'Denna Vecka';
+		$strings['CurrentMonth'] = 'Denna månad';
+		$strings['CurrentWeek'] = 'Denna vecka';
 		$strings['Total'] = 'Totalt';
-		$strings['AllTime'] = 'All Tid';
-		$strings['GetReport'] = 'Hämta Rapport';
-		$strings['Select'] = 'Välj Rapport:';
-		$strings['AggregateBy'] = 'Välj Efter:';
+		$strings['AllTime'] = 'All tid';
+		$strings['GetReport'] = 'Hämta rapport';
+		$strings['Select'] = 'Välj rapport:';
+		$strings['AggregateBy'] = 'Välj efter:';
 		$strings['houers'] = 'Timmar:';
-		$strings['Usage'] = 'Välj Typ Av:';
-		$strings['Range'] = 'Välj Intervall:';
-		$strings['FilterBy'] = 'Filtrera Efter:';
+		$strings['Usage'] = 'Välj typ av:';
+		$strings['Range'] = 'Välj intervall:';
+		$strings['FilterBy'] = 'Filtrera efter:';
         $strings['TakeOffline'] = 'Gå offline';
-        $strings['BringOnline'] = 'Gå Online';
+        $strings['BringOnline'] = 'Gå online';
         $strings['AddImage'] = 'Lägg till bild';
         $strings['NoImage'] = 'Bild inte tilldelad';
         $strings['Move'] = 'Flytta';
@@ -147,8 +199,8 @@ class sv_sv extends en_gb
         $strings['Notes'] = 'Anteckningar';
         $strings['NoNotesLabel'] = '(inga anteckningar)';
         $strings['NoTitleLabel'] = '(ingen titel)';
-        $strings['UsageConfiguration'] = 'Användar konfigurering';
-        $strings['ChangeConfiguration'] = 'Ändra konfigurering';
+        $strings['UsageConfiguration'] = 'Användarkonfigurering';
+        $strings['ChangeConfiguration'] = 'Redigera konfigurering'; // ändrad AR
         $strings['ResourceMinLength'] = 'Bokning måste vara minst %s';
         $strings['ResourceMinLengthNone'] = 'Det finns ingen minsta reservationstid';
         $strings['ResourceMaxLength'] = 'Bokning kan inte vara längre än %s';
@@ -161,15 +213,15 @@ class sv_sv extends en_gb
         $strings['ResourceMinNoticeNone'] = 'Bokning kan göras fram till bokad tid';
         $strings['ResourceMaxNotice'] = 'Bokningar får inte sluta mer än %s från nuvarande tid';
         $strings['ResourceMaxNoticeNone'] = 'Bokningar kan sluta vid vilken tidpunkt som helst i framtiden';
-        $strings['ResourceAllowMultiDay'] = 'Bokning kan göras över dagar';
-        $strings['ResourceNotAllowMultiDay'] = 'Bokningar kan inte göras över dagar';
-        $strings['ResourceCapacity'] = 'Denna tjänst har en kapacitet av %s människor';
-        $strings['ResourceCapacityNone'] = 'Denna tjänst är obegränsad';
-        $strings['AddNewResource'] = 'Lägg till ny tjänst';
+        $strings['ResourceAllowMultiDay'] = 'Bokning kan göras över flera dygn';	// språkvård
+        $strings['ResourceNotAllowMultiDay'] = 'Bokningar kan inte göras över flera dygn';	// språkvård
+        $strings['ResourceCapacity'] = 'Denna lokal har en kapacitet av %s personer';	// tjänst --> lokal
+        $strings['ResourceCapacityNone'] = 'Denna lokal är obegränsad'; // tjänst --> lokal
+        $strings['AddNewResource'] = 'Lägg till ny lokal'; // tjänst --> lokal
         $strings['AddNewUser'] = 'Lägg till ny användare';
         $strings['AddUser'] = 'Lägg till användare';
         $strings['Schedule'] = 'Schema';
-        $strings['AddResource'] = 'Lägg till tjänst';
+        $strings['AddResource'] = 'Lägg till lokal'; // tjänst --> lokal
         $strings['Capacity'] = 'Kapasitet';
         $strings['Access'] = 'Tillträde';
         $strings['Duration'] = 'Längd';
@@ -178,7 +230,7 @@ class sv_sv extends en_gb
         $strings['ResetPassword'] = 'Återställ lösenord';
         $strings['LastLogin'] = 'Senaste inloggning';
         $strings['Search'] = 'Sök';
-        $strings['ResourcePermissions'] = 'Tillstånd av tjänst';
+        $strings['ResourcePermissions'] = 'Behörighet till lokal';	// tjänst --> lokal
         $strings['Reservations'] = 'Bokning';
         $strings['Groups'] = 'Grupp';
         $strings['ResetPassword'] = 'Återställ lösenord';
@@ -192,7 +244,7 @@ class sv_sv extends en_gb
         $strings['CancelParticipation'] = 'Ångra deltagandet';
         $strings['Attending'] = 'Närvarande';
         $strings['QuotaConfiguration'] = 'På %s får %s användare i %s är begränsade till %s %s per %s';
-        $strings['reservations'] = 'bokningar';
+        $strings['reservations'] = 'Bokningar';
         $strings['ChangeCalendar'] = 'Byt Kalender';
         $strings['AddQuota'] = 'Lägg till ett filter';
         $strings['FindUser'] = 'sök användare';
@@ -209,8 +261,8 @@ class sv_sv extends en_gb
         $strings['PasswordChangedSuccessfully'] = 'Ditt lösenord har ändrats';
         $strings['SignedInAs'] = 'Inloggad som';
         $strings['NotSignedIn'] = 'Du är inte inloggad';
-        $strings['ReservationTitle'] = 'Rubrik på bokningen';
-        $strings['ReservationDescription'] = 'Övrig information';
+        $strings['ReservationTitle'] = 'Bokningens titel';	// ändrat
+        $strings['ReservationDescription'] = 'Ansvarig person';	// ändrat
         $strings['ResourceList'] = 'Bokning av rum';
         $strings['Accessories'] = 'Tillbehör';
         $strings['Add'] = 'Lägg till';
@@ -218,10 +270,10 @@ class sv_sv extends en_gb
         $strings['InvitationList'] = 'Inbjudna';
         $strings['AccessoryName'] = 'Namn på tillbehör';
         $strings['QuantityAvailable'] = 'Tillgängligt antal';
-        $strings['Resources'] = 'Tjänster';
+        $strings['Resources'] = 'Lokaler'; // tjänst --> lokal
         $strings['Participants'] = 'Deltagare';
         $strings['User'] = 'Användare';
-        $strings['Resource'] = 'Tjänst';
+        $strings['Resource'] = 'Lokal'; // tjänst --> lokal
         $strings['Status'] = 'Status';
         $strings['Approve'] = 'Godkänna';
         $strings['Page'] = 'Sida';
@@ -229,9 +281,9 @@ class sv_sv extends en_gb
         $strings['Unlimited'] = 'Obegränsat';
         $strings['Email'] = 'Email';
         $strings['EmailAddress'] = 'Email Adress';
-        $strings['Phone'] = 'Mobiltelefon';
-        $strings['Organization'] = 'Gata';
-        $strings['Position'] = 'Postnr / Ort';
+        $strings['Phone'] = 'Telefon';	// ändrat AR
+		$strings['Organization']                        = 'Organisation';  
+		$strings['Position']                            = 'Position';   // ändrat AR
         $strings['Language'] = 'Språk';
         $strings['Permissions'] = 'Behörighet';
         $strings['Reset'] = 'Återställ';
@@ -241,22 +293,26 @@ class sv_sv extends en_gb
         $strings['AddToOutlook'] = 'Lägg till i kalendern';
         $strings['Done'] = 'Klart';
         $strings['RememberMe'] = 'Komihåg mig';
-        $strings['FirstTimeUser?'] = 'Första gången ni är här?';
+        $strings['FirstTimeUser?'] = 'Första gången du är här?';	// ändrat AR
         $strings['CreateAnAccount'] = 'Skapa ett konto';
         $strings['ViewSchedule'] = 'Visa kalender';
         $strings['ForgotMyPassword'] = 'Glömt lösenordet';
-        $strings['YouWillBeEmailedANewPassword'] = 'Vi skickar ett nytt slumpmässigt genererat lösenord till er E-post';
+        $strings['YouWillBeEmailedANewPassword'] = 'Vi skickar ett nytt slumpmässigt genererat lösenord till din e-post';	// ändrat AR
         $strings['Close'] = 'Stäng';
         $strings['ExportToCSV'] = 'Exportera till CSV';
         $strings['OK'] = 'OK';
         $strings['Working'] = 'fungerar...';
         $strings['Login'] = 'Login';
-        $strings['AdditionalInformation'] = 'Ytterligare information';
-        $strings['AllFieldsAreRequired'] = 'alla fält är obligatoriska';
-        $strings['Optional'] = 'frivilligt';
-        $strings['YourProfileWasUpdated'] = 'din profil är uppdaterad';
+		$strings['AdditionalInformation']               = 'Ytterligare information'; // Ändrat AR 
+        $strings['AllFieldsAreRequired'] = 'Alla fält är obligatoriska';
+		$strings['Optional']                            = 'Valfritt';   
+        $strings['YourProfileWasUpdated'] = 'Din profil är uppdaterad';
         $strings['YourSettingsWereUpdated'] = 'Dina inställningar har uppdaterats';
         $strings['Register'] = 'Registrera';
+        $strings['TermsOfService'] = 'bokningsvillkor'; // Tillagt AR
+        $strings['ViewTerms'] = 'Visa bokningsvillkor'; // Tillagt AR
+        $strings['IAccept'] = 'Jag accepterar';	// Tillagt AR
+        $strings['TheTermsOfService'] = 'bokningsvillkoren'; // tillagt AR
         $strings['SecurityCode'] = 'Säkerhetskod';
         $strings['ReservationCreatedPreference'] = 'När jag skapar en bokning eller en bokning skapas för min räkning';
         $strings['ReservationUpdatedPreference'] = 'När jag uppdaterar en bokning eller en bokning uppdateras för min räkning';
@@ -267,9 +323,9 @@ class sv_sv extends en_gb
         $strings['ReservationCreated'] = 'Din bokning har skapats!';
         $strings['ReservationUpdated'] = 'Din bokning är uppdaterad!';
         $strings['ReservationRemoved'] = 'Din bokning har tagits bort';
-        $strings['YourReferenceNumber'] = 'Ert referensnummer är %s';
+        $strings['YourReferenceNumber'] = 'Ert bokningsnummer är %s';	// referens --> bokning
         $strings['UpdatingReservation'] = 'Uppdaterar bokning';
-        $strings['ChangeUser'] = 'ändra användare';
+        $strings['ChangeUser'] = 'Byt användare';
         $strings['MoreResources'] = 'Boka flera rum';
         $strings['ReservationLength'] = 'Bokningens längd';
         $strings['ParticipantList'] = 'Deltagarlista';
@@ -288,8 +344,8 @@ class sv_sv extends en_gb
         $strings['AllResourcesOn'] = 'Alla tillgångar är på';
         $strings['Reason'] = 'Orsak';
         $strings['BlackoutShowMe'] = 'Visa Ej Tillgänglig Tid i konflikt';
-        $strings['BlackoutDeleteConflicts'] = 'Ta bort Ej Tillgänglig Tid som är i konflikt';
-        $strings['Filter'] = 'Filter';
+        $strings['BlackoutDeleteConflicts'] = 'Ta bort ej tillgänglig tid som är i konflikt';
+        $strings['Filter'] = 'Filtrera';	// Ändrad AR
         $strings['Between'] = 'Mellan';
         $strings['CreatedBy'] = 'Skapad av';
         $strings['BlackoutCreated'] = 'Ej Tillgänglig Tid Skapad!';
@@ -298,7 +354,7 @@ class sv_sv extends en_gb
         $strings['ReservationConflicts'] = 'Det finns motstridiga reservationstider';
         $strings['UsersInGroup'] = 'Användare i denna grupp';
         $strings['Browse'] = 'Bläddra';
-        $strings['DeleteGroupWarning'] = 'Tar du bort denna grupp kommer alla tjänstetillhörigheter att raderas . Användare i denna grupp kan förlora tillgången till tjänsterna.';
+        $strings['DeleteGroupWarning'] = 'Tar du bort denna grupp kommer alla lokaltillhörigheter att raderas . Användare i denna grupp kan förlora tillgången till lokalerna.'; // tjänst --> lokal
         $strings['WhatRolesApplyToThisGroup'] = 'Vilka roller gäller i denna grupp?';
         $strings['WhoCanManageThisGroup'] = 'Vem hanterar denna grupp?';
         $strings['AddGroup'] = 'Lägg till grupp';
@@ -308,11 +364,12 @@ class sv_sv extends en_gb
         $strings['PendingReservations'] = 'Ej godkända bokningar';
         $strings['Approving'] = 'Godkänner';
         $strings['MoveToSchedule'] = 'Flytta till kalendern';
-        $strings['DeleteResourceWarning'] = 'Tar du bort denna tjänst kommer all tillhörande data tas bort, inklusive';
+        $strings['DeleteResourceWarning'] = 'Tar du bort denna lokal kommer all tillhörande data tas bort, inklusive'; // tjänst --> lokal
         $strings['DeleteResourceWarningReservations'] = 'alla tidigare, nuvarande och framtida bokningar associerade med den';
         $strings['DeleteResourceWarningPermissions'] = 'alla behörighetstilldelningar';
         $strings['DeleteResourceWarningReassign'] = 'Vänligen tilldela allt som du inte vill ska tas bort innan du går vidare';
         $strings['ScheduleLayout'] = 'Layout (alla tider %s)';
+		$strings['ScheduleReservations'] = 'Bokningar (per schema)'; // ändrat AR
         $strings['ReservableTimeSlots'] = 'Bokningsbara tidsintervaller';
         $strings['BlockedTimeSlots'] = 'Blockerade tidsintervaller';
         $strings['ThisIsTheDefaultSchedule'] = 'Denna kalendern är förvald';
@@ -328,7 +385,7 @@ class sv_sv extends en_gb
         $strings['OptionalLabel'] = 'Valfritt fält';
         $strings['LayoutInstructions'] = 'Lägg till ett tidsintervall per rad.  Tidsintervall måste tilldelas alla 24 timmar på dygnet med början och slut 12.00.';
         $strings['AddUser'] = 'Lägg till användare';
-        $strings['UserPermissionInfo'] = 'Faktisk åtkomst till tjänstenen kan variera beroende på användarens roll, grupptillhörighet eller externa behörighetsinställningar';
+        $strings['UserPermissionInfo'] = 'Faktisk åtkomst till lokalen kan variera beroende på användarens roll, grupptillhörighet eller externa behörighetsinställningar'; // tjänst --> lokal
         $strings['DeleteUserWarning'] = 'Om du raderar den här användaren avlägsnas denna användares samtliga bokningar.';
         $strings['AddAnnouncement'] = 'Lägg till meddelande';
         $strings['Announcement'] = 'Meddelande';
@@ -337,18 +394,19 @@ class sv_sv extends en_gb
         $strings['Unreservable'] = 'Ej bokningsbar';
         $strings['Reserved'] = 'Reserverad';
         $strings['MyReservation'] = 'Mina bokningar';
-        $strings['Pending'] = 'Avvaktande';
-        $strings['Past'] = 'tidigare';
-        $strings['Restricted'] = 'Begränsat';
+        $strings['Pending'] = 'Ej bekräftad';	// ändrat AR
+        $strings['Past'] = 'Förflutna';		// ändrat AR
+		$strings['Participant'] = 'Deltagare';	// ändrat AR
+        $strings['Restricted'] = 'Begränsat';	// ändrat AR
         $strings['ViewAll'] = 'Visa allt';
-        $strings['MoveResourcesAndReservations'] = 'Flytta tjänster och bokningar till';
+        $strings['MoveResourcesAndReservations'] = 'Flytta lokaler och bokningar till'; // tjänst --> lokal
         $strings['TurnOffSubscription'] = 'Stäng av prenumeration på kalendern';
         $strings['TurnOnSubscription'] = 'Tillåt Prenumeration av denna kalender';
         $strings['SubscribeToCalendar'] = 'Prenumerera på denna kalender';
         $strings['SubscriptionsAreDisabled'] = 'Administratören har inaktiverat abonnemang av kalendern';
-        $strings['NoResourceAdministratorLabel'] = '(Ingen administratör av tjänst)';
-        $strings['WhoCanManageThisResource'] = 'Vem kan hantera denna tjänst?';
-        $strings['ResourceAdministrator'] = 'Administratör av tjänst';
+        $strings['NoResourceAdministratorLabel'] = '(Ingen administratör av lokal)';// tjänst --> lokal
+        $strings['WhoCanManageThisResource'] = 'Vem kan hantera denna lokal?';// tjänst --> lokal
+        $strings['ResourceAdministrator'] = 'Administratör av lokal'; // tjänst --> lokal
         $strings['Private'] = 'Privat';
         $strings['Accept'] = 'Acceptera';
         $strings['Decline'] = 'Avböj';
@@ -371,13 +429,13 @@ class sv_sv extends en_gb
         $strings['CategoryGroup'] = 'Grupp';
         $strings['SortOrder'] = 'Sorteringsordning';
         $strings['Title'] = 'Rubrik';
-        $strings['AdditionalAttributes'] = 'Frivilliga uppgifter';
+		$strings['AdditionalAttributes']                = 'Flera attribut'; 	
         $strings['True'] = 'Sant';
         $strings['False'] = 'Falskt';
-		$strings['NoResultsFound'] = 'Hittade Inga Rapporter';
+		$strings['NoResultsFound'] = 'Hittade inga rapporter';
 		$strings['NoSavedReports'] = 'Det finns inga sparade rapporter';
-		$strings['GenerateReports'] = 'Skapa Rapport';
-		$strings['ForgotPasswordEmailSent'] = 'Ett e-postmeddelande har skickats till er e-postadress med instruktione om hur du återställer ditt lösenord';
+		$strings['GenerateReports'] = 'Skapa rapport';
+		$strings['ForgotPasswordEmailSent'] = 'Ett e-postmeddelande har skickats till din e-postadress med instruktioner om hur du återställer ditt lösenord'; // ändrat AR 
 		$strings['ActivationEmailSent'] = 'Ett aktiveringsmail har skickats till dig.';
 		$strings['AccountActivationError'] = 'Ett problem uppstod vid aktiveringen av ert konto, kontot kunde inte aktiveras. Vänligen försök igen.';
 		$strings['Attachments'] = 'Bilaga';
@@ -388,30 +446,35 @@ class sv_sv extends en_gb
 		// Reports
 		$strings['Working'] = 'Arbetar...';
 		$strings['Created'] = 'Skapad';
-		$strings['ViewAsChart'] = 'Visa som Stapeldiagram';
-		$strings['SaveThisReport'] = 'Spara denna Rapport';
-		$strings['NoSavedReports'] = 'Inga sparade Rapporter';
+		$strings['ViewAsChart'] = 'Visa som stapeldiagram';
+		$strings['SaveThisReport'] = 'Spara denna rapport';
+		$strings['NoSavedReports'] = 'Inga sparade rapporter';
 		$strings['RunReport'] = 'Kör Rapport';
-		$strings['EmailReport'] = 'Skicka Rapport med E-post';
-		$strings['Delete'] = 'Ta Bort';
+		$strings['EmailReport'] = 'Skicka rapport med E-post';
 		$strings['Edit'] = 'Ändra';
-		$strings['ReservedResources'] = 'Bokade Tjänster';
-		$strings['ReservedAccessories'] = 'Bokade Tillbehör';
-		$strings['ResourceUsageTimeBooked'] = 'Bokade Tjänster - Bokad Tid';
-		$strings['ResourceUsageReservationCount'] = 'Utnyttjade Tjänster - Antal Bokningar';
-		$strings['Top20UsersTimeBooked'] = 'Topp 20 Användare - Totalt Bokad Tid';
-		$strings['Top20UsersReservationCount'] = 'Topp 20 Användare - Totalt Antal Bokningar';
+		$strings['ReservedResources'] = 'Bokade lokaler'; // tjänst --> lokal
+		$strings['ReservedAccessories'] = 'Bokade tillbehör';
+		$strings['ResourceUsageTimeBooked'] = 'Bokade lokaler - Bokad tid'; // tjänst --> lokal
+		$strings['ResourceUsageReservationCount'] = 'Utnyttjade lokaler - Antal bokningar'; // tjänst --> lokal
+		$strings['Top20UsersTimeBooked'] = 'Topp 20 användare - Totalt bokad tid'; // ort
+		$strings['Top20UsersReservationCount'] = 'Topp 20 användare - Totalt antal bokningar'; // ort, hela detta block
+        $strings['AddToGoogleCalendar'] = 'Lägg till i Google Calendar';
+		$strings['hours'] = 'timmar';
+		$strings['minutes'] = 'minuter';
+		$strings['More'] = 'Mer';
         // End Strings
 
         // Errors
         $strings['LoginError'] = 'Användarnamn eller lösenord är felaktigt';
         $strings['ReservationFailed'] = 'Din bokning kunde inte göras';
-        $strings['MinNoticeError'] = 'Denna bokning kräver förhandsanmälan. Den första dagen som kan bokas är %s.';
-        $strings['MaxNoticeError'] = 'Denna bokning kan inte göras så långt i framtiden. Det senaste datum och tid som kan reserveras är %s.';
+        $strings['MinNoticeError'] = 'Du kan inte boka med så kort varsel. Den första dagen som kan bokas direkt är %s.';	// 
+        $strings['MaxNoticeError'] = 'Denna bokning kan inte göras så långt i framtiden. Det tidigaste datum som kan bokas är %s.';	// 
+		$strings['MinNoticeErrorUpdate'] = 'Du kan inte ändra en bokning med så kort varsel.';	// 
+		$strings['MinNoticeErrorDelete'] = 'Du kan inte ta bort en bokning med så kort varsel.';	
         $strings['MinDurationError'] = 'Denna bokning måste vara minst %s.';
         $strings['MaxDurationError'] = 'Denna bokning kan inte vara längre än %s.';
         $strings['ConflictingAccessoryDates'] = 'Det finns inte tillräckligt av följande tillbehör:';
-        $strings['NoResourcePermission'] = 'Du har ingen behörighet att komma åt den/dom begärda tjänsten/tjänsterna';
+        $strings['NoResourcePermission'] = 'Du har ingen behörighet att komma åt begärd(a) lokal(er)'; // // tjänst --> lokal
         $strings['ConflictingReservationDates'] = 'Det finns motstridiga reservationer på följande datum:';
         $strings['StartDateBeforeEndDateRule'] = 'Startdatum och tid måste vara före slutdatum och tid';
         $strings['StartIsInPast'] = 'Startdatum och tid kan inte vara i det förflutna';
@@ -426,13 +489,13 @@ class sv_sv extends en_gb
 
         // Page Titles
         $strings['CreateReservation'] = 'Bokning';
-        $strings['EditReservation'] = 'Ändra bokning';
+        $strings['EditReservation'] = 'Redigera bokning';	// ändrad AR
         $strings['LogIn'] = 'Inloggning';
         $strings['ManageReservations'] = 'Bokningar';
         $strings['AwaitingActivation'] = 'Avvaktar aktivering';
-        $strings['PendingApproval'] = 'Avvaktar godkännande';
+        $strings['PendingApproval'] = 'Avvaktar bekräftelse';
         $strings['ManageSchedules'] = 'Kalender';
-        $strings['ManageResources'] = 'Tjänster';
+        $strings['ManageResources'] = 'Lokaler';
         $strings['ManageAccessories'] = 'Tillbehör';
         $strings['ManageUsers'] = 'Användare';
         $strings['ManageGroups'] = 'Grupper';
@@ -444,25 +507,27 @@ class sv_sv extends en_gb
         $strings['Help'] = 'Hjälp';
         $strings['Bookings'] = 'Bokningar';
         $strings['Schedule'] = 'Kalender';
-        $strings['Reservations'] = 'Reservering';
+        $strings['Reservations'] = 'Bokningar';	// ändrat AR
         $strings['Account'] = 'Konto';
-        $strings['EditProfile'] = 'Ändra profil';
+		$strings['EditProfile']                         = 'Namn och organisation'; // Ändrat AR
         $strings['FindAnOpening'] = 'Hitta en öppning';
         $strings['OpenInvitations'] = 'Inbjudan';
         $strings['MyCalendar'] = 'Min kalender';
-        $strings['ResourceCalendar'] = 'Tjänstekalender';
-        $strings['Reservation'] = 'Bokning';
+        $strings['ResourceCalendar'] = 'Lokalkalender'; // tjänst --> lokal
+        $strings['FindATime'] = 'Hitta en tid';	// tillagt AR
+		$strings['SearchReservations'] = 'Sök bokningar';
+		$strings['Reservation'] = 'Bokning';
         $strings['Install'] = 'Installation';
         $strings['ChangePassword'] = 'Ändra lösenord';
         $strings['MyAccount'] = 'Mitt konto';
-        $strings['Profile'] = 'Ändra profil';
+        $strings['Profile'] = 'Namn och organisation';		// Ändrat AR
         $strings['ApplicationManagement'] = 'Administration';
         $strings['ForgotPassword'] = 'Glömt lösenordet';
-        $strings['NotificationPreferences'] = 'Meddelande inställning';
+        $strings['NotificationPreferences'] = 'E-postinställningar';	// Ändrat AR
         $strings['ManageAnnouncements'] = 'Meddelande';
         $strings['Responsibilities'] = 'Ansvar';
-        $strings['GroupReservations'] = 'Gruppbokning';
-        $strings['ResourceReservations'] = 'Bokning av Tjänst';
+        $strings['GroupReservations'] = 'Bokningar (per grupp)';	// Ändrat AR
+        $strings['ResourceReservations'] = 'Bokningar (per lokal)'; // tjänst --> lokal, ändrat
         $strings['Customization'] = 'Anpassningar';
         $strings['Attributes'] = 'Attribut';
 		$strings['AccountActivation'] = 'Aktivering av konto';
@@ -471,7 +536,6 @@ class sv_sv extends en_gb
 		$strings['CommonReports'] = 'Vanligaste Rapporterna';
 		$strings['MySavedReports'] = 'Mina sparade rapporter';
 		$strings['About'] = 'Om';
-		$strings['hours'] = 'timmar';
         // End Page Titles
 
         // Day representations
@@ -485,7 +549,6 @@ class sv_sv extends en_gb
 
         $strings['DaySundayAbbr'] = 'Sön';
         $strings['DayMondayAbbr'] = 'Mån';
-
         $strings['DayTuesdayAbbr'] = 'Tis';
         $strings['DayWednesdayAbbr'] = 'Ons';
         $strings['DayThursdayAbbr'] = 'Tor';
@@ -493,19 +556,29 @@ class sv_sv extends en_gb
         $strings['DaySaturdayAbbr'] = 'Lör';
 		// End Day representations
 
-        // Email Subjects
-        $strings['ReservationApprovedSubject'] = 'Bokning har blivit godkänd';
-        $strings['ReservationCreatedSubject'] = 'Bokning har skapats';
-        $strings['ReservationUpdatedSubject'] = 'Bokning har uppdaterats';
-        $strings['ReservationDeletedSubject'] = 'Bokning har tagits bort';
-        $strings['ReservationCreatedAdminSubject'] = 'Underrättelse: En bokning har gjorts';
+        // Email Subjects *** KOLLA ALLA ***
+        $strings['ReservationApprovedSubject'] = 'Din bokning har bekräftats';	// ändrat AR
+        $strings['ReservationCreatedSubject'] = 'Ny bokning';	// ändrat AR
+        $strings['ReservationUpdatedSubject'] = 'En bokning har uppdaterats';	// ändrat AR
+        $strings['ReservationDeletedSubject'] = 'En bokning har tagits bort';	// ändrat AR
+        $strings['ReservationCreatedAdminSubject'] = 'Underrättelse: Ny bokning';	// ändrat AR
         $strings['ReservationUpdatedAdminSubject'] = 'Underrättelse: En bokning har uppdaterats';
         $strings['ReservationDeleteAdminSubject'] = 'Underrättelse: En bokning har uppdaterats';
+		$strings['ReservationApprovalAdminSubject'] = 'Underrättelse: En bokning måste godkännas';  
         $strings['ParticipantAddedSubject'] = 'Underrättelse om bokningsdeltagande';
         $strings['ParticipantDeletedSubject'] = 'Bokning borttagen';
         $strings['InviteeAddedSubject'] = 'Bokningsinbjudan';
         $strings['ResetPassword'] = 'Återställningsbegäran av lösenord';
         $strings['ActivateYourAccount'] = 'Var vänlig och aktivera ert konto';
+		$strings['ReservationApprovedSubjectWithResource'] = 'En bokning har godkänts för %s'; // Ändrat AR hela vägen ner!
+		$strings['ReservationCreatedSubjectWithResource'] = 'Ny bokning av %s';
+		$strings['ReservationUpdatedSubjectWithResource'] = 'En bokning av %s har uppdaterats';
+		$strings['ReservationDeletedSubjectWithResource'] = 'En bokning av %s har tagits bort';
+		$strings['ReservationCreatedAdminSubjectWithResource'] = 'Underrättelse: Ny bokning av %s';
+		$strings['ReservationUpdatedAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s har uppdaterats';
+		$strings['ReservationDeleteAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s har tagits bort';
+		$strings['ReservationApprovalAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s måste godkännas';
+
         // End Email Subjects
 
         $this->Strings = $strings;
