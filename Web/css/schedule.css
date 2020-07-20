@@ -193,7 +193,8 @@ table.reservations.mobile div.reservable {
   border-left: solid 1px #36648B;
   z-index: 2;
 }
-.unreservable {
+.unreservable,
+.buffer {
   background-color: #CF9D9B;
   color: #fff;
   border-color: #482423;

@@ -162,7 +162,10 @@ function Schedule(opts, resourceGroups) {
 						return;
 					}
 
-					const className = res.IsReservation ? "reserved" : "unreservable";
+					var className = res.IsReservation ? "reserved" : "unreservable";
+					if (res.IsBuffer) {
+						className = "buffer";
+					}
 					const mine = res.IsOwner ? "mine" : "";
 					const participant = res.IsParticipant ? "participating" : "";
 					const past = res.IsPast ? "past" : "";
