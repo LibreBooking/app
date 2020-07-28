@@ -162,7 +162,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
                     new UserRepository(),
                     new GuestRegistrationNotificationStrategy(),
                     new GuestReservationPermissionStrategy($this))),
-            new AttributeService(new AttributeRepository()),
+            new AttributeService(new AttributeRepository(), new GuestPermissionService()),
             new ReservationRepository(),
             new TermsOfServiceRepository());
 
