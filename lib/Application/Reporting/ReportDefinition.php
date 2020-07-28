@@ -85,6 +85,7 @@ class ReportDefinition implements IReportDefinition
             ColumnNames::ORGANIZATION => new ReportStringColumn('Organization', ChartColumnDefinition::Null()),
             ColumnNames::USER_GROUP_LIST => new ReportStringColumn('Groups', ChartColumnDefinition::Null()),
             ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
+            ColumnNames::PARTICIPANT_LIST => new ReportStringColumn('Participants', ChartColumnDefinition::Null()),
             ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
             ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
             ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
@@ -138,6 +139,9 @@ class ReportDefinition implements IReportDefinition
         }
         if (array_key_exists(ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST, $row)) {
             $resourceTypeAttributes = CustomAttributes::Parse($row[ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST]);
+        }
+        if (array_key_exists(ColumnNames::PARTICIPANT_LIST, $row)) {
+            $row[ColumnNames::PARTICIPANT_LIST] = str_replace('!sep!', ', ', $row[ColumnNames::PARTICIPANT_LIST]);
         }
 
         $formattedRow = array();
