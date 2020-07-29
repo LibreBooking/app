@@ -878,8 +878,7 @@ class OwnerChangedEventCommand extends EventCommand
         foreach ($instances as $instance) {
             if (!$instance->IsNew()) {
                 $id = $instance->ReservationId();
-                $database->Execute(new RemoveReservationUserCommand($id, $oldOwnerId));
-                $database->Execute(new RemoveReservationUserCommand($id, $newOwnerId));
+                $database->Execute(new RemoveReservationUsersCommand($id, ReservationUserLevel::OWNER));
                 $database->Execute(new AddReservationUserCommand($id, $newOwnerId, ReservationUserLevel::OWNER));
             }
         }
