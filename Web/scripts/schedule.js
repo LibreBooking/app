@@ -255,6 +255,12 @@ function Schedule(opts, resourceGroups) {
 					let height = 0;
 					let top = startTd.position().top;
 					let left = startTd.position().left
+					let borderWidth = 0;
+					if (startTd.css('border-width')) {
+						borderWidth = Number.parseInt(startTd.css('border-width'));
+						left = left + borderWidth;
+					}
+
 					if (opts.scheduleStyle === ScheduleTall)
 					{
 						width = startTd.outerWidth();
@@ -268,7 +274,7 @@ function Schedule(opts, resourceGroups) {
 					{
 						height = startTd.outerHeight();
 						width = endTd.position().left - startTd.position().left + calculatedAdjustment;
-						top = startTd.position().top + (40 * numberOfConflicts);
+						top = startTd.position().top + (40 * numberOfConflicts) +borderWidth;
 						if (numberOfConflicts > 0)
 						{
 							startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
