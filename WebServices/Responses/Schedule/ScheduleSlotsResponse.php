@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ScheduleSlotResponse extends RestResponse
 {
 	/**
@@ -86,11 +87,10 @@ class ScheduleSlotDetailsResponse extends RestResponse
 	public function __construct(IRestServer $server, IReservationSlot $slot, IPrivacyFilter $privacyFilter)
 	{
 		$user = $server->GetSession();
-		$slotLabelFactory = $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory($user);
 
 		$this->slotSpan = $slot->PeriodSpan();
 		$this->isReserved = $slot->IsReserved();
-		$this->label = $slot->Label($slotLabelFactory);
+		$this->label = $slot->Label();
 		$this->isReservable = $slot->IsReservable();
 		$this->color = $slot->Color();
 		$this->startDateTime = $slot->BeginDate()->ToIso();
@@ -120,6 +120,14 @@ class ScheduleSlotResourceResponse extends RestResponse
 	 * @var IPrivacyFilter
 	 */
 	private $privacyFilter;
+	/**
+	 * @var int
+	 */
+	public $resourceId;
+	/**
+	 * @var string
+	 */
+	public $resourceName;
 
 	public function __construct(IRestServer $server, ResourceDto $resource, IPrivacyFilter $privacyFilter)
 	{
@@ -141,6 +149,10 @@ class ScheduleSlotResourceResponse extends RestResponse
 class ScheduleSlotsResponse extends RestResponse
 {
 	public $dates = array();
+	/**
+	 * @var int
+	 */
+	private $scheduleId;
 
 	/**
 	 * @param IRestServer $server
