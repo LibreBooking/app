@@ -164,10 +164,12 @@ class FormKeys
 
 	const ORGANIZATION = 'organization';
 	const ORIGINAL_RESOURCE_ID = 'ORIGINAL_RESOURCE_ID';
+	const OWNER_TEXT = 'ot';
 
 	const PARENT_ID = 'PARENT_ID';
 	const PARTICIPANT_LIST = 'participantList';
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
+	const PARTICIPANT_TEXT = 'pt';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
     const PAYPAL_ENABLED = 'ENABLE_PAYPAL';

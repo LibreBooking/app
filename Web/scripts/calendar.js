@@ -196,6 +196,37 @@ function Calendar(opts) {
             e.preventDefault();
             elements.moveErrorDialog.modal('hide');
         });
+
+        const ownerFilter = $("#ownerFilter");
+        const participantFilter = $("#participantFilter");
+
+        function selectOwner(ui, textbox) {
+            textbox.val(ui.item.label);
+            _options.eventsData.uid = ui.item.value;
+            _fullCalendar.fullCalendar('refetchEvents');
+        }
+
+        function selectParticipant(ui, textbox) {
+            textbox.val(ui.item.label);
+            _options.eventsData.pid = ui.item.value;
+            _fullCalendar.fullCalendar('refetchEvents');
+        }
+
+        if (ownerFilter.length != 0) {
+            ownerFilter.userAutoComplete(opts.autocompleteUrl, selectOwner);
+        }
+
+        if (participantFilter.length != 0) {
+            participantFilter.userAutoComplete(opts.autocompleteUrl, selectParticipant);
+        }
+
+        $("#clearUserFilter").on('click', function(e) {
+            _options.eventsData.uid = null;
+            _options.eventsData.pid = null;
+            ownerFilter.val('');
+            participantFilter.val('');
+            _fullCalendar.fullCalendar('refetchEvents');
+        });
     };
 
     Calendar.prototype.bindResourceGroups = function (resourceGroups, selectedNode) {

@@ -24,7 +24,6 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/GuestPermissionServiceFac
 
 class ViewSchedulePage extends SchedulePage
 {
-
     private $userRepository;
 
 	private $_styles = array(

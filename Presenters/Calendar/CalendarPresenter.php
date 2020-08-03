@@ -34,17 +34,20 @@ class CalendarPresenter extends CommonCalendarPresenter
      * @param int $selectedScheduleId
      * @param int $selectedResourceId
      */
-    protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId)
+    protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId, $selectedUserId, $selectedParticipantId)
     {
         $resources = $this->GetAllResources($userSession);
 
         $reservations = $this->reservationRepository->GetReservations(
             $this->GetStartDate(),
             $this->GetEndDate()->AddDays(1),
-            null,
+            $selectedUserId,
             null,
             $selectedScheduleId,
-            $selectedResourceId);
+            $selectedResourceId,
+            false,
+            $selectedParticipantId
+        );
 
         $dateRange = new DateRange($this->GetStartDate(), $this->GetEndDate()->AddDays(1));
         $blackouts = $this->reservationRepository->GetBlackoutsWithin(

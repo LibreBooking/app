@@ -65,6 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {jsfile src="reservationPopup.js"}
     {jsfile src="calendar.js"}
     {jsfile src="ajax-helpers.js"}
+    {jsfile src="autocomplete.js"}
     {jsfile src="js/tree.jquery.js"}
 
     <script type="text/javascript">
@@ -100,7 +101,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 subscriptionEnableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionEnableSubscription}',
                 subscriptionDisableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionDisableSubscription}',
                 moveReservationUrl: "{$Path}ajax/reservation_move.php",
-                returnTo: '{$pageUrl}'
+                returnTo: '{$pageUrl}',
+                autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
             };
 
             var calendar = new Calendar(options);

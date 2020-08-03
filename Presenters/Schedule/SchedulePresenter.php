@@ -142,7 +142,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 	public function LoadReservations()
     {
         $filter = $this->_page->GetReservationRequest();
-        $items = $this->_reservationService->Search($filter->DateRange(), $filter->ScheduleId(), $filter->ResourceIds());
+        $items = $this->_reservationService->Search($filter->DateRange(), $filter->ScheduleId(), $filter->ResourceIds(), $filter->OwnerId(), $filter->ParticipantId());
         $this->_page->BindReservations($items);
     }
 }

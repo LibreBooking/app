@@ -76,7 +76,7 @@ function ScheduleManagement(opts) {
 		deleteCustomTimeSlotForm: $('#deleteCustomTimeSlotForm'),
 		deleteSlot: $('#deleteSlot'),
 		confirmCreateSlotDialog: $('#confirmCreateSlotDialog'),
-		cancelCreateSlot: $('#cancelCreateSlot')
+		cancelCreateSlot: $('#cancelCreateSlot'),
 	};
 
 	ScheduleManagement.prototype.init = function () {

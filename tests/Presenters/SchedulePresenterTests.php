@@ -35,8 +35,8 @@ class SchedulePresenterTests extends TestBase
 
 		$this->scheduleId = 1;
 		$this->numDaysVisible = 10;
-		$this->currentSchedule = new Schedule($this->scheduleId, 'default', 1, '08:30', '19:00', 'America/New_York', 1, $this->numDaysVisible);
-		$otherSchedule = new Schedule(2, 'not default', 0, '08:30', '19:00', 1, 1, $this->numDaysVisible);
+		$this->currentSchedule = new Schedule($this->scheduleId, 'default', true, 1, $this->numDaysVisible, 'America/New_York', 1);
+		$otherSchedule = new Schedule(2, 'not default', false, 0, $this->numDaysVisible);
 
 		$this->schedules = array($this->currentSchedule, $otherSchedule);
 		$this->fakeConfig->SetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES,
@@ -793,7 +793,6 @@ class SchedulePresenterTests extends TestBase
 		$resourceService = $this->createMock('IResourceService');
 		$pageBuilder = $this->createMock('ISchedulePageBuilder');
 		$reservationService = $this->createMock('IReservationService');
-		$dailyLayoutFactory = $this->createMock('IDailyLayoutFactory');
 
 		$layout = $this->createMock('IScheduleLayout');
 
@@ -832,7 +831,7 @@ class SchedulePresenterTests extends TestBase
 				->method('SetLayoutResponse')
 				->with($this->equalTo($expectedLayoutResponse));
 
-		$presenter = new SchedulePresenter($page, $scheduleService, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
+		$presenter = new SchedulePresenter($page, $scheduleService, $resourceService, $pageBuilder, $reservationService);
 
 		$presenter->GetLayout($user);
 	}
@@ -910,8 +909,16 @@ class FakeSchedulePage implements ISchedulePage
 	 * @var ReservationListItem[]
 	 */
 	public $_BoundReservations = [];
+    /**
+     * @var int
+     */
+    public $_OwnerId;
+    /**
+     * @var int
+     */
+    public $_ParticipantId;
 
-	public function TakingAction()
+    public function TakingAction()
 	{
 	}
 
@@ -959,37 +966,18 @@ class FakeSchedulePage implements ISchedulePage
 	{
 	}
 
-	/**
-	 * Bind schedules to the page
-	 *
-	 * @param array|Schedule[] $schedules
-	 */
 	public function SetSchedules($schedules)
 	{
 	}
 
-	/**
-	 * Bind resources to the page
-	 *
-	 * @param array|ResourceDto[] $resources
-	 */
 	public function SetResources($resources)
 	{
 	}
 
-	/**
-	 * Bind layout to the page for daily time slot layouts
-	 *
-	 * @param IDailyLayout $dailyLayout
-	 */
 	public function SetDailyLayout($dailyLayout)
 	{
 	}
 
-	/**
-	 * Returns the currently selected scheduleId
-	 * @return int
-	 */
 	public function GetScheduleId()
 	{
 	}
@@ -1229,10 +1217,28 @@ class FakeSchedulePage implements ISchedulePage
 		return $this->_LoadReservationRequest;
 	}
 
-	public function BindReservations(array $items)
+	public function BindReservations($items)
 	{
 		$this->_BoundReservations = $items;
 	}
 
+    public function GetOwnerId()
+    {
+        return $this->_OwnerId;
+    }
 
+    public function GetParticipantId()
+    {
+        return $this->_ParticipantId;
+    }
+
+    public function GetOwnerText()
+    {
+        // TODO: Implement GetOwnerText() method.
+    }
+
+    public function GetParticipantText()
+    {
+        // TODO: Implement GetParticipantText() method.
+    }
 }

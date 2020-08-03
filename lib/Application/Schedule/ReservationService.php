@@ -70,9 +70,10 @@ class ReservationService implements IReservationService
 		return $reservationListing;
 	}
 
-	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null)
+	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null, $ownerId = null, $participantId = null)
 	{
-		$reservations = $this->_repository->GetReservations($dateRange->GetBegin(), $dateRange->GetEnd(), null, null, $scheduleId, $resourceIds);
+	    Log::Debug("owner %s participant %s", $ownerId, $participantId);
+		$reservations = $this->_repository->GetReservations($dateRange->GetBegin(), $dateRange->GetEnd(), $ownerId, null, $scheduleId, $resourceIds, false, $participantId);
 		$blackouts = $this->_repository->GetBlackoutsWithin($dateRange, $scheduleId, $resourceIds);
 
 		/** @var ReservationListItem[] $items */
@@ -105,7 +106,9 @@ interface IReservationService
 	 * @param DateRange $dateRange
 	 * @param int $scheduleId
 	 * @param null|int[] $resourceIds
+	 * @param null|int $ownerId
+	 * @param null|int $participantId
 	 * @return ReservationListItem[]
 	 */
-	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null);
+	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null, $ownerId = null, $participantId = null);
 }

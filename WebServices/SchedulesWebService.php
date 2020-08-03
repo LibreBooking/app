@@ -28,120 +28,115 @@ require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
 class SchedulesWebService
 {
-	/**
-	 * @var IRestServer
-	 */
-	private $server;
+    /**
+     * @var IRestServer
+     */
+    private $server;
 
-	/**
-	 * @var IScheduleRepositorRCOI
-	 */
-	private $scheduleRepository;
+    /**
+     * @var IScheduleRepositorRCOI
+     */
+    private $scheduleRepository;
 
-	/**
-	 * @var IPrivacyFilter
-	 */
-	private $privacyFilter;
+    /**
+     * @var IPrivacyFilter
+     */
+    private $privacyFilter;
 
-	public function __construct(IRestServer $server, IScheduleRepository $scheduleRepository, IPrivacyFilter $privacyFilter)
-	{
-		$this->server = $server;
-		$this->scheduleRepository = $scheduleRepository;
-		$this->privacyFilter = $privacyFilter;
-	}
+    public function __construct(IRestServer $server, IScheduleRepository $scheduleRepository, IPrivacyFilter $privacyFilter)
+    {
+        $this->server = $server;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->privacyFilter = $privacyFilter;
+    }
 
-	/**
-	 * @name GetAllSchedules
-	 * @description Loads all schedules
-	 * @response SchedulesResponse
-	 * @return void
-	 */
-	public function GetSchedules()
-	{
-		$schedules = $this->scheduleRepository->GetAll();
+    /**
+     * @name GetAllSchedules
+     * @description Loads all schedules
+     * @response SchedulesResponse
+     * @return void
+     */
+    public function GetSchedules()
+    {
+        $schedules = $this->scheduleRepository->GetAll();
 
-		$this->server->WriteResponse(new SchedulesResponse($this->server, $schedules));
-	}
+        $this->server->WriteResponse(new SchedulesResponse($this->server, $schedules));
+    }
 
-	/**
-	 * @name GetSchedule
-	 * @description Loads a specific schedule by id
-	 * @response ScheduleResponse
-	 * @param $scheduleId
-	 * @return void
-	 */
-	public function GetSchedule($scheduleId)
-	{
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
+    /**
+     * @name GetSchedule
+     * @description Loads a specific schedule by id
+     * @response ScheduleResponse
+     * @param $scheduleId
+     * @return void
+     */
+    public function GetSchedule($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
 
-		if ($schedule != null)
-		{
-			$layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($this->server->GetSession()->Timezone));
-			$this->server->WriteResponse(new ScheduleResponse($this->server, $schedule, $layout));
-		}
-		else
-		{
-			$this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
-		}
-	}
+        if ($schedule != null) {
+            $layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($this->server->GetSession()->Timezone));
+            $this->server->WriteResponse(new ScheduleResponse($this->server, $schedule, $layout));
+        }
+        else {
+            $this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
+        }
+    }
 
-	/**
-	 * @name GetSlots
-	 * @description Loads slots for a specific schedule
-	 * Optional query string parameters:  resourceId, startDateTime, endDateTime.
-	 * If no dates are provided the default schedule dates will be returned.
-	 * If dates do not include the timezone offset, the timezone of the authenticated user will be assumed.
-	 * @response ScheduleSlotsResponse
-	 * @param $scheduleId
-	 * @return void
-	 */
-	public function GetSlots($scheduleId)
-	{
-		$startDate = $this->GetDate(WebServiceQueryStringKeys::START_DATE_TIME);
-		$endDate = $this->GetDate(WebServiceQueryStringKeys::END_DATE_TIME);
+    /**
+     * @name GetSlots
+     * @description Loads slots for a specific schedule
+     * Optional query string parameters:  resourceId, startDateTime, endDateTime.
+     * If no dates are provided the default schedule dates will be returned.
+     * If dates do not include the timezone offset, the timezone of the authenticated user will be assumed.
+     * @response ScheduleSlotsResponse
+     * @param $scheduleId
+     * @return void
+     */
+    public function GetSlots($scheduleId)
+    {
+        $startDate = $this->GetDate(WebServiceQueryStringKeys::START_DATE_TIME);
+        $endDate = $this->GetDate(WebServiceQueryStringKeys::END_DATE_TIME);
 
 
         $resourceId = $this->server->GetQueryString(WebServiceQueryStringKeys::RESOURCE_ID);
 
-		$scheduleWebServiceView = new ScheduleWebServiceView($scheduleId, $startDate, $resourceId);
-		$permissionServiceFactory = new PermissionServiceFactory();
-		$scheduleRepository = new ScheduleRepository();
-		$userRepository = new UserRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()), $userRepository, new AccessoryRepository());
-		$builder = new ScheduleWebServicePageBuilder($startDate, $endDate, $resourceId);
-		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
-		$dailyLayoutFactory = new DailyLayoutFactory();
-		$scheduleService = new ScheduleService($scheduleRepository, $resourceService, new DailyLayoutFactory());
-		$presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService, $dailyLayoutFactory);
+        $scheduleWebServiceView = new ScheduleWebServiceView($scheduleId, $startDate, $resourceId);
+        $permissionServiceFactory = new PermissionServiceFactory();
+        $scheduleRepository = new ScheduleRepository();
+        $userRepository = new UserRepository();
+        $resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()), $userRepository, new AccessoryRepository());
+        $builder = new ScheduleWebServicePageBuilder($startDate, $endDate, $resourceId);
+        $reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
+        $dailyLayoutFactory = new DailyLayoutFactory();
+        $scheduleService = new ScheduleService($scheduleRepository, $resourceService, new DailyLayoutFactory());
+        $presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService, $dailyLayoutFactory);
 
-		$presenter->PageLoad($this->server->GetSession());
+        $presenter->PageLoad($this->server->GetSession());
 
-		$layout = $scheduleWebServiceView->GetDailyLayout();
-		$isError = $scheduleWebServiceView->IsPermissionError();
-		$dates = $scheduleWebServiceView->GetDates();
-		$resources = $scheduleWebServiceView->GetResources();
+        $layout = $scheduleWebServiceView->GetDailyLayout();
+        $isError = $scheduleWebServiceView->IsPermissionError();
+        $dates = $scheduleWebServiceView->GetDates();
+        $resources = $scheduleWebServiceView->GetResources();
 
-		if ($isError)
-		{
-			$this->server->WriteResponse(RestResponse::Unauthorized(), RestResponse::UNAUTHORIZED_CODE);
-		}
-		else
-		{
-			$response = new ScheduleSlotsResponse($this->server, $scheduleId, $layout, $dates, $resources, $this->privacyFilter);
-			$this->server->WriteResponse($response);
-		}
-	}
+        if ($isError) {
+            $this->server->WriteResponse(RestResponse::Unauthorized(), RestResponse::UNAUTHORIZED_CODE);
+        }
+        else {
+            $response = new ScheduleSlotsResponse($this->server, $scheduleId, $layout, $dates, $resources, $this->privacyFilter);
+            $this->server->WriteResponse($response);
+        }
+    }
 
-	private function GetDate($queryStringKey)
-	{
-		$dateQueryString = $this->server->GetQueryString($queryStringKey);
-		if (empty($dateQueryString))
-		{
-			return null;
-		}
+    private function GetDate($queryStringKey)
+    {
+        $dateQueryString = $this->server->GetQueryString($queryStringKey);
+        if (empty($dateQueryString)) {
+            return null;
+        }
 
-		return WebServiceDate::GetDate($dateQueryString, $this->server->GetSession());
-	}
+        return WebServiceDate::GetDate($dateQueryString, $this->server->GetSession());
+    }
 }
 
 
@@ -152,73 +147,72 @@ class ScheduleWebServicePageBuilder extends SchedulePageBuilder
     private $resourceId;
 
     public function __construct($startDate, $endDate, $resourceId)
-	{
-		$this->startDate = is_null($startDate) ? null : $startDate;
-		$this->endDate = is_null($endDate) ? null : $endDate;
-		$this->resourceId = empty($resourceId) ? null : $resourceId;
-	}
+    {
+        $this->startDate = is_null($startDate) ? null : $startDate;
+        $this->endDate = is_null($endDate) ? null : $endDate;
+        $this->resourceId = empty($resourceId) ? null : $resourceId;
+    }
 
-	public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree)
-	{
-		// no op
-	}
+    public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree)
+    {
+        // no op
+    }
 
-	public function BindResourceTypes(ISchedulePage $page, $resourceTypes)
-	{
-		// no op
-	}
+    public function BindResourceTypes(ISchedulePage $page, $resourceTypes)
+    {
+        // no op
+    }
 
-	public function GetGroupId($scheduleId, ISchedulePage $page)
-	{
-		// no op
-	}
+    public function GetGroupId($scheduleId, ISchedulePage $page)
+    {
+        // no op
+    }
 
     public function GetResourceIds($scheduleId, ISchedulePage $page)
-	{
-		return array($this->resourceId);
-	}
+    {
+        return array($this->resourceId);
+    }
 
-	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter, $resourceCustomAttributes, $resourceTypeCustomAttributes)
-	{
-		// no op
-	}
+    public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter, $resourceCustomAttributes, $resourceTypeCustomAttributes)
+    {
+        // no op
+    }
 
-	public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
-	{
-		if ($this->startDate != null && $this->endDate != null)
-		{
-			return new DateRange($this->startDate, $this->endDate->AddDays(1));
-		}
-		return parent::GetScheduleDates($user, $schedule, $page);
-	}
+    public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
+    {
+        if ($this->startDate != null && $this->endDate != null) {
+            return new DateRange($this->startDate, $this->endDate->AddDays(1));
+        }
+        return parent::GetScheduleDates($user, $schedule, $page);
+    }
 }
 
 class ScheduleWebServiceView implements ISchedulePage
 {
-	/**
-	 * @var int
-	 */
-	private $scheduleId;
+    /**
+     * @var int
+     */
+    private $scheduleId;
 
-	/**
-	 * @var IDailyLayout
-	 */
-	private $dailyLayout;
+    /**
+     * @var IDailyLayout
+     */
+    private $dailyLayout;
 
-	/**
-	 * @var bool
-	 */
-	private $isPermissionError;
+    /**
+     * @var bool
+     */
+    private $isPermissionError;
 
-	/**
-	 * @var DateRange
-	 */
-	private $dates;
+    /**
+     * @var DateRange
+     */
+    private $dates;
 
-	/**
-	 * @var ResourceDto[]
-	 */
-	private $resources;
+    /**
+     * @var ResourceDto[]
+     */
+    private $resources;
 
     /**
      * @var int
@@ -246,284 +240,284 @@ class ScheduleWebServiceView implements ISchedulePage
     private $allowConcurrentReservations;
 
     public function __construct($scheduleId, $startDate, $resourceId)
-	{
-		$this->scheduleId = $scheduleId;
-		$this->startDate = $startDate;
+    {
+        $this->scheduleId = $scheduleId;
+        $this->startDate = $startDate;
         $this->resourceId = $resourceId;
-	}
+    }
 
-	public function SetSchedules($schedules)
-	{
-		// no op
-	}
+    public function SetSchedules($schedules)
+    {
+        // no op
+    }
 
-	public function SetResources($resources)
-	{
-		$this->resources = $resources;
-	}
+    public function SetResources($resources)
+    {
+        $this->resources = $resources;
+    }
 
-	public function SetDailyLayout($dailyLayout)
-	{
-		$this->dailyLayout = $dailyLayout;
-	}
+    public function SetDailyLayout($dailyLayout)
+    {
+        $this->dailyLayout = $dailyLayout;
+    }
 
-	public function GetScheduleId()
-	{
-		return $this->scheduleId;
-	}
+    public function GetScheduleId()
+    {
+        return $this->scheduleId;
+    }
 
-	public function SetScheduleId($scheduleId)
-	{
-		// no op
-	}
+    public function SetScheduleId($scheduleId)
+    {
+        // no op
+    }
 
-	public function SetScheduleName($scheduleName)
-	{
-		// no op
-	}
+    public function SetScheduleName($scheduleName)
+    {
+        // no op
+    }
 
-	public function SetFirstWeekday($firstWeekday)
-	{
-		// no op
-	}
+    public function SetFirstWeekday($firstWeekday)
+    {
+        // no op
+    }
 
-	public function SetDisplayDates($dates)
-	{
-		$this->dates = $dates;
-	}
+    public function SetDisplayDates($dates)
+    {
+        $this->dates = $dates;
+    }
 
-	public function SetSpecificDates($specificDates)
-	{
-		// no op
-	}
+    public function SetSpecificDates($specificDates)
+    {
+        // no op
+    }
 
-	public function SetPreviousNextDates($previousDate, $nextDate)
-	{
-		// TODO: Implement SetPreviousNextDates() method.
-	}
+    public function SetPreviousNextDates($previousDate, $nextDate)
+    {
+        // TODO: Implement SetPreviousNextDates() method.
+    }
 
-	public function GetSelectedDate()
-	{
-		return empty($this->startDate) ? null : $this->startDate->Format("Y-m-d");
-	}
+    public function GetSelectedDate()
+    {
+        return empty($this->startDate) ? null : $this->startDate->Format("Y-m-d");
+    }
 
-	public function GetSelectedDates()
-	{
-		return array();
-	}
+    public function GetSelectedDates()
+    {
+        return array();
+    }
 
-	public function ShowInaccessibleResources()
-	{
-		return false;
-	}
+    public function ShowInaccessibleResources()
+    {
+        return false;
+    }
 
-	public function ShowFullWeekToggle($showShowFullWeekToggle)
-	{
-		// no op
-	}
+    public function ShowFullWeekToggle($showShowFullWeekToggle)
+    {
+        // no op
+    }
 
-	public function GetShowFullWeek()
-	{
-		return false;
-	}
+    public function GetShowFullWeek()
+    {
+        return false;
+    }
 
-	public function SetLayoutResponse($layoutResponse)
-	{
-		// no op
-	}
+    public function SetLayoutResponse($layoutResponse)
+    {
+        // no op
+    }
 
-	/**
-	 * @return string
-	 */
-	public function GetLayoutDate()
-	{
-		// TODO: Implement GetLayoutDate() method.
-	}
+    /**
+     * @return string
+     */
+    public function GetLayoutDate()
+    {
+        // TODO: Implement GetLayoutDate() method.
+    }
 
-	public function GetScheduleStyle($scheduleId)
-	{
-		return ScheduleStyle::Standard;
-	}
+    public function GetScheduleStyle($scheduleId)
+    {
+        return ScheduleStyle::Standard;
+    }
 
-	public function SetScheduleStyle($direction)
-	{
-		// no op
-	}
+    public function SetScheduleStyle($direction)
+    {
+        // no op
+    }
 
-	public function GetGroupId()
-	{
-		return null;
-	}
+    public function GetGroupId()
+    {
+        return null;
+    }
 
-	public function GetResourceId()
-	{
-		return null;
-	}
+    public function GetResourceId()
+    {
+        return null;
+    }
 
-	/**
-	 * @return int[]
-	 */
-	public function GetResourceIds()
-	{
-		return array($this->resourceId);
-	}
+    /**
+     * @return int[]
+     */
+    public function GetResourceIds()
+    {
+        return array($this->resourceId);
+    }
 
-	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
-	{
-		// no op
-	}
+    public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
+    {
+        // no op
+    }
 
-	public function SetResourceTypes($resourceTypes)
-	{
-		// no op
-	}
+    public function SetResourceTypes($resourceTypes)
+    {
+        // no op
+    }
 
-	public function SetResourceCustomAttributes($attributes)
-	{
-		// no op
-	}
+    public function SetResourceCustomAttributes($attributes)
+    {
+        // no op
+    }
 
-	public function SetResourceTypeCustomAttributes($attributes)
-	{
-		// no op
-	}
+    public function SetResourceTypeCustomAttributes($attributes)
+    {
+        // no op
+    }
 
-	public function FilterSubmitted()
-	{
-		return !empty($this->scheduleId) || !empty($this->resourceId);
-	}
+    public function FilterSubmitted()
+    {
+        return !empty($this->scheduleId) || !empty($this->resourceId);
+    }
 
-	public function GetResourceTypeId()
-	{
-		return null;
-	}
+    public function GetResourceTypeId()
+    {
+        return null;
+    }
 
-	public function GetMaxParticipants()
-	{
-		return null;
-	}
+    public function GetMaxParticipants()
+    {
+        return null;
+    }
 
-	public function GetResourceAttributes()
-	{
-		return array();
-	}
+    public function GetResourceAttributes()
+    {
+        return array();
+    }
 
-	public function GetResourceTypeAttributes()
-	{
-		return array();
-	}
+    public function GetResourceTypeAttributes()
+    {
+        return array();
+    }
 
-	public function SetFilter($resourceFilter)
-	{
-		// no op
-	}
+    public function SetFilter($resourceFilter)
+    {
+        // no op
+    }
 
-	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
-	{
-		// no op
-	}
+    public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
+    {
+        // no op
+    }
 
-	public function ShowPermissionError($shouldShow)
-	{
-		$this->isPermissionError = $shouldShow;
-	}
+    public function ShowPermissionError($shouldShow)
+    {
+        $this->isPermissionError = $shouldShow;
+    }
 
-	public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
-	{
-		return $user->Timezone;
-	}
+    public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
+    {
+        return $user->Timezone;
+    }
 
-	public function TakingAction()
-	{
-		return false;
-	}
+    public function TakingAction()
+    {
+        return false;
+    }
 
-	public function GetAction()
-	{
-		return null;
-	}
+    public function GetAction()
+    {
+        return null;
+    }
 
-	public function RequestingData()
-	{
-		return false;
-	}
+    public function RequestingData()
+    {
+        return false;
+    }
 
-	public function GetDataRequest()
-	{
-		return null;
-	}
+    public function GetDataRequest()
+    {
+        return null;
+    }
 
-	public function PageLoad()
-	{
-		// no op
-	}
+    public function PageLoad()
+    {
+        // no op
+    }
 
-	public function Redirect($url)
-	{
-		// no op
-	}
+    public function Redirect($url)
+    {
+        // no op
+    }
 
-	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
-	{
-		// no op
-	}
+    public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+    {
+        // no op
+    }
 
-	public function IsPostBack()
-	{
-		return false;
-	}
+    public function IsPostBack()
+    {
+        return false;
+    }
 
-	public function IsValid()
-	{
-		return true;
-	}
+    public function IsValid()
+    {
+        return true;
+    }
 
-	public function GetLastPage($defaultPage = '')
-	{
-		return null;
-	}
+    public function GetLastPage($defaultPage = '')
+    {
+        return null;
+    }
 
-	public function RegisterValidator($validatorId, $validator)
-	{
-		// no op
-	}
+    public function RegisterValidator($validatorId, $validator)
+    {
+        // no op
+    }
 
-	/**
-	 * @return IDailyLayout
-	 */
-	public function GetDailyLayout()
-	{
-		return $this->dailyLayout;
-	}
+    /**
+     * @return IDailyLayout
+     */
+    public function GetDailyLayout()
+    {
+        return $this->dailyLayout;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function IsPermissionError()
-	{
-		return $this->isPermissionError;
-	}
+    /**
+     * @return boolean
+     */
+    public function IsPermissionError()
+    {
+        return $this->isPermissionError;
+    }
 
-	/**
-	 * @return DateRange
-	 */
-	public function GetDates()
-	{
-		return $this->dates;
-	}
+    /**
+     * @return DateRange
+     */
+    public function GetDates()
+    {
+        return $this->dates;
+    }
 
-	/**
-	 * @return ResourceDto[]
-	 */
-	public function GetResources()
-	{
-		return $this->resources;
-	}
+    /**
+     * @return ResourceDto[]
+     */
+    public function GetResources()
+    {
+        return $this->resources;
+    }
 
-	public function EnforceCSRFCheck()
-	{
-		// no-op
-	}
+    public function EnforceCSRFCheck()
+    {
+        // no-op
+    }
 
 
     public function GetSortField()
@@ -538,7 +532,7 @@ class ScheduleWebServiceView implements ISchedulePage
 
     public function FilterCleared()
     {
-       return false;
+        return false;
     }
 
     public function BindScheduleAvailability($availability, $tooEarly)
@@ -552,7 +546,7 @@ class ScheduleWebServiceView implements ISchedulePage
         $this->allowConcurrentReservations = $allowConcurrentReservations;
     }
 
-	public function GetReservationRequest()
+    public function GetReservationRequest()
     {
         // no-op
         return null;
@@ -561,5 +555,25 @@ class ScheduleWebServiceView implements ISchedulePage
     public function BindReservations($items)
     {
         // no-op
+    }
+
+    public function GetOwnerId()
+    {
+        return null;
+    }
+
+    public function GetParticipantId()
+    {
+        return null;
+    }
+
+    public function GetOwnerText()
+    {
+        return null;
+    }
+
+    public function GetParticipantText()
+    {
+        return null;
     }
 }

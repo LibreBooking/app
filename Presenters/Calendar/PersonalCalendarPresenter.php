@@ -76,7 +76,7 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
         $this->page->BindSubscription($details);
     }
 
-    protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId)
+    protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId, $selectedUserId, $selectedParticipantId)
     {
         $reservations = $this->reservationRepository->GetReservations($this->GetStartDate(), $this->GetEndDate()->AddDays(1), $userSession->UserId,
             ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId, true);

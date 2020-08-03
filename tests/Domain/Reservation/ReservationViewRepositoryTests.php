@@ -349,7 +349,7 @@ class ReservationViewRepositoryTests extends TestBase
 
         $this->db->SetRows($rows);
 
-        $reservationCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER, array($scheduleId), array($resourceId));
+        $reservationCommand = new GetReservationListCommand($startDate, $endDate, array($userId), ReservationUserLevel::OWNER, array($scheduleId), array($resourceId), null);
         $reservationColorsCommand = new GetReservationColorRulesCommand();
         $reservations = $this->repository->GetReservations($startDate, $endDate, $userId, null, $scheduleId, $resourceId);
 
