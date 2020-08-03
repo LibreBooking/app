@@ -984,6 +984,9 @@ class Queries
 	const REMOVE_RESERVATION_USER =
 			'DELETE FROM `reservation_users` WHERE `reservation_instance_id` = @reservationid AND `user_id` = @userid';
 
+	const REMOVE_RESERVATION_USERS =
+			'DELETE FROM `reservation_users` WHERE `reservation_instance_id` = @reservationid AND `reservation_user_level` = @levelid';
+
 	const REMOVE_RESOURCE_FROM_GROUP = 'DELETE FROM `resource_group_assignment` WHERE `resource_group_id` = @resourcegroupid AND `resource_id` = @resourceid';
 
 	const ADD_RESOURCE =

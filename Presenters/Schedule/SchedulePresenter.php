@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
@@ -28,12 +28,14 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePageBuilder.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-interface ISchedulePresenter {
+interface ISchedulePresenter
+{
 
     public function PageLoad(UserSession $user);
 }
 
-class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
+class SchedulePresenter extends ActionPresenter implements ISchedulePresenter
+{
 
     /**
      * @var ISchedulePage
@@ -83,7 +85,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
         $this->_reservationService = $reservationService;
     }
 
-    public function PageLoad(UserSession $user)
+	public function PageLoad(UserSession $user, $loadReservations = false)
     {
         $showInaccessibleResources = $this->_page->ShowInaccessibleResources();
 
@@ -121,7 +123,18 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
         $resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $user, $filter);
 
-		$dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), new EmptyReservationListing());
+		$reservationListing = new EmptyReservationListing();
+		if ($loadReservations)
+		{
+			$rids = array();
+			foreach ($resources as $resource)
+			{
+				$rids[] = $resource->Id;
+			}
+			$reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone, $rids);
+		}
+
+		$dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), $reservationListing);
 
         $this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
     }

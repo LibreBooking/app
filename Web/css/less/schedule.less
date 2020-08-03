@@ -16,9 +16,9 @@ table.reservations {
     z-index: 100;
   }
 
-  td, th {
-    .border-radius();
-  }
+  //td, th {
+  //  .border-radius();
+  //}
 
   td {
     border: solid #36648B 1px;
@@ -28,7 +28,7 @@ table.reservations {
   }
 
   td.resourcename {
-    padding: 1px 3px;
+    padding: 0 3px;
     background-color: #EDEDED;
     color: #999999;
     width: 150px;
@@ -151,16 +151,16 @@ table.reservations.mobile {
   position: absolute;
   background-color: #000;
   height: 40px;
-  border-top: solid 1px #36648B;
-  border-left: solid 1px #36648B;
   z-index: 2;
+  border-bottom: solid 1px #36648B;
+  border-right: solid 1px #36648B;
 }
 
 .condensed-event {
 
 }
 
-.unreservable {
+.unreservable, .buffer {
   background-color: #CF9D9B;
   color: #fff;
   border-color: darken(#CF9D9B, 50);

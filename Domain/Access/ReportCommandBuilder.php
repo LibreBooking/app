@@ -41,7 +41,7 @@ class ReportCommandBuilder
 							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
 								FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `ri`.`series_id` AND `cav`.`attribute_category` = 1) as `attribute_list`,
 							(SELECT GROUP_CONCAT(CONCAT(`participant_users`.`fname`, " ", `participant_users`.`lname`) SEPARATOR "!sep!")
-								FROM `reservation_users` `participants` INNER JOIN `users` `participant_users` ON `participant_users`.`user_id` = `participants`.`user_id` WHERE `participants`.`reservation_instance_id` = `ri`.`reservation_instance_id` AND `participants`.`reservation_user_level` = 2) as `participant_list`,
+								FROM `reservation_users` `participants` INNER JOIN `users` `participant_users` ON `participant_users`.`user_id` = `participants`.`user_id` WHERE `participants`.`reservation_instance_id` = `ri`.`reservation_instance_id` AND `participants`.`reservation_user_level` = 2 ORDER BY `lname`, `fname`) as `participant_list`,
 							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
 								FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `rs`.`owner_id` AND `cav`.`attribute_category` = 2) as `user_attribute_list`,
 							(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`,\'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
@@ -52,9 +52,9 @@ class ReportCommandBuilder
 								FROM `groups` `g` LEFT JOIN `user_groups` `ug` ON `g`.`group_id` = `ug`.`group_id` WHERE `ug`.`user_id` = `owner`.`user_id`) as `user_group_list`
 								';
 
-	const COUNT_FRAGMENT = 'COUNT(1) as `total`';
+	const COUNT_FRAGMENT = 'COUNT(1) as `total`, TIMESTAMPDIFF(SECOND, `ri`.`start_date`, `ri`.`end_date`) as `duration`';
 
-	const TOTAL_TIME_FRAGMENT = 'SUM( UNIX_TIMESTAMP(LEAST(`ri`.`end_date`, @endDate)) - UNIX_TIMESTAMP(GREATEST(`ri`.`start_date`, @startDate)) ) AS `totalTime`';
+	const TOTAL_TIME_FRAGMENT = 'SUM( UNIX_TIMESTAMP(LEAST(`ri`.`end_date`, @endDate)) - UNIX_TIMESTAMP(GREATEST(`ri`.`start_date`, @startDate)) ) AS `totalTime`, TIMESTAMPDIFF(SECOND, `ri`.`start_date`, `ri`.`end_date`) as `duration`';
 
 	const DURATION_FRAGMENT = '`ri`.`start_date`, `ri`.`end_date`';
 

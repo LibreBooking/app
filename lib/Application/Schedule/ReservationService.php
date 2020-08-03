@@ -80,6 +80,9 @@ class ReservationService implements IReservationService
 		$items = [];
 		foreach ($reservations as $i)
 		{
+			if ($i->ReferenceNumber == '5ee21abc99fa0714161184') {
+				Log::Error("got it %s", 's');
+			}
 			$items[] = new ReservationListItem($i);
 		}
 		foreach ($blackouts as $i)

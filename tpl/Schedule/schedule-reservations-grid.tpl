@@ -8,9 +8,10 @@
     {$periods.$ts = $DailyLayout->GetPeriods($date, true)}
     {$slots.$ts = $DailyLayout->GetPeriods($date, false)}
     {assign var=count value=$periods[$ts]|count}
+    {assign var=slotCount value=$slots[$ts]|count}
     {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
-    {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
-    {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}
+    {assign var=min value=$slots[$ts][0]->BeginDate()->TimeStamp()}
+    {assign var=max value=$slots[$ts][$slotCount-1]->EndDate()->TimeStamp()}
     <table class="reservations" data-min="{$min}" data-max="{$max}">
         <thead>
         {if $date->DateEquals($TodaysDate)}

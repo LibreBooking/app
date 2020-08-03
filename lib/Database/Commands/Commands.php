@@ -2307,6 +2307,17 @@ class RemoveReservationUserCommand extends SqlCommand
 	}
 }
 
+class RemoveReservationUsersCommand extends SqlCommand
+{
+	public function __construct($instanceId, $levelId)
+	{
+		parent::__construct(Queries::REMOVE_RESERVATION_USERS);
+
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $levelId));
+	}
+}
+
 class RemoveResourceFromGroupCommand extends SqlCommand
 {
 	public function __construct($resourceId, $groupId)
