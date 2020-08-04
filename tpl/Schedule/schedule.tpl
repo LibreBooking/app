@@ -438,6 +438,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
     };
 
+    const resourceOrder = [];
+    let resourceIndex = 0;
+    {foreach from=$Resources item=r}
+    resourceOrder[{$r->GetId()}] = resourceIndex++;
+    {/foreach}
+    scheduleOpts.resourceOrder = resourceOrder;
+
     {if $LoadViewOnly}
     scheduleOpts.reservationUrlTemplate = "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]";
     scheduleOpts.reservationLoadUrl = "{$Path}{Pages::VIEW_SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations";
