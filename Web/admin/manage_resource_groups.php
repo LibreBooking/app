@@ -23,5 +23,5 @@ define('ROOT_DIR', '../../');
 require_once(ROOT_DIR . 'Pages/Admin/ManageResourceGroupsPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageResourceGroupsPresenter.php');
 
-$page = new AdminPageDecorator(new ManageResourceGroupsPage());
+$page = new RoleRestrictedPageDecorator(new ManageResourceGroupsPage(), array(RoleLevel::APPLICATION_ADMIN, RoleLevel::SCHEDULE_ADMIN, RoleLevel::RESOURCE_ADMIN));
 $page->PageLoad();
