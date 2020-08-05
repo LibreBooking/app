@@ -1126,6 +1126,7 @@ table.reservations thead td {
   position: sticky;
   top: 50px;
   z-index: 100;
+  background-clip: padding-box;
 }
 table.reservations td {
   border: solid #36648B 1px;
