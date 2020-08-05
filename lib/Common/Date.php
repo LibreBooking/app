@@ -109,35 +109,35 @@ class Date
 			return NullDate::Instance();
 		}
 
-/*
- * This wasn't producing correct results. 
- * Parameter $datestring is provided in ISO 8601 format and therefore has the correct timezone
- * This then needs to be converted to UTC.
- * 
-		$offset = '';
-		$strLen = strlen($dateString);
-		$hourAdjustment = 0;
-		$minuteAdjustment = 0;
-		if ($strLen > 5)
-		{
-			$offset = substr($dateString, -5);
-			$hourAdjustment = substr($offset, 1, 2);
-			$minuteAdjustment = substr($offset, 3, 2);
-		}
+		/*
+		 * This wasn't producing correct results.
+		 * Parameter $datestring is provided in ISO 8601 format and therefore has the correct timezone
+		 * This then needs to be converted to UTC.
+		 *
+				$offset = '';
+				$strLen = strlen($dateString);
+				$hourAdjustment = 0;
+				$minuteAdjustment = 0;
+				if ($strLen > 5)
+				{
+					$offset = substr($dateString, -5);
+					$hourAdjustment = substr($offset, 1, 2);
+					$minuteAdjustment = substr($offset, 3, 2);
+				}
 
-		if (BookedStringHelper::Contains($offset, '+'))
-		{
-			$hourAdjustment *= -1;
-			$minuteAdjustment *= -1;
-		}
+				if (BookedStringHelper::Contains($offset, '+'))
+				{
+					$hourAdjustment *= -1;
+					$minuteAdjustment *= -1;
+				}
 
-		$parsed = date_parse($dateString);
+				$parsed = date_parse($dateString);
 
-		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment,						  $parsed['second'], 'UTC');
- */
-        
-        $dt = new DateTime($dateString);
-        $utc = $dt->setTimezone(new DateTimeZone('UTC'));
+				$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment,						  $parsed['second'], 'UTC');
+		 */
+
+		$dt = new DateTime($dateString);
+		$utc = $dt->setTimezone(new DateTimeZone('UTC'));
 
 		$d = Date::Create($utc->format('Y'), $utc->format('m'), $utc->format('d'), $utc->format('H'), $utc->format('i'), $utc->format('s'), 'UTC');
 
@@ -801,24 +801,24 @@ class NullDate extends Date
 	}
 
 	public function LessThan(Date $end)
-    {
-        return false;
-    }
+	{
+		return false;
+	}
 
-    public function GreaterThan(Date $end)
-    {
-        return false;
-    }
+	public function GreaterThan(Date $end)
+	{
+		return false;
+	}
 
-    public function Timestamp()
-    {
-        return 0;
-    }
+	public function Timestamp()
+	{
+		return 0;
+	}
 
-    public function ToIso()
-    {
-        return '';
-    }
+	public function ToIso()
+	{
+		return '';
+	}
 }
 
 class DateDiff
@@ -1013,7 +1013,7 @@ class DateDiff
 		return $this->seconds > $diff->seconds;
 	}
 
-    /**
+	/**
 	 * @param DateDiff $diff
 	 * @return bool
 	 */
@@ -1028,6 +1028,24 @@ class DateDiff
 	public function Invert()
 	{
 		return new DateDiff($this->seconds * -1);
+	}
+
+	/**
+	 * @param false $short
+	 * @return string
+	 */
+	public function ToString($short = false)
+	{
+		if ($short)
+		{
+			if ($this->TotalSeconds() > 0)
+			{
+				return $this->Days() . 'd' . $this->Hours() . 'h' . $this->Minutes() . 'm';
+			}
+			return '';
+		}
+
+		return $this->__toString();
 	}
 
 	/**

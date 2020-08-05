@@ -795,6 +795,7 @@ class en_us extends Language
         $strings['AllowConcurrentReservations'] = 'Allow concurrent reservations';
         $strings['ResourceDisplayInstructions'] = 'No resource has been selected. You can find the URL to display a resource in Application Management, Resources. The resource must be publicly accessible.';
         $strings['Owner'] = 'Owner';
+		$strings['MaximumConcurrentReservations'] = 'Maximum Concurrent Reservations';
         // End Strings
 
 		// Install

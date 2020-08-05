@@ -47,6 +47,7 @@ class ResourceImportCsvRow
     public $autoreleaseMinutes;
     public $credits;
     public $creditsPeak;
+	public $maximumConcurrent;
 	public $attributes = array();
 
 	private $values = array();
@@ -89,6 +90,7 @@ class ResourceImportCsvRow
         $this->autoreleaseMinutes = $this->valueOrDefault('autoreleaseMinutes');
         $this->credits = $this->valueOrDefault('credits');
         $this->creditsPeak = $this->valueOrDefault('creditsPeak');
+		$this->maximumConcurrent = $this->valueOrDefault('concurrentReservations');
 
         foreach ($attributes as $label => $attribute)
 		{
@@ -145,6 +147,7 @@ class ResourceImportCsvRow
 		$indexes['autoreleaseMinutes'] = self::indexOrFalse('autorelease minutes', $values);
 		$indexes['credits'] = self::indexOrFalse('credits (off peak)', $values);
 		$indexes['creditsPeak'] = self::indexOrFalse('credits (peak)', $values);
+		$indexes['concurrentReservations'] = self::indexOrFalse('maximum concurrent reservations', $values);
 
 		foreach ($attributes as $label => $attribute)
 		{

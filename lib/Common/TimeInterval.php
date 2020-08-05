@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class TimeInterval
 {
 	/**
@@ -181,6 +182,23 @@ class TimeInterval
 		return '';
 	}
 
+	/**
+	 * @return string
+	 */
+	public function ToShortString()
+	{
+		if ($this->interval != null)
+		{
+			return $this->interval->ToString(true);
+		}
+
+		return '';
+	}
+
+	/**
+	 * @param bool $includeTotalHours
+	 * @return string
+	 */
 	public function ToString($includeTotalHours)
 	{
 		if ($includeTotalHours)

@@ -508,7 +508,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<label for="resourceAdminGroupId">{translate key='ResourceAdministrator'}</label>
 							<select class="form-control" {formname key=RESOURCE_ADMIN_GROUP_ID}
 									id="resourceAdminGroupId">
-								<option value="">{translate key=None}</option>
+								{if $CanViewAdmin}<option value="">{translate key=None}</option>{/if}
                                 {foreach from=$AdminGroups item=adminGroup}
 									<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
                                 {/foreach}

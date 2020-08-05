@@ -978,6 +978,7 @@ class ManageResourcesPresenter extends ActionPresenter
                 $resource->SetCheckin($row->checkIn, $row->autoreleaseMinutes);
                 $resource->SetCreditsPerSlot($row->credits);
                 $resource->SetPeakCreditsPerSlot($row->creditsPeak);
+				$resource->SetMaxConcurrentReservations($row->maximumConcurrent);
 
                 foreach ($row->attributes as $label => $value) {
                     if (empty($value)) {
