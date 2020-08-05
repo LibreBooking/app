@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </div>
 
 
-    {if $CanViewUsers}
+    {if false}
         <div class="col-xs-12">
             <div class="form-group inline">
                 <label for="ownerFilter">{translate key=Owner}</label>

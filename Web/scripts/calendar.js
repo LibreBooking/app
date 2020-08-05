@@ -197,8 +197,7 @@ function Calendar(opts) {
             elements.moveErrorDialog.modal('hide');
         });
 
-        const ownerFilter = $("#ownerFilter");
-        const participantFilter = $("#participantFilter");
+
 
         function selectOwner(ui, textbox) {
             textbox.val(ui.item.label);
@@ -212,11 +211,14 @@ function Calendar(opts) {
             _fullCalendar.fullCalendar('refetchEvents');
         }
 
-        if (ownerFilter.length != 0) {
+        const ownerFilter = $("#ownerFilter");
+        const participantFilter = $("#participantFilter");
+
+        if (ownerFilter.length !== 0) {
             ownerFilter.userAutoComplete(opts.autocompleteUrl, selectOwner);
         }
 
-        if (participantFilter.length != 0) {
+        if (participantFilter.length !== 0) {
             participantFilter.userAutoComplete(opts.autocompleteUrl, selectParticipant);
         }
 
