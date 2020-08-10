@@ -193,6 +193,8 @@ class Installer
             return $result;
         }
 
+        @mysqli_query($link, "SET foreign_key_checks = 0;");
+
         $sqlArray = explode(';', $script->GetFullSql());
         foreach ($sqlArray as $stmt)
         {
@@ -208,6 +210,8 @@ class Installer
                 }
             }
         }
+
+        @mysqli_query($link, "SET foreign_key_checks = 1;");
 
         $result->SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt);
 
