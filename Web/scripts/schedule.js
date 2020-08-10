@@ -269,7 +269,7 @@ function Schedule(opts, resourceGroups) {
 					let width = 0;
 					let height = 0;
 					let top = startTd.position().top;
-					let left = startTd.position().left
+					let left = startTd.position().left;
 					if (opts.scheduleStyle === ScheduleTall)
 					{
 						width = startTd.outerWidth();
