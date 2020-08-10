@@ -147,7 +147,7 @@ table.reservations.mobile {
   overflow: hidden;
 }
 
-.event {
+.event, .buffer {
   overflow: hidden;
   position: absolute;
   background-color: #000;
@@ -155,6 +155,10 @@ table.reservations.mobile {
   z-index: 2;
   border-bottom: solid 1px #36648B;
   border-right: solid 1px #36648B;
+}
+
+.buffer {
+  z-index: 1;
 }
 
 .condensed-event {

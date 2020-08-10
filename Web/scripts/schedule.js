@@ -177,7 +177,10 @@ function Schedule(opts, resourceGroups) {
 						return;
 					}
 
-					const className = res.IsReservation ? "reserved" : "unreservable";
+					let className = res.IsReservation ? "reserved" : "unreservable";
+					if (res.IsBuffer) {
+					    className = "buffer";
+                    }
 					const mine = res.IsOwner ? "mine" : "";
 					const participant = res.IsParticipant ? "participating" : "";
 					const past = res.IsPast ? "past" : "";
@@ -236,10 +239,10 @@ function Schedule(opts, resourceGroups) {
 					let conflictIds = [];
 
 					t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
-						if ($(div).hasClass('unreservable'))
-						{
-							return false;
-						}
+						// if ($(div).attr('id').contains('buffer'))
+						// {
+						// 	// return false;
+						// }
 						let divMin = Number.parseInt($(div).data('start'));
 						let divMax = Number.parseInt($(div).data('end'));
 						let resStart = Number.parseInt(res.StartDate);
@@ -289,9 +292,10 @@ function Schedule(opts, resourceGroups) {
 						}
 					}
 
+					const eventClass = res.IsBuffer ? "" : "event";
 					const style = `left:${left}px; top:${top}px; width:${width}px; height:${height}px;`;
 					const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} ${eventClass}" 
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     data-resourceid="${res.ResourceId}"

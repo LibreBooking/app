@@ -224,7 +224,7 @@ class ReservationListItem
         $dto->TextColor = $this->GetTextColor();
         $dto->IsReservation = $this->IsReservation();
         $dto->IsBuffer = false;
-        $dto->Label = $this->GetTitle();
+        $dto->Label = 'hey';//$this->GetTitle();
         $dto->IsPending = $this->GetPending();
         $dto->IsNew = $this->GetIsNew();
         $dto->IsUpdated = $this->GetIsUpdated();
@@ -256,7 +256,7 @@ class ReservationListItem
             $post->EndDate = $this->BufferedEndDate()->Timestamp();
             $post->EndTime = $this->BufferedEndDate()->ToTimezone($timezone)->Format($format);
             $post->IsReservation = false;
-			$pre->IsBuffer = true;
+            $post->IsBuffer = true;
             $post->Id = $this->Id() . 'buffer-post';
             $post->ReferenceNumber = $this->ReferenceNumber();
             $post->ResourceId = $this->ResourceId();

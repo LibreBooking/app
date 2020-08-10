@@ -1233,7 +1233,8 @@ table.reservations.mobile div.reservable {
   max-width: 1px;
   overflow: hidden;
 }
-.event {
+.event,
+.buffer {
   overflow: hidden;
   position: absolute;
   background-color: #000;
@@ -1241,6 +1242,9 @@ table.reservations.mobile div.reservable {
   z-index: 2;
   border-bottom: solid 1px #36648B;
   border-right: solid 1px #36648B;
+}
+.buffer {
+  z-index: 1;
 }
 .unreservable,
 .buffer {
