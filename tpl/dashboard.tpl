@@ -46,4 +46,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</script>
 </div>
 
+<div id="wait-box" class="wait-box">
+    <div id="creatingNotification">
+        <h3>
+            {block name="ajaxMessage"}
+                {translate key=Working}...
+            {/block}
+        </h3>
+        {html_image src="reservation_submitting.gif"}
+    </div>
+    <div id="result"></div>
+</div>
+
 {include file='globalfooter.tpl'}
