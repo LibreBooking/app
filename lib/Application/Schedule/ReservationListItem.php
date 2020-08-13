@@ -224,7 +224,7 @@ class ReservationListItem
         $dto->TextColor = $this->GetTextColor();
         $dto->IsReservation = $this->IsReservation();
         $dto->IsBuffer = false;
-        $dto->Label = 'hey';//$this->GetTitle();
+        $dto->Label = $this->GetTitle();
         $dto->IsPending = $this->GetPending();
         $dto->IsNew = $this->GetIsNew();
         $dto->IsUpdated = $this->GetIsUpdated();
