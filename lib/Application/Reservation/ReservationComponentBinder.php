@@ -237,7 +237,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		foreach ($resources as $resource)
 		{
 			$bindableResourceData->AddAvailableResource($resource);
-			if ($resource->Id == $requestedResourceId && $resource->GetStatusId() == ResourceStatus::AVAILABLE)
+			if ($resource->Id == $requestedResourceId)
 			{
 				$bindableResourceData->SetReservationResource($resource);
 			}
