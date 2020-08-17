@@ -159,7 +159,7 @@ class ResourceRepositoryTests extends TestBase
 			'#cccccc',
 			$enableCheckin,
 			$autoReleaseMinutes,
-			false,
+			true,
 			$credits,
 			$peakCredits,
             new TimeInterval($minNoticeUpdate),

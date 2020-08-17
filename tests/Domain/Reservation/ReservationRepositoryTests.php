@@ -969,15 +969,9 @@ class ReservationRepositoryTests extends TestBase
         $series->Update($newOwner, $series->Resource(), '', '', $this->fakeUser);
         $this->repository->Update($series);
 
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $currentOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $newOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, $newOwner,
-            ReservationUserLevel::OWNER)));
-
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $currentOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $newOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, $newOwner,
-            ReservationUserLevel::OWNER)));
+        $this->assertTrue($this->db->ContainsCommand(new RemoveReservationUsersCommand($instanceId1, ReservationUserLevel::OWNER)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, $newOwner, ReservationUserLevel::OWNER)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, $newOwner, ReservationUserLevel::OWNER)));
     }
 
     public function testEventsWhichAreNotNecessaryWhenSeriesIsBranchedAreIgnored()
