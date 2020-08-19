@@ -10,3 +10,6 @@ RewriteEngine On
 # Set RewriteBase if your physical path is different from the URL. For example, if using an alias
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
+
+RewriteCond %{REQUEST_METHOD} OPTIONS 
+RewriteRule ^(.*)$ blank.html [QSA,L]
