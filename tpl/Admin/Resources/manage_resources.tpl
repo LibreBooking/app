@@ -1350,6 +1350,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
+                        <div class="form-group">
+                            <label for="bulkEditConcurrent" class="control-label">{translate key=AllowConcurrentReservations}</label>
+                            <select id="bulkEditConcurrent" class="form-control" {formname key=ALLOW_CONCURRENT_RESERVATIONS}>
+                                {html_options options=$YesNoUnchangedOptions}
+                            </select>
+                            <div class="no-show" id="bulkEditAllowConcurrentDiv">
+                                {capture name="txtConcurrentReservations" assign="txtConcurrentReservations"}
+                                    <label for='bulkEditMaxConcurrentReservations' class='no-show'>Maximum Concurrent Reservations</label>
+                                    <input type='number' max='99' min='2' id='bulkEditMaxConcurrentReservations'
+                                           class='form-control inline minutes' {formname key=MAX_CONCURRENT_RESERVATIONS} value='2' />
+                                {/capture}
+                                {translate key='ResourceConcurrentReservations' args=$txtConcurrentReservations}
+                            </div>
+                        </div>
+
 						<div class="form-group">
 							<label for="bulkEditAllowSubscriptions"
 								   class="control-label">{translate key='TurnOnSubscription'}</label>

@@ -455,6 +455,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 */
     public function GetAllowConcurrentReservations();
 
+    /**
+	 * @return int
+	 */
+    public function GetBulkAllowConcurrentReservations();
+
 	/**
 	 * @return int
 	 */
@@ -1137,6 +1142,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$val = $this->GetForm(FormKeys::MAX_CONCURRENT_RESERVATIONS);
 		return intval($val);
 	}
+
+    public function GetBulkAllowConcurrentReservations()
+    {
+        return $this->GetForm(FormKeys::ALLOW_CONCURRENT_RESERVATIONS);
+    }
 }
 
 class ResourceFilterValues

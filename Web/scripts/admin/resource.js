@@ -322,6 +322,18 @@ function ResourceManagement(opts) {
 			}
 		});
 
+        $('#bulkEditConcurrent').change(function () {
+            if ($(this).val() == '1')
+            {
+                $('#bulkEditAllowConcurrentDiv').removeClass('no-show');
+            }
+
+            if ($(this).val() == '0')
+            {
+                $('#bulkEditAllowConcurrentDiv').addClass('no-show');
+            }
+        });
+
 		elements.bulkUpdatePromptButton.click(function (e) {
 			e.preventDefault();
 

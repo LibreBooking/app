@@ -639,6 +639,8 @@ class ManageResourcesPresenter extends ActionPresenter
         $peakCredits = $this->page->GetPeakCredits();
         $maxCapacity = $this->page->GetMaxParticipants();
         $unlimitedCapacity = $this->page->GetMaxParticipantsUnlimited();
+        $allowConcurrent = $this->page->GetBulkAllowConcurrentReservations();
+        $maxConcurrent = $this->page->GetMaxConcurrentReservations();
 
         $resourceIds = $this->page->GetBulkUpdateResourceIds();
 
@@ -725,6 +727,15 @@ class ManageResourcesPresenter extends ActionPresenter
                 }
                 if (!$unlimitedCapacity && $maxCapacity != '') {
                     $resource->SetMaxParticipants($maxCapacity);
+                }
+
+                if ($this->ChangingDropDown($allowConcurrent)) {
+                    if ($allowConcurrent) {
+                        $resource->SetMaxConcurrentReservations($maxConcurrent);
+                    }
+                    else {
+                        $resource->SetMaxConcurrentReservations(1);
+                    }
                 }
 
                 /** @var AttributeValue $attribute */
