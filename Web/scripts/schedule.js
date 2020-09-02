@@ -114,8 +114,10 @@ function Schedule(opts, resourceGroups) {
                 let tdMin = Number.parseInt(td.data('min'));
                 let resStart = Number.parseInt(reservation.StartDate);
 
-                if (tdMin <= resStart) {
+                if (tdMin <= resStart && tdMax > resStart) {
                     startTd = td;
+                } else if (tdMax < resStart && i+1 < tds.length) {
+                    startTd = $(tds[i+1]);
                 }
             });
 
