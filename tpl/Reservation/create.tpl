@@ -39,22 +39,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
 
                 <div class="col-md-6 col-xs-12 col-top">
-                    <div class="pull-right-sm">
-                        {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
-                        <a href="#" id="btnViewAvailability"><i class="fa fa-calendar"></i> {translate key="ViewAvailability"}</a>
-                        {/if}
-                        <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
-                            <span class="hidden-xs">{translate key='Cancel'}</span>
-                            <span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
-                        </button>
-                        {block name="submitButtons"}
-                            <button type="button" class="btn btn-success save create btnCreate">
-                                <span class="glyphicon glyphicon-ok-circle"></span>
-                                {translate key='Create'}
-                            </button>
-                        {/block}
-                    </div>
-                </div>
+            					<div class="pull-right-sm">
+            						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
+            							<span class="hidden-xs">{translate key='Cancel'}</span>
+            							<span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
+            						</button>
+                                    {block name="submitButtons"}
+            							<button type="button" class="btn btn-success save create btnCreate">
+            								<span class="glyphicon glyphicon-ok-circle"></span>
+                                            {translate key='Create'}
+            							</button>
+                                    {/block}
+            					</div>
+
+            					<div class="pull-right-sm margin-top-15 margin-bottom-15" style="clear:both;">
+                                    {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
+            							<a href="#" id="btnViewAvailability"><i class="fa fa-calendar"></i> {translate key="ViewAvailability"}</a>
+                                    {/if}
+            					</div>
+            				</div>
             </div>
 
             <div class="row">
@@ -536,7 +539,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate MinDate=$StartDate MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
-{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate" MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
+{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate" MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday MinDate=Date::Now()->ToTimezone($Timezone)}
 
 {jsfile src="js/jquery.autogrow.js"}
 {jsfile src="js/moment.min.js"}

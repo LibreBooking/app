@@ -49,7 +49,7 @@ new Date({$date->Year()}, {$date->Month()-1}, {$date->Day()})
             {/if}
             {if $MinDate}
             ,
-            minDate: {datePickerDateFormat date=$MinDate->AddDays(1)}
+            minDate: {datePickerDateFormat date=$MinDate}
             {/if}
             {if $MaxDate}
             ,

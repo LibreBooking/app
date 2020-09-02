@@ -1128,7 +1128,7 @@ function Reservation(opts) {
             ShowAvailabilityView();
         });
 
-        elements.userAvailabilityBox.on('click', '#btnHideAvailability', function (e) {
+        elements.userAvailabilityBox.on('click', '.btnHideAvailability', function (e) {
             e.preventDefault();
             elements.userAvailabilityBox.find('.availability-highlighter').remove();
             elements.userAvailabilityBox.addClass('no-show');
