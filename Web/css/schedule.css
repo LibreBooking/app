@@ -73,8 +73,12 @@ table.reservations td.resourcename {
   background-color: #EDEDED;
   color: #999999;
   width: 150px;
-  text-overflow: ellipsis;
+  height: 40px;
+  max-width: 100%;
+  margin: 0 auto;
+  line-height: 1;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 table.reservations td.resourcename a {
   color: #0772A1;
@@ -176,6 +180,7 @@ table.reservations.mobile div.reservable {
   z-index: 2;
   border: solid 1px #36648B;
   border-collapse: separate;
+  text-wrap: none;
 }
 .buffer {
   z-index: 1;

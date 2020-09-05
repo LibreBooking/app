@@ -262,23 +262,6 @@ function Schedule(opts, resourceGroups) {
                             if (overlap) {
                                 top += height;
                                 numberOfConflicts++;
-                                console.log(res.Label, $(div), {
-                                    divTop: divTop,
-                                    myTop,
-                                    divBottom,
-                                    myBottom: myBottom,
-                                    divLeft,
-                                    myLeft,
-                                    divRight,
-                                    myRight,
-                                });
-
-                                if (!conflictIds.includes(res.ReferenceNumber)) {
-                                    conflictIds.push(res.ReferenceNumber);
-                                }
-                                if (!conflictIds.includes($(div).data('resid'))) {
-                                    conflictIds.push($(div).data('resid'));
-                                }
                                 adjustOverlap();
                             }
                         });
@@ -320,18 +303,14 @@ function Schedule(opts, resourceGroups) {
                             height = endTd.outerHeight();
                         }
                     } else {
-                        height = startTd.outerHeight();
-                        // if (numberOfConflicts > 0) {
                         height = 40;
-                        // }
                         width = endTd.position().left - startTd.position().left + calculatedAdjustment;
-                        top = startTd.position().top;// + (40 * numberOfConflicts);
+                        top = startTd.position().top;
 
                         adjustOverlap();
 
                         if (numberOfConflicts > 0) {
                             startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
-                            height = 40;
                         }
                     }
 
