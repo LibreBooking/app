@@ -1,10 +1,11 @@
-var scheduleSpecificDates = [];
+let scheduleSpecificDates = [];
 
 function Schedule(opts, resourceGroups) {
-    var options = opts;
-    var groupDiv = $('#resourceGroups');
-    var scheduleId = $('#scheduleId');
-    var multidateselect = $('#multidateselect');
+    let options = opts;
+    let groupDiv = $('#resourceGroups');
+    let scheduleId = $('#scheduleId');
+    let multidateselect = $('#multidateselect');
+    let renderingEvents = false;
 
     this.init = function () {
         this.initUserDefaultSchedule();
@@ -46,6 +47,7 @@ function Schedule(opts, resourceGroups) {
 
     function renderEvents(clear = false) {
         $("#loading-schedule").removeClass("no-show");
+        renderingEvents = true;
 
         if (clear) {
             $("#reservations").find("div.event, div.condensed-event").remove();
@@ -296,9 +298,8 @@ function Schedule(opts, resourceGroups) {
                         }
 
                         countConflicts();
-                        // adjustOverlap();
+
                         top = startTd.position().top;
-                        // console.log('conflicts', nu)
                         if (height === 0) {
                             height = endTd.outerHeight();
                         }
@@ -359,6 +360,7 @@ function Schedule(opts, resourceGroups) {
             }
 
             $("#loading-schedule").addClass("no-show");
+            renderingEvents = false;
         });
     }
 
@@ -696,7 +698,6 @@ function Schedule(opts, resourceGroups) {
         });
 
         reservations.delegate('.reservable', 'click', function (e) {
-            console.log("clicked");
             openReservation($(e.target), $(e.target));
         });
     }
@@ -707,6 +708,10 @@ function Schedule(opts, resourceGroups) {
         reservations.find('td.reservable').on('dragover dragleave drop', function (event) {
             event.preventDefault();
             event.stopPropagation();
+
+            if (renderingEvents) {
+                return false;
+            }
 
             const data = JSON.parse(event.originalEvent.dataTransfer.getData("text"));
             var referenceNumber = data.referenceNumber;
@@ -719,6 +724,8 @@ function Schedule(opts, resourceGroups) {
             } else if (event.type == 'dragleave') {
                 $(event.target).removeClass('hilite');
             } else if (event.type === 'drop') {
+                renderingEvents = true;
+
                 var droppedCell = $(event.target);
                 droppedCell.addClass('dropped');
                 droppedCell.html('<i class="fa fa-spin fa-spinner" aria-hidden="true"></i>');
@@ -736,7 +743,7 @@ function Schedule(opts, resourceGroups) {
                     } else {
                         droppedCell.removeClass('dropped');
                         droppedCell.html('');
-
+                        renderingEvents = false;
                         return false;
                     }
                 });
