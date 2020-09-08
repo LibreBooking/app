@@ -976,20 +976,20 @@ class en_us extends Language
 		// End Day representations
 
 		// Email Subjects
-		$strings['ReservationApprovedSubject'] = 'Your Reservation Has Been Approved';
-		$strings['ReservationCreatedSubject'] = 'Your Reservation Was Created';
-		$strings['ReservationUpdatedSubject'] = 'Your Reservation Was Updated';
-		$strings['ReservationDeletedSubject'] = 'Your Reservation Was Removed';
-		$strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
-		$strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
-		$strings['ReservationDeleteAdminSubject'] = 'Notification: A Reservation Was Removed';
-		$strings['ReservationApprovalAdminSubject'] = 'Notification: Reservation Requires Your Approval';
-		$strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
-		$strings['ParticipantDeletedSubject'] = 'Reservation Removed';
-		$strings['InviteeAddedSubject'] = 'Reservation Invitation';
-		$strings['ResetPasswordRequest'] = 'Password Reset Request';
-		$strings['ActivateYourAccount'] = 'Please Activate Your Account';
-		$strings['ReportSubject'] = 'Your Requested Report (%s)';
+		$strings['ReservationApprovedSubject'] = 'Your reservation has been approved';
+		$strings['ReservationCreatedSubject'] = 'Your reservation was created';
+		$strings['ReservationUpdatedSubject'] = 'Your reservation was updated';
+		$strings['ReservationDeletedSubject'] = 'Your reservation was removed';
+		$strings['ReservationCreatedAdminSubject'] = 'Notification: A reservation was created';
+		$strings['ReservationUpdatedAdminSubject'] = 'Notification: A reservation was updated';
+		$strings['ReservationDeleteAdminSubject'] = 'Notification: A reservation was removed';
+		$strings['ReservationApprovalAdminSubject'] = 'Notification: Reservation requires your approval';
+		$strings['ParticipantAddedSubject'] = 'Reservation participation notification';
+		$strings['ParticipantDeletedSubject'] = 'Reservation removed';
+		$strings['InviteeAddedSubject'] = 'Reservation invitation';
+		$strings['ResetPasswordRequest'] = 'Password reset request';
+		$strings['ActivateYourAccount'] = 'Please activate your account';
+		$strings['ReportSubject'] = 'Your requested report (%s)';
 		$strings['ReservationStartingSoonSubject'] = 'Reservation for %s is starting soon';
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		$strings['UserAdded'] = 'A new user has been added';
@@ -998,23 +998,25 @@ class en_us extends Language
 		$strings['AccountCreatedSubject'] = 'Your %s account details';
 		$strings['InviteUserSubject'] = '%s has invited you to join %s';
 
-		$strings['ReservationApprovedSubjectWithResource'] = 'Reservation Has Been Approved for %s';
-		$strings['ReservationCreatedSubjectWithResource'] = 'Reservation Created for %s';
-		$strings['ReservationUpdatedSubjectWithResource'] = 'Reservation Updated for %s';
-		$strings['ReservationDeletedSubjectWithResource'] = 'Reservation Removed for %s';
+		$strings['ReservationApprovedSubjectWithResource'] = 'Reservation has been approved for %s';
+		$strings['ReservationCreatedSubjectWithResource'] = 'Reservation created for %s';
+		$strings['ReservationUpdatedSubjectWithResource'] = 'Reservation updated for %s';
+		$strings['ReservationDeletedSubjectWithResource'] = 'Reservation removed for %s';
 		$strings['ReservationCreatedAdminSubjectWithResource'] = 'Notification: Reservation Created for %s';
 		$strings['ReservationUpdatedAdminSubjectWithResource'] = 'Notification: Reservation Updated for %s';
 		$strings['ReservationDeleteAdminSubjectWithResource'] = 'Notification: Reservation Removed for %s';
-		$strings['ReservationApprovalAdminSubjectWithResource'] = 'Notification: Reservation for %s Requires Your Approval';
-		$strings['ParticipantAddedSubjectWithResource'] = '%s Added You to a Reservation for %s';
-		$strings['ParticipantDeletedSubjectWithResource'] = '%s Removed a Reservation for %s';
-		$strings['InviteeAddedSubjectWithResource'] = '%s Invited You to a Reservation for %s';
+		$strings['ReservationApprovalAdminSubjectWithResource'] = 'Notification: Reservation for %s requires your approval';
+		$strings['ParticipantAddedSubjectWithResource'] = '%s added you to a reservation for %s';
+		$strings['ParticipantUpdatedSubjectWithResource'] = '%s updated a reservation for %s';
+		$strings['ParticipantDeletedSubjectWithResource'] = '%s removed a reservation for %s';
+		$strings['InviteeAddedSubjectWithResource'] = '%s invited you to a reservation for %s';
 		$strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
-		$strings['ReservationShareSubject'] = '%s Shared a Reservation for %s';
-		$strings['ReservationSeriesEndingSubject'] = 'Reservation Series for %s is Ending on %s';
-		$strings['ReservationParticipantAccept'] = '%s Has Accepted Your Reservation Invitation for %s on %s';
-		$strings['ReservationParticipantDecline'] = '%s Has Declined Your Reservation Invitation for %s on %s';
-		$strings['ReservationParticipantJoin'] = '%s Has Joined Your Reservation for %s on %s';
+		$strings['ReservationShareSubject'] = '%s shared a reservation for %s';
+		$strings['ReservationSeriesEndingSubject'] = 'Reservation series for %s is ending on %s';
+		$strings['ReservationParticipantAccept'] = '%s has accepted your reservation invitation for %s on %s';
+		$strings['ReservationParticipantDecline'] = '%s has declined your reservation invitation for %s on %s';
+		$strings['ReservationParticipantJoin'] = '%s has joined your reservation for %s on %s';
+		$strings['ReservationAvailableSubject'] = '%s is available on %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

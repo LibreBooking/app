@@ -62,3 +62,18 @@ class GuestAddedEmail extends ReservationEmailMessage
         $this->Set('DeclineUrl', sprintf("%s?%s=%s&%s=%s&%s=%s", Pages::GUEST_INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(), QueryStringKeys::EMAIL, $this->guestEmail, QueryStringKeys::INVITATION_ACTION, InvitationAction::Decline));
     }
 }
+
+class GuestUpdatedEmail extends GuestAddedEmail
+{
+	public function Subject()
+	{
+		return $this->Translate('ParticipantUpdatedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
+	}
+
+	public function PopulateTemplate()
+	{
+		parent::PopulateTemplate();
+		$this->Set("Deleted", false);
+		$this->Set("Updated", true);
+	}
+}

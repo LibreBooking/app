@@ -16,16 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-Your recurring reservation series for {$ResourceName} is ending on {formatdate date=$StartDate key=reservation_email}.<br/>
-Reservation Details:
-	<br/>
-	<br/>
-	Start: {formatdate date=$StartDate key=reservation_email}<br/>
-	End: {formatdate date=$EndDate key=reservation_email}<br/>
-	Resource: {$ResourceName}<br/>
-	Title: {$Title}<br/>
-	Description: {$Description|nl2br}
-<br/>
-<br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-<a href="{$ScriptUrl}">Log in to {$AppTitle}</a>
+<p>Your recurring reservation series for {$ResourceName} is ending on {formatdate date=$StartDate key=reservation_email}.</p>
+<p><strong>Reservation Details:</strong></p>
+<p>
+	<strong>Start:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+	<strong>End:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+	<strong>Resource:</strong> {$ResourceName}<br/>
+	<strong>Title:</strong> {$Title}<br/>
+	<strong>Description:</strong> {$Description|nl2br}
+</p>
+
+<p>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
+	<a href="{$ScriptUrl}">Log in to {$AppTitle}</a>
+</p>

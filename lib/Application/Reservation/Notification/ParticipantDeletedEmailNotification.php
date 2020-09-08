@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Email/Messages/ParticipantDeletedEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ParticipantAddedEmail.php');
 
 class ParticipantDeletedEmailNotification implements IReservationNotification
 {

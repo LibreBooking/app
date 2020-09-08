@@ -1,20 +1,6 @@
 <?php
-/**
- * Copyright 2011-2020 Nick Korbel
- *
- * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmail.php');
 require_once(ROOT_DIR . 'Domain/Values/InvitationAction.php');
 
 class InviteeAddedEmail extends ReservationEmailMessage
@@ -24,7 +10,8 @@ class InviteeAddedEmail extends ReservationEmailMessage
 	 */
 	private $invitee;
 
-	public function __construct(User $reservationOwner, User $invitee, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+	public function __construct(User $reservationOwner, User $invitee, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository,
+								IUserRepository $userRepository)
 	{
 		parent::__construct($reservationOwner, $reservationSeries, $invitee->Language(), $attributeRepository, $userRepository);
 
@@ -39,7 +26,7 @@ class InviteeAddedEmail extends ReservationEmailMessage
 		$address = $this->invitee->EmailAddress();
 		$name = $this->invitee->FullName();
 
-		return array(new EmailAddress($address, $name));
+		return new EmailAddress($address, $name);
 	}
 
 	public function Subject()
@@ -62,15 +49,66 @@ class InviteeAddedEmail extends ReservationEmailMessage
 		$currentInstance = $this->reservationSeries->CurrentInstance();
 		parent::PopulateTemplate();
 
-		$this->Set('AcceptUrl', sprintf("%s?%s=%s&%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(),
-										QueryStringKeys::INVITATION_ACTION, InvitationAction::Accept));
-		$this->Set('DeclineUrl', sprintf("%s?%s=%s&%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(),
-										 QueryStringKeys::INVITATION_ACTION, InvitationAction::Decline));
+		$this->Set('AcceptUrl', $this->GetAcceptUrl($currentInstance, InvitationAction::Accept));
+		$this->Set('DeclineUrl', $this->GetAcceptUrl($currentInstance, InvitationAction::Decline));
+	}
+
+	/**
+	 * @param Reservation $currentInstance
+	 * @param string $action
+	 * @return string
+	 */
+	protected function GetAcceptUrl(Reservation $currentInstance, $action): string
+	{
+		return sprintf("%s?%s=%s&%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(),
+					   QueryStringKeys::INVITATION_ACTION, $action);
 	}
 }
 
-class InviteeRemovedEmail extends InviteeAddedEmail
+class InviteeUpdatedEmail extends InviteeAddedEmail
 {
+	public function Subject()
+	{
+		return $this->Translate('ParticipantUpdatedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
+	}
+
+	public function GetTemplateName()
+	{
+		return 'ReservationInvitation.tpl';
+	}
+}
+
+class InviteeRemovedEmail extends ReservationDeletedEmail
+{
+	/**
+	 * @var User
+	 */
+	private $invitee;
+
+	public function __construct(User $reservationOwner, User $invitee, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository,
+								IUserRepository $userRepository)
+	{
+		parent::__construct($reservationOwner, $reservationSeries, $invitee->Language(), $attributeRepository, $userRepository);
+
+		$this->reservationOwner = $reservationOwner;
+		$this->reservationSeries = $reservationSeries;
+		$this->timezone = $invitee->Timezone();
+		$this->invitee = $invitee;
+	}
+
+	public function To()
+	{
+		$address = $this->invitee->EmailAddress();
+		$name = $this->invitee->FullName();
+
+		return new EmailAddress($address, $name);
+	}
+
+	public function From()
+	{
+		return new EmailAddress($this->reservationOwner->EmailAddress(), $this->reservationOwner->FullName());
+	}
+
 	public function Subject()
 	{
 		return $this->Translate('ParticipantDeletedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));

@@ -15,53 +15,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/InviteeAddedEmail.php');
 
-class ParticipantAddedEmail extends ReservationEmailMessage
+class ParticipantAddedEmail extends InviteeAddedEmail
 {
-	/**
-	 * @var User
-	 */
-	private $participant;
-
-	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries,
-                                IAttributeRepository $attributeRepository, IUserRepository $userRepository)
-	{
-		parent::__construct($reservationOwner, $reservationSeries, $participant->Language(), $attributeRepository, $userRepository);
-
-		$this->reservationOwner = $reservationOwner;
-		$this->reservationSeries = $reservationSeries;
-		$this->timezone = $participant->Timezone();
-		$this->participant = $participant;
-	}
-
-	public function To()
-	{
-		$address = $this->participant->EmailAddress();
-		$name = $this->participant->FullName();
-
-		return array(new EmailAddress($address, $name));
-	}
-
 	public function Subject()
 	{
 		return $this->Translate('ParticipantAddedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
 	}
-
-	public function From()
-	{
-		return new EmailAddress($this->reservationOwner->EmailAddress(), $this->reservationOwner->FullName());
-	}
-
-    public function GetTemplateName()
-    {
-        return 'ReservationCreated.tpl';
-    }
 }
 
-class ParticipantUpdatedEmail extends ParticipantAddedEmail
+class ParticipantUpdatedEmail extends InviteeUpdatedEmail
 {
 	public function Subject()
 	{
-		return $this->Translate('ReservationUpdatedSubject');
+		return $this->Translate('ParticipantUpdatedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
+	}
+}
+
+class ParticipantDeletedEmail extends InviteeRemovedEmail
+{
+	public function Subject()
+	{
+		return $this->Translate('ParticipantDeletedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
 	}
 }

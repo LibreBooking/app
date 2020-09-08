@@ -1,44 +1,26 @@
 <?php
-/**
- * Copyright 2017-2020 Nick Korbel
- *
- * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
 
 class GuestDeletedEmail extends ReservationDeletedEmail
 {
 	/**
-	 * @var User
+	 * @var string
 	 */
-	private $participant;
+	private $guestEmail;
 
-	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+	public function __construct(User $reservationOwner, $guestEmail, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
 	{
-		parent::__construct($reservationOwner, $reservationSeries, $participant->Language(), $attributeRepository, $userRepository);
+		parent::__construct($reservationOwner, $reservationSeries, $reservationOwner->Language(), $attributeRepository, $userRepository);
 
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;
-		$this->timezone = $participant->Timezone();
-		$this->participant = $participant;
+		$this->timezone = $reservationOwner->Timezone();
+		$this->guestEmail = $guestEmail;
 	}
 
 	public function To()
 	{
-		$address = $this->participant->EmailAddress();
-		$name = $this->participant->FullName();
-
-		return array(new EmailAddress($address, $name));
+		return new EmailAddress($this->guestEmail);
 	}
 
 	public function Subject()
@@ -53,19 +35,6 @@ class GuestDeletedEmail extends ReservationDeletedEmail
 
 	public function GetTemplateName()
 	{
-		return 'ReservationDeleted.tpl';
-	}
-}
-
-class GuestUpdatedEmail extends GuestDeletedEmail
-{
-	public function Subject()
-	{
-		return $this->Translate('ReservationUpdatedSubject');
-	}
-
-	public function GetTemplateName()
-	{
-		return 'ReservationCreated.tpl';
+		return 'ReservationInvitation.tpl';
 	}
 }

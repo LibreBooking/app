@@ -87,6 +87,8 @@ class ReservationParticipationActivityEmail extends EmailMessage
         $this->Set('Title', $this->series->Title());
         $this->Set('Description', $this->series->Description());
         $this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
+        $this->Set('ParticipantDetails', $this->participantDetails);
+        $this->Set('InvitationAction', $this->invitationAction);
 
         $resourceNames = array();
         foreach ($this->series->AllResources() as $resource)

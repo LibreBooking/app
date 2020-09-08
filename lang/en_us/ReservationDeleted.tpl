@@ -16,62 +16,60 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-Reservation Details:
-<br/>
-<br/>
+<p><strong>Reservation Details:</strong></p>
 
-User: {$UserName}<br/>
-Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
-    Resources:
-    <br/>
-    {foreach from=$ResourceNames item=resourceName}
-        {$resourceName}
-        <br/>
+<p>
+	<strong>Start:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+	<strong>End:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+	<strong>Title:</strong> {$Title}<br/>
+	<strong>Description:</strong> {$Description|nl2br}
+    {if $Attributes|count > 0}
+	<br/>
+    {foreach from=$Attributes item=attribute}
+	<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
     {/foreach}
-{else}
-    Resource: {$ResourceName}
-    <br/>
 {/if}
+</p>
+
+<p>
+    {if $ResourceNames|count > 1}
+		<strong>Resources ({$ResourceNames|count}):</strong>
+		<br/>
+        {foreach from=$ResourceNames item=resourceName}
+            {$resourceName}
+			<br/>
+        {/foreach}
+    {else}
+		<strong>Resource:</strong>
+        {$ResourceName}
+		<br/>
+    {/if}
+</p>
 
 {if $ResourceImage}
-    <div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	<div class="resource-image"><img alt="{$ResourceName|escape}" src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
-
-Title: {$Title}<br/>
-Description: {$Description|nl2br}<br/>
-Delete Reason: {$DeleteReason|nl2br}<br/>
 
 {if count($RepeatRanges) gt 0}
-    <br/>
-    The following dates have been removed:
-    <br/>
-{/if}
-
-{foreach from=$RepeatRanges item=date name=dates}
-    {formatdate date=$date->GetBegin()}
-    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
-    <br/>
-{/foreach}
-
-{if $Accessories|count > 0}
-    <br/>
-    Accessories:
-    <br/>
-    {foreach from=$Accessories item=accessory}
-        ({$accessory->QuantityReserved}) {$accessory->Name}
-        <br/>
+	<br/>
+	<strong>The reservation occurs on the following dates ({$RepeatRanges|count}):</strong>
+	<br/>
+    {foreach from=$RepeatRanges item=date name=dates}
+        {formatdate date=$date->GetBegin()}
+        {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+		<br/>
     {/foreach}
 {/if}
 
-{if !empty($CreatedBy)}
-    <br/>
-    Deleted by: {$CreatedBy}
-{/if}
+<p>
+    {if !empty($CreatedBy)}
+		<strong>Deleted by:</strong>
+        {$CreatedBy}
+		<br/>
+		<strong>Delete Reason: {$DeleteReason|nl2br}</strong>
+    {/if}
+</p>
 
-<br/>
-Reference Number: {$ReferenceNumber}
+<p><strong>Reference Number:</strong> {$ReferenceNumber}</p>
 
-<br/>
 <a href="{$ScriptUrl}">Log in to {$AppTitle}</a>

@@ -16,131 +16,130 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-Reservation Details:
-<br/>
-<br/>
+<p><strong>Reservation Details:</strong></p>
 
-Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
-	Resources:
-	<br/>
-	{foreach from=$ResourceNames item=resourceName}
-		{$resourceName}
+<p>
+	<strong>Start:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+	<strong>End:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+	<strong>Title:</strong> {$Title}<br/>
+	<strong>Description:</strong> {$Description|nl2br}
+	{if $Attributes|count > 0}
 		<br/>
-	{/foreach}
+	    {foreach from=$Attributes item=attribute}
+			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+	    {/foreach}
+	{/if}
+</p>
+
+<p>
+{if $ResourceNames|count > 1}
+    <strong>Resources ({$ResourceNames|count}):</strong> <br />
+    {foreach from=$ResourceNames item=resourceName}
+        {$resourceName}<br/>
+    {/foreach}
 {else}
-	Resource: {$ResourceName}
-	<br/>
+    <strong>Resource:</strong> {$ResourceName}<br/>
 {/if}
+</p>
 
 {if $ResourceImage}
-	<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+    <div class="resource-image"><img alt="{$ResourceName|escape}" src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
 
-Title: {$Title}<br/>
-Description: {$Description|nl2br}
+{if $RequiresApproval}
+	<p>* At least one of the resources reserved requires approval before usage. This reservation will be pending until it is approved. *</p>
+{/if}
+
+{if $CheckInEnabled}
+	<p>
+	At least one of the resources reserved requires you to check in and out of your reservation.
+    {if $AutoReleaseMinutes != null}
+		This reservation will be cancelled unless you check in within {$AutoReleaseMinutes} minutes after the scheduled start time.
+    {/if}
+	</p>
+{/if}
 
 {if count($RepeatRanges) gt 0}
-	<br/>
-	The reservation occurs on the following dates:
-	<br/>
+    <br/>
+    <strong>The reservation occurs on the following dates ({$RepeatRanges|count}):</strong>
+    <br/>
+	{foreach from=$RepeatRanges item=date name=dates}
+	    {formatdate date=$date->GetBegin()}
+	    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+	    <br/>
+	{/foreach}
 {/if}
 
-{foreach from=$RepeatRanges item=date name=dates}
-	{formatdate date=$date->GetBegin()}
-    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
-	<br/>
-{/foreach}
-
 {if $Participants|count >0}
-    <br/>
-    Participants:
+    <br />
+    <strong>Participants ({$Participants|count + $ParticipatingGuests|count}):</strong>
+    <br />
     {foreach from=$Participants item=user}
-        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
+        {$user->FullName()}
         <br/>
     {/foreach}
 {/if}
 
 {if $ParticipatingGuests|count >0}
     {foreach from=$ParticipatingGuests item=email}
-        <a href="mailto:{$email}">{$email}</a>
+        {$email}
         <br/>
     {/foreach}
 {/if}
 
 {if $Invitees|count >0}
-    <br/>
-    Invitees:
+    <br />
+    <strong>Invitees ({$Invitees|count + $InvitedGuests|count}):</strong>
+    <br />
     {foreach from=$Invitees item=user}
-        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
+        {$user->FullName()}
         <br/>
     {/foreach}
 {/if}
 
 {if $InvitedGuests|count >0}
     {foreach from=$InvitedGuests item=email}
-        <a href="mailto:{$email}">{$email}</a>
+        {$email}
         <br/>
     {/foreach}
 {/if}
 
 {if $Accessories|count > 0}
-	<br/>
-	Accessories:
-	<br/>
-	{foreach from=$Accessories item=accessory}
-		({$accessory->QuantityReserved}) {$accessory->Name}
-		<br/>
-	{/foreach}
+    <br />
+       <strong>Accessories ({$Accessories|count}):</strong>
+       <br />
+    {foreach from=$Accessories item=accessory}
+        ({$accessory->QuantityReserved}) {$accessory->Name}
+        <br/>
+    {/foreach}
 {/if}
 
 {if $CreditsCurrent > 0}
-    <br/>
-    This reservation costs {$CreditsCurrent} credits.
+	<br/>
+	This reservation costs {$CreditsCurrent} credits.
     {if $CreditsCurrent != $CreditsTotal}
-        This series costs {$CreditsTotal} credits.
+		This entire reservation series costs {$CreditsTotal} credits.
     {/if}
-{/if}
-
-{if $Attributes|count > 0}
-	<br/>
-	{foreach from=$Attributes item=attribute}
-		<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-	{/foreach}
-{/if}
-
-{if $RequiresApproval}
-	<br/>
-	At least one of the resources reserved requires approval before usage. This reservation will be pending until it is approved.
-{/if}
-
-{if $CheckInEnabled}
-	<br/>
-	At least one of the resources reserved requires you to check in and out of your reservation.
-	{if $AutoReleaseMinutes != null}
-		This reservation will be cancelled unless you check in within {$AutoReleaseMinutes} minutes after the scheduled start time.
-	{/if}
-{/if}
-
-{if !empty($ApprovedBy)}
-	<br/>
-	Approved by: {$ApprovedBy}
 {/if}
 
 
 {if !empty($CreatedBy)}
-	<br/>
-	Created by: {$CreatedBy}
+	<p><strong>Created by:</strong> {$CreatedBy}</p>
 {/if}
 
-<br/>
-Reference Number: {$ReferenceNumber}
+{if !empty($ApprovedBy)}
+	<p><strong>Approved by:</strong> {$ApprovedBy}</p>
+{/if}
 
-<br/>
-<br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-<a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
-<a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$Title|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$ResourceName|escape:'url'}&trp=false&sprop=&sprop=name:"
-   target="_blank" rel="nofollow">Add to Google Calendar</a> |
+<p><strong>Reference Number:</strong> {$ReferenceNumber}</p>
+
+{if !$Deleted}
+	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a>
+	|
+	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a>
+	|
+	<a href="{$GoogleCalendarUrl}" target="_blank" rel="nofollow">Add to Google Calendar</a>
+	|
+{/if}
 <a href="{$ScriptUrl}">Log in to {$AppTitle}</a>
+
