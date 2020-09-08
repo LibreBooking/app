@@ -49,6 +49,7 @@ function Schedule(opts, resourceGroups) {
 
         if (clear) {
             $("#reservations").find("div.event, div.condensed-event").remove();
+            $('#reservations').find('td').css('height', '');
         }
 
         function attachReservationEvents(div, reservation) {
@@ -114,8 +115,10 @@ function Schedule(opts, resourceGroups) {
                 let tdMin = Number.parseInt(td.data('min'));
                 let resStart = Number.parseInt(reservation.StartDate);
 
-                if (tdMin <= resStart) {
+                if (tdMin <= resStart && tdMax > resStart) {
                     startTd = td;
+                } else if (tdMax < resStart && i + 1 < tds.length) {
+                    startTd = $(tds[i + 1]);
                 }
             });
 
@@ -228,49 +231,86 @@ function Schedule(opts, resourceGroups) {
                     let numberOfConflicts = 0;
                     let conflictIds = [];
 
-                    t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
-                        // if ($(div).attr('id').contains('buffer'))
-                        // {
-                        // 	// return false;
-                        // }
-                        let divMin = Number.parseInt($(div).data('start'));
-                        let divMax = Number.parseInt($(div).data('end'));
-                        let resStart = Number.parseInt(res.StartDate);
-                        let resEnd = Number.parseInt(res.EndDate);
-
-                        const overlaps = resStart <= divMin && resEnd >= divMax;
-                        const conflictsStart = resStart >= divMin && resStart < divMax;
-                        const conflictsEnd = resEnd > divMin && resEnd <= divMax;
-
-                        if (overlaps || conflictsStart || conflictsEnd) {
-                            numberOfConflicts++;
-                            if (!conflictIds.includes(res.ReferenceNumber)) {
-                                conflictIds.push(res.ReferenceNumber);
-                            }
-                            if (!conflictIds.includes($(div).data('resid'))) {
-                                conflictIds.push($(div).data('resid'));
-                            }
-                        }
-                    });
-
                     let width = 0;
                     let height = 0;
                     let top = startTd.position().top;
                     let left = startTd.position().left;
+
+                    const adjustOverlap = function () {
+                        const precision = 3;
+                        t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
+                            const divPosition = $(div).position();
+                            const divLeft = Number.parseFloat(divPosition.left.toFixed(precision));
+                            const divRight = divLeft + Number.parseFloat($(div).width().toFixed(precision));
+                            const divTop = Number.parseFloat(divPosition.top.toFixed(precision));
+                            const divBottom = Number.parseFloat((divTop + height).toFixed(precision));
+                            const myLeft = Number.parseFloat(left.toFixed(precision));
+                            const myTop = Number.parseFloat(top.toFixed(precision));
+                            const myRight = Number.parseFloat((myLeft + width).toFixed(precision));
+                            const myBottom = Number.parseFloat((myTop + height).toFixed(precision));
+
+                            let overlap = true;
+
+                            if (divRight <= myLeft || myRight <= divLeft) {
+                                overlap = false;
+                            }
+
+                            if (divTop >= myBottom || myTop >= divBottom) {
+                                overlap = false;
+                            }
+
+                            if (overlap) {
+                                top += height;
+                                numberOfConflicts++;
+                                adjustOverlap();
+                            }
+                        });
+                    };
+
                     if (opts.scheduleStyle === ScheduleTall) {
                         width = startTd.outerWidth();
                         height = endTd.position().top - startTd.position().top;
+                        top = startTd.position().top;// + (40 * numberOfConflicts);
 
+                        const countConflicts = function () {
+                            t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
+                                let divMin = Number.parseInt($(div).data('start'));
+                                let divMax = Number.parseInt($(div).data('end'));
+                                let resStart = Number.parseInt(res.StartDate);
+                                let resEnd = Number.parseInt(res.EndDate);
+
+                                const overlaps = resStart <= divMin && resEnd >= divMax;
+                                const conflictsStart = resStart >= divMin && resStart < divMax;
+                                const conflictsEnd = resEnd > divMin && resEnd <= divMax;
+
+                                if (overlaps || conflictsStart || conflictsEnd) {
+                                    numberOfConflicts++;
+                                    if (!conflictIds.includes(res.ReferenceNumber)) {
+                                        conflictIds.push(res.ReferenceNumber);
+                                    }
+                                    if (!conflictIds.includes($(div).data('resid'))) {
+                                        conflictIds.push($(div).data('resid'));
+                                    }
+                                }
+                            });
+                        }
+
+                        countConflicts();
+                        // adjustOverlap();
+                        top = startTd.position().top;
+                        // console.log('conflicts', nu)
                         if (height === 0) {
                             height = endTd.outerHeight();
                         }
                     } else {
-                        height = startTd.outerHeight();
+                        height = 40;
                         width = endTd.position().left - startTd.position().left + calculatedAdjustment;
-                        top = startTd.position().top + (40 * numberOfConflicts);
+                        top = startTd.position().top;
+
+                        adjustOverlap();
+
                         if (numberOfConflicts > 0) {
                             startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
-                            height = 40;
                         }
                     }
 
@@ -292,7 +332,7 @@ function Schedule(opts, resourceGroups) {
                     t.append(div);
 
                     if (conflictIds.length > 0 && opts.scheduleStyle === ScheduleTall) {
-                        width = startTd.outerWidth() / conflictIds.length;
+                        width = startTd.outerWidth() / (numberOfConflicts + 1);
                         conflictIds.forEach((conflict, index) => {
                             left = startTd.position().left + (width * index);
                             const div = t.find(`[data-resid="${conflict}"]`);
