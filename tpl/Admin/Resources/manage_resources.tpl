@@ -1910,7 +1910,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			resource.images.push('{resource_image image=$image}');
             {/foreach}
 
-			resource.resourceGroupIds = [{$resource->GetResourceGroupIds()|join:','}];
+			resource.resourceGroupIds = [{','|join:$resource->GetResourceGroupIds()}];
 
 			resourceManagement.add(resource);
             {/foreach}
