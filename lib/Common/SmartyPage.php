@@ -242,7 +242,7 @@ class SmartyPage extends Smarty
 		return $attributes->ToString();
 	}
 
-	public function PrintLink($params, &$smarty)
+	public function PrintLink($params, $smarty)
 	{
 		$string = $this->Resources->GetString($params['key']);
 		if (!isset($params['title']))
@@ -269,7 +269,7 @@ class SmartyPage extends Smarty
 		return "<a href=\"$href\" title=\"$title\" $attributes>$string</a>";
 	}
 
-	public function SmartyTranslate($params, &$smarty)
+	public function SmartyTranslate($params, $smarty)
 	{
 		if (!isset($params['args']))
 		{
@@ -278,7 +278,7 @@ class SmartyPage extends Smarty
 		return $this->Resources->GetString($params['key'], explode(',', $params['args']));
 	}
 
-	public function FormatDate($params, &$smarty)
+	public function FormatDate($params, $smarty)
 	{
 		if (!isset($params['date']) || empty($params['date']))
 		{
@@ -314,7 +314,7 @@ class SmartyPage extends Smarty
 		return $formatted;
 	}
 
-	public function PrintImage($params, &$smarty)
+	public function PrintImage($params, $smarty)
 	{
 		$alt = isset($params['alt']) ? $params['alt'] : '';
 		$altKey = isset($params['altKey']) ? $params['altKey'] : '';
@@ -333,7 +333,7 @@ class SmartyPage extends Smarty
 		return "<img src=\"$imgPath\" title=\"$alt\" alt=\"$alt\"  $attributes />";
 	}
 
-	public function DisplayControl($params, &$smarty)
+	public function DisplayControl($params, $smarty)
 	{
 		$type = $params['type'];
 		require_once(ROOT_DIR . "Controls/$type.php");
@@ -352,7 +352,7 @@ class SmartyPage extends Smarty
 		$control->PageLoad();
 	}
 
-	public function ValidationGroup($params, $content, &$smarty, &$repeat)
+	public function ValidationGroup($params, $content, $smarty, &$repeat)
 	{
 		$class = 'error';
 
@@ -374,7 +374,7 @@ class SmartyPage extends Smarty
 		return '';
 	}
 
-	public function Validator($params, &$smarty)
+	public function Validator($params, $smarty)
 	{
 		$validator = $this->Validators->Get($params['id']);
 		if (!$validator->IsValid())
@@ -400,7 +400,7 @@ class SmartyPage extends Smarty
 		return '';
 	}
 
-	public function AsyncValidator($params, &$smarty)
+	public function AsyncValidator($params, $smarty)
 	{
 		$message = '';
 		if (isset($params['key']) && !empty($params['key']))
@@ -410,7 +410,7 @@ class SmartyPage extends Smarty
 		return sprintf('<li class="asyncValidation" id="%s">%s</li>', $params['id'], $message);
 	}
 
-	public function Textbox($params, &$smarty)
+	public function Textbox($params, $smarty)
 	{
 		$class = null;
 		$value = null;
@@ -485,7 +485,7 @@ class SmartyPage extends Smarty
 		return $textbox->Html();
 	}
 
-	public function ObjectHtmlOptions($params, &$smarty)
+	public function ObjectHtmlOptions($params, $smarty)
 	{
 		$key = $params['key'];
 		$label = $params['label'];
@@ -507,13 +507,13 @@ class SmartyPage extends Smarty
 		return $builder->ToString();
 	}
 
-	public function SetFocus($params, &$smarty)
+	public function SetFocus($params, $smarty)
 	{
 		$id = isset($params['key']) ? FormKeys::Evaluate($params['key']) : $params['id'];
 		return "<script type=\"text/javascript\">document.getElementById('$id').focus();</script>";
 	}
 
-	public function GetFormName($params, &$smarty)
+	public function GetFormName($params, $smarty)
 	{
 		$append = '';
 
@@ -593,7 +593,7 @@ class SmartyPage extends Smarty
 		return $url;
 	}
 
-	public function CreatePagination($params, &$smarty)
+	public function CreatePagination($params, $smarty)
 	{
 		/** @var PageInfo $pageInfo */
 		$pageInfo = $params['pageInfo'];
@@ -654,7 +654,7 @@ class SmartyPage extends Smarty
 		return $sb->ToString();
 	}
 
-	public function CreatePageLink($params, &$smarty)
+	public function CreatePageLink($params, $smarty)
 	{
 		$url = ServiceLocator::GetServer()->GetUrl();
 		$page = $params['page'];
@@ -696,7 +696,7 @@ class SmartyPage extends Smarty
 		return $newUrl;
 	}
 
-	public function CreateJavascriptArray($params, &$smarty)
+	public function CreateJavascriptArray($params, $smarty)
 	{
 		$array = $params['array'];
 
@@ -705,7 +705,7 @@ class SmartyPage extends Smarty
 		return "[\"$string\"]";
 	}
 
-	public function DisplayFullName($params, &$smarty)
+	public function DisplayFullName($params, $smarty)
 	{
 		$config = Configuration::Instance();
 		$ignorePrivacy = false;
@@ -726,7 +726,7 @@ class SmartyPage extends Smarty
 		return htmlspecialchars($fullName->__toString());
 	}
 
-	public function AddQueryString($params, &$smarty)
+	public function AddQueryString($params, $smarty)
 	{
 		$url = new Url(ServiceLocator::GetServer()->GetUrl());
 		$name = constant(sprintf('QueryStringKeys::%s', $params['key']));
@@ -735,7 +735,7 @@ class SmartyPage extends Smarty
 		return $url->ToString();
 	}
 
-	public function GetResourceImage($params, &$smarty)
+	public function GetResourceImage($params, $smarty)
 	{
 		$imageUrl = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL);
 
@@ -753,20 +753,20 @@ class SmartyPage extends Smarty
 		return str_replace('"', '&quot;', $str);
 	}
 
-	public function Flush($params, &$smarty)
+	public function Flush($params, $smarty)
 	{
 		echo '<!-- flushing -->';
 		flush();
 	}
 
-	public function IncludeJavascriptFile($params, &$smarty)
+	public function IncludeJavascriptFile($params, $smarty)
 	{
 		$versionNumber = Configuration::VERSION;
 		$async = isset($params['async']) ? ' async' : '';
 		echo "<script type=\"text/javascript\" src=\"{$this->RootPath}scripts/{$params['src']}?v=$versionNumber\"{$async}></script>";
 	}
 
-	public function IncludeCssFile($params, &$smarty)
+	public function IncludeCssFile($params, $smarty)
 	{
 		$versionNumber = Configuration::VERSION;
 		$src = $params['src'];
@@ -777,7 +777,7 @@ class SmartyPage extends Smarty
 		echo "<link rel='stylesheet' type='text/css' href='{$this->RootPath}{$src}?v=$versionNumber'/>";
 	}
 
-	public function DisplayIndicator($params, &$smarty)
+	public function DisplayIndicator($params, $smarty)
 	{
 		$id = isset($params['id']) ? $params['id'] : '';
 		$spinClass = isset($params['spinClass']) ? $params['spinClass'] : 'fa-spinner';
@@ -788,7 +788,7 @@ class SmartyPage extends Smarty
 		echo "<span id=\"$id\" class=\"fa fa-spin $spinClass $size $class $show\"></span>";
 	}
 
-	public function ReadOnlyAttribute($params, &$smarty)
+	public function ReadOnlyAttribute($params, $smarty)
 	{
 		$attrVal = $params['value'];
 		$attribute = $params['attribute'];
@@ -809,7 +809,7 @@ class SmartyPage extends Smarty
 		}
 	}
 
-	public function CSRFToken($params, &$smarty)
+	public function CSRFToken($params, $smarty)
 	{
 		echo '<input type="hidden" id="csrf_token" name="' . FormKeys::CSRF_TOKEN . '" value="' .
 				ServiceLocator::GetServer()->GetUserSession()->CSRFToken . '"/>';
@@ -821,7 +821,7 @@ class SmartyPage extends Smarty
 		return $this->AppendAttributes($params, $knownAttributes);
 	}
 
-	public function CancelButton($params, &$smarty)
+	public function CancelButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Cancel';
 		$class = isset($params['class']) ? $params['class'] : '';
@@ -829,7 +829,7 @@ class SmartyPage extends Smarty
 				Resources::GetInstance()->GetString($key) . '</button>';
 	}
 
-	public function UpdateButton($params, &$smarty)
+	public function UpdateButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Update';
 		$class = isset($params['class']) ? ' ' . $params['class'] . ' ' : '';
@@ -840,7 +840,7 @@ class SmartyPage extends Smarty
 																																																	  ->GetString($key) . '</button>';
 	}
 
-	public function AddButton($params, &$smarty)
+	public function AddButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Add';
 		$class = isset($params['class']) ? $params['class'] : '';
@@ -855,7 +855,7 @@ class SmartyPage extends Smarty
 																																																	->GetString($key) . '</button>';
 	}
 
-	public function DeleteButton($params, &$smarty)
+	public function DeleteButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Delete';
 		$class = isset($params['class']) ? $params['class'] : '';
@@ -869,7 +869,7 @@ class SmartyPage extends Smarty
 																																														->GetString($key) . '</button>';
 	}
 
-	public function ResetButton($params, &$smarty)
+	public function ResetButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Reset';
 		$class = isset($params['class']) ? $params['class'] : '';
@@ -877,7 +877,7 @@ class SmartyPage extends Smarty
 																																	->GetString($key) . '</button>';
 	}
 
-	public function FilterButton($params, &$smarty)
+	public function FilterButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Filter';
 		$class = isset($params['class']) ? $params['class'] : '';
@@ -885,7 +885,7 @@ class SmartyPage extends Smarty
 																																													  ->GetString($key) . '</button>';
 	}
 
-	public function OkButton($params, &$smarty)
+	public function OkButton($params, $smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'OK';
 		$class = isset($params['class']) ? $params['class'] : '';
@@ -893,13 +893,13 @@ class SmartyPage extends Smarty
 																																														->GetString($key) . '</button>';
 	}
 
-	public function ShowHideIcon($params, &$smarty)
+	public function ShowHideIcon($params, $smarty)
 	{
 		$class = isset($params['class']) ? $params['class'] : '';
 		echo '<a href="#"><span class="icon black show-hide glyphicon ' . $class . '"></span><span class="no-show">Show/Hide</span></a>';
 	}
 
-	public function SortColumn($params, &$smarty)
+	public function SortColumn($params, $smarty)
 	{
 		$server = ServiceLocator::GetServer();
 		$url = $server->GetRequestUri();
@@ -946,7 +946,7 @@ class SmartyPage extends Smarty
 		echo '<a href="' . $url . '">' . $this->Resources->GetString($params['key']) . ' ' . $indicator . '</a>';
 	}
 
-	public function FormatCurrency($params, &$smarty)
+	public function FormatCurrency($params, $smarty)
 	{
 		$amount = $params['amount'];
 		$currency = $params['currency'];
