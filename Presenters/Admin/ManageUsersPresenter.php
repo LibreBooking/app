@@ -635,8 +635,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 					else
 					{
 						$user->ChangeName($row->firstName, $row->lastName);
-						$password = $this->passwordEncryption->EncryptPassword($row->password);
-						$user->ChangePassword($password->EncryptedPassword(), $password->Salt());
+						if ($row->password !== "password") {
+                            $password = $this->passwordEncryption->EncryptPassword($row->password);
+                            $user->ChangePassword($password->EncryptedPassword(), $password->Salt());
+                        }
 						$user->ChangeTimezone($timezone);
 						$user->ChangeAttributes($row->phone, $row->organization, $row->position);
 						if ($status == AccountStatus::ACTIVE)

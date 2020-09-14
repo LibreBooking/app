@@ -174,6 +174,7 @@ function Schedule(opts, resourceGroups) {
                 return;
             }
 
+            let left = startTd.position().left;
             let height = 40;
             let width = endTd.position().left - startTd.position().left + calculatedAdjustment;
             let top = startTd.position().top;
@@ -184,12 +185,10 @@ function Schedule(opts, resourceGroups) {
                 top = startTd.position().top;
             }
 
-            return {startTd, endTd, calculatedAdjustment, height, width, top};
+            return {startTd, endTd, calculatedAdjustment, height, width, top, left};
         }
 
         ajaxPost($("#fetchReservationsForm"), options.reservationLoadUrl, null, function (reservationList) {
-
-
             reservationList.sort((r1, r2) => {
                 const resourceOrder = options.resourceOrder[r1.ResourceId] - options.resourceOrder[r2.ResourceId];
                 if (resourceOrder === 0) {
@@ -198,7 +197,6 @@ function Schedule(opts, resourceGroups) {
 
                 return resourceOrder;
             });
-
 
             reservationList.forEach(res => {
                 $('#reservations').find(".reservations").each(function () {
@@ -238,28 +236,7 @@ function Schedule(opts, resourceGroups) {
                                     <span>${startTime}-${endTime}</span>
                                     ${isNew} ${isUpdated} ${res.Label}</div>`);
 
-
-                        // if (res.IsBuffered) {
-                        //     let preStartTime = res.BufferedStartDate < tableMin ? opts.midnightLabel : res.BufferedStartTime;
-                        //     let preEndTime = startTime;
-                        //     const preDiv = $(`<div
-                        //             class="buffer ${past} condensed-event"
-                        //             data-resid="${res.ReferenceNumber}">
-                        //             <span>${preStartTime}-${preEndTime}</span></div>`);
-                        //
-                        //     let postStartTime = endTime;
-                        //     let postEndTime = res.BufferedEndDate > tableMax ? opts.midnightLabel : res.BufferedEndTime;
-                        //     const postDiv = $(`<div
-                        //             class="buffer ${past} condensed-event"
-                        //             data-resid="${res.ReferenceNumber}">
-                        //             <span>${postStartTime}-${postEndTime}</span></div>`);
-                        //
-                        //     t.append(preDiv);
-                        //     t.append(div);
-                        //     t.append(postDiv);
-                        // } else {
                             t.append(div);
-                        // }
                         if (res.IsReservation) {
                             attachReservationEvents(div, res);
                         }
@@ -267,23 +244,18 @@ function Schedule(opts, resourceGroups) {
                     }
 
                     if (res.IsBuffer) {
+                        // buffers are added dynamically in grid views
                         return;
                     }
-
 
                     const startEnd = findStartAndEnd(res, t, "StartDate", "EndDate");
                     if (!startEnd) {
                         return;
                     }
-                    let {startTd, endTd, height, width, top} = startEnd;
+                    let {startTd, endTd, height, width, top, left} = startEnd;
 
                     let numberOfConflicts = 0;
                     let conflictIds = [];
-
-                    // let width = 0;
-                    // let height = 0;
-                    // let top = startTd.position().top;
-                    let left = startTd.position().left;
 
                     const adjustOverlap = function () {
                         const precision = 3;
@@ -317,10 +289,6 @@ function Schedule(opts, resourceGroups) {
                     };
 
                     if (opts.scheduleStyle === ScheduleTall) {
-                        // width = startTd.outerWidth();
-                        // height = endTd.position().top - startTd.position().top;
-                        // top = startTd.position().top;// + (40 * numberOfConflicts);
-
                         const countConflicts = function () {
                             t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
                                 let divMin = Number.parseInt($(div).data('start'));
@@ -351,10 +319,6 @@ function Schedule(opts, resourceGroups) {
                             height = endTd.outerHeight();
                         }
                     } else {
-                        // height = 40;
-                        // width = endTd.position().left - startTd.position().left + calculatedAdjustment;
-                        // top = startTd.position().top;
-
                         adjustOverlap();
 
                         if (numberOfConflicts > 0) {
@@ -362,10 +326,9 @@ function Schedule(opts, resourceGroups) {
                         }
                     }
 
-                    const eventClass = "event";
                     const style = `left:${left}px; top:${top}px; width:${width}px; height:${height}px;`;
                     const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} ${eventClass}" 
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     data-resourceid="${res.ResourceId}"
@@ -374,8 +337,22 @@ function Schedule(opts, resourceGroups) {
                                     ${draggableAttribute}>${isNew} ${isUpdated} ${res.Label}</div>`);
 
                     if (res.IsBuffered) {
-                        // addBuffer(div, res);
-                        // className = "buffer";
+                        const bufferStartEnd = findStartAndEnd(res, t, "BufferedStartDate", "BufferedEndDate");
+                        if (bufferStartEnd) {
+                            let bufferTop = top;
+                            if (opts.scheduleStyle === ScheduleTall) {
+                                bufferTop = bufferStartEnd.top;
+                            }
+                            const style = `left:${bufferStartEnd.left}px; top:${bufferTop}px; width:${bufferStartEnd.width}px; height:${bufferStartEnd.height}px;`;
+                            const bufferDiv = $(`<div 
+                                    class="${past} buffer" 
+                                    style="${style}"
+                                    data-resid="${res.ReferenceNumber}"
+                                    data-resourceid="${res.ResourceId}"
+                                    data-start="${startTd.data('min')}"
+                                    data-end="${endTd.data('min')}">&nbsp;</div>`);
+                            t.append(bufferDiv);
+                        }
                     }
                     if (res.IsReservation) {
                         attachReservationEvents(div, res);
