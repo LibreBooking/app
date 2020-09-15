@@ -26,6 +26,14 @@ class FakeResourceAvailabilityStrategy implements IResourceAvailabilityStrategy
 	 * @var IReservedItemView[]
 	 */
 	public $_ReservedItems = array();
+	/**
+	 * @var Date|null
+	 */
+	public $_Start;
+	/**
+	 * @var Date|null
+	 */
+	public $_End;
 
 	/**
 	 * @param Date $startDate
@@ -35,6 +43,8 @@ class FakeResourceAvailabilityStrategy implements IResourceAvailabilityStrategy
 	 */
 	public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds)
 	{
+		$this->_Start = $startDate;
+		$this->_End = $endDate;
 		return $this->_ReservedItems;
 	}
 }
