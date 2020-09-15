@@ -181,6 +181,7 @@ table.reservations.mobile div.reservable {
   border-top: solid 1px #36648B;
   border-left: solid 1px #36648B;
   border-bottom: solid 1px #36648B;
+  border-right: solid 1px #36648B;
   border-collapse: separate;
   text-wrap: none;
 }

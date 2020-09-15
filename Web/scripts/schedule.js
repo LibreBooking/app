@@ -210,13 +210,7 @@ function Schedule(opts, resourceGroups) {
 			}
 
 			return {
-				startTd,
-				endTd,
-				calculatedAdjustment,
-				height,
-				width: width,
-				top: top - cellAdjustment,
-				left: left - cellAdjustment
+				startTd, endTd, calculatedAdjustment, height, width: width + 1, top: top - cellAdjustment, left: left - cellAdjustment
 			};
 		}
 
@@ -383,7 +377,6 @@ function Schedule(opts, resourceGroups) {
 
 					let divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
 					const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
-					// const style = `left:${left}px; top:${top}px; width:${width}px; height:41px;`;
 					const div = $(`<div 
                                     class="${className} ${mine} ${past} ${participant} ${isPending} event" 
                                     style="${style} ${color}"
@@ -393,27 +386,6 @@ function Schedule(opts, resourceGroups) {
                                     data-end="${endTd.data('min')}"
                                     ${draggableAttribute}>${isNew} ${isUpdated} ${res.Label}</div>`);
 
-					if (res.IsBuffered)
-					{
-						const bufferStartEnd = findStartAndEnd(res, t, "BufferedStartDate", "BufferedEndDate");
-						if (bufferStartEnd)
-						{
-							let bufferTop = top;
-							if (opts.scheduleStyle === ScheduleTall)
-							{
-								bufferTop = bufferStartEnd.top;
-							}
-							const style = `left:${bufferStartEnd.left}px; top:${bufferTop}px; width:${bufferStartEnd.width}px; height:${bufferStartEnd.height}px;`;
-							const bufferDiv = $(`<div 
-                                    class="${past} buffer" 
-                                    style="${style}"
-                                    data-resid="${res.ReferenceNumber}"
-                                    data-resourceid="${res.ResourceId}"
-                                    data-start="${startTd.data('min')}"
-                                    data-end="${endTd.data('min')}">&nbsp;</div>`);
-							t.append(bufferDiv);
-						}
-					}
 					if (res.IsReservation)
 					{
 						attachReservationEvents(div, res);
@@ -430,6 +402,31 @@ function Schedule(opts, resourceGroups) {
 							div.css('width', width + "px");
 							div.css('left', left + "px");
 						})
+					}
+
+					if (res.IsBuffered)
+					{
+						const bufferStartEnd = findStartAndEnd(res, t, "BufferedStartDate", "BufferedEndDate");
+						if (bufferStartEnd)
+						{
+							let bufferHeight = 41;
+							let bufferTop = top;
+							if (opts.scheduleStyle === ScheduleTall)
+							{
+								bufferTop = bufferStartEnd.top;
+								bufferHeight = bufferStartEnd.height;
+							}
+
+							const style = `left:${bufferStartEnd.left}px; top:${bufferTop}px; width:${bufferStartEnd.width}px; height:${bufferHeight}px;`;
+							const bufferDiv = $(`<div 
+					                                    class="${past} buffer" 
+					                                    style="${style}"
+					                                    data-resid="${res.ReferenceNumber}"
+					                                    data-resourceid="${res.ResourceId}"
+					                                    data-start="${startTd.data('min')}"
+					                                    data-end="${endTd.data('min')}">&nbsp;</div>`);
+							t.append(bufferDiv);
+						}
 					}
 
 					if (isDraggable)
