@@ -90,9 +90,9 @@ class Authentication implements IAuthentication
 		return $this->firstRegistration;
 	}
 
-	public function Validate($username, $password)
+	public function Validate($username, $passwordPlainText)
 	{
-		if (($this->ShowUsernamePrompt() && empty($username)) || ($this->ShowPasswordPrompt() && empty($password)))
+		if (($this->ShowUsernamePrompt() && empty($username)) || ($this->ShowPasswordPrompt() && empty($passwordPlainText)))
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ class Authentication implements IAuthentication
 		{
 			Log::Debug('User was found: %s', $username);
 			$migration = $this->GetMigration();
-			$password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
+			$password = $migration->Create($passwordPlainText, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
 			$salt = $row[ColumnNames::SALT];
 
 			if ($password->Validate($salt))

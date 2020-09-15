@@ -223,6 +223,7 @@ class ReservationListItem
         $dto->BackgroundColor = $this->GetColor();
         $dto->TextColor = $this->GetTextColor();
         $dto->IsReservation = $this->IsReservation();
+        $dto->IsBuffered = false;
         $dto->IsBuffer = false;
         $dto->Label = $this->GetTitle();
         $dto->IsPending = $this->GetPending();
@@ -238,6 +239,11 @@ class ReservationListItem
         $dto->IsAdmin = $currentUser->IsAdmin || $currentUser->IsGroupAdmin || $currentUser->IsResourceAdmin || $currentUser->IsScheduleAdmin;
 
         if ($this->HasBufferTime()) {
+            $dto->IsBuffered = true;
+            $dto->BufferedStartDate = $this->BufferedStartDate()->Timestamp();
+            $dto->BufferedEndDate = $this->BufferedEndDate()->Timestamp();
+            $dto->BufferedStartTime = $this->BufferedStartDate()->ToTimezone($timezone)->Format($format);
+            $dto->BufferedEndTime = $this->BufferedEndDate()->ToTimezone($timezone)->Format($format);
             $pre = new ReservationListItemDto();
             $pre->StartDate = $this->BufferedStartDate()->Timestamp();
             $pre->StartTime = $this->BufferedStartDate()->ToTimezone($timezone)->Format($format);
@@ -245,6 +251,7 @@ class ReservationListItem
             $pre->EndTime = $this->StartDate()->ToTimezone($timezone)->Format($format);
             $pre->IsReservation = false;
             $pre->IsBuffer = true;
+            $pre->IsBuffered = false;
             $pre->Id = $this->Id() . 'buffer-pre';
             $pre->ReferenceNumber = $this->ReferenceNumber();
             $pre->ResourceId = $this->ResourceId();
@@ -257,6 +264,7 @@ class ReservationListItem
             $post->EndTime = $this->BufferedEndDate()->ToTimezone($timezone)->Format($format);
             $post->IsReservation = false;
             $post->IsBuffer = true;
+            $post->IsBuffered = false;
             $post->Id = $this->Id() . 'buffer-post';
             $post->ReferenceNumber = $this->ReferenceNumber();
             $post->ResourceId = $this->ResourceId();
@@ -458,10 +466,14 @@ class ReservationListItemDto
      * @var bool
      */
     public $IsReservation;
-	/**
+    /**
      * @var bool
      */
     public $IsBuffer;
+    /**
+     * @var bool
+     */
+    public $IsBuffered;
     /**
      * @var string
      */
@@ -502,4 +514,20 @@ class ReservationListItemDto
      * @var bool
      */
     public $IsAdmin;
+    /**
+     * @var string|null
+     */
+    public $BufferedStartDate;
+    /**
+     * @var string|null
+     */
+    public $BufferedEndDate;
+    /**
+     * @var string|null
+     */
+    public $BufferedStartTime;
+    /**
+     * @var string|null
+     */
+    public $BufferedEndTime;
 }
