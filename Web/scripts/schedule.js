@@ -64,8 +64,12 @@ function Schedule(opts, resourceGroups) {
 			$('#reservations').find('td').css('height', '40px');
 		}
 
-		// adjust for how different browsers calculate positions for elements with borders
-		let cellAdjustment = Math.min(1, $('#reservations').find('td.slot').first().position().top - 40);
+		let cellAdjustment = 0;
+		if (opts.scheduleStyle !== ScheduleWide)
+		{
+			// adjust for how different browsers calculate positions for elements with borders
+			cellAdjustment = Math.min(1, ($('#reservations').find('td.slot').first().position().top % 40));
+		}
 
 		function attachReservationEvents(div, reservation) {
 			var reservations = $('#reservations');
@@ -199,7 +203,7 @@ function Schedule(opts, resourceGroups) {
 
 			if (opts.scheduleStyle === ScheduleTall)
 			{
-				width = startTd.outerWidth();
+				width = startTd.outerWidth() - cellAdjustment;
 				height = endTd.position().top - startTd.position().top;
 				top = startTd.position().top;
 				left += cellAdjustment;
@@ -421,7 +425,7 @@ function Schedule(opts, resourceGroups) {
 					{
 						width = startTd.outerWidth() / (numberOfConflicts + 1);
 						conflictIds.forEach((conflict, index) => {
-							left = startTd.position().left + (width * index);
+							left = startTd.position().left + (width * index) - cellAdjustment;
 							const div = t.find(`[data-resid="${conflict}"]`);
 							div.css('width', width + "px");
 							div.css('left', left + "px");
