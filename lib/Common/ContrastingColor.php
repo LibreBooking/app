@@ -59,16 +59,15 @@ class AdjustedColor
         $this->steps = $steps;
     }
 
-    public function GetHex(){
+    public function GetHex() {
         if(!preg_match('/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i', $this->sourceColor, $parts))
         {
             return '';
         }
-        $out = ""; // Prepare to fill with the results
+        $out = "";
         for($i = 1; $i <= 3; $i++) {
             $parts[$i] = hexdec($parts[$i]);
-            $parts[$i] = round($parts[$i] * $this->steps/100); // 80/100 = 80%, i.e. 20% darker
-            // Increase or decrease it to fit your needs
+            $parts[$i] = round($parts[$i] * $this->steps/100);
             $out .= str_pad(dechex($parts[$i]), 2, '0', STR_PAD_LEFT);
         }
         return '#' . $out;

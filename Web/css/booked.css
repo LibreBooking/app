@@ -1209,9 +1209,9 @@ table.reservations.mobile div.reservable {
 .reservations.condensed div.reservable {
   padding: 3px;
   margin: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   cursor: pointer;
 }
 .reservations.condensed div.reservable {
@@ -1247,12 +1247,18 @@ table.reservations.mobile div.reservable {
   background-color: #000;
   height: 40px;
   z-index: 2;
-  border: solid 1px #36648B;
+  border-top: solid 1px #36648B;
+  border-left: solid 1px #36648B;
+  border-bottom: solid 1px #36648B;
   border-collapse: separate;
   text-wrap: none;
 }
 .buffer {
   z-index: 1;
+}
+.condensed-event {
+  border-width: 1px;
+  border-style: solid;
 }
 .unreservable,
 .buffer {

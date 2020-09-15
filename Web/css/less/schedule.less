@@ -112,7 +112,7 @@ table.reservations.mobile {
   .reserved, .unreservable, div.reservable {
     padding: 3px;
     margin: 2px;
-    .rounded(2px);
+    .rounded(3px);
     cursor: pointer;
   }
 
@@ -157,7 +157,9 @@ table.reservations.mobile {
   background-color: #000;
   height: 40px;
   z-index: 2;
-  border: solid 1px #36648B;
+  border-top: solid 1px #36648B;
+  border-left: solid 1px #36648B;
+  border-bottom: solid 1px #36648B;
   border-collapse: separate;
   text-wrap: none;
 }
@@ -167,7 +169,8 @@ table.reservations.mobile {
 }
 
 .condensed-event {
-
+  border-width: 1px;
+  border-style: solid;
 }
 
 .unreservable, .buffer {
