@@ -72,7 +72,6 @@ class ReservationService implements IReservationService
 
 	public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null, $ownerId = null, $participantId = null)
 	{
-	    Log::Debug("owner %s participant %s", $ownerId, $participantId);
 		$reservations = $this->_repository->GetReservations($dateRange->GetBegin(), $dateRange->GetEnd(), $ownerId, null, $scheduleId, $resourceIds, false, $participantId);
 		$blackouts = $this->_repository->GetBlackoutsWithin($dateRange, $scheduleId, $resourceIds);
 
@@ -80,9 +79,6 @@ class ReservationService implements IReservationService
 		$items = [];
 		foreach ($reservations as $i)
 		{
-			if ($i->ReferenceNumber == '5ee21abc99fa0714161184') {
-				Log::Error("got it %s", 's');
-			}
 			$items[] = new ReservationListItem($i);
 		}
 		foreach ($blackouts as $i)

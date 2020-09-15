@@ -205,7 +205,7 @@ class ReservationListItem
 
     /**
      * @param $currentUser UserSession
-     * @return ReservationListItemDto
+     * @return ReservationListItemDto[]
      */
     public function AsDto($currentUser)
     {
@@ -272,7 +272,7 @@ class ReservationListItem
 
             return [$pre, $dto, $post];
         }
-        return $dto;
+        return [$dto];
     }
 
     private function GetIsNew()
