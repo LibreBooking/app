@@ -65,7 +65,7 @@ function Schedule(opts, resourceGroups) {
 		}
 
 		let cellAdjustment = 0;
-		if (opts.scheduleStyle !== ScheduleWide)
+		if (opts.scheduleStyle === ScheduleStandard || opts.scheduleStyle === ScheduleTall)
 		{
 			// adjust for how different browsers calculate positions for elements with borders
 			cellAdjustment = Math.min(1, ($('#reservations').find('td.slot').first().position().top % 40));
