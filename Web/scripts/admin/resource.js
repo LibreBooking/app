@@ -102,6 +102,10 @@ function ResourceManagement(opts) {
 		checkAllowConcurrent: $('#allowConcurrentChk'),
 		maxConcurrent: $('#maxConcurrentReservations'),
 		allowConcurrentDiv: $('#allowConcurrentDiv'),
+
+		toggleStatusChangeMessage: $('#toggleStatusChangeMessage'),
+		sendStatusChangeMessageContent: $('#sendStatusChangeMessageContent'),
+		statusMessageContent: $('#statusMessageContent'),
 	};
 
 	var resources = {};
@@ -322,17 +326,17 @@ function ResourceManagement(opts) {
 			}
 		});
 
-        $('#bulkEditConcurrent').change(function () {
-            if ($(this).val() == '1')
-            {
-                $('#bulkEditAllowConcurrentDiv').removeClass('no-show');
-            }
+		$('#bulkEditConcurrent').change(function () {
+			if ($(this).val() == '1')
+			{
+				$('#bulkEditAllowConcurrentDiv').removeClass('no-show');
+			}
 
-            if ($(this).val() == '0')
-            {
-                $('#bulkEditAllowConcurrentDiv').addClass('no-show');
-            }
-        });
+			if ($(this).val() == '0')
+			{
+				$('#bulkEditAllowConcurrentDiv').addClass('no-show');
+			}
+		});
 
 		elements.bulkUpdatePromptButton.click(function (e) {
 			e.preventDefault();
@@ -460,6 +464,18 @@ function ResourceManagement(opts) {
 			window.location.reload();
 		});
 
+
+		elements.toggleStatusChangeMessage.on('change', function (e) {
+			if ($(this).is(":checked"))
+			{
+				elements.sendStatusChangeMessageContent.removeClass('no-show');
+			}
+			else
+			{
+				elements.sendStatusChangeMessageContent.addClass('no-show');
+			}
+		});
+
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
 		};
@@ -532,6 +548,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 		ConfigureAsyncForm(elements.importForm, defaultSubmitCallback(elements.importForm), importHandler);
 		ConfigureAsyncForm(elements.bulkDeleteForm, defaultSubmitCallback(elements.bulkDeleteForm));
+		ConfigureAsyncForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -813,12 +830,12 @@ function ResourceManagement(opts) {
 
 	var showStatusPrompt = function (e) {
 		var resource = getActiveResource();
-		var statusForm = $('.popover:visible').find('form');
+		var statusForm = elements.statusForm;
 
 		var statusOptions = statusForm.find(elements.statusOptions);
 		var statusReasons = statusForm.find(elements.statusReasons);
 		var addStatusReason = statusForm.find(elements.addStatusReason);
-		var saveButton = statusForm.find('.save');
+		// var saveButton = statusForm.find('.save');
 
 		statusOptions.val(resource.statusId);
 		statusReasons.val(resource.reasonId);
@@ -849,14 +866,20 @@ function ResourceManagement(opts) {
 			}
 		});
 
-		saveButton.unbind();
+		// saveButton.unbind();
+		//
+		//
+		//
+		// saveButton.click(function () {
+		// 	statusForm.submit();
+		// });
+		//
 
-		ConfigureAsyncForm(statusForm, defaultSubmitCallback(statusForm));
+		elements.toggleStatusChangeMessage.prop('checked', false);
+		elements.sendStatusChangeMessageContent.addClass('no-show');
+		elements.statusMessageContent.val('');
 
-		saveButton.click(function () {
-			statusForm.submit();
-		});
-
+		elements.statusDialog.modal('show');
 		statusOptions.focus();
 	};
 

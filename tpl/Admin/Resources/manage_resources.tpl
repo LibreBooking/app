@@ -227,17 +227,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {if $resource->IsAvailable()}
                                     {html_image src="status.png"}
 									<a class="update changeStatus"
-									   href="#" rel="popover"
+									   href="#"
 									   data-popover-content="#statusDialog">{translate key='Available'}</a>
                                 {elseif $resource->IsUnavailable()}
                                     {html_image src="status-away.png"}
 									<a class="update changeStatus"
-									   href="#" rel="popover"
+									   href="#"
 									   data-popover-content="#statusDialog">{translate key='Unavailable'}</a>
                                 {else}
                                     {html_image src="status-busy.png"}
 									<a class="update changeStatus"
-									   href="#" rel="popover"
+									   href="#"
 									   data-popover-content="#statusDialog">{translate key='Hidden'}</a>
                                 {/if}
                                 {if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
@@ -508,7 +508,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<label for="resourceAdminGroupId">{translate key='ResourceAdministrator'}</label>
 							<select class="form-control" {formname key=RESOURCE_ADMIN_GROUP_ID}
 									id="resourceAdminGroupId">
-								{if $CanViewAdmin}<option value="">{translate key=None}</option>{/if}
+                                {if $CanViewAdmin}
+									<option value="">{translate key=None}</option>{/if}
                                 {foreach from=$AdminGroups item=adminGroup}
 									<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
                                 {/foreach}
@@ -925,51 +926,77 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="statusDialog" class="hide">
-		<form class="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
-			<div class="control-group form-group">
-				<div class="form-group">
-					<label>{translate key=Status}
-						<select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">
-							<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-							<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-							<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-						</select>
-					</label>
-				</div>
+	<div id="statusDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
+		 aria-hidden="true">
+		<form id="statusForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="statusModalLabel">{translate key=ChangeResourceStatus}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="control-group form-group">
+							<div class="form-group">
+								<label>{translate key=Status}
+									<select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">
+										<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+										<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+										<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+									</select>
+								</label>
+							</div>
 
-				<div class="form-group no-show newStatusReason">
-					<label>{translate key=ReasonText}
-						<a href="#" class="pull-right addStatusReason">
-							<span class="no-show">{translate key=ReasonText}</span>
-							<span class="addStatusIcon fa fa-list-alt icon add"></span>
-						</a>
-						<input type="text"
-							   class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
-					</label>
-				</div>
-				<div class="form-group existingStatusReason">
-					<label>
-                        {translate key=Reason}
-						<a href="#" class="pull-right addStatusReason">
-							<span class="no-show">{translate key=Reason}</span>
-							<span class="addStatusIcon fa fa-plus icon add"></span>
-						</a>
-						<select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>
-					</label>
-				</div>
+							<div class="form-group no-show newStatusReason">
+								<label>{translate key=ReasonText}
+									<a href="#" class="pull-right addStatusReason">
+										<span class="no-show">{translate key=ReasonText}</span>
+										<span class="addStatusIcon fa fa-list-alt icon add"></span>
+									</a>
+									<input type="text"
+										   class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
+								</label>
+							</div>
+							<div class="form-group existingStatusReason">
+								<label>
+                                    {translate key=Reason}
+									<a href="#" class="pull-right addStatusReason">
+										<span class="no-show">{translate key=Reason}</span>
+										<span class="addStatusIcon fa fa-plus icon add"></span>
+									</a>
+									<select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>
+								</label>
+							</div>
 
-			</div>
-			<div class="editable-buttons">
-				<button type="button" class="btn btn-primary btn-sm editable-submit save">
-					<span class="no-show">{translate key=Save}</span>
-					<i class="glyphicon glyphicon-ok"></i>
-				</button>
-				<button type="button" class="btn btn-default btn-sm editable-cancel">
-					<span class="no-show">{translate key=Cancel}</span>
-					<i class="glyphicon glyphicon-remove"></i>
-				</button>
-                {indicator}
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="toggleStatusChangeMessage" {formname key=SEND_AS_EMAIL}/>
+									<label for="toggleStatusChangeMessage">{translate key=NotifyUsers}</label>
+								</div>
+							</div>
+
+							<div id="sendStatusChangeMessageContent" class="no-show">
+								<div class="form-group">
+									<label for="statusMessageSendDays">{translate key=AllUsersWhoHaveAReservationInTheNext}</label>
+									<div class="input-group">
+										<input type="number" min="1" max="365" step="1" value="30" id="statusMessageSendDays" class="form-control" {formname key=DAY}/>
+										<div class="input-group-addon">{translate key=days}</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="statusMessageContent">{translate key=Message}</label>
+									<textarea id="statusMessageContent" class="form-control" {formname key=EMAIL_CONTENTS}></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+                        {cancel_button}
+                        {update_button}
+                        {indicator}
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -1350,20 +1377,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
-                        <div class="form-group">
-                            <label for="bulkEditConcurrent" class="control-label">{translate key=AllowConcurrentReservations}</label>
-                            <select id="bulkEditConcurrent" class="form-control" {formname key=ALLOW_CONCURRENT_RESERVATIONS}>
+						<div class="form-group">
+							<label for="bulkEditConcurrent" class="control-label">{translate key=AllowConcurrentReservations}</label>
+							<select id="bulkEditConcurrent" class="form-control" {formname key=ALLOW_CONCURRENT_RESERVATIONS}>
                                 {html_options options=$YesNoUnchangedOptions}
-                            </select>
-                            <div class="no-show" id="bulkEditAllowConcurrentDiv">
+							</select>
+							<div class="no-show" id="bulkEditAllowConcurrentDiv">
                                 {capture name="txtConcurrentReservations" assign="txtConcurrentReservations"}
-                                    <label for='bulkEditMaxConcurrentReservations' class='no-show'>Maximum Concurrent Reservations</label>
-                                    <input type='number' max='99' min='2' id='bulkEditMaxConcurrentReservations'
-                                           class='form-control inline minutes' {formname key=MAX_CONCURRENT_RESERVATIONS} value='2' />
+									<label for='bulkEditMaxConcurrentReservations' class='no-show'>Maximum Concurrent Reservations</label>
+									<input type='number' max='99' min='2' id='bulkEditMaxConcurrentReservations'
+										   class='form-control inline minutes' {formname key=MAX_CONCURRENT_RESERVATIONS} value='2'/>
                                 {/capture}
                                 {translate key='ResourceConcurrentReservations' args=$txtConcurrentReservations}
-                            </div>
-                        </div>
+							</div>
+						</div>
 
 						<div class="form-group">
 							<label for="bulkEditAllowSubscriptions"

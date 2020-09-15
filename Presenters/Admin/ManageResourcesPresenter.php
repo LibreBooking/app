@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/ImageUploadDirectory.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/ResourceImportCsv.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ResourceStatusChangeEmail.php');
 
 class ManageResourcesActions
 {
@@ -98,6 +99,11 @@ class ManageResourcesPresenter extends ActionPresenter
 	 */
 	private $userPreferenceRepository;
 
+	/**
+	 * @var IReservationViewRepository
+	 */
+	private $reservationViewRepository;
+
 	public function __construct(
 			IManageResourcesPage $page,
 			IResourceRepository $resourceRepository,
@@ -105,7 +111,8 @@ class ManageResourcesPresenter extends ActionPresenter
 			IImageFactory $imageFactory,
 			IGroupViewRepository $groupRepository,
 			IAttributeService $attributeService,
-			IUserPreferenceRepository $userPreferenceRepository)
+			IUserPreferenceRepository $userPreferenceRepository,
+			IReservationViewRepository $reservationViewRepository)
 	{
 		parent::__construct($page);
 
@@ -116,6 +123,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->groupRepository = $groupRepository;
 		$this->attributeService = $attributeService;
 		$this->userPreferenceRepository = $userPreferenceRepository;
+		$this->reservationViewRepository = $reservationViewRepository;
 
 		$this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
 		$this->AddAction(ManageResourcesActions::ActionChangeAdmin, 'ChangeAdmin');
@@ -464,6 +472,28 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resource->ChangeStatus($statusId, $statusReasonId);
 		$this->resourceRepository->Update($resource);
+
+		if ($this->page->SendStatusChangeMessage())
+		{
+
+			$emails = array();
+			$days = intval($this->page->StatusChangeDays());
+			$days = max(1, min($days, 365));
+			$message = $this->page->GetStatusChangeMessage();
+
+			Log::Debug("Sending resource status changed email to users. Days: %s", $days);
+
+			$reservations = $this->reservationViewRepository->GetReservations(Date::Now(), Date::Now()->AddDays($days), null, null, null, $resourceId);
+
+			foreach ($reservations as $reservation) {
+				$email = $reservation->OwnerEmailAddress;
+				if (!array_key_exists($email, $emails)) {
+					$emails[$email] = 1;
+					ServiceLocator::GetEmailService()->Send(new ResourceStatusChangeEmail($email, $resource, $message, $reservation->OwnerLanguage));
+				}
+
+			}
+		}
 	}
 
 	public function ChangeSchedule()

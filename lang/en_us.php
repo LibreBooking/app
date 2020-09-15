@@ -796,6 +796,10 @@ class en_us extends Language
         $strings['ResourceDisplayInstructions'] = 'No resource has been selected. You can find the URL to display a resource in Application Management, Resources. The resource must be publicly accessible.';
         $strings['Owner'] = 'Owner';
 		$strings['MaximumConcurrentReservations'] = 'Maximum Concurrent Reservations';
+		$strings['NotifyUsers'] = 'Notify Users';
+		$strings['Message'] = 'Message';
+		$strings['AllUsersWhoHaveAReservationInTheNext'] = 'Anyone with a reservation in the next';
+		$strings['ChangeResourceStatus'] = 'Change Resource Status';
         // End Strings
 
 		// Install
@@ -1017,6 +1021,7 @@ class en_us extends Language
 		$strings['ReservationParticipantDecline'] = '%s has declined your reservation invitation for %s on %s';
 		$strings['ReservationParticipantJoin'] = '%s has joined your reservation for %s on %s';
 		$strings['ReservationAvailableSubject'] = '%s is available on %s';
+		$strings['ResourceStatusChangedSubject'] = 'The availability of %s has changed';
 		// End Email Subjects
 
 		$this->Strings = $strings;

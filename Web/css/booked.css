@@ -2421,6 +2421,14 @@ td.update {
 #resource-images .resource-image img {
   width: 100%;
 }
+#sendStatusChangeMessageContent {
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  padding: 1em;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,

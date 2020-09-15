@@ -91,10 +91,10 @@ class CaptchaService implements ICaptchaService
 														 new BooleanConverter())
 			)
 			{
-				Log::Debug('Using ReCaptchaService');
+//				Log::Debug('Using ReCaptchaService');
 				return new ReCaptchaService();
 			}
-			Log::Debug('Using CaptchaService');
+//			Log::Debug('Using CaptchaService');
 			return new CaptchaService();
 		}
 

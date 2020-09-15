@@ -466,6 +466,11 @@ td.update {
 #resource-images .resource-image img {
   width: 100%;
 }
+#sendStatusChangeMessageContent {
+  background-color: #f0f0f0;
+  border: solid 1px #999;
+  padding: 1em;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,
