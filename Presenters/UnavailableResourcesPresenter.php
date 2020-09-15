@@ -54,21 +54,30 @@ class UnavailableResourcesPresenter
 	{
 		$duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
 									  $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
-		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin(), $duration->GetEnd(), ReservationViewRepository::ALL_RESOURCES);
-		if (empty($reserved)) {
-			$this->page->BindUnavailable([]);
-			return;
-		}
 
 		$resources = $this->resourceRepository->GetResourceList();
 
+		$maxBuffer = new TimeInterval(0);
 		$resourceConflicts = array();
 		$indexedResources = array();
 		foreach ($resources as $resource)
 		{
 			$resourceConflicts[$resource->GetId()] = 0;
 			$indexedResources[$resource->GetId()] = $resource;
+			if ($resource->HasBufferTime()) {
+				if ($resource->GetBufferTime()->TotalSeconds() > $maxBuffer->TotalSeconds()) {
+					$maxBuffer = $resource->GetBufferTime();
+				}
+			}
 		}
+
+		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin()->SubtractInterval($maxBuffer), $duration->GetEnd()->AddInterval($maxBuffer), ReservationViewRepository::ALL_RESOURCES);
+		if (empty($reserved))
+		{
+			$this->page->BindUnavailable([]);
+			return;
+		}
+
 
 		$unavailable = array();
 
@@ -85,8 +94,10 @@ class UnavailableResourcesPresenter
 			}
 		}
 
-		foreach($resourceConflicts as $resourceId => $conflicts) {
-			if ($conflicts >= $indexedResources[$resourceId]->GetMaxConcurrentReservations()) {
+		foreach ($resourceConflicts as $resourceId => $conflicts)
+		{
+			if ($conflicts >= $indexedResources[$resourceId]->GetMaxConcurrentReservations())
+			{
 				$unavailable[] = $resourceId;
 			}
 		}

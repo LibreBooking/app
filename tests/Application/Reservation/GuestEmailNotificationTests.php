@@ -94,22 +94,12 @@ class GuestEmailNotificationTests extends TestBase
 				 ->with($this->equalTo($ownerId))
 				 ->will($this->returnValue($owner));
 
-		$userRepo->expects($this->at(1))
-				 ->method('LoadByUsername')
-				 ->with($this->equalTo($guest1))
-				 ->will($this->returnValue($guestUser));
-
-		$userRepo->expects($this->at(2))
-				 ->method('LoadByUsername')
-				 ->with($this->equalTo($guest2))
-				 ->will($this->returnValue($guestUser));
-
 		$notification = new GuestDeletedEmailNotification($userRepo, $attributeRepo);
 		$notification->Notify($series);
 
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
 		$this->assertInstanceOf('GuestDeletedEmail', $this->fakeEmailService->_LastMessage);
-		$this->assertEquals($guest2, $this->fakeEmailService->_LastMessage->To()[0]->Address());
+		$this->assertEquals($guest2, $this->fakeEmailService->_LastMessage->To()->Address());
 	}
 
 	public function testSendsReservationUpdatedEmailToExistingParticipants()
@@ -139,16 +129,6 @@ class GuestEmailNotificationTests extends TestBase
 				 ->method('LoadById')
 				 ->with($this->equalTo($ownerId))
 				 ->will($this->returnValue($owner));
-
-		$userRepo->expects($this->at(1))
-				 ->method('LoadByUsername')
-				 ->with($this->equalTo($guest1))
-				 ->will($this->returnValue($guestUser));
-
-		$userRepo->expects($this->at(2))
-				 ->method('LoadByUsername')
-				 ->with($this->equalTo($guest2))
-				 ->will($this->returnValue($guestUser));
 
 		$notification = new GuestUpdatedEmailNotification($userRepo, $attributeRepo);
 		$notification->Notify($series);

@@ -150,6 +150,25 @@ class UnavailableResourcesPresenterTests extends TestBase
 
 		$this->assertEquals(array(), $bound);
 	}
+
+	public function testUsesMaxBufferForFindingReservations()
+	{
+		$thirtyMinutes = new FakeBookableResource(1);
+		$ninetyMinutes = new FakeBookableResource(1);
+		$thirtyMinutes->SetBufferTime(30 * 60);
+		$ninetyMinutes->SetBufferTime(90 * 60);
+
+		$this->resourceRepository->_ResourceList = array(
+				$thirtyMinutes,
+				$ninetyMinutes,
+		);
+		$duration = $this->page->GetDuration();
+
+		$this->presenter->PageLoad();
+
+		$this->assertEquals($duration->GetBegin()->AddMinutes(-90), $this->resourceAvailability->_Start);
+		$this->assertEquals($duration->GetEnd()->AddMinutes(90), $this->resourceAvailability->_End);
+	}
 }
 
 class FakeAvailableResourcesPage implements IAvailableResourcesPage
