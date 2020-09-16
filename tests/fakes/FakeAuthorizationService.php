@@ -28,6 +28,7 @@ class FakeAuthorizationService implements IAuthorizationService
 	public $_CanApproveFor = false;
 	public $_CanEditForResource = false;
 	public $_CanApproveForResource = false;
+	public $_IsAdminFor = false;
 
 	public function __construct()
 	{
@@ -126,6 +127,6 @@ class FakeAuthorizationService implements IAuthorizationService
      */
     public function IsAdminFor(UserSession $userSession, $otherUserId)
     {
-        // TODO: Implement IsAdminFor() method.
+        return $this->_IsAdminFor;
     }
 }

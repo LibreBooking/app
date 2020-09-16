@@ -167,6 +167,7 @@ class ReservationView
         $this->CheckinDate = new NullDate();
         $this->CheckoutDate = new NullDate();
         $this->OriginalEndDate = new NullDate();
+        $this->OriginalEndDate = new NullDate();
     }
 
     /**

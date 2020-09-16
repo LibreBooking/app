@@ -1,18 +1,18 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 interface IReservationAuthorization
 {
@@ -58,15 +58,29 @@ class ReservationAuthorization implements IReservationAuthorization
 
 	public function CanEdit(ReservationView $reservationView, UserSession $currentUser)
 	{
-//		$isGroupAdmin = $this->authorizationService->IsAdminFor($currentUser, $reservationView->OwnerId);
-//		$isResourceAdmin = $this->authorizationService->CanEditForResource($currentUser, $resource)
 		if ($currentUser->IsAdmin)
 		{
 			return true;
 		}
 
-		$ongoingReservation = true;
 		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
+		$allowedForAdmin = $reservationView->EndDate->GreaterThanOrEqual(Date::Now());
+
+		$adminForUser = $this->authorizationService->IsAdminFor($currentUser, $reservationView->OwnerId);
+		$adminForResource = false;
+		foreach ($reservationView->Resources as $resource)
+		{
+			if ($this->authorizationService->CanEditForResource($currentUser, $resource))
+			{
+				$adminForResource = true;
+			}
+		}
+
+		if ($allowedForAdmin && ($adminForUser || $adminForResource) && $startTimeConstraint !== ReservationStartTimeConstraint::NONE) {
+			return $adminForUser || $adminForResource;
+		}
+
+		$ongoingReservation = true;
 
 		if ($startTimeConstraint == ReservationStartTimeConstraint::CURRENT)
 		{
@@ -86,7 +100,7 @@ class ReservationAuthorization implements IReservationAuthorization
 			}
 		}
 
-		return $currentUser->IsAdmin;	// only admins can edit reservations that have ended
+		return $currentUser->IsAdmin;    // only admins can edit reservations that have ended
 	}
 
 	public function CanChangeUsers(UserSession $currentUser)
@@ -102,25 +116,25 @@ class ReservationAuthorization implements IReservationAuthorization
 		}
 
 		if ($currentUser->IsAdmin)
-        {
-            return true;
-        }
+		{
+			return true;
+		}
 
-        $canReserveForUser = $this->authorizationService->CanApproveFor($currentUser, $reservationView->OwnerId);
-        if ($canReserveForUser)
-        {
-            return true;
-        }
+		$canReserveForUser = $this->authorizationService->CanApproveFor($currentUser, $reservationView->OwnerId);
+		if ($canReserveForUser)
+		{
+			return true;
+		}
 
-        foreach ($reservationView->Resources as $resource)
-        {
-            if ($this->authorizationService->CanApproveForResource($currentUser, $resource))
-            {
-                return true;
-            }
-        }
+		foreach ($reservationView->Resources as $resource)
+		{
+			if ($this->authorizationService->CanApproveForResource($currentUser, $resource))
+			{
+				return true;
+			}
+		}
 
-        return false;
+		return false;
 	}
 
 	public function CanViewDetails(ReservationView $reservationView, UserSession $currentUser)

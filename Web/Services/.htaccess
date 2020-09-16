@@ -2,14 +2,16 @@
   Allow from all
 </Limit>
 
-Header add Access-Control-Allow-Origin *
-Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type, x-booked-sessiontoken, x-booked-userid"
-Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
 
 RewriteEngine On
+
 # Set RewriteBase if your physical path is different from the URL. For example, if using an alias
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
 
 RewriteCond %{REQUEST_METHOD} OPTIONS 
 RewriteRule ^(.*)$ blank.html [QSA,L]
+
+Header Set Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type, x-booked-sessiontoken, x-booked-userid"
+Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"

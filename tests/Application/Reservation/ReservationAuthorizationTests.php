@@ -1,28 +1,27 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 class ReservationAuthorizationTests extends TestBase
 {
 	/**
-	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeAuthorizationService
 	 */
 	private $authorizationService;
 
@@ -45,7 +44,7 @@ class ReservationAuthorizationTests extends TestBase
 	{
 		parent::setup();
 
-		$this->authorizationService = $this->createMock('IAuthorizationService');
+		$this->authorizationService = new FakeAuthorizationService();
 
 		$this->currentUser = new FakeUserSession(false, null, 998);
 		$this->adminUser = new FakeUserSession(true, null, 999);
@@ -61,6 +60,7 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
 		$reservationView->StartDate = $futureDate;
+		$reservationView->EndDate = $futureDate->AddDays(1);
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
@@ -75,6 +75,7 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
 		$reservationView->EndDate = $future;
+		$reservationView->StartDate = Date::Now()->AddDays(-1);
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
@@ -89,6 +90,7 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
 		$reservationView->EndDate = $past;
+		$reservationView->StartDate = $past->AddDays(-1);
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
@@ -103,6 +105,7 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
 		$reservationView->StartDate = $past;
+		$reservationView->EndDate = Date::Now()->AddDays(2);
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
@@ -117,6 +120,7 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
 		$reservationView->EndDate = $past;
+		$reservationView->StartDate	= $past->AddDays(-1);
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
@@ -130,12 +134,10 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$ownerId = 92929;
 		$reservationView->OwnerId = $ownerId;
+		$reservationView->EndDate = Date::Now()->AddDays(-1);
 		$reservationView->EndDate = $endsInFuture;
 
-		$this->authorizationService->expects($this->once())
-			->method('CanReserveFor')
-			->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
-			->will($this->returnValue(false));
+		$this->authorizationService->_CanReserveFor = false;
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
@@ -148,6 +150,7 @@ class ReservationAuthorizationTests extends TestBase
 
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = 92929;
+		$reservationView->StartDate = $endsInPast->AddDays(-1);
 		$reservationView->EndDate = $endsInPast;
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->adminUser);
@@ -163,119 +166,105 @@ class ReservationAuthorizationTests extends TestBase
 		$ownerId = 92929;
 		$reservationView->OwnerId = $ownerId;
 		$reservationView->EndDate = $endsInFuture;
+		$reservationView->StartDate = Date::Now()->AddDays(-1);
 
-		$this->authorizationService->expects($this->once())
-			->method('CanReserveFor')
-			->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
-			->will($this->returnValue(true));
+		$this->authorizationService->_CanReserveFor = true;
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
 		$this->assertTrue($isEditable);
 	}
 
-    public function testIsEditableIfCurrentUserIsAuthorizedForAtLeastOneResource()
-    {
-        $endsInFuture = Date::Now()->AddDays(1);
-
-        $reservationView = new ReservationView();
-        $ownerId = 92929;
-        $reservationView->OwnerId = $ownerId;
-        $reservationView->EndDate = $endsInFuture;
-        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
-        $reservationView->Resources = array($resource1);
-
-        $this->authorizationService->expects($this->atLeastOnce())
-            ->method('CanReserveFor')
-            ->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
-            ->will($this->returnValue(false));
-
-        $this->authorizationService->expects($this->once())
-            ->method('CanEditForResource')
-            ->with($this->equalTo($this->currentUser), $this->equalTo($resource1))
-            ->will($this->returnValue(true));
-
-        $isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
-
-        $this->assertTrue($isEditable);
-    }
-
-    public function testCanBeApprovedIfCurrentUserIsAuthorizedForAtLeastOneResource()
-    {
-        $endsInFuture = Date::Now()->AddDays(1);
-
-        $reservationView = new ReservationView();
-        $ownerId = 92929;
-        $reservationView->OwnerId = $ownerId;
-        $reservationView->EndDate = $endsInFuture;
-        $reservationView->StatusId = ReservationStatus::Pending;
-        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
-        $reservationView->Resources = array($resource1);
-
-        $this->authorizationService->expects($this->atLeastOnce())
-            ->method('CanApproveFor')
-            ->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
-            ->will($this->returnValue(false));
-
-        $this->authorizationService->expects($this->once())
-            ->method('CanApproveForResource')
-            ->with($this->equalTo($this->currentUser), $this->equalTo($resource1))
-            ->will($this->returnValue(true));
-
-        $canBeApproved = $this->reservationAuthorization->CanApprove($reservationView, $this->currentUser);
-
-        $this->assertTrue($canBeApproved);
-    }
-
-	public function testCanChangeUsersIfTheCurrentUserIsAnAdminOrIsAuthorized()
+	public function testIsEditableIfCurrentUserIsAuthorizedForAtLeastOneResource()
 	{
-		$authorizedUser = new FakeUserSession();
+		$endsInFuture = Date::Now()->AddDays(1);
 
-		$this->authorizationService->expects($this->at(0))
-				->method('CanReserveForOthers')
-				->with($this->equalTo($this->currentUser))
-				->will($this->returnValue(false));
+		$reservationView = new ReservationView();
+		$ownerId = 92929;
+		$reservationView->OwnerId = $ownerId;
+		$reservationView->EndDate = $endsInFuture;
+		$reservationView->StartDate = Date::Now()->AddDays(-1);
+		$resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
+		$reservationView->Resources = array($resource1);
 
-		$this->authorizationService->expects($this->at(1))
-				->method('CanReserveForOthers')
-				->with($this->equalTo($authorizedUser))
-				->will($this->returnValue(true));
+		$this->authorizationService->_CanReserveFor = false;
+		$this->authorizationService->_CanEditForResource = true;
 
-		$asAdmin = $this->reservationAuthorization->CanChangeUsers($this->adminUser);
-		$asUser = $this->reservationAuthorization->CanChangeUsers($this->currentUser);
-		$asAuthorized = $this->reservationAuthorization->CanChangeUsers($authorizedUser);
+		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
-		$this->assertTrue($asAdmin);
-		$this->assertTrue($asAuthorized);
-		$this->assertFalse($asUser);
+		$this->assertTrue($isEditable);
 	}
 
-	public function testCanApprovePendingReservationsIfTheCurrentUserIsAnAdminOrIsAuthorized()
+	public function testCanBeApprovedIfCurrentUserIsAuthorizedForAtLeastOneResource()
+	{
+		$endsInFuture = Date::Now()->AddDays(1);
+
+		$reservationView = new ReservationView();
+		$ownerId = 92929;
+		$reservationView->OwnerId = $ownerId;
+		$reservationView->StartDate = Date::Now()->AddDays(-1);
+		$reservationView->EndDate = $endsInFuture;
+		$reservationView->StatusId = ReservationStatus::Pending;
+		$resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
+		$reservationView->Resources = array($resource1);
+
+		$this->authorizationService->_CanApproveFor = false;
+		$this->authorizationService->_CanApproveForResource = true;
+
+		$canBeApproved = $this->reservationAuthorization->CanApprove($reservationView, $this->currentUser);
+
+		$this->assertTrue($canBeApproved);
+	}
+
+	public function testCanChangeUsersIfTheCurrentUserIsAnAdmin()
+	{
+		$this->authorizationService->_CanReserveForOthers = false;
+
+		$asAdmin = $this->reservationAuthorization->CanChangeUsers($this->adminUser);
+
+		$this->assertTrue($asAdmin);
+	}
+
+	public function testCanChangeUsersIfTheCurrentUserIsAuthorized()
 	{
 		$authorizedUser = new FakeUserSession();
+
+		$this->authorizationService->_CanReserveForOthers = true;
+
+		$asAuthorized = $this->reservationAuthorization->CanChangeUsers($authorizedUser);
+
+		$this->assertTrue($asAuthorized);
+	}
+
+	public function testCanApprovePendingReservationsIfTheCurrentUserIsAnAdmin()
+	{
 		$reservationOwnerId = 123;
 
-		$this->authorizationService->expects($this->at(0))
-				->method('CanApproveFor')
-				->with($this->equalTo($this->currentUser), $this->equalTo($reservationOwnerId))
-				->will($this->returnValue(false));
-
-		$this->authorizationService->expects($this->at(1))
-				->method('CanApproveFor')
-				->with($this->equalTo($authorizedUser), $this->equalTo($reservationOwnerId))
-				->will($this->returnValue(true));
+		$this->authorizationService->_CanApproveFor = false;
 
 		$pendingReservation = new ReservationView();
 		$pendingReservation->StatusId = ReservationStatus::Pending;
 		$pendingReservation->OwnerId = $reservationOwnerId;
 
 		$asAdmin = $this->reservationAuthorization->CanApprove($pendingReservation, $this->adminUser);
-		$asUser = $this->reservationAuthorization->CanApprove($pendingReservation, $this->currentUser);
-		$asAuthorized = $this->reservationAuthorization->CanApprove($pendingReservation, $authorizedUser);
 
 		$this->assertTrue($asAdmin);
+	}
+
+	public function testCanApprovePendingReservationsIfTheCurrentUserIsAuthorized()
+	{
+		$authorizedUser = new FakeUserSession();
+		$reservationOwnerId = 123;
+
+		$this->authorizationService->_CanApproveFor = true;
+
+		$pendingReservation = new ReservationView();
+		$pendingReservation->StatusId = ReservationStatus::Pending;
+		$pendingReservation->OwnerId = $reservationOwnerId;
+
+		$asAuthorized = $this->reservationAuthorization->CanApprove($pendingReservation, $authorizedUser);
+
 		$this->assertTrue($asAuthorized);
-		$this->assertFalse($asUser);
 	}
 
 	public function testCanNotApproveReservationsThatDoNotRequireApproval()
@@ -296,19 +285,11 @@ class ReservationAuthorizationTests extends TestBase
 		$resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
 		$reservationView->Resources = array($resource1);
 
-		$this->authorizationService->expects($this->atLeastOnce())
-			->method('CanReserveFor')
-			->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
-			->will($this->returnValue(false));
-
-		$this->authorizationService->expects($this->once())
-			->method('CanEditForResource')
-			->with($this->equalTo($this->currentUser), $this->equalTo($resource1))
-			->will($this->returnValue(true));
+		$this->authorizationService->_CanReserveFor = false;
+		$this->authorizationService->_CanEditForResource = true;
 
 		$canSeeDetails = $this->reservationAuthorization->CanViewDetails($reservationView, $this->currentUser);
 
 		$this->assertTrue($canSeeDetails);
 	}
 }
-?>
