@@ -91,3 +91,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakeTermsOfServiceRepository.php');
 require_once(ROOT_DIR . 'tests/fakes/ReservationItemViewBuilder.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationNotificationService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeBlackoutRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeReservationConflictIdentifier.php');

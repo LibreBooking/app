@@ -40,11 +40,11 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$conflicts = $this->conflictIdentifier->GetConflicts($reservationSeries);
 		$shouldSkipConflicts = ReservationRetryParameter::GetValue(ReservationRetryParameter::$SKIP_CONFLICTS, $retryParameters,
 																   new BooleanConverter()) == true;
+
+		$skippedConflicts = 0;
 		if ($shouldSkipConflicts)
 		{
-			$reviewableConflicts = $conflicts;
-			$conflicts = [];
-			foreach ($reviewableConflicts as $conflict)
+			foreach ($conflicts->Conflicts() as $conflict)
 			{
 				Log::Debug("Skipping conflicting reservation. Reference number %s conflicts with existing %s with id %s on %s",
 						   $conflict->Reservation->ReferenceNumber(), get_class($conflict->Conflict), $conflict->Conflict->GetId(),
@@ -52,32 +52,22 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 
 				$skipped = $reservationSeries->RemoveInstance($conflict->Reservation);
 
-				if (!$skipped)
+				if ($skipped)
 				{
-					$conflicts[] = $conflict;
+					$skippedConflicts++;
 				}
 			}
 		}
 
-		$numberOfConflicts = count($conflicts);
-		$anyConflictsAreBlackouts = false;
-		foreach ($conflicts as $c)
-		{
-			if ($c->Conflict->GetReferenceNumber() == "")
-			{
-				$anyConflictsAreBlackouts = true;
-				break;
-			}
-		}
-		$thereAreConflicts = $numberOfConflicts > 0 || $anyConflictsAreBlackouts;
+		$allowReservation = $conflicts->AllowReservation($skippedConflicts);//$numberOfConflicts > 0 || $anyConflictsAreBlackouts;
 
-		if ($thereAreConflicts)
+		if (!$allowReservation)
 		{
 			$numberOfReservationDates = count($reservationSeries->Instances());
-			$shouldRetry = $numberOfConflicts < $numberOfReservationDates;
+			$shouldRetry = count($conflicts->Conflicts()) < $numberOfReservationDates;
 			$canJoinWaitlist = $numberOfReservationDates == 1;
 			return new ReservationRuleResult(false,
-											 $this->GetErrorString($conflicts),
+											 $this->GetErrorString($conflicts->Conflicts()),
 											 $shouldRetry,
 											 Resources::GetInstance()->GetString('RetrySkipConflicts'),
 											 array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)),

@@ -20,7 +20,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/UnavailableResourcesPresenter.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/ResourceAvailability.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class UnavailableResourcesPresenter
 {
@@ -29,9 +29,9 @@ class UnavailableResourcesPresenter
 	 */
 	private $page;
 	/**
-	 * @var IResourceAvailabilityStrategy
+	 * @var IReservationConflictIdentifier
 	 */
-	private $resourceAvailability;
+	private $reservationConflictIdentifier;
 	/**
 	 * @var UserSession
 	 */
@@ -41,11 +41,13 @@ class UnavailableResourcesPresenter
 	 */
 	private $resourceRepository;
 
-	public function __construct(IAvailableResourcesPage $page, IResourceAvailabilityStrategy $resourceAvailability, UserSession $userSession,
+	public function __construct(IAvailableResourcesPage $page,
+								IReservationConflictIdentifier $reservationConflictIdentifier,
+								UserSession $userSession,
 								IResourceRepository $resourceRepository)
 	{
 		$this->page = $page;
-		$this->resourceAvailability = $resourceAvailability;
+		$this->reservationConflictIdentifier = $reservationConflictIdentifier;
 		$this->userSession = $userSession;
 		$this->resourceRepository = $resourceRepository;
 	}
@@ -57,50 +59,62 @@ class UnavailableResourcesPresenter
 
 		$resources = $this->resourceRepository->GetResourceList();
 
-		$maxBuffer = new TimeInterval(0);
+		$unavailable = array();
+//		$maxBuffer = new TimeInterval(0);
 		$resourceConflicts = array();
-		$indexedResources = array();
+//		$indexedResources = array();
 		foreach ($resources as $resource)
 		{
-			$resourceConflicts[$resource->GetId()] = 0;
-			$indexedResources[$resource->GetId()] = $resource;
-			if ($resource->HasBufferTime()) {
-				if ($resource->GetBufferTime()->TotalSeconds() > $maxBuffer->TotalSeconds()) {
-					$maxBuffer = $resource->GetBufferTime();
-				}
-			}
-		}
+			$series = ReservationSeries::Create($this->userSession->UserId, $resource, "", "", $duration, new RepeatNone(), $this->userSession);
+			$conflict = $this->reservationConflictIdentifier->GetConflicts($series);
 
-		$reserved = $this->resourceAvailability->GetItemsBetween($duration->GetBegin()->SubtractInterval($maxBuffer), $duration->GetEnd()->AddInterval($maxBuffer), ReservationViewRepository::ALL_RESOURCES);
-		if (empty($reserved))
-		{
-			$this->page->BindUnavailable([]);
-			return;
-		}
-
-
-		$unavailable = array();
-
-		foreach ($reserved as $reservation)
-		{
-			if ($reservation->GetReferenceNumber() == $this->page->GetReferenceNumber())
+			if (!$conflict->AllowReservation())
 			{
-				continue;
+				$unavailable[] = $resource->GetId();
 			}
-
-			if ($reservation->BufferedTimes()->Overlaps($duration))
-			{
-				$resourceConflicts[$reservation->GetResourceId()]++;
-			}
+//			$indexedResources[$resource->GetId()] = $resource;
+//			if ($resource->HasBufferTime()) {
+//				if ($resource->GetBufferTime()->TotalSeconds() > $maxBuffer->TotalSeconds()) {
+//					$maxBuffer = $resource->GetBufferTime();
+//				}
+//			}
 		}
 
-		foreach ($resourceConflicts as $resourceId => $conflicts)
-		{
-			if ($conflicts >= $indexedResources[$resourceId]->GetMaxConcurrentReservations())
-			{
-				$unavailable[] = $resourceId;
-			}
-		}
+
+
+//		$conflictIdentifier = new ReservationConflictIdentifier(new ResourceAvailability($this->resourceRepository));
+//		$conflictIdentifier->GetConflicts($)
+
+//		$reserved = $this->reservationConflictIdentifier->GetItemsBetween($duration->GetBegin()->SubtractInterval($maxBuffer), $duration->GetEnd()->AddInterval($maxBuffer), ReservationViewRepository::ALL_RESOURCES);
+//		if (empty($reserved))
+//		{
+//			$this->page->BindUnavailable([]);
+//			return;
+//		}
+
+
+//		$unavailable = array();
+//
+//		foreach ($reserved as $reservation)
+//		{
+//			if ($reservation->GetReferenceNumber() == $this->page->GetReferenceNumber())
+//			{
+//				continue;
+//			}
+//
+//			if ($reservation->BufferedTimes()->Overlaps($duration))
+//			{
+//				$resourceConflicts[$reservation->GetResourceId()]++;
+//			}
+//		}
+//
+//		foreach ($resourceConflicts as $resourceId => $conflicts)
+//		{
+//			if ($conflicts >= $indexedResources[$resourceId]->GetMaxConcurrentReservations())
+//			{
+//				$unavailable[] = $resourceId;
+//			}
+//		}
 
 		$this->page->BindUnavailable(array_unique($unavailable));
 	}

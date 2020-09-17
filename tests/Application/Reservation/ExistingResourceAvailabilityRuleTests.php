@@ -241,30 +241,20 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$reservation->WithDuration(new DateRange($startDate, $endDate));
 		$reservation->WithResource($resource1);
 
-		$conflict1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00',
-																'UTC'), Date::Parse('2010-04-04 05:30',
-																					'UTC'), $resource1->GetId());
+		$conflict1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00', 'UTC'), Date::Parse('2010-04-04 05:30', 'UTC'), $resource1->GetId());
 		$conflict1->WithBufferTime($bufferTime);
 
-		$conflict2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:30',
-																'UTC'), Date::Parse('2010-04-04 08:00',
-																					'UTC'), $resource1->GetId());
+		$conflict2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:30', 'UTC'), Date::Parse('2010-04-04 08:00', 'UTC'), $resource1->GetId());
 		$conflict2->WithBufferTime($bufferTime);
 
-		$nonConflict1 = new TestReservationItemView(4, Date::Parse('2010-04-04 06:00',
-																   'UTC'), Date::Parse('2010-04-04 07:30',
-																					   'UTC'), 2);
+		$nonConflict1 = new TestReservationItemView(4, Date::Parse('2010-04-04 06:00', 'UTC'), Date::Parse('2010-04-04 07:30', 'UTC'), 2);
 
 		$nonConflict1->WithBufferTime($bufferTime);
 
-		$nonConflict2 = new TestReservationItemView(5, Date::Parse('2010-04-04 02:30',
-																   'UTC'), Date::Parse('2010-04-04 05:00',
-																					   'UTC'), $resource1->GetId());
+		$nonConflict2 = new TestReservationItemView(5, Date::Parse('2010-04-04 02:30', 'UTC'), Date::Parse('2010-04-04 05:00', 'UTC'), $resource1->GetId());
 		$nonConflict2->WithBufferTime($bufferTime);
 
-		$nonConflict3 = new TestReservationItemView(6, Date::Parse('2010-04-04 08:00',
-																   'UTC'), Date::Parse('2010-04-04 09:00',
-																					   'UTC'), $resource1->GetId());
+		$nonConflict3 = new TestReservationItemView(6, Date::Parse('2010-04-04 08:00', 'UTC'), Date::Parse('2010-04-04 09:00', 'UTC'), $resource1->GetId());
 		$nonConflict3->WithBufferTime($bufferTime);
 
 		$strategy = $this->createMock('IResourceAvailabilityStrategy');
@@ -299,7 +289,8 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->WithCurrentInstance($current);
 
 		$reservations = array(
-				new TestReservationItemView($currentId + 1, $currentDate->GetBegin(), $currentDate->GetEnd(), $resourceId),
+				new TestReservationItemView($currentId + 1, $currentDate->GetBegin(), $currentDate->GetEnd(), $resourceId, "r1"),
+				new TestReservationItemView($currentId + 1, $currentDate->GetEnd(), $currentDate->GetEnd()->AddMinutes(30), $resourceId, "r2"),
 		);
 
 		$this->strategy->expects($this->once())
@@ -308,6 +299,33 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 					   ->will($this->returnValue($reservations));
 
 		$rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
+		$ruleResult = $rule->Validate($series, null);
+
+		$this->assertTrue($ruleResult->IsValid());
+	}
+
+	public function testNoConflictIfOverlappingCountIsLessThanWhatResourcesAllowRecurring()
+	{
+		$resourceId = 1;
+		$start = Date::Parse('2010-01-01 01:00', $this->timezone);
+		$end = Date::Parse('2010-01-01 02:00',  $this->timezone);
+		$reservationDates = new DateRange($start, $end);
+		$series = new TestReservationSeries();
+		$resource = new FakeBookableResource(1);
+		$resource->SetMaxConcurrentReservations(2);
+		$series->WithResource($resource);
+		$series->WithDuration($reservationDates);
+		$series->WithRepeatOptions(new RepeatDaily(1, $start->AddDays(3)));
+
+		$reservationRepository = new FakeReservationViewRepository();
+		$reservationRepository->_Reservations = array(
+				new TestReservationItemView(100, $start->AddDays(1), $end->AddDays(1), $resourceId, "100"),
+				new TestReservationItemView(200, $start->AddDays(2), $end->AddDays(2), $resourceId, "200"),
+				new TestReservationItemView(300, $start->AddDays(3), $end->AddDays(3), $resourceId, "300"),
+		);
+		$strategy = new ResourceAvailability($reservationRepository);
+
+		$rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), $this->timezone);
 		$ruleResult = $rule->Validate($series, null);
 
 		$this->assertTrue($ruleResult->IsValid());
@@ -334,12 +352,12 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->WithInstance($instance);
 
 		$reservationsInstance1 = array(
-				new TestReservationItemView(++$currentId, $current->StartDate(), $current->EndDate(), $resourceId),
+				new TestReservationItemView(++$currentId, $current->StartDate(), $current->EndDate(), $resourceId, "r$currentId"),
 		);
 
 		$reservationsInstance2 = array(
-				new TestReservationItemView(++$currentId, $instance->StartDate(), $instance->EndDate(), $resourceId),
-				new TestReservationItemView(++$currentId, $instance->StartDate(), $instance->EndDate(), $resourceId),
+				new TestReservationItemView(++$currentId, $instance->StartDate(), $instance->EndDate(), $resourceId, "r$currentId"),
+				new TestReservationItemView(++$currentId, $instance->StartDate(), $instance->EndDate(), $resourceId, "r$currentId"),
 		);
 
 		$this->strategy->expects($this->at(0))

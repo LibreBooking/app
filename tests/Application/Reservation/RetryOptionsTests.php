@@ -72,10 +72,10 @@ class RetryOptionsTests extends TestBase
 		$series->CalculateCredits($layout);
 
 
-		$this->conflictIdentifier->_Conflicts = [
+		$this->conflictIdentifier->_Conflicts = new ReservationConflictResult([
 				new IdentifiedConflict($conflict1, new TestReservationItemView("100", $conflict1->StartDate(), $conflict1->EndDate(), 1, "2")),
 				new IdentifiedConflict($conflict2, new TestReservationItemView("200", $conflict2->StartDate(), $conflict2->EndDate(), 1, "3"))
-		];
+		], 0, false, 1);
 
 		$retryOptions = new ReservationRetryOptions($this->conflictIdentifier, $this->scheduleRepository);
 		$retryOptions->AdjustReservation($series, [new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, "true")]);
@@ -88,22 +88,5 @@ class RetryOptionsTests extends TestBase
 		$this->assertEquals($current, $instances[0]);
 		$this->assertEquals($nonConflict1, $instances[1]);
 		$this->assertEquals($nonConflict2, $instances[2]);
-	}
-}
-
-class FakeReservationConflictIdentifier implements IReservationConflictIdentifier
-{
-
-	/**
-	 * @var IdentifiedConflict[]
-	 */
-	public $_Conflicts = [];
-
-	/**
-	 * @inheritDoc
-	 */
-	public function GetConflicts($reservationSeries)
-	{
-		return $this->_Conflicts;
 	}
 }

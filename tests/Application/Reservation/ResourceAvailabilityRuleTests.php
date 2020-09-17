@@ -23,21 +23,21 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class ResourceAvailabilityRuleTests extends TestBase
 {
-    /**
-     * @var FakeScheduleRepository
-     */
-    private $scheduleRepository;
+	/**
+	 * @var FakeScheduleRepository
+	 */
+	private $scheduleRepository;
 
-    /**
-     * @var FakeSchedule
-     */
-    private $schedule;
+	/**
+	 * @var FakeSchedule
+	 */
+	private $schedule;
 
 	public function setUp(): void
 	{
-	    $this->scheduleRepository = new FakeScheduleRepository();
-	    $this->schedule = new FakeSchedule();
-	    $this->scheduleRepository->_Schedule = $this->schedule;
+		$this->scheduleRepository = new FakeScheduleRepository();
+		$this->schedule = new FakeSchedule();
+		$this->scheduleRepository->_Schedule = $this->schedule;
 		parent::setup();
 	}
 
@@ -62,7 +62,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				 ->will($this->returnValue(array($scheduleReservation)));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
@@ -105,12 +105,12 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				 ->will($this->returnValue($reservations));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 		$this->assertFalse($result->CanBeRetried());
-        $this->assertTrue($result->CanJoinWaitlist());
+		$this->assertTrue($result->CanJoinWaitlist());
 	}
 
 	public function testGetsConflictingReservationTimesForSingleDateMultipleResources()
@@ -142,7 +142,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				 ->will($this->returnValue($reservations));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
@@ -203,7 +203,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
 				 ->will($this->returnValue(array($scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5)));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
@@ -262,7 +262,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->will($this->returnValue(array($conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3)));
 
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
@@ -298,7 +298,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->will($this->returnValue(array($conflict1)));
 
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), "UTC");
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), "UTC");
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
@@ -309,9 +309,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$start = Date::Parse('2010-01-01');
 		$end = Date::Parse('2010-01-02');
 		$reservationDates = new DateRange($start, $end);
-		$twoRepetitions = new RepeatWeekly(1,
-										   $start->AddDays(14),
-										   array($start->Weekday()));
+		$twoRepetitions = new RepeatWeekly(1, $start->AddDays(14), [$start->Weekday()]);
 
 		$repeatDates = $twoRepetitions->GetDates($reservationDates);
 
@@ -327,15 +325,17 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->anything(), $this->anything())
 				 ->will($this->returnValue(array()));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
+
+		$this->assertTrue($result->IsValid());
 	}
 
 	public function testReservationStrategyChecksReservations()
 	{
 		$startDate = Date::Now();
 		$endDate = Date::Now();
-		$resourceIds = array(1,2);
+		$resourceIds = array(1, 2);
 
 		$repository = $this->createMock('IReservationViewRepository');
 
@@ -388,7 +388,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($instance->GetBegin()), $this->equalTo($instance->GetEnd()))
 				 ->will($this->returnValue(array()));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->CanBeRetried(),
@@ -426,48 +426,69 @@ class ResourceAvailabilityRuleTests extends TestBase
 				 ->with($this->equalTo($instance->GetBegin()), $this->equalTo($instance->GetEnd()))
 				 ->will($this->returnValue($reservations));
 
-		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
 		$result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
 
 		$this->assertTrue($result->IsValid(), 'should have skipped conflicts');
 		$this->assertEquals(1, count($reservation->Instances()));
 	}
 
-    public function testSkipsCorrectDatesWhenUpdatingExisting()
-    {
-        $this->fakeUser->Timezone = 'UTC';
-        Date::_SetNow(Date::Parse('2010-04-01', 'UTC'));
-        $startDate = Date::Parse('2010-04-09 06:00', 'UTC');
-        $endDate = Date::Parse('2010-04-09 08:00', 'UTC');
+	public function testSkipsCorrectDatesWhenUpdatingExisting()
+	{
+		$this->fakeUser->Timezone = 'UTC';
+		Date::_SetNow(Date::Parse('2010-04-01', 'UTC'));
+		$startDate = Date::Parse('2010-04-09 06:00', 'UTC');
+		$endDate = Date::Parse('2010-04-09 08:00', 'UTC');
 
-        $reservation = new ExistingReservationSeries();
-        $reservation->UpdateBookedBy($this->fakeUser);
-        $reservation->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-        $reservation->WithCurrentInstance(new TestReservation('not conflict', new DateRange($startDate, $endDate)));
-        $reservation->WithPrimaryResource(new FakeBookableResource(100));
-        $reservation->WithRepeatOptions(new RepeatDaily(1, Date::Parse('2010-04-10', 'UTC')));
-        $reservation->UpdateDuration(new DateRange($startDate, $endDate));
-        $reservation->Repeats(new RepeatDaily(1, Date::Parse('2010-04-12', 'UTC')));
+		$reservation = new ExistingReservationSeries();
+		$reservation->UpdateBookedBy($this->fakeUser);
+		$reservation->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$reservation->WithCurrentInstance(new TestReservation('not conflict', new DateRange($startDate, $endDate)));
+		$reservation->WithPrimaryResource(new FakeBookableResource(100));
+		$reservation->WithRepeatOptions(new RepeatDaily(1, Date::Parse('2010-04-10', 'UTC')));
+		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
+		$reservation->Repeats(new RepeatDaily(1, Date::Parse('2010-04-12', 'UTC')));
 
-        $startConflict1 = Date::Parse('2010-04-10 06:00', 'UTC');
-        $endConflict1 = Date::Parse('2010-04-10 08:00', 'UTC');
+		$startConflict1 = Date::Parse('2010-04-10 06:00', 'UTC');
+		$endConflict1 = Date::Parse('2010-04-10 08:00', 'UTC');
 
-        $reservations = array(
-            new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
-        );
+		$reservations = array(
+				new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
+		);
 
-        $strategy = $this->createMock('IResourceAvailabilityStrategy');
+		$strategy = $this->createMock('IResourceAvailabilityStrategy');
 
-        $strategy->expects($this->atLeastOnce())
-            ->method('GetItemsBetween')
-            ->will($this->returnValue($reservations));
+		$strategy->expects($this->atLeastOnce())
+				 ->method('GetItemsBetween')
+				 ->will($this->returnValue($reservations));
 
-        $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
-        $result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
+		$result = $rule->Validate($reservation, array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)));
 
-        $this->assertTrue($result->IsValid(), 'should have skipped conflicts');
-        $this->assertEquals(3, count($reservation->Instances()));
-        $events = $reservation->GetEvents();
-        $this->assertEquals(3, count($events), 'we shouldnt have the insert for the conflict');
-    }
+		$this->assertTrue($result->IsValid(), 'should have skipped conflicts');
+		$this->assertEquals(3, count($reservation->Instances()));
+		$events = $reservation->GetEvents();
+		$this->assertEquals(3, count($events), 'we shouldnt have the insert for the conflict');
+	}
+
+	public function testBackToBackReservationsAndAnotherConcurrentCoveringBoth()
+	{
+		$reservation = new TestReservationSeries();
+		$resource = new FakeBookableResource(1);
+		$resource->SetMaxConcurrentReservations(3);
+		$reservation->WithResource($resource);
+		$reservation->WithDuration(DateRange::Create('2020-09-17 09:00', '2020-09-17 12:00', 'UTC'));
+
+		$reservationRepository = new FakeReservationViewRepository();
+		$reservationRepository->_Reservations = [
+				new TestReservationItemView(100, Date::Parse('2020-09-17 10:00', 'UTC'), Date::Parse('2020-09-17 11:00', 'UTC'), 1, 'r1'),
+				new TestReservationItemView(200, Date::Parse('2020-09-17 11:00', 'UTC'), Date::Parse('2020-09-17 12:00', 'UTC'), 1, 'r2'),
+				new TestReservationItemView(300, Date::Parse('2020-09-17 10:30', 'UTC'), Date::Parse('2020-09-17 12:00', 'UTC'), 1, 'r3'),
+				];
+		$strategy = new ResourceAvailability($reservationRepository);
+		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
+
+		$result = $rule->Validate($reservation, null);
+		$this->assertTrue($result->IsValid());
+	}
 }

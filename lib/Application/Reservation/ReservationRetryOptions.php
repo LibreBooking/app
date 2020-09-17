@@ -34,7 +34,7 @@ class ReservationRetryOptions implements IReservationRetryOptions
 
 		$conflicts = $this->conflictIdentifier->GetConflicts($series);
 
-		foreach ($conflicts as $conflict) {
+		foreach ($conflicts->Conflicts() as $conflict) {
 			$series->RemoveInstance($conflict->Reservation);
 		}
 
