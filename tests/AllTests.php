@@ -34,7 +34,7 @@ require_once(ROOT_DIR . 'tests/phpstorm.php');
 require_once(ROOT_DIR . 'tests/UnitTest.php');
 require_once(ROOT_DIR . 'tests/TestHelper.php');
 require_once(ROOT_DIR . 'tests/TestBase.php');
-require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
+require_once(ROOT_DIR . 'tests/fakes/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 use PHPUnit\Framework\TestSuite;
 

@@ -65,11 +65,14 @@ function Schedule(opts, resourceGroups) {
 		}
 
 		let cellAdjustment = 0;
-		if (opts.scheduleStyle === ScheduleStandard || opts.scheduleStyle === ScheduleTall)
-		{
-			// adjust for how different browsers calculate positions for elements with borders
-			cellAdjustment = Math.min(1, ($('#reservations').find('td.slot').first().position().top % 40));
-		}
+        if (opts.scheduleStyle === ScheduleStandard || opts.scheduleStyle === ScheduleTall)
+        {
+            // adjust for how different browsers calculate positions for elements with borders
+            let slots = $('#reservations').find('td.slot');
+            if (slots.length !== 0) {
+                cellAdjustment = Math.min(1, (slots.first().position().top % 40));
+            }
+        }
 
 		function attachReservationEvents(div, reservation) {
 			var reservations = $('#reservations');
