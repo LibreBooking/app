@@ -1,56 +1,148 @@
 {*
 Copyright 2011-2020 Nick Korbel
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Denne fil er en del af programmet Booked Schduler.
 
-You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+Booked Scheduler er et gratis program.
+
+Du må genudgive og ændre i det så længe du følger retningslinjerne under
+"GNU General Public License" som er udgivet af "The Free Software Foundation",
+enten version 3 af retningslinjerne, eller en hvilken som helst senere version.
+
+Booked Scheduler er udgivet i håbet om, at det er nyttigt og brugbart,
+men uden NOGEN GARANTI; Ikke engang med almindelige gældende handelsbetingelser
+eller en garanti om, at det kan bruges til et bestemt formål.  Se alle detaljer
+i "GNU General Public License".
+
+Du skulle have modtaget en kopi af "GNU General Public License" sammen med
+Booked Scheduler. Hvis ikke, se <http://www.gnu.org/licenses/>.
 *}
 
+Oplysninger om reservation:
+<br/>
+<br/>
 
-	Reservationsdetaljer:
+Begynder: {formatdate date=$StartDate key=reservation_email}<br/>
+Slutter: {formatdate date=$EndDate key=reservation_email}<br/>
+{if $ResourceNames|count > 1}
+	Faciliteter:
 	<br/>
-	<br/>
-
-	Reservationen starter: {formatdate date=$StartDate key=reservation_email}<br/>
-	Velkommen til 10 minuter før den bestille tid.<br/>
-
-	Reservationen slutter: {formatdate date=$EndDate key=reservation_email}<br/>
-	<br/>
-	Reservationen: {$ResourceName}<br/>
-
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
-
-	<br/>
-	Titel: {$Title}<br/>
-	<br/>
-	Beskrivelse: {$Description|nl2br}<br/>
-
-	{if count($RepeatDates) gt 0}
+	{foreach from=$ResourceNames item=resourceName}
+		{$resourceName}
 		<br/>
-		Du har reserveret følgende tidspunkt(er):
-		<br/>
-	{/if}
-
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
 	{/foreach}
-
-	{if $RequiresApproval}
-		<br/>
-		Før en reservation bliver registreret skal den først godkendes.
-	{/if}
-
+{else}
+	Facilitet: {$ResourceName}
 	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Vis reservation</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Tilføj til Outlook</a> |
-	<a href="{$ScriptUrl}">Log ind på Reservationsystemet</a>
+{/if}
 
+{if $ResourceImage}
+	<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+{/if}
+
+Overskrift: {$Title}<br/>
+Beskrivelse: {$Description|nl2br}
+
+{if count($RepeatRanges) gt 0}
+	<br/>
+	Reservationen gælder for følgende datoer:
+	<br/>
+{/if}
+
+{foreach from=$RepeatRanges item=date name=dates}
+	{formatdate date=$date->GetBegin()}
+    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+	<br/>
+{/foreach}
+
+{if $Participants|count >0}
+    <br/>
+    Deltagere:
+    {foreach from=$Participants item=user}
+        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
+        <br/>
+    {/foreach}
+{/if}
+
+{if $ParticipatingGuests|count >0}
+    {foreach from=$ParticipatingGuests item=email}
+        <a href="mailto:{$email}">{$email}</a>
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Invitees|count >0}
+    <br/>
+    Inviterede:
+    {foreach from=$Invitees item=user}
+        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
+        <br/>
+    {/foreach}
+{/if}
+
+{if $InvitedGuests|count >0}
+    {foreach from=$InvitedGuests item=email}
+        <a href="mailto:{$email}">{$email}</a>
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Accessories|count > 0}
+	<br/>
+	Udstyr:
+	<br/>
+	{foreach from=$Accessories item=accessory}
+		({$accessory->QuantityReserved}) {$accessory->Name}
+		<br/>
+	{/foreach}
+{/if}
+
+{if $CreditsCurrent > 0}
+    <br/>
+    Denne reservation koster {$CreditsCurrent} kreditter.
+    {if $CreditsCurrent != $CreditsTotal}
+        Denne serie af reservationer koster {$CreditsTotal} kreditter.
+    {/if}
+{/if}
+
+{if $Attributes|count > 0}
+	<br/>
+	{foreach from=$Attributes item=attribute}
+		<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+	{/foreach}
+{/if}
+
+{if $RequiresApproval}
+	<br/>
+	Mindst én af dine reservationer skal godkendes. En reservation er først endelig, når den er godkendt.
+{/if}
+
+{if $CheckInEnabled}
+	<br/>
+	For mindst én af dine reservationer, er det påkrævet, at du tjekker ind og ud.
+	{if $AutoReleaseMinutes != null}
+		Reservationen annulleres, hvis der ikke foretages tjek ind, senest {$AutoReleaseMinutes} minutter efter det planlagte starttidspunkt.
+	{/if}
+{/if}
+
+{if !empty($ApprovedBy)}
+	<br/>
+	Godkendt af: {$ApprovedBy}
+{/if}
+
+
+{if !empty($CreatedBy)}
+	<br/>
+	Oprettet af: {$CreatedBy}
+{/if}
+
+<br/>
+Referencenummer: {$ReferenceNumber}
+
+<br/>
+<br/>
+<a href="{$ScriptUrl}/{$ReservationUrl}">Se denne reservation</a> |
+<a href="{$ScriptUrl}/{$ICalUrl}">Tilføj til kalender</a> |
+<a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$Title|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$ResourceName|escape:'url'}&trp=false&sprop=&sprop=name:"
+   target="_blank" rel="nofollow">Tilføj til Google Kalender</a> |
+<a href="{$ScriptUrl}">Log på {$AppTitle}</a>

@@ -1,19 +1,21 @@
 {*
 Copyright 2017-2020 Nick Korbel
 
-This file is part of Booked Scheduler.
+Denne fil er en del af programmet Booked Schduler.
 
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Booked Scheduler er et gratis program.
 
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Du må genudgive og ændre i det så længe du følger retningslinjerne under
+"GNU General Public License" som er udgivet af "The Free Software Foundation",
+enten version 3 af retningslinjerne, eller en hvilken som helst senere version.
 
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+Booked Scheduler er udgivet i håbet om, at det er nyttigt og brugbart,
+men uden NOGEN GARANTI; Ikke engang med almindelige gældende handelsbetingelser
+eller en garanti om, at det kan bruges til et bestemt formål.  Se alle detaljer
+ i "GNU General Public License".
+
+ Du skulle have modtaget en kopi af "GNU General Public License" sammen med
+ Booked Scheduler. Hvis ikke, se <http://www.gnu.org/licenses/>.
+
 *}
 {$AnnouncementText|nl2br}

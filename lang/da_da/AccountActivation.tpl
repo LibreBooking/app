@@ -1,24 +1,23 @@
 {*
 Copyright 2011-2020 Nick Korbel
 
-This file is part of Booked Scheduler.
+Denne fil er en del af programmet Booked Schduler.
 
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Booked Scheduler er et gratis program: du må genudgive og ændre i det
+så længe du følger retningslinjerne under "GNU General Public License" som er udgivet af
+"The Free Software Foundation", enten version 3 af retningslinjerne, eller
+en hvilken som helst senere version.
 
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Booked Scheduler er udgivet i håbet om, at det er nyttigt og brugbart,
+men uden NOGEN GARANTI; Ikke engang med almindelige gældende handelsebetingelser
+eller en garanti om, om det kan bruges til et bestemt formål.  Se alle detaljer
+ i "GNU General Public License".
+ Du skulle have modtaget en kopi af "GNU General Public License" sammen med
+ Booked Scheduler. Hvis ikke, se <http://www.gnu.org/licenses/>.
 
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
-{$FirstName},tak for din registrering i vores reservationssystem. Før du kan logge ind, skal du aktivere din konto Det gør du ved at klikke på linket "Aktivering af konto"
-
-<a href="{$ActivationUrl}">Aktivering af din konto</a>.
-
+Kære {$FirstName},<br/>
+Du er nu oprettet som bruger i {$AppTitle}.
+Før du kan bruge systemet, skal du aktivere din konto.
+Det gør du ved at klikke på linket herunder "Aktiver din konto"
+ <a href="{$ActivationUrl}">Aktiver din konto</a>.
