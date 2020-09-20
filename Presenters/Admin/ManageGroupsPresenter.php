@@ -47,31 +47,35 @@ class ManageGroupsPresenter extends ActionPresenter
 	 * @var IManageGroupsPage
 	 */
 	private $page;
-
 	/**
-	 * @var GroupRepository
+	 * @var IGroupRepository
 	 */
 	private $groupRepository;
-
 	/**
-	 * @var ResourceRepository
+	 * @var IResourceRepository
 	 */
 	private $resourceRepository;
 	/**
-	 * @var ScheduleRepository
+	 * @var IScheduleRepository
 	 */
 	private $scheduleRepository;
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
 
 	/**
 	 * @param IManageGroupsPage $page
-	 * @param GroupRepository $groupRepository
-	 * @param ResourceRepository $resourceRepository
-	 * @param ScheduleRepository $scheduleRepository
+	 * @param IGroupRepository $groupRepository
+	 * @param IResourceRepository $resourceRepository
+	 * @param IScheduleRepository $scheduleRepository
+	 * @param IUserRepository $userRepository
 	 */
 	public function __construct(IManageGroupsPage $page,
-								GroupRepository $groupRepository,
-								ResourceRepository $resourceRepository,
-								ScheduleRepository $scheduleRepository)
+								IGroupRepository $groupRepository,
+								IResourceRepository $resourceRepository,
+								IScheduleRepository $scheduleRepository,
+                                IUserRepository $userRepository)
 	{
 		parent::__construct($page);
 
@@ -79,6 +83,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->groupRepository = $groupRepository;
 		$this->resourceRepository = $resourceRepository;
 		$this->scheduleRepository = $scheduleRepository;
+		$this->userRepository = $userRepository;
 
 		$this->AddAction(ManageGroupsActions::AddUser, 'AddUser');
 		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
@@ -199,6 +204,9 @@ class ManageGroupsPresenter extends ActionPresenter
 			case ManageGroupsActions::ScheduleGroups :
 				$response = $this->GetScheduleAdminGroups();
 				break;
+            case 'export':
+                $this->Export();
+                break;
 		}
 
 		$this->page->SetJsonResponse($response);
@@ -438,6 +446,17 @@ class ManageGroupsPresenter extends ActionPresenter
 			$this->scheduleRepository->Update($schedule);
 		}
 	}
+
+    private function Export()
+    {
+        /** @var GroupItemView[] $groups */
+        $groups = $this->groupRepository->GetList()->Results();
+        $userGroups = $this->userRepository->GetList(null, null, null, null, null, AccountStatus::ACTIVE)->Results();
+        $groupPermissions = null;
+        $groupRoles = null;
+
+//        $this->page->Export();
+    }
 }
 
 class UserGroupResults
