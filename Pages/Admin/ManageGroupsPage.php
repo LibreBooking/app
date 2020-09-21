@@ -132,6 +132,23 @@ interface IManageGroupsPage extends IActionPage
      * @param GroupResourcePermission[] $permissionsRead
      */
     public function Export($groups, $users, $permissionsWrite, $permissionsRead);
+
+    /**
+     * @return UploadedFile
+     */
+    public function GetImportFile();
+
+    public function ShowTemplateCsv();
+
+    /**
+     * @param CsvImportResult $importResult
+     */
+    public function SetImportResult($importResult);
+
+    /**
+     * @return bool
+     */
+    public function GetUpdateOnImport();
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -289,6 +306,26 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
         $this->Set('PermissionsWrite', $permissionsWrite);
         $this->Set('PermissionsRead', $permissionsRead);
         $this->DisplayCsv('Admin/Groups/groups_csv.tpl', 'groups.csv');
+    }
+
+    public function GetImportFile()
+    {
+        return $this->server->GetFile(FormKeys::GROUP_IMPORT_FILE);
+    }
+
+    public function ShowTemplateCsv()
+    {
+        $this->DisplayCsv('Admin/Groups/groups_csv.tpl', 'groups.csv');
+    }
+
+    public function SetImportResult($importResult)
+    {
+        $this->SetJsonResponse($importResult);
+    }
+
+    public function GetUpdateOnImport()
+    {
+        return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
 }
 

@@ -800,6 +800,8 @@ class en_us extends Language
 		$strings['Message'] = 'Message';
 		$strings['AllUsersWhoHaveAReservationInTheNext'] = 'Anyone with a reservation in the next';
 		$strings['ChangeResourceStatus'] = 'Change Resource Status';
+		$strings['UpdateGroupsOnImport'] = 'Update existing group if name matches';
+		$strings['GroupsImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Name is required.</li><li>Member lists should be comma separated lists of emails.</li><li>Empty member lists when updating groups will leave members unchanged.</li><li>Permissions lists should be comma separated lists of resource names.</li><li>Empty permissions lists when updating groups will leave permissions unchanged.</li><li>Use the supplied template as an example.</li></ul>';
         // End Strings
 
 		// Install

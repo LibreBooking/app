@@ -21,6 +21,8 @@
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/GroupImportCsv.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
 require_once(ROOT_DIR . 'Pages/Admin/ManageGroupsPage.php');
 
 class ManageGroupsActions
@@ -39,6 +41,7 @@ class ManageGroupsActions
     const AdminGroups = 'adminGroups';
     const ResourceGroups = 'resourceGroups';
     const ScheduleGroups = 'scheduleGroups';
+    const Import = 'import';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -96,6 +99,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->AddAction(ManageGroupsActions::AdminGroups, 'ChangeAdminGroups');
         $this->AddAction(ManageGroupsActions::ResourceGroups, 'ChangeResourceGroups');
         $this->AddAction(ManageGroupsActions::ScheduleGroups, 'ChangeScheduleGroups');
+        $this->AddAction(ManageGroupsActions::Import, 'Import');
     }
 
     public function PageLoad()
@@ -197,6 +201,9 @@ class ManageGroupsPresenter extends ActionPresenter
                 break;
             case 'export':
                 $this->Export();
+                return;
+            case 'template':
+                $this->page->ShowTemplateCsv();
                 return;
         }
 
@@ -426,7 +433,7 @@ class ManageGroupsPresenter extends ActionPresenter
         }
     }
 
-    private function Export()
+    public function Export()
     {
         /** @var GroupItemView[] $groups */
         $groups = $this->groupRepository->GetList()->Results();
@@ -459,6 +466,160 @@ class ManageGroupsPresenter extends ActionPresenter
         }
 
         $this->page->Export($groups, $indexedUsers, $indexedPermissionsWrite, $indexedPermissionsRead);
+    }
+
+    public function Import()
+    {
+        Log::Debug('Importing groups');
+
+        ini_set('max_execution_time', 600);
+
+        $resources = $this->resourceRepository->GetResourceList();
+        /** @var int[] $resourcesIndexed */
+        $resourcesIndexed = array();
+        foreach ($resources as $resource) {
+            $resourcesIndexed[$resource->GetName()] = $resource->GetId();
+        }
+
+        /** @var UserItemView[] $users */
+        $users = $this->userRepository->GetList(null, null, null, null, null, AccountStatus::ACTIVE)->Results();
+        /** @var int[] $usersIndexed */
+        $usersIndexed = array();
+        foreach ($users as $user) {
+            $usersIndexed[$user->Email] = $user->Id;
+        }
+
+        /** @var GroupItemView[] $groups */
+        $groups = $this->groupRepository->GetList()->Results();
+        /** @var int[] $groupsIndexed */
+        $groupsIndexed = array();
+        foreach ($groups as $group) {
+            $groupsIndexed[$group->Name()] = $group->Id();
+        }
+
+        $importFile = $this->page->GetImportFile();
+        $csv = new GroupImportCsv($importFile);
+
+        $importCount = 0;
+        $messages = array();
+
+        $rows = $csv->GetRows();
+
+        if (count($rows) == 0) {
+            $this->page->SetImportResult(new CsvImportResult(0, array(), 'Empty file or missing header row'));
+            return;
+        }
+
+        for ($i = 0; $i < count($rows); $i++) {
+            $row = $rows[$i];
+
+            $shouldUpdate = $this->page->GetUpdateOnImport() && array_key_exists($row->name, $groupsIndexed);
+
+            try {
+                if ($shouldUpdate) {
+                    $group = $this->groupRepository->LoadById($groupsIndexed[$row->name]);
+                    $group->ChangeDefault($row->autoAdd);
+
+                    if (!empty($row->groupAdministrator) && array_key_exists($row->groupAdministrator, $groupsIndexed)) {
+                        $group->ChangeAdmin($groupsIndexed[$row->groupAdministrator]);
+                    }
+
+                    $group->ChangeRoles($this->GetImportRoles($row));
+
+                    if (!empty($row->members)) {
+                        $memberIds = $this->GetImportMembers($row->members, $usersIndexed);
+                        $group->ChangeUsers($memberIds);
+                    }
+
+                    if (!empty($row->permissionsFull)) {
+                        $resourceIds = $this->GetImportResources($row->permissionsFull, $resourcesIndexed);
+                        $group->ChangeAllowedPermissions($resourceIds);
+                    }
+
+                    if (!empty($row->permissionsView)) {
+                        $resourceIds = $this->GetImportResources($row->permissionsRead, $resourcesIndexed);
+
+                        $group->ChangeViewPermissions($resourceIds);
+                    }
+
+                    Log::Debug('Updating group from import. Id %s', $group->Id());
+
+                    $this->groupRepository->Update($group);
+                }
+                else {
+                    Log::Debug('Adding group from import. Name %s', $row->name);
+                    $group = new Group(0, $row->name, $row->autoAdd);
+                    $this->groupRepository->Add($group);
+
+                    if (!empty($row->groupAdministrator) && array_key_exists($row->groupAdministrator, $groupsIndexed)) {
+                        $group->ChangeAdmin($groupsIndexed[$row->groupAdministrator]);
+                    }
+
+                    $group->ChangeRoles($this->GetImportRoles($row));
+                    $group->ChangeUsers($this->GetImportMembers($row->members, $usersIndexed));
+                    $group->ChangeAllowedPermissions($this->GetImportResources($row->permissionsFull, $resourcesIndexed));
+                    $group->ChangeViewPermissions($this->GetImportResources($row->permissionsRead, $resourcesIndexed));
+
+                    $this->groupRepository->Update($group);
+                }
+
+                $importCount++;
+            } catch (Exception $ex) {
+                Log::Error('Error importing groups. %s', $ex);
+            }
+        }
+
+        $this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
+    }
+
+    public function LoadValidators($action)
+    {
+        if ($action == ManageGroupsActions::Import) {
+            $this->page->RegisterValidator('fileExtensionValidator', new FileExtensionValidator('csv', $this->page->GetImportFile()));
+        }
+    }
+
+    private function GetImportMembers($members, $usersIndexed)
+    {
+        $memberIds = array();
+        foreach ($members as $member) {
+            if (array_key_exists($member, $usersIndexed)) {
+                $memberIds[] = $usersIndexed[$member];
+            }
+        }
+
+        return $memberIds;
+    }
+
+    private function GetImportResources($resources, $resourcesIndexed)
+    {
+        $resourceIds = array();
+        foreach ($resources as $resource) {
+            if (array_key_exists($resource, $resourcesIndexed)) {
+                $resourceIds[] = $resourcesIndexed[$resource];
+            }
+        }
+
+        return $resourceIds;
+    }
+
+    private function GetImportRoles(GroupImportCsvRow $row)
+    {
+        $roles = array();
+        if ($row->isAdmin) {
+            $roles[] = RoleLevel::APPLICATION_ADMIN;
+        }
+        if ($row->isGroupAdmin) {
+            $roles[] = RoleLevel::GROUP_ADMIN;
+        }
+        if ($row->isResourceAdmin) {
+            $roles[] = RoleLevel::RESOURCE_ADMIN;
+        }
+        if ($row->isScheduleAdmin) {
+            $roles[] = RoleLevel::SCHEDULE_ADMIN;
+        }
+
+        return $roles;
     }
 }
 

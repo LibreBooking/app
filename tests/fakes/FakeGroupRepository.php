@@ -71,4 +71,9 @@ class FakeGroupViewRepository implements IGroupViewRepository
 	{
 		// TODO: Implement GetGroupsByRole() method.
 	}
+
+    public function GetPermissionList()
+    {
+        // TODO: Implement GetPermissionList() method.
+    }
 }

@@ -42,7 +42,11 @@ function GroupManagement(opts) {
         changeAdminSchedulesForm: $('#scheduleAdminForm'),
         resourceAdminDialog: $('#resourceAdminDialog'),
         groupAdminAllDialog: $('#groupAdminAllDialog'),
-        scheduleAdminDialog: $('#scheduleAdminDialog')
+        scheduleAdminDialog: $('#scheduleAdminDialog'),
+
+        importGroupsDialog: $('#importGroupsDialog'),
+        importGroupsForm: $('#importGroupsForm'),
+        importGroupsTrigger: $('#import-groups')
 	};
 
 	var allUserList = null;
@@ -184,6 +188,30 @@ function GroupManagement(opts) {
             elements.addDialog.find(':text').first().focus();
         });
 
+		elements.importGroupsTrigger.click(e => {
+            e.preventDefault();
+            elements.importGroupsDialog.modal('show');
+        });
+
+        const importHandler = function (responseText, form) {
+            if (!responseText)
+            {
+                return;
+            }
+
+            $('#importCount').text(responseText.importCount);
+            $('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
+            $('#importResult').removeClass('no-show');
+
+            var errors = $('#importErrors');
+            errors.empty();
+            if (responseText.messages && responseText.messages.length > 0)
+            {
+                var messages = responseText.messages.join('</li><li>');
+                errors.html('<div>' + messages + '</div>').removeClass('no-show');
+            }
+        };
+
 		ConfigureAsyncForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
 		ConfigureAsyncForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
 		ConfigureAsyncForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
@@ -195,7 +223,9 @@ function GroupManagement(opts) {
 		ConfigureAsyncForm(elements.changeAdminGroupsForm, getSubmitCallback(options.actions.adminGroups), function() {elements.groupAdminAllDialog.modal('hide');}, error);
 		ConfigureAsyncForm(elements.changeAdminResourcesForm, getSubmitCallback(options.actions.resourceGroups), function() {elements.resourceAdminDialog.modal('hide');}, error);
 		ConfigureAsyncForm(elements.changeAdminSchedulesForm, getSubmitCallback(options.actions.scheduleGroups), function() {elements.scheduleAdminDialog.modal('hide');}, error);
-	};
+        ConfigureAsyncForm(elements.importGroupsForm, getSubmitCallback(options.actions.importGroups), importHandler);
+
+    };
 
 	var showAllUsersToAdd = function() {
 		elements.membersDialog.modal('hide');

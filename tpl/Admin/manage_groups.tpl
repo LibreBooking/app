@@ -472,6 +472,57 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </div>
 
+    <div id="importGroupsDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="importGroupsModalLabel"
+         aria-hidden="true">
+        <form id="importGroupsForm" class="form" role="form" method="post" enctype="multipart/form-data"
+              ajaxAction="{ManageGroupsActions::Import}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="importGroupsModalLabel">{translate key=Import}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="importGroupsResults" class="validationSummary alert alert-danger no-show">
+                            <ul>
+                                {async_validator id="fileExtensionValidator" key=""}
+                            </ul>
+                        </div>
+                        <div id="importErrors" class="alert alert-danger no-show"></div>
+                        <div id="importResult" class="alert alert-success no-show">
+                            <span>{translate key=RowsImported}</span>
+
+                            <div id="importCount" class="inline bold">0</div>
+                            <span>{translate key=RowsSkipped}</span>
+
+                            <div id="importSkipped" class="inline bold">0</div>
+                            <a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
+                        </div>
+                        <div class="margin-bottom-25">
+                            <input type="file" {formname key=GROUP_IMPORT_FILE} id="groupsImportFile"/>
+                            <label for="groupsImportFile" class="no-show">Group Import File</label>
+                            <div class="checkbox">
+                                <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
+                                <label for="updateOnImport">{translate key=UpdateGroupsOnImport}</label>
+                            </div>
+                        </div>
+                        <div id="importInstructions" class="alert alert-info">
+                            <div class="note">{translate key=GroupsImportInstructions}</div>
+                            <a href="{$smarty.server.SCRIPT_NAME}?dr=template"
+                               download="{$smarty.server.SCRIPT_NAME}?dr=template"
+                               target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {add_button key=Import}
+                        {indicator}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     {csrf_token}
 
     {include file="javascript-includes.tpl"}
@@ -498,7 +549,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 groupAdmin: '{ManageGroupsActions::GroupAdmin}',
                 adminGroups: '{ManageGroupsActions::AdminGroups}',
                 resourceGroups: '{ManageGroupsActions::ResourceGroups}',
-                scheduleGroups: '{ManageGroupsActions::ScheduleGroups}'
+                scheduleGroups: '{ManageGroupsActions::ScheduleGroups}',
+                importGroups: '{ManageGroupsActions::Import}'
             };
 
             var dataRequests = {

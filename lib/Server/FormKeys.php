@@ -111,6 +111,7 @@ class FormKeys
 	const GROUP_ID = 'group_id';
 	const GROUP_NAME = 'group_name';
 	const GROUP_ADMIN = 'group_admin';
+	const GROUP_IMPORT_FILE = 'GROUP_IMPORT_FILE';
 	const GUEST_INVITATION_LIST = 'guestInvitationList';
 	const GUEST_PARTICIPATION_LIST = 'guestParticipationList';
 
