@@ -124,6 +124,14 @@ interface IManageGroupsPage extends IActionPage
      * @return int[]
      */
     public function GetScheduleAdminIds();
+
+    /**
+     * @param GroupItemView[] $groups
+     * @param UserItemView[] $users
+     * @param GroupResourcePermission[] $permissionsWrite
+     * @param GroupResourcePermission[] $permissionsRead
+     */
+    public function Export($groups, $users, $permissionsWrite, $permissionsRead);
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -272,6 +280,15 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     public function GetScheduleAdminIds()
     {
         return $this->GetForm(FormKeys::SCHEDULE_ID);
+    }
+
+    public function Export($groups, $users, $permissionsWrite, $permissionsRead)
+    {
+        $this->Set('Groups', $groups);
+        $this->Set('Users', $users);
+        $this->Set('PermissionsWrite', $permissionsWrite);
+        $this->Set('PermissionsRead', $permissionsRead);
+        $this->DisplayCsv('Admin/Groups/groups_csv.tpl', 'groups.csv');
     }
 }
 

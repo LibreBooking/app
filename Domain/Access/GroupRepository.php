@@ -23,28 +23,24 @@ require_once(ROOT_DIR . 'Domain/Values/ResourcePermissionType.php');
 interface IGroupRepository
 {
     /**
-     * @abstract
      * @param int $groupId
      * @return Group
      */
     public function LoadById($groupId);
 
     /**
-     * @abstract
      * @param Group $group
      * @return int newly inserted group id
      */
     public function Add(Group $group);
 
     /**
-     * @abstract
      * @param Group $group
      * @return void
      */
     public function Update(Group $group);
 
     /**
-     * @abstract
      * @param Group $group
      * @return void
      */
@@ -65,7 +61,6 @@ interface IGroupViewRepository
                             $filter = null);
 
     /**
-     * @abstract
      * @param int|array|int[] $groupIds
      * @param int $pageNumber
      * @param int $pageSize
@@ -77,11 +72,15 @@ interface IGroupViewRepository
                                     $accountStatus = AccountStatus::ALL);
 
     /**
-     * @abstract
      * @param $roleLevel int|RoleLevel
      * @return GroupItemView[]|array
      */
     public function GetGroupsByRole($roleLevel);
+
+    /**
+     * @return GroupResourcePermission[]
+     */
+    public function GetPermissionList();
 }
 
 class GroupRepository implements IGroupRepository, IGroupViewRepository
@@ -253,6 +252,19 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
         return $groups;
     }
+
+    public function GetPermissionList()
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllGroupResourcePermissions());
+
+        $groups = array();
+        while ($row = $reader->GetRow()) {
+            $groups[] = GroupResourcePermission::Create($row);
+        }
+        $reader->Free();
+
+        return $groups;
+    }
 }
 
 class GroupUserView
@@ -318,6 +330,14 @@ class GroupItemView
      * @var string
      */
     public $AdminGroupName;
+
+    /**
+     * @return string|null
+     */
+    public function AdminGroupName()
+    {
+        return $this->AdminGroupName;
+    }
 
     /**
      * @var int
@@ -435,5 +455,59 @@ class RoleDto
         $this->Id = $id;
         $this->Name = $name;
         $this->Level = $level;
+    }
+}
+
+class GroupResourcePermission
+{
+    private $groupId;
+    private $resourceId;
+    private $resourceName;
+    private $permissionType;
+
+    /**
+     * @return int
+     */
+    public function GroupId()
+    {
+        return $this->groupId;
+    }
+
+    /**
+     * @return int
+     */
+    public function ResourceId()
+    {
+        return $this->resourceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function ResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
+     * @return int|ResourcePermissionType
+     */
+    public function PermissionType()
+    {
+        return $this->permissionType;
+    }
+
+    /**
+     * @param array $row
+     * @return GroupResourcePermission
+     */
+    public static function Create($row)
+    {
+        $grp = new GroupResourcePermission();
+        $grp->groupId = $row[ColumnNames::GROUP_ID];
+        $grp->resourceId = $row[ColumnNames::RESOURCE_ID];
+        $grp->resourceName = $row[ColumnNames::RESOURCE_NAME];
+        $grp->permissionType = $row[ColumnNames::PERMISSION_TYPE];
+        return $grp;
     }
 }

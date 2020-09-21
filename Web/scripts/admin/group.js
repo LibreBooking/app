@@ -28,6 +28,7 @@ function GroupManagement(opts) {
         groupCount: $('#groupCount'),
 
 		addForm: $('#addGroupForm'),
+		addDialog: $('#addGroupDialog'),
 
         checkAllResourcesFull: $('#checkAllResourcesFull'),
         checkAllResourcesView: $('#checkAllResourcesView'),
@@ -101,7 +102,7 @@ function GroupManagement(opts) {
 							return {
 								label: item.Name,
 								value: item.Id
-							}
+							};
 						}));
 					}
 				});
@@ -175,6 +176,12 @@ function GroupManagement(opts) {
             var $checkbox = $(e.target);
             var modal = $checkbox.closest('.modal-body');
             modal.find('.count').text(modal.find(':checked').length);
+        });
+
+		$('#add-group').click(e => {
+		    e.preventDefault();
+            elements.addDialog.modal('show');
+            elements.addDialog.find(':text').first().focus();
         });
 
 		ConfigureAsyncForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);

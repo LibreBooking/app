@@ -19,33 +19,38 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl'}
 
 <div id="page-manage-groups" class="admin-page">
-    <h1>{translate key=ManageGroups}</h1>
-
-    <form id="addGroupForm" class="form-inline" role="form" method="post">
-        <div class="panel panel-default" id="add-group-panel">
-            <div class="panel-heading">{translate key="AddGroup"} {showhide_icon}</div>
-            <div class="panel-body add-contents">
-                <div id="addGroupResults" class="error" style="display:none;"></div>
-                <div class="form-group has-feedback">
-                    <label for="addGroupName">{translate key=Name}</label>
-                    <input {formname key=GROUP_NAME} type="text" id="addGroupName" required
-                                                     class="form-control required"/>
-                    <i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="addGroupName"></i>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <input type="checkbox" id="addGroupIsDefault" {formname key=IS_DEFAULT} />
-                        <label for="addGroupIsDefault">{translate key=AutomaticallyAddToGroup}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                {add_button class="btn-sm"}
-                {reset_button class="btn-sm"}
-                {indicator}
-            </div>
+    <div>
+        <div class="dropdown admin-header-more pull-right">
+            <button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
+                <span class="no-show">More</span>
+                <span class="glyphicon glyphicon-option-horizontal"></span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
+                <li role="presentation">
+                    <a role="menuitem" href="#" class="import-groups" id="import-groups">
+                        {translate key="Import"}
+                        <span class="glyphicon glyphicon-import"></span>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" href="{$smarty.server.SCRIPT_NAME}?dr=export" download="{$smarty.server.SCRIPT_NAME}?dr=export" class="export-groups"
+                       id="export-groups" target="_blank">
+                        {translate key="Export"}
+                        <span class="glyphicon glyphicon-export"></span>
+                    </a>
+                </li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation">
+                    <a role="menuitem" href="#" class="add-group" id="add-group">{translate key="AddGroup"}
+                        <span class="fa fa-plus-circle icon add"></span>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </form>
+
+        <h1>{translate key='ManageGroups'}</h1>
+    </div>
 
     <div id="groupSearchPanel">
         <label for="groupSearch">{translate key='FindGroup'}</label>
@@ -219,6 +224,41 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <input type="hidden" id="addUserId" {formname key=USER_ID} />
     </form>
 
+    <div class="modal fade" id="addGroupDialog" tabindex="-1" role="dialog" aria-labelledby="addDialogLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="addGroupForm" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="addDialogLabel">{translate key=AddGroup}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="addGroupResults" class="error" style="display:none;"></div>
+                        <div class="form-group has-feedback">
+                            <label for="addGroupName">{translate key=Name}</label>
+                            <input {formname key=GROUP_NAME} type="text" id="addGroupName" required
+                                                             class="form-control required"/>
+                            <i class="glyphicon glyphicon-asterisk form-control-feedback"
+                               data-bv-icon-for="addGroupName"></i>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <input type="checkbox" id="addGroupIsDefault" {formname key=IS_DEFAULT} />
+                                <label for="addGroupIsDefault">{translate key=AutomaticallyAddToGroup}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {add_button}
+                        {indicator}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -313,14 +353,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="resourceAdminDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
+                            <h4 class="modal-title"
+                                id="resourceAdminDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
                         </div>
                         <div class="modal-body scrollable-modal-content">
                             <h4><span class="count"></span> {translate key=Resources}</h4>
 
                             {foreach from=$resources item=resource}
                                 <div class="checkbox">
-                                    <input type="checkbox" id="resource{$resource->GetId()}" {formname key=RESOURCE_ID multi=true}"
+                                    <input type="checkbox"
+                                           id="resource{$resource->GetId()}" {formname key=RESOURCE_ID multi=true}"
                                     value="{$resource->GetId()}" />
                                     <label for="resource{$resource->GetId()}">{$resource->GetName()}</label>
                                 </div>
@@ -343,7 +385,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="groupAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
+                            <h4 class="modal-title"
+                                id="groupAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
                         </div>
                         <div class="modal-body scrollable-modal-content">
                             <h4><span class="count"></span> {translate key=Groups}</h4>
@@ -373,14 +416,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="scheduleAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
+                            <h4 class="modal-title"
+                                id="scheduleAdminAllDialogLabel">{translate key=WhatCanThisGroupManage}</h4>
                         </div>
                         <div class="modal-body scrollable-modal-content">
                             <h4><span class="count"></span> {translate key=Schedules}</h4>
 
                             {foreach from=$Schedules item=schedule}
                                 <div class="checkbox">
-                                    <input type="checkbox" id="schedule{$schedule->GetId()}" {formname key=SCHEDULE_ID multi=true}"
+                                    <input type="checkbox"
+                                           id="schedule{$schedule->GetId()}" {formname key=SCHEDULE_ID multi=true}"
                                     value="{$schedule->GetId()}" />
                                     <label for="schedule{$schedule->GetId()}">{$schedule->GetName()}</label>
                                 </div>
