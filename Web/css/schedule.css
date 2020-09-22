@@ -479,3 +479,21 @@ a.toggle-sidebar {
 #reservations {
   position: relative;
 }
+#reservationsToTop {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 999;
+  border: none;
+  background-color: #D5DED9;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  color: #585754;
+  cursor: pointer;
+  padding: 5px;
+}
+#reservationsToTop:hover {
+  color: #000;
+}

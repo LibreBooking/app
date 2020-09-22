@@ -400,6 +400,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="loading-schedule" class="no-show">Loading reservations...</div>
 
+<button id="reservationsToTop" title="Go to top"><i class="fa fa-2x fa-arrow-circle-o-up"></i></button>
+
 {include file="javascript-includes.tpl" Qtip=true Select2=true Owl=true Clear=true}
 
 {block name="scripts-before"}
