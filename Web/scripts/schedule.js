@@ -73,7 +73,7 @@ function Schedule(opts, resourceGroups) {
         renderingEvents = true;
 
         if (clear) {
-            $("#reservations").find("div.event, div.condensed-event").remove();
+            $("#reservations").find("div.event, div.condensed-event, div.buffer").remove();
             $('#reservations').find('td').css('height', '40px');
         }
 
@@ -811,11 +811,12 @@ function Schedule(opts, resourceGroups) {
                 $('#moveSourceResourceId').val(sourceResourceId);
 
                 ajaxPost($('#moveReservationForm'), options.updateReservationUrl, null, function (updateResult) {
-                    if (updateResult.success) {
+                    droppedCell.removeClass('dropped');
+                    droppedCell.html('');
+					
+					if (updateResult.success) {
                         renderEvents(true);
                     } else {
-                        droppedCell.removeClass('dropped');
-                        droppedCell.html('');
                         renderingEvents = false;
                         return false;
                     }
