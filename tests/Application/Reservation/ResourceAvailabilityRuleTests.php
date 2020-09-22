@@ -483,7 +483,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservationRepository->_Reservations = [
 				new TestReservationItemView(100, Date::Parse('2020-09-17 10:00', 'UTC'), Date::Parse('2020-09-17 11:00', 'UTC'), 1, 'r1'),
 				new TestReservationItemView(200, Date::Parse('2020-09-17 11:00', 'UTC'), Date::Parse('2020-09-17 12:00', 'UTC'), 1, 'r2'),
-				new TestReservationItemView(300, Date::Parse('2020-09-17 10:30', 'UTC'), Date::Parse('2020-09-17 12:00', 'UTC'), 1, 'r3'),
+				new TestReservationItemView(300, Date::Parse('2020-09-17 9:30', 'UTC'), Date::Parse('2020-09-17 11:00', 'UTC'), 1, 'r3'),
 				];
 		$strategy = new ResourceAvailability($reservationRepository);
 		$rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
@@ -491,4 +491,47 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$result = $rule->Validate($reservation, null);
 		$this->assertTrue($result->IsValid());
 	}
+
+	public function testExistingStartingAtTheSameTime()
+	{
+        $reservation = new TestReservationSeries();
+        $resource = new FakeBookableResource(1);
+        $resource->SetMaxConcurrentReservations(3);
+        $reservation->WithResource($resource);
+        $reservation->WithDuration(DateRange::Create('2020-09-17 09:00', '2020-09-17 9:30', 'UTC'));
+
+        $reservationRepository = new FakeReservationViewRepository();
+        $reservationRepository->_Reservations = [
+            new TestReservationItemView(100, Date::Parse('2020-09-17 9:00', 'UTC'), Date::Parse('2020-09-17 10:30', 'UTC'), 1, 'r1'),
+            new TestReservationItemView(200, Date::Parse('2020-09-17 9:00', 'UTC'), Date::Parse('2020-09-17 9:30', 'UTC'), 1, 'r2'),
+            new TestReservationItemView(300, Date::Parse('2020-09-17 9:00', 'UTC'), Date::Parse('2020-09-17 9:30', 'UTC'), 1, 'r3'),
+        ];
+        $strategy = new ResourceAvailability($reservationRepository);
+        $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
+
+        $result = $rule->Validate($reservation, null);
+        $this->assertFalse($result->IsValid());
+	}
+
+    public function testBackToBackReservationsAndAnotherConcurrentCoveringBothWithAllowingOnlyTwo()
+    {
+        $reservation = new TestReservationSeries();
+        $resource = new FakeBookableResource(1);
+        $resource->SetMaxConcurrentReservations(2);
+        $reservation->WithResource($resource);
+        $reservation->WithDuration(DateRange::Create('2020-09-17 09:00', '2020-09-17 12:00', 'UTC'));
+
+        $reservationRepository = new FakeReservationViewRepository();
+        $reservationRepository->_Reservations = [
+            new TestReservationItemView(100, Date::Parse('2020-09-17 10:00', 'UTC'), Date::Parse('2020-09-17 12:00', 'UTC'), 1, 'r1'),
+            new TestReservationItemView(200, Date::Parse('2020-09-17 10:00', 'UTC'), Date::Parse('2020-09-17 11:00', 'UTC'), 1, 'r2'),
+            new TestReservationItemView(300, Date::Parse('2020-09-17 11:00', 'UTC'), Date::Parse('2020-09-17 12:00', 'UTC'), 1, 'r3'),
+        ];
+        $strategy = new ResourceAvailability($reservationRepository);
+        $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
+
+        $result = $rule->Validate($reservation, null);
+        $this->assertFalse($result->IsValid());
+    }
+
 }

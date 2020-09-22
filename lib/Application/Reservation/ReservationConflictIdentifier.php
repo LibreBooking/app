@@ -181,22 +181,22 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 
 		foreach ($instanceConflicts as $c1)
 		{
-			$subConflicts = 0;
-
+            $conflictsReference = array();
 			foreach ($instanceConflicts as $c2)
 			{
-				if ($c1->Conflict->GetReferenceNumber() != $c2->Conflict->GetReferenceNumber()
-						&& $c1->Conflict->BufferedTimes()->Overlaps($c2->Conflict->BufferedTimes())
-				)
+				if ($c1->Conflict->GetReferenceNumber() == $c2->Conflict->GetReferenceNumber()) {
+				    continue;
+                }
+				if ($c1->Conflict->BufferedTimes()->Overlaps($c2->Conflict->BufferedTimes()))
 				{
-					$subConflicts++;
+                    $conflictsReference[$c1->Conflict->GetReferenceNumber()] = 1;
+                    $conflictsReference[$c2->Conflict->GetReferenceNumber()] = 1;
 				}
 			}
 
-			if ($subConflicts > $conflicts)
-			{
-				$conflicts = $subConflicts;
-			}
+			if (count($conflictsReference) > $conflicts) {
+			    $conflicts = count($conflictsReference);
+            }
 		}
 
 		return $conflicts;
