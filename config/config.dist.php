@@ -55,13 +55,13 @@ $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // wheth
 $conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label.  Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}. Custom attributes can be added using att with the attribute id. For example {att1}
 $conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if blocked periods should be hidden or shown
 $conf['settings']['schedule']['update.highlight.minutes'] = '0';    // if set, will show reservations as 'updated' for a certain amount of time
-
+$conf['settings']['schedule']['show.week.numbers'] = 'false';
 /**
  * ical integration configuration
  */
 $conf['settings']['ics']['subscription.key'] = '';              // must be set to allow webcal subscriptions
-$conf['settings']['ics']['future.days'] = 30;
-$conf['settings']['ics']['past.days'] = 0;
+$conf['settings']['ics']['future.days'] = '30';
+$conf['settings']['ics']['past.days'] = '0';
 /**
  * Privacy configuration
  */

@@ -45,6 +45,7 @@ class ConfigKeys
     const SCHEDULE_RESERVATION_LABEL = 'reservation.label';
     const SCHEDULE_HIDE_BLOCKED_PERIODS = 'hide.blocked.periods';
     const SCHEDULE_UPDATE_HIGHLIGHT_MINUTES = 'update.highlight.minutes';
+    const SCHEDULE_SHOW_WEEK_NUMBERS = 'show.week.numbers';
 
     const DATABASE_TYPE = 'type';
     const DATABASE_USER = 'user';

@@ -37,6 +37,7 @@ new Date({$date->Year()}, {$date->Month()-1}, {$date->Day()})
             currentText: "{{translate key='Today'}|escape:'javascript'}",
             timeFormat: "{$TimeFormat}",
             altFieldTimeOnly: false,
+            showWeek: {if $ShowWeekNumbers}true{else}false{/if},
             controlType: 'select'
             {if $AltId neq ''}
             ,

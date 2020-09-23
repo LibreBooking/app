@@ -38,6 +38,7 @@ function Calendar(opts) {
                 day: _options.dayText
             },
             allDaySlot: false,
+            weekNumbers: _options.showWeekNumbers,
             defaultView: _options.view,
             defaultDate: _options.defaultDate,
             eventSources: [{

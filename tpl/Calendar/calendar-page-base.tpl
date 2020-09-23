@@ -103,6 +103,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 moveReservationUrl: "{$Path}ajax/reservation_move.php",
                 returnTo: '{$pageUrl}',
                 autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
+                showWeekNumbers: {if $ShowWeekNumbers}true{else}false{/if}
             };
 
             var calendar = new Calendar(options);

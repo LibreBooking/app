@@ -180,7 +180,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <a href="#" class="change-date" data-year="{$PreviousDate->Year()}"
                                data-month="{$PreviousDate->Month()}"
                                data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="{translate key=Back}"}</a>
-                            {formatdate date=$FirstDate} - {formatdate date=$LastDate}
+                            {formatdate date=$FirstDate}
+                            {if $ShowWeekNumbers}({$FirstDate->WeekNumber()}){/if}
+                            -
+                            {formatdate date=$LastDate}
+                            {if $ShowWeekNumbers}({$LastDate->WeekNumber()}){/if}
                             <a href="#" class="change-date" data-year="{$NextDate->Year()}"
                                data-month="{$NextDate->Month()}"
                                data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="{translate key=Forward}"}</a>

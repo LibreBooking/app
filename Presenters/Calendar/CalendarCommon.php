@@ -184,6 +184,7 @@ abstract class CommonCalendarPage extends ActionPage implements ICommonCalendarP
         $this->Set('DayName', $days[$displayDate->Weekday()]);
         $this->Set('DayNames', $days);
         $this->Set('DayNamesShort', Resources::GetInstance()->GetDays('abbr'));
+        $this->Set('ShowWeekNumbers', Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_WEEK_NUMBERS, new BooleanConverter()));
     }
 
     /**
