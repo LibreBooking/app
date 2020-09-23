@@ -137,11 +137,11 @@ class Ldap2Wrapper
             $attributes[] = 'memberof';
         }
 
-        Log::Error('LDAP - Loading user attributes: %s', implode(', ', $attributes));
+        Log::Debug('LDAP - Loading user attributes: %s', implode(', ', $attributes));
 
         $options = array('attributes' => $attributes);
 
-        Log::Error('Searching ldap for user %s', $username);
+        Log::Debug('Searching ldap for user %s', $username);
         $searchResult = $this->ldap->search(null, $filter, $options);
 
         if ($l->isError($searchResult))
@@ -169,11 +169,11 @@ class Ldap2Wrapper
                 $userGroups = array_map('strtolower', $userGroups);
             }
 
-            Log::Error('Found user %s', $username);
+            Log::Debug('Found user %s', $username);
 
             if (!empty($requiredGroup))
             {
-                Log::Error('LDAP - Required Group: %s', $requiredGroup);
+                Log::Debug('LDAP - Required Group: %s', $requiredGroup);
 
                 if (in_array(strtolower(trim($requiredGroup)), $userGroups))
                 {
