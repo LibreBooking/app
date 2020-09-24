@@ -380,6 +380,28 @@ abstract class GroupControllerPageFacade implements IManageGroupsPage
     public function GetUserIds()
     {
     }
+
+    public function Export($groups, $users, $permissionsWrite, $permissionsRead)
+    {
+        // TODO: Implement Export() method.
+    }
+
+    public function GetImportFile()
+    {
+        // TODO: Implement GetImportFile() method.
+    }
+
+    public function ShowTemplateCsv()
+    {
+    }
+
+    public function SetImportResult($importResult)
+    {
+    }
+
+    public function GetUpdateOnImport()
+    {
+    }
 }
 
 class CreateGroupFacade extends GroupControllerPageFacade
@@ -446,6 +468,8 @@ class CreateGroupFacade extends GroupControllerPageFacade
     {
         // TODO: Implement GetScheduleAdminIds() method.
     }
+
+
 }
 
 class UpdateGroupRolesFacade extends GroupControllerPageFacade
