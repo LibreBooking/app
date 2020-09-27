@@ -160,6 +160,10 @@ class ConfigKeys
 	const TABLET_VIEW_AUTOCOMPLETE = 'auto.suggest.emails';
 
 	const USE_DATABASE_SESSION = 'use.database.session';
+
+	const REGISTRATION_REQUIRE_PHONE = 'require.phone';
+	const REGISTRATION_REQUIRE_ORGANIZATION = 'require.organization';
+	const REGISTRATION_REQUIRE_POSITION = 'require.position';
 }
 
 class ConfigSection
@@ -187,4 +191,5 @@ class ConfigSection
     const PAYMENTS = 'payments';
     const SLACK = 'slack';
     const TABLET_VIEW = 'tablet.view';
+    const REGISTRATION = 'registration';
 }

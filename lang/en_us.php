@@ -802,6 +802,9 @@ class en_us extends Language
 		$strings['ChangeResourceStatus'] = 'Change Resource Status';
 		$strings['UpdateGroupsOnImport'] = 'Update existing group if name matches';
 		$strings['GroupsImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Name is required.</li><li>Member lists should be comma separated lists of emails.</li><li>Empty member lists when updating groups will leave members unchanged.</li><li>Permissions lists should be comma separated lists of resource names.</li><li>Empty permissions lists when updating groups will leave permissions unchanged.</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['PhoneRequired'] = 'Phone is required';
+		$strings['OrganizationRequired'] = 'Organization is required';
+		$strings['PositionRequired'] = 'Position is required';
         // End Strings
 
 		// Install

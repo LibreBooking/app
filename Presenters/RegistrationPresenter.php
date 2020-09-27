@@ -260,5 +260,15 @@ class RegistrationPresenter extends ActionPresenter
         $this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
         $this->page->RegisterValidator('requiredEmailDomain', new RequiredEmailDomainValidator($this->page->GetEmail()));
         $this->page->RegisterValidator('termsOfService', new TermsOfServiceValidator($this->termsRepository, $this->page->GetTermsOfServiceAcknowledgement()));
+
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_PHONE, new BooleanConverter())) {
+            $this->page->RegisterValidator('phoneRequired', new RequiredValidator($this->page->GetPhone()));
+        }
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_ORGANIZATION, new BooleanConverter())) {
+            $this->page->RegisterValidator('organizationRequired', new RequiredValidator($this->page->GetOrganization()));
+        }
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_POSITION, new BooleanConverter())) {
+            $this->page->RegisterValidator('positionRequired', new RequiredValidator($this->page->GetPosition()));
+        }
     }
 }

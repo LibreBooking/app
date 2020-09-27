@@ -97,7 +97,11 @@ class ProfilePage extends ActionPage implements IProfilePage
 
 	public function ProcessPageLoad()
 	{
-		$this->presenter->PageLoad();
+        $this->Set('RequirePhone', Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_PHONE, new BooleanConverter()));
+        $this->Set('RequirePosition', Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_POSITION, new BooleanConverter()));
+        $this->Set('RequireOrganization', Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_ORGANIZATION, new BooleanConverter()));
+
+        $this->presenter->PageLoad();
 		$this->Display('MyAccount/profile.tpl');
 	}
 

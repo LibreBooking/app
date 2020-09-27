@@ -53,6 +53,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {async_validator id="additionalattributes" key=""}
                     {async_validator id="requiredEmailDomain" key="InvalidEmailDomain"}
                     {async_validator id="termsOfService" key="TermsOfServiceError"}
+                    {async_validator id="phoneRequired" key="PhoneRequired"}
+                    {async_validator id="positionRequired" key="PositionRequired"}
+                    {async_validator id="organizationRequired" key="OrganizationRequired"}
                 </ul>
             </div>
 
@@ -149,14 +152,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="col-xs-12 col-sm-6" id="phone">
                     <div class="form-group">
                         <label class="reg" for="phone">{translate key="Phone"}</label>
-                        {textbox name="PHONE" class="input" value="Phone" size="20"}
+                        <input type="text" id="phone" {formname key="PHONE"} class="form-control" size="20"
+                                {if $RequirePhone}required="required"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="{translate key=PhoneRequired}"{/if}
+                        />
                     </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6" id="organization">
                     <div class="form-group">
                         <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
-                        {textbox name="ORGANIZATION" class="input" value="Organization" size="20" id="txtOrganization"}
+                        <input type="text" id="txtOrganization" {formname key="ORGANIZATION"} class="form-control"
+                               size="20"
+                                {if $RequireOrganization}required="required"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="{translate key=OrganizationRequired}"{/if}/>
                     </div>
                 </div>
             </div>
@@ -165,7 +176,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="col-xs-12 col-sm-6" id="position">
                     <div class="form-group">
                         <label class="reg" for="txtPosition">{translate key="Position"}</label>
-                        {textbox name="POSITION" class="input" value="Position" size="20" id="txtPosition"}
+                        <input type="text" id="txtPosition" {formname key="POSITION"} class="form-control"
+                               size="20" {if $RequirePosition}required="required"
+                            data-bv-notempty="true"
+                            data-bv-notempty-message="{translate key=PositionRequired}"{/if}/>
                     </div>
                 </div>
 
@@ -241,10 +255,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             $('#detectTimezone').click(function (e) {
                 e.preventDefault();
 
-                if (Intl.DateTimeFormat)
-                {
+                if (Intl.DateTimeFormat) {
                     var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                }else {
+                } else {
                     var timezone = jstz.determine_timezone().name();
                 }
 

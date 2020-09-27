@@ -211,3 +211,9 @@ $conf['settings']['slack']['token'] = '';
  */
 $conf['settings']['tablet.view']['allow.guest.reservations'] = 'false';
 $conf['settings']['tablet.view']['auto.suggest.emails'] = 'false';
+/**
+ * Registration
+ */
+$conf['settings']['registration']['require.phone'] = 'false';
+$conf['settings']['registration']['require.position'] = 'false';
+$conf['settings']['registration']['require.organization'] = 'false';
