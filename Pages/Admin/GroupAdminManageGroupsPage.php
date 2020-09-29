@@ -32,7 +32,7 @@ class GroupAdminManageGroupsPage extends ManageGroupsPage
             new GroupAdminGroupRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
             new ResourceRepository(),
             new ScheduleRepository(),
-            new GroupAdminUserRepository());
+            new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()));
     }
 
     public function ProcessPageLoad()
