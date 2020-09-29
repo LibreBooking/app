@@ -88,6 +88,9 @@ class AutoCompletePage extends Page
 		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
 		$filter->_Or(new SqlFilterLike(ColumnNames::USERNAME, $term));
 
+		$apiOnlyFilter = new SqlFilterEquals(ColumnNames::API_ONLY, 0);
+		$apiOnlyFilter->_And($filter);
+
 		$r = new UserRepository();
 		$currentUser = ServiceLocator::GetServer()->GetUserSession();
 		$user = $r->LoadById($currentUser->UserId);
@@ -97,7 +100,7 @@ class AutoCompletePage extends Page
         {
             $status = AccountStatus::ALL;
         }
-		$results = $r->GetList(1, PageInfo::All, null, null, $filter, $status)->Results();
+		$results = $r->GetList(1, PageInfo::All, null, null, $apiOnlyFilter, $status)->Results();
 
         $hideUserDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
 		$users = array();

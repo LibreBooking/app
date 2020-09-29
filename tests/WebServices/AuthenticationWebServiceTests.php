@@ -71,6 +71,11 @@ class AuthenticationWebServiceTests extends TestBase
 		$expectedResponse = AuthenticationResponse::Success($this->server, $session, 0);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
+	
+	public function testLogsInApiOnlyUserAndSkipsNormalAuth()
+	{
+	    
+	}
 
 	public function testRestrictsUserIfInvalidCredentials()
 	{

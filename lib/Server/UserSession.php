@@ -38,6 +38,7 @@ class UserSession
 	public $Groups = array();
 	public $AdminGroups = array();
 	public $CSRFToken = '';
+	public $ApiOnly = false;
 
     public function __construct($id)
 	{

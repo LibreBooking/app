@@ -30,8 +30,12 @@ class AuthenticationWebService
 	 * @var IWebServiceAuthentication
 	 */
 	private $authentication;
+    /**
+     * @var IRestServer
+     */
+    private $server;
 
-	public function __construct(IRestServer $server, IWebServiceAuthentication $authentication)
+    public function __construct(IRestServer $server, IWebServiceAuthentication $authentication)
 	{
 		$this->server = $server;
 		$this->authentication = $authentication;

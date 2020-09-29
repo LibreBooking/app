@@ -422,6 +422,7 @@ class Queries
 		  WHERE `g`.`group_id` IN (@groupid)
 		  )
 		AND (0 = @user_statusid OR `u`.`status_id` = @user_statusid)
+		AND `u`.`api_only` = 0
 		ORDER BY `u`.`lname`, `u`.`fname`';
 
     const GET_ALL_QUOTAS =

@@ -114,6 +114,10 @@ class WebAuthentication implements IWebAuthentication
 	public function Login($username, $loginContext)
 	{
 		$userSession = $this->authentication->Login($username, $loginContext);
+		if ($userSession->ApiOnly) {
+            $this->server->SetUserSession(new NullUserSession());
+		    return;
+        }
 		$this->server->SetUserSession($userSession);
 
 		if ($loginContext->GetData()->Persist)
