@@ -42,8 +42,12 @@ class UnavailableResourcesPresenterTests extends TestBase
 	 * @var FakeResourceRepository
 	 */
 	private $resourceRepository;
+    /**
+     * @var FakeReservationRepository
+     */
+    private $reservationRepository;
 
-	public function setUp(): void
+    public function setUp(): void
 	{
 		parent::setup();
 
@@ -58,7 +62,9 @@ class UnavailableResourcesPresenterTests extends TestBase
 				new FakeBookableResource(5),
 		);
 
-		$this->presenter = new UnavailableResourcesPresenter($this->page, $this->reservationConflictIdentifier, $this->fakeUser, $this->resourceRepository);
+		$this->reservationRepository = new FakeReservationRepository();
+
+		$this->presenter = new UnavailableResourcesPresenter($this->page, $this->reservationConflictIdentifier, $this->fakeUser, $this->resourceRepository, $this->reservationRepository);
 	}
 
 	public function testGetsUnavailableResourceIdsWhenNotTheSameReservation()
@@ -69,11 +75,16 @@ class UnavailableResourcesPresenterTests extends TestBase
 		$this->reservationConflictIdentifier->_IndexedConflicts[] = new FakeReservationConflictResult();
 		$this->reservationConflictIdentifier->_IndexedConflicts[] = new FakeReservationConflictResult(false);
 
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->Build();
+		$this->reservationRepository->_Series = $series;
+
 		$this->presenter->PageLoad();
 
 		$bound = $this->page->_BoundAvailability;
 
 		$this->assertEquals(array(3, 5), $bound);
+		$this->assertEquals($this->page->GetDuration()->ToUtc(), $series->CurrentInstance()->Duration()->ToUtc());
 	}
 }
 

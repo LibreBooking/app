@@ -22,62 +22,66 @@ require_once(ROOT_DIR . 'Presenters/UnavailableResourcesPresenter.php');
 
 interface IAvailableResourcesPage
 {
-	public function GetStartDate();
+    public function GetStartDate();
 
-	public function GetEndDate();
+    public function GetEndDate();
 
-	public function GetStartTime();
+    public function GetStartTime();
 
-	public function GetEndTime();
+    public function GetEndTime();
 
-	public function GetReferenceNumber();
+    public function GetReferenceNumber();
 
-	/**
-	 * @param int[] $unavailableResourceIds
-	 */
-	public function BindUnavailable($unavailableResourceIds);
+    /**
+     * @param int[] $unavailableResourceIds
+     */
+    public function BindUnavailable($unavailableResourceIds);
 }
 
 class UnavailableResourcesPage extends Page implements IAvailableResourcesPage
 {
-	public function __construct()
-	{
-		parent::__construct('', 1);
-	}
+    public function __construct()
+    {
+        parent::__construct('', 1);
+    }
 
-	public function PageLoad()
-	{
-		$presenter = new UnavailableResourcesPresenter($this, new ReservationConflictIdentifier(new ResourceAvailability(new ReservationViewRepository())), ServiceLocator::GetServer()->GetUserSession(), new ResourceRepository());
-		$presenter->PageLoad();
-	}
+    public function PageLoad()
+    {
+        $presenter = new UnavailableResourcesPresenter($this,
+            new ReservationConflictIdentifier(new ResourceAvailability(new ReservationViewRepository())),
+            ServiceLocator::GetServer()->GetUserSession(),
+            new ResourceRepository(),
+            new ReservationRepository());
+        $presenter->PageLoad();
+    }
 
-	public function GetStartDate()
-	{
-		return $this->GetQuerystring(QueryStringKeys::START_DATE);
-	}
+    public function GetStartDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START_DATE);
+    }
 
-	public function GetEndDate()
-	{
-		return $this->GetQuerystring(QueryStringKeys::END_DATE);
-	}
+    public function GetEndDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END_DATE);
+    }
 
-	public function GetReferenceNumber()
-	{
-		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
-	}
+    public function GetReferenceNumber()
+    {
+        return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
+    }
 
-	public function GetStartTime()
-	{
-		return $this->GetQuerystring(QueryStringKeys::START_TIME);
-	}
+    public function GetStartTime()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START_TIME);
+    }
 
-	public function GetEndTime()
-	{
-		return $this->GetQuerystring(QueryStringKeys::END_TIME);
-	}
+    public function GetEndTime()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END_TIME);
+    }
 
-	public function BindUnavailable($unavailableResourceIds)
-	{
-		$this->SetJson($unavailableResourceIds);
-	}
+    public function BindUnavailable($unavailableResourceIds)
+    {
+        $this->SetJson($unavailableResourceIds);
+    }
 }
