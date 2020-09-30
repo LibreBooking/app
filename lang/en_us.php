@@ -805,6 +805,8 @@ class en_us extends Language
 		$strings['PhoneRequired'] = 'Phone is required';
 		$strings['OrganizationRequired'] = 'Organization is required';
 		$strings['PositionRequired'] = 'Position is required';
+		$strings['GroupMembership'] = 'Group Membership';
+		$strings['AvailableGroups'] = 'Available Groups';
         // End Strings
 
 		// Install

@@ -33,9 +33,14 @@ class FakeReservationConflictIdentifier implements IReservationConflictIdentifie
 	public $_IndexedConflicts = [];
 
 	private $_GetConflictCall = 0;
+    /**
+     * @var ReservationSeries[]
+     */
+    public $_Series;
 
-	public function GetConflicts($reservationSeries)
+    public function GetConflicts($reservationSeries)
 	{
+	    $this->_Series[] = $reservationSeries;
 		if (!empty($this->_IndexedConflicts)) {
 			return $this->_IndexedConflicts[$this->_GetConflictCall++];
 		}

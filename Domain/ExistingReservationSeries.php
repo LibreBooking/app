@@ -284,12 +284,6 @@ class ExistingReservationSeries extends ReservationSeries
 		$currentBegin = $currentDuration->GetBegin();
 		$currentEnd = $currentDuration->GetEnd();
 
-		Log::Debug('duration %s', $currentDuration->ToString());
-		Log::Debug('current begin %s', $currentBegin->ToString());
-		Log::Debug('current end %s', $currentEnd->ToString());
-		Log::Debug('date begin %s', $reservationDate->GetBegin()->ToString());
-		Log::Debug('date end %s', $reservationDate->GetEnd()->ToString());
-
 		$startTimeAdjustment = $currentBegin->GetDifference($reservationDate->GetBegin());
 		$endTimeAdjustment = $currentEnd->GetDifference($reservationDate->GetEnd());
 

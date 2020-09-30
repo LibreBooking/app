@@ -24,98 +24,69 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class UnavailableResourcesPresenter
 {
-	/**
-	 * @var IAvailableResourcesPage
-	 */
-	private $page;
-	/**
-	 * @var IReservationConflictIdentifier
-	 */
-	private $reservationConflictIdentifier;
-	/**
-	 * @var UserSession
-	 */
-	private $userSession;
-	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var IAvailableResourcesPage
+     */
+    private $page;
+    /**
+     * @var IReservationConflictIdentifier
+     */
+    private $reservationConflictIdentifier;
+    /**
+     * @var UserSession
+     */
+    private $userSession;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
+    /**
+     * @var IReservationRepository
+     */
+    private $reservationRepository;
 
-	public function __construct(IAvailableResourcesPage $page,
-								IReservationConflictIdentifier $reservationConflictIdentifier,
-								UserSession $userSession,
-								IResourceRepository $resourceRepository)
-	{
-		$this->page = $page;
-		$this->reservationConflictIdentifier = $reservationConflictIdentifier;
-		$this->userSession = $userSession;
-		$this->resourceRepository = $resourceRepository;
-	}
+    public function __construct(IAvailableResourcesPage $page,
+                                IReservationConflictIdentifier $reservationConflictIdentifier,
+                                UserSession $userSession,
+                                IResourceRepository $resourceRepository,
+                                IReservationRepository $reservationRepository)
+    {
+        $this->page = $page;
+        $this->reservationConflictIdentifier = $reservationConflictIdentifier;
+        $this->userSession = $userSession;
+        $this->resourceRepository = $resourceRepository;
+        $this->reservationRepository = $reservationRepository;
+    }
 
-	public function PageLoad()
-	{
-		$duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
-									  $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
+    public function PageLoad()
+    {
+        $duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
+            $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
 
-		$resources = $this->resourceRepository->GetResourceList();
+        $resources = $this->resourceRepository->GetScheduleResources($this->page->GetScheduleId());
 
-		$unavailable = array();
-//		$maxBuffer = new TimeInterval(0);
-		$resourceConflicts = array();
-//		$indexedResources = array();
-		foreach ($resources as $resource)
-		{
-			$series = ReservationSeries::Create($this->userSession->UserId, $resource, "", "", $duration, new RepeatNone(), $this->userSession);
-			$conflict = $this->reservationConflictIdentifier->GetConflicts($series);
+        $unavailable = array();
+        $referenceNumber = $this->page->GetReferenceNumber();
+        $series = null;
+        $existingSeries = false;
+        if (!empty($referenceNumber)) {
+            $series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
+            $series->UpdateDuration($duration);
+            $existingSeries = true;
+        }
 
-			if (!$conflict->AllowReservation())
-			{
-				$unavailable[] = $resource->GetId();
-			}
-//			$indexedResources[$resource->GetId()] = $resource;
-//			if ($resource->HasBufferTime()) {
-//				if ($resource->GetBufferTime()->TotalSeconds() > $maxBuffer->TotalSeconds()) {
-//					$maxBuffer = $resource->GetBufferTime();
-//				}
-//			}
-		}
+        foreach ($resources as $resource) {
 
+            if (!$existingSeries) {
+                $series = ReservationSeries::Create($this->userSession->UserId, $resource, "", "", $duration, new RepeatNone(), $this->userSession);
+            }
+            $conflict = $this->reservationConflictIdentifier->GetConflicts($series);
 
+            if (!$conflict->AllowReservation()) {
+                $unavailable[] = $resource->GetId();
+            }
+        }
 
-//		$conflictIdentifier = new ReservationConflictIdentifier(new ResourceAvailability($this->resourceRepository));
-//		$conflictIdentifier->GetConflicts($)
-
-//		$reserved = $this->reservationConflictIdentifier->GetItemsBetween($duration->GetBegin()->SubtractInterval($maxBuffer), $duration->GetEnd()->AddInterval($maxBuffer), ReservationViewRepository::ALL_RESOURCES);
-//		if (empty($reserved))
-//		{
-//			$this->page->BindUnavailable([]);
-//			return;
-//		}
-
-
-//		$unavailable = array();
-//
-//		foreach ($reserved as $reservation)
-//		{
-//			if ($reservation->GetReferenceNumber() == $this->page->GetReferenceNumber())
-//			{
-//				continue;
-//			}
-//
-//			if ($reservation->BufferedTimes()->Overlaps($duration))
-//			{
-//				$resourceConflicts[$reservation->GetResourceId()]++;
-//			}
-//		}
-//
-//		foreach ($resourceConflicts as $resourceId => $conflicts)
-//		{
-//			if ($conflicts >= $indexedResources[$resourceId]->GetMaxConcurrentReservations())
-//			{
-//				$unavailable[] = $resourceId;
-//			}
-//		}
-
-		$this->page->BindUnavailable(array_unique($unavailable));
-	}
+        $this->page->BindUnavailable(array_unique($unavailable));
+    }
 }

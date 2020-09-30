@@ -26,6 +26,10 @@ class FakeResourceRepository implements IResourceRepository
 	 * @var array|BookableResource[]
 	 */
 	public $_ResourceList = array();
+	/**
+	 * @var array|BookableResource[]
+	 */
+	public $_ScheduleResourceList = array();
 
 	/**
 	 * @var FakeBookableResource
@@ -43,7 +47,7 @@ class FakeResourceRepository implements IResourceRepository
 
 	public function GetScheduleResources($scheduleId)
 	{
-		// TODO: Implement GetScheduleResources() method.
+		return $this->_ScheduleResourceList;
 	}
 
 	public function LoadById($resourceId)

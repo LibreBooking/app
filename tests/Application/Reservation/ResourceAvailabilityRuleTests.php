@@ -534,4 +534,26 @@ class ResourceAvailabilityRuleTests extends TestBase
         $this->assertFalse($result->IsValid());
     }
 
+    public function testConcurrentWithGap()
+    {
+        $reservation = new TestReservationSeries();
+        $resource = new FakeBookableResource(1);
+        $resource->SetMaxConcurrentReservations(3);
+        $reservation->WithResource($resource);
+        $reservation->WithDuration(DateRange::Create('2020-09-17 14:30', '2020-09-17 16:00', 'UTC'));
+
+        $reservationRepository = new FakeReservationViewRepository();
+        $reservationRepository->_Reservations = [
+            new TestReservationItemView(100, Date::Parse('2020-09-17 13:30', 'UTC'), Date::Parse('2020-09-17 14:30', 'UTC'), 1, 'r1'),
+            new TestReservationItemView(200, Date::Parse('2020-09-17 13:30', 'UTC'), Date::Parse('2020-09-17 15:00', 'UTC'), 1, 'r2'),
+            new TestReservationItemView(300, Date::Parse('2020-09-17 14:00', 'UTC'), Date::Parse('2020-09-17 16:00', 'UTC'), 1, 'r3'),
+            new TestReservationItemView(400, Date::Parse('2020-09-17 15:00', 'UTC'), Date::Parse('2020-09-17 15:30', 'UTC'), 1, 'r4'),
+        ];
+        $strategy = new ResourceAvailability($reservationRepository);
+        $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
+
+        $result = $rule->Validate($reservation, null);
+        $this->assertTrue($result->IsValid());
+    }
+
 }

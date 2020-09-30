@@ -65,5 +65,13 @@ Motivo de exclusão: {$DeleteReason|nl2br}<br/>
     {/foreach}
 {/if}
 
+{if !empty($CreatedBy)}
+    <br/>
+    Eliminado por: {$CreatedBy}
+{/if}
+
+<br/>
+Número de referência: {$ReferenceNumber}
+
 <br/>
 <a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
