@@ -872,8 +872,8 @@ class pt_pt extends en_gb
 		$strings['Transactions'] = 'Transações';
 		$strings['True'] = 'Verdadeiro';
 		$strings['TryAgain'] = 'Tente novamente';
-		$strings['TurnOffSubscription'] = 'Desligar assinaturas de calendário';
-		$strings['TurnOnSubscription'] = 'Permitir assinaturas para este calendário';
+		$strings['TurnOffSubscription'] = 'Esconder do público';
+		$strings['TurnOnSubscription'] = 'Mostrar ao público (RSS, iCalendar, Tablet, Monitor)';
 		$strings['Type'] = 'Tipo';
 		$strings['Unavailable'] = 'Indisponível';
 		$strings['UnavailableAllDay'] = 'Indisponível todo o dia';
@@ -970,7 +970,27 @@ class pt_pt extends en_gb
 		$strings['weeks'] = 'semanas';
 		$strings['year'] = 'ano';
 		$strings['years'] = 'anos';
-
+		//2.8.4.
+		$strings['Custom'] = 'Personalizado';
+        $strings['AddDate'] = 'Adicionar data';
+        $strings['RepeatOn'] = 'Repetir em';
+        $strings['ScheduleConcurrentMaximum'] = 'Um total de <b>%s</b> recursos podem ser reservados em simultâneo';
+        $strings['ScheduleConcurrentMaximumNone'] = 'Não existe limite para o número de recursos reservados em simultâneo';
+        $strings['ScheduleMaximumConcurrent'] = 'Número máximo de recursos que podem ser reservados em simultâneo';
+        $strings['ScheduleMaximumConcurrentNote'] = 'Quando definido, o número total de recursos que podem ser reservados em simultâneo nesta agenda será limitado.';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Cada reserva está limitada a um máximo de <b>%s</b> recursos';
+        $strings['ScheduleResourcesPerReservationNone'] = 'Não existe limite para o número de recursos por reserva';
+        $strings['ScheduleResourcesPerReservation'] = 'Número máximo de recursos por reserva';
+        $strings['ResourceConcurrentReservations'] = 'Permitir %s reservas em simultâneo';
+        $strings['ResourceConcurrentReservationsNone'] = 'Não permitir reservas em simultâneo';
+        $strings['AllowConcurrentReservations'] = 'Permitir reservas em simultâneo';
+        $strings['ResourceDisplayInstructions'] = 'Não foi seleccionado nenhum recurso. Pode encontrar o endereço para exibir um recurso na Gestão da Aplicação, Recursos. O recurso deverá estar públicamente acessivel.';
+        $strings['Owner'] = 'Proprietário';
+		$strings['MaximumConcurrentReservations'] = 'Número máximo de reservas em simultâneo';
+		$strings['InstancesOverlapRule'] = 'Algumas instâncias da serie de reservas sobrepõem-se:';
+		$strings['InvalidNumberOfResourcesError'] = 'O número máximo de recursos que pode ser reservado numa única reserva é de %s';
+		$strings['ScheduleTotalReservationsError'] = 'Esta agenda apenas permite que %s recursos sejam reservados em simultâneo. Esta reserva iria violar este limite nas seguintes datas:';
+		//--
         $this->Strings = $strings;
 
         return $this->Strings;
