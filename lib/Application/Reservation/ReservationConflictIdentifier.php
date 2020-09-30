@@ -179,9 +179,10 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
 
 		$conflicts = 0;
 
+        $conflictsReference = array();
 		foreach ($instanceConflicts as $c1)
 		{
-            $conflictsReference = array();
+            $conflictsReference[$c1->Conflict->GetReferenceNumber()] = [$c1->Conflict->GetReferenceNumber()];
 			foreach ($instanceConflicts as $c2)
 			{
 				if ($c1->Conflict->GetReferenceNumber() == $c2->Conflict->GetReferenceNumber()) {
@@ -189,15 +190,21 @@ class ReservationConflictIdentifier implements IReservationConflictIdentifier
                 }
 				if ($c1->Conflict->BufferedTimes()->Overlaps($c2->Conflict->BufferedTimes()))
 				{
-                    $conflictsReference[$c1->Conflict->GetReferenceNumber()] = 1;
-                    $conflictsReference[$c2->Conflict->GetReferenceNumber()] = 1;
+                    $conflictsReference[$c1->Conflict->GetReferenceNumber()][] = $c2->Conflict->GetReferenceNumber();
 				}
 			}
-
-			if (count($conflictsReference) > $conflicts) {
-			    $conflicts = count($conflictsReference);
-            }
 		}
+
+        foreach ($conflictsReference as $ref => $conflictList) {
+            $maxConflicts = 0;
+            foreach ($conflictList as $otherRef) {
+                $maxConflicts = count(array_intersect($conflictsReference[$ref], $conflictsReference[$otherRef]));
+            }
+
+            if ($maxConflicts > $conflicts) {
+                $conflicts = $maxConflicts;
+            }
+        }
 
 		return $conflicts;
 	}
