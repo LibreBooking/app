@@ -106,6 +106,11 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 */
 	public function GetLanguage();
 
+    /**
+     * @return bool
+     */
+	public function GetIsApiOnly();
+
 	/**
 	 * @param $attributeList CustomAttribute[]
 	 */
@@ -488,4 +493,9 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->Set('Attributes', $attributes);
 		$this->Display('Admin/Users/user-update.tpl');
 	}
+
+    public function GetIsApiOnly()
+    {
+        return $this->GetCheckbox(FormKeys::API_ONLY);
+    }
 }

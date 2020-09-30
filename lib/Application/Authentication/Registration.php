@@ -78,8 +78,19 @@ class Registration implements IRegistration
         }
     }
 
-    public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-                             $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false)
+    public function Register($username,
+                             $email,
+                             $firstName,
+                             $lastName,
+                             $password,
+                             $timezone,
+                             $language,
+                             $homepageId,
+                             $additionalFields = array(),
+                             $attributeValues = array(),
+                             $groups = null,
+                             $acceptTerms = false,
+                             $apiOnly = null)
     {
         $homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
         $encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
@@ -97,6 +108,7 @@ class Registration implements IRegistration
         $user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
         $user->ChangeCustomAttributes($attributeValues);
         $user->AcceptTerms($acceptTerms);
+        $user->IsApiOnly($apiOnly);
 
         if ($groups != null) {
             $user->WithGroups($groups);
@@ -183,8 +195,7 @@ class Registration implements IRegistration
     {
         $userGroups = $user->GetGroups();
 
-        if (empty($userGroups))
-        {
+        if (empty($userGroups)) {
             return null;
         }
 

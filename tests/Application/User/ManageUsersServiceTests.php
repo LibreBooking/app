@@ -22,234 +22,241 @@ require_once(ROOT_DIR . 'lib/Application/User/ManageUsersService.php');
 
 class ManageUsersServiceTests extends TestBase
 {
-	/**
-	 * @var ManageUsersService
-	 */
-	private $service;
+    /**
+     * @var ManageUsersService
+     */
+    private $service;
 
-	/**
-	 * @var IRegistration
-	 */
-	private $registration;
+    /**
+     * @var IRegistration
+     */
+    private $registration;
 
-	/**
-	 * @var FakeUserRepository
-	 */
-	private $userRepo;
+    /**
+     * @var FakeUserRepository
+     */
+    private $userRepo;
 
-	/**
-	 * @var IGroupRepository
-	 */
-	private $groupRepo;
+    /**
+     * @var IGroupRepository
+     */
+    private $groupRepo;
 
-	/**
-	 * @var IUserViewRepository
-	 */
-	private $userViewRepo;
+    /**
+     * @var IUserViewRepository
+     */
+    private $userViewRepo;
 
-	/**
-	 * @var FakePasswordEncryption
-	 */
-	private $passwordEncryption;
+    /**
+     * @var FakePasswordEncryption
+     */
+    private $passwordEncryption;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->registration = $this->createMock('IRegistration');
-		$this->userRepo = new FakeUserRepository();
-		$this->groupRepo = $this->createMock('IGroupRepository');
-		$this->userViewRepo = $this->createMock('IUserRepository');
-		$this->passwordEncryption = new FakePasswordEncryption();
+        $this->registration = $this->createMock('IRegistration');
+        $this->userRepo = new FakeUserRepository();
+        $this->groupRepo = $this->createMock('IGroupRepository');
+        $this->userViewRepo = $this->createMock('IUserRepository');
+        $this->passwordEncryption = new FakePasswordEncryption();
 
-		$this->service = new ManageUsersService(
-				$this->registration,
-				$this->userRepo,
-				$this->groupRepo,
-				$this->userViewRepo,
-				$this->passwordEncryption);
-	}
+        $this->service = new ManageUsersService(
+            $this->registration,
+            $this->userRepo,
+            $this->groupRepo,
+            $this->userViewRepo,
+            $this->passwordEncryption);
+    }
 
-	public function testAddsUser()
-	{
-		$fname = 'f';
-		$lname = 'l';
-		$username = 'un';
-		$email = 'e@mail.com';
-		$timezone = 'America/Chicago';
-		$lang = 'foo';
-		$password = 'pw';
+    public function testAddsUser()
+    {
+        $fname = 'f';
+        $lname = 'l';
+        $username = 'un';
+        $email = 'e@mail.com';
+        $timezone = 'America/Chicago';
+        $lang = 'foo';
+        $password = 'pw';
 
-		$attributeId = 1;
-		$attributeValue = 'value';
-		$phone = 'phone';
-		$position = 'position';
-		$org = 'organization';
-		$homePageId = 1;
+        $attributeId = 1;
+        $attributeValue = 'value';
+        $phone = 'phone';
+        $position = 'position';
+        $org = 'organization';
+        $homePageId = 1;
+        $apiOnly = true;
 
-		$userId = 99889;
-		$user = new FakeUser($userId);
+        $userId = 99889;
+        $user = new FakeUser($userId);
 
-		$extraAttributes = array(UserAttribute::Phone => $phone, UserAttribute::Organization => $org, UserAttribute::Position => $position);
-		$customAttributes = array(new AttributeValue($attributeId, $attributeValue));
-		$this->registration->expects($this->once())
-						   ->method('Register')
-						   ->with($this->equalTo($username),
-								  $this->equalTo($email),
-								  $this->equalTo($fname),
-								  $this->equalTo($lname),
-								  $this->equalTo($password),
-								  $this->equalTo($timezone),
-								  $this->equalTo($lang),
-								  $this->equalTo($homePageId),
-								  $this->equalTo($extraAttributes),
-								  $this->equalTo($customAttributes))
-						   ->will($this->returnValue($user));
+        $extraAttributes = array(UserAttribute::Phone => $phone, UserAttribute::Organization => $org, UserAttribute::Position => $position);
+        $customAttributes = array(new AttributeValue($attributeId, $attributeValue));
+        $this->registration->expects($this->once())
+            ->method('Register')
+            ->with($this->equalTo($username),
+                $this->equalTo($email),
+                $this->equalTo($fname),
+                $this->equalTo($lname),
+                $this->equalTo($password),
+                $this->equalTo($timezone),
+                $this->equalTo($lang),
+                $this->equalTo($homePageId),
+                $this->equalTo($extraAttributes),
+                $this->equalTo($customAttributes),
+                $this->isNull(),
+                $this->isNull(),
+                $this->equalTo($apiOnly))
+            ->will($this->returnValue($user));
 
-		$actualUser = $this->service->AddUser($username,
-											  $email,
-											  $fname,
-											  $lname,
-											  $password,
-											  $timezone,
-											  $lang,
-											  $homePageId,
-											  $extraAttributes,
-											  $customAttributes);
+        $actualUser = $this->service->AddUser($username,
+            $email,
+            $fname,
+            $lname,
+            $password,
+            $timezone,
+            $lang,
+            $homePageId,
+            $extraAttributes,
+            $customAttributes,
+            $apiOnly);
 
-		$this->assertEquals($userId, $actualUser->Id());
-	}
+        $this->assertEquals($userId, $actualUser->Id());
+    }
 
-	public function testUpdatesAttributes()
-	{
-		$attributeId = 1;
-		$attributeValue = 'value';
-		$userId = 111;
-		$attribute = array(new AttributeValue($attributeId, $attributeValue));
+    public function testUpdatesAttributes()
+    {
+        $attributeId = 1;
+        $attributeValue = 'value';
+        $userId = 111;
+        $attribute = array(new AttributeValue($attributeId, $attributeValue));
 
-		$user = new FakeUser($userId);
+        $user = new FakeUser($userId);
 
-		$this->userRepo->_User = $user;
-		$this->service->ChangeAttributes($userId, $attribute);
+        $this->userRepo->_User = $user;
+        $this->service->ChangeAttributes($userId, $attribute);
 
-		$this->assertEquals(1, count($user->GetAddedAttributes()));
-		$this->assertEquals($attributeValue, $user->GetAttributeValue($attributeId));
-		$this->assertEquals($user, $this->userRepo->_UpdatedUser);
-	}
+        $this->assertEquals(1, count($user->GetAddedAttributes()));
+        $this->assertEquals($attributeValue, $user->GetAttributeValue($attributeId));
+        $this->assertEquals($user, $this->userRepo->_UpdatedUser);
+    }
 
-	public function testDeleteDelegatesToRepositoryAndSendsEmails()
-	{
-		$this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_NOTIFY, 'true');
+    public function testDeleteDelegatesToRepositoryAndSendsEmails()
+    {
+        $this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_NOTIFY, 'true');
 
-		$userId = 809;
-		$user = new FakeUser($userId);
+        $userId = 809;
+        $user = new FakeUser($userId);
 
-		$appAdmins = array(new UserDto(1, 'f, l', null, 'en_us'));
-		$groupAdmins = array(new UserDto(2, 'f, l', null, 'en_gb'));
+        $appAdmins = array(new UserDto(1, 'f, l', null, 'en_us'));
+        $groupAdmins = array(new UserDto(2, 'f, l', null, 'en_gb'));
 
-		$this->userRepo->_User = $user;
+        $this->userRepo->_User = $user;
 
-		$this->userViewRepo->expects($this->once())
-						   ->method('GetApplicationAdmins')
-						   ->will($this->returnValue($appAdmins));
+        $this->userViewRepo->expects($this->once())
+            ->method('GetApplicationAdmins')
+            ->will($this->returnValue($appAdmins));
 
-		$this->userViewRepo->expects($this->once())
-						   ->method('GetGroupAdmins')
-						   ->with($this->equalTo($userId))
-						   ->will($this->returnValue($groupAdmins));
+        $this->userViewRepo->expects($this->once())
+            ->method('GetGroupAdmins')
+            ->with($this->equalTo($userId))
+            ->will($this->returnValue($groupAdmins));
 
-		$this->service->DeleteUser($userId);
+        $this->service->DeleteUser($userId);
 
-		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
-		$this->assertEquals($userId, $this->userRepo->_DeletedUserId);
-	}
+        $this->assertEquals(2, count($this->fakeEmailService->_Messages));
+        $this->assertEquals($userId, $this->userRepo->_DeletedUserId);
+    }
 
-	public function testUpdatesUser()
-	{
-		$user = new User();
-		$userId = 1029380;
-		$fname = 'f';
-		$lname = 'l';
-		$username = 'un';
-		$email = 'e@mail.com';
-		$timezone = 'America/Chicago';
-		$phone = '123-123-1234';
-		$organization = 'ou';
-		$position = 'position';
+    public function testUpdatesUser()
+    {
+        $user = new User();
+        $userId = 1029380;
+        $fname = 'f';
+        $lname = 'l';
+        $username = 'un';
+        $email = 'e@mail.com';
+        $timezone = 'America/Chicago';
+        $phone = '123-123-1234';
+        $organization = 'ou';
+        $position = 'position';
+        $apiOnly = true;
 
-		$extraAttributes = array(
-				UserAttribute::Organization => $organization,
-				UserAttribute::Phone => $phone,
-				UserAttribute::Position => $position);
+        $extraAttributes = array(
+            UserAttribute::Organization => $organization,
+            UserAttribute::Phone => $phone,
+            UserAttribute::Position => $position);
 
-		$customAttributes = array(new AttributeValue(1, "value"));
+        $customAttributes = array(new AttributeValue(1, "value"));
 
-		$this->userRepo->_User = $user;
+        $this->userRepo->_User = $user;
 
-		$updatedUser = $this->service->UpdateUser($userId, $username, $email, $fname, $lname, $timezone, $extraAttributes, $customAttributes);
+        $updatedUser = $this->service->UpdateUser($userId, $username, $email, $fname, $lname, $timezone, $extraAttributes, $customAttributes, $apiOnly);
 
-		$this->assertEquals($user, $updatedUser);
-		$this->assertEquals($fname, $user->FirstName());
-		$this->assertEquals($lname, $user->LastName());
-		$this->assertEquals($timezone, $user->Timezone());
+        $this->assertEquals($user, $updatedUser);
+        $this->assertEquals($fname, $user->FirstName());
+        $this->assertEquals($lname, $user->LastName());
+        $this->assertEquals($timezone, $user->Timezone());
 
-		$this->assertEquals($username, $user->Username());
-		$this->assertEquals($email, $user->EmailAddress());
-		$this->assertEquals($phone, $user->GetAttribute(UserAttribute::Phone));
-		$this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
-		$this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
-		$this->assertEquals("value", $user->GetAttributeValue(1));
-		$this->assertEquals($user, $this->userRepo->_UpdatedUser);
-	}
+        $this->assertEquals($username, $user->Username());
+        $this->assertEquals($email, $user->EmailAddress());
+        $this->assertEquals($phone, $user->GetAttribute(UserAttribute::Phone));
+        $this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
+        $this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
+        $this->assertEquals("value", $user->GetAttributeValue(1));
+        $this->assertEquals($user, $this->userRepo->_UpdatedUser);
+        self::assertEquals($apiOnly, $user->GetIsApiOnly());
+    }
 
-	public function testAddsAndRemovesUserFromGroups()
-	{
-		$userId = 23;
-		$user = new FakeUser($userId);
-		$user->WithGroups(array(new UserGroup(1, '1'), new UserGroup(4, '4')));
-		$groupids = array(1, 2, 3);
+    public function testAddsAndRemovesUserFromGroups()
+    {
+        $userId = 23;
+        $user = new FakeUser($userId);
+        $user->WithGroups(array(new UserGroup(1, '1'), new UserGroup(4, '4')));
+        $groupids = array(1, 2, 3);
 
-		$group1 = new FakeGroup(1);
-		$group1->WithUser($userId);
-		$group2 = new FakeGroup(2);
-		$group3 = new FakeGroup(3);
-		$group4 = new FakeGroup(4);
-		$group4->WithUser($userId);
+        $group1 = new FakeGroup(1);
+        $group1->WithUser($userId);
+        $group2 = new FakeGroup(2);
+        $group3 = new FakeGroup(3);
+        $group4 = new FakeGroup(4);
+        $group4->WithUser($userId);
 
-		$this->groupRepo->expects($this->at(0))
-						->method('LoadById')
-						->with($this->equalTo(2))
-						->will($this->returnValue($group2));
+        $this->groupRepo->expects($this->at(0))
+            ->method('LoadById')
+            ->with($this->equalTo(2))
+            ->will($this->returnValue($group2));
 
-		$this->groupRepo->expects($this->at(2))
-						->method('LoadById')
-						->with($this->equalTo(3))
-						->will($this->returnValue($group3));
+        $this->groupRepo->expects($this->at(2))
+            ->method('LoadById')
+            ->with($this->equalTo(3))
+            ->will($this->returnValue($group3));
 
-		$this->groupRepo->expects($this->at(4))
-						->method('LoadById')
-						->with($this->equalTo(4))
-						->will($this->returnValue($group4));
+        $this->groupRepo->expects($this->at(4))
+            ->method('LoadById')
+            ->with($this->equalTo(4))
+            ->will($this->returnValue($group4));
 
-		$this->service->ChangeGroups($user, $groupids);
+        $this->service->ChangeGroups($user, $groupids);
 
-		$this->assertTrue(in_array($userId, $group2->AddedUsers()));
-		$this->assertTrue(in_array($userId, $group3->AddedUsers()));
-		$this->assertTrue(in_array($userId, $group4->RemovedUsers()));
-	}
+        $this->assertTrue(in_array($userId, $group2->AddedUsers()));
+        $this->assertTrue(in_array($userId, $group3->AddedUsers()));
+        $this->assertTrue(in_array($userId, $group4->RemovedUsers()));
+    }
 
-	public function testEncryptsAndSavesPassword()
-	{
-		$userId = 1;
-		$password = 'password';
-		$user = new FakeUser($userId);
+    public function testEncryptsAndSavesPassword()
+    {
+        $userId = 1;
+        $password = 'password';
+        $user = new FakeUser($userId);
 
-		$this->userRepo->_User = $user;
+        $this->userRepo->_User = $user;
 
-		$this->service->UpdatePassword($userId, $password);
+        $this->service->UpdatePassword($userId, $password);
 
-		$this->assertEquals($this->passwordEncryption->_Encrypted, $user->_Password);
-		$this->assertEquals($this->passwordEncryption->_Salt, $user->_Salt);
-		$this->assertEquals($user, $this->userRepo->_UpdatedUser);
-	}
+        $this->assertEquals($this->passwordEncryption->_Encrypted, $user->_Password);
+        $this->assertEquals($this->passwordEncryption->_Salt, $user->_Salt);
+        $this->assertEquals($user, $this->userRepo->_UpdatedUser);
+    }
 }

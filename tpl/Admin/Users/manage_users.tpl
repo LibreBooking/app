@@ -130,8 +130,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                               data-type="number" data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
                               data-name="{FormKeys::CREDITS}">{$user->CurrentCreditCount}</span>
                         <a href="credit_log.php?{QueryStringKeys::USER_ID}={$id}" title="{translate key=CreditHistory}">
-                            <span class="no-color">{translate key=CreditHistory}</span>
-                            <span class="fa fa-list"></span>
+                            <span class="fa fa-clock-o"></span>
                         </a>
                     </td>
                 {/if}
@@ -324,6 +323,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     {object_html_options options=$Groups label=Name key=Id}
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="checkbox inline-block">
+                                <input type="checkbox" {formname key="API_ONLY"} id="apionly" value="1" />
+                                <label for="apionly">{translate key="ApiOnly"}</label>
+                            </div>
+                            <i class="fa fa-info-circle inline-block" title="{translate key=ApiOnlyDetails|escape}"></i>
                         </div>
                         {if $AttributeList|count > 0}
                             <div class="col-xs-12 col-sm-6">

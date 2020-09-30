@@ -62,6 +62,7 @@ class ParameterNames
 	const ATTRIBUTE_IS_PRIVATE = '@is_private';
 	const AUTO_RELEASE_MINUTES = '@auto_release_minutes';
 	const ADDITIONAL_PROPERTIES = '@additional_properties';
+	const API_ONLY = '@api_only';
 
 	const BLACKOUT_SERIES_ID = '@blackout_series_id';
 	const BLACKOUT_INSTANCE_ID = '@blackout_instance_id';

@@ -950,9 +950,9 @@ class Queries
 
     const REGISTER_USER =
         'INSERT INTO
-			`users` (`email`, `password`, `fname`, `lname`, `phone`, `organization`, `position`, `username`, `salt`, `timezone`, `language`, `homepageid`, `status_id`, `date_created`, `public_id`, `default_schedule_id`, `terms_date_accepted`)
+			`users` (`email`, `password`, `fname`, `lname`, `phone`, `organization`, `position`, `username`, `salt`, `timezone`, `language`, `homepageid`, `status_id`, `date_created`, `public_id`, `default_schedule_id`, `terms_date_accepted`, `api_only`)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted, @api_only)';
 
     const REMOVE_ATTRIBUTE_ENTITY =
         'DELETE FROM `custom_attribute_entities` WHERE `custom_attribute_id` = @custom_attribute_id AND `entity_id` = @entity_id';
@@ -1179,7 +1179,8 @@ class Queries
 			`language` = @language,
 			`lastlogin` = @lastlogin,
 			`default_schedule_id` = @scheduleid,
-			`credit_count` = @credit_count
+			`credit_count` = @credit_count,
+			`api_only` = @api_only
 		WHERE
 			`user_id` = @userid';
 

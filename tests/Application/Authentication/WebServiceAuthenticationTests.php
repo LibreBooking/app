@@ -39,21 +39,39 @@ class WebServiceAuthenticationTests extends TestBase
 	 * @var IUserSessionRepository
 	 */
 	private $userSessionRepository;
+    /**
+     * @var FakeApiAuth
+     */
+    private $fakeApiAuth;
 
-	public function setUp(): void
+    public function setUp(): void
 	{
 		parent::setup();
 
 		WebServiceSessionToken::$_Token = 'hard coded token';
 
 		$this->fakeAuth = new FakeAuth();
+		$this->fakeApiAuth = new FakeAuth();
 		$this->userSessionRepository = $this->createMock('IUserSessionRepository');
 
-		$this->webAuth = new WebServiceAuthentication($this->fakeAuth, $this->userSessionRepository);
+		$this->webAuth = new WebServiceAuthentication($this->fakeAuth, $this->userSessionRepository, $this->fakeApiAuth);
+	}
+
+	public function testChecksLocalAuthForAPIUserFirst()
+	{
+        $this->fakeApiAuth->_ValidateResult = true;
+
+        $isValid = $this->webAuth->Validate($this->username, $this->password);
+
+        $this->assertEquals($this->username, $this->fakeApiAuth->_LastLogin);
+        $this->assertEquals($this->password, $this->fakeApiAuth->_LastPassword);
+        $this->assertTrue($isValid);
+        $this->assertEmpty($this->fakeAuth->_LastLogin);
 	}
 
 	public function testValidatePassesThrough()
 	{
+		$this->fakeApiAuth->_ValidateResult = false;
 		$this->fakeAuth->_ValidateResult = true;
 
 		$isValid = $this->webAuth->Validate($this->username, $this->password);

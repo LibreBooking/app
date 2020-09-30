@@ -39,3 +39,4 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationPermissionSt
 require_once(ROOT_DIR . 'lib/Application/Authentication/GuestUserService.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/GuestRegistrationNotificationStrategy.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/SetAdminFirstRegistrationStrategy.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/WebServiceApiUserAuthentication.php');

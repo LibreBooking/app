@@ -44,16 +44,27 @@ interface IWebServiceAuthentication
 
 class WebServiceAuthentication implements IWebServiceAuthentication
 {
+    /**
+     * @var IAuthentication
+     */
     private $authentication;
+    /**
+     * @var IAuthentication
+     */
+    private $apiAuthentication;
+    /**
+     * @var IUserSessionRepository
+     */
     private $userSessionRepository;
 
     /**
      * @param IAuthentication $authentication
      * @param IUserSessionRepository $userSessionRepository
      */
-    public function __construct(IAuthentication $authentication, IUserSessionRepository $userSessionRepository)
+    public function __construct(IAuthentication $authentication, IUserSessionRepository $userSessionRepository, IAuthentication $apiAuthentication)
     {
         $this->authentication = $authentication;
+        $this->apiAuthentication = $apiAuthentication;
         $this->userSessionRepository = $userSessionRepository;
     }
 
@@ -64,9 +75,8 @@ class WebServiceAuthentication implements IWebServiceAuthentication
      */
     public function Validate($username, $password)
     {
-        if ($this->IsApiUser($username)) {
-            $auth = new Authentication();
-            return;
+        if ($this->apiAuthentication->Validate($username, $password)) {
+            return true;
         }
         return $this->authentication->Validate($username, $password);
     }
@@ -78,7 +88,12 @@ class WebServiceAuthentication implements IWebServiceAuthentication
     public function Login($username)
     {
         Log::Debug('Web Service Login with username: %s', $username);
-        $userSession = $this->authentication->Login($username, new WebServiceLoginContext());
+        $userSession = $this->apiAuthentication->Login($username, new WebServiceLoginContext());
+
+        if ($userSession == null) {
+            $userSession = $this->authentication->Login($username, new WebServiceLoginContext());
+        }
+
         if ($userSession->IsLoggedIn()) {
             $webSession = WebServiceUserSession::FromSession($userSession);
             $existingSession = $this->userSessionRepository->LoadBySessionToken($webSession->SessionToken);

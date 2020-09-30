@@ -100,8 +100,15 @@ function RegisterHelp(SlimWebServiceRegistry $registry, \Slim\Slim $app)
 
 function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-    $webService = new AuthenticationWebService($server, new WebServiceAuthentication(PluginManager::Instance()->LoadAuthentication(), new UserSessionRepository()));
-
+    $webService = new AuthenticationWebService($server,
+        new WebServiceAuthentication(
+            PluginManager::Instance()->LoadAuthentication(),
+            new UserSessionRepository(),
+            new WebServiceApiUserAuthentication(PluginManager::Instance()->LoadAuthorization(),
+                new UserRepository(),
+                new GroupRepository())
+        )
+    );
     $category = new SlimWebServiceRegistryCategory('Authentication');
     $category->AddPost('SignOut/', array($webService, 'SignOut'), WebServices::Logout);
     $category->AddPost('Authenticate/', array($webService, 'Authenticate'), WebServices::Login);

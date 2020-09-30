@@ -98,6 +98,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
+    <div class="col-sm-12 col-md-6">
+        <div class="checkbox inline-block">
+            <input type="checkbox" {formname key="API_ONLY"} id="apionly" value="1" {if $User->GetIsApiOnly()}checked="checked"{/if}/>
+            <label for="apionly">{translate key="ApiOnly"}</label>
+        </div>
+        <i class="fa fa-info-circle inline-block" title="{translate key=ApiOnlyDetails|escape}"></i>
+    </div>
+
 	{foreach from=$Attributes item=attribute}
 		<div class="col-sm-12 col-md-6">
 			{control type="AttributeControl" attribute=$attribute value={$User->GetAttributeValue($attribute->Id())} }

@@ -807,6 +807,8 @@ class en_us extends Language
 		$strings['PositionRequired'] = 'Position is required';
 		$strings['GroupMembership'] = 'Group Membership';
 		$strings['AvailableGroups'] = 'Available Groups';
+		$strings['ApiOnly'] = 'API Access Only';
+		$strings['ApiOnlyDetails'] = 'This user will only be able to log in through the API';
         // End Strings
 
 		// Install

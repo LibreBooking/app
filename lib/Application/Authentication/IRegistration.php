@@ -28,10 +28,11 @@ interface IRegistration
 	 * @param array $additionalFields key value pair of additional fields to use during registration
 	 * @param array|AttributeValue[] $attributeValues
      * @param null|UserGroup[] $groups
-	 * @param bool $acceptTerms
+	 * @param bool|null $acceptTerms
+	 * @param bool|null $apiOnly
 	 * @return User
 	 */
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false);
+	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false, $apiOnly = null);
 
 	/**
 	 * @param string $loginName

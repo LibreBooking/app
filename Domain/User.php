@@ -403,8 +403,7 @@ class User
         $removed = $diff->GetRemovedFromArray1();
         $added = $diff->GetAddedToArray1();
 
-        if ($diff->AreDifferent())
-        {
+        if ($diff->AreDifferent()) {
             $this->permissionsChanged = true;
             $this->removedViewPermissions = $removed;
             $this->addedViewPermissions = $added;
@@ -422,8 +421,8 @@ class User
     }
 
     /**
-     * @internal
      * @return int[]
+     * @internal
      */
     public function GetAddedPermissions()
     {
@@ -431,8 +430,8 @@ class User
     }
 
     /**
-     * @internal
      * @return int[]
+     * @internal
      */
     public function GetAddedViewPermissions()
     {
@@ -440,8 +439,8 @@ class User
     }
 
     /**
-     * @internal
      * @return int[]
+     * @internal
      */
     public function GetRemovedPermissions()
     {
@@ -457,8 +456,8 @@ class User
     }
 
     /**
-     * @internal
      * @param IEmailPreferences $emailPreferences
+     * @internal
      */
     public function WithEmailPreferences(IEmailPreferences $emailPreferences)
     {
@@ -853,15 +852,14 @@ class User
             $this->_addedAttributeValues[] = $attribute;
         }
 
-		if ($removeAttrOnDiff)
-		{
-			/** @var $attribute AttributeValue */
-			foreach ($removed as $attribute) {
-				if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
-					$this->_removedAttributeValues[] = $attribute;
-				}
-			}
-		}
+        if ($removeAttrOnDiff) {
+            /** @var $attribute AttributeValue */
+            foreach ($removed as $attribute) {
+                if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
+                    $this->_removedAttributeValues[] = $attribute;
+                }
+            }
+        }
 
         foreach ($attributes as $attribute) {
             $this->AddAttributeValue($attribute);
@@ -1041,6 +1039,24 @@ class User
         if ($accepted) {
             $this->termsAcceptanceDate = Date::Now();
         }
+    }
+
+    protected $isApiOnly = false;
+
+    /**
+     * @param bool $isApiOnly
+     */
+    public function IsApiOnly($isApiOnly)
+    {
+        $this->isApiOnly = $isApiOnly;
+    }
+
+    /**
+     * return bool
+     */
+    public function GetIsApiOnly()
+    {
+        return $this->isApiOnly;
     }
 }
 

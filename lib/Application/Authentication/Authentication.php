@@ -180,6 +180,7 @@ class Authentication implements IAuthentication
 		$userSession->LoginTime = $loginTime;
 		$userSession->PublicId = $user->GetPublicId();
 		$userSession->ScheduleId = $user->GetDefaultScheduleId();
+        $userSession->ApiOnly = $user->GetIsApiOnly();
 
 		$userSession->IsAdmin = $this->roleService->IsApplicationAdministrator($user);
 		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);

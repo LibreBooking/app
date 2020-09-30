@@ -42,6 +42,10 @@ class FakeRegistration implements IRegistration
     public $_TermsAccepted;
     public $_Groups = array();
     public $_Language;
+    /**
+     * @var mixed|null
+     */
+    public $_ApiOnly;
 
     public function __construct()
 	{
@@ -52,7 +56,7 @@ class FakeRegistration implements IRegistration
 	 */
 	public $_AttributeValues = array();
 
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributes = array(), $groups = array(), $acceptTerms = false)
+	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributes = array(), $groups = array(), $acceptTerms = false, $apiOnly = null)
 	{
 		$this->_RegisterCalled = true;
 		$this->_Login = $login;
@@ -67,6 +71,7 @@ class FakeRegistration implements IRegistration
 		$this->_Groups = $groups;
 		$this->_TermsAccepted = $acceptTerms;
 		$this->_Language = $language;
+		$this->_ApiOnly = $apiOnly;
 
 		return $this->_RegisteredUser;
 	}

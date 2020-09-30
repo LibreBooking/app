@@ -2142,7 +2142,7 @@ class MigratePasswordCommand extends SqlCommand
 class RegisterUserCommand extends SqlCommand
 {
     public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
-                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId, $termsAcceptedDate)
+                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId, $termsAcceptedDate, $apiOnly)
     {
         parent::__construct(Queries::REGISTER_USER);
 
@@ -2165,6 +2165,7 @@ class RegisterUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptedDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::API_ONLY, (int)$apiOnly));
     }
 }
 
@@ -2742,7 +2743,8 @@ class UpdateUserCommand extends SqlCommand
         $publicId,
         $language,
         $scheduleId,
-        $currentCreditCount)
+        $currentCreditCount,
+        $apiOnly)
     {
         parent::__construct(Queries::UPDATE_USER);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -2762,7 +2764,7 @@ class UpdateUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCreditCount));
-
+        $this->AddParameter(new Parameter(ParameterNames::API_ONLY, (int)$apiOnly));
     }
 }
 
