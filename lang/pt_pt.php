@@ -990,6 +990,8 @@ class pt_pt extends en_gb
 		$strings['InstancesOverlapRule'] = 'Algumas instâncias da serie de reservas sobrepõem-se:';
 		$strings['InvalidNumberOfResourcesError'] = 'O número máximo de recursos que pode ser reservado numa única reserva é de %s';
 		$strings['ScheduleTotalReservationsError'] = 'Esta agenda apenas permite que %s recursos sejam reservados em simultâneo. Esta reserva iria violar este limite nas seguintes datas:';
+		$strings['GroupMembership'] = 'Membros do grupo';
+		$strings['AvailableGroups'] = 'Grupos disponiveis';
 		//--
         $this->Strings = $strings;
 
