@@ -1037,9 +1037,11 @@ class ExistingReservationTests extends TestBase
 
     public function testWhenRemovingInstanceOfUpdatedRepeatingSeries()
     {
-        Date::_SetNow(Date::Parse('2017-08-01'));
+        $tz = 'UTC';
+        $this->fakeUser->Timezone = $tz;
+        Date::_SetNow(Date::Parse('2017-08-01', $tz));
         $reservations = array();
-        $now = Date::Parse('2017-08-10');
+        $now = Date::Parse('2017-08-10', $tz);
         for ($i = 0; $i < 5; $i++) {
             $date = new DateRange($now->AddDays($i)->SetTime(Time::Parse('13:00')), $now->AddDays($i)->SetTime(Time::Parse('14:00')));
             $reservations[] = new TestReservation($i, $date, $i);
@@ -1053,7 +1055,7 @@ class ExistingReservationTests extends TestBase
 
         $series->UpdateBookedBy($this->fakeUser);
         $series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-        $series->Repeats(new RepeatDaily(1, Date::Parse('2017-08-16')));
+        $series->Repeats(new RepeatDaily(1, Date::Parse('2017-08-16', $tz)));
 
         $series->RemoveInstance($reservations[2]);
 
