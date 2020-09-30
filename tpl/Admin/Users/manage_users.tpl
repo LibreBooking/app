@@ -608,11 +608,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {/foreach}
                     </div>
 
-                    <h5>Group Membership <span class="badge" id="groupCount">0</span></h5>
+                    <h5>{translate key=GroupMembership} <span class="badge" id="groupCount">0</span></h5>
                     <div id="addedGroups">
                     </div>
 
-                    <h5>Available Groups</h5>
+                    <h5>{translate key=AvailableGroups}</h5>
                     <div id="removedGroups">
                     </div>
 
