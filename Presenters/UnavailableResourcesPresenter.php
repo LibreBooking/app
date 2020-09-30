@@ -63,14 +63,23 @@ class UnavailableResourcesPresenter
         $duration = DateRange::Create($this->page->GetStartDate() . ' ' . $this->page->GetStartTime(),
             $this->page->GetEndDate() . ' ' . $this->page->GetEndTime(), $this->userSession->Timezone);
 
-        $resources = $this->resourceRepository->GetResourceList();
+        $resources = $this->resourceRepository->GetScheduleResources($this->page->GetScheduleId());
 
         $unavailable = array();
-        $series = $this->reservationRepository->LoadByReferenceNumber($this->page->GetReferenceNumber());
-        $series->UpdateDuration($duration);
+        $referenceNumber = $this->page->GetReferenceNumber();
+        $series = null;
+        $existingSeries = false;
+        if (!empty($referenceNumber)) {
+            $series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
+            $series->UpdateDuration($duration);
+            $existingSeries = true;
+        }
 
         foreach ($resources as $resource) {
 
+            if (!$existingSeries) {
+                $series = ReservationSeries::Create($this->userSession->UserId, $resource, "", "", $duration, new RepeatNone(), $this->userSession);
+            }
             $conflict = $this->reservationConflictIdentifier->GetConflicts($series);
 
             if (!$conflict->AllowReservation()) {

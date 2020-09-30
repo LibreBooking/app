@@ -36,6 +36,11 @@ interface IAvailableResourcesPage
      * @param int[] $unavailableResourceIds
      */
     public function BindUnavailable($unavailableResourceIds);
+
+    /**
+     * @return int
+     */
+    public function GetScheduleId();
 }
 
 class UnavailableResourcesPage extends Page implements IAvailableResourcesPage
@@ -83,5 +88,10 @@ class UnavailableResourcesPage extends Page implements IAvailableResourcesPage
     public function BindUnavailable($unavailableResourceIds)
     {
         $this->SetJson($unavailableResourceIds);
+    }
+
+    public function GetScheduleId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
     }
 }
