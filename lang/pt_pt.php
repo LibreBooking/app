@@ -992,6 +992,16 @@ class pt_pt extends en_gb
 		$strings['ScheduleTotalReservationsError'] = 'Esta agenda apenas permite que %s recursos sejam reservados em simultâneo. Esta reserva iria violar este limite nas seguintes datas:';
 		$strings['GroupMembership'] = 'Membros do grupo';
 		$strings['AvailableGroups'] = 'Grupos disponiveis';
+		//--30092020
+		$strings['NotifyUsers'] = 'Notificar utilizadores';
+		$strings['Message'] = 'Mensagem';
+		$strings['AllUsersWhoHaveAReservationInTheNext'] = 'Qualquer um com uma reserva na(o) seguinte';
+		$strings['ChangeResourceStatus'] = 'Alterar estado do recurso';
+		$strings['UpdateGroupsOnImport'] = 'Atualizar o grupo existente se o nome corresponder';
+		$strings['GroupsImportInstructions'] = '<ul><li>O ficheiro deverá estar em formato CSV.</li><li>O nome é obrigatório.</li><li>As listas de membros deverão ser listas de emails separados por vírgulas.</li><li>Listas de membros vazias durante a atualização deixarão os membros inalterados.</li><li>As listas de permissões deverão ser listas de nomes de recursos separados por vírgulas.</li><li>Listas de permissões vazias durante a atualização de grupos deixarão as permissões inalteradas.</li><li>Utilize o modelo fornecido como exemplo.</li></ul>';
+		$strings['PhoneRequired'] = 'O telefone é obrigatório';
+		$strings['OrganizationRequired'] = 'A organização é obrigatória';
+		$strings['PositionRequired'] = 'A posição é obrigatória';
 		//--
         $this->Strings = $strings;
 
