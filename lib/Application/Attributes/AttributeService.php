@@ -342,6 +342,7 @@ class AttributeService implements IAttributeService
 
 		if ($this->allowedResources == null)
 		{
+            $this->allowedResources = array();
 			$resources = $this->GetResourceService()->GetAllResources(false, $userSession);
 			foreach ($resources as $resource)
 			{
