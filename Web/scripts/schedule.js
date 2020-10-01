@@ -218,7 +218,7 @@ function Schedule(opts, resourceGroups) {
                 endTd,
                 calculatedAdjustment,
                 height,
-                width: width + 1,
+                width,
                 top: top - cellAdjustment,
                 left: left - cellAdjustment
             };
@@ -299,17 +299,20 @@ function Schedule(opts, resourceGroups) {
                     let conflictIds = [];
 
                     const adjustOverlap = function () {
-                        const precision = 3;
+                        const precision = 2;
                         t.find(`div.event[data-resourceid="${res.ResourceId}"]`).each((i, div) => {
+                            if ($(div).data('resid') === res.ReferenceNumber) {
+                                return;
+                            }
                             const divPosition = $(div).position();
                             const divLeft = Number.parseFloat(divPosition.left.toFixed(precision));
-                            const divRight = divLeft + Number.parseFloat($(div).width().toFixed(precision));
+                            const divRight = Number.parseFloat((divPosition.left + $(div).width()).toFixed(precision));
                             const divTop = Number.parseFloat(divPosition.top.toFixed(precision));
                             const divBottom = Number.parseFloat((divTop + height).toFixed(precision));
                             const myLeft = Number.parseFloat(left.toFixed(precision));
                             const myTop = Number.parseFloat(top.toFixed(precision));
-                            const myRight = Number.parseFloat((myLeft + width).toFixed(precision));
-                            const myBottom = Number.parseFloat((myTop + height).toFixed(precision));
+                            const myRight = Number.parseFloat((left + width).toFixed(precision));
+                            const myBottom = Number.parseFloat((top + height).toFixed(precision));
 
                             let overlap = true;
 
