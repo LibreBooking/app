@@ -500,8 +500,14 @@ function Reservation(opts) {
 
         var dialog = elements.resourceGroupsDialog;
         var allCheckboxes = dialog.find('[resource-id]');
+
         allCheckboxes.prop('disabled', false);
         allCheckboxes.parent().removeClass('unavailableResource');
+
+        if (allCheckboxes.length > 50) {
+            dialog.find('#checking-availability-error').removeClass('no-show');
+            return;
+        }
 
         dialog.find('#checking-availability').removeClass('no-show');
 
