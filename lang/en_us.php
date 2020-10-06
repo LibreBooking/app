@@ -807,6 +807,7 @@ class en_us extends Language
 		$strings['PositionRequired'] = 'Position is required';
 		$strings['GroupMembership'] = 'Group Membership';
 		$strings['AvailableGroups'] = 'Available Groups';
+		$strings['CheckingAvailabilityError'] = 'Cannot get resource availability - too many resources';
         // End Strings
 
 		// Install
