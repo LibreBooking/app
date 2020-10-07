@@ -81,6 +81,7 @@ class ParameterNames
 	const CREDIT_COST = '@credit_cost';
 	const CREDIT_CURRENCY = '@credit_currency';
 	const CREDIT_NOTE = '@credit_note';
+	const CREDIT_APPLICABILITY = '@credit_applicability';
 
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';

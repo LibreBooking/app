@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Domain/Accessory.php');
 
@@ -35,7 +35,7 @@ interface IAccessoryRepository
 
 	/**
 	 * @param Accessory $accessory
-     * @return int
+	 * @return int
 	 */
 	public function Add(Accessory $accessory);
 
@@ -65,11 +65,13 @@ class AccessoryRepository implements IAccessoryRepository
 		if ($row = $reader->GetRow())
 		{
 			$accessory = new Accessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+			$accessory->ChangeCredits($row[ColumnNames::CREDIT_COUNT], $row[ColumnNames::PEAK_CREDIT_COUNT], $row[ColumnNames::CREDIT_APPLICABILITY]);
 			$arReader = ServiceLocator::GetDatabase()->Query(new GetAccessoryResources($accessoryId));
 
 			while ($row = $arReader->GetRow())
 			{
-				$accessory->AddResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::ACCESSORY_MINIMUM_QUANTITY], $row[ColumnNames::ACCESSORY_MAXIMUM_QUANTITY]);
+				$accessory->AddResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::ACCESSORY_MINIMUM_QUANTITY],
+										$row[ColumnNames::ACCESSORY_MAXIMUM_QUANTITY]);
 			}
 
 			$reader->Free();
@@ -95,11 +97,17 @@ class AccessoryRepository implements IAccessoryRepository
 	 */
 	public function Update(Accessory $accessory)
 	{
-		ServiceLocator::GetDatabase()->Execute(new UpdateAccessoryCommand($accessory->GetId(), $accessory->GetName(), $accessory->GetQuantityAvailable()));
+		ServiceLocator::GetDatabase()->Execute(new UpdateAccessoryCommand($accessory->GetId(),
+																		  $accessory->GetName(),
+																		  $accessory->GetQuantityAvailable(),
+																		  $accessory->GetCreditCount(),
+																		  $accessory->GetPeakCreditCount(),
+																		  $accessory->GetCreditApplicability()));
 		ServiceLocator::GetDatabase()->Execute(new DeleteAcccessoryResourcesCommand($accessory->GetId()));
 		foreach ($accessory->Resources() as $resource)
 		{
-			ServiceLocator::GetDatabase()->Execute(new AddAccessoryResourceCommand($accessory->GetId(), $resource->ResourceId, $resource->MinQuantity, $resource->MaxQuantity));
+			ServiceLocator::GetDatabase()->Execute(new AddAccessoryResourceCommand($accessory->GetId(), $resource->ResourceId, $resource->MinQuantity,
+																				   $resource->MaxQuantity));
 		}
 	}
 

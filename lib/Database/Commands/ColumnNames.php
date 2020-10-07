@@ -282,6 +282,7 @@ class ColumnNames
 	// CURRENT_CREDITS //
 	const CREDIT_COUNT = 'credit_count';
 	const PEAK_CREDIT_COUNT = 'peak_credit_count';
+	const CREDIT_APPLICABILITY = 'credit_applicability';
 	const CREDIT_NOTE = 'credit_note';
 	const ORIGINAL_CREDIT_COUNT = 'original_credit_count';
 

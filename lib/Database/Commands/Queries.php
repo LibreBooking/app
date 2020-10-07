@@ -1027,7 +1027,7 @@ class Queries
 
     const UPDATE_ACCESSORY =
         'UPDATE `accessories`
-		SET `accessory_name` = @accessoryname, `accessory_quantity` = @quantity
+		SET `accessory_name` = @accessoryname, `accessory_quantity` = @quantity, `credit_count` = @credit_count, `peak_credit_count` = @peak_credit_count, `credit_applicability` = @credit_applicability
 		WHERE `accessory_id` = @accessoryid';
 
     const UPDATE_ANNOUNCEMENT =

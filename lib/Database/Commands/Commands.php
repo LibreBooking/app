@@ -2419,12 +2419,15 @@ class SetDefaultScheduleCommand extends SqlCommand
 
 class UpdateAccessoryCommand extends SqlCommand
 {
-    public function __construct($accessoryId, $accessoryName, $quantityAvailable)
+    public function __construct($accessoryId, $accessoryName, $quantityAvailable, $credits, $peakCredits, $creditApplicability)
     {
         parent::__construct(Queries::UPDATE_ACCESSORY);
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName));
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_QUANTITY, $quantityAvailable));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
+        $this->AddParameter(new Parameter(ParameterNames::PEAK_CREDIT_COUNT, $peakCredits));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_APPLICABILITY, $creditApplicability));
     }
 }
 

@@ -19,6 +19,8 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Domain/Values/CreditApplicability.php');
+
 class Accessory
 {
 	/**
@@ -41,6 +43,19 @@ class Accessory
 	 * @var ResourceAccessory[]
 	 */
 	private $resources = array();
+
+	/**
+	 * @var int|null
+	 */
+	private $peakCredits;
+	/**
+	 * @var int|null
+	 */
+	private $offPeakCredits;
+	/**
+	 * @var int|CreditApplicability|null
+	 */
+	private $creditApplicability;
 
 	/**
 	 * @param int $id
@@ -173,6 +188,42 @@ class Accessory
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param int|null $offPeakCredits
+	 * @param int|null $peakCredits
+	 * @param int|CreditApplicability $applicability
+	 */
+	public function ChangeCredits($offPeakCredits, $peakCredits, $applicability)
+	{
+		$this->offPeakCredits = empty($offPeakCredits) ? null : $offPeakCredits;
+		$this->peakCredits = empty($peakCredits) ? null : $applicability;
+		$this->creditApplicability = $applicability;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetCreditCount()
+	{
+		return $this->offPeakCredits;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetPeakCreditCount()
+	{
+		return $this->peakCredits;
+	}
+
+	/**
+	 * @return CreditApplicability|int|null
+	 */
+	public function GetCreditApplicability()
+	{
+		return $this->creditApplicability;
 	}
 }
 
