@@ -623,6 +623,7 @@ class BookableResource implements IBookableResource
 		$this->SetMaxNotice($maxNotice);
 		$this->SetScheduleId($scheduleId);
 		$this->SetAdminGroupId($adminGroupId);
+		$this->ChangeCredits(0, 0, CreditApplicability::SLOT);
 	}
 
 	/**

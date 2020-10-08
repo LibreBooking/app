@@ -92,7 +92,8 @@ class FakeResourceAccess extends ResourceRepository
 						 $peakCreditCount = null,
 						 $minNoticeUpdate = null,
 						 $minNoticeDelete = null,
-						 $additionalProperties = null
+						 $additionalProperties = null,
+						 $creditApplicability = CreditApplicability::SLOT
     )
     {
 
@@ -130,6 +131,7 @@ class FakeResourceAccess extends ResourceRepository
             ColumnNames::RESOURCE_MINNOTICE_UPDATE => $minNoticeUpdate,
             ColumnNames::RESOURCE_MINNOTICE_DELETE => $minNoticeDelete,
             ColumnNames::RESOURCE_ADDITIONAL_PROPERTIES => $additionalProperties,
+            ColumnNames::CREDIT_APPLICABILITY => $creditApplicability,
         );
 
         return $this;
