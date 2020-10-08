@@ -850,6 +850,7 @@ class ReservationSeries
 					$creditsRequired += ($accessory->GetPeakCreditCount() * $peakSlots * $quantityReserved);
 				}
 			}
+
 			$instance->SetCreditsRequired($creditsRequired);
 
 			$slots += $instanceSlots;

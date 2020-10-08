@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationDeletePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationCheckinPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AccessoryFormElement.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
@@ -627,7 +628,6 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->_createdRequiresApproval = $requiresApproval;
 	}
-
 
 	public function GetAccessories()
 	{

@@ -278,6 +278,8 @@ function Reservation(opts) {
         elements.accessoriesDialog.find('.accessory-quantity, :checked').each(function () {
             AddAccessory($(this).siblings('.name').val(), $(this).siblings('.id').val(), $(this).val());
         });
+
+        onAccessoriesChanged();
     };
 
     Reservation.prototype.addAccessory = function (accessoryId, quantity, name) {
@@ -361,6 +363,10 @@ function Reservation(opts) {
 
     function onResourcesChanged() {
         LoadCustomAttributes();
+        CalculateCredits();
+    }
+
+    function onAccessoriesChanged() {
         CalculateCredits();
     }
 

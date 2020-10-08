@@ -22,271 +22,298 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationCreditsPresenter.php'
 
 class ReservationCreditsPresenterTests extends TestBase
 {
-    /**
-     * @var FakeReservationCreditsPage
-     */
-    private $page;
-    /**
-     * @var ReservationCreditsPresenter
-     */
-    private $presenter;
-    /**
-     * @var FakeReservationRepository
-     */
-    private $reservationRepository;
-    /**
-     * @var FakeScheduleRepository
-     */
-    private $scheduleRepository;
-    /**
-     * @var FakeResourceRepository
-     */
-    private $resourceRepository;
-    /**
-     * @var FakePaymentRepository
-     */
-    private $paymentRepository;
+	/**
+	 * @var FakeReservationCreditsPage
+	 */
+	private $page;
+	/**
+	 * @var ReservationCreditsPresenter
+	 */
+	private $presenter;
+	/**
+	 * @var FakeReservationRepository
+	 */
+	private $reservationRepository;
+	/**
+	 * @var FakeScheduleRepository
+	 */
+	private $scheduleRepository;
+	/**
+	 * @var FakeResourceRepository
+	 */
+	private $resourceRepository;
+	/**
+	 * @var FakePaymentRepository
+	 */
+	private $paymentRepository;
+	/**
+	 * @var FakeAccessoryRepository
+	 */
+	private $accessoryRepository;
 
-    public function setUp(): void
-    {
-        parent::setup();
+	public function setUp(): void
+	{
+		parent::setup();
 
-        $this->page = new FakeReservationCreditsPage();
-        $this->reservationRepository = new FakeReservationRepository();
-        $this->scheduleRepository = new FakeScheduleRepository();
-        $this->resourceRepository = new FakeResourceRepository();
-        $this->paymentRepository = new FakePaymentRepository();
+		$this->page = new FakeReservationCreditsPage();
+		$this->reservationRepository = new FakeReservationRepository();
+		$this->scheduleRepository = new FakeScheduleRepository();
+		$this->resourceRepository = new FakeResourceRepository();
+		$this->paymentRepository = new FakePaymentRepository();
+		$this->accessoryRepository = new FakeAccessoryRepository();
 
-        $this->presenter = new ReservationCreditsPresenter($this->page,
-            $this->reservationRepository,
-            $this->scheduleRepository,
-            $this->resourceRepository,
-            $this->paymentRepository);
+		$this->presenter = new ReservationCreditsPresenter($this->page,
+														   $this->reservationRepository,
+														   $this->scheduleRepository,
+														   $this->resourceRepository,
+														   $this->paymentRepository,
+														   $this->accessoryRepository);
 
-        $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
-        $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, 'true');
-    }
+		$this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
+		$this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, 'true');
+	}
 
-    public function testReturnsNumberOfCreditsConsumedForNewReservation()
-    {
-        $scheduleId = 100;
-        $resource1 = new FakeBookableResource(1);
-        $resource1->SetCreditsPerSlot(1);
-        $resource1->SetScheduleId($scheduleId);
-        $resource2 = new FakeBookableResource(2);
-        $resource2->SetCreditsPerSlot(1);
-        $resource2->SetScheduleId($scheduleId);
+	public function testReturnsNumberOfCreditsConsumedForNewReservation()
+	{
+		$scheduleId = 100;
+		$resource1 = new FakeBookableResource(1);
+		$resource1->SetCreditsPerSlot(1);
+		$resource1->SetScheduleId($scheduleId);
+		$resource2 = new FakeBookableResource(2);
+		$resource2->SetCreditsPerSlot(1);
+		$resource2->SetScheduleId($scheduleId);
 
-        $fakeScheduleLayout = new FakeScheduleLayout();
-        $this->scheduleRepository->_Layout = $fakeScheduleLayout;
-        $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
+		foreach ($this->page->GetAccessories() as $a)
+		{
+			$accessory = new Accessory($a->Id, "name", 100);
+			$accessory->ChangeCredits(1, 1, CreditApplicability::SLOT);
+			$this->accessoryRepository->_AccessoryList[$a->Id] = $accessory;
+		}
 
-        $expectedCost = Booked\Currency::Create('USD')->Format(150);
+		$fakeScheduleLayout = new FakeScheduleLayout();
+		$this->scheduleRepository->_Layout = $fakeScheduleLayout;
+		$fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
 
-        $this->paymentRepository->_CreditCost = new CreditCost(15, 'USD');
+		$expectedCost = Booked\Currency::Create('USD')->Format(300);
 
-        $this->page->_ResourceId = 1;
-        $this->page->_ResourceIds = [2];
+		$this->paymentRepository->_CreditCost = new CreditCost(15, 'USD');
 
-        $this->resourceRepository->_ResourceList[1] = $resource1;
-        $this->resourceRepository->_ResourceList[2] = $resource2;
+		$this->page->_ResourceId = 1;
+		$this->page->_ResourceIds = [2];
 
-        $this->presenter->PageLoad($this->fakeUser);
+		$this->resourceRepository->_ResourceList[1] = $resource1;
+		$this->resourceRepository->_ResourceList[2] = $resource2;
 
-        $this->assertEquals(10, $this->page->_CreditsRequired, '2 resources for 5 slots');
-        $this->assertEquals($expectedCost, $this->page->_CreditCost, '15 * 10');
-    }
+		$this->presenter->PageLoad($this->fakeUser);
 
-    public function testReturnsNumberOfCreditsConsumedForExistingReservation()
-    {
-    	$pageDate = Date::Now()->AddDays(1);
-        $scheduleId = 100;
-        $resource1 = new FakeBookableResource(1);
-        $resource1->SetCreditsPerSlot(1);
-        $resource1->SetScheduleId($scheduleId);
-        $resource2 = new FakeBookableResource(2);
-        $resource2->SetCreditsPerSlot(1);
-        $resource2->SetScheduleId($scheduleId);
+		$this->assertEquals(20, $this->page->_CreditsRequired, '2 resources for 5 slots + 1 accessory x 2 quantity for 5 slots');
+		$this->assertEquals($expectedCost, $this->page->_CreditCost, '15 * 20');
+	}
 
-        $builder = new ExistingReservationSeriesBuilder();
-        $series = $builder->Build();
-        $this->reservationRepository->_Series = $series;
+	public function testReturnsNumberOfCreditsConsumedForExistingReservation()
+	{
+		$pageDate = Date::Now()->AddDays(1);
+		$scheduleId = 100;
+		$resource1 = new FakeBookableResource(1);
+		$resource1->SetCreditsPerSlot(1);
+		$resource1->SetScheduleId($scheduleId);
+		$resource2 = new FakeBookableResource(2);
+		$resource2->SetCreditsPerSlot(1);
+		$resource2->SetScheduleId($scheduleId);
 
-        $fakeScheduleLayout = new FakeScheduleLayout();
-        $this->scheduleRepository->_Layout = $fakeScheduleLayout;
-        $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
+		foreach ($this->page->GetAccessories() as $a)
+		{
+			$accessory = new Accessory($a->Id, "name", 100);
+			$accessory->ChangeCredits(1, 1, CreditApplicability::SLOT);
+			$this->accessoryRepository->_AccessoryList[$a->Id] = $accessory;
+		}
 
-        $this->page->_ResourceId = 1;
-        $this->page->_ResourceIds = array(2);
-        $this->page->_ReferenceNumber = '123';
-        $this->page->_StartDate = $pageDate->Format('Y-m-d');
-        $this->page->_StartTime = '01:00';
-        $this->page->_EndDate = $pageDate->Format('Y-m-d');
-        $this->page->_EndTime = '02:00';
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->Build();
+		$this->reservationRepository->_Series = $series;
 
-        $this->resourceRepository->_ResourceList[1] = $resource1;
-        $this->resourceRepository->_ResourceList[2] = $resource2;
+		$fakeScheduleLayout = new FakeScheduleLayout();
+		$this->scheduleRepository->_Layout = $fakeScheduleLayout;
+		$fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
 
-        $this->presenter->PageLoad($this->fakeUser);
+		$this->page->_ResourceId = 1;
+		$this->page->_ResourceIds = array(2);
+		$this->page->_ReferenceNumber = '123';
+		$this->page->_StartDate = $pageDate->Format('Y-m-d');
+		$this->page->_StartTime = '01:00';
+		$this->page->_EndDate = $pageDate->Format('Y-m-d');
+		$this->page->_EndTime = '02:00';
 
-        $this->assertEquals(10, $this->page->_CreditsRequired, 'two resources for 5 slots');
-    }
+		$this->resourceRepository->_ResourceList[1] = $resource1;
+		$this->resourceRepository->_ResourceList[2] = $resource2;
+
+		$this->presenter->PageLoad($this->fakeUser);
+
+		$this->assertEquals(20, $this->page->_CreditsRequired, 'two resources for 5 slots + 1 accessory x 2 quantity for 5 slots');
+	}
 }
 
 class FakeReservationCreditsPage implements IReservationCreditsPage
 {
-    /**
-     * @var int
-     */
-    public $_CreditsRequired;
-    /**
-     * @var int
-     */
-    public $_ResourceId;
-    /**
-     * @var string
-     */
-    public $_RepeatType;
-    /**
-     * @var string
-     */
-    public $_RepeatInterval;
-    /**
-     * @var int[]|null
-     */
-    public $_RepeatWeekdays = [];
-    /**
-     * @var string
-     */
-    public $_RepeatMonthlyType;
-    /**
-     * @var string
-     */
-    public $_RepeatTerminationDate;
-    /**
-     * @var int
-     */
-    public $_UserId;
-    /**
-     * @var string
-     */
-    public $_StartDate;
-    /**
-     * @var string
-     */
-    public $_EndDate;
-    /**
-     * @var string
-     */
-    public $_StartTime;
-    /**
-     * @var string
-     */
-    public $_EndTime;
-    /**
-     * @var int[]|null
-     */
-    public $_ResourceIds;
-    /**
-     * @var string
-     */
-    public $_ReferenceNumber;
-    /**
-     * @var string
-     */
-    public $_CreditCost;
+	/**
+	 * @var int
+	 */
+	public $_CreditsRequired;
+	/**
+	 * @var int
+	 */
+	public $_ResourceId;
+	/**
+	 * @var string
+	 */
+	public $_RepeatType;
+	/**
+	 * @var string
+	 */
+	public $_RepeatInterval;
+	/**
+	 * @var int[]|null
+	 */
+	public $_RepeatWeekdays = [];
+	/**
+	 * @var string
+	 */
+	public $_RepeatMonthlyType;
+	/**
+	 * @var string
+	 */
+	public $_RepeatTerminationDate;
+	/**
+	 * @var int
+	 */
+	public $_UserId;
+	/**
+	 * @var string
+	 */
+	public $_StartDate;
+	/**
+	 * @var string
+	 */
+	public $_EndDate;
+	/**
+	 * @var string
+	 */
+	public $_StartTime;
+	/**
+	 * @var string
+	 */
+	public $_EndTime;
+	/**
+	 * @var int[]|null
+	 */
+	public $_ResourceIds;
+	/**
+	 * @var string
+	 */
+	public $_ReferenceNumber;
+	/**
+	 * @var string
+	 */
+	public $_CreditCost;
 
-    /**
-     * @var Date[]
-     */
-    public $_RepeatCustomDates = [];
+	/**
+	 * @var Date[]
+	 */
+	public $_RepeatCustomDates = [];
+	public $_Accessories = [];
 
-    public function __construct()
-    {
-        $start = Date::Now()->AddHours(1);
-        $end = $start->AddHours(1);
+	public function __construct()
+	{
+		$start = Date::Now()->AddHours(1);
+		$end = $start->AddHours(1);
 
-        $this->_ResourceId = 1;
-        $this->_UserId = 2;
-        $this->_StartDate = $start->Format('Y-m-d');
-        $this->_EndDate = $end->Format('Y-m-d');
-        $this->_StartTime = $start->Format('H:i');
-        $this->_EndTime = $end->Format('H:i');
-    }
+		$this->_ResourceId = 1;
+		$this->_UserId = 2;
+		$this->_StartDate = $start->Format('Y-m-d');
+		$this->_EndDate = $end->Format('Y-m-d');
+		$this->_StartTime = $start->Format('H:i');
+		$this->_EndTime = $end->Format('H:i');
+		$this->_Accessories = [AccessoryFormElement::Create(1, 2)];
+	}
 
-    public function GetRepeatType()
-    {
-        return $this->_RepeatType;
-    }
+	public function GetRepeatType()
+	{
+		return $this->_RepeatType;
+	}
 
-    public function GetRepeatInterval()
-    {
-        return $this->_RepeatInterval;
-    }
+	public function GetRepeatInterval()
+	{
+		return $this->_RepeatInterval;
+	}
 
-    public function GetRepeatWeekdays()
-    {
-        return $this->_RepeatWeekdays;
-    }
+	public function GetRepeatWeekdays()
+	{
+		return $this->_RepeatWeekdays;
+	}
 
-    public function GetRepeatMonthlyType()
-    {
-        return $this->_RepeatMonthlyType;
-    }
+	public function GetRepeatMonthlyType()
+	{
+		return $this->_RepeatMonthlyType;
+	}
 
-    public function GetRepeatTerminationDate()
-    {
-        return $this->_RepeatTerminationDate;
-    }
+	public function GetRepeatTerminationDate()
+	{
+		return $this->_RepeatTerminationDate;
+	}
 
-    public function GetUserId()
-    {
-        return $this->_UserId;
-    }
+	public function GetUserId()
+	{
+		return $this->_UserId;
+	}
 
-    public function GetResourceId()
-    {
-        return $this->_ResourceId;
-    }
+	public function GetResourceId()
+	{
+		return $this->_ResourceId;
+	}
 
-    public function GetStartDate()
-    {
-        return $this->_StartDate;
-    }
+	public function GetStartDate()
+	{
+		return $this->_StartDate;
+	}
 
-    public function GetEndDate()
-    {
-        return $this->_EndDate;
-    }
+	public function GetEndDate()
+	{
+		return $this->_EndDate;
+	}
 
-    public function GetStartTime()
-    {
-        return $this->_StartTime;
-    }
+	public function GetStartTime()
+	{
+		return $this->_StartTime;
+	}
 
-    public function GetEndTime()
-    {
-        return $this->_EndTime;
-    }
+	public function GetEndTime()
+	{
+		return $this->_EndTime;
+	}
 
-    public function GetResources()
-    {
-        return $this->_ResourceIds;
-    }
+	public function GetResources()
+	{
+		return $this->_ResourceIds;
+	}
 
-    public function GetReferenceNumber()
-    {
-        return $this->_ReferenceNumber;
-    }
+	public function GetReferenceNumber()
+	{
+		return $this->_ReferenceNumber;
+	}
 
-    public function SetCreditRequired($creditsRequired, $cost)
-    {
-       $this->_CreditsRequired = $creditsRequired;
-       $this->_CreditCost = $cost;
-    }
+	public function SetCreditRequired($creditsRequired, $cost)
+	{
+		$this->_CreditsRequired = $creditsRequired;
+		$this->_CreditCost = $cost;
+	}
 
-    public function GetRepeatCustomDates()
-    {
-        return $this->_RepeatCustomDates;
-    }
+	public function GetRepeatCustomDates()
+	{
+		return $this->_RepeatCustomDates;
+	}
+
+	public function GetAccessories()
+	{
+		return $this->_Accessories;
+	}
 }

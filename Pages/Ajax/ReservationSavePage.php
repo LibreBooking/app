@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsView.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AccessoryFormElement.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
 interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptionsComposite
@@ -540,31 +541,4 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
     {
         return $this->GetCheckbox(FormKeys::TOS_ACKNOWLEDGEMENT);
     }
-}
-
-class AccessoryFormElement
-{
-	public $Id;
-	public $Quantity;
-	public $Name;
-
-	public function __construct($formValue)
-	{
-		$idAndQuantity = $formValue;
-		$y = explode('!-!', $idAndQuantity);
-		$params = explode(',', $y[1]);
-		$id = explode('=', $params[0]);
-		$quantity = explode('=', $params[1]);
-		$name = explode('=', $params[2]);
-
-		$this->Id = $id[1];
-		$this->Quantity = $quantity[1];
-		$this->Name = urldecode($name[1]);
-	}
-
-	public static function Create($id, $quantity)
-	{
-		$element = new AccessoryFormElement("accessory!-!id=$id,quantity=$quantity,name=");
-		return $element;
-	}
 }

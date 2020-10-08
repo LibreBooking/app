@@ -50,7 +50,7 @@ class ExistingReservationSeriesBuilder
 	/**
 	 * @var ReservationAccessory[]
 	 */
-	private $accessories;
+	private $accessories = [];
 
 	public function __construct()
 	{
