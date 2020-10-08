@@ -76,13 +76,14 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$resourceRepository = new ResourceRepository();
 		$scheduleRepository = new ScheduleRepository();
+		$accessoryRepository = new AccessoryRepository();
 		$reservationAction = ReservationAction::Create;
 		$persistenceService = $persistenceFactory->Create($reservationAction);
 		$handler = ReservationHandler::Create($reservationAction,
 											  $persistenceService,
 											  $userSession);
 
-		return new ReservationSavePresenter($savePage, $persistenceService, $handler, $resourceRepository, $scheduleRepository, $userSession);
+		return new ReservationSavePresenter($savePage, $persistenceService, $handler, $resourceRepository, $scheduleRepository, $accessoryRepository, $userSession);
 	}
 
 	public function Update(IReservationUpdatePage $updatePage, UserSession $userSession)
@@ -90,13 +91,14 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$resourceRepository = new ResourceRepository();
 		$scheduleRepository = new ScheduleRepository();
+		$accessoryRepository = new AccessoryRepository();
 		$reservationAction = ReservationAction::Update;
 		$persistenceService = $persistenceFactory->Create($reservationAction);
 		$handler = ReservationHandler::Create($reservationAction,
 											  $persistenceService,
 											  $userSession);
 
-		return new ReservationUpdatePresenter($updatePage, $persistenceService, $handler, $resourceRepository, $scheduleRepository, $userSession);
+		return new ReservationUpdatePresenter($updatePage, $persistenceService, $handler, $resourceRepository, $scheduleRepository, $accessoryRepository, $userSession);
 	}
 
 	public function Delete(IReservationDeletePage $deletePage, UserSession $userSession)

@@ -499,7 +499,7 @@ class ReservationComponentTests extends TestBase
 		$participatingGuests = array('p1@email.com', 'p2@email.com');
 		$invitedGuests = array('i1@email.com', 'i2@email.com');
 		$accessories = array(
-				new ReservationAccessory(1, 2)
+				new ReservationAccessory(new Accessory(1, "1", 10), 2)
 		);
 
 		$attachments = array(

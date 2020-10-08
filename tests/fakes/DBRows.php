@@ -267,6 +267,7 @@ class ReservationResourceRow
             ColumnNames::PEAK_CREDIT_COUNT => $this->peakCreditCount,
             ColumnNames::RESOURCE_MINNOTICE_UPDATE => $this->minNoticeUpdate,
             ColumnNames::RESOURCE_MINNOTICE_DELETE => $this->minNoticeDelete,
+			ColumnNames::RESOURCE_ADDITIONAL_PROPERTIES =>  null,
         );
     }
 }

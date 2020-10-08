@@ -343,7 +343,7 @@ class AccessoryAddedEvent extends SeriesEvent
 	 */
 	public function AccessoryId()
 	{
-		return $this->accessory->AccessoryId;
+		return $this->accessory->Accessory->GetId();
 	}
 
 	/**
@@ -379,7 +379,7 @@ class AccessoryRemovedEvent extends SeriesEvent
 	 */
 	public function AccessoryId()
 	{
-		return $this->accessory->AccessoryId;
+		return $this->accessory->Accessory->GetId();
 	}
 
 	/**

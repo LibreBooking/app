@@ -899,12 +899,12 @@ class ExistingReservationTests extends TestBase
 
     public function testChangeAccessories()
     {
-        $accessory1 = new ReservationAccessory(1, 100);
-        $accessory2 = new ReservationAccessory(2, 22);
-        $accessory3 = new ReservationAccessory(3, 3);
-        $accessory4 = new ReservationAccessory(4, 444);
+        $accessory1 = new ReservationAccessory(new Accessory(1, "1", 1), 100);
+        $accessory2 = new ReservationAccessory(new Accessory(2, "2", 2), 22);
+        $accessory3 = new ReservationAccessory(new Accessory(3, "3", 3), 3);
+        $accessory4 = new ReservationAccessory(new Accessory(4, "4", 4), 444);
 
-        $accessory1WithDifferentQuantity = new ReservationAccessory(1, 99);
+        $accessory1WithDifferentQuantity = new ReservationAccessory(new Accessory(1, "1", 1), 99);
 
         $series = new ExistingReservationSeries();
 

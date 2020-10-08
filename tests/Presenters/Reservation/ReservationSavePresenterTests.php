@@ -55,9 +55,14 @@ class ReservationSavePresenterTests extends TestBase
 	private $handler;
 
 	/**
-	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeResourceRepository
 	 */
 	private $resourceRepository;
+
+	/**
+	 * @var FakeAccessoryRepository
+	 */
+	private $accessoryRepository;
 
 	/**
 	 * @var FakeScheduleRepository
@@ -75,7 +80,8 @@ class ReservationSavePresenterTests extends TestBase
 
 		$this->persistenceService = $this->createMock('IReservationPersistenceService');
 		$this->handler = $this->createMock('IReservationHandler');
-		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->resourceRepository = new FakeResourceRepository();
+		$this->accessoryRepository = new FakeAccessoryRepository();
 		$this->scheduleRepository = new FakeScheduleRepository();
 
 		$this->presenter = new ReservationSavePresenter(
@@ -84,6 +90,7 @@ class ReservationSavePresenterTests extends TestBase
 				$this->handler,
 				$this->resourceRepository,
 				$this->scheduleRepository,
+				$this->accessoryRepository,
 				$this->fakeUser);
 	}
 
@@ -131,7 +138,9 @@ class ReservationSavePresenterTests extends TestBase
 		$accessories = array();
 		foreach ($pageAccessories as $pa)
 		{
-			$accessories[] = new ReservationAccessory($pa->Id, $pa->Quantity, $pa->Name);
+			$accessory = new Accessory($pa->Id, "name$pa->Id", 100);
+			$this->accessoryRepository->_AccessoryList[$pa->Id] = $accessory;
+			$accessories[] = new ReservationAccessory($accessory, $pa->Quantity);
 		}
 
 		$expectedAttributes = array();
@@ -143,20 +152,9 @@ class ReservationSavePresenterTests extends TestBase
 		$startReminder = new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval());
 		$endReminder = new ReservationReminder($this->page->GetEndReminderValue(), $this->page->GetEndReminderInterval());
 
-		$this->resourceRepository->expects($this->at(0))
-								 ->method('LoadById')
-								 ->with($this->equalTo($resourceId))
-								 ->will($this->returnValue($resource));
-
-		$this->resourceRepository->expects($this->at(1))
-								 ->method('LoadById')
-								 ->with($this->equalTo($additionalResources[0]))
-								 ->will($this->returnValue($additionalResource1));
-
-		$this->resourceRepository->expects($this->at(2))
-								 ->method('LoadById')
-								 ->with($this->equalTo($additionalResources[1]))
-								 ->will($this->returnValue($additionalResource2));
+		$this->resourceRepository->_ResourceList[$resourceId] = $resource;
+		$this->resourceRepository->_ResourceList[$additionalResources[0]] = $additionalResource1;
+		$this->resourceRepository->_ResourceList[$additionalResources[1]] = $additionalResource2;
 
 		$fakeScheduleLayout = new FakeScheduleLayout();
 		$fakeScheduleLayout->_SlotCount = new SlotCount(1, 2);

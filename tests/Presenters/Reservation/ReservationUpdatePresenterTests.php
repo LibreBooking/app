@@ -47,9 +47,14 @@ class ReservationUpdatePresenterTests extends TestBase
 	private $handler;
 
 	/**
-	 * @var IResourceRepository
+	 * @var FakeResourceRepository
 	 */
 	private $resourceRepository;
+
+	/**
+	 * @var FakeAccessoryRepository
+	 */
+	private $accessoryRepository;
 
 	/**
 	 * @var FakeScheduleRepository
@@ -70,7 +75,8 @@ class ReservationUpdatePresenterTests extends TestBase
 
 		$this->persistenceService = $this->createMock('IUpdateReservationPersistenceService');
 		$this->handler = $this->createMock('IReservationHandler');
-		$this->resourceRepository = $this->createMock('IResourceRepository');
+		$this->resourceRepository = new FakeResourceRepository();
+		$this->accessoryRepository = new FakeAccessoryRepository();
 		$this->scheduleRepository = new FakeScheduleRepository();
 
 		$this->page = new FakeReservationUpdatePage();
@@ -81,6 +87,7 @@ class ReservationUpdatePresenterTests extends TestBase
 				$this->handler,
 				$this->resourceRepository,
 				$this->scheduleRepository,
+				$this->accessoryRepository,
 				$this->fakeUser);
 	}
 
@@ -125,20 +132,9 @@ class ReservationUpdatePresenterTests extends TestBase
 								 ->with($this->equalTo($referenceNumber))
 								 ->will($this->returnValue($expectedSeries));
 
-		$this->resourceRepository->expects($this->at(0))
-								 ->method('LoadById')
-								 ->with($this->equalTo($this->page->resourceId))
-								 ->will($this->returnValue($resource));
-
-		$this->resourceRepository->expects($this->at(1))
-								 ->method('LoadById')
-								 ->with($this->equalTo($additionalId1))
-								 ->will($this->returnValue($additional1));
-
-		$this->resourceRepository->expects($this->at(2))
-								 ->method('LoadById')
-								 ->with($this->equalTo($additionalId2))
-								 ->will($this->returnValue($additional2));
+		$this->resourceRepository->_ResourceList[$this->page->resourceId] = $resource;
+		$this->resourceRepository->_ResourceList[$additionalId1] = $additional1;
+		$this->resourceRepository->_ResourceList[$additionalId2] = $additional2;
 
 		$this->page->repeatType = RepeatType::Daily;
 		$roFactory = new RepeatOptionsFactory();
@@ -163,11 +159,13 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->scheduleRepository->_Layout = $fakeScheduleLayout;
 		$expectedCredits = 168;
 
+		$accessory = new Accessory(1, "whatever", 100);
+		$this->accessoryRepository->_AccessoryList[1] = $accessory;
+		$expectedAccessories = array(new ReservationAccessory($accessory, 2));
+
 		$existingSeries = $this->presenter->BuildReservation();
 
-		$expectedAccessories = array(new ReservationAccessory(1, 2, 'accessoryname'));
 		$expectedAttributes = array(1 => new AttributeValue(1, 'something'));
-
 
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
 		$this->assertEquals($this->page->seriesUpdateScope, $existingSeries->SeriesUpdateScope());
@@ -209,15 +207,13 @@ class ReservationUpdatePresenterTests extends TestBase
 
 		$resource = new FakeBookableResource($additionalId);
 
+		$this->resourceRepository->_Resource = $resource;
+		$this->accessoryRepository->_Accessory = new Accessory(1, "1", 1);
+
 		$this->persistenceService->expects($this->once())
 								 ->method('LoadByReferenceNumber')
 								 ->with($this->equalTo($referenceNumber))
 								 ->will($this->returnValue($expectedSeries));
-
-		$this->resourceRepository->expects($this->once())
-								 ->method('LoadById')
-								 ->with($this->equalTo($additionalId))
-								 ->will($this->returnValue($resource));
 
 		$existingSeries = $this->presenter->BuildReservation();
 

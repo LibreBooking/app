@@ -55,7 +55,7 @@ class AccessoriesWebServiceTests extends TestBase
 
 	public function testGetsAllAccessories()
 	{
-		$accessories = array(new AccessoryDto(1, 'name', 23, 1));
+		$accessories = array(new AccessoryDto(1, 'name', 23, 1, 10, 20, CreditApplicability::SLOT));
 
 		$this->resourceRepository->expects($this->once())
 				->method('GetAccessoryList')

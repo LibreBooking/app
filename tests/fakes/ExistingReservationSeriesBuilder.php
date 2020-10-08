@@ -159,6 +159,11 @@ class ExistingReservationSeriesBuilder
 
 		return $this;
 	}
+
+	public function WithAccessory($accessory) {
+
+	}
+
 	/**
 	 * @return ExistingReservationSeries
 	 */

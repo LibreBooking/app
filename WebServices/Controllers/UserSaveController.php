@@ -94,7 +94,7 @@ class UserSaveController implements IUserSaveController
 
 		$user = $userService->AddUser($request->userName, $request->emailAddress, $request->firstName,
 										$request->lastName, $request->password, $request->timezone, $request->language,
-										Pages::DEFAULT_HOMEPAGE_ID, $extraAttributes, $customAttributes);
+										Pages::DEFAULT_HOMEPAGE_ID, $extraAttributes, $customAttributes, false);
 
 		$userService->ChangeGroups($user, $request->groups);
 
@@ -120,7 +120,7 @@ class UserSaveController implements IUserSaveController
 		}
 
 		$user = $userService->UpdateUser($userId, $request->userName, $request->emailAddress, $request->firstName,
-								 $request->lastName, $request->timezone, $extraAttributes, $customAttributes);
+								 $request->lastName, $request->timezone, $extraAttributes, $customAttributes, false);
 
 //		$userService->ChangeAttributes($userId, $customAttributes);
 

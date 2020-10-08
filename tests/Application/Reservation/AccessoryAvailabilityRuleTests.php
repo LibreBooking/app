@@ -29,11 +29,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
     public $reservationRepository;
 
     /**
-     * @var IAccessoryRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    public $accessoryRepository;
-
-    /**
      * @var AccessoryAvailabilityRule
      */
     public $rule;
@@ -43,9 +38,8 @@ class AccessoryAvailabilityRuleTests extends TestBase
         parent::setup();
 
         $this->reservationRepository = $this->createMock('IReservationViewRepository');
-        $this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
-        $this->rule = new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, 'UTC');
+        $this->rule = new AccessoryAvailabilityRule($this->reservationRepository, 'UTC');
     }
 
     public function teardown(): void
@@ -55,10 +49,10 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
     public function testRuleIsValidIfTotalQuantityReservedIsLessThanQuantityAvailable()
     {
-        $accessory1 = new ReservationAccessory(1, 5);
-        $accessory2 = new ReservationAccessory(2, 5);
+		$quantityAvailable = 8;
 
-        $quantityAvailable = 8;
+        $accessory1 = new ReservationAccessory(new Accessory(1, 'name1', $quantityAvailable), 5);
+        $accessory2 = new ReservationAccessory(new Accessory(2, 'name2', $quantityAvailable), 5);
 
         $startDate = Date::Parse('2010-04-04', 'UTC');
         $endDate = Date::Parse('2010-04-05', 'UTC');
@@ -78,16 +72,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $accessoryReservation = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 3);
         $accessoryReservationForOtherResource = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 3);
 
-        $this->accessoryRepository->expects($this->at(0))
-            ->method('LoadById')
-            ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
-
-        $this->accessoryRepository->expects($this->at(1))
-            ->method('LoadById')
-            ->with($accessory2->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory2->AccessoryId, 'name1', $quantityAvailable)));
-
         $this->reservationRepository->expects($this->at(0))
             ->method('GetAccessoriesWithin')
             ->with($this->equalTo($dr1))
@@ -105,8 +89,9 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
     public function testGetsConflictingReservationTimes()
     {
-        $accessory1 = new ReservationAccessory(1, 5);
-        $quantityAvailable = 8;
+    	$quantityAvailable = 8;
+
+        $accessory1 = new ReservationAccessory(new Accessory(1, 'name1', $quantityAvailable), 5);
 
         $startDate = Date::Parse('2010-04-04', 'UTC');
         $endDate = Date::Parse('2010-04-05', 'UTC');
@@ -119,11 +104,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $lowerQuantity1 = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 2);
         $lowerQuantity2 = new AccessoryReservation(3, $startDate, $endDate, $accessory1->AccessoryId, 2);
         $notOnReservation = new AccessoryReservation(4, $startDate, $endDate, 100, 1);
-
-        $this->accessoryRepository->expects($this->at(0))
-            ->method('LoadById')
-            ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
 
         $this->reservationRepository->expects($this->at(0))
             ->method('GetAccessoriesWithin')
@@ -138,18 +118,13 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
     public function testNoConflictsButTooHigh()
     {
-        $accessory1 = new ReservationAccessory(1, 5);
         $quantityAvailable = 4;
+        $accessory1 = new ReservationAccessory(new Accessory(1, 'name1', $quantityAvailable), 5);
 
         $reservation = new TestReservationSeries();
         $dr1 = new TestDateRange();
         $reservation->WithDuration($dr1);
         $reservation->WithAccessory($accessory1);
-
-        $this->accessoryRepository->expects($this->at(0))
-            ->method('LoadById')
-            ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
 
         $this->reservationRepository->expects($this->once(0))
             ->method('GetAccessoriesWithin')
@@ -164,8 +139,8 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
     public function testUnlimitedQuantity()
     {
-        $accessory1 = new ReservationAccessory(1, 5);
         $quantityAvailable = null;
+        $accessory1 = new ReservationAccessory(new Accessory(1, 'name1', $quantityAvailable), 5);
 
         $startDate = Date::Parse('2010-04-04', 'UTC');
         $endDate = Date::Parse('2010-04-05', 'UTC');
@@ -175,11 +150,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $dr1 = new DateRange($startDate, $endDate);
         $reservation->WithDuration($dr1);
 
-        $this->accessoryRepository->expects($this->at(0))
-            ->method('LoadById')
-            ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
-
         $result = $this->rule->Validate($reservation, null);
 
         $this->assertTrue($result->IsValid());
@@ -187,10 +157,11 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
     public function testExistingLongRunningReservation()
     {
-        $accessory1 = new ReservationAccessory(1, 5);
         $currentReferenceNumber = 1;
-
         $quantityAvailable = 6;
+
+        $accessory1 = new ReservationAccessory(new Accessory(1, 'name1', $quantityAvailable), 5);
+
         $startDate = Date::Parse('2010-04-04 00:00', 'UTC');
         $endDate = Date::Parse('2010-04-06 00:00', 'UTC');
 
@@ -204,11 +175,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $a1 = new AccessoryReservation(2, Date::Parse('2010-04-04 10:00', 'UTC'), Date::Parse('2010-04-04 12:00', 'UTC'), $accessory1->AccessoryId, 1);
         $a2 = new AccessoryReservation(3, Date::Parse('2010-04-04 13:00', 'UTC'), Date::Parse('2010-04-04 15:00', 'UTC'), $accessory1->AccessoryId, 1);
 
-        $this->accessoryRepository->expects($this->at(0))
-            ->method('LoadById')
-            ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
-
         $this->reservationRepository->expects($this->any())
             ->method('GetAccessoriesWithin')
             ->will($this->returnValue(array($accessoryReservation, $a1, $a2)));
@@ -220,8 +186,8 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
     public function testMultipleReservationsButNoneOverlapping()
     {
-        $accessory = new ReservationAccessory(1, 4);
         $quantityAvailable = 5;
+        $accessory = new ReservationAccessory(new Accessory(1, 'name1', $quantityAvailable), 4);
 
         $startDate = Date::Parse('2010-04-04 05:30', 'UTC');
         $endDate = Date::Parse('2010-04-10 16:30', 'UTC');
@@ -235,11 +201,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $ar2 = new AccessoryReservation(3, Date::Parse('2010-04-05', 'UTC'), Date::Parse('2010-04-06', 'UTC'), $accessory->AccessoryId, 1);
         $ar3 = new AccessoryReservation(4, Date::Parse('2010-04-06', 'UTC'), Date::Parse('2010-04-07', 'UTC'), $accessory->AccessoryId, 1);
         $ar4 = new AccessoryReservation(5, Date::Parse('2010-04-08', 'UTC'), Date::Parse('2010-04-11', 'UTC'), $accessory->AccessoryId, 1);
-
-        $this->accessoryRepository->expects($this->any())
-            ->method('LoadById')
-            ->with($accessory->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory->AccessoryId, 'name1', $quantityAvailable)));
 
         $this->reservationRepository->expects($this->any())
             ->method('GetAccessoriesWithin')

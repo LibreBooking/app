@@ -39,22 +39,22 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	 * @var IReservationSavePage
 	 */
 	private $page;
-
 	/**
 	 * @var IReservationPersistenceService
 	 */
 	private $persistenceService;
-
 	/**
 	 * @var IReservationHandler
 	 */
 	private $handler;
-
 	/**
 	 * @var IResourceRepository
 	 */
 	private $resourceRepository;
-
+	/**
+	 * @var IAccessoryRepository
+	 */
+	private $accessoryRepository;
 	/**
 	 * @var UserSession
 	 */
@@ -70,6 +70,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		IReservationHandler $handler,
 		IResourceRepository $resourceRepository,
 		IScheduleRepository $scheduleRepository,
+		IAccessoryRepository $accessoryRepository,
 		UserSession $userSession)
 	{
 		$this->page = $page;
@@ -77,6 +78,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$this->handler = $handler;
 		$this->resourceRepository = $resourceRepository;
 		$this->scheduleRepository = $scheduleRepository;
+		$this->accessoryRepository = $accessoryRepository;
 		$this->userSession = $userSession;
 	}
 
@@ -102,10 +104,11 @@ class ReservationSavePresenter implements IReservationSavePresenter
 			}
 		}
 
-		$accessories = $this->page->GetAccessories();
-		foreach ($accessories as $accessory)
+		$reservedAccessories = $this->page->GetAccessories();
+		foreach ($reservedAccessories as $reservedAccessory)
 		{
-			$reservationSeries->AddAccessory(new ReservationAccessory($accessory->Id, $accessory->Quantity, $accessory->Name));
+			$accessory = $this->accessoryRepository->LoadById($reservedAccessory->Id);
+			$reservationSeries->AddAccessory(new ReservationAccessory($accessory, $reservedAccessory->Quantity));
 		}
 
 		$attributes = $this->page->GetAttributes();

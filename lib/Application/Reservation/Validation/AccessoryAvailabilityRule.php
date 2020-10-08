@@ -26,19 +26,13 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
     protected $reservationRepository;
 
     /**
-     * @var IAccessoryRepository
-     */
-    protected $accessoryRepository;
-
-    /**
      * @var string
      */
     protected $timezone;
 
-    public function __construct(IReservationViewRepository $reservationRepository, IAccessoryRepository $accessoryRepository, $timezone)
+    public function __construct(IReservationViewRepository $reservationRepository, $timezone)
     {
         $this->reservationRepository = $reservationRepository;
-        $this->accessoryRepository = $accessoryRepository;
         $this->timezone = $timezone;
     }
 
@@ -55,9 +49,8 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
         /** @var AccessoryToCheck[] $accessories */
         $accessories = array();
         foreach ($reservationAccessories as $accessory) {
-            $a = $this->accessoryRepository->LoadById($accessory->AccessoryId);
-            if (!$a->HasUnlimitedQuantity()) {
-                $accessories[$a->GetId()] = new AccessoryToCheck($a, $accessory);
+            if (!$accessory->Accessory->HasUnlimitedQuantity()) {
+                $accessories[$accessory->AccessoryId] = new AccessoryToCheck($accessory->Accessory, $accessory);
             }
         }
 

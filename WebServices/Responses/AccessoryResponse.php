@@ -18,12 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class AccessoryResponse extends RestResponse
 {
     public $id;
     public $name;
     public $quantityAvailable;
     public $associatedResources = array();
+	public $creditCount;
+    public $peakCreditCount;
+    public $creditApplicability;
 
     public function __construct(IRestServer $server, Accessory $accessory)
     {
@@ -31,11 +35,14 @@ class AccessoryResponse extends RestResponse
         $this->name = $accessory->GetName();
         $this->quantityAvailable = $accessory->GetQuantityAvailable();
         $this->associatedResources = $this->GetResources($server, $accessory->Resources());
+        $this->creditCount = $accessory->GetCreditCount();
+        $this->peakCreditCount = $accessory->GetPeakCreditCount();
+        $this->creditApplicability = $accessory->GetCreditApplicability();
     }
 
     public static function Example()
     {
-        return new ExampleAccessoryResponse(null, new Accessory(1, 'accessoryName', 10));
+        return new ExampleAccessoryResponse();
     }
 
     /**
@@ -82,6 +89,9 @@ class ExampleAccessoryResponse extends AccessoryResponse
         $this->name = 'accessoryName';
         $this->quantityAvailable = 10;
         $this->associatedResources = array(AssociatedResourceResponse::Example());
+        $this->creditCount = 1;
+        $this->peakCreditCount = 2;
+        $this->creditApplicability = CreditApplicability::SLOT;
     }
 }
 

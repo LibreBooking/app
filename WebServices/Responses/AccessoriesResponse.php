@@ -58,6 +58,9 @@ class AccessoryItemResponse extends RestResponse
 	public $name;
 	public $quantityAvailable;
     public $associatedResourceCount;
+    public $creditCount;
+    public $peakCreditCount;
+    public $creditApplicability;
 
     public function __construct(IRestServer $server, AccessoryDto $accessory)
 	{
@@ -65,6 +68,9 @@ class AccessoryItemResponse extends RestResponse
 		$this->name = $accessory->Name;
 		$this->quantityAvailable = $accessory->QuantityAvailable;
         $this->associatedResourceCount = $accessory->AssociatedResources;
+        $this->creditCount = $accessory->CreditCount;
+        $this->peakCreditCount = $accessory->PeakCreditCount;
+        $this->creditApplicability = $accessory->CreditApplicability;
 		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $this->id));
 	}
 
@@ -82,5 +88,8 @@ class ExampleAccessoryItemResponse extends AccessoryItemResponse
 		$this->name = 'accessoryName';
 		$this->quantityAvailable = 3;
         $this->associatedResourceCount = 10;
+        $this->creditCount = 1;
+        $this->peakCreditCount = 2;
+        $this->creditApplicability = 1;
 	}
 }

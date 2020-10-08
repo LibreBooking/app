@@ -21,6 +21,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class ReservationAccessory
 {
 	/**
+	 * @var Accessory
+	 */
+	public $Accessory;
+
+	/**
 	 * @var int
 	 */
 	public $AccessoryId;
@@ -31,24 +36,18 @@ class ReservationAccessory
 	public $QuantityReserved;
 
 	/**
-	 * @var null|string
-	 */
-	public $Name;
-
-	/**
-	 * @param int $accessoryId
+	 * @param Accessory $accessory
 	 * @param int $quantityReserved
-	 * @param string $accessoryName
 	 */
-	public function __construct($accessoryId, $quantityReserved, $accessoryName = null)
+	public function __construct(Accessory $accessory, $quantityReserved)
 	{
-		$this->AccessoryId = $accessoryId;
+		$this->Accessory = $accessory;
+		$this->AccessoryId = $accessory->GetId();
 		$this->QuantityReserved = $quantityReserved;
-		$this->Name = $accessoryName;
 	}
 
 	public function __toString()
 	{
-        return sprintf("ReservationAccessory id:%d quantity reserved:%d", $this->AccessoryId, $this->QuantityReserved);
+        return sprintf("ReservationAccessory id:%d quantity reserved:%d", $this->Accessory->GetId(), $this->QuantityReserved);
     }
 }

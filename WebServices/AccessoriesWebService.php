@@ -50,7 +50,7 @@ class AccessoriesWebService
 
 	/**
 	 * @name GetAllAccessories
-	 * @description Loads all accessories
+	 * @description Loads all accessories. CreditApplicability of 1 is per slot, 2 is per reservation
 	 * @response AccessoriesResponse
 	 * @return void
 	 */
@@ -62,7 +62,7 @@ class AccessoriesWebService
 
 	/**
 	 * @name GetAccessory
-	 * @description Loads a specific accessory by id
+	 * @description Loads a specific accessory by id. CreditApplicability of 1 is per slot, 2 is per reservation
 	 * @param int $accessoryId
 	 * @response AccessoryResponse
 	 * @return void

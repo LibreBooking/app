@@ -67,6 +67,9 @@ class Accessory
 		$this->id = $id;
 		$this->SetName($name);
 		$this->SetQuantityAvailable($quantityAvailable);
+		$this->creditApplicability = CreditApplicability::SLOT;
+		$this->peakCredits = 0;
+		$this->offPeakCredits = 0;
 	}
 
 	/**
@@ -199,7 +202,7 @@ class Accessory
 	{
 		$this->offPeakCredits = empty($offPeakCredits) ? 0 : $offPeakCredits;
 		$this->peakCredits = empty($peakCredits) ? 0 : $peakCredits;
-		$this->creditApplicability = $applicability;
+		$this->creditApplicability = empty($applicability) ? CreditApplicability::SLOT : $applicability;
 	}
 
 	/**

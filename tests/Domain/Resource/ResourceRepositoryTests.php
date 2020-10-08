@@ -233,7 +233,7 @@ class ResourceRepositoryTests extends TestBase
 	{
 		$ar = new ReservationAccessoryRow();
 		$ar
-		->WithAccessory(1, 3, "name", 3, 1, 2, CreditApplicability::SLOT)
+		->WithAccessory(1, 3, "name", 3, 10, 1, 2, CreditApplicability::SLOT)
 		->WithAccessory(2, 23, "slkjdf", 3);
 
 		$this->db->SetRows($ar->Rows());

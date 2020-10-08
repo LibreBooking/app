@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2014 Nick Korbel
+ * Copyright 2011-2020 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -44,9 +44,10 @@ class AccessoryResourceRuleTests extends TestBase
 
 	public function testRuleIsValidIfAccessoryIsNotTiedToAnyResources()
 	{
-		$accessory1 = new ReservationAccessory(1, 5);
+		$accessory = new Accessory(1, 'name1', null);
+		$accessory1 = new ReservationAccessory($accessory, 5);
 
-		$this->accessoryRepository->AddAccessory(new Accessory($accessory1->AccessoryId, 'name1', null));
+		$this->accessoryRepository->AddAccessory($accessory);
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithAccessory($accessory1);
@@ -61,14 +62,13 @@ class AccessoryResourceRuleTests extends TestBase
 	{
 		$resourceId = 1;
 
-		$accessory1 = new ReservationAccessory(1, 5);
+		$accessory = new Accessory(1, 'name1', 2);
+		$accessory->AddResource($resourceId, 1, 5);
+		$accessory1 = new ReservationAccessory($accessory, 5);
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithAccessory($accessory1);
 		$reservation->WithResource(new FakeBookableResource($resourceId));
-
-		$accessory = new Accessory($accessory1->AccessoryId, 'name1', 2);
-		$accessory->AddResource($resourceId, 1, 5);
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
@@ -81,13 +81,13 @@ class AccessoryResourceRuleTests extends TestBase
 	{
 		$resourceId = 1;
 		$accessoryId = 1;
+		$accessory = new Accessory($accessoryId, 'name1', null);
+		$accessory->AddResource($resourceId, null, null);
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource(new FakeBookableResource(1));
 		$reservation->AddResource(new FakeBookableResource(2));
-		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
-		$accessory = new Accessory(1, 'name1', null);
-		$accessory->AddResource($resourceId, null, null);
+		$reservation->WithAccessory(new ReservationAccessory($accessory, 10));
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
@@ -101,11 +101,12 @@ class AccessoryResourceRuleTests extends TestBase
 		$resourceId = 1;
 		$accessoryId = 1;
 
-		$reservation = new TestReservationSeries();
-		$reservation->WithResource(new FakeBookableResource(2));
-		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
 		$accessory = new Accessory($accessoryId, 'name1', null);
 		$accessory->AddResource($resourceId, 1, null);
+
+		$reservation = new TestReservationSeries();
+		$reservation->WithResource(new FakeBookableResource(2));
+		$reservation->WithAccessory(new ReservationAccessory($accessory, 10));
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
@@ -118,12 +119,12 @@ class AccessoryResourceRuleTests extends TestBase
 	{
 		$resourceId = 1;
 		$accessoryId = 1;
+		$accessory = new Accessory($accessoryId, 'name1', 1);
+		$accessory->AddResource($resourceId, 2, 10);
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource(new FakeBookableResource($resourceId));
-		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 1));
-		$accessory = new Accessory($accessoryId, 'name1', 1);
-		$accessory->AddResource($resourceId, 2, 10);
+		$reservation->WithAccessory(new ReservationAccessory($accessory, 1));
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
@@ -136,12 +137,12 @@ class AccessoryResourceRuleTests extends TestBase
 	{
 		$resourceId = 1;
 		$accessoryId = 1;
+		$accessory = new Accessory($accessoryId, 'name1', 1);
+		$accessory->AddResource($resourceId, 1, 10);
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource(new FakeBookableResource($resourceId));
-		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 11));
-		$accessory = new Accessory($accessoryId, 'name1', 1);
-		$accessory->AddResource($resourceId, 1, 10);
+		$reservation->WithAccessory(new ReservationAccessory($accessory, 11));
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
@@ -175,13 +176,13 @@ class AccessoryResourceRuleTests extends TestBase
 	{
 		$resourceId = 1;
 		$accessoryId = 1;
+		$accessory = new Accessory($accessoryId, 'name1', null);
+		$accessory->AddResource($resourceId, null, null);
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource(new FakeBookableResource(10));
 		$reservation->AddResource(new FakeBookableResource(20));
-		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
-		$accessory = new Accessory(1, 'name1', null);
-		$accessory->AddResource($resourceId, null, null);
+		$reservation->WithAccessory(new ReservationAccessory($accessory, 10));
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
@@ -191,21 +192,19 @@ class AccessoryResourceRuleTests extends TestBase
 	}
 
 	public function testRuleIsValidIfAccessoryNotTiedToResources()
-		{
-			$resourceId = 1;
-			$accessoryId = 1;
+	{
+		$resourceId = 1;
+		$accessoryId = 1;
+		$accessory = new Accessory($accessoryId, 'name1', null);
+		$accessory2 = new Accessory(2, 'name1', null);
+		$accessory2->AddResource(10, null, 1);
+		$reservation = new TestReservationSeries();
+		$reservation->WithResource(new FakeBookableResource($resourceId));
+		$reservation->WithAccessory(new ReservationAccessory($accessory, 10));
+		$this->accessoryRepository->AddAccessory($accessory);
 
-			$reservation = new TestReservationSeries();
-			$reservation->WithResource(new FakeBookableResource($resourceId));
-			$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
-			$accessory = new Accessory(1, 'name1', null);
-			$accessory2 = new Accessory(2, 'name1', null);
-			$accessory2->AddResource(10, null, 1);
+		$result = $this->rule->Validate($reservation, null);
 
-			$this->accessoryRepository->AddAccessory($accessory);
-
-			$result = $this->rule->Validate($reservation, null);
-
-			$this->assertTrue($result->IsValid());
-		}
+		$this->assertTrue($result->IsValid());
+	}
 }

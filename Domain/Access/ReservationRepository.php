@@ -383,10 +383,19 @@ class ReservationRepository implements IReservationRepository
 
     private function PopulateAccessories(ExistingReservationSeries $series)
     {
-        $getResourcesCommand = new GetReservationAccessoriesCommand($series->SeriesId());
-        $reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
+        $getReservationAccessoriesCommand = new GetReservationAccessoriesCommand($series->SeriesId());
+        $reader = ServiceLocator::GetDatabase()->Query($getReservationAccessoriesCommand);
         while ($row = $reader->GetRow()) {
-            $series->WithAccessory(new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY]));
+        	$accessory = new Accessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+        	$accessory->ChangeCredits($row[ColumnNames::CREDIT_COUNT], $row[ColumnNames::PEAK_CREDIT_COUNT], $row[ColumnNames::CREDIT_APPLICABILITY]);
+
+        	$getAccessoryResourcesCommand = new GetAccessoryResources($accessory->GetId());
+			$arReader = ServiceLocator::GetDatabase()->Query($getAccessoryResourcesCommand);
+			while ($arRow = $arReader->GetRow()) {
+				$accessory->AddResource($arRow[ColumnNames::RESOURCE_ID], $arRow[ColumnNames::ACCESSORY_MINIMUM_QUANTITY], $arRow[ColumnNames::ACCESSORY_MAXIMUM_QUANTITY]);
+			}
+
+            $series->WithAccessory(new ReservationAccessory($accessory, $row[ColumnNames::QUANTITY]));
         }
         $reader->Free();
     }
