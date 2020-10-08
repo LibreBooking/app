@@ -526,8 +526,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
+		$resource->ChangeCredits(2, 4, CreditApplicability::SLOT);
 
 		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
 		$instance->WithCreditsConsumed(10);
@@ -556,8 +555,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
+		$resource->ChangeCredits(2, 4, CreditApplicability::SLOT);
 
 		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
 		$instance->WithCreditsConsumed(14);
@@ -585,8 +583,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
+		$resource->ChangeCredits(2, 4, CreditApplicability::SLOT);
 
 		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(-2), Date::Now()->AddDays(-1)));
 		$instance->WithCreditsConsumed(10);
@@ -613,8 +610,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
+		$resource->ChangeCredits(2, 4, CreditApplicability::SLOT);
 
 		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(-2), Date::Now()->AddDays(-1)));
 		$instance->WithCreditsConsumed(12);
@@ -642,8 +638,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
+		$resource->ChangeCredits(2, 4, CreditApplicability::SLOT);
 
 		$accessory = new Accessory(1, "1", 100);
 		$accessory->ChangeCredits(1, 2, CreditApplicability::RESERVATION);
@@ -676,8 +671,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
+		$resource->ChangeCredits(2, 4, CreditApplicability::SLOT);
 
 		$accessory = new Accessory(1, "1", 100);
 		$accessory->ChangeCredits(1, 2, CreditApplicability::SLOT);

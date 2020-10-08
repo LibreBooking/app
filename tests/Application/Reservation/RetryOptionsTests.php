@@ -51,8 +51,7 @@ class RetryOptionsTests extends TestBase
 
 		$requiredCredits = 3;
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(1);
-		$resource->SetPeakCreditsPerSlot(1);
+		$resource->ChangeCredits(1, 1, CreditApplicability::SLOT);
 
 		$current = new TestReservation("1", new DateRange($now->AddDays(1), $now->AddDays(1)->AddHours(1)));
 		$conflict1 = new TestReservation("2", new DateRange($now->AddDays(2), $now->AddDays(2)->AddHours(1)));

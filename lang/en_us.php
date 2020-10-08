@@ -619,7 +619,7 @@ class en_us extends Language
 		$strings['NameOrEmail'] = 'name or email';
 		$strings['ImportResources'] = 'Import Resources';
 		$strings['ExportResources'] = 'Export Resources';
-		$strings['ResourceImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Name is required field. Leaving other fields blank will set default values.</li><li>Status options are \'Available\', \'Unavailable\' and \'Hidden\'.</li><li>Color should be the hex value. ex) #ffffff.</li><li>Auto assign and approval columns can be true or false.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource groups.</li><li>Durations can be specified in the format #d#h#m or HH:mm (1d3h30m or 27:30 for 1 day, 3 hours, 30 minutes)</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['ResourceImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Name is required field. Leaving other fields blank will set default values.</li><li>Status options are \'Available\', \'Unavailable\' and \'Hidden\'.</li><li>Color should be the hex value. ex) #ffffff.</li><li>Auto assign and approval columns can be true or false.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource groups.</li><li>Durations can be specified in the format #d#h#m or HH:mm (1d3h30m or 27:30 for 1 day, 3 hours, 30 minutes)</li><li>Credit Applicability can be 1 for per slot and 2 for per reservation</li><li>Use the supplied template as an example.</li></ul>';
 		$strings['ReservationImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Email, resource names, begin, and end are required fields.</li><li>Begin and end require full date time. Recommended format is YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Rules, conflicts, and valid time slots will not be checked.</li><li>Notifications will not be sent.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource names.</li><li>Use the supplied template as an example.</li></ul>';
 		$strings['AutoReleaseMinutes'] = 'Autorelease Minutes';
 		$strings['CreditsPeak'] = 'Credits (peak)';
@@ -812,7 +812,8 @@ class en_us extends Language
 		$strings['ApiOnlyDetails'] = 'This user will only be able to log in through the API';
 		$strings['PerReservation'] = 'per reservation';
 		$strings['PerSlot'] = 'per slot';
-		$strings['CreditApplicability'] = 'Credits Calculated';
+		$strings['CreditsCalculated'] = 'Credits Calculated';
+		$strings['CreditsApplied'] = 'Credit Applicability';
         // End Strings
 
 		// Install

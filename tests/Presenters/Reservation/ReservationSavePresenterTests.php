@@ -130,8 +130,7 @@ class ReservationSavePresenterTests extends TestBase
 		$this->page->attachment = $attachment;
 
 		$resource = new FakeBookableResource($resourceId, 'r1');
-		$resource->SetCreditsPerSlot(1);
-		$resource->SetPeakCreditsPerSlot(1);
+		$resource->ChangeCredits(1, 1, CreditApplicability::SLOT);
 		$additionalResource1 = new FakeBookableResource($additionalResources[0], 'r2');
 		$additionalResource2 = new FakeBookableResource($additionalResources[1], 'r3');
 

@@ -48,8 +48,9 @@ class ResourceResponse extends RestResponse
     public $autoReleaseMinutes;
     public $requiresCheckIn;
     public $color;
-    public $creditsPerSlot;
-    public $peakCreditsPerSlot;
+    public $credits;
+    public $peakCredits;
+    public $creditApplicability;
     public $maxConcurrentReservations;
 
     /**
@@ -84,8 +85,9 @@ class ResourceResponse extends RestResponse
         $this->autoReleaseMinutes = $resource->GetAutoReleaseMinutes();
         $this->requiresCheckIn = $resource->IsCheckInEnabled();
         $this->color = $resource->GetColor();
-        $this->creditsPerSlot = $resource->GetCreditsPerSlot();
-        $this->peakCreditsPerSlot = $resource->GetPeakCreditsPerSlot();
+        $this->credits = $resource->GetCredits();
+        $this->peakCredits = $resource->GetPeakCredits();
+        $this->creditApplicability = $resource->GetCreditApplicability();
         $this->maxConcurrentReservations = $resource->GetMaxConcurrentReservations();
 
 		$attributeValues = $attributes->GetAttributes($resourceId);
@@ -141,8 +143,9 @@ class ExampleResourceResponse extends ResourceResponse
         $this->autoReleaseMinutes = 15;
         $this->requiresCheckIn = true;
         $this->color = '#ffffff';
-        $this->creditsPerSlot = 3;
-        $this->peakCreditsPerSlot = 6;
+        $this->credits = 3;
+        $this->peakCredits = 6;
+        $this->creditApplicability = CreditApplicability::SLOT;
         $this->maxConcurrentReservations = 1;
 
 		$this->customAttributes = array(CustomAttributeResponse::Example());

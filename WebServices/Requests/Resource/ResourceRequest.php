@@ -109,13 +109,17 @@ class ResourceRequest extends JsonRequest
      */
     public $color;
     /**
-     * @var int|null
+     * @var float|null
      */
-    public $creditsPerSlot;
+    public $credits;
     /**
-     * @var int|null
+     * @var float|null
      */
-    public $peakCreditsPerSlot;
+    public $peakCredits;
+	/**
+	 * @var int|null
+	 */
+    public $creditApplicability;
 	/**
 	 * @var int|null
 	 */
@@ -166,8 +170,9 @@ class ExampleResourceRequest extends ResourceRequest
         $this->autoReleaseMinutes = 15;
         $this->requiresCheckIn = true;
         $this->color = '#ffffff';
-        $this->creditsPerSlot = 3;
-        $this->peakCreditsPerSlot = 6;
+        $this->credits = 3;
+        $this->peakCredits = 6;
+        $this->creditApplicability = CreditApplicability::SLOT;
         $this->maxConcurrentReservations = 1;
     }
 }

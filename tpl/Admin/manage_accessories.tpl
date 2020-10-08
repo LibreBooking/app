@@ -170,7 +170,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									   class="form-control" {formname key=PEAK_CREDITS} />
 							</div>
 							<div class="form-group col-xs-4">
-								<label for="editCreditApplicability">{translate key='CreditApplicability'}</label>
+								<label for="editCreditApplicability">{translate key='CreditsCalculated'}</label>
 								<select id="editCreditApplicability"
 										class="form-control" {formname key=CREDITS_APPLICABILITY}>
 									<option value="{CreditApplicability::SLOT}">{translate key=PerSlot}</option>

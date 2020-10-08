@@ -83,8 +83,7 @@ class ResourceSaveControllerTests extends TestBase
 		$expectedUpdateResource->ChangeAttributes($attributes);
 		$expectedUpdateResource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
         $expectedUpdateResource->SetColor($request->color);
-        $expectedUpdateResource->SetCreditsPerSlot($request->creditsPerSlot);
-        $expectedUpdateResource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
+		$expectedUpdateResource->ChangeCredits($request->credits, $request->peakCredits, $request->creditApplicability);
 
 		$this->validator->expects($this->once())
 				->method('ValidateCreateRequest')
@@ -150,8 +149,7 @@ class ResourceSaveControllerTests extends TestBase
 		$expectedUpdateResource->ChangeAttributes($attributes);
         $expectedUpdateResource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
         $expectedUpdateResource->SetColor($request->color);
-        $expectedUpdateResource->SetCreditsPerSlot($request->creditsPerSlot);
-        $expectedUpdateResource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
+		$expectedUpdateResource->ChangeCredits($request->credits, $request->peakCredits, $request->creditApplicability);
 
 		$this->validator->expects($this->once())
 				->method('ValidateUpdateRequest')

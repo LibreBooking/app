@@ -575,8 +575,9 @@ class BookableResource implements IBookableResource
 	protected $_autoReleaseMinutes = null;
 	protected $_color;
 	protected $_textColor;
-	protected $_creditsPerSlot;
-	protected $_peakCreditsPerSlot;
+	protected $_offPeakCredits;
+	protected $_peakCredits;
+	protected $_creditApplicability;
 	protected $_maxConcurrentReservations = 1;
 
 	/**
@@ -717,8 +718,7 @@ class BookableResource implements IBookableResource
 			$resource->_imageNames = explode('!sep!', $row[ColumnNames::RESOURCE_IMAGE_LIST]);
 		}
 
-		$resource->WithCreditsPerSlot($row[ColumnNames::CREDIT_COUNT]);
-		$resource->WithPeakCreditsPerSlot($row[ColumnNames::PEAK_CREDIT_COUNT]);
+		$resource->ChangeCredits($row[ColumnNames::CREDIT_COUNT], $row[ColumnNames::PEAK_CREDIT_COUNT], $row[ColumnNames::CREDIT_APPLICABILITY]);
 		$resource->SetMinNoticeUpdate($row[ColumnNames::RESOURCE_MINNOTICE_UPDATE]);
 		$resource->SetMinNoticeDelete($row[ColumnNames::RESOURCE_MINNOTICE_DELETE]);
 		$resource->DeserializeProperties($row[ColumnNames::RESOURCE_ADDITIONAL_PROPERTIES]);
@@ -1661,48 +1661,39 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @return float
 	 */
-	protected function WithCreditsPerSlot($creditsPerSlot)
+	public function GetCredits()
 	{
-		$this->_creditsPerSlot = $creditsPerSlot;
+		return empty($this->_offPeakCredits) ? 0 : $this->_offPeakCredits;
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @return float
 	 */
-	protected function WithPeakCreditsPerSlot($creditsPerSlot)
+	public function GetPeakCredits()
 	{
-		$this->_peakCreditsPerSlot = $creditsPerSlot;
+		return empty($this->_peakCredits) ? 0 : $this->_peakCredits;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function GetCreditsPerSlot()
+	public function GetCreditApplicability()
 	{
-		return empty($this->_creditsPerSlot) ? 0 : $this->_creditsPerSlot;
-	}
-
-	public function GetPeakCreditsPerSlot()
-	{
-		return empty($this->_peakCreditsPerSlot) ? 0 : $this->_peakCreditsPerSlot;
+		return empty($this->_creditApplicability) ? CreditApplicability::SLOT : $this->_creditApplicability;
 	}
 
 	/**
-	 * @param $creditsPerSlot int
+	 * @param float|null $offPeakCredits
+	 * @param float|null $peakCredits
+	 * @param int|CreditApplicability $applicability
 	 */
-	public function SetCreditsPerSlot($creditsPerSlot)
+	public function ChangeCredits($offPeakCredits, $peakCredits, $applicability)
 	{
-		$this->_creditsPerSlot = $creditsPerSlot;
-	}
-
-	/**
-	 * @param $creditsPerSlot int
-	 */
-	public function SetPeakCreditsPerSlot($creditsPerSlot)
-	{
-		$this->_peakCreditsPerSlot = $creditsPerSlot;
+		$this->_offPeakCredits = empty($offPeakCredits) ? 0 : $offPeakCredits;
+		$this->_peakCredits = empty($peakCredits) ? 0 : $peakCredits;
+		$this->_creditApplicability = CreditApplicability::Create($applicability);
 	}
 
 	/**

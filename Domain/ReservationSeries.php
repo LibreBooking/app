@@ -735,7 +735,7 @@ class ReservationSeries
 		$creditsPerReservation = 0;
 		foreach ($this->AllResources() as $resource)
 		{
-			$creditsPerSlot += ($resource->GetCreditsPerSlot() + $resource->GetPeakCreditsPerSlot());
+			$creditsPerSlot += ($resource->GetCredits() + $resource->GetPeakCredits());
 		}
 
 		foreach ($this->Accessories() as $accessory)
@@ -817,8 +817,8 @@ class ReservationSeries
 			$creditsRequired = 0;
 			foreach ($this->AllResources() as $resource)
 			{
-				$resourceCredits = $resource->GetCreditsPerSlot();
-				$peakCredits = $resource->GetPeakCreditsPerSlot();
+				$resourceCredits = $resource->GetCredits();
+				$peakCredits = $resource->GetPeakCredits();
 
 				$creditsRequired += $resourceCredits * $instanceSlots;
 				$creditsRequired += $peakCredits * $peakSlots;

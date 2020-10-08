@@ -78,6 +78,7 @@ function ResourceManagement(opts) {
 		creditsForm: $('#creditsForm'),
 		creditsPerSlot: $('#creditsPerSlot'),
 		peakCreditsPerSlot: $('#peakCreditsPerSlot'),
+		creditApplicability: $('#creditApplicability'),
 
 		checkAllResources: $('#checkAllResources'),
 		checkNoResources: $('#checkNoResources'),
@@ -249,6 +250,7 @@ function ResourceManagement(opts) {
 				var resource = getActiveResource();
 				elements.creditsPerSlot.val(resource.credits);
 				elements.peakCreditsPerSlot.val(resource.peakCredits);
+				elements.creditApplicability.val(resource.creditApplicability);
 				elements.creditsDialog.modal('show');
 			});
 
@@ -819,11 +821,13 @@ function ResourceManagement(opts) {
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.creditsPlaceHolder').html(resultHtml);
 
-		var credits = resourceDiv.find('.creditsPerSlot');
-		var peak = resourceDiv.find('.peakCreditsPerSlot');
+		var credits = resourceDiv.find('.creditCount');
+		var peak = resourceDiv.find('.peakCreditCount');
+		var creditApplicability = resourceDiv.find('.creditApplicability');
 
 		resource.credits = credits.attr('data-value');
 		resource.peakCredits = peak.attr('data-value');
+		resource.creditApplicability = creditApplicability.attr('data-value');
 
 		elements.creditsDialog.modal('hide');
 	};

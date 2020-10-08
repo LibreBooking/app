@@ -485,9 +485,11 @@ class ManageResourcesPresenter extends ActionPresenter
 
 			$reservations = $this->reservationViewRepository->GetReservations(Date::Now(), Date::Now()->AddDays($days), null, null, null, $resourceId);
 
-			foreach ($reservations as $reservation) {
+			foreach ($reservations as $reservation)
+			{
 				$email = $reservation->OwnerEmailAddress;
-				if (!array_key_exists($email, $emails)) {
+				if (!array_key_exists($email, $emails))
+				{
 					$emails[$email] = 1;
 					ServiceLocator::GetEmailService()->Send(new ResourceStatusChangeEmail($email, $resource, $message, $reservation->OwnerLanguage));
 				}
@@ -683,6 +685,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$allowSubscription = $this->page->GetAllowSubscriptions();
 		$credits = $this->page->GetCredits();
 		$peakCredits = $this->page->GetPeakCredits();
+		$creditApplicability = $this->page->GetCreditApplicability();
 		$maxCapacity = $this->page->GetMaxParticipants();
 		$unlimitedCapacity = $this->page->GetMaxParticipantsUnlimited();
 		$allowConcurrent = $this->page->GetBulkAllowConcurrentReservations();
@@ -813,14 +816,21 @@ class ManageResourcesPresenter extends ActionPresenter
 						$resource->DisableSubscription();
 					}
 				}
-				if (!empty($credits))
+				if (empty($credits))
 				{
-					$resource->SetCreditsPerSlot($credits);
+					$credits = $resource->GetCredits();
+
 				}
-				if (!empty($peakCredits))
+				if (empty($peakCredits))
 				{
-					$resource->SetPeakCreditsPerSlot($peakCredits);
+					$peakCredits = $resource->GetPeakCredits();
 				}
+				if (!$this->ChangingDropDown($creditApplicability))
+				{
+					$creditApplicability = $resource->GetCreditApplicability();
+				}
+
+				$resource->ChangeCredits($credits, $peakCredits, $creditApplicability);
 
 				if ($unlimitedCapacity)
 				{
@@ -931,10 +941,10 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resourceId = $this->page->GetResourceId();
 		$credits = $this->page->GetCredits();
 		$peakCredits = $this->page->GetPeakCredits();
+		$creditApplicability = $this->page->GetCreditApplicability();
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
-		$resource->SetCreditsPerSlot($credits);
-		$resource->SetPeakCreditsPerSlot($peakCredits);
+		$resource->ChangeCredits($credits, $peakCredits, $creditApplicability);
 
 		$this->resourceRepository->Update($resource);
 
@@ -1115,8 +1125,7 @@ class ManageResourcesPresenter extends ActionPresenter
 				$resource->SetMinNoticeUpdate($row->updateNotice);
 				$resource->SetMinNoticeDelete($row->deleteNotice);
 				$resource->SetCheckin($row->checkIn, $row->autoreleaseMinutes);
-				$resource->SetCreditsPerSlot($row->credits);
-				$resource->SetPeakCreditsPerSlot($row->creditsPeak);
+				$resource->ChangeCredits($row->credits, $row->creditsPeak, $row->creditApplicability);
 				$resource->SetMaxConcurrentReservations($row->maximumConcurrent);
 
 				foreach ($row->attributes as $label => $value)

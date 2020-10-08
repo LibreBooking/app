@@ -385,14 +385,19 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function GetAutoReleaseMinutes();
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function GetCredits();
 
 	/**
-	 * @return int
+	 * @return float
 	 */
 	public function GetPeakCredits();
+
+	/**
+	 * @return int
+	 */
+	public function GetCreditApplicability();
 
 	public function BindUpdatedResourceCredits(BookableResource $resource);
 
@@ -1046,6 +1051,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetPeakCredits()
 	{
 		return $this->GetForm(FormKeys::PEAK_CREDITS);
+	}
+
+	public function GetCreditApplicability()
+	{
+		return $this->GetForm(FormKeys::CREDITS_APPLICABILITY);
 	}
 
 	public function BindUpdatedResourceCredits(BookableResource $resource)

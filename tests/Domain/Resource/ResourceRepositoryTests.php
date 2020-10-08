@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2020 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
@@ -95,8 +95,9 @@ class ResourceRepositoryTests extends TestBase
 		$autoReleaseMinutes = 40;
 		$credits = 100;
 		$peakCredits = 200;
-        $minNoticeUpdate = 19291;
-        $minNoticeDelete = 9919;
+		$creditApplicability = CreditApplicability::SLOT;
+		$minNoticeUpdate = 19291;
+		$minNoticeDelete = 9919;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -122,8 +123,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetBufferTime($bufferTime);
 		$resource->SetColor($color);
 		$resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
-		$resource->SetCreditsPerSlot($credits);
-		$resource->SetPeakCreditsPerSlot($peakCredits);
+		$resource->ChangeCredits($credits, $peakCredits, $creditApplicability);
 		$resource->SetMinNoticeUpdate($minNoticeUpdate);
 		$resource->SetMinNoticeDelete($minNoticeDelete);
 
@@ -132,39 +132,40 @@ class ResourceRepositoryTests extends TestBase
 		$this->repository->Update($resource);
 
 		$expectedUpdateResourceCommand = new UpdateResourceCommand(
-			$id,
-			$name,
-			$location,
-			$contact,
-			$notes,
-			new TimeInterval($minLength),
-			new TimeInterval($maxLength),
-			$autoAssign,
-			$requiresApproval,
-			$allowMultiday,
-			$maxParticipants,
-			new TimeInterval($minNoticeAdd),
-			new TimeInterval($maxNotice),
-			$description,
-			$imageName,
-			$scheduleId,
-			$adminGroupId,
-			$allowSubscription,
-			$publicId,
-			$sortOrder,
-			$resourceTypeId,
-			ResourceStatus::AVAILABLE,
-			$reasonId,
-			new TimeInterval($bufferTime),
-			'#cccccc',
-			$enableCheckin,
-			$autoReleaseMinutes,
-			true,
-			$credits,
-			$peakCredits,
-            new TimeInterval($minNoticeUpdate),
-            new TimeInterval($minNoticeDelete),
-			ResourceProperties::FromResource($resource)->Serialize()
+				$id,
+				$name,
+				$location,
+				$contact,
+				$notes,
+				new TimeInterval($minLength),
+				new TimeInterval($maxLength),
+				$autoAssign,
+				$requiresApproval,
+				$allowMultiday,
+				$maxParticipants,
+				new TimeInterval($minNoticeAdd),
+				new TimeInterval($maxNotice),
+				$description,
+				$imageName,
+				$scheduleId,
+				$adminGroupId,
+				$allowSubscription,
+				$publicId,
+				$sortOrder,
+				$resourceTypeId,
+				ResourceStatus::AVAILABLE,
+				$reasonId,
+				new TimeInterval($bufferTime),
+				'#cccccc',
+				$enableCheckin,
+				$autoReleaseMinutes,
+				true,
+				$credits,
+				$peakCredits,
+				new TimeInterval($minNoticeUpdate),
+				new TimeInterval($minNoticeDelete),
+				ResourceProperties::FromResource($resource)->Serialize(),
+				$creditApplicability
 		);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
@@ -233,8 +234,8 @@ class ResourceRepositoryTests extends TestBase
 	{
 		$ar = new ReservationAccessoryRow();
 		$ar
-		->WithAccessory(1, 3, "name", 3, 10, 1, 2, CreditApplicability::SLOT)
-		->WithAccessory(2, 23, "slkjdf", 3);
+				->WithAccessory(1, 3, "name", 3, 10, 1, 2, CreditApplicability::SLOT)
+				->WithAccessory(2, 23, "slkjdf", 3);
 
 		$this->db->SetRows($ar->Rows());
 
@@ -263,8 +264,8 @@ class ResourceRepositoryTests extends TestBase
 
 		$car = new CustomAttributeValueRow();
 		$car
-		->With(1, 'value')
-		->With(2, 'value2');
+				->With(1, 'value')
+				->With(2, 'value2');
 		$this->db->SetRow(1, $car->Rows());
 		$loadResourceCommand = new GetResourceByPublicIdCommand($publicId);
 		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
@@ -288,10 +289,10 @@ class ResourceRepositoryTests extends TestBase
 
 		$car = new CustomAttributeValueRow();
 		$car
-		->With(1, 'value')
-		->With(2, 'value2');
+				->With(1, 'value')
+				->With(2, 'value2');
 		$this->db->SetRow(1, $car->Rows());
-		$this->db->SetRow(2, array( array(ColumnNames::RESOURCE_ID => $id, ColumnNames::RESOURCE_GROUP_ID => 1)));
+		$this->db->SetRow(2, array(array(ColumnNames::RESOURCE_ID => $id, ColumnNames::RESOURCE_GROUP_ID => 1)));
 
 		$loadResourceCommand = new GetResourceByIdCommand($id);
 		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
@@ -342,28 +343,28 @@ class ResourceRepositoryTests extends TestBase
 
 		$groupRows = new ResourceGroupRow();
 		$groupRows
-		->With(1, 'group1')
-		->With(2, 'group1a', 1)
-		->With(3, 'group1a1', 2)
-		->With(4, 'group2')
-		->With(5, 'group2a', 4)
-		->With(6, 'group3')
-		->With(7, 'group1b', 1);
+				->With(1, 'group1')
+				->With(2, 'group1a', 1)
+				->With(3, 'group1a1', 2)
+				->With(4, 'group2')
+				->With(5, 'group2a', 4)
+				->With(6, 'group3')
+				->With(7, 'group1b', 1);
 
 		$assignmentRows = new ResourceGroupAssignmentRow();
 		$assignmentRows
-		->With(1, 'resource1', 3)
-		->With(2, 'resource2', 3)
-		->With(3, 'resource3', 4)
-		->With(4, 'resource4', 5)
-		->With(5, 'resource5', 5);
+				->With(1, 'resource1', 3)
+				->With(2, 'resource2', 3)
+				->With(3, 'resource3', 4)
+				->With(4, 'resource4', 5)
+				->With(5, 'resource5', 5);
 
 		$resourceRows = new FakeResourceAccess();
 		$resourceRows->With(1, 'resource1')
-				->With(2, 'resource2')
-				->With(3, 'resource3')
-				->With(4, 'resource4')
-				->With(5, 'resource5');
+					 ->With(2, 'resource2')
+					 ->With(3, 'resource3')
+					 ->With(4, 'resource4')
+					 ->With(5, 'resource5');
 
 		$this->db->SetRow(0, $groupRows->Rows());
 		$this->db->SetRow(1, $assignmentRows->Rows());
@@ -466,9 +467,9 @@ class ResourceRepositoryTests extends TestBase
 	{
 		$rows = new ResourceTypeRow();
 		$rows
-		->With(1, 'resourcetype1', 'description')
-		->With(2, 'resourcetype2', null)
-		->With(3, 'resourcetype3', '');
+				->With(1, 'resourcetype1', 'description')
+				->With(2, 'resourcetype2', null)
+				->With(3, 'resourcetype3', '');
 
 		$this->db->SetRows($rows->Rows());
 
@@ -545,8 +546,8 @@ class ResourceRepositoryTests extends TestBase
 
 		$car = new CustomAttributeValueRow();
 		$car
-		->With(1, 'value')
-		->With(2, 'value2');
+				->With(1, 'value')
+				->With(2, 'value2');
 		$this->db->SetRow(0, $rows->Rows());
 		$this->db->SetRow(1, $car->Rows());
 
@@ -595,10 +596,10 @@ class ResourceRepositoryTests extends TestBase
 		);
 		$this->db->SetRows($rows);
 
-        $g1 = new GroupPermissionItemView(1, 'g1');
-        $g1->PermissionType = ResourcePermissionType::Full;
-        $g2 = new GroupPermissionItemView(2, 'g2');
-        $g2->PermissionType = ResourcePermissionType::View;
+		$g1 = new GroupPermissionItemView(1, 'g1');
+		$g1->PermissionType = ResourcePermissionType::Full;
+		$g2 = new GroupPermissionItemView(2, 'g2');
+		$g2->PermissionType = ResourcePermissionType::View;
 
 		$list = $this->repository->GetGroupsWithPermission($resourceId);
 		$results = $list->Results();

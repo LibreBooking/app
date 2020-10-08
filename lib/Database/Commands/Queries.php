@@ -1126,7 +1126,8 @@ class Queries
 			`credit_count` = @credit_count,
 			`peak_credit_count` = @peak_credit_count,
 			`last_modified` = @dateModified,
-			`additional_properties` = @additional_properties
+			`additional_properties` = @additional_properties,
+			`credit_applicability` = @credit_applicability
 		WHERE
 			`resource_id` = @resourceid';
 

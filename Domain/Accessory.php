@@ -202,7 +202,7 @@ class Accessory
 	{
 		$this->offPeakCredits = empty($offPeakCredits) ? 0 : $offPeakCredits;
 		$this->peakCredits = empty($peakCredits) ? 0 : $peakCredits;
-		$this->creditApplicability = empty($applicability) ? CreditApplicability::SLOT : $applicability;
+		$this->creditApplicability = CreditApplicability::Create($applicability);
 	}
 
 	/**

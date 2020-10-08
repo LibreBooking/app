@@ -63,8 +63,8 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
         $this->Set('autoReleaseMinutes', $resource->GetAutoReleaseMinutes());
         $this->Set('isCheckInEnabled', $resource->IsCheckInEnabled());
         $this->Set('creditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
-        $this->Set('peakCredits', $resource->GetPeakCreditsPerSlot());
-        $this->Set('offPeakCredits', $resource->GetCreditsPerSlot());
+        $this->Set('peakCredits', $resource->GetPeakCredits());
+        $this->Set('offPeakCredits', $resource->GetCredits());
 
         if ($resource->HasImage())
         {

@@ -16,12 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="creditsPerSlot"
-	 data-value="{$resource->GetCreditsPerSlot()}">
-	{translate key=CreditUsagePerSlot args=$resource->GetCreditsPerSlot()}
+<div class="creditCount"
+	 data-value="{$resource->GetCredits()}">
+	{translate key='CreditsOffPeak'} {$resource->GetCredits()}
 </div>
 
-<div class="peakCreditsPerSlot"
-	 data-value="{$resource->GetPeakCreditsPerSlot()}">
-	{translate key=PeakCreditUsagePerSlot args=$resource->GetPeakCreditsPerSlot()}
+<div class="peakCreditCount"
+	 data-value="{$resource->GetPeakCredits()}">
+	{translate key='CreditsPeak'} {$resource->GetPeakCredits()}
+</div>
+
+<div class="creditApplicability"
+	 data-value="{$resource->GetCreditApplicability()}">
+	{translate key='CreditsCalculated'} {if $resource->GetCreditApplicability() == CreditApplicability::RESERVATION}{translate key=PerReservation}{else}{translate key=PerSlot}{/if}
 </div>

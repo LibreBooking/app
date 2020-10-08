@@ -979,7 +979,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div class="form-group">
 									<label for="statusMessageSendDays">{translate key=AllUsersWhoHaveAReservationInTheNext}</label>
 									<div class="input-group">
-										<input type="number" min="1" max="365" step="1" value="30" id="statusMessageSendDays" class="form-control" {formname key=DAY}/>
+										<input type="number" min="1" max="365" step="1" value="30" id="statusMessageSendDays"
+											   class="form-control" {formname key=DAY}/>
 										<div class="input-group-addon">{translate key=days}</div>
 									</div>
 								</div>
@@ -1404,20 +1405,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {if $CreditsEnabled}
 							<div class="title">{translate key=Credits}</div>
 							<div class="form-group">
-                                {capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
-									<label for='bulkEditCreditsPerSlot' class='no-show'>Credits Per Slot</label>
-									<input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
-										   class='credits form-control inline' {formname key=CREDITS} />
-                                {/capture}
-                                {translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
+								<label for='bulkEditCreditsPerSlot'>{translate key=CreditsOffPeak}</label>
+								<input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
+									   class='credits form-control' {formname key=CREDITS} />
 							</div>
 							<div class="form-group">
-                                {capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
-									<label for='bulkEditPeakCreditsPerSlot' class='no-show'>Peak Credits Per Slot</label>
-									<input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
-										   class='credits form-control inline' {formname key=PEAK_CREDITS} />
-                                {/capture}
-                                {translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
+								<label for='bulkEditPeakCreditsPerSlot'>{translate key=CreditsPeak}</label>
+								<input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
+									   class='credits form-control' {formname key=PEAK_CREDITS} />
+							</div>
+							<div class="form-group">
+								<label for="bulkEditCreditApplicability">{translate key='CreditsCalculated'}</label>
+								<select id="bulkEditCreditApplicability"
+										class="form-control" {formname key=CREDITS_APPLICABILITY}>
+									<option value="-1">{translate key=Unchanged}</option>
+									<option value="{CreditApplicability::SLOT}">{translate key=PerSlot}</option>
+									<option value="{CreditApplicability::RESERVATION}">{translate key=PerReservation}</option>
+								</select>
 							</div>
                         {/if}
 
@@ -1601,22 +1605,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="creditsModalLabel">{translate key=Credits}</h4>
 					</div>
 					<div class="modal-body">
-						<div>
-                            {capture name="creditsPerSLot" assign="creditsPerSLot"}
-								<label for='creditsPerSlot' class='no-show'>Credits Per Slot</label>
-								<input type='number' min='0' step='1' id='creditsPerSlot'
-									   class='credits form-control inline' {formname key=CREDITS} />
-                            {/capture}
-                            {translate key='CreditUsagePerSlot' args=$creditsPerSLot}
+						<div class="form-group">
+							<label for='creditsPerSlot'>{translate key=CreditsOffPeak}</label>
+							<input type='number' min='0' step='1' id='creditsPerSlot'
+								   class='credits form-control' {formname key=CREDITS} />
+						</div>
+						<div class="form-group">
+							<label for='peakCreditsPerSlot'>{translate key=CreditsPeak}</label>
+							<input type='number' min='0' step='1' id='peakCreditsPerSlot'
+								   class='credits form-control' {formname key=PEAK_CREDITS} />
 						</div>
 
-						<div>
-                            {capture name="peakCreditsPerSlot" assign="peakCreditsPerSlot"}
-								<label for='peakCreditsPerSlot' class='no-show'>Peak Credits Per Slot</label>
-								<input type='number' min='0' step='1' id='peakCreditsPerSlot'
-									   class='credits form-control inline' {formname key=PEAK_CREDITS} />
-                            {/capture}
-                            {translate key='PeakCreditUsagePerSlot' args=$peakCreditsPerSlot}
+						<div class="form-group">
+							<label for="creditApplicability">{translate key='CreditsCalculated'}</label>
+							<select id="creditApplicability"
+									class="form-control" {formname key=CREDITS_APPLICABILITY}>
+								<option value="{CreditApplicability::SLOT}">{translate key=PerSlot}</option>
+								<option value="{CreditApplicability::RESERVATION}">{translate key=PerReservation}</option>
+							</select>
 						</div>
 					</div>
 
@@ -1858,8 +1864,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				allowSubscription: '{$resource->GetIsCalendarSubscriptionAllowed()}',
 				enableCheckin: '{$resource->IsCheckInEnabled()}',
 				autoReleaseMinutes: '{$resource->GetAutoReleaseMinutes()}',
-				credits: '{$resource->GetCreditsPerSlot()}',
-				peakCredits: '{$resource->GetPeakCreditsPerSlot()}',
+				credits: '{$resource->GetCredits()}',
+				peakCredits: '{$resource->GetPeakCredits()}',
+				creditApplicability: '{$resource->GetCreditApplicability()}',
 				allowConcurrent: '{$resource->GetAllowConcurrentReservations()}',
 				maxConcurrent: '{$resource->GetMaxConcurrentReservations()}'
 			};

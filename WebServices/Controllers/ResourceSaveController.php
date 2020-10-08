@@ -153,8 +153,7 @@ class ResourceSaveController implements IResourceSaveController
 
         $resource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
         $resource->SetColor($request->color);
-        $resource->SetCreditsPerSlot($request->creditsPerSlot);
-        $resource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
+        $resource->ChangeCredits($request->credits, $request->peakCredits, $request->creditApplicability);
         if (isset($request->maxConcurrentReservations)) {
         	$resource->SetMaxConcurrentReservations(intval($request->maxConcurrentReservations));
 		}

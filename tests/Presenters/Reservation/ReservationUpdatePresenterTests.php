@@ -106,8 +106,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$removedResourceId = 190;
 
 		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(1);
-		$resource->SetPeakCreditsPerSlot(1);
+		$resource->ChangeCredits(1, 1, CreditApplicability::SLOT);
 		$additionalId1 = $this->page->resourceIds[0];
 		$additionalId2 = $this->page->resourceIds[1];
 		$additional1 = new FakeBookableResource($additionalId1);

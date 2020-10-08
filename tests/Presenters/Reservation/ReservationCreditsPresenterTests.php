@@ -77,10 +77,10 @@ class ReservationCreditsPresenterTests extends TestBase
 	{
 		$scheduleId = 100;
 		$resource1 = new FakeBookableResource(1);
-		$resource1->SetCreditsPerSlot(1);
+		$resource1->ChangeCredits(1, 0, CreditApplicability::SLOT);
 		$resource1->SetScheduleId($scheduleId);
 		$resource2 = new FakeBookableResource(2);
-		$resource2->SetCreditsPerSlot(1);
+		$resource2->ChangeCredits(1, 0, CreditApplicability::SLOT);
 		$resource2->SetScheduleId($scheduleId);
 
 		foreach ($this->page->GetAccessories() as $a)
@@ -115,10 +115,10 @@ class ReservationCreditsPresenterTests extends TestBase
 		$pageDate = Date::Now()->AddDays(1);
 		$scheduleId = 100;
 		$resource1 = new FakeBookableResource(1);
-		$resource1->SetCreditsPerSlot(1);
+		$resource1->ChangeCredits(1, 0, CreditApplicability::SLOT);
 		$resource1->SetScheduleId($scheduleId);
 		$resource2 = new FakeBookableResource(2);
-		$resource2->SetCreditsPerSlot(1);
+		$resource2->ChangeCredits(1, 0, CreditApplicability::SLOT);
 		$resource2->SetScheduleId($scheduleId);
 
 		foreach ($this->page->GetAccessories() as $a)
