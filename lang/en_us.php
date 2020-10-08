@@ -810,6 +810,9 @@ class en_us extends Language
 		$strings['CheckingAvailabilityError'] = 'Cannot get resource availability - too many resources';
 		$strings['ApiOnly'] = 'API Access Only';
 		$strings['ApiOnlyDetails'] = 'This user will only be able to log in through the API';
+		$strings['PerReservation'] = 'per reservation';
+		$strings['PerSlot'] = 'per slot';
+		$strings['CreditApplicability'] = 'Credits Calculated';
         // End Strings
 
 		// Install

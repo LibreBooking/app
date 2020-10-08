@@ -233,7 +233,7 @@ class ResourceRepositoryTests extends TestBase
 	{
 		$ar = new ReservationAccessoryRow();
 		$ar
-		->WithAccessory(1, 3, "name", 3)
+		->WithAccessory(1, 3, "name", 3, 1, 2, CreditApplicability::SLOT)
 		->WithAccessory(2, 23, "slkjdf", 3);
 
 		$this->db->SetRows($ar->Rows());
@@ -248,6 +248,9 @@ class ResourceRepositoryTests extends TestBase
 		$this->assertEquals(1, $accessories[0]->Id);
 		$this->assertEquals("name", $accessories[0]->Name);
 		$this->assertEquals(3, $accessories[0]->QuantityAvailable);
+		$this->assertEquals(1, $accessories[0]->CreditCount);
+		$this->assertEquals(2, $accessories[0]->PeakCreditCount);
+		$this->assertEquals(CreditApplicability::SLOT, $accessories[0]->CreditApplicability);
 	}
 
 	public function testLoadsResourceByPublicId()

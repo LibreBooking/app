@@ -21,55 +21,49 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class FakeAccessoryRepository implements IAccessoryRepository
 {
 	public $_AllAccessories = array();
+    public $_DeletedId;
+    /**
+     * @var Accessory
+     */
+    public $_Accessory;
+    /**
+     * @var Accessory
+     */
+    public $_AddedAccessory;
+    /**
+     * @var Accessory
+     */
+    public $_UpdatedAccessory;
 
-	public function AddAccessory(Accessory $accessory)
+    public function AddAccessory(Accessory $accessory)
 	{
 		$this->_AllAccessories[] = $accessory;
 		return $this;
 	}
 
-	/**
-	 * @param int $accessoryId
-	 * @return Accessory
-	 */
 	public function LoadById($accessoryId)
 	{
-		// TODO: Implement LoadById() method.
+		return $this->_Accessory;
 	}
 
-	/**
-	 * @return Accessory[]
-	 */
 	public function LoadAll()
 	{
 		return $this->_AllAccessories;
 	}
 
-	/**
-	 * @param Accessory $accessory
-	 * @return int
-	 */
 	public function Add(Accessory $accessory)
 	{
-		// TODO: Implement Add() method.
+        $this->_AddedAccessory = $accessory;
 	}
 
-	/**
-	 * @param Accessory $accessory
-	 * @return void
-	 */
 	public function Update(Accessory $accessory)
 	{
-		// TODO: Implement Update() method.
+		$this->_UpdatedAccessory = $accessory;
 	}
 
-	/**
-	 * @param int $accessoryId
-	 * @return void
-	 */
 	public function Delete($accessoryId)
 	{
-		// TODO: Implement Delete() method.
+		$this->_DeletedId = $accessoryId;
 	}
 }
  

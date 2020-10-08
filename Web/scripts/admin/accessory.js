@@ -11,7 +11,10 @@ function AccessoryManagement(opts) {
 		editName: $('#editName'),
 		editUnlimited: $('#chkUnlimitedEdit'),
 		editQuantity: $('#editQuantity'),
-		
+		editCredits: $('#editCredits'),
+        editPeakCredits: $('#editPeakCredits'),
+        editCreditApplicability: $('#editCreditApplicability'),
+
 		editDialog: $('#editDialog'),
 		deleteDialog: $('#deleteDialog'),
 		accessoryResourcesDialog: $('#accessoryResourcesDialog'),
@@ -98,6 +101,9 @@ function AccessoryManagement(opts) {
 		{
 			elements.editUnlimited.prop('checked', false);
 		}
+		elements.editCredits.val(accessory.credits);
+		elements.editPeakCredits.val(accessory.peakCredits);
+		elements.editCreditApplicability.val(accessory.creditApplicability);
 
 		elements.editUnlimited.trigger('change');
 		elements.editDialog.modal('show');
@@ -164,8 +170,8 @@ function AccessoryManagement(opts) {
 		});
 	};
 
-	AccessoryManagement.prototype.addAccessory = function(id, name, quantity)
+	AccessoryManagement.prototype.addAccessory = function(id, name, quantity, credits, peakCredits, creditApplicability)
 	{
-		accessories[id] = {id: id, name: name, quantity: quantity};
+		accessories[id] = {id, name, quantity, credits, peakCredits, creditApplicability};
 	};
 }

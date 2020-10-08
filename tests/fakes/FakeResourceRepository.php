@@ -44,8 +44,12 @@ class FakeResourceRepository implements IResourceRepository
     public $_NamedResources = array();
 
     public $_PublicResourceIds = array();
+    /**
+     * @var AccessoryDto[]
+     */
+    public $_AccessoryList;
 
-	public function GetScheduleResources($scheduleId)
+    public function GetScheduleResources($scheduleId)
 	{
 		return $this->_ScheduleResourceList;
 	}
@@ -96,7 +100,7 @@ class FakeResourceRepository implements IResourceRepository
 
 	public function GetAccessoryList($sortField = null, $sortDirection = null)
 	{
-		// TODO: Implement GetAccessoryList() method.
+		return $this->_AccessoryList;
 	}
 
 	public function GetResourceGroups($scheduleId = null, $resourceFilter = null)

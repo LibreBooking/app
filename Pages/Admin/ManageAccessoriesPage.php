@@ -38,6 +38,21 @@ interface IManageAccessoriesPage extends IActionPage
 	 */
 	public function GetQuantityAvailable();
 
+    /**
+     * @return int
+     */
+    public function GetCreditCount();
+
+    /**
+     * @return int
+     */
+    public function GetPeakCreditCount();
+
+    /**
+     * @return int
+     */
+    public function GetCreditApplicability();
+
 	/**
 	 * @param $accessories AccessoryDto[]
 	 */
@@ -185,4 +200,19 @@ class ManageAccessoriesPage extends ActionPage implements IManageAccessoriesPage
 
 		return $r;
 	}
+
+    public function GetCreditCount()
+    {
+        return $this->GetForm(FormKeys::CREDITS);
+    }
+
+    public function GetPeakCreditCount()
+    {
+        return $this->GetForm(FormKeys::PEAK_CREDITS);
+    }
+
+    public function GetCreditApplicability()
+    {
+        return $this->GetForm(FormKeys::CREDITS_APPLICABILITY);
+    }
 }

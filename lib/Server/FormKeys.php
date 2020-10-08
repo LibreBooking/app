@@ -82,6 +82,7 @@ class FormKeys
 	const CSRF_TOKEN = 'CSRF_TOKEN';
 	const CREDIT_QUANTITY = 'CREDIT_QUANTITY';
 	const CURRENT_PASSWORD = 'currentPassword';
+	const CREDITS_APPLICABILITY = 'CREDITS_APPLICABILITY';
 
 	const DAY = 'DAY';
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';

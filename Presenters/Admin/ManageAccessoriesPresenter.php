@@ -89,12 +89,16 @@ class ManageAccessoriesPresenter extends ActionPresenter
 		$id = $this->page->GetAccessoryId();
 		$name = $this->page->GetAccessoryName();
 		$quantity = $this->page->GetQuantityAvailable();
+		$credits = $this->page->GetCreditCount();
+		$peakCredits = $this->page->GetPeakCreditCount();
+		$creditApplicability = $this->page->GetCreditApplicability();
 
 		Log::Debug('Changing accessory with id %s to name %s and quantity %s', $id, $name, $quantity);
 
 		$accessory = $this->accessoryRepository->LoadById($id);
 		$accessory->SetName($name);
 		$accessory->SetQuantityAvailable($quantity);
+		$accessory->ChangeCredits($credits, $peakCredits, $creditApplicability);
 
 		$this->accessoryRepository->Update($accessory);
 	}

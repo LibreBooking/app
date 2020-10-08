@@ -197,8 +197,8 @@ class Accessory
 	 */
 	public function ChangeCredits($offPeakCredits, $peakCredits, $applicability)
 	{
-		$this->offPeakCredits = empty($offPeakCredits) ? null : $offPeakCredits;
-		$this->peakCredits = empty($peakCredits) ? null : $applicability;
+		$this->offPeakCredits = empty($offPeakCredits) ? 0 : $offPeakCredits;
+		$this->peakCredits = empty($peakCredits) ? 0 : $peakCredits;
 		$this->creditApplicability = $applicability;
 	}
 
