@@ -634,8 +634,6 @@ class ReservationRepositoryTests extends TestBase
 
 	public function testWhenCreditsConsumedIncreases_ResourcePerSlot_AccessoryPerReservation()
 	{
-		$this->markTestIncomplete("todo");
-
 		Date::_SetNow(new Date('2018-01-20 3:00', 'UTC'));
 		$layout = new FakeScheduleLayout();
 		$layout->_SlotCount = new SlotCount(2, 2);
@@ -647,13 +645,16 @@ class ReservationRepositoryTests extends TestBase
 		$resource->SetCreditsPerSlot(2);
 		$resource->SetPeakCreditsPerSlot(4);
 
+		$accessory = new Accessory(1, "1", 100);
+		$accessory->ChangeCredits(1, 2, CreditApplicability::RESERVATION);
+
 		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
 		$instance->WithCreditsConsumed(10);
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithCurrentInstance($instance);
 		$builder->WithPrimaryResource($resource);
-		$builder->WithAccessory($accessory);
+		$builder->WithAccessory(new ReservationAccessory($accessory, 2));
 		$existingReservation = $builder->Build();
 
 		$existingReservation->CalculateCredits($layout);
@@ -661,14 +662,12 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->repository->Update($existingReservation);
 
-		$this->assertEquals(new AdjustUserCreditsCommand($userId, 2, 'ReservationUpdatedLog' . $existingReservation->CurrentInstance()->ReferenceNumber()),
-							$this->db->_Commands[1], 'was taking 10, required 12');
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, 6, 'ReservationUpdatedLog' . $existingReservation->CurrentInstance()->ReferenceNumber()),
+							$this->db->_Commands[1], 'was taking 10, required 16');
 	}
 
-	public function testWhenCreditsConsumedDecreases_ResourceOnlyPerSlot_AccessoryPerReservation()
+	public function testWhenCreditsConsumedDecreases_ResourceOnlyPerSlot_AccessoryPerSlot()
 	{
-		$this->markTestIncomplete("todo");
-
 		Date::_SetNow(new Date('2018-01-20 3:00', 'UTC'));
 		$layout = new FakeScheduleLayout();
 		$layout->_SlotCount = new SlotCount(2, 2);
@@ -680,43 +679,16 @@ class ReservationRepositoryTests extends TestBase
 		$resource->SetCreditsPerSlot(2);
 		$resource->SetPeakCreditsPerSlot(4);
 
+		$accessory = new Accessory(1, "1", 100);
+		$accessory->ChangeCredits(1, 2, CreditApplicability::SLOT);
+
 		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
-		$instance->WithCreditsConsumed(14);
-
-		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithCurrentInstance($instance);
-		$builder->WithPrimaryResource($resource);
-		$existingReservation = $builder->Build();
-
-		$existingReservation->CalculateCredits($layout);
-		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
-
-		$this->repository->Update($existingReservation);
-
-		$this->assertEquals(new AdjustUserCreditsCommand($userId, -2, 'ReservationUpdatedLog' . $existingReservation->CurrentInstance()->ReferenceNumber()),
-							$this->db->_Commands[1], 'was taking 10, required 12');
-	}
-
-	public function testDoesNotDeductCreditsForPastInstances_ResourceOnlyPerSlot_AccessoryPerReservation()
-	{
-		$this->markTestIncomplete("todo");
-
-		$layout = new FakeScheduleLayout();
-		$layout->_SlotCount = new SlotCount(2, 2);
-		$userId = 10;
-		$title = "new title";
-		$description = "new description";
-
-		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
-
-		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(-2), Date::Now()->AddDays(-1)));
 		$instance->WithCreditsConsumed(10);
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithCurrentInstance($instance);
 		$builder->WithPrimaryResource($resource);
+		$builder->WithAccessory(new ReservationAccessory($accessory, 2));
 		$existingReservation = $builder->Build();
 
 		$existingReservation->CalculateCredits($layout);
@@ -724,37 +696,8 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->repository->Update($existingReservation);
 
-		$this->assertTrue(count($this->db->GetCommandsOfType('AdjustUserCreditsCommand')) == 0);
-	}
-
-	public function testDoesNotDeductCreditsForWhenNoChangeInCredits_ResourceOnlyPerSlot_AccessoryPerReservation()
-	{
-		$this->markTestIncomplete("todo");
-
-		$layout = new FakeScheduleLayout();
-		$layout->_SlotCount = new SlotCount(2, 2);
-		$userId = 10;
-		$title = "new title";
-		$description = "new description";
-
-		$resource = new FakeBookableResource(1);
-		$resource->SetCreditsPerSlot(2);
-		$resource->SetPeakCreditsPerSlot(4);
-
-		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(-2), Date::Now()->AddDays(-1)));
-		$instance->WithCreditsConsumed(12);
-
-		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithCurrentInstance($instance);
-		$builder->WithPrimaryResource($resource);
-		$existingReservation = $builder->Build();
-
-		$existingReservation->CalculateCredits($layout);
-		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
-
-		$this->repository->Update($existingReservation);
-
-		$this->assertTrue(count($this->db->GetCommandsOfType('AdjustUserCreditsCommand')) == 0);
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, 14, 'ReservationUpdatedLog' . $existingReservation->CurrentInstance()->ReferenceNumber()),
+							$this->db->_Commands[1], 'was taking 10, required 24');
 	}
 
 	public function testBranchedSingleInstance()

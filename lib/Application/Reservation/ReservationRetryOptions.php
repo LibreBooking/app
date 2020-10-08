@@ -1,6 +1,7 @@
 <?php
 
-interface IReservationRetryOptions {
+interface IReservationRetryOptions
+{
 	/**
 	 * @param ReservationSeries $series
 	 * @param ReservationRetryParameter[] $retryParameters
@@ -27,17 +28,24 @@ class ReservationRetryOptions implements IReservationRetryOptions
 
 	public function AdjustReservation(ReservationSeries $series, $retryParameters)
 	{
-		$shouldSkipConflicts = ReservationRetryParameter::GetValue(ReservationRetryParameter::$SKIP_CONFLICTS, $retryParameters, new BooleanConverter()) == true;
-		if (!$shouldSkipConflicts) {
+		$shouldSkipConflicts = ReservationRetryParameter::GetValue(ReservationRetryParameter::$SKIP_CONFLICTS, $retryParameters,
+																   new BooleanConverter()) == true;
+		if (!$shouldSkipConflicts)
+		{
 			return;
 		}
 
 		$conflicts = $this->conflictIdentifier->GetConflicts($series);
 
-		foreach ($conflicts->Conflicts() as $conflict) {
+		foreach ($conflicts->Conflicts() as $conflict)
+		{
 			$series->RemoveInstance($conflict->Reservation);
 		}
 
-		$series->CalculateCredits($this->scheduleRepository->GetLayout($series->ScheduleId(), new ScheduleLayoutFactory($series->CurrentInstance()->StartDate()->Timezone())));
+		if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
+		{
+			$series->CalculateCredits($this->scheduleRepository->GetLayout($series->ScheduleId(),
+																		   new ScheduleLayoutFactory($series->CurrentInstance()->StartDate()->Timezone())));
+		}
 	}
 }

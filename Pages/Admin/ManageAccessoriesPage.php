@@ -101,6 +101,7 @@ class ManageAccessoriesPage extends ActionPage implements IManageAccessoriesPage
 	{
 		$this->presenter->PageLoad();
 
+		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 		$this->Display('Admin/manage_accessories.tpl');
 	}
 

@@ -47,6 +47,10 @@ class ExistingReservationSeriesBuilder
 	private $bookedBy;
 
 	private $requiresNewSeries = false;
+	/**
+	 * @var ReservationAccessory[]
+	 */
+	private $accessories;
 
 	public function __construct()
 	{
@@ -161,7 +165,7 @@ class ExistingReservationSeriesBuilder
 	}
 
 	public function WithAccessory($accessory) {
-
+		$this->accessories[] = $accessory;
 	}
 
 	/**
@@ -187,6 +191,10 @@ class ExistingReservationSeriesBuilder
 		$this->series->WithPrimaryResource($this->resource);
 		$this->series->WithTitle('title');
 		$this->series->WithDescription('description');
+		foreach($this->accessories as $a)
+		{
+			$this->series->WithAccessory($a);
+		}
 //		$this->series->Update(1, $this->resource, 'title', 'description', $this->bookedBy);
 
 		return $this->series;

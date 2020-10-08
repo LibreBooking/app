@@ -731,13 +731,31 @@ class ReservationSeries
 
 	public function CalculateCredits(IScheduleLayout $layout)
 	{
-		$credits = 0;
+		$creditsPerSlot = 0;
+		$creditsPerReservation = 0;
 		foreach ($this->AllResources() as $resource)
 		{
-			$credits += ($resource->GetCreditsPerSlot() + $resource->GetPeakCreditsPerSlot());
+			$creditsPerSlot += ($resource->GetCreditsPerSlot() + $resource->GetPeakCreditsPerSlot());
 		}
 
-		if ($credits == 0)
+		foreach ($this->Accessories() as $accessory)
+		{
+			if (empty($accessory->QuantityReserved))
+			{
+				continue;
+			}
+
+			if ($accessory->Accessory->GetCreditApplicability() == CreditApplicability::RESERVATION)
+			{
+				$creditsPerReservation += ($accessory->Accessory->GetCreditCount() + $accessory->Accessory->GetPeakCreditCount());
+			}
+			else
+			{
+				$creditsPerSlot += ($accessory->Accessory->GetCreditCount() + $accessory->Accessory->GetPeakCreditCount());
+			}
+		}
+
+		if ($creditsPerSlot == 0 && $creditsPerReservation == 0)
 		{
 			$this->creditsRequired = 0;
 			return;
@@ -804,6 +822,33 @@ class ReservationSeries
 
 				$creditsRequired += $resourceCredits * $instanceSlots;
 				$creditsRequired += $peakCredits * $peakSlots;
+			}
+
+			foreach ($this->Accessories() as $reservationAccessory)
+			{
+				$accessory = $reservationAccessory->Accessory;
+				$quantityReserved = $reservationAccessory->QuantityReserved;
+
+				if (empty($quantityReserved)) {
+					continue;
+				}
+
+				if ($accessory->GetCreditApplicability() == CreditApplicability::RESERVATION)
+				{
+					if ($peakSlots > 0)
+					{
+						$creditsRequired += ($accessory->GetPeakCreditCount() * $quantityReserved);
+					}
+					else
+					{
+						$creditsRequired += ($accessory->GetCreditCount() * $quantityReserved);
+					}
+				}
+				else
+				{
+					$creditsRequired += ($accessory->GetCreditCount() * $instanceSlots * $quantityReserved);
+					$creditsRequired += ($accessory->GetPeakCreditCount() * $peakSlots * $quantityReserved);
+				}
 			}
 			$instance->SetCreditsRequired($creditsRequired);
 

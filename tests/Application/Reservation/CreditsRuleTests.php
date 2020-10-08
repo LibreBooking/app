@@ -29,7 +29,7 @@ class CreditsRuleTests extends TestBase
 	public $userRepository;
 
 	/**
-	 * @var AccessoryAvailabilityRule
+	 * @var CreditsRule
 	 */
 	public $rule;
 
