@@ -545,6 +545,35 @@ class ReservationRepositoryTests extends TestBase
 							$this->db->_Commands[1], 'was taking 10, required 12');
 	}
 
+	public function testWhenCreditsConsumedIncreases_ResourceOnlyPerReservation_Peak()
+	{
+		Date::_SetNow(new Date('2018-01-20 3:00', 'UTC'));
+		$layout = new FakeScheduleLayout();
+		$layout->_SlotCount = new SlotCount(100, 100);
+		$userId = 10;
+		$title = "new title";
+		$description = "new description";
+
+		$resource = new FakeBookableResource(1);
+		$resource->ChangeCredits(2, 4, CreditApplicability::RESERVATION);
+
+		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
+		$instance->WithCreditsConsumed(1);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($instance);
+		$builder->WithPrimaryResource($resource);
+		$existingReservation = $builder->Build();
+
+		$existingReservation->CalculateCredits($layout);
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+
+		$this->repository->Update($existingReservation);
+
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, 3, 'ReservationUpdatedLog' . $existingReservation->CurrentInstance()->ReferenceNumber()),
+							$this->db->_Commands[1], 'was taking 1, required 4');
+	}
+
 	public function testWhenCreditsConsumedDecreases_ResourceOnlyPerSlot()
 	{
 		Date::_SetNow(new Date('2018-01-20 3:00', 'UTC'));
