@@ -504,8 +504,22 @@ function Reservation(opts) {
         allCheckboxes.prop('disabled', false);
         allCheckboxes.parent().removeClass('unavailableResource');
 
+        elements.groupDiv.find('input[type=checkbox]').prop('checked', false);
+        $.each($('.resourceId'), function (idx, val) {
+            var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
+            $.each(resourceCheckboxes, function (ridx, checkbox) {
+                $(checkbox).prop('checked', true);
+                handleAdditionalResourceChecked($(checkbox));
+            });
+        });
+
+        if (opts.maximumResources !== 0) {
+            elements.groupDiv.find(':not([resource-id])').attr("checked", false).attr("disabled", true);
+        }
+
         if (allCheckboxes.length > 50) {
             dialog.find('#checking-availability-error').removeClass('no-show');
+            dialog.find('#checking-availability').addClass('no-show');
             return;
         }
 
@@ -521,19 +535,6 @@ function Reservation(opts) {
             });
             dialog.find('#checking-availability').addClass('no-show');
         });
-
-        elements.groupDiv.find('input[type=checkbox]').prop('checked', false);
-        $.each($('.resourceId'), function (idx, val) {
-            var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
-            $.each(resourceCheckboxes, function (ridx, checkbox) {
-                $(checkbox).prop('checked', true);
-                handleAdditionalResourceChecked($(checkbox));
-            });
-        });
-
-        if (opts.maximumResources !== 0) {
-            elements.groupDiv.find(':not([resource-id])').attr("checked", false).attr("disabled", true);
-        }
     };
 
     var handleAdditionalResourceChecked = function (checkbox, event) {
