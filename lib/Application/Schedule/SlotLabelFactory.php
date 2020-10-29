@@ -131,9 +131,14 @@ class SlotLabelFactory
             $attributesLabel = new StringBuilder();
             $attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
             foreach ($attributes as $attribute) {
-                $attributesLabel->Append($attribute->Label() . ': ' . $reservation->GetAttributeValue($attribute->Id()) . ', ');
+                $entityIds = [$this->user->UserId];
+                // check if this is a unique custom attribute
+                if ((!$attribute->UniquePerEntity() && !$attribute->HasSecondaryEntities()) ||
+                    (($attribute->UniquePerEntity() && count(array_intersect($entityIds, $attribute->EntityIds()))) ||
+                        ($attribute->HasSecondaryEntities() && count(array_intersect($entityIds, $attribute->SecondaryEntityIds()))))) {
+                    $attributesLabel->Append($attribute->Label() . ': ' . $reservation->GetAttributeValue($attribute->Id()) . ', ');
+                }
             }
-
             $label = str_replace('{reservationAttributes}', rtrim($attributesLabel->ToString(), ', '), $label);
         }
 

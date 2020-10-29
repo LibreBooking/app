@@ -214,7 +214,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		$initializer->BindAvailableResources($resources);
 		$accessories = $this->resourceService->GetAccessories();
 		$initializer->BindAvailableAccessories($accessories);
-		$initializer->ShowAdditionalResources($bindableResourceData->NumberAccessible > 0);
+		$initializer->ShowAdditionalResources($bindableResourceData->NumberAccessible > 1);
 		$initializer->SetReservationResource($bindableResourceData->ReservationResource);
 		$initializer->SetMaximumResources($schedule->GetMaxResourcesPerReservation());
 	}
