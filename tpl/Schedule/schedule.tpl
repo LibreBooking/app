@@ -142,13 +142,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 
                 <div id="schedule-title" class="schedule_title {$titleWidth} col-xs-12">
-                    <label for="schedules" class="no-show">Schedule</label>
-                    <select id="schedules" class="form-control" style="width:auto;">
-                        {foreach from=$Schedules item=schedule}
-                            <option value="{$schedule->GetId()}"
-                                    {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
-                        {/foreach}
-                    </select>
+					{if count($Schedules) > 1}
+						 <label for="schedules" class="no-show">Schedule</label>
+						 <select id="schedules" class="form-control" style="width:auto;">
+							 {foreach from=$Schedules item=schedule}
+								 <option value="{$schedule->GetId()}"
+										 {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
+							 {/foreach}
+						 </select>
+					{/if}
                     <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
                         <span class="glyphicon glyphicon-calendar"></span>
                         <span class="no-show">{translate key=ShowHideNavigation}</span>
