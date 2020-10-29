@@ -409,7 +409,7 @@ class Queries
         INNER JOIN `user_groups` `ug` ON `u`.`user_id` = `ug`.`user_id`
         WHERE `status_id` = @user_statusid AND `ug`.`group_id` IN (
           SELECT `g`.`admin_group_id` FROM `user_groups` `ug`
-          INNER JOIN groups `g` ON `ug`.`group_id` = `g`.`group_id`
+          INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
           WHERE `ug`.`user_id` = @userid AND `g`.`admin_group_id` IS NOT NULL)';
 
     const GET_ALL_GROUP_USERS =
