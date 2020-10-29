@@ -555,6 +555,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="ajax-helpers.js"}
 {jsfile src="js/tree.jquery.js"}
 
+{include file="Reservation/pdf_libraries.tpl"}
+
 <script type="text/javascript">
 
     $(function () {
@@ -655,6 +657,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         $('#description').autogrow();
         $('#userName').bindUserDetails();
+
+		// jsPDF
+		{include file="Reservation/pdf.tpl"}
+		//
 
         $.blockUI.defaults.css.width = '60%';
         $.blockUI.defaults.css.left = '20%';

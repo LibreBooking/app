@@ -268,6 +268,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <button type="button" class="btnPrint btn btn-default">
                                     <span class="fa fa-print"></span>
                                     {translate key='Print'}</button>
+								<button type="button" class="btnPDF btn btn-default">
+                                    <span class="fa fa-file-pdf-o"></span>
+                                    PDF</button>
                             {/block}
 
                             {block name="submitButtons"}
@@ -362,6 +365,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="ajax-helpers.js"}
 {jsfile src="js/tree.jquery.js"}
 
+{include file="Reservation/pdf_libraries.tpl"}
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -411,7 +416,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             $(this).ajaxSubmit(ajaxOptions);
             return false;
         });
-
+		
+		// jsPDF
+		{include file="Reservation/pdf.tpl"}
+		//
+		
         $.blockUI.defaults.css.width = '60%';
         $.blockUI.defaults.css.left = '20%';
     });
