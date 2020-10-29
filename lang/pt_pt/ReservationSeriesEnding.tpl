@@ -16,16 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-A série de reservas recorrentes de {$ResourceName} irá terminar em {formatdate date=$StartDate key=reservation_email}.<br/>
-Detalhes da reserva:
-	<br/>
-	<br/>
-	Início: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}
-<br/>
-<br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
-<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
+<p>A série de reservas recorrentes de {$ResourceName} irá terminar em {formatdate date=$StartDate key=reservation_email}.</p>
+<p><strong>Detalhes da reserva:</strong></p>
+<p>
+	<strong>Início:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+	<strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+	<strong>Recurso:</strong> {$ResourceName}<br/>
+	<strong>Título:</strong> {$Title}<br/>
+	<strong>Descrição:</strong> {$Description|nl2br}
+</p>
+
+<p>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
+	<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
+</p>

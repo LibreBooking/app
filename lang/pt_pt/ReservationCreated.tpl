@@ -16,40 +16,130 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+<p><strong>Detalhes da Reserva:</strong></p>
 
-
-	Detalhes da Reserva:
-	<br/>
-	<br/>
-
-	Início: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
-
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
-
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}<br/>
-
-	{if count($RepeatDates) gt 0}
+<p>
+	<strong>Início:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+	<strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+	<strong>Título:</strong> {$Title}<br/>
+	<strong>Descrição:</strong> {$Description|nl2br}
+	{if $Attributes|count > 0}
 		<br/>
-		A reserva ocorre nas seguintes datas:
-		<br/>
+	    {foreach from=$Attributes item=attribute}
+			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+	    {/foreach}
 	{/if}
+</p>
 
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
+<p>
+{if $ResourceNames|count > 1}
+    <strong>Recursos ({$ResourceNames|count}):</strong> <br />
+    {foreach from=$ResourceNames item=resourceName}
+        {$resourceName}<br/>
+    {/foreach}
+{else}
+    <strong>Recurso:</strong> {$ResourceName}<br/>
+{/if}
+</p>
+
+{if $ResourceImage}
+    <div class="resource-image"><img alt="{$ResourceName|escape}" src="{$ScriptUrl}/{$ResourceImage}"/></div>
+{/if}
+
+{if $RequiresApproval}
+	<p>* Pelo menos um dos recursos reservados requer aprovação antes do uso. Esta reserva ficará pendente até que seja aprovada. *</p>
+{/if}
+
+{if $CheckInEnabled}
+	<p>
+	Pelo menos um dos recursos reservados requer que seja efetuado o check-in/check-out da sua reserva.
+    {if $AutoReleaseMinutes != null}
+		Esta reserva será cancelada a não ser que o check-in seja efetuado dentro de {$AutoReleaseMinutes} minutos após a hora marcada de ínicio da reserva.
+    {/if}
+	</p>
+{/if}
+
+{if count($RepeatRanges) gt 0}
+    <br/>
+    <strong>A reserva ocorre nas seguintes datas ({$RepeatRanges|count}):</strong>
+    <br/>
+	{foreach from=$RepeatRanges item=date name=dates}
+	    {formatdate date=$date->GetBegin()}
+	    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+	    <br/>
 	{/foreach}
+{/if}
 
-	{if $RequiresApproval}
-		<br/>
-		Um ou mais recursos reservados requerem aprovação antes do uso. Esta reserva será pendente até que seja aprovada.
-	{/if}
+{if $Participants|count >0}
+    <br />
+    <strong>Participantes ({$Participants|count + $ParticipatingGuests|count}):</strong>
+    <br />
+    {foreach from=$Participants item=user}
+        {$user->FullName()}
+        <br/>
+    {/foreach}
+{/if}
 
+{if $ParticipatingGuests|count >0}
+    {foreach from=$ParticipatingGuests item=email}
+        {$email}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Invitees|count >0}
+    <br />
+    <strong>Convidados ({$Invitees|count + $InvitedGuests|count}):</strong>
+    <br />
+    {foreach from=$Invitees item=user}
+        {$user->FullName()}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $InvitedGuests|count >0}
+    {foreach from=$InvitedGuests item=email}
+        {$email}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Accessories|count > 0}
+    <br />
+       <strong>Acessórios ({$Accessories|count}):</strong>
+       <br />
+    {foreach from=$Accessories item=accessory}
+        ({$accessory->QuantityReserved}) {$accessory->Name}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $CreditsCurrent > 0}
 	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Adicionar ao Outlook</a> |
-	<a href="{$ScriptUrl}">Entrar no Booked Scheduler</a>
+	Esta reserva custa {$CreditsCurrent} créditos.
+    {if $CreditsCurrent != $CreditsTotal}
+		Esta reserva custa, na sua totalidadem {$CreditsTotal} créditos.
+    {/if}
+{/if}
+
+
+{if !empty($CreatedBy)}
+	<p><strong>Criado por:</strong> {$CreatedBy}</p>
+{/if}
+
+{if !empty($ApprovedBy)}
+	<p><strong>Aprovado por:</strong> {$ApprovedBy}</p>
+{/if}
+
+<p><strong>Número de referência:</strong> {$ReferenceNumber}</p>
+
+{if !$Deleted}
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reservan</a>
+	|
+	<a href="{$ScriptUrl}/{$ICalUrl}">Adicionar ao calendário</a>
+	|
+	<a href="{$GoogleCalendarUrl}" target="_blank" rel="nofollow">Adicionar ao Google Calendar</a>
+	|
+{/if}
+<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
 

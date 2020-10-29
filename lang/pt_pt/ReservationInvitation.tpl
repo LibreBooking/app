@@ -17,42 +17,112 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
+{if $Deleted}
+    <p>{$UserName} removeu a reserva</p>
+    {else}
+    <p>{$UserName} adicionou-o(a) à reserva</p>
+{/if}
 
-	Detalhes da Reserva:
-	<br/>
-	<br/>
+{if !empty($DeleteReason)}
+    <p><strong>Motivo da exclusão:</strong>{$DeleteReason|nl2br}</p>
+{/if}
 
-	Início: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
+<p><strong>Detalhes da Reserva:</strong></p>
 
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
+<p>
+    <strong>Início:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+    <strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+</p>
 
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}<br/>
+<p>
+{if $ResourceNames|count > 1}
+    <strong>Recursos ({$ResourceNames|count}):</strong> <br />
+    {foreach from=$ResourceNames item=resourceName}
+        {$resourceName}<br/>
+    {/foreach}
+{else}
+    <strong>Recurso:</strong> {$ResourceName}<br/>
+{/if}
+</p>
 
-	{if count($RepeatDates) gt 0}
-		<br/>
-		A reserva ocorre nas seguintes datas:
-		<br/>
-	{/if}
+{if $ResourceImage}
+    <div class="resource-image"><img alt="{$ResourceName|escape}" src="{$ScriptUrl}/{$ResourceImage}"/></div>
+{/if}
 
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
+{if $RequiresApproval && !$Deleted}
+    <p>* Um ou mais recursos reservados requerem aprovação antes do uso. Esta reservation reserva ficará pendente até que seja aprovada. *</p>
+{/if}
 
-	{if $RequiresApproval}
-		<br/>
-		Um ou mais recursos reservados requerem aprovação antes do uso. Esta reserva estará pendente até que seja aprovada.
-	{/if}
+<p>
+    <strong>Título:</strong> {$Title}<br/>
+    <strong>Descrição:</strong> {$Description|nl2br}
+</p>
 
-	<br/>
-	Aceitar? <a href="{$ScriptUrl}/{$AcceptUrl}">Sim</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Não</a>
-	<br/>
+{if count($RepeatRanges) gt 0}
+    <br/>
+    <strong>A reserva ocorre nas seguintes datas ({$RepeatRanges|count}):</strong>
+    <br/>
+{/if}
 
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Adicionar ao Outlook</a> |
-	<a href="{$ScriptUrl}">Entrar no Booked Scheduler</a>
+{foreach from=$RepeatRanges item=date name=dates}
+    {formatdate date=$date->GetBegin()}
+    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+    <br/>
+{/foreach}
 
+{if $Participants|count >0}
+    <br />
+    <strong>Participantes ({$Participants|count + $ParticipatingGuests|count}):</strong>
+    <br />
+    {foreach from=$Participants item=user}
+        {$user->FullName()}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $ParticipatingGuests|count >0}
+    {foreach from=$ParticipatingGuests item=email}
+        {$email}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Invitees|count >0}
+    <br />
+    <strong>Convidados ({$Invitees|count + $InvitedGuests|count}):</strong>
+    <br />
+    {foreach from=$Invitees item=user}
+        {$user->FullName()}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $InvitedGuests|count >0}
+    {foreach from=$InvitedGuests item=email}
+        {$email}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Accessories|count > 0}
+    <br />
+       <strong>Acessórios ({$Accessories|count}):</strong>
+       <br />
+    {foreach from=$Accessories item=accessory}
+        ({$accessory->QuantityReserved}) {$accessory->Name}
+        <br/>
+    {/foreach}
+{/if}
+
+{if !$Deleted && !$Updated}
+<p>
+    <strong>Aceitar?</strong> <a href="{$ScriptUrl}/{$AcceptUrl}">Sim</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Não</a>
+</p>
+{/if}
+
+{if !$Deleted}
+<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
+<a href="{$ScriptUrl}/{$ICalUrl}">Adicionar ao calendário</a> |
+<a href="{$GoogleCalendarUrl}" target="_blank" rel="nofollow">Adicionar ao Google Calendar</a> |
+{/if}
+<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>

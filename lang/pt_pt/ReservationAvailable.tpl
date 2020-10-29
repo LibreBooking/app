@@ -16,9 +16,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{$FirstName},<br/>
-{$ResourceName} está atualmente disponível entre {formatdate date=$StartDate key=res_popup} e {formatdate date=$EndDate key=res_popup}
-<br/>
-<br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">Reserve agora</a> |
-<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
+<p>{$FirstName},</p>
+<p>{$ResourceName} está atualmente disponível entre {formatdate date=$StartDate key=res_popup} e {formatdate date=$EndDate key=res_popup}</p>
+
+<p>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Reserve agora</a> |
+	<a href="{$ScriptUrl}">Entrar em {$AppTitle}</a>
+</p>
