@@ -192,7 +192,7 @@ class SqlFilterEquals extends BaseSqlFilter
     protected function GetSql()
     {
         if ($this->criteria->Value == null) {
-            return "({$this->criteria->Name} IS NULL OR {$this->criteria->Name} = '')";
+            return "{$this->criteria->Name} IS NULL";
         }
         return "{$this->criteria->Name} = {$this->criteria->Variable}";
     }
