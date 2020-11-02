@@ -24,6 +24,7 @@ class MySqlConnection implements IDbConnection
 	private $_dbPassword = '';
 	private $_hostSpec = '';
 	private $_dbName = '';
+        private $_port = null;
 
 	private $_db = null;
 	private $_connected = false;
@@ -54,10 +55,10 @@ class MySqlConnection implements IDbConnection
         {
             $parts = explode(':', $this->_hostSpec);
             $this->_hostSpec = $parts[0];
-            $port = intval($parts[1]);
+            $this->_port = intval($parts[1]);
         }
 
-		$this->_db = @mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $port);
+		$this->_db = @mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_port);
 		$selected = @mysqli_select_db($this->_db, $this->_dbName);
 		@mysqli_set_charset($this->_db, 'utf8');
 
