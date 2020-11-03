@@ -51,8 +51,8 @@ try
 	$reservationViewRepository = new ReservationViewRepository();
 
     $now = Date::Now();
-    $onlyMissedCheckinReservations = new SqlFilterFreeForm(sprintf("%s=1 AND %s IS NULL AND %s BETWEEN '%s' AND '%s'",
-        ColumnNames::ENABLE_CHECK_IN, ColumnNames::CHECKIN_DATE, ColumnNames::RESERVATION_START, $now->AddMinutes(-1)->ToDatabase(), $now->ToDatabase()));
+    $onlyMissedCheckinReservations = new SqlFilterFreeForm(sprintf("%s=1 AND %s IS NULL AND `%s`.`%s` BETWEEN '%s' AND '%s'",
+        ColumnNames::ENABLE_CHECK_IN, ColumnNames::CHECKIN_DATE, TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, $now->AddMinutes(-1)->ToDatabase(), $now->ToDatabase()));
 	$reservations = $reservationViewRepository->GetList(null, null, null, null, $onlyMissedCheckinReservations)->Results();
 
 	/** @var ReservationItemView $reservation */

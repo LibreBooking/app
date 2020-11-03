@@ -131,7 +131,7 @@ class pt_pt extends en_gb
 		$strings['AllResources'] = 'Todos os recursos';
 		$strings['AllResourcesOn'] = 'Todos recursos em';
 		$strings['AllSchedules'] = 'Todas as agendas';
-		$strings['AllTime'] = 'Todo os tempos';
+		$strings['AllTime'] = 'Todos os tempos';
 		$strings['AllUpcomingReservations'] = 'Todas as reservas futuras';
 		$strings['AllUsers'] = 'Todos os utilizadores';
 		$strings['AllYear'] = 'Ano inteiro';
