@@ -1,6 +1,6 @@
 A) Project:
-    - GIT Repository - https://git.code.sf.net/p/phpscheduleit/source
-    - To contribute and submit your code please contact Nick Korbel <nick@twinkletoessoftware.com>
+    - GIT Repository - https://github.com/effgarces/BookedSchedule
+    - To contribute and submit your code
     - Programming paradigm: toward 100% object oriented PHP5
     - Please include the GPL header on every new source file with your name and year. If you are altering an existing file, just add your name and year.
 
