@@ -25,6 +25,26 @@ Booked application help is available from the Help menu item.
 
 <h2>Release Notes</h2>
 
+<h4>2.8.5.1</h4>
+<h3><strong>This version is no longer developed by Twinkle Toes Software (https://www.bookedscheduler.com)</strong></h3>
+Based on the original open source version of Booked, now available at: <a href="https://github.com/effgarces/BookedSchedule">https://github.com/effgarces/BookedSchedule</a>
+<br>Fork this repo, contribute and help keep it alive
+<ul>
+    <li>Added intial support for generating pdf's on the reservation page</li>
+    <li>Added two plugins (Moodle Advanced Authentication and Admin Check-in/out Only)</li>
+    <li>Updated portuguese translation</li>
+    <li>Bugfixes</li>
+		<ul>
+		<li>Fix for Error while executing the job sendmissedcheckin.php</li>
+		<li>Fix for non standard MySQL port</li>
+		<li>Cannot access Web/admin/manage_reservations.php if database is MySQL 8</li>
+		<li>Selector not needed when only one Schedule is available</li>
+		<li>Reservation label when using {reservationAttributes} leaks data </li>
+		<li>Show only one resource in reservation when user can access only the one</li>
+		<li>The name "groups" is now a reserved word in MySQL</li>
+		</ul>
+</ul>
+
 <h4>2.8.5</h4>
 <ul>
     <li>Added import and export of groups</li>
