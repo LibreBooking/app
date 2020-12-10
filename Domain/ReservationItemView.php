@@ -504,8 +504,17 @@ class ReservationItemView implements IReservedItemView
 				$id = $pair[0];
 				$name = $pair[1];
 				$name_parts = explode(' ', $name);
+				$firstnames = $name_parts[0]; 
+				$lastnames = $name_parts[1];
+				if (count($name_parts) > 2) {
+					# more than just one first and one last name
+					$lastIndex = count($name_parts) - 1;
+					$firstnames = implode(' ', array_splice($name_parts, 0, $lastIndex));
+					$lastnames = $name_parts[$lastIndex];
+					// could be extended to guess which is a middle name etc.
+				}
 				$this->ParticipantIds[] = $id;
-				$name = new FullName($name_parts[0], $name_parts[1]);
+				$name = new FullName($firstnames, $lastnames);
 				$this->ParticipantNames[$id] = $name->__toString();
 			}
 		}
@@ -521,8 +530,17 @@ class ReservationItemView implements IReservedItemView
 				$id = $pair[0];
 				$name = $pair[1];
 				$name_parts = explode(' ', $name);
+				$firstnames = $name_parts[0]; 
+				$lastnames = $name_parts[1];
+				if (count($name_parts) > 2) {
+					# more than just one first and one last name
+					$lastIndex = count($name_parts) - 1;
+					$firstnames = implode(' ', array_splice($name_parts, 0, $lastIndex));
+					$lastnames = $name_parts[$lastIndex];
+					// could be extended to guess which is a middle name etc.
+				}
 				$this->InviteeIds[] = $id;
-				$name = new FullName($name_parts[0], $name_parts[1]);
+				$name = new FullName($firstnames, $lastnames);
 				$this->InviteeNames[$id] = $name->__toString();
 			}
 		}
