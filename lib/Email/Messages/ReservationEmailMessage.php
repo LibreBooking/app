@@ -160,7 +160,9 @@ abstract class ReservationEmailMessage extends EmailMessage
 		$attributeValues = array();
 		foreach ($attributes as $attribute)
 		{
-			$attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+			if (($attribute->HasSecondaryEntities()) && in_array($this->reservationSeries->ResourceId(), $attribute->SecondaryEntityIds())) {
+				$attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+			}
 		}
 
 		$this->Set('Attributes', $attributeValues);
