@@ -123,6 +123,12 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $this->Set('ResourceName', $this->resource->GetName());
         $this->Set('Title', $this->reservationSeries->Title());
         $this->Set('Description', $this->reservationSeries->Description());
+        
+        $img = $this->reservationSeries->Resource()->GetImage();
+        if (!empty($img))
+        {
+            $this->Set('ResourceImage', $this->GetFullImagePath($img));
+        }
 
         $repeatDates = array();
         $repeatRanges = array();
@@ -151,7 +157,9 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $attributeValues = array();
         foreach ($attributes as $attribute)
         {
-            $attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+            if (($attribute->HasSecondaryEntities()) && in_array($this->reservationSeries->ResourceId(), $attribute->SecondaryEntityIds())) {
+                $attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+            }
         }
 
         $this->Set('Attributes', $attributeValues);
@@ -164,4 +172,10 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 
         $this->Set('ReferenceNumber', $this->reservationSeries->CurrentInstance()->ReferenceNumber());
     }
+    
+    private function GetFullImagePath($img)
+    {
+        return Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/' . $img;
+    }
+
 }
