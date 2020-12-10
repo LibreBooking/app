@@ -51,14 +51,15 @@ class MySqlConnection implements IDbConnection
 		}
 
 		$port = null;
+		$hostSpec = $this->_hostSpec;
 		if (BookedStringHelper::Contains($this->_hostSpec, ':'))
-        {
-            $parts = explode(':', $this->_hostSpec);
-            $this->_hostSpec = $parts[0];
-            $this->_port = intval($parts[1]);
-        }
+		{
+			$parts = explode(':', $this->_hostSpec);
+			$hostSpec = $parts[0];
+			$port = intval($parts[1]);
+		}
 
-		$this->_db = @mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_port);
+		$this->_db = @mysqli_connect($hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $port);
 		$selected = @mysqli_select_db($this->_db, $this->_dbName);
 		@mysqli_set_charset($this->_db, 'utf8');
 
