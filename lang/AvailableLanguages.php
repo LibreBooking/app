@@ -37,6 +37,7 @@ class AvailableLanguages
             'de_de' => new AvailableLanguage('de_de', 'de_de.php', 'Deutsch'),
             'du_be' => new AvailableLanguage('du_be', 'du_be.php', 'Flemisch'),
             'du_nl' => new AvailableLanguage('du_nl', 'du_nl.php', 'Dutch'),
+            'el_gr' => new AvailableLanguage('el_gr', 'el_gr.php', 'Greek (Ελληνικά'),
             'en_us' => new AvailableLanguage('en_us', 'en_us.php', 'English US'),
             'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
             'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
