@@ -87,7 +87,7 @@ pdfDocument.autoTable({
 			{ colSpan: 3, content: '{foreach from=$RepeatWeekdays item=day name=weekdaysLoop}{if $smarty.foreach.weekdaysLoop.last}{translate key=$DayNames[$day]}{else}{translate key=$DayNames[$day]},{/if} {/foreach}'},
 			],
 		{/if}	
-		[{ content: '{translate key=RepeatUntilPrompt}', styles: { fontStyle: 'bold'}},
+		[{ content: '{{translate key='RepeatUntilPrompt'}|escape('javascript')', styles: { fontStyle: 'bold'}},
 		 { colSpan: 3, content: '{formatdate date=$RepeatTerminationDate}'},	 
 		],
 	{/if}
