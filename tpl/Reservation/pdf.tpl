@@ -262,7 +262,7 @@ pdfDocument.autoTable({
   styles: { lineWidth: 0.02},
   theme: 'plain',
     body: [
-	[{ content: '{translate key=Attachments} ({$Attachments|count})', styles: { fontStyle: 'bold'}},
+	[{ content: '{translate key=Attachments|escape:'javascript'} ({$Attachments|count})', styles: { fontStyle: 'bold'}},
 	],
 	{foreach from=$Attachments item=attachment}
 	[{ content: '{$attachment->FileName()|escape:'javascript'}'},
@@ -278,7 +278,7 @@ pdfDocument.autoTable({
   columnStyles: { 1: { cellWidth: 10}},
   theme: 'plain',
     body: [
-	[{ content: '{translate key=IAccept} {translate key=TheTermsOfService}', styles: { fontStyle: 'bold'}},
+	[{ content: '{translate key=IAccept|escape:'javascript'} {translate key=TheTermsOfService}', styles: { fontStyle: 'bold'}},
 	 { content: 'X', styles: { fontStyle: 'bold', halign: 'center'}},
 	],
 	]
