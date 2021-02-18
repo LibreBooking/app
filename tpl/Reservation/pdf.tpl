@@ -1,3 +1,5 @@
+window.jsPDF = window.jspdf.jsPDF;
+
 var pdfDocument = new jsPDF();
 
 var logo = new Image();
