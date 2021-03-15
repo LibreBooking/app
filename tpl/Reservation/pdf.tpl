@@ -89,7 +89,7 @@ pdfDocument.autoTable({
 			{ colSpan: 3, content: '{foreach from=$RepeatWeekdays item=day name=weekdaysLoop}{if $smarty.foreach.weekdaysLoop.last}{translate key=$DayNames[$day]}{else}{translate key=$DayNames[$day]},{/if} {/foreach}'},
 			],
 		{/if}	
-		[{ content: '{translate key=RepeatUntilPrompt|escape:'javascript'}', styles: { fontStyle: 'bold'}},
+		[{ content: '{{translate key=RepeatUntilPrompt}|escape:'javascript'}', styles: { fontStyle: 'bold'}},
 		 { colSpan: 3, content: '{formatdate date=$RepeatTerminationDate}'},	 
 		],
 	{/if}
@@ -264,7 +264,7 @@ pdfDocument.autoTable({
   styles: { lineWidth: 0.02},
   theme: 'plain',
     body: [
-	[{ content: '{translate key=Attachments|escape:'javascript'} ({$Attachments|count})', styles: { fontStyle: 'bold'}},
+	[{ content: '{{translate key=Attachments}|escape:'javascript'} ({$Attachments|count})', styles: { fontStyle: 'bold'}},
 	],
 	{foreach from=$Attachments item=attachment}
 	[{ content: '{$attachment->FileName()|escape:'javascript'}'},
