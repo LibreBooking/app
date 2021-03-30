@@ -1,5 +1,5 @@
 A) Project:
-    - GIT Repository - https://github.com/effgarces/BookedSchedule
+    - GIT Repository - https://github.com/effgarces/BookedScheduler
     - To contribute and submit your code
     - Programming paradigm: toward 100% object oriented PHP5
     - Please include the GPL header on every new source file with your name and year. If you are altering an existing file, just add your name and year.
