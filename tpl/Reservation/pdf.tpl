@@ -14,7 +14,7 @@ pdfDocument.autoTable({
   ],
   didDrawCell: data => {
 	if (data.section == 'body' && data.column.index == 0 && data.row.index == 0){
-		pdfDocument.addImage(logo, data.cell.x, data.cell.y + 1, 0, 0);
+		pdfDocument.addImage(logo, data.cell.x, data.cell.y + 1, 0, 17);
 	}
   }
 });
