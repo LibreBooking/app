@@ -161,12 +161,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div>{translate key=DeleteReminderWarning}</div>
                 <div>
                     <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
-                    <textarea id="deleteReason" class="form-control"></textarea>
+                    <textarea class="deleteReason form-control"></textarea>
                 </div>
              </div>
             <div class="modal-footer">
-            {cancel_button id="cancelDelete" class="cancel"}
-                {delete_button id="confirmDelete" class="delete save"}
+            {cancel_button class="cancelDelete cancel"}
+                {delete_button class="confirmDelete delete save"}
            </div>
         </div>
     </div>

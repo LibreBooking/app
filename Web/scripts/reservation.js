@@ -162,7 +162,7 @@ function Reservation(opts) {
             elements.deleteButtonPrompt.modal('show');
         });
 
-        $('#cancelDelete, #confirmDelete').click(function (e) {
+        $('.cancelDelete, .confirmDelete').click(function (e) {
             e.preventDefault();
             elements.deleteButtonPrompt.modal('hide');
         });
@@ -195,7 +195,7 @@ function Reservation(opts) {
     };
 
     function SetDeleteReason() {
-        var reason = $("#deleteReason").val();
+        var reason = $(".deleteReason").val();
         if (_.isEmpty(reason)) {
             reason = $('#deleteReasonRecurring').val();
         }
