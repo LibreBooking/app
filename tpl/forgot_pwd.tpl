@@ -36,7 +36,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<p class="forgot">{translate key='YouWillBeEmailedANewPassword'}</p>
 			<p>
 				<label class="forgot">{translate key='EmailAddress'}<br />
-					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
+					{textbox name="EMAIL" class="input" required="required" size="20" tabindex="10"}</label>
 			</p>
 			<p class="resetpassword">
 				<button type="submit" class="btn btn-default" name="{Actions::RESET}" value="{Actions::RESET}">{translate key='ChangePassword'}</button>
