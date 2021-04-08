@@ -1,26 +1,51 @@
-/config/log4php.config.xml
-/.idea
-/tpl_c
-/config/config.php
-/plugins/Authentication/ActiveDirectory/ActiveDirectory.config.php
-/plugins/Authentication/Ldap/Ldap.config.php
-/plugins/Authentication/Drupal/Drupal.config.php
-/lib/external/phpqrcode/cache/*.dat
-/lib/external/phpqrcode/cache/mask_0/*.dat
-/lib/external/phpqrcode/cache/mask_1/*.dat
-/lib/external/phpqrcode/cache/mask_2/*.dat
-/lib/external/phpqrcode/cache/mask_3/*.dat
-/lib/external/phpqrcode/cache/mask_4/*.dat
-/lib/external/phpqrcode/cache/mask_5/*.dat
-/lib/external/phpqrcode/cache/mask_6/*.dat
-/lib/external/phpqrcode/cache/mask_7/*.dat
-/config/test.config.php
-/config/test.tenants.config.php
-/Web/uploads/tos/tos.pdf
-/Web/test-embed.html
-/efs/config
-/.ebextensions
-/config/1.config.php
 /vendor
+
+# Customized Confiuration Files
+/config/config.php
+**/*.config.php
+
+/lib/external/phpqrcode/cache/*
+!/lib/external/phpqrcode/cache/index.html
+
+/plugins/*
+!/plugins/Authentication
+!/plugins/**/index.html
+!/plugins/**/*Example/*
+
+# Smarty Cache
+/tpl_c/*
+!/tpl_c/index.html
+
+# Upload Directories
+/uploads/*
+!/uploads/index.html
+
+/Web/uploads/images/*
+!/Web/uploads/images/index.html
+/Web/uploads/tos/*
+!/Web/uploads/tos/index.html
+
+# Customization Files
+/Web/custom-favicon.png
+/Web/img/custom-logo.png
+
+/Web/test-embed.html
+
+# AWS Elastic Beanstalk configuration
+/.ebextensions
+
 /.phpunit.result.cache
-/plugins/Authentication/Saml/Saml.config.php
+/.phpdoc
+
+# Editor Cache Files
+.idea
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+*.sublime-workspace
+
+.DS_Store
