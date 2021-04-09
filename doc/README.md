@@ -22,7 +22,7 @@ This simply makes it easier to include necessary file dependencies.
 All classes should have good unit test coverage. The level of coverage is up to the developer, but I'd encourage TDD and .
 
 ## User interface
-[Smarty template engine](www.smarty.net) is used for all UI presentation. Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
+[Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation. Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
 
 ## Application Structure
 
