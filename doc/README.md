@@ -1,9 +1,9 @@
 # Developer Documentation
 ## Working on the projekt
-The master branch contains the most current working code of the Project and should be considered beta.  
-The Final Branch as the name implies is the most current stable release of BookedScheduler.  
-You can automatically keep your fork up to date with the [pull GitHub App](https://github.com/apps/pull).  
-Please commit bugfixes / features to a new branch prefixed `bugfix-`, `feature-` so they can be looked over, merged to the master branch and eventually end up in a release on Final.
+The develop branch contains the most current working code of the Project and should be considered beta.  
+The master branch is the most current stable release of BookedScheduler.  
+You can automatically keep your fork up to date with the [pull GitHub App](https://github.com/apps/pull). which will sync the master and develop branches for you.
+Please commit bugfixes / features to a new branch prefixed `bugfix-`, `feature-` so they can be looked over, and pull requested to the develop branch and will eventually end up in a release on master.
 
 ## Design philosophy
 The Model-View-Presenter (MVP) pattern is used to keep a clear separation between application logic and presentation logic.  
