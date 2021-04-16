@@ -17,7 +17,7 @@ This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) BookedSc
 [developer documentation](./doc/README.md)
 
 ## REPO
-[https://github.com/effgarces/BookedScheduler](https://github.com/effgarces/BookedScheduler)
+<https://github.com/effgarces/BookedScheduler>
 
 ## Chat
 We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedscheduler>
