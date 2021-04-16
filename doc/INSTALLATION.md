@@ -93,11 +93,47 @@ You are done. Try to load the application at (eg. http://yourhostname/booked/Web
 
 ## Upgrading from a previous version of Booked 2.x (or phpScheduleIt 2.x)
 
-<div> The steps for upgrading from a previous version of Booked are very similar to the steps described above in Application Deployment to Server. <h3>Recommended</h3><p>The recommended approach is to backup your current Booked files, then upload the new files to the that same location. This prevents any old files from interfering with new ones.</p><p>After the new files are uploaded, copy your old config/config.php file to the config directory in the new version. Then run /Web/install/configure.php to bring your config file up to date.</p><p>If you have any uploaded resource images you will need to copy them from their old location to the new one.</p><h3>Alternative</h3><p>An alternative upgrade approach is to overwrite the current Booked files with the new ones. If doing this, you must delete the contents of /tpl_c. This approach will not allow you to roll back and will not clear out any obsolete files.</p><h3>Database</h3><p> After the application files have been upgraded you will need to upgrade the database. </p><h4>Automatically</h4><p>The automatic database upgrade is exactly the same as the automatic database install. Please follow the instructions in the Automatic Database Setup section above.</p><h4>Manually</h4><div> The packaged database scripts make assumptions about your desired database configuration and set default values. Please edit them to suit your environment before running. The files are located in booked/database_schema/upgrades. <br><br> Depending on your current version, import the upgrade.sql file within each subdirectory to get to the current version (we recommend <a href="https://www.phpmyadmin.net/">phpMyAdmin</a> for this).<br><br> For example, if you are running version 2.0 and the current version is 2.2 then you should run booked/database_schema/upgrade/2.1/upgrade.sql then booked/database_schema/upgrade/2.2/upgrade.sql </div></div>
+The steps for upgrading from a previous version of Booked are very similar to the steps described above in Application Deployment to Server.
+
+### Recommended
+
+The recommended approach is to backup your current Booked files, then upload the new files to the that same location.  
+This prevents any old files from interfering with new ones.
+After the new files are uploaded, copy your old `config/config.php` file to the config directory in the new version.  
+Then run `/Web/install/configure.php` to bring your config file up to date.  
+If you have any uploaded resource images you will need to copy them from their old location to the new one.
+
+### Alternative
+
+An alternative upgrade approach is to overwrite the current Booked files with the new ones.  
+If doing this, you must delete the contents of `/tpl_c`.
+This approach will not allow you to roll back and will not clear out any obsolete files.
+
+
+### Database
+
+After the application files have been upgraded you will need to upgrade the database.
+
+
+#### Automatically
+
+The automatic database upgrade is exactly the same as the automatic database install.  
+Please follow the instructions in the Automatic Database Setup section above.
+
+#### Manually
+
+The packaged database scripts make assumptions about your desired database configuration and set default values.
+Please edit them to suit your environment before running.
+The files are located in `booked/database_schema/upgrades.`
+Depending on your current version, import the `upgrade.sql` file within each subdirectory to get to the current version (we recommend [phpMyAdmin](https://www.phpmyadmin.net) for this)  
+For example, if you are running version 2.0 and the current version is 2.2 then you should run `booked/database_schema/upgrade/2.1/upgrade.sql` then `booked/database_schema/upgrade/2.2/upgrade.sql`
 
 ## Migrating from version 1.2
 
-<div>A migration from 1.2 to 2.0 is supported for MySQL only. This can be run after the 2.0 installation. To run the migration open /Web/install/migrate.php directory in a web browser and follow the on-screen instructions. </div>
+A migration from 1.2 to 2.0 is supported for MySQL only.  
+This can be run after the 2.0 installation.  
+To run the migration open `/Web/install/migrate.php` directory in a web browser and follow the on-screen instructions.
+
 
 # Getting Started
 
@@ -108,13 +144,12 @@ There are 2 main types of accounts, they are admin and user account.
 - If you imported a sample application data, you now can use admin/password and user/password to login and make changes or addition via the application. 
 - If not, **you will need to register an account with your configured admin email address**. The admin email address can be set in the booked/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>
 
-. Other self registration accounts are defaulted to normal users.<br>
+Other self registration accounts are defaulted to normal users.
 
- After registration you will be logged in automatically.
+After registration you will be logged in automatically.
 
- At this time, it is recommended to change your password. 
+At this time, it is recommended to change your password.  
 - For LDAP authentication please login with your LDAP username/password.
-
 
 
 ## Log Files
@@ -138,7 +173,7 @@ Booked has the option to expose a RESTful JSON API. This API can be leveraged fo
 ### Prerequisites
 
 - PHP 7.0 or greater
-- To use 'friendly' URLs, mod\rewrite or URL rewriting must be enabled
+- To use 'friendly' URLs, mod_rewrite or URL rewriting must be enabled
 - Your web server must accept all verbs: GET, POST, PUT, DELETE
 
 

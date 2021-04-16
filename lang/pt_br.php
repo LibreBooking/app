@@ -1,22 +1,4 @@
 <?php
-/**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 require_once('Language.php');
 require_once('en_gb.php');
@@ -633,7 +615,7 @@ class pt_br extends en_gb
     $strings['DayFridayAbbr'] = 'Sex';
     $strings['DaySaturdayAbbr'] = 'Sab';
     // End Day representations
-    
+
     // Email Subjects
     $strings['ReservationApprovedSubject'] = 'Sua reserva foi aprovada';
     $strings['ReservationCreatedSubject'] = 'Sua reserva foi criada';
@@ -667,11 +649,11 @@ class pt_br extends en_gb
     $strings['ImageUploadDirectory'] = 'Diretório para enviar imagem física';
     $strings['ChangePermissions'] = 'Tente aplicar as permissões corretas';
     // End of creation
-    
+
     //My count
     //Change Password
     $strings['PasswordControlledExternallyError'] = 'Sua senha é controlada por um sistema externo e não pode ser atualizada aqui.';
-    
+
     //Create to pt_br 18/04/2019
     //Schedule
     $strings['ThisWeek'] = 'Semana atual';
@@ -682,8 +664,8 @@ class pt_br extends en_gb
     $strings['NewVersion'] = 'Nova versão';
     $strings['AnyResource'] = 'Todos os recursos';
     $strings['MoreOptions'] = 'Mais opções';
-    //End Schedule 
-    
+    //End Schedule
+
     //New version
     //Cleanup data
     $strings['ManageEmailTemplates'] = 'Modelo de email';
@@ -694,14 +676,14 @@ class pt_br extends en_gb
     $strings['DeletedReservations'] = 'Reserva(s) excluída(s)';
     $strings['WhatsNew'] = 'O que há de novo?';
     //End New version
-    
+
     //Reservations
     $strings['NameOrEmail'] = 'Nome ou email';
-    $strings['Guest'] = 'Convidados'; 
+    $strings['Guest'] = 'Convidados';
     $strings['ReservationSeriesEndingPreference'] = 'Quando minha série de reservas recorrentes está terminando';
-    $strings['CheckingAvailability']='Visualizar disponibilidade';    
-    //End reservations 
-    
+    $strings['CheckingAvailability']='Visualizar disponibilidade';
+    //End reservations
+
     //Schedule
     $strings['SearchReservations'] = 'Procure uma reserva';
     $strings['Day'] = 'Dia';
@@ -711,7 +693,7 @@ class pt_br extends en_gb
     $strings['AddToGoogleCalendar'] = 'Adicionar ao Google';
     $strings['DuplicateReservation'] = 'Duplicar';
     //End schedule
-    
+
     //Resources
     $strings['ResourceColor'] = 'Cor do recurso';
     $strings['PrintQRCode'] = 'Imprimir QR Code';
@@ -725,19 +707,19 @@ class pt_br extends en_gb
     $strings['ExportResources'] = 'Exportar recursos';
     $strings['BulkResourceDelete'] = 'Excluir recursos em massa';
     //End Resources
-    
+
     //Access
     $strings['ResourceMinNoticeNoneUpdate'] = 'As reservas podem ser atualizadas até a hora atual';
-    $strings['ResourceMinNoticeNoneDelete'] ='As reservas podem ser excluídas até a hora atual'; 
+    $strings['ResourceMinNoticeNoneDelete'] ='As reservas podem ser excluídas até a hora atual';
     $strings['ResourceMinNoticeDelete'] = 'As reservas devem ser excluídas pelo menos 2 dias antes da hora de início';
     $strings['RequiresCheckInNotification'] = 'Requer check in/out';
     $strings['AutoReleaseNotification'] = 'Liberado automaticamente se não for verificado em 30 minutos';
     $strings['ChooseOrDropFile'] = 'Escolha um arquivo ou arraste-o aqui';
     //End Access
-  
-    
-    
-    
+
+
+
+
     //Gerenciamento de Aplicativos
     //Reservas
     $strings['MissedCheckin'] = 'Checkin perdido';
@@ -756,14 +738,14 @@ class pt_br extends en_gb
 
     //Horários indisponíveis
     $strings['BlackoutAroundConflicts'] = 'Indisponibilizar reservas conflitantes';
-    
+
     //Cotas
     $strings['AllDay'] = 'O dia inteiro';
     $strings['Everyday'] = 'Todos os dias';
     $strings['IncludingCompletedReservations'] = 'Incluir reservas concluídas';
     $strings['NotCountingCompletedReservations'] = 'Não incluir reservas concluídas';
     $strings['QuotaEnforcement'] = 'Forçar %s %s';
-    
+
     //Schedules
     $strings['ReservationDetails']='Detalhes da reserva';
     $strings['ViewAvailability']='Visualizar disponibilidade';
@@ -781,35 +763,35 @@ class pt_br extends en_gb
     $strings['SwitchToACustomLayout'] = 'Mudar para um layout personalizado';
     $strings['SwitchLayoutWarning'] = 'Tem certeza de que deseja alterar o tipo de layout? Isso removerá todos os slots existentes.';
     $strings['OnlyViewedCalendar'] = 'Esta agenda só pode ser visualizada a partir da exibição da agenda.';
-    
+
     $strings['ViewTerms']         = 'Ver os Termos de Serviço';
     $strings['IAccept']           = 'Eu Aceito';
     $strings['TheTermsOfService'] = 'os Termos de Serviço';
-    
+
     //Users
     $strings['InviteUsers'] = 'Convidar usuários';
     $strings['NotifyUser'] = 'Notificar usuário';
     $strings['AutomaticallyAddToGroup'] = 'Adicionar automaticamente novos usuários a este grupo';
     $strings['GroupAutomaticallyAdd'] = 'Adiciona automaticamente';
     $strings['InviteUsersLabel'] = 'Insira os endereços de e-mail das pessoas para convidar';
-    
+
     //Announcements
     $strings['DisplayPage'] = 'Mostrar página';
     $strings['UsersInGroups'] = 'Usuários nos grupos';
     $strings['UsersWithAccessToResources'] = 'Usuários com acesso ao recurso';
     $strings['SendAsEmail'] = 'Enviar como e-mail';
     $strings['AnnouncementEmailNotice'] = 'os usuários receberão este anúncio como um e-mail';
-    
+
     //Personalização dos atributos
     $strings['DateTime'] = 'Data e hora';
     $strings['AdminOnly'] = 'Somente Admin';
     $strings['LimitAttributeScope'] = 'Coletar em casos específicos';
     $strings['CollectedFor'] = 'Coletado para';
-    
+
     //Relatórios
     $strings['IncludeDeleted'] = 'Inclui reservas removidas';
     $strings['Utilization'] = 'Utilização';
-    
+
     $strings['UpdateUsersOnImport'] = 'Atualizar usuário existente se o email já existir';
     $strings['UserImportInstructions'] = '<ul><li>O arquivo deve estar no formato CSV.</li>'
             . '<li>Nome de usuário e email são campos obrigatórios.</li>'
@@ -817,18 +799,18 @@ class pt_br extends en_gb
             . '<li>Deixar outros campos em branco irá definir valores padrão e \'senha\' como a senha do usuário.</li>'
             . '<li>Use o modelo fornecido como um exemplo.</li></ul>';
     $strings['GetTemplate'] = 'Baixar modelo';
-    
+
     //Configuração
     $strings['ImportICS'] = 'Importar de ICS';
     $strings['ImportQuartzy'] = 'Importar de Quartzy';
     $strings['OnlyIcs'] = 'Somente arquivos *.ics podem se importados.';
     $strings['IcsLocationsAsResources'] = 'Locais serão importados como recursos.';
-    $strings['IcsMissingOrganizer'] = 'Qualquer evento que não tenha um organizador terá o proprietário configurado para o usuário atual.';                               
+    $strings['IcsMissingOrganizer'] = 'Qualquer evento que não tenha um organizador terá o proprietário configurado para o usuário atual.';
     $strings['IcsWarning'] = 'As regras de reserva não serão aplicadas se houver conflitos, duplicatas, etc.';
     $strings['DeleteBlackoutsBefore'] = 'Excluir horários indisponíveis antes de ';
     $strings['PermanentlyDeleteUsers'] = 'Excluir permanentemente os usuários que não estão conectados desde';
     $strings['SelectEmailTemplate'] = 'Selecione um modelo de email';
-    
+
     $this->Strings = $strings;
 
     return $this->Strings;

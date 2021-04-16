@@ -4,11 +4,11 @@
 		{
         "folder_exclude_patterns":
 			[
-				"./.git",
-                "./.phpdoc",
-				"./tpl_c",
-				"./vendor",
-                "./lib/external/"
+				".git",
+                ".phpdoc",
+				"tpl_c",
+				"vendor",
+                "lib/external"
 			],
 			"name": "BookedScheduler",
 			"path": "."
