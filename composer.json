@@ -5,6 +5,7 @@
   },
   "require-dev": {
     "phing/phing": "2.*",
-    "phpunit/phpunit": "9"
+    "phpunit/phpunit": "9",
+    "kint-php/kint": "^3.3"
   }
 }

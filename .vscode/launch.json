@@ -1,0 +1,16 @@
+{
+    // doc: https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "stopOnEntry": true,
+            "port": 9000, // Xdebug 3 default port
+            "skipFiles": [
+                "tpl_c/**"
+            ],
+        },
+    ]
+}
