@@ -6,6 +6,6 @@ rules:
   - base: devel
     upstream:  effgarces:develop
     mergeMethod: rebase
-  - base: Final
-    upstream: effgarces:Final
+  - base: master
+    upstream: effgarces:master
     mergeMethod: hardreset
