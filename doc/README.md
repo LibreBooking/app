@@ -1,4 +1,10 @@
 # Developer Documentation
+## Working on the projekt
+The `develop` branch contains the most current working code of the Project and should be considered beta.  
+The `master` branch is the most current stable release of BookedScheduler.  
+You can automatically keep your fork up to date with the [pull GitHub App](https://github.com/apps/pull). which will sync the `master` and `develop` branches for you.
+Please commit bugfixes / features to a new branch prefixed `bugfix-`, `feature-` so they can be looked over, and pull requested to the `develop` branch and will eventually end up in a release on `master`.
+
 ## Design philosophy
 The Model-View-Presenter (MVP) pattern is used to keep a clear separation between application logic and presentation logic.  
 Page objects act as thin abstraction to the template engine and typically have no other logic.  
@@ -19,10 +25,16 @@ This typically includes fetching and transforming data and minimal application l
 Logically related code should be grouped in a directory with a "namespace.php" file, which requires all files in that directory.  
 This simply makes it easier to include necessary file dependencies.
 
-All classes should have good unit test coverage. The level of coverage is up to the developer, but I'd encourage TDD and .
-
 ## User interface
 [Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation. Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
+
+## PHPUnit
+All classes should have good unit test coverage. The level of coverage is up to the developer and should be done when the code is sufficiently complex.
+Tests must all succeed for a final release.
+
+## PHPDocumentor
+use [phive](https://phar.io/) to install [phpDocumentor](https://phpdoc.org/) globally as not to not pollute the composer.json
+you can customize the output by copyiing `/phpdoc.dist.xml` to `/phpdoc.xml` which now takes precedence and isn't tracked with git.
 
 ## Application Structure
 
@@ -74,10 +86,6 @@ All classes should have good unit test coverage. The level of coverage is up to 
         /scripts                    All application related javascript files
     /WebServices                The Booked API
 
-
-# PHPDocumentor
-use [phive](https://phar.io/) to install [phpDocumentor](https://phpdoc.org/) globally as not to not pollute the composer.json
-
-# Database
+## Database
 ![Entity Relationship Diagram](./ERD.svg)
-open BookedScheduler.mbw with [MySQL Workbench](https://www.mysql.com/products/workbench/) to edit/update this ERD
+you can open `/doc/BookedScheduler.mbw` with [MySQL Workbench](https://www.mysql.com/products/workbench/) to edit/update this ERD

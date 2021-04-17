@@ -3,9 +3,9 @@
 # pull from: https://github.com/effgarces/BookedScheduler
 version: "1"
 rules:
-  - base: Final
-    upstream:  effgarces:Final
+  - base: develop
+    upstream:  effgarces:develop
     mergeMethod: rebase
-  - base: RC
-    upstream: effgarces:RC
-    mergeMethod: rebase
+  - base: master
+    upstream: effgarces:master
+    mergeMethod: hardreset
