@@ -78,5 +78,3 @@ class ResourceRequestValidatorTests extends TestBase
 		$this->assertEquals(1, count($updateErrors));
 	}
 }
-
-?>

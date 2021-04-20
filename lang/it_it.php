@@ -1,25 +1,4 @@
 <?php
-/**
- * Copyright 2011-2016 Nick Korbel
- *
- * Translation: 2014 Nicola Ruggero <nicola@nxnt.org>, Daniele Cordella <kordan@mclink.it>
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 require_once('Language.php');
 require_once('en_gb.php');
 
@@ -586,7 +565,7 @@ class it_it extends en_gb
 		$strings['Autofill'] = 'Autoriempimento';
 		$strings['NameOrEmail'] = 'nome o email';
 		$strings['ImportResources'] = 'Importa Risorse';
-		$strings['ExportResources'] = 'Esporta Risorse';		
+		$strings['ExportResources'] = 'Esporta Risorse';
 		$strings['ResourceImportInstructions'] = '<ul><li>I file devono essere in formato CSV e con codifica UTF-8.</li><li>Il campo nome è obbligatorio. Lasciando vuoti gli altri campi si erediteranno i valori di default.</li><li>I possibili valori per lo Stato sono \'Disponibile\', \'Non disponibile\' and \'Nascosta\'.</li><li>Colore deve essere il valore esadecimale. es) #ffffff.</li><li>Le colonne Assegna automaticamente e approva possono essere vero o falso.</li><li>La validità degli attributi non verrà forzata.</li><li>I gruppi di risorsa multipli devono essere separati da virgola.</li><li>Si usi il template fornito come esempio.</li></ul>';
 		$strings['ReservationImportInstructions'] = '<ul><li>I file devono essere in formato CSV e con codifica UTF-8.</li><li>I campi Email, nomi risorsa, inizio e fine sono obbligatori.</li><li>I campi inizio e fine richiedono data e ora. Il formato raccomandato è YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Ruoli, conflitti, e periodi di tempo valiti non verranno controllati.</li><li>Le Notifiche non verranno mandate.</li><li>La validità degli attributi non verrà forzata.</li><li>I nomi di risorsa multipli devono essere separati da virgola.</li><li>Si usi il template fornito come esempio.</li></ul>';
 		$strings['AutoReleaseMinutes'] = 'Rilascio Automatico Minuti';

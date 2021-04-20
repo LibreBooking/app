@@ -71,5 +71,3 @@ class CustomAttributeTests extends TestBase
 		$this->assertEquals(1, $attribute->SortOrder());
 	}
 }
-
-?>

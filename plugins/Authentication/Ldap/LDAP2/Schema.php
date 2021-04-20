@@ -619,4 +619,3 @@ class Net_LDAP2_Schema extends PEAR
         return false; // no ocl for the ocls found.
     }
 }
-?>

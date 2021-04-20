@@ -87,5 +87,3 @@ class AccountActivationTests extends TestBase
 		$this->assertFalse($result->Activated());
 	}
 }
-
-?>

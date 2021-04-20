@@ -218,5 +218,3 @@ class ReservationAttachmentPresenterTests extends TestBase
 		$this->presenter->PageLoad($this->fakeUser);
 	}
 }
-
-?>

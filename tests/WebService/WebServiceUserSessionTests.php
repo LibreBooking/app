@@ -34,4 +34,3 @@ class WebServiceUserSessionTests extends TestBase
 		$this->assertFalse($session->IsExpired());
 	}
 }
-?>

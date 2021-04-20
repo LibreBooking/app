@@ -36,5 +36,3 @@ class ReminderValidationRuleTests extends TestBase
 		$this->assertFalse($result->IsValid());
 	}
 }
-
-?>

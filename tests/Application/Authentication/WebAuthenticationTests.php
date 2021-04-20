@@ -143,5 +143,3 @@ class WebAuthenticationTests extends TestBase
 		$this->assertTrue($this->fakeAuth->_HandleLoginFailureCalled);
 	}
 }
-
-?>

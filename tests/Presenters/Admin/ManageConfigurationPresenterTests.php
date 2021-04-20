@@ -317,5 +317,3 @@ class FakeManageConfigurationPage extends FakeActionPageBase implements IManageC
         // TODO: Implement GetHomePageId() method.
     }
 }
-
-?>

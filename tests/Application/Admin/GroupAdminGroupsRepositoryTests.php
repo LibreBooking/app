@@ -43,6 +43,3 @@ class GroupAdminGroupsRepositoryTests extends TestBase
         $this->assertInstanceOf('GroupItemView', $resultList[0]);
     }
 }
-
-
-?>

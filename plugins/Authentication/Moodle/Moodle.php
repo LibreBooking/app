@@ -1,4 +1,5 @@
 <?php
+
 define('ABORT_AFTER_CONFIG', true);
 define('NO_OUTPUT_BUFFERING', true);
 define('IGNORE_COMPONENT_CACHE', true);
@@ -62,32 +63,32 @@ class Moodle extends Authentication implements IAuthentication
 	public function __construct(IAuthentication $authentication)
 	{
 		Log::Debug('Moodle authentication plugin - __construct');
-		
+
 		$this->authToDecorate = $authentication;
 
 		if(!ServiceLocator::GetServer()->GetUserSession()->IsLoggedIn())
         {
-    		$this->CheckForMoodleSession(); 
+    		$this->CheckForMoodleSession();
         }
  	}
 
 	private function CheckForMoodleSession()
 	{
 		global $CFG;
-	
+
 		Log::Debug('Moodle authentication plugin - in CheckForMoodleSession');
-	
+
 		$this->options = new MoodleOptions();
-        
+
 		// phpScheduleIt can only 'see' Moodle cookies if they are on the same (main) domain
 		// from Moodle 2.6 this can be set in Site Administration>Server>Session Handling (admin/settings.php?section=sessionhandling)
 		$server = ServiceLocator::GetServer();
         if($moodleCookie = $server->GetCookie($this->options->GetMoodleCookieId()))
         {
             $moodlesid = $_COOKIE[$this->options->GetMoodleCookieId()];
-			
+
             Log::Debug('Moodle authentication plugin - using Moodle session: '.$moodleCookie);
-	
+
             require_once($this->options->GetPath().'config.php');
 
             Log::Debug('Moodle authentication plugin - Moodle config loaded from '.$this->options->GetPath().'config.php');
@@ -104,7 +105,7 @@ class Moodle extends Authentication implements IAuthentication
 				{
 					$loginData = new LoginData();
 					$webLoginContext = new WebLoginContext( $loginData );
-					
+
 					$userSession = $this->authToDecorate->Login($moodleuser->username, $webLoginContext );
 					if ($userSession->IsLoggedIn())
 					{
@@ -118,16 +119,16 @@ class Moodle extends Authentication implements IAuthentication
         {
             Log::Debug('Moodle authentication plugin - no Moodle session found');
         }
-		
+
 		return false;
 	}
 
 	public function Validate($username, $password)
 	{
 		global $CFG;
-		
+
 		Log::Debug('Moodle authentication plugin - Validate');
-		
+
 		if( $username=='api' )
 			return $this->authToDecorate->Validate($username, $password);
 
@@ -138,14 +139,14 @@ class Moodle extends Authentication implements IAuthentication
         Log::Debug('Moodle authentication plugin - Moodle config loaded from '.$this->options->GetPath().'config.php');
 
 		$moodledb = new Database(new MySqlConnection($CFG->dbuser, $CFG->dbpass, $CFG->dbhost, $CFG->dbname));
-		
+
 		// Note: only teachers are allowed to login using their Moodle account
 		// This is checked by looking at mdl_role_assignments for users with a role_id = 3
 		$reader = $moodledb->Query(new GetMoodleUserCommand($username));
 		if ($moodleuser = (object)$reader->GetRow())
 		{
     		require_once($this->options->GetPath() . 'lib/moodlelib.php');
-        
+
 			if (validate_internal_user_password($moodleuser,$password))
 			{
 				Log::Debug('Moodle authentication successful. User=%s', $username);
@@ -163,7 +164,7 @@ class Moodle extends Authentication implements IAuthentication
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -186,21 +187,21 @@ class Moodle extends Authentication implements IAuthentication
 	public function Logout(UserSession $user)
 	{
 		Log::Debug('Moodle authentication plugin - Logout');
-		
+
 		$this->authToDecorate->Logout($user);
 	}
 
 	public function AreCredentialsKnown()
 	{
 		Log::Debug('Moodle authentication plugin - AreCredentialsKnown');
-		  
+
 		return false;
 	}
 
 	private function UserExists()
 	{
 		Log::Debug('Moodle authentication plugin - UserExists');
-		
+
 		return ($this->user!=null) && $this->user->exists();
 	}
 
@@ -221,7 +222,7 @@ class Moodle extends Authentication implements IAuthentication
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadByUsername($this->user->username);
-		
+
 		// grab the Docenten group
 		$groupRepository = new GroupRepository();
 		if( $group = $groupRepository->LoadById(DOCENTEN_GROUP_ID) )
@@ -248,13 +249,10 @@ class GetMoodleUserCommand extends SqlCommand
 class GetMoodleSessionCommand extends SqlCommand
 {
 	// NB nog uitbreiden met check op ja/nee teacher of admin
-	
+
 	public function __construct($sid)
 	{
 		parent::__construct('SELECT u.* FROM mdl_sessions s JOIN mdl_user u ON s.userid=u.id AND NOT s.userid=0 WHERE s.state=0 AND s.sid=@sid AND u.suspended=0 AND u.deleted=0');
 		$this->AddParameter(new Parameter('@sid', $sid));
 	}
 }
-
-
-?>
