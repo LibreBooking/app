@@ -281,5 +281,3 @@ class CannedReportTests extends TestBase
 		$this->assertEquals($expected, $builder);
 	}
 }
-
-?>

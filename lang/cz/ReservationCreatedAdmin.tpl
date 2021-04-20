@@ -1,25 +1,7 @@
-{*
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*}
 	Byly vytvořeny tyto nové rezervace:
 	<br/>
 	<br/>
-	
+
 Uživatel: {$UserName}<br/>
 Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
 Konec: {formatdate date=$EndDate key=reservation_email}<br/>
@@ -38,13 +20,13 @@ Konec: {formatdate date=$EndDate key=reservation_email}<br/>
 
 	Nadpis: {$Title}<br/>
     Popis: {$Description}<br/>
-	
+
 	{if count($RepeatDates) gt 0}
 		<br/>
 		Byly rezervovány všechny tyto termíny:
 		<br/>
 	{/if}
-	
+
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
@@ -67,7 +49,7 @@ Konec: {formatdate date=$EndDate key=reservation_email}<br/>
 		<br/>
 		Jedna nebo více rezervací vyžaduje schválení od administrátora. Do té doby bude Vaše rezervace ve stavu schvalování.
 	{/if}
-	
+
 	<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit rezervaci v systému</a> | <a href="{$ScriptUrl}">Přihlásit se do systému</a>

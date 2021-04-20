@@ -237,4 +237,3 @@ class Net_LDAP2_RootDSE extends PEAR
     }
 }
 
-?>

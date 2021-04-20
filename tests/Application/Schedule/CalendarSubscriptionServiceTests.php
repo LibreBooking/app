@@ -1,4 +1,5 @@
 <?php
+
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class CalendarSubscriptionServiceTests extends TestBase
@@ -79,5 +80,3 @@ class CalendarSubscriptionServiceTests extends TestBase
         $this->assertEquals($expected, $actual);
     }
 }
-
-?>

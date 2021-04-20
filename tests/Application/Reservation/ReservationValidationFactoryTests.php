@@ -65,5 +65,3 @@ class ReservationValidationFactoryTests extends TestBase
         $this->assertEquals($validationService, $actual);
     }
 }
-
-?>

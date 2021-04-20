@@ -105,5 +105,3 @@ class LayoutValidatorTests extends TestBase
 		return $s;
 	}
 }
-
-?>

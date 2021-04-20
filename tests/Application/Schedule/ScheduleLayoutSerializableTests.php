@@ -50,4 +50,3 @@ class ScheduleLayoutSerializableTests extends TestBase
 		$this->assertEquals($p2->IsReservable(), $actualPeriods[1]->isReservable);
 	}
 }
-?>

@@ -1,23 +1,4 @@
 <?php
-/**
-Copyright 2011-2020 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
-// See http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration for a full list
 
 $conf['settings']['domain.controllers'] = 'mydomain,local'; // comma separated list of ldap servers such as domaincontroller1,controller2
 $conf['settings']['port'] = '389';      // default ldap port 389 or 636 for ssl.
@@ -33,4 +14,4 @@ $conf['settings']['required.groups'] = '';	// Required groups (empty if not nece
 $conf['settings']['sync.groups'] = 'false';	// Whether or not groups should be synced into Booked. When true then be sure that the attribute.mapping config value contains a correct map for groups
 $conf['settings']['use.sso'] = 'false';	// Whether or not to use single sign on
 $conf['settings']['prevent.clean.username'] = 'false';	// If the username is an email address or contains the domain, clean it
-?>
+

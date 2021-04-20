@@ -72,5 +72,3 @@ class PostRegistrationTests extends TestBase
 		$this->assertEquals(Pages::ACTIVATION, $this->page->_RedirectDestination);
 	}
 }
-
-?>

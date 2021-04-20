@@ -67,5 +67,3 @@ class PluginManagerTests extends TestBase
 		$this->assertEquals('PostRegistration', get_class($plugin));
 	}
 }
-
-?>

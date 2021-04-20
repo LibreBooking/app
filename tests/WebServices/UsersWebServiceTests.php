@@ -253,5 +253,3 @@ class UsersWebServiceTests extends TestBase
 		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, $hide);
 	}
 }
-
-?>
