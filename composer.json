@@ -1,7 +1,6 @@
 {
   "description": "Booked Scheduler",
   "autoload": {
-
   },
   "require-dev": {
     "phing/phing": "2.*",

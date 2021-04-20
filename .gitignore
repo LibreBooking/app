@@ -1,4 +1,6 @@
-/vendor
+/vendor/*
+/build/*
+/tools/*
 
 # Customized Confiuration Files
 /config/config.php
