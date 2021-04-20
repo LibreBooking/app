@@ -40,5 +40,3 @@ class WordPressOptions
 		return Configuration::Instance()->File(self::CONFIG_ID)->GetKey($keyName, $converter);
 	}
 }
-
-?>

@@ -1,24 +1,5 @@
 <?php
 
-/**
- * Copyright 2017-2020 Nick Korbel
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationMovePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationMovePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
@@ -126,7 +107,7 @@ class ReservationMovePresenterTests extends TestBase
 								 ->method('LoadByReferenceNumber')
 								 ->with($this->equalTo($this->page->_ReferenceNumber))
 								 ->will($this->returnValue($expectedSeries));
-		
+
 		$this->resourceRepository->expects($this->once())
 					->method('LoadById')
 					->with($this->equalTo($this->page->_ResourceId))
@@ -137,7 +118,7 @@ class ReservationMovePresenterTests extends TestBase
 		$this->assertEquals($newResource, $expectedSeries->Resource());
 		$this->assertEquals(1, count($expectedSeries->AllResources()));
 	}
-	
+
 	public function testRemovesDuplicateResource()
 	{
 		$this->page->_StartDate = '2016-05-01 12:00';

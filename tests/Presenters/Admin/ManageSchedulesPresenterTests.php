@@ -209,5 +209,3 @@ class ManageSchedulesPresenterTests extends TestBase
 		$presenter->Delete();
 	}
 }
-
-?>

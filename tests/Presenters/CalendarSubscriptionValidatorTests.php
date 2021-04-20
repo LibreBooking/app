@@ -129,5 +129,3 @@ class CalendarSubscriptionValidatorTests extends TestBase
         $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY, '123');
     }
 }
-
-?>

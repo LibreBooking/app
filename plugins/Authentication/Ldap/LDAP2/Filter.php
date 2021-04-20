@@ -136,7 +136,7 @@ class Net_LDAP2_Filter extends PEAR
     *    - approx:         One of the attributes values is similar to $value
     *
     * Negation ("not") can be done by prepending the above operators with the
-    * "not" or "!" keyword, see example below. 
+    * "not" or "!" keyword, see example below.
     *
     * If $escape is set to true (default) then $value will be escaped
     * properly. If it is set to false then $value will be treaten as raw filter value string.
@@ -222,7 +222,7 @@ class Net_LDAP2_Filter extends PEAR
         default:
             return PEAR::raiseError('Net_LDAP2_Filter create error: matching rule "' . $match . '" not known!');
         }
-        
+
         // negate if requested
         if ($negate_filter) {
            $leaf_filter = Net_LDAP2_Filter::combine('!', $leaf_filter);
@@ -582,13 +582,13 @@ class Net_LDAP2_Filter extends PEAR
             // if this is not a single component, do calculate all subfilters,
             // then assert the partial results with the given combination modifier
             if (!$this->isLeaf()) {
-        
+
                 // get partial results from subfilters
                 $partial_results = array();
                 foreach ($this->_subfilters as $filter) {
                     $partial_results[] = $filter->matches($entry);
                 }
-            
+
                 // evaluate partial results using this filters combination rule
                 switch ($this->_match) {
                     case '!':
@@ -600,17 +600,17 @@ class Net_LDAP2_Filter extends PEAR
                         // all partial results have to be boolean-true
                         $entry_matched = !in_array(false, $partial_results);
                     break;
-                
+
                     case '|':
                         // at least one partial result has to be true
                         $entry_matched = in_array(true, $partial_results);
                     break;
                 }
-            
+
             } else {
                 // Leaf filter: assert given entry
                 // [TODO]: Could be optimized to avoid preg_match especially with "ends", "begins" etc
-            
+
                 // Translate the LDAP-match to some preg_match expression and evaluate it
                 list($attribute, $match, $assertValue) = $this->getComponents();
                 switch ($match) {
@@ -618,16 +618,16 @@ class Net_LDAP2_Filter extends PEAR
                         $regexp = '/^'.str_replace('*', '.*', $assertValue).'$/i'; // not case sensitive unless specified by schema
                         $entry_matched = $entry->pregMatch($regexp, $attribute);
                     break;
-                
+
                     // -------------------------------------
                     // [TODO]: implement <, >, <=, >= and =~
                     // -------------------------------------
-                
+
                     default:
                         $err = PEAR::raiseError("Net_LDAP2_Filter match error: unsupported match rule '$match'!");
                         return $err;
                 }
-            
+
             }
 
             // process filter matching result
@@ -672,4 +672,3 @@ class Net_LDAP2_Filter extends PEAR
 
 
 }
-?>

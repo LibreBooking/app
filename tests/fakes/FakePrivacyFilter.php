@@ -44,5 +44,3 @@ class FakePrivacyFilter implements IPrivacyFilter
 		return $this->_CanViewDetails;
 	}
 }
-
-?>

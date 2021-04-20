@@ -148,5 +148,3 @@ class ManageResourceGroupsPresenterTests extends TestBase
 		$this->presenter->MoveNode();
 	}
 }
-
-?>

@@ -75,5 +75,3 @@ class ActivationPresenterTests extends TestBase
 		$this->presenter->PageLoad();
 	}
 }
-
-?>

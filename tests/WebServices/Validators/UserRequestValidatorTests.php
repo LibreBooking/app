@@ -179,5 +179,3 @@ class UserRequestValidatorTests extends TestBase
 				->will($this->returnValue(new AttributeServiceValidationResult(true, null)));
 	}
 }
-
-?>

@@ -88,5 +88,3 @@ class GroupsWebServiceTests extends TestBase
 		$this->assertEquals(RestResponse::NOT_FOUND_CODE, $this->server->_LastResponseCode);
 	}
 }
-
-?>

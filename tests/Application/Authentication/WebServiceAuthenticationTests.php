@@ -125,5 +125,3 @@ class WebServiceAuthenticationTests extends TestBase
 	}
 
 }
-
-?>

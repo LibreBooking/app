@@ -7,11 +7,11 @@ function AccessoryManagement(opts) {
 
 		addUnlimited: $('#chkUnlimitedAdd'),
 		addQuantity: $('#addQuantity'),
-		
+
 		editName: $('#editName'),
 		editUnlimited: $('#chkUnlimitedEdit'),
 		editQuantity: $('#editQuantity'),
-		
+
 		editDialog: $('#editDialog'),
 		deleteDialog: $('#deleteDialog'),
 		accessoryResourcesDialog: $('#accessoryResourcesDialog'),

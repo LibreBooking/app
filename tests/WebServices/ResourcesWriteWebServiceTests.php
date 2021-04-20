@@ -142,5 +142,3 @@ class ResourcesWriteWebServiceTests extends TestBase
 		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
 	}
 }
-
-?>

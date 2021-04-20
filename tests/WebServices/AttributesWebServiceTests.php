@@ -79,5 +79,3 @@ class AttributesWebServiceTests extends TestBase
 	}
 
 }
-
-?>

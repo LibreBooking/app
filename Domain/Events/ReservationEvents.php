@@ -1,6 +1,5 @@
 <?php
 
-
 class SeriesEventPriority
 {
 	const Highest = 10;

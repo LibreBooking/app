@@ -1,27 +1,4 @@
 <?php
-/**
-Copyright 2011-2019 Nick Korbel, Boris Vatin
-
-****************************************************************************************
-Version för ordenshuset. Alla ändringar kommenterade för lätt uppgradering nästa gång!!! 
-****************************************************************************************
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 require_once('Language.php');
 require_once('en_gb.php');
 
@@ -31,7 +8,7 @@ class sv_sv extends en_gb
     {
         parent::__construct();
     }
-    
+
 	/**
 	 * @return array
 	 */
@@ -282,7 +259,7 @@ class sv_sv extends en_gb
         $strings['Email'] = 'Email';
         $strings['EmailAddress'] = 'Email Adress';
         $strings['Phone'] = 'Telefon';	// ändrat AR
-		$strings['Organization']                        = 'Organisation';  
+		$strings['Organization']                        = 'Organisation';
 		$strings['Position']                            = 'Position';   // ändrat AR
         $strings['Language'] = 'Språk';
         $strings['Permissions'] = 'Behörighet';
@@ -303,9 +280,9 @@ class sv_sv extends en_gb
         $strings['OK'] = 'OK';
         $strings['Working'] = 'fungerar...';
         $strings['Login'] = 'Login';
-		$strings['AdditionalInformation']               = 'Ytterligare information'; // Ändrat AR 
+		$strings['AdditionalInformation']               = 'Ytterligare information'; // Ändrat AR
         $strings['AllFieldsAreRequired'] = 'Alla fält är obligatoriska';
-		$strings['Optional']                            = 'Valfritt';   
+		$strings['Optional']                            = 'Valfritt';
         $strings['YourProfileWasUpdated'] = 'Din profil är uppdaterad';
         $strings['YourSettingsWereUpdated'] = 'Dina inställningar har uppdaterats';
         $strings['Register'] = 'Registrera';
@@ -429,13 +406,13 @@ class sv_sv extends en_gb
         $strings['CategoryGroup'] = 'Grupp';
         $strings['SortOrder'] = 'Sorteringsordning';
         $strings['Title'] = 'Rubrik';
-		$strings['AdditionalAttributes']                = 'Flera attribut'; 	
+		$strings['AdditionalAttributes']                = 'Flera attribut';
         $strings['True'] = 'Sant';
         $strings['False'] = 'Falskt';
 		$strings['NoResultsFound'] = 'Hittade inga rapporter';
 		$strings['NoSavedReports'] = 'Det finns inga sparade rapporter';
 		$strings['GenerateReports'] = 'Skapa rapport';
-		$strings['ForgotPasswordEmailSent'] = 'Ett e-postmeddelande har skickats till din e-postadress med instruktioner om hur du återställer ditt lösenord'; // ändrat AR 
+		$strings['ForgotPasswordEmailSent'] = 'Ett e-postmeddelande har skickats till din e-postadress med instruktioner om hur du återställer ditt lösenord'; // ändrat AR
 		$strings['ActivationEmailSent'] = 'Ett aktiveringsmail har skickats till dig.';
 		$strings['AccountActivationError'] = 'Ett problem uppstod vid aktiveringen av ert konto, kontot kunde inte aktiveras. Vänligen försök igen.';
 		$strings['Attachments'] = 'Bilaga';
@@ -467,10 +444,10 @@ class sv_sv extends en_gb
         // Errors
         $strings['LoginError'] = 'Användarnamn eller lösenord är felaktigt';
         $strings['ReservationFailed'] = 'Din bokning kunde inte göras';
-        $strings['MinNoticeError'] = 'Du kan inte boka med så kort varsel. Den första dagen som kan bokas direkt är %s.';	// 
-        $strings['MaxNoticeError'] = 'Denna bokning kan inte göras så långt i framtiden. Det tidigaste datum som kan bokas är %s.';	// 
-		$strings['MinNoticeErrorUpdate'] = 'Du kan inte ändra en bokning med så kort varsel.';	// 
-		$strings['MinNoticeErrorDelete'] = 'Du kan inte ta bort en bokning med så kort varsel.';	
+        $strings['MinNoticeError'] = 'Du kan inte boka med så kort varsel. Den första dagen som kan bokas direkt är %s.';	//
+        $strings['MaxNoticeError'] = 'Denna bokning kan inte göras så långt i framtiden. Det tidigaste datum som kan bokas är %s.';	//
+		$strings['MinNoticeErrorUpdate'] = 'Du kan inte ändra en bokning med så kort varsel.';	//
+		$strings['MinNoticeErrorDelete'] = 'Du kan inte ta bort en bokning med så kort varsel.';
         $strings['MinDurationError'] = 'Denna bokning måste vara minst %s.';
         $strings['MaxDurationError'] = 'Denna bokning kan inte vara längre än %s.';
         $strings['ConflictingAccessoryDates'] = 'Det finns inte tillräckligt av följande tillbehör:';
@@ -564,7 +541,7 @@ class sv_sv extends en_gb
         $strings['ReservationCreatedAdminSubject'] = 'Underrättelse: Ny bokning';	// ändrat AR
         $strings['ReservationUpdatedAdminSubject'] = 'Underrättelse: En bokning har uppdaterats';
         $strings['ReservationDeleteAdminSubject'] = 'Underrättelse: En bokning har uppdaterats';
-		$strings['ReservationApprovalAdminSubject'] = 'Underrättelse: En bokning måste godkännas';  
+		$strings['ReservationApprovalAdminSubject'] = 'Underrättelse: En bokning måste godkännas';
         $strings['ParticipantAddedSubject'] = 'Underrättelse om bokningsdeltagande';
         $strings['ParticipantDeletedSubject'] = 'Bokning borttagen';
         $strings['InviteeAddedSubject'] = 'Bokningsinbjudan';

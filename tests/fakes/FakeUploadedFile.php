@@ -89,5 +89,3 @@ class FakeUploadedFile extends UploadedFile
 		$this->Error;
 	}
 }
-
-?>

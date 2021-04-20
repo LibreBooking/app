@@ -109,5 +109,3 @@ class UserSessionRepositoryTests extends TestBase
 		$this->assertEquals($command, $this->db->_LastCommand);
 	}
 }
-
-?>
