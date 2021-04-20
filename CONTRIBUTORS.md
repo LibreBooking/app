@@ -36,9 +36,9 @@
 - [Róbert Bere]()  (Hungarian)
 
 
-# Libraries
-Thank you to the following projects and libraries
+## Libraries
 
+Thank you to the following projects and libraries
 - [Smarty]()
 - [PEAR]()
 - [adLDAP]()
