@@ -1,26 +1,5 @@
 <?php
 
-/**
- * Copyright 2011-2020 Nick Korbel
- * Copyright 2012-2014, Moritz Schepp, IST Austria
- * Copyright 2012-2014, Alois Schloegl, IST Austria
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 class Queries
 {
     private function __construct()
@@ -74,14 +53,14 @@ class Queries
         'INSERT INTO `groups` (`name`, `isdefault`) VALUES (@groupname, @isdefault)';
 
     const ADD_GROUP_RESOURCE_PERMISSION =
-        'INSERT INTO `group_resource_permissions` (`group_id`, `resource_id`, `permission_type`) 
+        'INSERT INTO `group_resource_permissions` (`group_id`, `resource_id`, `permission_type`)
 			VALUES (@groupid, @resourceid, @permission_type)';
 
     const ADD_GROUP_ROLE =
         'INSERT IGNORE INTO `group_roles` (`group_id`, `role_id`) VALUES (@groupid, @roleid)';
 
     const ADJUST_USER_CREDITS =
-        'INSERT INTO `credit_log` (`user_id`, `original_credit_count`, `credit_count`, `credit_note`, `date_created`) 
+        'INSERT INTO `credit_log` (`user_id`, `original_credit_count`, `credit_count`, `credit_note`, `date_created`)
             SELECT `user_id`, `credit_count`, COALESCE(`credit_count`,0) - @credit_count, @credit_note, @dateCreated FROM `users` WHERE `user_id` = @userid;
           UPDATE `users` SET `credit_count` = COALESCE(`credit_count`,0) - @credit_count WHERE `user_id` = @userid';
 
@@ -100,11 +79,11 @@ class Queries
         'INSERT INTO `quotas` (`quota_limit`, `unit`, `duration`, `resource_id`, `group_id`, `schedule_id`, `enforced_time_start`, `enforced_time_end`, `enforced_days`, `scope`)
 			VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid, @startTime, @endTime, @enforcedDays, @scope)';
 
-    const ADD_PAYMENT_GATEWAY_SETTING = 'INSERT INTO `payment_gateway_settings` (`gateway_type`, `setting_name`, `setting_value`) 
+    const ADD_PAYMENT_GATEWAY_SETTING = 'INSERT INTO `payment_gateway_settings` (`gateway_type`, `setting_name`, `setting_value`)
                                       VALUES (@gateway_type, @setting_name, @setting_value)';
 
     const ADD_PAYMENT_TRANSACTION_LOG =
-        'INSERT INTO `payment_transaction_log` (`user_id`, `status`, `invoice_number`, `transaction_id`, `subtotal_amount`, `tax_amount`, `total_amount`, `transaction_fee`, `currency`, `transaction_href`, `refund_href`, `date_created`, `gateway_date_created`, `gateway_name`, `payment_response`) 
+        'INSERT INTO `payment_transaction_log` (`user_id`, `status`, `invoice_number`, `transaction_id`, `subtotal_amount`, `tax_amount`, `total_amount`, `transaction_fee`, `currency`, `transaction_href`, `refund_href`, `date_created`, `gateway_date_created`, `gateway_name`, `payment_response`)
           VALUES (@userid, @status, @invoice_number, @transaction_id, @total_amount, 0, @total_amount, @transaction_fee, @currency, @transaction_href, @refund_href, @date_created, @gateway_date_created, @gateway_name, @payment_response)';
 
     const ADD_PEAK_TIMES =
@@ -112,7 +91,7 @@ class Queries
 			VALUES (@scheduleid, @all_day, @start_time, @end_time, @every_day, @peak_days, @all_year, @begin_month, @begin_day, @end_month, @end_day)';
 
     const ADD_REFUND_TRANSACTION_LOG =
-        'INSERT INTO `refund_transaction_log` (`payment_transaction_log_id`, `status`, `transaction_id`, `total_refund_amount`, `payment_refund_amount`, `fee_refund_amount`, `transaction_href`, `date_created`, `gateway_date_created`, `refund_response`) 
+        'INSERT INTO `refund_transaction_log` (`payment_transaction_log_id`, `status`, `transaction_id`, `total_refund_amount`, `payment_refund_amount`, `fee_refund_amount`, `transaction_href`, `date_created`, `gateway_date_created`, `refund_response`)
           VALUES (@payment_transaction_log_id, @status, @transaction_id, @total_refund_amount, @payment_refund_amount, @fee_refund_amount, @transaction_href, @date_created, @gateway_date_created, @refund_response)';
 
     const ADD_REMINDER =
@@ -178,7 +157,7 @@ class Queries
 		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid, @admin_group_id)';
 
     const ADD_TERMS_OF_SERVICE =
-        'INSERT INTO `terms_of_service` (`terms_text`, `terms_url`, `terms_file`, `applicability`, `date_created`) 
+        'INSERT INTO `terms_of_service` (`terms_text`, `terms_url`, `terms_file`, `applicability`, `date_created`)
       VALUES (@terms_text, @terms_url, @terms_file, @applicability, @dateCreated)';
 
     const ADD_USER_GROUP =
@@ -251,8 +230,8 @@ class Queries
 		INNER JOIN `blackout_instances` ON `blackout_series`.`blackout_series_id` = `blackout_instances`.`blackout_series_id`
 		WHERE `blackout_instance_id` = @blackout_instance_id';
 
-    const DELETE_CUSTOM_LAYOUT_PERIOD = 'DELETE FROM `custom_time_blocks` 
-      WHERE `start_time` = @startTime AND 
+    const DELETE_CUSTOM_LAYOUT_PERIOD = 'DELETE FROM `custom_time_blocks`
+      WHERE `start_time` = @startTime AND
         `layout_id` = (select `layout_id` from `schedules` where `schedule_id` = @scheduleid)';
 
     const DELETE_BLACKOUT_INSTANCE = 'DELETE FROM `blackout_instances` WHERE `blackout_instance_id` = @blackout_instance_id';
@@ -362,7 +341,7 @@ class Queries
 
  			ORDER BY `accessory_name`';
 
-    const GET_ALL_ANNOUNCEMENTS = 'SELECT `a`.*, 
+    const GET_ALL_ANNOUNCEMENTS = 'SELECT `a`.*,
 			(SELECT GROUP_CONCAT(`ag`.`group_id`) FROM `announcement_groups` `ag` WHERE `ag`.`announcementid` = `a`.`announcementid`) as `group_ids`,
 			(SELECT GROUP_CONCAT(`ar`.`resource_id`) FROM `announcement_resources` `ar` WHERE `ar`.`announcementid` = `a`.`announcementid`) as `resource_ids`
 			FROM `announcements` `a` ORDER BY `start_date`';
@@ -379,8 +358,8 @@ class Queries
               ) OR `email` IN (@email))
               GROUP BY `user_id`';
 
-    const GET_ALL_CREDIT_LOGS = 'SELECT `cl`.*, `u`.`fname`, `u`.`lname`, `u`.`email` FROM `credit_log` `cl` 
-            LEFT JOIN `users` `u` ON `cl`.`user_id` = `u`.`user_id` 
+    const GET_ALL_CREDIT_LOGS = 'SELECT `cl`.*, `u`.`fname`, `u`.`lname`, `u`.`email` FROM `credit_log` `cl`
+            LEFT JOIN `users` `u` ON `cl`.`user_id` = `u`.`user_id`
             WHERE (@userid = -1 or `cl`.`user_id` = @userid)
             ORDER BY `cl`.`date_created` DESC';
 
@@ -401,7 +380,7 @@ class Queries
 		ORDER BY `g`.`name`';
 
     const GET_ALL_GROUP_RESOURCE_PERMISSIONS = 'SELECT `grp`.*, `r`.`name`
-        FROM `group_resource_permissions` `grp` 
+        FROM `group_resource_permissions` `grp`
         INNER JOIN `resources` `r` ON `grp`.`resource_id` = `r`.`resource_id`';
 
     const GET_ALL_GROUP_ADMINS =
@@ -478,7 +457,7 @@ class Queries
     const GET_ALL_TRANSACTION_LOGS = 'SELECT `ptl`.*, `u`.`fname`, `u`.`lname`, `u`.`email`, SUM(`total_refund_amount`) as `refund_amount`
             FROM `payment_transaction_log` `ptl`
             LEFT JOIN `refund_transaction_log` `refunds` on `ptl`.`payment_transaction_log_id` = `refunds`.`payment_transaction_log_id`
-            LEFT JOIN `users` `u` ON `ptl`.`user_id` = `u`.`user_id` 
+            LEFT JOIN `users` `u` ON `ptl`.`user_id` = `u`.`user_id`
             WHERE (@userid = -1 OR `ptl`.`user_id` = @userid)
             GROUP BY `ptl`.`payment_transaction_log_id`
             ORDER BY `date_created` DESC';
@@ -582,15 +561,15 @@ class Queries
 		WHERE `rr`.`blackout_series_id` = @blackout_series_id
 		ORDER BY `r`.`name`';
 
-    const GET_CUSTOM_LAYOUT = 'SELECT `l`.`timezone`, `ctb`.* 
-        FROM `layouts` `l` 
+    const GET_CUSTOM_LAYOUT = 'SELECT `l`.`timezone`, `ctb`.*
+        FROM `layouts` `l`
         INNER JOIN `custom_time_blocks` `ctb` ON `l`.`layout_id` = `ctb`.`layout_id`
         INNER JOIN `schedules` `s` ON `s`.`layout_id` = `l`.`layout_id`
         WHERE `ctb`.`start_time` >= @startDate AND `ctb`.`end_time` <= @endDate AND `s`.`schedule_id` = @scheduleid
         ORDER BY `ctb`.`start_time`';
 
     const GET_DASHBOARD_ANNOUNCEMENTS =
-        'SELECT `a`.*, 
+        'SELECT `a`.*,
 			(SELECT GROUP_CONCAT(`ag`.`group_id`) FROM `announcement_groups` `ag` WHERE `ag`.`announcementid` = `a`.`announcementid`) as `group_ids`,
 			(SELECT GROUP_CONCAT(`ar`.`resource_id`) FROM `announcement_resources` `ar` WHERE `ar`.`announcementid` = `a`.`announcementid`) as `resource_ids`
 			FROM `announcements` `a`
@@ -629,7 +608,7 @@ class Queries
 		FROM `reservation_instances` `ri`
 		INNER JOIN `reservation_series` `rs` ON `ri`.`series_id` = `rs`.`series_id`
 		INNER JOIN `reservation_reminders` `rr` on `ri`.`series_id` = `rr`.`series_id` INNER JOIN `reservation_users` `ru` on `ru`.`reservation_instance_id` = `ri`.`reservation_instance_id`
-		INNER JOIN `users` `u` on `ru`.`user_id` = `u`.`user_id`		
+		INNER JOIN `users` `u` on `ru`.`user_id` = `u`.`user_id`
 		WHERE `rs`.`status_id` <> 2 AND (`reminder_type` = @reminder_type AND @reminder_type=0 AND date_sub(`start_date`,INTERVAL `rr`.`minutes_prior` MINUTE) = @current_date) OR (`reminder_type` = @reminder_type AND @reminder_type=1 AND date_sub(`end_date`,INTERVAL `rr`.`minutes_prior` MINUTE) = @current_date)';
 
     const GET_REMINDERS_BY_USER = 'SELECT * FROM `reminders` WHERE `user_id` = @user_id';
@@ -795,7 +774,7 @@ class Queries
 			`l`.`timezone`,
 			`l`.`layout_type`
 		FROM
-		`layouts` `l` 
+		`layouts` `l`
 		INNER JOIN `schedules` `s` ON `l`.`layout_id` = `s`.`layout_id`
 		LEFT JOIN `time_blocks` `tb` ON `tb`.`layout_id` = `l`.`layout_id`
 		WHERE
@@ -925,10 +904,10 @@ class Queries
 				`user_resource_permissions` `urp`, `resources` `r`, `users` `u`
 			WHERE
 				`r`.`resource_id` = @resourceid AND `r`.`resource_id` = `urp`.`resource_id` AND `u`.`user_id` = `urp`.`user_id` AND `u`.`status_id` = @user_statusid
-		UNION 
+		UNION
 			SELECT `u`.*, `grp`.`permission_type`
-			FROM `users` `u` 
-			INNER JOIN `user_groups` `ug` on `u`.`user_id` = `ug`.`user_id` 
+			FROM `users` `u`
+			INNER JOIN `user_groups` `ug` on `u`.`user_id` = `ug`.`user_id`
 			INNER JOIN `group_resource_permissions` `grp` on `ug`.`group_id` = `grp`.`group_id`
 			WHERE `ug`.`group_id` IN (
 				SELECT
@@ -936,7 +915,7 @@ class Queries
 				FROM
 					`group_resource_permissions` `grp`, `resources` `r`, `groups` `g`
 				WHERE
-					`r`.`resource_id` = @resourceid AND `r`.`resource_id` = `grp`.`resource_id` AND `g`.`group_id` = `grp`.`group_id`) 
+					`r`.`resource_id` = @resourceid AND `r`.`resource_id` = `grp`.`resource_id` AND `g`.`group_id` = `grp`.`group_id`)
 			AND `u`.`status_id` = @user_statusid';
 
     const MIGRATE_PASSWORD =
@@ -1245,7 +1224,7 @@ class QueryBuilder
 
 					(SELECT GROUP_CONCAT(CONCAT(`p`.`name`, "=", `p`.`value`) SEPARATOR "!sep!")
 						FROM `user_preferences` `p` WHERE `owner`.`user_id` = `p`.`user_id`) as `preferences`,
-						
+
 					(SELECT GROUP_CONCAT(CONCAT(`guests`.`email`, "=", `guests`.`reservation_user_level`) SEPARATOR "!sep!")
 						FROM `reservation_guests` `guests` WHERE `guests`.`reservation_instance_id` = `ri`.`reservation_instance_id`) as `guest_list`';
 

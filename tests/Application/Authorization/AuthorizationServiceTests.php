@@ -1,6 +1,5 @@
 <?php
 
-
 require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 class AuthorizationServiceTests extends TestBase
