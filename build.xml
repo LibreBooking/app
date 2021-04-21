@@ -1,26 +1,24 @@
 <?xml version="1.0"?>
+<!-- doc: https://www.phing.info/guide/hlhtml/#d5e653 -->
+<!-- php and mysql command have to be in your PATH -->
 <project name="booked" default="package">
-    <property name="version" value="2.8.5"/>
+    <property name="version" value="2.8.6"/>
     <property name="is.pre.release" value="false"/>
     <property name="packagename" value="booked-${version}"/>
-    <property name="root.dir" value="../.."/>
-    <property name="zipdirectory" value="${root.dir}/booked_archive/zip/${version}"/>
-    <property name="archive_directory" value="${root.dir}/booked_archive/src/${version}"/>
-    <property name="staging" value="${root.dir}/staging"/>
-    <property name="stagingdir" value="${staging}/booked"/>
-    <property name="demo.dir" value="${root.dir}/booked_archive/src/demo"/>
-    <property name="phing.tasks.dir" value="c:/php/pear/phing/tasks/my"/>
 
-    <available file="C:\wamp64\bin\mysql\mysql5.7.26" property="mysql.bin" value="C:\wamp64\bin\mysql\mysql5.7.26\bin"/>
-    <available file="C:\wamp64\bin\mysql\mysql8.0.18" property="mysql.bin" value="C:\wamp64\bin\mysql\mysql8.0.18\bin"/>
+    <property name="build.dir" value="build"/>
+    <property name="zipdirectory" value="${build.dir}/zip/${version}"/>
+    <property name="bundle_directory" value="${build.dir}/src/${version}"/>
+    <property name="stagingdir" value="${build.dir}/staging"/>
 
-    <property name="mysql.username" value="root"/>
-    <property name="mysql.password" value="root"/>
+    <property name="mysql.username" value="test"/>
+    <property name="mysql.password" value="test"/>
     <property name="mysql.server" value="127.0.0.1"/>
-    <property name="mysql.database" value="booked"/>
+    <property name="mysql.database" value="bookedscheduler"/>
+
     <property name="sql.file.create.db" value="database_schema/create-db.sql"/>
     <property name="sql.file.create.schema" value="database_schema/create-schema.sql"/>
-<!--    <property name="sql.file.create.user" value="database_schema/create-user.sql"/>-->
+<!-- <property name="sql.file.create.user" value="database_schema/create-user.sql"/> -->
     <property name="sql.file.data" value="database_schema/create-data.sql"/>
     <property name="sql.file.full" value="database_schema/full-install.sql"/>
     <property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
@@ -56,12 +54,12 @@
         <echo message="Create db file: ${sql.file.create.db}"/>
         <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} mysql &lt; ${phing.dir}/${sql.file.create.db}"
               checkreturn="true"
-              dir="${mysql.bin}"/>
+        />
 
         <echo message="Create schema file: ${sql.file.create.schema}"/>
         <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.schema}"
               checkreturn="true"
-              dir="${mysql.bin}"/>
+        />
 
 <!--        <echo message="Create user file: ${sql.file.create.user}"/>-->
 <!--        <exec command="${mysql.bin}\mysql &#45;&#45;user=${mysql.username} &#45;&#45;password=${mysql.password} &#45;&#45;host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.user}"-->
@@ -107,57 +105,82 @@
         <property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
 
         <zip destfile="${zip.file.name}">
-            <fileset dir="${staging}">
+            <fileset dir="${stagingdir}">
                 <include name="**/*"/>
             </fileset>
         </zip>
 
-        <delete dir="${archive_directory}" failonerror="false"/>
-        <mkdir dir="${archive_directory}"/>
+        <delete dir="${bundle_directory}" failonerror="false"/>
+        <mkdir dir="${bundle_directory}"/>
 
-        <copy todir="${archive_directory}" includeemptydirs="true">
-            <fileset dir="${staging}">
+        <copy todir="${bundle_directory}" includeemptydirs="true">
+            <fileset dir="${stagingdir}">
                 <include name="**/*"/>
             </fileset>
         </copy>
 
-        <delete dir="${staging}" failonerror="false"/>
+        <delete dir="${stagingdir}" failonerror="false"/>
     </target>
 
     <target name="stage.files">
-        <delete dir="${staging}" failonerror="false"/>
-        <mkdir dir="${staging}"/>
+        <delete dir="${stagingdir}" failonerror="false"/>
         <mkdir dir="${stagingdir}"/>
         <copy todir="${stagingdir}" includeemptydirs="true">
             <fileset dir=".">
                 <include name="**/*"/>
-                <exclude name="**.psd"/>
-                <exclude name="**.bak"/>
-                <exclude name="*test*"/>
-                <exclude name=".project"/>
-                <exclude name="build.bat"/>
-                <exclude name="build.xml"/>
-                <exclude name="**/tests/**"/>
-                <exclude name="**/docs/**"/>
-                <exclude name="tpl_c/*.*"/>
-                <exclude name=".git*/**"/>
-                <exclude name=".idea"/>
-                <exclude name=".idea/**"/>
-                <exclude name=".settings/**"/>
-                <exclude name="_excludes.txt"/>
-                <exclude name="pdt_templates.xml"/>
-                <exclude name="**/*.zip"/>
-                <exclude name="**/*.jar"/>
-                <exclude name="**/phing-tasks/**"/>
-                <exclude name="*phing-tasks*"/>
-                <exclude name="**/uploads/images/*"/>
-                <exclude name="**/uploads/reservation/*"/>
-                <exclude name="vendor/**"/>
+                <!-- config files -->
                 <exclude name="**/config.php"/>
+                <exclude name="**/config.devel.php"/>
                 <exclude name="**/*.config.php"/>
                 <exclude name="config/log4php.config.xml"/>
-                <exclude name="*phpunit*"/>
+
+                <!-- user files -->
+                <exclude name="**/uploads/images/*"/>
+                <exclude name="**/uploads/reservation/*"/>
+
+                <!-- asset resources -->
+                <exclude name="**.psd"/>
+                <exclude name="**.bak"/>
+                <exclude name="**/*.zip"/>
+
+                <!-- temporary files -->
+                <exclude name="tpl_c/*.*"/>
+
+                <!-- project / IDE files -->
+                <exclude name=".project"/>
+                <exclude name=".idea/**"/>
+                <exclude name=".vscode/**"/>
+                <exclude name="**/*.code-workspace"/>
+                <exclude name="**/*.sublime-*"/>
+                <exclude name="**/*.jar"/>
+                <exclude name="pdt_templates.xml"/>
+
+                <!-- development libraries / tools -->
                 <exclude name="composer*"/>
+                <exclude name="vendor/**"/>
+                <exclude name="tools/**"/>
+
+                <!-- testing -->
+                <exclude name="*phpunit*"/>
+                <exclude name="**/tests/**"/>
+                <exclude name="*test*"/>
+
+                <!-- documentation -->
+                <exclude name="**/doc/**"/>
+                <exclude name="**/docs/**"/>
+                <exclude name="phpdoc.*" />
+                <exclude name=".phpdoc/*">
+
+                <!-- build stuff -->
+                <exclude name="build/**"/>
+                <exclude name="build.bat"/>
+                <exclude name="build.xml"/>
+                <exclude name="**/phing-tasks/**"/>
+                <exclude name="*phing-tasks*"/>
+
+                <!-- version control -->
+                <exclude name=".git*/**"/>
+
                 <include name="**/qrconfig.php"/>
                 <include name="**/.htaccess"/>
             </fileset>
@@ -165,10 +188,7 @@
 
         <copy tofile="${stagingdir}/lib/external/phpqrcode/qrconfig.php" file="./lib/external/phpqrcode/qrconfig.php"/>
 
-        <delete dir="${stagingdir}/.ebextensions" includeemptydirs="true"/>
-
         <phingcall target="combine.db.files">
-
         </phingcall>
 
         <append destFile="${stagingdir}/${sql.file.full}">
@@ -179,19 +199,17 @@
     </target>
 
     <target name="combine.db.files" depends="custom.tasks">
-
         <exec passthru="true" escape="false" command="php ${application.startdir}/phing-tasks/CombineDbFilesTask.php
         ${stagingdir}/database_schema
         ${stagingdir}/${sql.file.create.schema}
         ${stagingdir}/${sql.file.data}"/>
-
     </target>
 
     <target name="custom.tasks">
-        <copy todir="${phing.tasks.dir}">
+<!--         <copy todir="${phing.tasks.dir}">
             <fileset dir="phing-tasks">
                 <include name="*.php"/>
             </fileset>
-        </copy>
+        </copy> -->
     </target>
 </project>
