@@ -69,4 +69,3 @@ class ResourceParticipationRuleTests extends TestBase
 		$this->assertFalse($result->IsValid());
 	}
 }
-?>

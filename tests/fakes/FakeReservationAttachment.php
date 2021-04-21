@@ -19,4 +19,3 @@ class FakeReservationAttachment extends ReservationAttachment
 		$this->fileExtension = $extension;
 	}
 }
-?>

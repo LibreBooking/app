@@ -354,7 +354,7 @@ function GroupManagement(opts) {
 		var groupId = getActiveId();
 
 		elements.groupAdminForm.find('select').val('');
-		
+
 		elements.groupAdminDialog.modal('show');
 	};
 

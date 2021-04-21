@@ -490,7 +490,7 @@ class Net_LDAP2_Entry extends PEAR
                         $value = array_shift($value);
                     }
             }
-            
+
         }
 
         return $value;
@@ -851,8 +851,8 @@ class Net_LDAP2_Entry extends PEAR
             if ($fullEntry->exists($attr)) {
                 $currentValue = $fullEntry->getValue($attr, "all");
                 $value = array_merge( $currentValue, $value );
-            } 
-            
+            }
+
             $modifications[$attr] = $value;
         }
 
@@ -865,7 +865,7 @@ class Net_LDAP2_Entry extends PEAR
             if (!is_array($value)) {
                 $value = array($value);
             }
-            
+
             // Find out what is missing from $value and exclude it
             $currentValue = isset($modifications[$attr]) ? $modifications[$attr] : $fullEntry->getValue($attr, "all");
             $modifications[$attr] = array_values( array_diff( $currentValue, $value ) );
@@ -1093,4 +1093,3 @@ class Net_LDAP2_Entry extends PEAR
         return $this->_changes;
     }
 }
-?>

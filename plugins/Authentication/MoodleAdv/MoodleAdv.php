@@ -1,22 +1,4 @@
 <?php
-/**
- * Copyright 2014-2019 Nick Korbel
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/MySQL/namespace.php');
@@ -50,19 +32,19 @@ class MoodleAdv extends Authentication implements IAuthentication
 
 	//
 	private $retryDB;
-	
+
 	private $moodleDBHost;
 	private $moodleDBName;
 	private $moodleDBUser;
 	private $moodleDBPass;
 	private $moodlePrefix;
-	
-	private $authmethod; 
-	
+
+	private $authmethod;
+
 	private $moodleRoles;
-	
+
 	private $moodleField;
-		
+
 	/**
 	 * @param IAuthentication $authentication Authentication class to decorate
 	 */
@@ -79,10 +61,10 @@ class MoodleAdv extends Authentication implements IAuthentication
 		$this->moodleDBUser = $config->File('MOODLEADV')->GetKey('moodleadv.dbuser');
 		$this->moodleDBPass = $config->File('MOODLEADV')->GetKey('moodleadv.dbpass');
 		$this->moodlePrefix = $config->File('MOODLEADV')->GetKey('moodleadv.prefix');
-		
+
 
 		$this->authmethod = $config->File('MOODLEADV')->GetKey('moodleadv.authmethod');
-		
+
 		switch ($this->authmethod){
 			case 'roles':
 				$roles = $config->File('MOODLEADV')->GetKey('moodleadv.roles');
@@ -92,9 +74,9 @@ class MoodleAdv extends Authentication implements IAuthentication
 				$this->moodleField = $config->File('MOODLEADV')->GetKey('moodleadv.field');
 				break;
 		};
-		
+
 		$this->authToDecorate = $authentication;
-		
+
 	}
 
 	/**
@@ -160,7 +142,7 @@ class MoodleAdv extends Authentication implements IAuthentication
 	{
 		// $db['port'] should be passed as a separate argument, per http://php.net/manual/mysqli.construct.php
 		$moodleDb = new Database(new MySqlConnection($this->moodleDBUser, $this->moodleDBPass, $this->moodleDBHost, $this->moodleDBName));
-		
+
 		switch ($this->authmethod){
 			case 'roles':
 				if ($m_roles = count($this->moodleRoles)) {
@@ -181,22 +163,22 @@ class MoodleAdv extends Authentication implements IAuthentication
 						foreach ($this->moodleRoles as $role) {
 								$command->AddParameter(new Parameter('@role' . $rid++, $role));
 						}
-				}				
+				}
 				break;
 			case 'field':
 				$query ='SELECT u.* FROM '.$this->moodlePrefix.'user u JOIN '.$this->moodlePrefix.'user_info_data a ';
 				$query .= 'ON u.id=a.userid WHERE u.deleted=0 AND u.suspended=0 AND a.data=1 ';
 				$query .= 'AND u.username=@user AND a.fieldid=@field';
 				$command = new AdHocCommand($query);
-				$command->AddParameter(new Parameter('@user', $username));		
-				$command->AddParameter(new Parameter('@field', $this->moodleField));					
+				$command->AddParameter(new Parameter('@user', $username));
+				$command->AddParameter(new Parameter('@field', $this->moodleField));
 				break;
 			case 'all':
 				$query ='SELECT u.* FROM '.$this->moodlePrefix.'user u ';
 				$query .= 'WHERE u.deleted=0 AND u.suspended=0 ';
 				$query .= 'AND u.username=@user ';
 				$command = new AdHocCommand($query);
-				$command->AddParameter(new Parameter('@user', $username));						
+				$command->AddParameter(new Parameter('@user', $username));
 				break;
 		}
 

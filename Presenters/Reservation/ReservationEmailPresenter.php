@@ -1,24 +1,5 @@
 <?php
 
-/**
- * Copyright 2017-2020 Nick Korbel
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationEmailPage.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationShareEmail.php');
@@ -79,7 +60,7 @@ class ReservationEmailPresenter
             Log::Debug('Attempting to email reservation but user does not have permission. Reference Number %s, UserId %s', $existingSeries->CurrentInstance()->ReferenceNumber(), $this->userSession->UserId);
             return;
         }
-        
+
         foreach ($this->page->GetEmailAddresses() as $emailAddress)
         {
             Log::Debug('Emailing reservation details. Reference Number %s, UserId %s, To %s', $existingSeries->CurrentInstance()->ReferenceNumber(), $this->userSession->UserId, $emailAddress);

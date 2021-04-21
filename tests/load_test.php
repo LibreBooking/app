@@ -115,5 +115,3 @@ function getRandomResource($resources)
 	$rand = rand(0, count($resources)-1);
 	return $resources[$rand];
 }
-
-?>

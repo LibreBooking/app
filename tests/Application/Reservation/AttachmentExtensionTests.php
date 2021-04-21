@@ -74,5 +74,3 @@ class AttachmentExtensionTests extends TestBase
 		$this->assertFalse($result->IsValid());
 	}
 }
-
-?>

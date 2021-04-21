@@ -436,5 +436,3 @@ class TestLdapEntry extends Net_LDAP2_Entry
 		$this->_values[$attr] = $value;
 	}
 }
-
-?>

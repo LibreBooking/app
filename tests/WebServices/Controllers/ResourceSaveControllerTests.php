@@ -212,5 +212,3 @@ class ResourceSaveControllerTests extends TestBase
 		$this->assertEmpty($response->ResourceId());
 	}
 }
-
-?>

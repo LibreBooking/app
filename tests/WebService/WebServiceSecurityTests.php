@@ -199,5 +199,3 @@ class WebServiceSecurityTests extends TestBase
 		$this->assertFalse($this->session->_SessionExtended);
 	}
 }
-
-?>

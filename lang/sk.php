@@ -1,23 +1,6 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-
 Translation: 2014 Slovak Language: Branislav Ďorď <branislav.dord@eurogalaxy.sk>
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('en_gb.php');
@@ -176,7 +159,7 @@ class sk extends en_gb
         $strings['ResetPassword'] = 'Resetovať heslo';
         $strings['AllUsers'] = 'Všetci užívatelia';
         $strings['AllGroups'] = 'Všetky skupiny';
-        $strings['AllSchedules'] = 'Všetky kalendáre'; 
+        $strings['AllSchedules'] = 'Všetky kalendáre';
         $strings['UsernameOrEmail'] = 'Užívateľské meno alebo e-mail';
         $strings['Members'] = 'Členovia';
         $strings['QuickSlotCreation'] = 'Vytvoriť miesto každých %s minút medzi %s a %s';
@@ -236,7 +219,7 @@ class sk extends en_gb
         $strings['RememberMe'] = 'Zapamätať si ma';
         $strings['FirstTimeUser?'] = 'Nemáte tu založený účet?';
         $strings['CreateAnAccount'] = 'Registrovať sa';
-        $strings['ViewSchedule'] = 'Zobraziť rozvrh'; 
+        $strings['ViewSchedule'] = 'Zobraziť rozvrh';
         $strings['ForgotMyPassword'] = 'Zabudnuté heslo';
         $strings['YouWillBeEmailedANewPassword'] = 'Na zadaný e-mail Vám bude zaslané novo vygenerované heslo.';
         $strings['Close'] = 'Zatvoriť';
@@ -315,7 +298,7 @@ class sk extends en_gb
         $strings['MakeDefault'] = 'Nastaviť ako základný';
         $strings['BringDown'] = 'Znížit';
         $strings['ChangeLayout'] = 'Zmeniť rozvrhnutie';
-        $strings['AddSchedule'] = 'Pridať rozvrh'; 
+        $strings['AddSchedule'] = 'Pridať rozvrh';
 	$strings['StartsOn'] = 'Začína od';
         $strings['NumberOfDaysVisible'] = 'Viditelné dní';
         $strings['UseSameLayoutAs'] = 'Použiť rozvrhnutie ako';
@@ -408,7 +391,7 @@ class sk extends en_gb
 	$strings['ResourceUsageReservationCount'] = 'Využitie prostriedkov - počet rezervácií';
 	$strings['Top20UsersTimeBooked'] = '20 najväčších užívateľov - celkový čas';
 	$strings['Top20UsersReservationCount'] = '20 najväčších užívateľov - počet rezervácií';
-    $strings['ConfigurationUpdated'] = 'Konfiguračný súbor bol aktualizovaný';   
+    $strings['ConfigurationUpdated'] = 'Konfiguračný súbor bol aktualizovaný';
     $strings['ConfigurationUiNotEnabled'] = 'Táto stránka nemôže byť zobrazená, preto že $conf[\'settings\'][\'pages\'][\'enable.configuration\'] je nastavená na hodnotu false alebo chýba.';
     $strings['ConfigurationFileNotWritable'] = 'Konfiguračný súbor nie je zapisovateľný. Skontrolujte prosím oprávnenie tohto súboru a skúste to znova.';
     $strings['ConfigurationUpdateHelp'] = 'Pozrite sa do časti Konfigurácia <a target=_blank href=%s>súbor Pomocníka</a> k dokumentácii o týchto nastaveniach.';
@@ -585,8 +568,8 @@ class sk extends en_gb
         $strings['Profile'] = 'Nastavenie profilu';
         $strings['ApplicationManagement'] = 'Správa systému';
         $strings['ForgotPassword'] = 'zabudnuté heslo';
-        $strings['NotificationPreferences'] = 'Nastavenie oznámenia e-mailem'; 
-        $strings['ManageAnnouncements'] = 'Úplné prerušenie prevádzky'; 
+        $strings['NotificationPreferences'] = 'Nastavenie oznámenia e-mailem';
+        $strings['ManageAnnouncements'] = 'Úplné prerušenie prevádzky';
         $strings['Responsibilities'] = 'Správa';
         $strings['GroupReservations'] = 'Skupinová rezervácia';
         $strings['ResourceReservations'] = 'Rezervácia prostriedkov';

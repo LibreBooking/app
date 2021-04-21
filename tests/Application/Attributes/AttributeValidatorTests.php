@@ -28,4 +28,3 @@ class AttributeValidatorTests extends TestBase
 
 	}
 }
-?>

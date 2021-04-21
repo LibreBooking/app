@@ -824,7 +824,7 @@ class Net_LDAP2 extends PEAR
                 if ((Net_LDAP2::errorMessage($error_code) === 'LDAP_OPERATIONS_ERROR') &&
                     ($this->_config['auto_reconnect'])) {
                     // The server has become disconnected before trying the
-                    // operation.  We should try again, possibly with a 
+                    // operation.  We should try again, possibly with a
                     // different server.
                     $this->_link = false;
                     $this->performReconnect();
@@ -1798,5 +1798,3 @@ class Net_LDAP2_Error extends PEAR_Error
         }
     }
 }
-
-?>

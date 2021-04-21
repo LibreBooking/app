@@ -5,7 +5,7 @@ require_once(ROOT_DIR . '/lib/Config/namespace.php');
 class MoodleOptions
 {
 	const CONFIG_ID = 'moodle';
-	
+
 	public function __construct()
 	{
 		require_once(dirname(__FILE__) . '/Moodle.config.php');
@@ -49,5 +49,3 @@ class MoodleOptions
 		return Configuration::Instance()->File(self::CONFIG_ID)->GetKey($keyName, $converter);
 	}
 }
-
-?>

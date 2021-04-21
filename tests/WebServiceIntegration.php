@@ -404,5 +404,3 @@ class HttpClient
 		return $this->baseUrl . '/' . $url;
 	}
 }
-
-?>

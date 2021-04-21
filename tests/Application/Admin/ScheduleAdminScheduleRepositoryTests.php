@@ -85,5 +85,3 @@ class ScheduleAdminScheduleRepositoryTests extends TestBase
 		$this->assertNotEmpty($actualEx, "should have thrown an exception");
 	}
 }
-
-?>

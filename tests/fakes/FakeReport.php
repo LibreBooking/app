@@ -76,5 +76,3 @@ class FakeReportData implements IReportData
 		return array();
 	}
 }
-
-?>

@@ -75,5 +75,3 @@ class RequiresApprovalRuleTests extends TestBase
 		$this->assertFalse($series->RequiresApproval());
 	}
 }
-
-?>

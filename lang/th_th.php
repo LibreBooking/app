@@ -1,27 +1,4 @@
-﻿<?php
-/**
- * Copyright 2011-2020 Nick Korbel
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Thai Language Translation by Suthep Yonphimai any comments or suggestions at  suthep@rmuti.ac.th or tomztt@gmail.com
- * แปลภาษาไทยโดย สุเทพ ยนต์พิมาย แจ้งข้อคิดเห็นหรือข้อเสนอแนะได้ที่ suthep@rmuti.ac.th หรือ tomztt@gmail.com
- * Additional code to support the Thai and Buddhist calendar year by latee Buangam any comments or suggestions at latee.bu@rmuti.ac.th
- * Code เพิ่มเติมเพื่อสนับสนุนปฏิทินไทยและพุทธศักราช โดยลทีบ์ บัวงาม แจ้งข้อคิดเห็นหรือข้อเสนอแนะที่ latee.bu@rmuti.ac.th
- */
+<?php
 
 require_once('Language.php');
 require_once('en_gb.php');
@@ -39,15 +16,15 @@ class th_th extends en_gb
 	protected function _LoadDates()
 	{
 		$dates = array();
-		
+
 		/**
 			* Additional code to support the Thai and Buddhist calendar year
 			* Also encountered problems in the display of the Thai day in $dates['res_popup'] & $dates['dashboard'] Welcome suggestions
 			* Code เพิ่มเติมเพื่อสนับสนุนปฏิทินไทยและพุทธศักราช
 			* ยังพบปัญหาในการแสดงวันภาษาไทยใน $dates['res_popup'] และ $dates['dashboard'] ยินดีรับคำแนะนำ
 		*/
-		
-		
+
+
 		$dates['general_date'] = 'd/m/'.(date('Y')+543);
 		$dates['general_datetime'] = 'd/m/'.(date('Y')+543).' H:i:s';
 		$dates['short_datetime'] = 'd/m/'.(date('Y')+543).' H:i';
@@ -69,7 +46,7 @@ class th_th extends en_gb
 
 		return $this->Dates;
 	}
-	
+
 	/* Function Test Display Thai Day in Dashboard
 	protected function _LoadDayThai($daythai=null){
 				$days_en = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
@@ -80,7 +57,7 @@ class th_th extends en_gb
 									$day_thai = $days_thai [$key];
 						}
 				}
-				
+
 		return $day_thai;
 	}
 	*/
@@ -659,8 +636,8 @@ class th_th extends en_gb
         $strings['NoAvailableMatchingTimes'] = 'ไม่มีช่วงเวลาว่างที่ตรงกับคุณค้นหา';
         $strings['Schedules'] = 'ตารางการจอง';
         $strings['NotifyUser'] = 'เตือนผู้ใช้';
-		
-		
+
+
         // End Strings
 
 		// Install

@@ -79,5 +79,3 @@ class ReservationNotificationFactoryTests extends TestBase
         $this->assertEquals($this->service, $actual);
     }
 }
-
-?>
