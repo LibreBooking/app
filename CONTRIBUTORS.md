@@ -35,7 +35,7 @@
 - [Veliša Bujić](#) (Serbian)
 - [Róbert Bere](#) (Hungarian)
 
-If you want to your information be updated or mentioned here, please make a pull request, or contact us via chat. 
+If you want your information to be updated or mentioned here, please make a pull request, or contact us via chat. 
 
 ## Libraries
 
