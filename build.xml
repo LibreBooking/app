@@ -169,14 +169,13 @@
                 <exclude name="**/doc/**"/>
                 <exclude name="**/docs/**"/>
                 <exclude name="phpdoc.*" />
-                <exclude name=".phpdoc/*">
+                <exclude name=".phpdoc/**"/>
 
                 <!-- build stuff -->
                 <exclude name="build/**"/>
                 <exclude name="build.bat"/>
                 <exclude name="build.xml"/>
                 <exclude name="**/phing-tasks/**"/>
-                <exclude name="*phing-tasks*"/>
 
                 <!-- version control -->
                 <exclude name=".git*/**"/>
