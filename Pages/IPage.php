@@ -2,7 +2,7 @@
 
 interface IPage {
 
-	public function PageLoad();
+	  public function PageLoad();
 
     public function Redirect($url);
 
