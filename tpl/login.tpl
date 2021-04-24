@@ -26,7 +26,7 @@
 			  action="{$smarty.server.SCRIPT_NAME}">
 			<div id="login-box" class="col-xs-12 default-box">
 				<div class="col-xs-12 login-icon">
-					{html_image src="$LogoUrl?2.6" alt="$Title"}
+					{html_image src="$LogoUrl?{$Version}" alt="$Title"}
 				</div>
 				{if $ShowUsernamePrompt}
 					<div class="col-xs-12">
