@@ -1,4 +1,4 @@
-<?phpw
+<?php
 
 define('ROOT_DIR', '../../');
 
