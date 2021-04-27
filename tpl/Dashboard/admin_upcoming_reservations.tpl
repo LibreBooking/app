@@ -14,28 +14,28 @@
         {if $Total > 0}
             <div>
                 <div class="timespan">
-                    {translate key="Today"} ({$TodaysReservations|count})
+                    {translate key="Today"} ({$TodaysReservations|default:array()|count})
                 </div>
                 {foreach from=$TodaysReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
                 {/foreach}
 
                 <div class="timespan">
-                    {translate key="Tomorrow"} ({$TomorrowsReservations|count})
+                    {translate key="Tomorrow"} ({$TomorrowsReservations|default:array()|count})
                 </div>
                 {foreach from=$TomorrowsReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
                 {/foreach}
 
                 <div class="timespan">
-                    {translate key="LaterThisWeek"} ({$ThisWeeksReservations|count})
+                    {translate key="LaterThisWeek"} ({$ThisWeeksReservations|default:array()|count})
                 </div>
                 {foreach from=$ThisWeeksReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
                 {/foreach}
 
                 <div class="timespan">
-                    {translate key="NextWeek"} ({$NextWeeksReservations|count})
+                    {translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
                 </div>
                 {foreach from=$NextWeeksReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}

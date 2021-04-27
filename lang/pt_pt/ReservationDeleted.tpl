@@ -5,7 +5,7 @@
 	<strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
 	<strong>Título:</strong> {$Title}<br/>
 	<strong>Descrição:</strong> {$Description|nl2br}
-    {if $Attributes|count > 0}
+    {if $Attributes|default:array()|count > 0}
 	<br/>
     {foreach from=$Attributes item=attribute}
 	<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>

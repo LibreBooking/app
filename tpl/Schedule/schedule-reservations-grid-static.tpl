@@ -6,7 +6,7 @@
 {foreach from=$BoundDates item=date}
     {assign var=ts value=$date->Timestamp()}
     {$periods.$ts = $DailyLayout->GetPeriods($date, true)}
-    {if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
+    {if $periods[$ts]|default:array()|count == 0}{continue}{*dont show if there are no slots*}{/if}
     <div style="position:relative;">
         <table class="reservations" border="1" cellpadding="0" width="100%">
             <thead>

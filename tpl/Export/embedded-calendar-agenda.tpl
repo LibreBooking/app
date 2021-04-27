@@ -1,7 +1,7 @@
 {extends file="Export/embedded-calendar-container.tpl"}
 {block name="calendar"}
 <div class="booked-calendar-agenda">
-    {if $Reservations->Reservations()|count == 0}
+    {if $Reservations->Reservations()|default:array()|count == 0}
         {translate key=NoReservationsFound}
     {/if}
     {assign var=LastDate value=Date::Min()}

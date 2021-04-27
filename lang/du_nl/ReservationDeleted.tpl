@@ -5,7 +5,7 @@ Reserverings Details:
 Gebruiker: {$UserName}<br/>
 Start: {formatdate date=$StartDate key=reservation_email}<br/>
 Eindingd: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     Bronnen:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -37,7 +37,7 @@ Beschrijving: {$Description|nl2br}<br/>
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     Benodigdheden:
     <br/>

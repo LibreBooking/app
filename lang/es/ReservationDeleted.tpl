@@ -5,7 +5,7 @@ Detalles de la Reserva:
 Usuario: {$UserName}<br/>
 Inicio: {formatdate date=$StartDate key=reservation_email}<br/>
 Fin: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     Recursos:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -37,7 +37,7 @@ Descripción: {$Description|nl2br}<br/>
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     Accesorios:
     <br/>

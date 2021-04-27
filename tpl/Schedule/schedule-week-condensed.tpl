@@ -56,7 +56,7 @@
     {/function}
 
     {assign var=TodaysDate value=Date::Now()}
-    {assign var=columnWidth value=(1/($BoundDates|count+1))*100}
+    {assign var=columnWidth value=(1/($BoundDates|default:array()|count+1))*100}
     <div id="reservations">
         <table class="reservations condensed" border="1" cellpadding="0" style="width:100%;">
             <thead>
@@ -67,7 +67,7 @@
                     {assign var=tdclass value=""}
                     {assign var=ts value=$date->Timestamp()}
                     {$periods.$ts = $DailyLayout->GetPeriods($date)}
-                    {if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
+                    {if $periods[$ts]|default:array()|count == 0}{continue}{*dont show if there are no slots*}{/if}
                     {if $date->DateEquals($TodaysDate)}
                         {assign var=tdclass value="today"}
                     {/if}
@@ -94,7 +94,7 @@
                     {foreach from=$BoundDates item=date}
                         {assign var=ts value=$date->Timestamp()}
                         {$periods.$ts = $DailyLayout->GetPeriods($date, false)}
-                        {assign var=count value=$periods[$ts]|count}
+                        {assign var=count value=$periods[$ts]|default:array()|count}
                         {if $count== 0}{continue}{*dont show if there are no slots*}{/if}
                         {assign var=min value=$periods[$ts][0]->BeginDate()->TimeStamp()}
                         {assign var=max value=$periods[$ts][$count-1]->EndDate()->TimeStamp()}

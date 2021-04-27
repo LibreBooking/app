@@ -1,4 +1,4 @@
-<h4><span id="totalGroups">{$Groups|count}</span> {translate key=Groups} <span class="no-show group-permission-spinner"><i class="fa fa-spinner fa-spin"></i></span> </h4>
+<h4><span id="totalGroups">{$Groups|default:array()|count}</span> {translate key=Groups} <span class="no-show group-permission-spinner"><i class="fa fa-spinner fa-spin"></i></span> </h4>
 {foreach from=$Groups item=g}
     {cycle values='row0,row1' assign=rowCss}
     <div class="{$rowCss} form-group">

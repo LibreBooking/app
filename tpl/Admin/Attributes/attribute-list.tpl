@@ -1,5 +1,5 @@
 <h3>{$Attributes|count} {translate key=Attributes}</h3>
-{if $Attributes|count > 0}
+{if $Attributes|default:array()|count > 0}
 	<table class="table">
 		<thead>
 		<tr>
@@ -90,7 +90,7 @@
 		possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
 		type: "{$attribute->Type()}",
 		sortOrder: "{$attribute->SortOrder()}",
-		{if $attribute->EntityIds()|count > 0}
+		{if $attribute->EntityIds()|default:array()|count > 0}
 		entityIds: ["{$attribute->EntityIds()|implode:'","'}"],
 		{else}
 		entityIds: [],

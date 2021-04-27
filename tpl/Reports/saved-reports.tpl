@@ -4,10 +4,10 @@
 
 	<div class="panel panel-default" id="saved-reports-panel">
 		<div class="panel-heading">
-			{translate key=MySavedReports} <span class="badge">{$ReportList|count}</span>
+			{translate key=MySavedReports} <span class="badge">{$ReportList|default:array()|count}</span>
 		</div>
 		<div class="panel-body no-padding">
-			{if $ReportList|count == 0}
+			{if $ReportList|default:array()|count == 0}
 				<h2 class="no-data" style="text-align: center;">{translate key=NoSavedReports}</h2>
                 <div style="text-align:center;"><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></div>
 			{else}

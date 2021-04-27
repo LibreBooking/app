@@ -13,7 +13,7 @@
         <div class="header">{translate key=Available}</div>
         {foreach from=$Schedules item=s}
             {assign var=availability value=$Available[$s->GetId()]}
-            {if is_array($availability) && $availability|count > 0}
+            {if is_array($availability) && $availability|default:array()|count > 0}
             <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
                 <div class="availabilityItem">
@@ -49,7 +49,7 @@
 
         {foreach from=$Schedules item=s}
             {assign var=availability value=$Unavailable[$s->GetId()]}
-            {if is_array($availability) && $availability|count > 0}
+            {if is_array($availability) && $availability|default:array()|count > 0}
             <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
                 <div class="availabilityItem">
@@ -79,7 +79,7 @@
         <div class="header">{translate key=UnavailableAllDay}</div>
         {foreach from=$Schedules item=s}
             {assign var=availability value=$UnavailableAllDay[$s->GetId()]}
-            {if is_array($availability) && $availability|count > 0}
+            {if is_array($availability) && $availability|default:array()|count > 0}
             <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
                 <div class="availabilityItem">

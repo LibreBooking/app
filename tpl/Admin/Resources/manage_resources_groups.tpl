@@ -1,4 +1,4 @@
-{if $resource->GetResourceGroupIds()|count == 0}
+{if $resource->GetResourceGroupIds()|default:array()|count == 0}
 	{translate key=None}
 {/if}
 {foreach from=$resource->GetResourceGroupIds() item=resourceGroupId name=eachGroup}

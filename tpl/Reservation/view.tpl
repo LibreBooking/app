@@ -272,10 +272,10 @@
                 {/if}
             </div>
             {if $ShowReservationDetails}
-                {if $Attachments|count > 0}
+                {if $Attachments|default:array()|count > 0}
                     <div class="col-xs-12">
                         <div class="res-attachments">
-                            <span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
+                            <span class="heading">{translate key=Attachments} ({$Attachments|default:array()|count})</span>
                             <br/>
                             {foreach from=$Attachments item=attachment}
                                 {assign var=attachmentUrl value="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}

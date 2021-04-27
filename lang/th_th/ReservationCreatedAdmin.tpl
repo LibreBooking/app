@@ -9,7 +9,7 @@ User: {$UserName}<br/>
 {/if}
 Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
 	Resources:
 	<br/>
 	{foreach from=$ResourceNames item=resourceName}
@@ -40,7 +40,7 @@ Description: {$Description|nl2br}
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
 	<br/>
 	Accessories:
 	<br/>
@@ -50,7 +50,7 @@ Description: {$Description|nl2br}
 	{/foreach}
 {/if}
 
-{if $Attributes|count > 0}
+{if $Attributes|default:array()|count > 0}
 	<br/>
 	{foreach from=$Attributes item=attribute}
 		<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
