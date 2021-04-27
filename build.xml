@@ -145,6 +145,7 @@
 
                 <!-- temporary files -->
                 <exclude name="tpl_c/*.*"/>
+                <exclude name="var/**"/>
 
                 <!-- project / IDE files -->
                 <exclude name=".project"/>

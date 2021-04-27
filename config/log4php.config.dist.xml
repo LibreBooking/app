@@ -1,25 +1,30 @@
 <log4php:configuration xmlns:log4php="http://logging.apache.org/log4php/">
     <!-- doc: https://logging.apache.org/log4php/docs/configuration.html -->
     <!-- loaded in ../lib/Common/Logging/Log.php -->
-	<appender name="defaultAppender" class="LoggerAppenderDailyFile">
-		<layout class="LoggerLayoutPattern">
-			<param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
-		</layout>
-		<param name="file" value="/var/log/log_%s.log" />
-		<param name="append" value="true" />
-	</appender>
-	<appender name="sqlAppender" class="LoggerAppenderDailyFile">
-		<layout class="LoggerLayoutPattern">
-			<param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
-		</layout>
-		<param name="file" value="/var/log/sql_log_%s.log" />
-		<param name="append" value="true" />
-	</appender>
+
+    <appender name="defaultAppender" class="LoggerAppenderDailyFile">
+        <layout class="LoggerLayoutPattern">
+            <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
+        </layout>
+        <param name="file" value="../var/log_%s.log" />
+        <param name="append" value="true" />
+    </appender>
+
+    <appender name="sqlAppender" class="LoggerAppenderDailyFile">
+        <layout class="LoggerLayoutPattern">
+            <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
+        </layout>
+        <param name="file" value="../var/sql_log_%s.log" />
+        <param name="append" value="true" />
+    </appender>
+
+    <!-- https://logging.apache.org/log4php/docs/introduction.html#Levels -->
     <logger name="default" additivity="false">
-        <level value="OFF" />
+        <level value="ERROR" />
         <appender_ref ref="defaultAppender" />
     </logger>
-	<logger name="sql" additivity="false">
+
+    <logger name="sql" additivity="false">
         <level value="OFF" />
         <appender_ref ref="sqlAppender" />
     </logger>

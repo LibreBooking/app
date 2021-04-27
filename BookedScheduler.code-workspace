@@ -1,8 +1,16 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/vendor": true,
+            "**/tpl_c": true,
+            "**/*.code-search": true,
+            "**/lib/external": true
+        }
+    }
 }
