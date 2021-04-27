@@ -1,2 +1,3 @@
-@echo off
-/tools/phing %1%
+@ECHO OFF
+setlocal DISABLEDELAYEDEXPANSION
+%~dp0\tools\phing.bat %*

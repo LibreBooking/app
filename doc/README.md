@@ -1,4 +1,5 @@
 # Developer Documentation
+
 ## Working on the projekt
 The `develop` branch contains the most current working code of the Project and should be considered beta.  
 The `master` branch is the most current stable release of BookedScheduler.  
@@ -28,13 +29,20 @@ This simply makes it easier to include necessary file dependencies.
 ## User interface
 [Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation. Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
 
-## PHPUnit
+## Tools
+you can easily install the following php tools needed for development with [phive](https://github.com/phar-io/phive#getting-phive) by going to the root of the project and executing `phive install <toolname>` all the tools will then be available inside the `/tools` directory.
+
+### [Phing](https://www.phing.info/#docs)
+Builds a distributable relase inside `/build` configured via `/build.xml`.
+
+### [PHPUnit](https://phpunit.readthedocs.io/en/latest/writing-tests-for-phpunit.html)
 All classes should have good unit test coverage. The level of coverage is up to the developer and should be done when the code is sufficiently complex.
 Tests must all succeed for a final release.
 
-## PHPDocumentor
-use [phive](https://phar.io/) to install [phpDocumentor](https://phpdoc.org/) globally as not to not pollute the composer.json
-you can customize the output by copyiing `/phpdoc.dist.xml` to `/phpdoc.xml` which now takes precedence and isn't tracked with git.
+### [PHPDocumentor](https://docs.phpdoc.org/latest/guide/guides/running-phpdocumentor.html)
+Generates automatic documentation based on code comments.
+You can customize the output by copying `/phpdoc.dist.xml` to `/phpdoc.xml` which now takes precedence and isn't tracked with git.
+The documentation will be generated in `/.phpdoc/build`.
 
 ## Application Structure
 
