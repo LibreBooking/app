@@ -5,24 +5,24 @@ class ConfigKeys
     const ADMIN_EMAIL = 'admin.email';
     const ADMIN_EMAIL_NAME = 'admin.email.name';
     const ALLOW_REGISTRATION = 'allow.self.registration';
-	const CREDITS_ENABLED = 'enabled';
-	const CREDITS_ALLOW_PURCHASE = 'allow.purchase';
-	const CSS_EXTENSION_FILE = 'css.extension.file';
-	const DEFAULT_HOMEPAGE = 'default.homepage';
+    const CREDITS_ENABLED = 'enabled';
+    const CREDITS_ALLOW_PURCHASE = 'allow.purchase';
+    const CSS_EXTENSION_FILE = 'css.extension.file';
+    const DEFAULT_HOMEPAGE = 'default.homepage';
     const DEFAULT_PAGE_SIZE = 'default.page.size';
     const DISABLE_PASSWORD_RESET = 'disable.password.reset';
     const ENABLE_EMAIL = 'enable.email';
-	const HOME_URL = 'home.url';
-	const INACTIVITY_TIMEOUT = 'inactivity.timeout';
+    const HOME_URL = 'home.url';
+    const INACTIVITY_TIMEOUT = 'inactivity.timeout';
     const LANGUAGE = 'default.language';
-	const LOGOUT_URL = 'logout.url';
+    const LOGOUT_URL = 'logout.url';
     const NAME_FORMAT = 'name.format';
     const SCRIPT_URL = 'script.url';
     const DEFAULT_TIMEZONE = 'default.timezone';
     const REGISTRATION_ENABLE_CAPTCHA = 'registration.captcha.enabled';
     const REGISTRATION_REQUIRE_ACTIVATION = 'registration.require.email.activation';
     const REGISTRATION_AUTO_SUBSCRIBE_EMAIL = 'registration.auto.subscribe.email';
-	const REGISTRATION_NOTIFY = 'registration.notify.admin';
+    const REGISTRATION_NOTIFY = 'registration.notify.admin';
 
     const VERSION = 'version';
 
@@ -50,13 +50,13 @@ class ConfigKeys
     const RESERVATION_PREVENT_PARTICIPATION = 'prevent.participation';
     const RESERVATION_PREVENT_RECURRENCE = 'prevent.recurrence';
     const RESERVATION_REMINDERS_ENABLED = 'enable.reminders';
-	const RESERVATION_ALLOW_GUESTS = 'allow.guest.participation';
-	const RESERVATION_ALLOW_WAITLIST = 'allow.wait.list';
-	const RESERVATION_CHECKIN_MINUTES = 'checkin.minutes.prior';
-	const RESERVATION_START_REMINDER = 'default.start.reminder';
-	const RESERVATION_END_REMINDER = 'default.end.reminder';
-	const RESERVATION_TITLE_REQUIRED = 'title.required';
-	const RESERVATION_DESCRIPTION_REQUIRED = 'description.required';
+    const RESERVATION_ALLOW_GUESTS = 'allow.guest.participation';
+    const RESERVATION_ALLOW_WAITLIST = 'allow.wait.list';
+    const RESERVATION_CHECKIN_MINUTES = 'checkin.minutes.prior';
+    const RESERVATION_START_REMINDER = 'default.start.reminder';
+    const RESERVATION_END_REMINDER = 'default.end.reminder';
+    const RESERVATION_TITLE_REQUIRED = 'title.required';
+    const RESERVATION_DESCRIPTION_REQUIRED = 'description.required';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     const IMAGE_UPLOAD_URL = 'image.upload.url';
@@ -89,40 +89,40 @@ class ConfigKeys
     const NOTIFY_DELETE_APPLICATION_ADMINS = 'application.admin.delete';
     const NOTIFY_DELETE_GROUP_ADMINS = 'group.admin.delete';
 
-	const NOTIFY_APPROVAL_RESOURCE_ADMINS = 'resource.admin.approval';
-	const NOTIFY_APPROVAL_APPLICATION_ADMINS = 'application.admin.approval';
-	const NOTIFY_APPROVAL_GROUP_ADMINS = 'group.admin.approval';
+    const NOTIFY_APPROVAL_RESOURCE_ADMINS = 'resource.admin.approval';
+    const NOTIFY_APPROVAL_APPLICATION_ADMINS = 'application.admin.approval';
+    const NOTIFY_APPROVAL_GROUP_ADMINS = 'group.admin.approval';
 
-	const UPLOAD_ENABLE_RESERVATION_ATTACHMENTS = 'enable.reservation.attachments';
-	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachment.path';
-	const UPLOAD_RESERVATION_EXTENSIONS = 'reservation.attachment.extensions';
+    const UPLOAD_ENABLE_RESERVATION_ATTACHMENTS = 'enable.reservation.attachments';
+    const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachment.path';
+    const UPLOAD_RESERVATION_EXTENSIONS = 'reservation.attachment.extensions';
 
-	const PAGES_ENABLE_CONFIGURATION = 'enable.configuration';
+    const PAGES_ENABLE_CONFIGURATION = 'enable.configuration';
 
-	const API_ENABLED = 'enabled';
-	const RECAPTCHA_ENABLED = 'enabled';
-	const RECAPTCHA_PUBLIC_KEY = 'public.key';
-	const RECAPTCHA_PRIVATE_KEY = 'private.key';
+    const API_ENABLED = 'enabled';
+    const RECAPTCHA_ENABLED = 'enabled';
+    const RECAPTCHA_PUBLIC_KEY = 'public.key';
+    const RECAPTCHA_PRIVATE_KEY = 'private.key';
 
-	const DEFAULT_FROM_ADDRESS = 'default.from.address';
-	const DEFAULT_FROM_NAME = 'default.from.name';
+    const DEFAULT_FROM_ADDRESS = 'default.from.address';
+    const DEFAULT_FROM_NAME = 'default.from.name';
 
-	const REPORTS_ALLOW_ALL = 'allow.all.users';
+    const REPORTS_ALLOW_ALL = 'allow.all.users';
 
-	const APP_TITLE = 'app.title';
+    const APP_TITLE = 'app.title';
 
-	const SCHEDULE_PER_USER_COLORS = 'use.per.user.colors';
+    const SCHEDULE_PER_USER_COLORS = 'use.per.user.colors';
 
-	const PASSWORD_UPPER_AND_LOWER = 'upper.and.lower';
-	const PASSWORD_LETTERS = 'minimum.letters';
-	const PASSWORD_NUMBERS = 'minimum.numbers';
+    const PASSWORD_UPPER_AND_LOWER = 'upper.and.lower';
+    const PASSWORD_LETTERS = 'minimum.letters';
+    const PASSWORD_NUMBERS = 'minimum.numbers';
 
-	const RESERVATION_LABELS_ICS_SUMMARY = 'ics.summary';
-	const RESERVATION_LABELS_MY_ICS_SUMMARY = 'ics.my.summary';
-	const RESERVATION_LABELS_RSS_DESCRIPTION = 'rss.description';
-	const RESERVATION_LABELS_MY_CALENDAR = 'my.calendar';
-	const RESERVATION_LABELS_RESOURCE_CALENDAR = 'resource.calendar';
-	const RESERVATION_LABELS_RESERVATION_POPUP = 'reservation.popup';
+    const RESERVATION_LABELS_ICS_SUMMARY = 'ics.summary';
+    const RESERVATION_LABELS_MY_ICS_SUMMARY = 'ics.my.summary';
+    const RESERVATION_LABELS_RSS_DESCRIPTION = 'rss.description';
+    const RESERVATION_LABELS_MY_CALENDAR = 'my.calendar';
+    const RESERVATION_LABELS_RESOURCE_CALENDAR = 'resource.calendar';
+    const RESERVATION_LABELS_RESERVATION_POPUP = 'reservation.popup';
 
     const SECURITY_HEADERS = 'security.headers';
     const SECURITY_STRICT_TRANSPORT = 'security.strict-transport';
@@ -135,43 +135,43 @@ class ConfigKeys
 
     const AUTHENTICATION_ALLOW_FACEBOOK = 'allow.facebook.login';
     const AUTHENTICATION_ALLOW_GOOGLE = 'allow.google.login';
-	const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
-	const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
-	const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
+    const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
+    const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
+    const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
 
-	const SLACK_TOKEN = 'token';
+    const SLACK_TOKEN = 'token';
 
-	const TABLET_VIEW_ALLOW_GUESTS = 'allow.guest.reservations';
-	const TABLET_VIEW_AUTOCOMPLETE = 'auto.suggest.emails';
+    const TABLET_VIEW_ALLOW_GUESTS = 'allow.guest.reservations';
+    const TABLET_VIEW_AUTOCOMPLETE = 'auto.suggest.emails';
 
-	const USE_DATABASE_SESSION = 'use.database.session';
+    const USE_DATABASE_SESSION = 'use.database.session';
 
-	const REGISTRATION_REQUIRE_PHONE = 'require.phone';
-	const REGISTRATION_REQUIRE_ORGANIZATION = 'require.organization';
-	const REGISTRATION_REQUIRE_POSITION = 'require.position';
+    const REGISTRATION_REQUIRE_PHONE = 'require.phone';
+    const REGISTRATION_REQUIRE_ORGANIZATION = 'require.organization';
+    const REGISTRATION_REQUIRE_POSITION = 'require.position';
 }
 
 class ConfigSection
 {
     const API = 'api';
     const AUTHENTICATION = 'authentication';
-	const CREDITS = 'credits';
+    const CREDITS = 'credits';
     const DATABASE = 'database';
-	const EMAIL = 'email';
+    const EMAIL = 'email';
     const ICS = 'ics';
-	const PAGES = 'pages';
-	const PASSWORD = 'password';
+    const PAGES = 'pages';
+    const PASSWORD = 'password';
     const PLUGINS = 'plugins';
     const PRIVACY = 'privacy';
-	const REPORTS = 'reports';
+    const REPORTS = 'reports';
     const RESERVATION = 'reservation';
-	const RESERVATION_LABELS = 'reservation.labels';
+    const RESERVATION_LABELS = 'reservation.labels';
     const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
-	const SECURITY = 'security';
-	const UPLOADS = 'uploads';
-	const RECAPTCHA = 'recaptcha';
-	const USERS = 'users';
+    const SECURITY = 'security';
+    const UPLOADS = 'uploads';
+    const RECAPTCHA = 'recaptcha';
+    const USERS = 'users';
     const GOOGLE_ANALYTICS = 'google.analytics';
     const PAYMENTS = 'payments';
     const SLACK = 'slack';
