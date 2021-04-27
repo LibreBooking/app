@@ -6,7 +6,7 @@
             "name": "Listen for Xdebug",
             "type": "php",
             "request": "launch",
-            "stopOnEntry": true,
+            "stopOnEntry": false,
             "port": 9000, // Xdebug 3 default port
             "skipFiles": [
                 "tpl_c/**"

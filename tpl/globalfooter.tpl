@@ -2,7 +2,6 @@
 
 	<footer class="footer navbar">
 		<a href="{$CompanyUrl}">{$CompanyName}</a> <br/><a href="https://github.com/effgarces/BookedScheduler">{$AppTitle} GPLv3 v{$Version}</a>
-
 	</footer>
 
 	<script type="text/javascript">

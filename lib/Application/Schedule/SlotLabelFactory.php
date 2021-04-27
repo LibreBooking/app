@@ -55,8 +55,9 @@ class SlotLabelFactory
     {
         $shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
         $shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
-
-        if ($shouldHideUser || $shouldHideDetails) {
+        $shouldHideReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
+        
+		if ($shouldHideUser || $shouldHideDetails) {
             $canSeeUserDetails = $reservation->OwnerId == $this->user->UserId || $this->user->IsAdmin || $this->user->IsAdminForGroup($reservation->OwnerGroupIds());
             $canEditResource = $this->authorizationService->CanEditForResource($this->user, new SlotLabelResource($reservation));
             $shouldHideUser = $shouldHideUser && !$canSeeUserDetails && !$canEditResource;
@@ -64,6 +65,10 @@ class SlotLabelFactory
         }
 
         if ($shouldHideDetails) {
+            return '';
+        }
+		
+        if ($shouldHideReservations || !$this->user->IsLoggedIn()) {
             return '';
         }
 
