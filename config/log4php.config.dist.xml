@@ -6,7 +6,7 @@
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
         </layout>
-        <param name="file" value="../var/log_%s.log" />
+        <param name="file" value="./../var/log_%s.log" />
         <param name="append" value="true" />
     </appender>
 
@@ -14,7 +14,7 @@
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
         </layout>
-        <param name="file" value="../var/sql_log_%s.log" />
+        <param name="file" value="./../var/sql_log_%s.log" />
         <param name="append" value="true" />
     </appender>
 
@@ -25,7 +25,7 @@
     </logger>
 
     <logger name="sql" additivity="false">
-        <level value="OFF" />
+        <level value="ERROR" />
         <appender_ref ref="sqlAppender" />
     </logger>
 </log4php:configuration>
