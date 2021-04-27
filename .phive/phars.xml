@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phive xmlns="https://phar.io/phive">
+  <phar name="phpunit" version="^9.5.4" installed="9.5.4" location="./tools/phpunit" copy="false"/>
+  <phar name="phing" version="^3.0.0-alpha4" installed="3.0.0-alpha4" location="./tools/phing" copy="false"/>
+  <phar name="phpdocumentor" version="^3.0.0" installed="3.0.0" location="./tools/phpdocumentor" copy="false"/>
+</phive>

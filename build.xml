@@ -158,6 +158,7 @@
 
                 <!-- development libraries / tools -->
                 <exclude name="composer*"/>
+                <exclude name=".phive/**"/>
                 <exclude name="vendor/**"/>
                 <exclude name="tools/**"/>
 

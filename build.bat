@@ -1,2 +1,2 @@
 @echo off
-phing %1%
+/tools/phing %1%
