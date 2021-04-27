@@ -4,6 +4,8 @@ class ConfigKeys
 {
     const ADMIN_EMAIL = 'admin.email';
     const ADMIN_EMAIL_NAME = 'admin.email.name';
+    const COMPANY_NAME = 'company.name';
+    const COMPANY_URL = 'company.url';
     const ALLOW_REGISTRATION = 'allow.self.registration';
     const CREDITS_ENABLED = 'enabled';
     const CREDITS_ALLOW_PURCHASE = 'allow.purchase';
