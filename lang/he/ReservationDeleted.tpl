@@ -4,7 +4,7 @@
 
 התחלה: {formatdate date=$StartDate key=reservation_email}<br/>
 סיום: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     משאבים:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -31,7 +31,7 @@
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     משאבים:
     <br/>

@@ -61,14 +61,14 @@
         {else}
             {translate key=NoResourceTypeLabel}
         {/if}
-        {if $Attributes|count > 0}
+        {if $Attributes|default:array()|count > 0}
             {foreach from=$Attributes item=attribute}
                 <div>
                     {control type="AttributeControl" attribute=$attribute readonly=true}
                 </div>
             {/foreach}
         {/if}
-        {if $ResourceTypeAttributes && $ResourceTypeAttributes|count > 0}
+        {if $ResourceTypeAttributes && $ResourceTypeAttributes|default:array()|count > 0}
             {foreach from=$ResourceTypeAttributes item=attribute}
                 <div>
                     {control type="AttributeControl" attribute=$attribute readonly=true}

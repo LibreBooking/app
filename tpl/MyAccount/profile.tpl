@@ -170,22 +170,22 @@
                 </div>
 
                 <div class="col-xs-12 col-sm-6">
-                    {if $Attributes|count > 0}
+                    {if $Attributes|default:array()|count > 0}
                         {control type="AttributeControl" attribute=$Attributes[0]}
                     {/if}
                 </div>
 
             </div>
 
-            {if $Attributes|count > 1}
-                {for $i=1 to $Attributes|count-1}
+            {if $Attributes|default:array()|count > 1}
+                {for $i=1 to $Attributes|default:array()|count-1}
                     {if $i%2==1}
                         <div class="row">
                     {/if}
                     <div class="col-xs-12 col-sm-6">
                         {control type="AttributeControl" attribute=$Attributes[$i]}
                     </div>
-                    {if $i%2==0 || $i==$Attributes|count-1}
+                    {if $i%2==0 || $i==$Attributes|default:array()|count-1}
                         </div>
                     {/if}
                 {/for}

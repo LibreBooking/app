@@ -1,4 +1,4 @@
-{if $Attributes|count > 0}
+{if $Attributes|default:array()|count > 0}
     <div class="customAttributes">
         <div class="row">
             {foreach from=$Attributes item=attribute name=attributes}

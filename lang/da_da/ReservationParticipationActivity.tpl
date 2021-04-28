@@ -4,7 +4,7 @@ Oplysninger om reservation:
 
 Begynder: {formatdate date=$StartDate key=reservation_email}<br/>
 Slutter: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     Faciliteter:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -19,7 +19,7 @@ Slutter: {formatdate date=$EndDate key=reservation_email}<br/>
 Overskrift: {$Title}<br/>
 Beskrivelse: {$Description|nl2br}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     Udstyr:
     <br/>

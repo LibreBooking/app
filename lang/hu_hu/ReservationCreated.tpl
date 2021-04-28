@@ -4,7 +4,7 @@ A foglalás részletei:
 
 Kezdés: {formatdate date=$StartDate key=reservation_email}<br/>
 Befejezés: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
 	Elemek:
 	<br/>
 	{foreach from=$ResourceNames item=resourceName}
@@ -35,7 +35,7 @@ Leírás: {$Description|nl2br}
 	<br/>
 {/foreach}
 
-{if $Participants|count >0}
+{if $Participants|default:array()|count >0}
     <br/>
     Résztvevők:
     {foreach from=$Participants item=user}
@@ -44,14 +44,14 @@ Leírás: {$Description|nl2br}
     {/foreach}
 {/if}
 
-{if $ParticipatingGuests|count >0}
+{if $ParticipatingGuests|default:array()|count >0}
     {foreach from=$ParticipatingGuests item=email}
         <a href="mailto:{$email}">{$email}</a>
         <br/>
     {/foreach}
 {/if}
 
-{if $Invitees|count >0}
+{if $Invitees|default:array()|count >0}
     <br/>
     Meghívottak:
     {foreach from=$Invitees item=user}
@@ -60,14 +60,14 @@ Leírás: {$Description|nl2br}
     {/foreach}
 {/if}
 
-{if $InvitedGuests|count >0}
+{if $InvitedGuests|default:array()|count >0}
     {foreach from=$InvitedGuests item=email}
         <a href="mailto:{$email}">{$email}</a>
         <br/>
     {/foreach}
 {/if}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
 	<br/>
 	Kiegészítők:
 	<br/>
@@ -85,7 +85,7 @@ Leírás: {$Description|nl2br}
     {/if}
 {/if}
 
-{if $Attributes|count > 0}
+{if $Attributes|default:array()|count > 0}
 	<br/>
 	{foreach from=$Attributes item=attribute}
 		<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>

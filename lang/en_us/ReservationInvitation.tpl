@@ -16,8 +16,8 @@
 </p>
 
 <p>
-{if $ResourceNames|count > 1}
-    <strong>Resources ({$ResourceNames|count}):</strong> <br />
+{if $ResourceNames|default:array()|count > 1}
+    <strong>Resources ({$ResourceNames|default:array()|count}):</strong> <br />
     {foreach from=$ResourceNames item=resourceName}
         {$resourceName}<br/>
     {/foreach}
@@ -41,7 +41,7 @@
 
 {if count($RepeatRanges) gt 0}
     <br/>
-    <strong>The reservation occurs on the following dates ({$RepeatRanges|count}):</strong>
+    <strong>The reservation occurs on the following dates ({$RepeatRanges|default:array()|count}):</strong>
     <br/>
 {/if}
 
@@ -51,9 +51,9 @@
     <br/>
 {/foreach}
 
-{if $Participants|count >0}
+{if $Participants|default:array()|count >0}
     <br />
-    <strong>Participants ({$Participants|count + $ParticipatingGuests|count}):</strong>
+    <strong>Participants ({$Participants|default:array()|count + $ParticipatingGuests|default:array()|count}):</strong>
     <br />
     {foreach from=$Participants item=user}
         {$user->FullName()}
@@ -61,16 +61,16 @@
     {/foreach}
 {/if}
 
-{if $ParticipatingGuests|count >0}
+{if $ParticipatingGuests|default:array()|count >0}
     {foreach from=$ParticipatingGuests item=email}
         {$email}
         <br/>
     {/foreach}
 {/if}
 
-{if $Invitees|count >0}
+{if $Invitees|default:array()|count >0}
     <br />
-    <strong>Invitees ({$Invitees|count + $InvitedGuests|count}):</strong>
+    <strong>Invitees ({$Invitees|default:array()|count + $InvitedGuests|default:array()|count}):</strong>
     <br />
     {foreach from=$Invitees item=user}
         {$user->FullName()}
@@ -78,16 +78,16 @@
     {/foreach}
 {/if}
 
-{if $InvitedGuests|count >0}
+{if $InvitedGuests|default:array()|count >0}
     {foreach from=$InvitedGuests item=email}
         {$email}
         <br/>
     {/foreach}
 {/if}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br />
-       <strong>Accessories ({$Accessories|count}):</strong>
+       <strong>Accessories ({$Accessories|default:array()|count}):</strong>
        <br />
     {foreach from=$Accessories item=accessory}
         ({$accessory->QuantityReserved}) {$accessory->Name}

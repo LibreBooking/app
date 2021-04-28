@@ -5,7 +5,7 @@ Foglalás részletei:
 Felhasználó: {$UserName}<br/>
 Kezdés: {formatdate date=$StartDate key=reservation_email}<br/>
 Befejezés: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     Elemek:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -37,7 +37,7 @@ Törlés oka: {$DeleteReason|nl2br}<br/>
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     Kiegészítők:
     <br/>

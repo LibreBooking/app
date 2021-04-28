@@ -125,7 +125,7 @@
                 {foreach from=$ResourceAttributes item=attribute}
                     {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="col-sm-6 col-xs-12" inputClass="input-sm"}
                 {/foreach}
-                {if $ResourceAttributes|count%2 != 0}
+                {if $ResourceAttributes|default:array()|count%2 != 0}
                     <div class="col-sm-6 hidden-xs">&nbsp;</div>
                 {/if}
             </div>
@@ -134,7 +134,7 @@
                 {foreach from=$ResourceTypeAttributes item=attribute}
                     {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="col-sm-6 col-xs-12" inputClass="input-sm"}
                 {/foreach}
-                {if $ResourceTypeAttributes|count%2 != 0}
+                {if $ResourceTypeAttributes|default:array()|count%2 != 0}
                     <div class="col-sm-6 hidden-xs">&nbsp;</div>
                 {/if}
             </div>

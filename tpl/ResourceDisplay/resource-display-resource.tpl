@@ -48,7 +48,7 @@
         <div class="date">{formatdate date=$Now key=schedule_daily timezone=$Timezone}</div>
         <div class="upcoming-reservations">
             <div class="resource-display-heading">{translate key=UpcomingReservations}</div>
-            {if $UpcomingReservations|count > 0}
+            {if $UpcomingReservations|default:array()|count > 0}
                 {foreach from=$UpcomingReservations item=r name=upcoming}
                     <div class="resource-display-upcoming">
                         {call name=displayReservation reservation=$r}
@@ -165,7 +165,7 @@
             </div>
             {/if}
 
-            {if $Attributes|count > 0}
+            {if $Attributes|default:array()|count > 0}
             <div class="row margin-top-25">
                 <div class="customAttributes col-xs-12">
                     {foreach from=$Attributes item=attribute name=attributeEach}
@@ -179,7 +179,7 @@
                             </div>
                         {/if}
                     {/foreach}
-                    {if $Attributes|count % 2 == 1}
+                    {if $Attributes|default:array()|count % 2 == 1}
                         <div class="col-xs-6">&nbsp;</div>
                     {/if}
                 </div>

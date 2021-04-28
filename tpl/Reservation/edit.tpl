@@ -159,10 +159,10 @@
 {/block}
 
 {block name='attachments'}
-    {if $Attachments|count > 0}
+    {if $Attachments|default:array()|count > 0}
         <div class="col-xs-12">
     <div id="attachmentDiv" class="res-attachments">
-        <span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
+        <span class="heading">{translate key=Attachments} ({$Attachments|default:array()|count})</span>
         <a href="#" class="remove" id="btnRemoveAttachment">({translate key="Remove"})</a>
         <br/>
         {foreach from=$Attachments item=attachment}

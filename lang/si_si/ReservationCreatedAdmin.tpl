@@ -25,14 +25,14 @@
 		{formatdate date=$date}<br/>
 	{/foreach}
 
-	{if $Accessories|count > 0}
+	{if $Accessories|default:array()|count > 0}
 		<br/>Dodatki:<br/>
 		{foreach from=$Accessories item=accessory}
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
 		{/foreach}
 	{/if}
 
-	{if $Attributes|count > 0}
+	{if $Attributes|default:array()|count > 0}
 		<br/>
 		{foreach from=$Attributes item=attribute}
 			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>

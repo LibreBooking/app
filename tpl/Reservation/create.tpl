@@ -212,7 +212,7 @@
                                 </div>
                             </div>
                             <div class="accessoriesDiv">
-                                {if $ShowReservationDetails && $AvailableAccessories|count > 0}
+                                {if $ShowReservationDetails && $AvailableAccessories|default:array()|count > 0}
                                     <label>{translate key="Accessories"}</label>
                                     <a href="#" id="addAccessoriesPrompt"
                                        class="small-action" data-toggle="modal"

@@ -5,7 +5,7 @@ Erreserbaren xehetasunak:
 Erabiltzailea: {$UserName}<br/>
 Hasiera: {formatdate date=$StartDate key=reservation_email}<br/>
 Amaiera: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     Baliabideak:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -37,7 +37,7 @@ Deskripzioa: {$Description|nl2br}<br/>
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     Osagarriak:
     <br/>

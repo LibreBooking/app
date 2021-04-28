@@ -4,7 +4,7 @@
 
 	Начало: {formatdate date=$StartDate key=reservation_email}<br/>
 	Край: {formatdate date=$EndDate key=reservation_email}<br/>
-	{if $ResourceNames|count > 1}
+	{if $ResourceNames|default:array()|count > 1}
 		Ресурси:<br/>
 		{foreach from=$ResourceNames item=resourceName}
 			{$resourceName}<br/>
@@ -30,7 +30,7 @@
 		{formatdate date=$date}<br/>
 	{/foreach}
 
-	{if $Accessories|count > 0}
+	{if $Accessories|default:array()|count > 0}
 		<br/>Accessories:<br/>
 		{foreach from=$Accessories item=accessory}
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>

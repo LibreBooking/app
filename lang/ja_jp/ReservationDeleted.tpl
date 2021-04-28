@@ -5,7 +5,7 @@
 ユーザー: {$UserName}<br/>
 開始: {formatdate date=$StartDate key=reservation_email}<br/>
 終了: {formatdate date=$EndDate key=reservation_email}<br/>
-{if $ResourceNames|count > 1}
+{if $ResourceNames|default:array()|count > 1}
     リソース:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
@@ -37,7 +37,7 @@
     <br/>
 {/foreach}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br/>
     備品:
     <br/>

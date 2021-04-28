@@ -1,4 +1,4 @@
-<h4><span id="totalUsers">{$Users|count}</span> {translate key=Users} <span class="no-show user-permission-spinner"><i class="fa fa-spinner fa-spin"></i></span> </h4>
+<h4><span id="totalUsers">{$Users|default:array()|count}</span> {translate key=Users} <span class="no-show user-permission-spinner"><i class="fa fa-spinner fa-spin"></i></span> </h4>
 {foreach from=$Users item=u}
     {cycle values='row0,row1' assign=rowCss}
     <div class="{$rowCss} form-group">
