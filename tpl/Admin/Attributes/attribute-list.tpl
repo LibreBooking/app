@@ -91,14 +91,14 @@
 		type: "{$attribute->Type()}",
 		sortOrder: "{$attribute->SortOrder()}",
 		{if $attribute->EntityIds()|count > 0}
-		entityIds: ['","'|implode:"{$attribute->EntityIds()}"],
+		entityIds: ["{'","'|implode:$attribute->EntityIds()}"],
 		{else}
 		entityIds: [],
 		{/if}
-		entityDescriptions: ['","'|implode:"{$attribute->EntityDescriptions()}"],
+		entityDescriptions: ["{'","'|implode:$attribute->EntityDescriptions()}"],
 		adminOnly: {$attribute->AdminOnly()},
 		{if $attribute->HasSecondaryEntities()}
-		secondaryEntityIds: ["{$attribute->SecondaryEntityIds()|implode:'","'}"],
+		secondaryEntityIds: ["{'","'|implode:$attribute->SecondaryEntityIds()}"],
 		secondaryEntityDescriptions: ["{'","'|implode:$attribute->SecondaryEntityDescriptions()}"],
 		{else}
 		secondaryEntityIds: [],
