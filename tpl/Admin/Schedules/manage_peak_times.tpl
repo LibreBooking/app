@@ -10,7 +10,7 @@
 		{/if}
 	</div>
 
-	<div class="peakDays" data-everyday="{$p->IsEveryDay()}" data-weekdays="{$p->GetWeekdays()|implode:','}">
+	<div class="peakDays" data-everyday="{$p->IsEveryDay()}" data-weekdays="{','|implode:$p->GetWeekdays()}">
 		{if $p->IsEveryDay()}
 			{translate key=Everyday}
 		{else}

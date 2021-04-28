@@ -37,7 +37,7 @@
 					{/if}</td>
 				{if $Category != CustomAttributeCategory::RESERVATION}
 					<td>{if $attribute->UniquePerEntity()}
-							{$attribute->EntityDescriptions()|implode:', '}
+							{', '|implode:$attribute->EntityDescriptions()}
 						{else}
 							{translate key=All}
 						{/if}
@@ -45,7 +45,7 @@
 				{/if}
 				<td>
 					{if $attribute->HasSecondaryEntities()}
-						{$attribute->SecondaryEntityDescriptions()|implode:', '}
+						{', '|implode:$attribute->SecondaryEntityDescriptions()}
 					{else}
 						{translate key=All}
 					{/if}
@@ -91,15 +91,15 @@
 		type: "{$attribute->Type()}",
 		sortOrder: "{$attribute->SortOrder()}",
 		{if $attribute->EntityIds()|count > 0}
-		entityIds: ["{$attribute->EntityIds()|implode:'","'}"],
+		entityIds: ['","'|implode:"{$attribute->EntityIds()}"],
 		{else}
 		entityIds: [],
 		{/if}
-		entityDescriptions: ["{$attribute->EntityDescriptions()|implode:'","'}"],
+		entityDescriptions: ['","'|implode:"{$attribute->EntityDescriptions()}"],
 		adminOnly: {$attribute->AdminOnly()},
 		{if $attribute->HasSecondaryEntities()}
 		secondaryEntityIds: ["{$attribute->SecondaryEntityIds()|implode:'","'}"],
-		secondaryEntityDescriptions: ["{$attribute->SecondaryEntityDescriptions()|implode:'","'}"],
+		secondaryEntityDescriptions: ["{'","'|implode:$attribute->SecondaryEntityDescriptions()}"],
 		{else}
 		secondaryEntityIds: [],
 		secondaryEntityDescriptions: [],
