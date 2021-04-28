@@ -1,5 +1,11 @@
 <?php
 
+// debugging tools / libs
+if (file_exists(ROOT_DIR . 'vendor/autoload.php'))
+{
+	require ROOT_DIR . 'vendor/autoload.php';
+}
+
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Pages/Authentication/ILoginBasePage.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');

@@ -2,14 +2,14 @@
 	"folders":
 	[
 		{
-        "folder_exclude_patterns":
+			"folder_exclude_patterns":
 			[
 				".git",
-                ".phpdoc",
+				".phpdoc",
 				"tpl_c",
-				"vendor",
-                "lib/external"
-			],
+				"vendor"
+                // "lib/external"
+            ],
 			"name": "BookedScheduler",
 			"path": "."
 		}

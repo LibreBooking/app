@@ -1,9 +1,13 @@
 /vendor/*
+/composer.lock
+
 /build/*
 /tools/*
+/var/*
 
 # Customized Confiuration Files
 /config/config.php
+/config/log4php.config.xml
 **/*.config.php
 
 /lib/external/phpqrcode/cache/*
