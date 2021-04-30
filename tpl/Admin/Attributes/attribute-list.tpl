@@ -1,4 +1,4 @@
-<h3>{$Attributes|count} {translate key=Attributes}</h3>
+<h3>{$Attributes|default:array()|count} {translate key=Attributes}</h3>
 {if $Attributes|default:array()|count > 0}
 	<table class="table">
 		<thead>
