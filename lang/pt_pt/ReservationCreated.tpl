@@ -5,7 +5,7 @@
 	<strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
 	<strong>Título:</strong> {$Title}<br/>
 	<strong>Descrição:</strong> {$Description|nl2br}
-	{if $Attributes|count > 0}
+	{if $Attributes|default:array()|count > 0}
 		<br/>
 	    {foreach from=$Attributes item=attribute}
 			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
@@ -14,8 +14,8 @@
 </p>
 
 <p>
-{if $ResourceNames|count > 1}
-    <strong>Recursos ({$ResourceNames|count}):</strong> <br />
+{if $ResourceNames|default:array()|count > 1}
+    <strong>Recursos ({$ResourceNames|default:array()|count}):</strong> <br />
     {foreach from=$ResourceNames item=resourceName}
         {$resourceName}<br/>
     {/foreach}
@@ -43,7 +43,7 @@
 
 {if count($RepeatRanges) gt 0}
     <br/>
-    <strong>A reserva ocorre nas seguintes datas ({$RepeatRanges|count}):</strong>
+    <strong>A reserva ocorre nas seguintes datas ({$RepeatRanges|default:array()|count}):</strong>
     <br/>
 	{foreach from=$RepeatRanges item=date name=dates}
 	    {formatdate date=$date->GetBegin()}
@@ -52,9 +52,9 @@
 	{/foreach}
 {/if}
 
-{if $Participants|count >0}
+{if $Participants|default:array()|count >0}
     <br />
-    <strong>Participantes ({$Participants|count + $ParticipatingGuests|count}):</strong>
+    <strong>Participantes ({$Participants|default:array()|count + $ParticipatingGuests|default:array()|count}):</strong>
     <br />
     {foreach from=$Participants item=user}
         {$user->FullName()}
@@ -62,16 +62,16 @@
     {/foreach}
 {/if}
 
-{if $ParticipatingGuests|count >0}
+{if $ParticipatingGuests|default:array()|count >0}
     {foreach from=$ParticipatingGuests item=email}
         {$email}
         <br/>
     {/foreach}
 {/if}
 
-{if $Invitees|count >0}
+{if $Invitees|default:array()|count >0}
     <br />
-    <strong>Convidados ({$Invitees|count + $InvitedGuests|count}):</strong>
+    <strong>Convidados ({$Invitees|default:array()|count + $InvitedGuests|default:array()|count}):</strong>
     <br />
     {foreach from=$Invitees item=user}
         {$user->FullName()}
@@ -79,16 +79,16 @@
     {/foreach}
 {/if}
 
-{if $InvitedGuests|count >0}
+{if $InvitedGuests|default:array()|count >0}
     {foreach from=$InvitedGuests item=email}
         {$email}
         <br/>
     {/foreach}
 {/if}
 
-{if $Accessories|count > 0}
+{if $Accessories|default:array()|count > 0}
     <br />
-       <strong>Acessórios ({$Accessories|count}):</strong>
+       <strong>Acessórios ({$Accessories|default:array()|count}):</strong>
        <br />
     {foreach from=$Accessories item=accessory}
         ({$accessory->QuantityReserved}) {$accessory->Name}

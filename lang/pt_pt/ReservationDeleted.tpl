@@ -14,8 +14,8 @@
 </p>
 
 <p>
-    {if $ResourceNames|count > 1}
-		<strong>Recursos ({$ResourceNames|count}):</strong>
+    {if $ResourceNames|default:array()|count > 1}
+		<strong>Recursos ({$ResourceNames|default:array()|count}):</strong>
 		<br/>
         {foreach from=$ResourceNames item=resourceName}
             {$resourceName}
@@ -34,7 +34,7 @@
 
 {if count($RepeatRanges) gt 0}
 	<br/>
-	<strong>Esta reserva ocorre nas seguintes datas ({$RepeatRanges|count}):</strong>
+	<strong>Esta reserva ocorre nas seguintes datas ({$RepeatRanges|default:array()|count}):</strong>
 	<br/>
     {foreach from=$RepeatRanges item=date name=dates}
         {formatdate date=$date->GetBegin()}
