@@ -5,7 +5,7 @@
 	<strong>Λήξη:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
 	<strong>Τίτλος:</strong> {$Title}<br/>
 	<strong>Περιγραφή:</strong> {$Description|nl2br}
-    {if $Attributes|count > 0}
+    {if $Attributes|default:array()|count > 0}
 		<br/>
 		{foreach from=$Attributes item=attribute}
 			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
@@ -14,8 +14,8 @@
 </p>
 
 <p>
-    {if $ResourceNames|count > 1}
-		<strong>Πόροι ({$ResourceNames|count}):</strong>
+    {if $ResourceNames|default:array()|count > 1}
+		<strong>Πόροι ({$ResourceNames|default:array()|count}):</strong>
 		<br/>
         {foreach from=$ResourceNames item=resourceName}
             {$resourceName}
@@ -34,7 +34,7 @@
 
 {if count($RepeatRanges) gt 0}
 	<br/>
-	<strong>Η κράτηση συμβαίνει στις ακόλουθες ημερομηνίες ({$RepeatRanges|count}):</strong>
+	<strong>Η κράτηση συμβαίνει στις ακόλουθες ημερομηνίες ({$RepeatRanges|default:array()|count}):</strong>
 	<br/>
     {foreach from=$RepeatRanges item=date name=dates}
         {formatdate date=$date->GetBegin()}

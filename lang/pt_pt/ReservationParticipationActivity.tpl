@@ -23,7 +23,7 @@
 </p>
 
 <p>
-    {if $ResourceNames|count > 1}
+    {if $ResourceNames|default:array()|count > 1}
 		<strong>Recursos ({$ResourceNames|default:array()|count}):</strong>
 		<br/>
         {foreach from=$ResourceNames item=resourceName}
