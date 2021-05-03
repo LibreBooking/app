@@ -1,213 +1,165 @@
 <?xml version="1.0"?>
 <!-- doc: https://www.phing.info/guide/hlhtml/#d5e653 -->
 <!-- php and mysql command have to be in your PATH -->
-<project name="booked" default="package">
-    <property name="version" value="2.8.6"/>
-    <property name="is.pre.release" value="false"/>
-    <property name="packagename" value="booked-${version}"/>
+<project name="bookedscheduler" default="package">
+    <property name="packagename" value="bookedscheduler" />
+    <property name="build.dir" value="build" />
+    <property name="zipdirectory" value="${build.dir}/" />
+    <property name="bundle_directory" value="${build.dir}/" />
+    <property name="stagingdir" value="${build.dir}/staging" />
 
-    <property name="build.dir" value="build"/>
-    <property name="zipdirectory" value="${build.dir}/zip/${version}"/>
-    <property name="bundle_directory" value="${build.dir}/src/${version}"/>
-    <property name="stagingdir" value="${build.dir}/staging"/>
+    <property name="mysql.username" value="test" />
+    <property name="mysql.password" value="test" />
+    <property name="mysql.server" value="127.0.0.1" />
 
-    <property name="mysql.username" value="test"/>
-    <property name="mysql.password" value="test"/>
-    <property name="mysql.server" value="127.0.0.1"/>
-    <property name="mysql.database" value="bookedscheduler"/>
-
-    <property name="sql.file.create.db" value="database_schema/create-db.sql"/>
-    <property name="sql.file.create.schema" value="database_schema/create-schema.sql"/>
-<!-- <property name="sql.file.create.user" value="database_schema/create-user.sql"/> -->
-    <property name="sql.file.data" value="database_schema/create-data.sql"/>
-    <property name="sql.file.full" value="database_schema/full-install.sql"/>
-    <property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
+    <property name="mysql.database" value="bookedscheduler" />
+    <property name="sql.file.create.db" value="database_schema/create-db.sql" />
+    <property name="sql.file.create.schema" value="database_schema/create-schema.sql" />
+    <!-- <property name="sql.file.create.user" value="database_schema/create-user.sql"/> -->
+    <property name="sql.file.data" value="database_schema/create-data.sql" />
+    <property name="sql.file.full" value="database_schema/full-install.sql" />
+    <property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql" />
 
     <target name="setup.db" description="setting up the latest version of the database">
-
         <if>
-            <equals arg1="${mysql.password}" arg2=""/>
+            <equals arg1="${mysql.password}" arg2="" />
             <then>
                 <input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
             </then>
         </if>
-
         <phingcall target="baseline.db">
-            <property name="mysql.password" value="${mysql.password}"/>
+            <property name="mysql.password" value="${mysql.password}" />
         </phingcall>
-
         <phingcall target="upgrade.db">
-            <property name="mysql.password" value="${mysql.password}"/>
+            <property name="mysql.password" value="${mysql.password}" />
         </phingcall>
     </target>
 
     <target name="baseline.db" description="baseline db">
-
         <if>
-            <equals arg1="${mysql.password}" arg2=""/>
+            <equals arg1="${mysql.password}" arg2="" />
             <then>
                 <input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
             </then>
         </if>
-
-        <echo message="Using MySQL from ${mysql.bin}"/>
-        <echo message="Create db file: ${sql.file.create.db}"/>
-        <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} mysql &lt; ${phing.dir}/${sql.file.create.db}"
-              checkreturn="true"
-        />
-
-        <echo message="Create schema file: ${sql.file.create.schema}"/>
-        <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.schema}"
-              checkreturn="true"
-        />
-
-<!--        <echo message="Create user file: ${sql.file.create.user}"/>-->
-<!--        <exec command="${mysql.bin}\mysql &#45;&#45;user=${mysql.username} &#45;&#45;password=${mysql.password} &#45;&#45;host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.user}"-->
-<!--              checkreturn="true"-->
-<!--              dir="${mysql.bin}"/>-->
-
+        <echo message="Using MySQL from ${mysql.bin}" />
+        <echo message="Create db file: ${sql.file.create.db}" />
+        <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} mysql &lt; ${phing.dir}/${sql.file.create.db}" checkreturn="true" />
+        <echo message="Create schema file: ${sql.file.create.schema}" />
+        <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.schema}" checkreturn="true" />
+        <!-- <echo message="Create user file: ${sql.file.create.user}"/> -->
+        <!-- <exec command="${mysql.bin}\mysql &#45;&#45;user=${mysql.username} &#45;&#45;password=${mysql.password} &#45;&#45;host=${mysql.server} ${mysql.database} &lt; ${phing.dir}/${sql.file.create.user}" -->
+        <!-- checkreturn="true" -->
+        <!-- dir="${mysql.bin}"/> -->
     </target>
 
     <target name="upgrade.db" depends="custom.tasks">
-
         <if>
-            <equals arg1="${mysql.password}" arg2=""/>
+            <equals arg1="${mysql.password}" arg2="" />
             <then>
                 <input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
             </then>
         </if>
-
         <exec passthru="true" escape="false" command="php ${application.startdir}/phing-tasks/UpgradeDbTask.php
         ${mysql.username}
         ${mysql.password}
         ${mysql.server}
-        ${mysql.database} ${application.startdir}/database_schema"/>
-
-        <echo message="Application data file: ${sql.file.data}"/>
-        <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}"
-              checkreturn="true"
-              dir="${mysql.bin}"/>
-
-        <echo message="Test data file: ${sql.file.test.data}"/>
-        <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}"
-              checkreturn="true"
-              passthru="true"
-              dir="${mysql.bin}"/>
+        ${mysql.database} ${application.startdir}/database_schema" />
+        <echo message="Application data file: ${sql.file.data}" />
+        <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}" checkreturn="true" dir="${mysql.bin}" />
+        <echo message="Test data file: ${sql.file.test.data}" />
+        <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}" checkreturn="true" passthru="true" dir="${mysql.bin}" />
     </target>
 
     <target name="package" description="packages all required files" depends="stage.files">
-
-        <delete dir="${zipdirectory}" failonerror="false"/>
-        <mkdir dir="${zipdirectory}"/>
-
-        <tstamp/>
-
-        <property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
-
+        <delete dir="${zipdirectory}" failonerror="false" />
+        <mkdir dir="${zipdirectory}" />
+        <tstamp />
+        <property name="zip.file.name" value="${zipdirectory}/${packagename}.zip" />
         <zip destfile="${zip.file.name}">
             <fileset dir="${stagingdir}">
-                <include name="**/*"/>
+                <include name="**/*" />
             </fileset>
         </zip>
-
-        <delete dir="${bundle_directory}" failonerror="false"/>
-        <mkdir dir="${bundle_directory}"/>
-
+        <delete dir="${bundle_directory}" failonerror="false" />
+        <mkdir dir="${bundle_directory}" />
         <copy todir="${bundle_directory}" includeemptydirs="true">
             <fileset dir="${stagingdir}">
-                <include name="**/*"/>
+                <include name="**/*" />
             </fileset>
         </copy>
-
-        <delete dir="${stagingdir}" failonerror="false"/>
+        <delete dir="${stagingdir}" failonerror="false" />
     </target>
 
     <target name="stage.files">
-        <delete dir="${stagingdir}" failonerror="false"/>
-        <mkdir dir="${stagingdir}"/>
+        <delete dir="${stagingdir}" failonerror="false" />
+        <mkdir dir="${stagingdir}" />
         <copy todir="${stagingdir}" includeemptydirs="true">
             <fileset dir=".">
-                <include name="**/*"/>
+                <include name="**/*" />
                 <!-- config files -->
-                <exclude name="**/config.php"/>
-                <exclude name="**/config.devel.php"/>
-                <exclude name="**/*.config.php"/>
-                <exclude name="config/log4php.config.xml"/>
-
+                <exclude name="**/config.php" />
+                <exclude name="**/config.devel.php" />
+                <exclude name="**/*.config.php" />
+                <exclude name="config/log4php.config.xml" />
                 <!-- user files -->
-                <exclude name="**/uploads/images/*"/>
-                <exclude name="**/uploads/reservation/*"/>
-
+                <exclude name="**/uploads/images/*" />
+                <exclude name="**/uploads/reservation/*" />
                 <!-- asset resources -->
-                <exclude name="**.psd"/>
-                <exclude name="**.bak"/>
-                <exclude name="**/*.zip"/>
-
+                <exclude name="**.psd" />
+                <exclude name="**.bak" />
+                <exclude name="**/*.zip" />
                 <!-- temporary files -->
-                <exclude name="tpl_c/*.*"/>
-                <exclude name="var/**"/>
-
+                <exclude name="tpl_c/*.*" />
+                <exclude name="var/**" />
                 <!-- project / IDE files -->
-                <exclude name=".project"/>
-                <exclude name=".idea/**"/>
-                <exclude name=".vscode/**"/>
-                <exclude name="**/*.code-workspace"/>
-                <exclude name="**/*.sublime-*"/>
-                <exclude name="**/*.jar"/>
-                <exclude name="pdt_templates.xml"/>
-
+                <exclude name=".project" />
+                <exclude name=".idea/**" />
+                <exclude name=".vscode/**" />
+                <exclude name="**/*.code-workspace" />
+                <exclude name="**/*.sublime-*" />
+                <exclude name="**/*.jar" />
+                <exclude name="pdt_templates.xml" />
                 <!-- development libraries / tools -->
-                <exclude name="composer*"/>
-                <exclude name=".phive/**"/>
-                <exclude name="vendor/**"/>
-                <exclude name="tools/**"/>
-
+                <exclude name="composer*" />
+                <exclude name=".phive/**" />
+                <exclude name="vendor/**" />
+                <exclude name="tools/**" />
                 <!-- testing -->
-                <exclude name="*phpunit*"/>
-                <exclude name="**/tests/**"/>
-                <exclude name="*test*"/>
-
+                <exclude name="*phpunit*" />
+                <exclude name="**/tests/**" />
+                <exclude name="*test*" />
                 <!-- documentation -->
-                <exclude name="**/doc/**"/>
-                <exclude name="**/docs/**"/>
+                <exclude name="**/doc/**" />
+                <exclude name="**/docs/**" />
                 <exclude name="phpdoc.*" />
-                <exclude name=".phpdoc/**"/>
-
+                <exclude name=".phpdoc/**" />
                 <!-- build stuff -->
-                <exclude name="build/**"/>
-                <exclude name="build.bat"/>
-                <exclude name="build.xml"/>
-                <exclude name="**/phing-tasks/**"/>
-
+                <exclude name="build/**" />
+                <exclude name="build.bat" />
+                <exclude name="build.xml" />
+                <exclude name="**/phing-tasks/**" />
                 <!-- version control -->
-                <exclude name=".git*/**"/>
-
-                <include name="**/qrconfig.php"/>
-                <include name="**/.htaccess"/>
+                <exclude name=".git*/**" />
+                <include name="**/qrconfig.php" />
+                <include name="**/.htaccess" />
             </fileset>
         </copy>
-
-        <copy tofile="${stagingdir}/lib/external/phpqrcode/qrconfig.php" file="./lib/external/phpqrcode/qrconfig.php"/>
-
+        <copy tofile="${stagingdir}/lib/external/phpqrcode/qrconfig.php" file="./lib/external/phpqrcode/qrconfig.php" />
         <phingcall target="combine.db.files">
         </phingcall>
-
         <append destFile="${stagingdir}/${sql.file.full}">
-            <filelist dir="${stagingdir}/database_schema"
-                      files="create-schema.sql,create-data.sql"/>
+            <filelist dir="${stagingdir}/database_schema" files="create-schema.sql,create-data.sql" />
         </append>
-
     </target>
-
     <target name="combine.db.files" depends="custom.tasks">
         <exec passthru="true" escape="false" command="php ${application.startdir}/phing-tasks/CombineDbFilesTask.php
         ${stagingdir}/database_schema
         ${stagingdir}/${sql.file.create.schema}
-        ${stagingdir}/${sql.file.data}"/>
+        ${stagingdir}/${sql.file.data}" />
     </target>
-
     <target name="custom.tasks">
-<!--         <copy todir="${phing.tasks.dir}">
+        <!-- <copy todir="${phing.tasks.dir}">
             <fileset dir="phing-tasks">
                 <include name="*.php"/>
             </fileset>
