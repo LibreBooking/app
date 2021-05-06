@@ -1,4 +1,3 @@
-{* Translated by Alenka Kavčič (alenka.kavcic@fri.uni-lj.si) *}
 Podrobnosti rezervacije:
 <br/>
 <br/>

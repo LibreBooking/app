@@ -119,26 +119,26 @@
                 <exclude name="**/*.code-workspace" />
                 <exclude name="**/*.sublime-*" />
                 <exclude name="**/*.jar" />
-                <exclude name="pdt_templates.xml" />
-                <!-- development libraries / tools -->
+                <!-- development libraries -->
                 <exclude name="composer*" />
                 <exclude name=".phive/**" />
                 <exclude name="vendor/**" />
-                <exclude name="tools/**" />
                 <!-- testing -->
                 <exclude name="*phpunit*" />
                 <exclude name="**/tests/**" />
                 <exclude name="*test*" />
+                <!-- build stuff / tools -->
+                <exclude name="tools/**" />
+                <exclude name="**/*.bat" />
+                <exclude name="**/*.ps1" />
+                <exclude name="build/**" />
+                <exclude name="build.xml" />
+                <exclude name="**/phing-tasks/**" />
                 <!-- documentation -->
                 <exclude name="**/doc/**" />
                 <exclude name="**/docs/**" />
                 <exclude name="phpdoc.*" />
                 <exclude name=".phpdoc/**" />
-                <!-- build stuff -->
-                <exclude name="build/**" />
-                <exclude name="build.bat" />
-                <exclude name="build.xml" />
-                <exclude name="**/phing-tasks/**" />
                 <!-- version control -->
                 <exclude name=".git*/**" />
                 <include name="**/qrconfig.php" />

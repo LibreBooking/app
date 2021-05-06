@@ -29,7 +29,9 @@ Logically related code should be grouped in a directory with a "namespace.php" f
 This simply makes it easier to include necessary file dependencies.
 
 ## User interface
-[Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation. Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
+[Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation.  
+Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`  
+[Fugue Icons](https://p.yusukekamiyamane.com/) are used as the default iconset and when needed saved to `/Web/img/<icon-name>.png`
 
 ## Tools
 you can easily install the following php tools needed for development with [phive](https://github.com/phar-io/phive#getting-phive) by going to the root of the project and executing `phive install <toolname>` all the tools will then be available inside the `/tools` directory.
