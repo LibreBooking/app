@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- doc: https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit bootstrap="./tests/AllTests.php" colors="true">
     <testsuites>
         <testsuite name="unit">
