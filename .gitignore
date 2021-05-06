@@ -19,9 +19,13 @@
 !/plugins/**/index.html
 !/plugins/**/*Example/*
 
-# Smarty Cache
+# Smarty Cache / compiled templates
 /tpl_c/*
 !/tpl_c/index.html
+
+# Customization Files
+/Web/custom-favicon.png
+/Web/img/custom-logo.png
 
 # Upload Directories
 /uploads/*
@@ -32,14 +36,16 @@
 /Web/uploads/tos/*
 !/Web/uploads/tos/index.html
 
-# Customization Files
-/Web/custom-favicon.png
-/Web/img/custom-logo.png
 
 /Web/test-embed.html
 
 /.phpunit.result.cache
+# .phpunit.xml.dist is default tracked
+# /.phpunit.xml
+
 /.phpdoc
+# /.phpunit.dist.xml is default tracked
+#/.phpdoc.xml
 
 # Editor Cache Files
 .idea
