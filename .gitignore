@@ -41,11 +41,11 @@
 
 /.phpunit.result.cache
 # .phpunit.xml.dist is default tracked
-# /.phpunit.xml
+/.phpunit.xml
 
 /.phpdoc
 # /.phpunit.dist.xml is default tracked
-#/.phpdoc.xml
+/.phpdoc.xml
 
 # Editor Cache Files
 .idea
