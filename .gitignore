@@ -4,6 +4,7 @@
 /build/*
 /tools/*
 /var/*
+.phive/*
 
 # Customized Confiuration Files
 /config/config.php
@@ -18,9 +19,13 @@
 !/plugins/**/index.html
 !/plugins/**/*Example/*
 
-# Smarty Cache
+# Smarty Cache / compiled templates
 /tpl_c/*
 !/tpl_c/index.html
+
+# Customization Files
+/Web/custom-favicon.png
+/Web/img/custom-logo.png
 
 # Upload Directories
 /uploads/*
@@ -31,17 +36,16 @@
 /Web/uploads/tos/*
 !/Web/uploads/tos/index.html
 
-# Customization Files
-/Web/custom-favicon.png
-/Web/img/custom-logo.png
 
 /Web/test-embed.html
 
-# AWS Elastic Beanstalk configuration
-/.ebextensions
-
 /.phpunit.result.cache
+# /.phpunit.xml.dist is tracked
+/.phpunit.xml
+
 /.phpdoc
+# /.phpunit.dist.xml is tracked
+/.phpdoc.xml
 
 # Editor Cache Files
 .idea

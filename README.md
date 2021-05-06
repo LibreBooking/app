@@ -1,4 +1,4 @@
-# Welcome to Booked Scheduler!
+# Welcome to Booked Scheduler
 
 This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) BookedScheduler alive, see [History](./doc/HISTORY.md)
 
@@ -26,9 +26,9 @@ We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedschedu
 
 #### 2.8.5.3
 
-**This version is no longer developed by Twinkle Toes Software (https://www.bookedscheduler.com)**
+**This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](https://github.com/effgarces/BookedScheduler)  
-Fork this repo, contribute and help keep it alive 
+Fork this repo, contribute and help keep it alive
 
 - Added translation: Greek
 - Updated jsPDF
@@ -36,21 +36,20 @@ Fork this repo, contribute and help keep it alive
 
 #### 2.8.5.2
 
-**This version is no longer developed by Twinkle Toes Software (https://www.bookedscheduler.com)**
+**This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](<https://github.com/effgarces/BookedScheduler>)  
 Fork this repo, contribute and help keep it alive - Bugfixes
 
-
 #### 2.8.5.1
 
-**This version is no longer developed by Twinkle Toes Software (https://www.bookedscheduler.com)**
+**This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](<https://github.com/effgarces/BookedScheduler>)<br>
 
 Fork this repo, contribute and help keep it alive - Added intial support for generating pdf's on the reservation page
+
 - Added two plugins (Moodle Advanced Authentication and Admin Check-in/out Only)
 - Updated portuguese translation
 - Bugfixes
-
 
 #### 2.8.5
 
@@ -62,7 +61,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added settings to require phone, position, and organization during registration
 - Bugfixes
 
-
 #### 2.8.4
 
 - Allow reservations on the schedule to be filtered by owner or participant
@@ -70,12 +68,10 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Add resource concurrency to resource import and export
 - Bugfixes
 
-
 #### 2.8.3
 
 - Do not require logging in to set up resource tablet display
 - Bugfixes
-
 
 #### 2.8.2
 
@@ -83,12 +79,10 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Removed the ability to set a schedule as allowing unlimited concurrent reservations per resource
 - Bugfixes
 
-
 #### 2.8.1
 
 - Added ability to limit the total number of concurrent reservations for a schedule
 - Added ability to limit the number of resources per reservation for a schedule
-
 
 #### 2.7.8
 
@@ -100,13 +94,11 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - MySQL 8+ compatibility
 - Bugfixes
 
-
 #### 2.7.7
 
 - Added a configuration option to show whether a reservation is new or updated for a period of time
 - Added Hungarian translation
 - Bugfixes
-
 
 #### 2.7.6
 
@@ -117,7 +109,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Updated Portuguese and Finnish translations
 - Bugfixes
 
-
 #### 2.7.5
 
 - Added utilization reports
@@ -127,7 +118,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added link to add to Google Calendar to reservation emails
 - Bugfixes
 
-
 #### 2.7.4
 
 - Added availability view to reservation page
@@ -136,7 +126,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added ability to search for reservations that missed checkin/checkout
 - Bugfixes
 
-
 #### 2.7.3
 
 - Added ability to set user status on CSV import
@@ -144,14 +133,12 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added ability set the resources, groups, and schedules a group can administer from Groups tool
 - Bugfixes
 
-
 #### 2.7.2
 
 - Added monitor display view
 - Resolved accessibility issues
 - Added Serbian
 - Bugfixes
-
 
 #### 2.7.1
 
@@ -184,7 +171,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Upgraded jQuery to latest
 - Bugfixes
 
-
 #### 2.6.8
 
 - Added ability to see real time availability when selecting additional resources
@@ -194,7 +180,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Better highlight pending reservations on Dashboard and popups
 - Optimize JavaScript file loading for better page rendering times
 - Bugfixes
-
 
 #### 2.6.7
 
@@ -207,7 +192,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added Basque language
 - Added Thai language
 - Bugfixes
-
 
 #### 2.6.6
 
@@ -232,7 +216,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Numerous security fixes
 - Bugfixes
 
-
 #### 2.6.5
 
 - Ensure only one reminder email is sent per reservation when multiple resources are booked
@@ -242,7 +225,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added resource type filter to reports
 - Bugfixes
 
-
 #### 2.6.4
 
 - Use resource color on availability dashboard
@@ -251,7 +233,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Allow view schedule to be changed to alternate schedule views
 - Upgrade PHPMailer
 - Bugfixes
-
 
 #### 2.6.3
 
@@ -266,7 +247,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added Russian
 - Bugfixes and security updates
 
-
 #### 2.6.2
 
 - Added ability to invite users to join Booked
@@ -275,11 +255,9 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Bugfixes
 - Updated French language pack
 
-
 #### 2.6.1
 
 - Bugfixes
-
 
 #### 2.6
 
@@ -306,7 +284,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - The first user to register will automatically be setup as the primary admin
 - Numerous minor enhancements and bug fixes
 
-
 #### 2.5.21
 
 - Added ability to duplicate a reservation
@@ -316,7 +293,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fix API bugs
 - Fix bug not showing custom user attributes on manage user page
 - Fix for account deleted email
-
 
 #### 2.5.20
 
@@ -329,13 +305,11 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fixed click and drag on condensed week view
 - Fixed problem showing hidden resources on dashboard
 
-
 #### 2.5.19
 
 - Fixed some packaging issues from 2.5.18
 - Added ability to filter multiple resources on the schedule
 - Updated Japanese language files
-
 
 #### 2.5.18
 
@@ -346,7 +320,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fixed issue filtering on custom attributes on manage reservations page
 - Added fix to allow larger datasets returned when using group_concat
 - Fixed the 'deleted by' name in the account deletion email
-
 
 #### 2.5.17
 
@@ -372,7 +345,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Removed CSRF check on registration page
 - Ensure session is started when rendering captcha
 - Fixed syntax issue on PHP 5.3 and lower
-
 
 #### 2.5.16
 
@@ -402,7 +374,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Updated French language pack
 - Updated Croatian language pack
 
-
 #### 2.5.15
 
 - Added ability for users to join reservations without being invited
@@ -414,7 +385,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fixed bug incorrectly grouping recurring reservations on calendar views
 - Updated Italian language
 - Updated Spanish language
-
 
 #### 2.5.14
 
@@ -432,7 +402,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Updated Italian language pack
 - Updated Spanish language pack
 
-
 #### 2.5.13
 
 - Fixed bug preventing reservations from being added to Outlook
@@ -443,21 +412,17 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Applied patch for HTTP security headers
 - Updated Italian language
 
-
-
 #### 2.5.12
 
 - Fixed English admin help page
-
 
 #### 2.5.11
 
 - Fixed issue that was sending approval request emails on every reservation create/update if approval emails were enabled
 
-
 #### 2.5.10
-- Fixed issue sending email from \*nix servers
 
+- Fixed issue sending email from \*nix servers
 
 #### 2.5.9
 
@@ -479,8 +444,8 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Updated German language files
 - Updated Portuguese language files
 
-
 #### 2.5.8
+
 - Added schedule and resource filter to My Calendar
 - Fixed bug displaying week in calendar views
 - Reduced the size of the bookings page by \~35%
@@ -488,28 +453,23 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Updated Japanese language files
 - Updated Portuguese language files
 
-
 #### 2.5.7
 
 - Fixed potential XSS vulnerability on login page
-
 
 #### 2.5.6
 
 - Fixed problem navigating to reservation details from tall schedule view
 - Fixed problem rendering resource group management page
 
-
 #### 2.5.5
 
 - Fixed problem updating plugin config files through UI
 - Fixed date parsing in web services
 
-
 #### 2.5.4
 
 - Fixed error updating resources
-
 
 #### 2.5.3
 
@@ -520,8 +480,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Changed installer to use mysqli
 - Fixed error filtering blackouts by resource
 - Fixed error creating recurring reservation which sometimes picked the wrong week of the month
-
-
 
 #### 2.5.2
 
@@ -539,7 +497,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Changed reservation confirmation screen to notify when the reservation requires approval
 - Updates to Italian language pack
 
-
 #### 2.5.1
 
 - Updated German language files
@@ -555,7 +512,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fixed bug adding/removing resource images
 - Fixed sample data import
 - Cleaned up sample post-reservation plugin example
-
 
 #### 2.5
 
@@ -593,7 +549,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Updated all mysql_\* calls to mysqli_\*
 - Numerous other minor fixes and updates
 
-
 #### 2.4.2
 
 - Added ability to click and drag to create reservations
@@ -607,14 +562,12 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fixed bug selecting wrong start time when user and schedule timezones are different
 - Updated German, Portuguese and Hebrew languages
 
-
 #### 2.4.1
 
 - Changed periods spanning less than an hour to display tick marks instead of times
 - Fixed bug when displaying vertical schedule when reservation title contained special characters
 - Fixed bug in migration script not copying legacy password correctly
 - Fixed bugs generating API documentation
-
 
 #### 2.4
 
@@ -636,7 +589,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added ability to disable password reset
 - Numerous bug fixes and minor enhancements
 
-
 #### 2.3
 
 - Added ability for administrators of all levels to create reports
@@ -654,7 +606,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Added email address to user autocomplete
 - Numerous minor enhancements added and defects fixed
 
-
 #### 2.2
 
 - Breaking change: For Active Directory authentication, please set your authentication plugin to ActiveDirectory. Ldap plugin is now targeted at non-Active Directory.
@@ -667,8 +618,6 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Made configuring resource image directories easier
 - Added ability to start schedules on Today
 - Numerous minor enhancements added and defects fixed
-
-
 
 #### 2.1
 
@@ -696,7 +645,7 @@ Fork this repo, contribute and help keep it alive - Added intial support for gen
 - Fixed defect on manage blackouts
 - Added pre-reservation plugin example
 - Ajax reservation now displays errors
-- Fixed defect selecting first period instead of last period when reservation ends at start time of first period 
+- Fixed defect selecting first period instead of last period when reservation ends at start time of first period
 - Fixed defect displaying reservation on first period of the day if it ends at the first period's start time
 - Fixed bug adding users from the admin tool
 - Fixed javascript single quote bugs

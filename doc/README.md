@@ -3,8 +3,10 @@
 ## Working on the projekt
 The `develop` branch contains the most current working code of the Project and should be considered beta.  
 The `master` branch is the most current stable release of BookedScheduler.  
-You can automatically keep your fork up to date with the [pull GitHub App](https://github.com/apps/pull). which will sync the `master` and `develop` branches for you.
+You can automatically keep your fork up to date with the [pull GitHub App](https://github.com/apps/pull). which will sync the `master` (hardreset) and `develop` (rebase) branches for you.
 Please commit bugfixes / features to a new branch prefixed `bugfix-`, `feature-` so they can be looked over, and pull requested to the `develop` branch and will eventually end up in a release on `master`.
+
+See what's currently worked on / add your own efforts to this [Active Devlopment pad](https://demo.hedgedoc.org/4MVpNd46TL2LI_IKR9K1EQ?both#).
 
 ## Design philosophy
 The Model-View-Presenter (MVP) pattern is used to keep a clear separation between application logic and presentation logic.  
@@ -27,7 +29,9 @@ Logically related code should be grouped in a directory with a "namespace.php" f
 This simply makes it easier to include necessary file dependencies.
 
 ## User interface
-[Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation. Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
+[Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation.  
+Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`  
+[Fugue Icons](https://p.yusukekamiyamane.com/) are used as the default iconset and when needed saved to `/Web/img/<icon-name>.png`
 
 ## Tools
 you can easily install the following php tools needed for development with [phive](https://github.com/phar-io/phive#getting-phive) by going to the root of the project and executing `phive install <toolname>` all the tools will then be available inside the `/tools` directory.

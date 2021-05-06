@@ -1,4 +1,3 @@
-{*Translated by Alenka Kavčič (alenka.kavcic@fri.uni-lj.si) *}
 <p>{$To},</p>
 
 <p>Nov uporabnik se je registriral z naslednjimi podatki:<br/>
