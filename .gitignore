@@ -40,11 +40,11 @@
 /Web/test-embed.html
 
 /.phpunit.result.cache
-# .phpunit.xml.dist is default tracked
+# /.phpunit.xml.dist is tracked
 /.phpunit.xml
 
 /.phpdoc
-# /.phpunit.dist.xml is default tracked
+# /.phpunit.dist.xml is tracked
 /.phpdoc.xml
 
 # Editor Cache Files
