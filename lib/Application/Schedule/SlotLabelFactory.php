@@ -68,7 +68,7 @@ class SlotLabelFactory
             return '';
         }
 		
-        if ($shouldHideReservations || !$this->user->IsLoggedIn()) {
+        if (!$shouldHideReservations && !$this->user->IsLoggedIn()) {
             return '';
         }
 
