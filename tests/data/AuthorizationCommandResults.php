@@ -2,42 +2,42 @@
 
 class AuthorizationCommandResults
 {
-	private $rows = array();
+    private $rows = array();
 
-	public $UserId = 1;
-	public $Password = 'password';
-	public $Salt = 'salt';
-	public $OldPassword = 'oldpassword';
+    public $UserId = 1;
+    public $Password = 'password';
+    public $Salt = 'salt';
+    public $OldPassword = 'oldpassword';
 
-	public static function ValidUser()
-	{
-		$results = new AuthorizationCommandResults();
-		$results->AddDefaultUser();
+    public static function ValidUser()
+    {
+        $results = new AuthorizationCommandResults();
+        $results->AddDefaultUser();
 
-		return $results;
-	}
+        return $results;
+    }
 
-	public static function InvalidUser()
-	{
-		return new AuthorizationCommandResults();
-	}
+    public static function InvalidUser()
+    {
+        return new AuthorizationCommandResults();
+    }
 
-	private function AddDefaultUser()
-	{
-		$this->AddRow($this->UserId, $this->Password, $this->Salt, $this->OldPassword);
-	}
+    private function AddDefaultUser()
+    {
+        $this->AddRow($this->UserId, $this->Password, $this->Salt, $this->OldPassword);
+    }
 
-	public function AddRow($userid, $password, $salt, $oldpassword)
-	{
-		$this->rows[] = array(
-			ColumnNames::USER_ID => $userid,
-			ColumnNames::PASSWORD => $password,
-			ColumnNames::SALT => $salt,
-			ColumnNames::OLD_PASSWORD => $oldpassword);
-	}
+    public function AddRow($userid, $password, $salt, $oldpassword)
+    {
+        $this->rows[] = array(
+            ColumnNames::USER_ID => $userid,
+            ColumnNames::PASSWORD => $password,
+            ColumnNames::SALT => $salt,
+            ColumnNames::OLD_PASSWORD => $oldpassword);
+    }
 
-	public function Rows()
-	{
-		return $this->rows;
-	}
+    public function Rows()
+    {
+        return $this->rows;
+    }
 }

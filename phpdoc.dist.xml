@@ -8,7 +8,7 @@
 >
     <paths>
         <output>.phpdoc/build</output>
-        <cache>.phpdoc/cache</cache>
+        <cache>/var/cache/phpdoc</cache>
     </paths>
     <version number="3.0.0">
         <api format="php">
