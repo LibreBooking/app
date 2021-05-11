@@ -2,7 +2,7 @@
 /**
 *  Cron Example:
 *  This script must be executed every day to enable session cleanup functionality
-*  0 0 * * * /usr/bin/env php ${WWW_DIR}/booked/Jobs/sessioncleanup.php
+*  0 0 * * * /usr/bin/env php -f ${WWW_DIR}/booked/Jobs/sessioncleanup.php
 */
 
 define('ROOT_DIR', dirname(__FILE__) . '/../');
