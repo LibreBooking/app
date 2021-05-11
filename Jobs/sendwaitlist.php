@@ -1,12 +1,9 @@
 <?php
 /**
-
-Cron Example:
-This script must be executed every minute for to enable waitlist notification emails
-
-* * * * * php /home/mydomain/public_html/booked/Jobs/sendwaitlist.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendwaitlist.php
-
+*  Cron Example:
+*  This script must be executed every minute for to enable waitlist notification emails
+*  * * * * * php /home/mydomain/public_html/booked/Jobs/sendwaitlist.php
+*  * * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendwaitlist.php
 */
 
 define('ROOT_DIR', dirname(__FILE__) . '/../');

@@ -1,13 +1,8 @@
 <?php
 /**
-
-Cron Example:
-
-This script must be executed every minute for to enable missed checkin email functionality
-
-* * * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
-
+*  Cron Example:
+*  This script must be executed every minute for to enable missed checkin email functionality
+*  * * * * * /usr/bin/env php ${WWW_DIR}/booked/Jobs/sendmissedcheckin.php
 */
 
 define('ROOT_DIR', dirname(__FILE__) . '/../');
