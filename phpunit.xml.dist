@@ -11,8 +11,8 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "false"
-
-    verbose                     = "true"
+    cacheResultFile             = "./var/cache/.phpunit.result.cache"
+    verbose                     = "false"
     defaultTestSuite            = "all"
 >
     <!-- organizing tests: https://phpunit.readthedocs.io/en/latest/organizing-tests.html -->
