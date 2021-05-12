@@ -74,7 +74,7 @@ $('.btnPDF').click(function (e) {
 		  styles: { lineWidth: 0.02},
 		  theme: 'plain',
 		  body: [
-			{ user: '{$ReservationUserName}'},
+			{ user: '{$ReservationUserName|escape:'javascript'}'},
 		  ],
 		  columns: [
 			{ header: '{translate key='User'}', dataKey: 'user' },
