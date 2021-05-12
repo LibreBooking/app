@@ -1,12 +1,8 @@
 <?php
 /**
-
-Cron Example:
-This script must be executed every day for to enable series ending email functionality
-
-0 0 * * * php /home/mydomain/public_html/booked/Jobs/sendseriesend.php
-0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendseriesend.php
-
+*  Cron Example:
+*  This script must be executed every day for to enable series ending email functionality
+*  0 0 * * * /usr/bin/env php -f ${WWW_DIR}/booked/Jobs/sendseriesend.php
 */
 
 define('ROOT_DIR', dirname(__FILE__) . '/../');

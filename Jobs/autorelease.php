@@ -1,12 +1,8 @@
 <?php
 /**
-Cron Example:
-
-This script must be executed every minute for to enable automatic release functionality
-
-* * * * * php /home/mydomain/public_html/booked/Jobs/autorelease.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/autorelease.php
-
+*  Cron Example:
+*  This script must be executed every minute for to enable automatic release functionality
+*  * * * * * /usr/bin/env php -f ${WWW_DIR}/booked/Jobs/autorelease.php
 */
 
 define('ROOT_DIR', dirname(__FILE__) . '/../');
