@@ -2,29 +2,31 @@
     <!-- doc: https://logging.apache.org/log4php/docs/configuration.html -->
     <!-- loaded in ../lib/Common/Logging/Log.php -->
 
-    <appender name="defaultAppender" class="LoggerAppenderDailyFile">
+    <appender name="defaultAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
         </layout>
-        <param name="file" value="./../var/application_log.log" />
+        <!-- this has to be an absolute path -->
+        <param name="file" value="/var/log/booked-application.log" />
         <param name="append" value="true" />
     </appender>
 
-    <appender name="sqlAppender" class="LoggerAppenderDailyFile">
+    <appender name="sqlAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutPattern">
             <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
         </layout>
-        <param name="file" value="./../var/sql_log.log" />
+        <!-- this has to be an absolute path -->
+        <param name="file" value="/var/log/booked-sql.log" />
         <param name="append" value="true" />
     </appender>
 
     <!-- https://logging.apache.org/log4php/docs/introduction.html#Levels -->
-    <logger name="default" additivity="false">
+    <logger name="default">
         <level value="ERROR" />
         <appender_ref ref="defaultAppender" />
     </logger>
 
-    <logger name="sql" additivity="false">
+    <logger name="sql">
         <level value="ERROR" />
         <appender_ref ref="sqlAppender" />
     </logger>
