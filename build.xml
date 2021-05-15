@@ -4,9 +4,9 @@
 <project name="bookedscheduler" default="package">
     <property name="packagename" value="bookedscheduler" />
     <property name="build.dir" value="build" />
-    <property name="zipdirectory" value="${build.dir}/" />
-    <property name="bundle_directory" value="${build.dir}/" />
     <property name="stagingdir" value="${build.dir}/staging" />
+    <property name="zipdirectory" value="${build.dir}/zip" />
+    <property name="bundle_directory" value="${build.dir}/bundle" />
 
     <property name="mysql.username" value="test" />
     <property name="mysql.password" value="test" />
@@ -19,6 +19,14 @@
     <property name="sql.file.data" value="database_schema/create-data.sql" />
     <property name="sql.file.full" value="database_schema/full-install.sql" />
     <property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql" />
+
+    <target name="custom.tasks">
+        <!-- <copy todir="${phing.tasks.dir}">
+            <fileset dir="phing-tasks">
+                <include name="*.php"/>
+            </fileset>
+        </copy> -->
+    </target>
 
     <target name="setup.db" description="setting up the latest version of the database">
         <if>
@@ -69,26 +77,6 @@
         <exec command="${mysql.bin}\mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}" checkreturn="true" dir="${mysql.bin}" />
         <echo message="Test data file: ${sql.file.test.data}" />
         <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}" checkreturn="true" passthru="true" dir="${mysql.bin}" />
-    </target>
-
-    <target name="package" description="packages all required files" depends="stage.files">
-        <delete dir="${zipdirectory}" failonerror="false" />
-        <mkdir dir="${zipdirectory}" />
-        <tstamp />
-        <property name="zip.file.name" value="${zipdirectory}/${packagename}.zip" />
-        <zip destfile="${zip.file.name}">
-            <fileset dir="${stagingdir}">
-                <include name="**/*" />
-            </fileset>
-        </zip>
-        <delete dir="${bundle_directory}" failonerror="false" />
-        <mkdir dir="${bundle_directory}" />
-        <copy todir="${bundle_directory}" includeemptydirs="true">
-            <fileset dir="${stagingdir}">
-                <include name="**/*" />
-            </fileset>
-        </copy>
-        <delete dir="${stagingdir}" failonerror="false" />
     </target>
 
     <target name="stage.files">
@@ -146,23 +134,39 @@
             </fileset>
         </copy>
         <copy tofile="${stagingdir}/lib/external/phpqrcode/qrconfig.php" file="./lib/external/phpqrcode/qrconfig.php" />
-        <phingcall target="combine.db.files">
-        </phingcall>
+
+        <phingcall target="combine.db.files"></phingcall>
+
         <append destFile="${stagingdir}/${sql.file.full}">
             <filelist dir="${stagingdir}/database_schema" files="create-schema.sql,create-data.sql" />
         </append>
     </target>
+
     <target name="combine.db.files" depends="custom.tasks">
         <exec passthru="true" escape="false" command="php ${application.startdir}/phing-tasks/CombineDbFilesTask.php
         ${stagingdir}/database_schema
         ${stagingdir}/${sql.file.create.schema}
         ${stagingdir}/${sql.file.data}" />
     </target>
-    <target name="custom.tasks">
-        <!-- <copy todir="${phing.tasks.dir}">
-            <fileset dir="phing-tasks">
-                <include name="*.php"/>
+
+    <target name="package" description="packages all required files" depends="stage.files">
+        <tstamp />
+
+        <property name="zip.file.name" value="${build.dir}/${packagename}.zip" />
+        <zip destfile="${zip.file.name}">
+            <fileset dir="${stagingdir}">
+                <include name="**/*" />
             </fileset>
-        </copy> -->
+        </zip>
+
+        <delete dir="${bundle_directory}" failonerror="false" />
+        <mkdir dir="${bundle_directory}" />
+        <copy todir="${bundle_directory}" includeemptydirs="true">
+            <fileset dir="${stagingdir}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <delete dir="${stagingdir}" failonerror="false" />
     </target>
 </project>
