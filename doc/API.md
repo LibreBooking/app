@@ -1911,7 +1911,26 @@ _This service is secure and requires authentication_
 __Response:__  
 
 ```json
-{"schedules":[{"daysVisible":5,"id":123,"isDefault":true,"name":"schedule name","timezone":"timezone_name","weekdayStart":0,"availabilityBegin":"2021-03-08T09:56:04+0000","availabilityEnd":"2021-03-28T09:56:04+0000","maxResourcesPerReservation":10,"totalConcurrentReservationsAllowed":0,"links":[],"message":null}],"links":[],"message":null}
+{
+    "schedules": [
+        {
+            "daysVisible": 5,
+            "id": 123,
+            "isDefault": true,
+            "name": "schedule name",
+            "timezone": "timezone_name",
+            "weekdayStart": 0,
+            "availabilityBegin": "2021-03-08T09:56:04+0000",
+            "availabilityEnd": "2021-03-28T09:56:04+0000",
+            "maxResourcesPerReservation": 10,
+            "totalConcurrentReservationsAllowed": 0,
+            "links": [],
+            "message": null
+        }
+    ],
+    "links": [],
+    "message": null
+}
 ```
 
 
