@@ -28,6 +28,9 @@ This typically includes fetching and transforming data and minimal application l
 Logically related code should be grouped in a directory with a "namespace.php" file, which requires all files in that directory.  
 This simply makes it easier to include necessary file dependencies.
 
+## API
+[API-Documentation](./API.md)
+
 ## User interface
 [Smarty template engine](https://www.smarty.net/docsv2/en/language.basic.syntax.tpl) is used for all UI presentation.  
 Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`  
