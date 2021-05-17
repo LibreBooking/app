@@ -451,29 +451,31 @@ abstract class Page implements IPage
             return false;
         }
 
-        $newVersion = $this->server->GetCookie('new_version');
-        if (empty($newVersion)) {
-            $cookie = sprintf('v=%s,fs=%s', Configuration::VERSION, Date::Now()->Timestamp());
-            $this->server->SetCookie(new Cookie('new_version', $cookie));
-            return true;
-        }
+        // $newVersion = $this->server->GetCookie('new_version');
+        // if (empty($newVersion)) {
+        //     $cookie = sprintf('v=%s,fs=%s', Configuration::VERSION, Date::Now()->Timestamp());
+        //     $this->server->SetCookie(new Cookie('new_version', $cookie));
+        //     return true;
+        // }
 
-        $parts = explode(',', $newVersion);
-        $versionParts = explode('=', $parts[0]);
-        $firstShownParts = explode('=', $parts[1]);
+        // $parts = explode(',', $newVersion);
+        // $versionParts = explode('=', $parts[0]);
+        // $firstShownParts = explode('=', $parts[1]);
 
-        if ($versionParts[1] != Configuration::VERSION)
-        {
-            $cookie = sprintf('v=%s,fs=%s', Configuration::VERSION, Date::Now()->Timestamp());
-            $this->server->SetCookie(new Cookie('new_version', $cookie));
-            return true;
-        }
+        // if ($versionParts[1] != Configuration::VERSION)
+        // {
+        //     $cookie = sprintf('v=%s,fs=%s', Configuration::VERSION, Date::Now()->Timestamp());
+        //     $this->server->SetCookie(new Cookie('new_version', $cookie));
+        //     return true;
+        // }
 
-        if (Date::Now()->AddDays(-3)->Timestamp() > $firstShownParts[1])
-        {
-            return false;
-        }
+        // if (Date::Now()->AddDays(-3)->Timestamp() > $firstShownParts[1])
+        // {
+        //     return false;
+        // }
 
-        return true;
+        // TODO Actually check for new versions on git / save install date to DB.
+        // The old Method doesn't work when deleting cookies and confuses the users.
+        return false;
     }
 }
