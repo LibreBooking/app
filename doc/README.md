@@ -29,6 +29,7 @@ Logically related code should be grouped in a directory with a "namespace.php" f
 This simply makes it easier to include necessary file dependencies.
 
 ## API
+Booked Scheduler has a REST-API
 [API-Documentation](./API.md)
 
 ## User interface
@@ -37,10 +38,13 @@ Page templates are located in `/tpl` and, by default, are cached to `/tpl_c`
 [Fugue Icons](https://p.yusukekamiyamane.com/) are used as the default iconset and when needed saved to `/Web/img/<icon-name>.png`
 
 ## Tools
-you can easily install the following php tools needed for development with [phive](https://github.com/phar-io/phive#getting-phive) by going to the root of the project and executing `phive install <toolname>` all the tools will then be available inside the `/tools` directory.
+you can easily install these useful php tools needed for development with [phive](https://github.com/phar-io/phive#getting-phive) and [composer](https://getcomposer.org/download/)  
+For phive to work properly you also need to install [gnupgp](https://www.gnupg.org/download/index.html#binary)
+
+Simply run `composer install-tools` in the root of the project and all tools will be available inside the `/tools` directory.
 
 ### [Phing](https://www.phing.info/#docs)
-Builds a distributable relase inside `/build` configured via `/build.xml`.
+`composer build` Builds / Packages a distributable relase inside `/build` configured via `/build.xml`.
 
 ### [PHPUnit](https://phpunit.readthedocs.io/en/latest/writing-tests-for-phpunit.html)
 All classes should have good unit test coverage. The level of coverage is up to the developer and should be done when the code is sufficiently complex.
@@ -50,6 +54,10 @@ Tests must all succeed for a final release.
 Generates automatic documentation based on code comments.
 You can customize the output by copying `/phpdoc.dist.xml` to `/phpdoc.xml` which now takes precedence and isn't tracked with git.
 The documentation will be generated in `/.phpdoc/build`.
+
+### [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer#usage)
+`compser lint` and `composer fix`  
+lints (just warnings) and fixes (changes files) code formating to [PSR-12] 
 
 ## Application Structure
 

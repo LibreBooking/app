@@ -1,5 +1,7 @@
 # Booked Scheduler API Documentation
 
+A dynamically generated API documentation Page can be found by opening `<booked-url>/Web/Services/index.php` (API has to be enabled in config)
+
 __Pass the following headers for all secure service calls: `X-Booked-SessionToken` and `X-Booked-UserId`__
 
 - [Accessories](#Accessories)

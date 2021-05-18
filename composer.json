@@ -1,12 +1,21 @@
 {
     "description": "Booked Scheduler",
-    "autoload":
-    {
-
-    },
-    "require-dev":
-    {
+    "autoload": {},
+    "require-dev": {
         "kint-php/kint": "^3.3",
         "kint-php/kint-smarty": "^1.0"
+    },
+    "require" : {
+        "php" : ">=7.3"
+    },
+    "scripts": {
+        "install-tools":"phive install --copy --trust-gpg-keys 4AA394086372C20A,2420BAE0A3BE25C6,6DA3ACC4991FFAE5,E82B2FB314E9906E  phing phpunit phpdocumentor php-cs-fixer",
+        "build":"./tools/phing",
+        "fix": "./tools/php-cs-fixer fix . -v",
+        "lint": "./tools/php-cs-fixer fix . --dry-run -vv",
+        "test": [
+            "./tools/phpunit",
+            "@lint"
+        ]
     }
 }
