@@ -8,8 +8,9 @@ try {
 
 // doc: https://github.com/FriendsOfPhp/PHP-CS-Fixer#usage
 // https://symfony.com/doc/current/components/finder.html
-$finder = PhpCsFixer\Finder::create()
-    ->exclude(['.git', 'tpl_c', 'build', '.phpdoc', 'var', 'tools', 'vendor'])
+$finder = new PhpCsFixer\Finder();
+
+$finder->exclude(['.git', 'tpl_c', 'build', '.phpdoc', 'var', 'tools', 'vendor'])
     ->notPath(['lib/external'])
     ->in(__DIR__);
 

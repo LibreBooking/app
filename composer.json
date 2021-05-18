@@ -11,8 +11,8 @@
     "scripts": {
         "install-tools":"phive install --copy --trust-gpg-keys 4AA394086372C20A,2420BAE0A3BE25C6,6DA3ACC4991FFAE5,E82B2FB314E9906E  phing phpunit phpdocumentor php-cs-fixer",
         "build":"./tools/phing",
-        "fix": "./tools/php-cs-fixer fix . -v",
-        "lint": "./tools/php-cs-fixer fix . --dry-run -vv",
+        "fix": "./tools/php-cs-fixer fix -v",
+        "lint": "./tools/php-cs-fixer fix -vv --dry-run",
         "test": [
             "./tools/phpunit",
             "@lint"
