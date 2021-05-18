@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- doc: https://docs.phpdoc.org/latest/guide/references/configuration.html -->
 <phpdocumentor
-        configVersion="3"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="https://www.phpdoc.org"
-        xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+    xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
 >
     <paths>
-        <output>.phpdoc/build</output>
-        <cache>/var/cache/phpdoc</cache>
+        <output>.phpdoc</output>
+        <cache>var/cache/phpdoc</cache>
     </paths>
-    <version number="3.0.0">
+
+    <version number="latest">
+        <folder>doc</folder>
         <api format="php">
-            <source dsn="./">
+            <output>code</output>
+            <source dsn=".">
                 <path>config/*</path>
                 <path>Controls/*</path>
                 <path>Domain/*</path>
@@ -29,5 +32,11 @@
                 <path>vendor/**/*</path>
             </ignore>
         </api>
+       <!-- <guide format="rst">
+            <output>api</output>
+            <source dsn="./">
+                <path>WebServices/*</path>
+            </source>
+        </guide> -->
     </version>
 </phpdocumentor>
