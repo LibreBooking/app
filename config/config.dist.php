@@ -178,6 +178,8 @@ $conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Ana
 
 $conf['settings']['authentication']['allow.facebook.login'] = 'false';
 $conf['settings']['authentication']['allow.google.login'] = 'false';
+$conf['settings']['authentication']['login.google.client.id'] = '';
+$conf['settings']['authentication']['login.google.client.secret'] = '';
 $conf['settings']['authentication']['required.email.domains'] = '';
 $conf['settings']['authentication']['hide.booked.login.prompt'] = 'false';
 $conf['settings']['authentication']['captcha.on.login'] = 'false';

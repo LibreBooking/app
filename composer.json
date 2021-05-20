@@ -4,6 +4,21 @@
     {
 
     },
+	"require":
+    {
+        "google/apiclient": "^2.0"
+    },
+	"scripts": {
+        "post-update-cmd": "Google\\Task\\Composer::cleanup"
+    },
+	"extra": {
+		"installer-paths": {
+			"WebServices/Google": ["google/apiclient"]
+		},
+        "google/apiclient-services": [
+            "Oauth2"
+        ]
+    }
     "require-dev":
     {
         "kint-php/kint": "^3.3",
