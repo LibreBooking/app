@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- doc: https://docs.phpdoc.org/latest/guide/references/configuration.html -->
+<!-- annotations: https://manual.phpdoc.org/HTMLframesConverter/default/ -->
 <phpdocumentor
     configVersion="3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

@@ -36,16 +36,17 @@
 /Web/uploads/tos/*
 !/Web/uploads/tos/index.html
 
-
 /Web/test-embed.html
 
-/.phpunit.result.cache
-# /.phpunit.xml.dist is tracked
-/.phpunit.xml
+# /phpunit.xml.dist is tracked
+/phpunit.xml
+
+# /.php-cs-fixer.dist.php is tracked
+.php-cs-fixer.php
 
 /.phpdoc
-# /.phpunit.dist.xml is tracked
-/.phpdoc.xml
+# /phpdoc.dist.xml is tracked
+/phpdoc.xml
 
 # Editor Cache Files
 .idea

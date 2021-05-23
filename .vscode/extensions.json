@@ -3,6 +3,10 @@
         "imperez.smarty",
         "felixfbecker.php-intellisense",
         "felixfbecker.php-debug",
-        "tombonnike.vscode-status-bar-format-toggle"
+        "tombonnike.vscode-status-bar-format-toggle",
+        "howardzuo.vscode-favorites",
+        "aaron-bond.better-comments",
+        "vikyd.vscode-fold-level",
+        "pomber.git-file-history"
     ]
 }
