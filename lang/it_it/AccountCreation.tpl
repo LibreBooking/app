@@ -1,12 +1,13 @@
-<p>{$To},</p>
-
-<p>Si è registrato un nuovo utente con le seguenti informazioni:<br />
-Email: {$EmailAddress}<br />
-Nome: {$FullName}<br />
-Telefono: {$Phone}<br />
-Area: {$Organization}<br />
-Posizione: {$Position}</p>
-
-{if !empty($CreatedBy)}
-	Creato da: {$CreatedBy}
-{/if}
+<p>Si &egrave; registrato un nuovo utente con le seguenti informazioni:</p>
+<p>
+    <strong>Email:</strong> {$EmailAddress}<br />
+    <strong>Nome:</strong> {$FullName}<br />
+    <strong>Telefono:</strong> {$Phone}<br />
+    <strong>Dipartimento:</strong> {$Organization}<br />
+    <strong>Posizione:</strong> {$Position}
+</p>
+<p>
+    {if preg_match("/[a-zA-Z]+/",$CreatedBy)}
+        <strong>Creato da:</strong> {$CreatedBy}
+    {/if}
+</p>
