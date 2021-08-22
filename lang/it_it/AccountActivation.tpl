@@ -1,3 +1,4 @@
-{$FirstName},<br />
-grazie per esserti registrato in Booked Scheduler. Attiva il tuo account facendo clic <a href="{$ActivationUrl}">qui</a>.
-
+<p>{$FirstName},</p>
+<p>grazie per essersi registrato su Booked Scheduler.</p>
+<p>&nbsp;</p>
+<p>Attivi il suo account facendo clic <a href="{$ActivationUrl}">qui</a>.</p>

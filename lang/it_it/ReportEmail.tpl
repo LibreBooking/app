@@ -1,5 +1,3 @@
-In allegato il report richiesto in Booked Scheduler.<br />
-
-<br />
-<a href="{$ScriptUrl}">Accedi a Booked Scheduler</a>
-
+<p>Il suo report su Booking Scheduler &egrave; in allegato.</p>
+<p>&nbsp;</p>
+<p><a href="{$ScriptUrl}">Login su Booking Scheduler</a>
