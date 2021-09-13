@@ -3,7 +3,9 @@
     "autoload": {},
     "require-dev": {
         "kint-php/kint": "^3.3",
-        "kint-php/kint-smarty": "^1.0"
+        "kint-php/kint-smarty": "^1.0",
+        "squizlabs/php_codesniffer": "^3.6",
+        "phpcompatibility/php-compatibility": "^9.3"
     },
     "require" : {
         "php" : ">=7.3"
@@ -16,6 +18,7 @@
         "test": [
             "./tools/phpunit",
             "@lint"
-        ]
+        ],
+	"sniffer:php8": "phpcs -p ./ --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion 8.0"
     }
 }
