@@ -4,76 +4,74 @@ require_once(ROOT_DIR . 'Domain/ReservationWaitlistRequest.php');
 
 interface IReservationWaitlistRepository
 {
-	/**
-	 * @param ReservationWaitlistRequest $request
-	 * @return int
-	 */
-	public function Add(ReservationWaitlistRequest $request);
+    /**
+     * @param ReservationWaitlistRequest $request
+     * @return int
+     */
+    public function Add(ReservationWaitlistRequest $request);
 
-	/**
-	 * @return ReservationWaitlistRequest[]
-	 */
-	public function GetAll();
+    /**
+     * @return ReservationWaitlistRequest[]
+     */
+    public function GetAll();
 
-	/**
-	 * @param int $waitlistId
-	 * @return ReservationWaitlistRequest
-	 */
-	public function LoadById($waitlistId);
+    /**
+     * @param int $waitlistId
+     * @return ReservationWaitlistRequest
+     */
+    public function LoadById($waitlistId);
 
-	/**
-	 * @param ReservationWaitlistRequest $request
-	 */
-	public function Delete(ReservationWaitlistRequest $request);
+    /**
+     * @param ReservationWaitlistRequest $request
+     */
+    public function Delete(ReservationWaitlistRequest $request);
 }
 
 class ReservationWaitlistRepository implements IReservationWaitlistRepository
 {
-	/**
-	 * @param ReservationWaitlistRequest $request
-	 * @return int
-	 */
-	public function Add(ReservationWaitlistRequest $request)
-	{
-		$command = new AddReservationWaitlistCommand($request->UserId(), $request->StartDate(), $request->EndDate(), $request->ResourceId());
-		$id = ServiceLocator::GetDatabase()->ExecuteInsert($command);
+    /**
+     * @param ReservationWaitlistRequest $request
+     * @return int
+     */
+    public function Add(ReservationWaitlistRequest $request)
+    {
+        $command = new AddReservationWaitlistCommand($request->UserId(), $request->StartDate(), $request->EndDate(), $request->ResourceId());
+        $id = ServiceLocator::GetDatabase()->ExecuteInsert($command);
 
-		$request->WithId($id);
+        $request->WithId($id);
 
-		return $id;
-	}
+        return $id;
+    }
 
-	public function GetAll()
-	{
-		$reader = ServiceLocator::GetDatabase()->Query(new GetAllReservationWaitlistRequests());
+    public function GetAll()
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllReservationWaitlistRequests());
 
-		$requests = array();
+        $requests = [];
 
-		while ($row = $reader->GetRow())
-		{
-			$requests[] = ReservationWaitlistRequest::FromRow($row);
-		}
+        while ($row = $reader->GetRow()) {
+            $requests[] = ReservationWaitlistRequest::FromRow($row);
+        }
 
-		$reader->Free();
+        $reader->Free();
 
-		return $requests;
-	}
+        return $requests;
+    }
 
-	public function Delete(ReservationWaitlistRequest $request)
-	{
-		ServiceLocator::GetDatabase()->Execute(new DeleteReservationWaitlistCommand($request->Id()));
-	}
+    public function Delete(ReservationWaitlistRequest $request)
+    {
+        ServiceLocator::GetDatabase()->Execute(new DeleteReservationWaitlistCommand($request->Id()));
+    }
 
-	public function LoadById($waitlistId)
-	{
-		$reader = ServiceLocator::GetDatabase()->Query(new GetReservationWaitlistRequestCommand($waitlistId));
+    public function LoadById($waitlistId)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetReservationWaitlistRequestCommand($waitlistId));
 
-		if ($row = $reader->GetRow())
-		{
-			$reader->Free();
-			return ReservationWaitlistRequest::FromRow($row);
-		}
+        if ($row = $reader->GetRow()) {
+            $reader->Free();
+            return ReservationWaitlistRequest::FromRow($row);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

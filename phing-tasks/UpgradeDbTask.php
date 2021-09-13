@@ -1,4 +1,5 @@
 <?php
+
 //require_once "phing/Task.php";
 
 //require __DIR__ . '../vendor/autoload.php';
@@ -56,12 +57,10 @@ class UpgradeDbTask // extends Task
         $upgradeDir = "{$this->schemaDir}/upgrades";
         $upgrades = scandir($upgradeDir);
 
-        usort($upgrades, array($this, 'SortDirectories'));
+        usort($upgrades, [$this, 'SortDirectories']);
 
-        foreach ($upgrades as $upgrade)
-        {
-            if ($upgrade === '.' || $upgrade === '..' || strpos($upgrade, '.') === 0)
-            {
+        foreach ($upgrades as $upgrade) {
+            if ($upgrade === '.' || $upgrade === '..' || strpos($upgrade, '.') === 0) {
                 continue;
             }
 
@@ -72,14 +71,13 @@ class UpgradeDbTask // extends Task
     private function ExecuteUpgrade($upgradeDir, $upgrade)
     {
         $fullUpgradeDir = "$upgradeDir/$upgrade";
-        if (!is_dir($fullUpgradeDir))
-        {
+        if (!is_dir($fullUpgradeDir)) {
             return;
         }
 
         print("Upgrading database to version $upgrade\n");
 
-       // $this->ExecuteFile($fullUpgradeDir, 'clean.sql');
+        // $this->ExecuteFile($fullUpgradeDir, 'clean.sql');
         $this->ExecuteFile($fullUpgradeDir, 'schema.sql');
         $this->ExecuteFile($fullUpgradeDir, 'data.sql');
 
@@ -89,26 +87,22 @@ class UpgradeDbTask // extends Task
     private function ExecuteFile($fullUpgradeDir, $fileName)
     {
         $dblink = mysqli_connect($this->host, $this->username, $this->mysqlPassword, $this->database);
-		if (!$dblink)
-		{
-		    die('Could not connect: ' . mysqli_error($dblink));
-		}
+        if (!$dblink) {
+            die('Could not connect: ' . mysqli_error($dblink));
+        }
 
-		mysqli_select_db($dblink, $this->database);
+        mysqli_select_db($dblink, $this->database);
 
-		mysqli_query($dblink, 'SET foreign_key_checks = 0;');
+        mysqli_query($dblink, 'SET foreign_key_checks = 0;');
 
         $path = "$fullUpgradeDir/$fileName";
         print("Executing $path\n");
 
         $sqlArray = explode(';', $this->GetFullSql($path));
-        foreach ($sqlArray as $stmt)
-        {
-            if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*')
-            {
+        foreach ($sqlArray as $stmt) {
+            if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*') {
                 $queryResult = mysqli_query($dblink, $stmt);
-                if (!$queryResult)
-                {
+                if (!$queryResult) {
                     $sqlErrorCode = mysqli_errno($dblink);
                     $sqlErrorText = mysqli_error($dblink);
                     $sqlStmt = $stmt;
@@ -119,10 +113,10 @@ class UpgradeDbTask // extends Task
             }
         }
 
-		mysqli_query($dblink, 'SET foreign_key_checks = 1;');
+        mysqli_query($dblink, 'SET foreign_key_checks = 1;');
     }
 
-    private function  GetFullSql($file)
+    private function GetFullSql($file)
     {
         $f = fopen($file, "r");
         $sql = fread($f, filesize($file));
@@ -135,8 +129,7 @@ class UpgradeDbTask // extends Task
         $d1 = floatval($dir1);
         $d2 = floatval($dir2);
 
-        if ($d1 == $d2)
-        {
+        if ($d1 == $d2) {
             return 0;
         }
         return ($d1 < $d2) ? -1 : 1;

@@ -55,36 +55,36 @@ require_once(dirname(__FILE__) . '/classes/adLDAPContacts.php');
 require_once(dirname(__FILE__) . '/classes/adLDAPExchange.php');
 require_once(dirname(__FILE__) . '/classes/adLDAPComputers.php');
 
-class adLDAP {
-
+class adLDAP
+{
     /**
      * Define the different types of account in AD
      */
-    const ADLDAP_NORMAL_ACCOUNT = 805306368;
-    const ADLDAP_WORKSTATION_TRUST = 805306369;
-    const ADLDAP_INTERDOMAIN_TRUST = 805306370;
-    const ADLDAP_SECURITY_GLOBAL_GROUP = 268435456;
-    const ADLDAP_DISTRIBUTION_GROUP = 268435457;
-    const ADLDAP_SECURITY_LOCAL_GROUP = 536870912;
-    const ADLDAP_DISTRIBUTION_LOCAL_GROUP = 536870913;
-    const ADLDAP_FOLDER = 'OU';
-    const ADLDAP_CONTAINER = 'CN';
+    public const ADLDAP_NORMAL_ACCOUNT = 805306368;
+    public const ADLDAP_WORKSTATION_TRUST = 805306369;
+    public const ADLDAP_INTERDOMAIN_TRUST = 805306370;
+    public const ADLDAP_SECURITY_GLOBAL_GROUP = 268435456;
+    public const ADLDAP_DISTRIBUTION_GROUP = 268435457;
+    public const ADLDAP_SECURITY_LOCAL_GROUP = 536870912;
+    public const ADLDAP_DISTRIBUTION_LOCAL_GROUP = 536870913;
+    public const ADLDAP_FOLDER = 'OU';
+    public const ADLDAP_CONTAINER = 'CN';
 
     /**
     * The default port for LDAP non-SSL connections
     */
-    const ADLDAP_LDAP_PORT = '389';
+    public const ADLDAP_LDAP_PORT = '389';
     /**
     * The default port for LDAPS SSL connections
     */
-    const ADLDAP_LDAPS_PORT = '636';
+    public const ADLDAP_LDAPS_PORT = '636';
 
     /**
     * The account suffix for your domain, can be set when the class is invoked
     *
     * @var string
     */
-	protected $accountSuffix = "@mydomain.local";
+    protected $accountSuffix = "@mydomain.local";
 
     /**
     * The base dn for your domain
@@ -93,7 +93,7 @@ class adLDAP {
     *
     * @var string
     */
-	protected $baseDn = "DC=mydomain,DC=local";
+    protected $baseDn = "DC=mydomain,DC=local";
 
     /**
     * Port used to talk to the domain controllers.
@@ -108,7 +108,7 @@ class adLDAP {
     *
     * @var array
     */
-    protected $domainControllers = array("dc01.mydomain.local");
+    protected $domainControllers = ["dc01.mydomain.local"];
 
     /**
     * Optional account with higher privileges for searching
@@ -117,8 +117,8 @@ class adLDAP {
     * @var string
     * @var string
     */
-	protected $adminUsername = NULL;
-    protected $adminPassword = NULL;
+    protected $adminUsername = null;
+    protected $adminPassword = null;
 
     /**
     * AD does not return the primary group. http://support.microsoft.com/?kbid=321360
@@ -128,7 +128,7 @@ class adLDAP {
     *
     * @var bool
     */
-	protected $realPrimaryGroup = true;
+    protected $realPrimaryGroup = true;
 
     /**
     * Use SSL (LDAPS), your server needs to be setup, please see
@@ -136,7 +136,7 @@ class adLDAP {
     *
     * @var bool
     */
-	protected $useSSL = false;
+    protected $useSSL = false;
 
     /**
     * Use TLS
@@ -161,26 +161,27 @@ class adLDAP {
     *
     * @var bool
     */
-	protected $recursiveGroups = true;
+    protected $recursiveGroups = true;
 
-	// You should not need to edit anything below this line
-	//******************************************************************************************
+    // You should not need to edit anything below this line
+    //******************************************************************************************
 
-	/**
+    /**
     * Connection and bind default variables
     *
     * @var mixed
     * @var mixed
     */
-	protected $ldapConnection;
-	protected $ldapBind;
+    protected $ldapConnection;
+    protected $ldapBind;
 
     /**
     * Get the active LDAP Connection
     *
     * @return resource
     */
-    public function getLdapConnection() {
+    public function getLdapConnection()
+    {
         if ($this->ldapConnection) {
             return $this->ldapConnection;
         }
@@ -192,7 +193,8 @@ class adLDAP {
     *
     * @return bool
     */
-    public function getLdapBind() {
+    public function getLdapBind()
+    {
         return $this->ldapBind;
     }
 
@@ -201,7 +203,8 @@ class adLDAP {
     *
     * @return string
     */
-    public function getBaseDn() {
+    public function getBaseDn()
+    {
         return $this->baseDn;
     }
 
@@ -217,7 +220,8 @@ class adLDAP {
     *
     * @return adLDAPGroups
     */
-    public function group() {
+    public function group()
+    {
         if (!$this->groupClass) {
             $this->groupClass = new adLDAPGroups($this);
         }
@@ -236,7 +240,8 @@ class adLDAP {
     *
     * @return adLDAPUsers
     */
-    public function user() {
+    public function user()
+    {
         if (!$this->userClass) {
             $this->userClass = new adLDAPUsers($this);
         }
@@ -255,7 +260,8 @@ class adLDAP {
     *
     * @return adLDAPFolders
     */
-    public function folder() {
+    public function folder()
+    {
         if (!$this->folderClass) {
             $this->folderClass = new adLDAPFolders($this);
         }
@@ -274,7 +280,8 @@ class adLDAP {
     *
     * @return adLDAPUtils
     */
-    public function utilities() {
+    public function utilities()
+    {
         if (!$this->utilClass) {
             $this->utilClass = new adLDAPUtils($this);
         }
@@ -293,7 +300,8 @@ class adLDAP {
     *
     * @return adLDAPContacts
     */
-    public function contact() {
+    public function contact()
+    {
         if (!$this->contactClass) {
             $this->contactClass = new adLDAPContacts($this);
         }
@@ -312,7 +320,8 @@ class adLDAP {
     *
     * @return adLDAPExchange
     */
-    public function exchange() {
+    public function exchange()
+    {
         if (!$this->exchangeClass) {
             $this->exchangeClass = new adLDAPExchange($this);
         }
@@ -331,7 +340,8 @@ class adLDAP {
     *
     * @return adLDAPComputers
     */
-    public function computer() {
+    public function computer()
+    {
         if (!$this->computerClass) {
             $this->computerClass = new adLDAPComputers($this);
         }
@@ -350,7 +360,7 @@ class adLDAP {
     */
     public function setAccountSuffix($accountSuffix)
     {
-          $this->accountSuffix = $accountSuffix;
+        $this->accountSuffix = $accountSuffix;
     }
 
     /**
@@ -360,7 +370,7 @@ class adLDAP {
     */
     public function getAccountSuffix()
     {
-          return $this->accountSuffix;
+        return $this->accountSuffix;
     }
 
     /**
@@ -371,7 +381,7 @@ class adLDAP {
     */
     public function setDomainControllers(array $domainControllers)
     {
-          $this->domainControllers = $domainControllers;
+        $this->domainControllers = $domainControllers;
     }
 
     /**
@@ -381,7 +391,7 @@ class adLDAP {
     */
     public function getDomainControllers()
     {
-          return $this->domainControllers;
+        return $this->domainControllers;
     }
 
     /**
@@ -412,7 +422,7 @@ class adLDAP {
     */
     public function setAdminUsername($adminUsername)
     {
-          $this->adminUsername = $adminUsername;
+        $this->adminUsername = $adminUsername;
     }
 
     /**
@@ -422,7 +432,7 @@ class adLDAP {
     */
     public function getAdminUsername()
     {
-          throw new adLDAPException('For security reasons you cannot access the domain administrator account details');
+        throw new adLDAPException('For security reasons you cannot access the domain administrator account details');
     }
 
     /**
@@ -433,7 +443,7 @@ class adLDAP {
     */
     public function setAdminPassword($adminPassword)
     {
-          $this->adminPassword = $adminPassword;
+        $this->adminPassword = $adminPassword;
     }
 
     /**
@@ -443,7 +453,7 @@ class adLDAP {
     */
     public function getAdminPassword()
     {
-          throw new adLDAPException('For security reasons you cannot access the domain administrator account details');
+        throw new adLDAPException('For security reasons you cannot access the domain administrator account details');
     }
 
     /**
@@ -454,7 +464,7 @@ class adLDAP {
     */
     public function setRealPrimaryGroup($realPrimaryGroup)
     {
-          $this->realPrimaryGroup = $realPrimaryGroup;
+        $this->realPrimaryGroup = $realPrimaryGroup;
     }
 
     /**
@@ -464,7 +474,7 @@ class adLDAP {
     */
     public function getRealPrimaryGroup()
     {
-          return $this->realPrimaryGroup;
+        return $this->realPrimaryGroup;
     }
 
     /**
@@ -475,14 +485,13 @@ class adLDAP {
     */
     public function setUseSSL($useSSL)
     {
-          $this->useSSL = $useSSL;
-          // Set the default port correctly
-          if($this->useSSL) {
+        $this->useSSL = $useSSL;
+        // Set the default port correctly
+        if ($this->useSSL) {
             $this->setPort(self::ADLDAP_LDAPS_PORT);
-          }
-          else {
+        } else {
             $this->setPort(self::ADLDAP_LDAP_PORT);
-          }
+        }
     }
 
     /**
@@ -492,7 +501,7 @@ class adLDAP {
     */
     public function getUseSSL()
     {
-          return $this->useSSL;
+        return $this->useSSL;
     }
 
     /**
@@ -503,7 +512,7 @@ class adLDAP {
     */
     public function setUseTLS($useTLS)
     {
-          $this->useTLS = $useTLS;
+        $this->useTLS = $useTLS;
     }
 
     /**
@@ -513,7 +522,7 @@ class adLDAP {
     */
     public function getUseTLS()
     {
-          return $this->useTLS;
+        return $this->useTLS;
     }
 
     /**
@@ -525,10 +534,10 @@ class adLDAP {
     */
     public function setUseSSO($useSSO)
     {
-          if ($useSSO === true && !$this->ldapSaslSupported()) {
-              throw new adLDAPException('No LDAP SASL support for PHP.  See: http://www.php.net/ldap_sasl_bind');
-          }
-          $this->useSSO = $useSSO;
+        if ($useSSO === true && !$this->ldapSaslSupported()) {
+            throw new adLDAPException('No LDAP SASL support for PHP.  See: http://www.php.net/ldap_sasl_bind');
+        }
+        $this->useSSO = $useSSO;
     }
 
     /**
@@ -538,7 +547,7 @@ class adLDAP {
     */
     public function getUseSSO()
     {
-          return $this->useSSO;
+        return $this->useSSO;
     }
 
     /**
@@ -549,7 +558,7 @@ class adLDAP {
     */
     public function setRecursiveGroups($recursiveGroups)
     {
-          $this->recursiveGroups = $recursiveGroups;
+        $this->recursiveGroups = $recursiveGroups;
     }
 
     /**
@@ -559,7 +568,7 @@ class adLDAP {
     */
     public function getRecursiveGroups()
     {
-          return $this->recursiveGroups;
+        return $this->recursiveGroups;
     }
 
     /**
@@ -571,25 +580,44 @@ class adLDAP {
     * @throws Exception - if unable to bind to Domain Controller
     * @return bool
     */
-    function __construct($options = array()) {
+    public function __construct($options = [])
+    {
         // You can specifically overide any of the default configuration options setup above
         if (count($options) > 0) {
-            if (array_key_exists("account_suffix",$options)){ $this->accountSuffix = $options["account_suffix"]; }
-            if (array_key_exists("base_dn",$options)){ $this->baseDn = $options["base_dn"]; }
-            if (array_key_exists("domain_controllers",$options)){
+            if (array_key_exists("account_suffix", $options)) {
+                $this->accountSuffix = $options["account_suffix"];
+            }
+            if (array_key_exists("base_dn", $options)) {
+                $this->baseDn = $options["base_dn"];
+            }
+            if (array_key_exists("domain_controllers", $options)) {
                 if (!is_array($options["domain_controllers"])) {
                     throw new adLDAPException('[domain_controllers] option must be an array');
                 }
                 $this->domainControllers = $options["domain_controllers"];
             }
-            if (array_key_exists("admin_username",$options)){ $this->adminUsername = $options["admin_username"]; }
-            if (array_key_exists("admin_password",$options)){ $this->adminPassword = $options["admin_password"]; }
-            if (array_key_exists("real_primarygroup",$options)){ $this->realPrimaryGroup = $options["real_primarygroup"]; }
-            if (array_key_exists("use_ssl",$options)){ $this->setUseSSL($options["use_ssl"]); }
-            if (array_key_exists("use_tls",$options)){ $this->useTLS = $options["use_tls"]; }
-            if (array_key_exists("recursive_groups",$options)){ $this->recursiveGroups = $options["recursive_groups"]; }
-            if (array_key_exists("ad_port",$options)){ $this->setPort($options["ad_port"]); }
-            if (array_key_exists("sso",$options)) {
+            if (array_key_exists("admin_username", $options)) {
+                $this->adminUsername = $options["admin_username"];
+            }
+            if (array_key_exists("admin_password", $options)) {
+                $this->adminPassword = $options["admin_password"];
+            }
+            if (array_key_exists("real_primarygroup", $options)) {
+                $this->realPrimaryGroup = $options["real_primarygroup"];
+            }
+            if (array_key_exists("use_ssl", $options)) {
+                $this->setUseSSL($options["use_ssl"]);
+            }
+            if (array_key_exists("use_tls", $options)) {
+                $this->useTLS = $options["use_tls"];
+            }
+            if (array_key_exists("recursive_groups", $options)) {
+                $this->recursiveGroups = $options["recursive_groups"];
+            }
+            if (array_key_exists("ad_port", $options)) {
+                $this->setPort($options["ad_port"]);
+            }
+            if (array_key_exists("sso", $options)) {
                 $this->setUseSSO($options["sso"]);
                 if (!$this->ldapSaslSupported()) {
                     $this->setUseSSO(false);
@@ -611,7 +639,8 @@ class adLDAP {
     *
     * @return void
     */
-    function __destruct() {
+    public function __destruct()
+    {
         $this->close();
     }
 
@@ -639,31 +668,29 @@ class adLDAP {
         }
 
         // Bind as a domain admin if they've set it up
-        if ($this->adminUsername !== NULL && $this->adminPassword !== NULL) {
+        if ($this->adminUsername !== null && $this->adminPassword !== null) {
             $this->ldapBind = @ldap_bind($this->ldapConnection, $this->adminUsername . $this->accountSuffix, $this->adminPassword);
             if (!$this->ldapBind) {
                 if ($this->useSSL && !$this->useTLS) {
                     // If you have problems troubleshooting, remove the @ character from the ldapldapBind command above to get the actual error message
                     throw new adLDAPException('Bind to Active Directory failed. Either the LDAPs connection failed or the login credentials are incorrect. AD said: ' . $this->getLastError());
-                }
-                else {
+                } else {
                     throw new adLDAPException('Bind to Active Directory failed. Check the login credentials and/or server details. AD said: ' . $this->getLastError());
                 }
             }
         }
         if ($this->useSSO && $_SERVER['REMOTE_USER'] && $this->adminUsername === null && $_SERVER['KRB5CCNAME']) {
             putenv("KRB5CCNAME=" . $_SERVER['KRB5CCNAME']);
-            $this->ldapBind = @ldap_sasl_bind($this->ldapConnection, NULL, NULL, "GSSAPI");
-            if (!$this->ldapBind){
+            $this->ldapBind = @ldap_sasl_bind($this->ldapConnection, null, null, "GSSAPI");
+            if (!$this->ldapBind) {
                 throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
-            }
-            else {
+            } else {
                 return true;
             }
         }
 
 
-        if ($this->baseDn == NULL) {
+        if ($this->baseDn == null) {
             $this->baseDn = $this->findBaseDn();
         }
 
@@ -675,7 +702,8 @@ class adLDAP {
     *
     * @return void
     */
-    public function close() {
+    public function close()
+    {
         if ($this->ldapConnection) {
             @ldap_close($this->ldapConnection);
         }
@@ -689,19 +717,23 @@ class adLDAP {
     * @param bool optional $preventRebind
     * @return bool
     */
-    public function authenticate($username, $password, $preventRebind = false) {
+    public function authenticate($username, $password, $preventRebind = false)
+    {
         // Prevent null binding
-        if ($username === NULL || $password === NULL) { return false; }
-        if (empty($username) || empty($password)) { return false; }
+        if ($username === null || $password === null) {
+            return false;
+        }
+        if (empty($username) || empty($password)) {
+            return false;
+        }
 
         // Allow binding over SSO for Kerberos
-        if ($this->useSSO && $_SERVER['REMOTE_USER'] && $_SERVER['REMOTE_USER'] == $username && $this->adminUsername === NULL && $_SERVER['KRB5CCNAME']) {
+        if ($this->useSSO && $_SERVER['REMOTE_USER'] && $_SERVER['REMOTE_USER'] == $username && $this->adminUsername === null && $_SERVER['KRB5CCNAME']) {
             putenv("KRB5CCNAME=" . $_SERVER['KRB5CCNAME']);
-            $this->ldapBind = @ldap_sasl_bind($this->ldapConnection, NULL, NULL, "GSSAPI");
+            $this->ldapBind = @ldap_sasl_bind($this->ldapConnection, null, null, "GSSAPI");
             if (!$this->ldapBind) {
                 throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
-            }
-            else {
+            } else {
                 return true;
             }
         }
@@ -709,14 +741,14 @@ class adLDAP {
         // Bind as the user
         $ret = true;
         $this->ldapBind = @ldap_bind($this->ldapConnection, $username . $this->accountSuffix, $password);
-        if (!$this->ldapBind){
+        if (!$this->ldapBind) {
             $ret = false;
         }
 
         // Cnce we've checked their details, kick back into admin mode if we have it
-        if ($this->adminUsername !== NULL && !$preventRebind) {
-            $this->ldapBind = @ldap_bind($this->ldapConnection, $this->adminUsername . $this->accountSuffix , $this->adminPassword);
-            if (!$this->ldapBind){
+        if ($this->adminUsername !== null && !$preventRebind) {
+            $this->ldapBind = @ldap_bind($this->ldapConnection, $this->adminUsername . $this->accountSuffix, $this->adminPassword);
+            if (!$this->ldapBind) {
                 // This should never happen in theory
                 throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
             }
@@ -732,7 +764,7 @@ class adLDAP {
     */
     public function findBaseDn()
     {
-        $namingContext = $this->getRootDse(array('defaultnamingcontext'));
+        $namingContext = $this->getRootDse(['defaultnamingcontext']);
         return $namingContext[0]['defaultnamingcontext'][0];
     }
 
@@ -742,10 +774,13 @@ class adLDAP {
     * @param array $attributes The attributes you wish to query e.g. defaultnamingcontext
     * @return array
     */
-    public function getRootDse($attributes = array("*", "+")) {
-        if (!$this->ldapBind){ return (false); }
+    public function getRootDse($attributes = ["*", "+"])
+    {
+        if (!$this->ldapBind) {
+            return (false);
+        }
 
-        $sr = @ldap_read($this->ldapConnection, NULL, 'objectClass=*', $attributes);
+        $sr = @ldap_read($this->ldapConnection, null, 'objectClass=*', $attributes);
         $entries = @ldap_get_entries($this->ldapConnection, $sr);
         return $entries;
     }
@@ -759,7 +794,8 @@ class adLDAP {
     *
     * return string
     */
-    public function getLastError() {
+    public function getLastError()
+    {
         return @ldap_error($this->ldapConnection);
     }
 
@@ -795,69 +831,162 @@ class adLDAP {
     * @param array $attributes Attributes to be queried
     * @return array
     */
-    public function adldap_schema($attributes){
+    public function adldap_schema($attributes)
+    {
 
         // LDAP doesn't like NULL attributes, only set them if they have values
         // If you wish to remove an attribute you should set it to a space
         // TO DO: Adapt user_modify to use ldap_mod_delete to remove a NULL attribute
-        $mod=array();
+        $mod=[];
 
         // Check every attribute to see if it contains 8bit characters and then UTF8 encode them
-        array_walk($attributes, array($this, 'encode8bit'));
+        array_walk($attributes, [$this, 'encode8bit']);
 
-        if ($attributes["address_city"]){ $mod["l"][0]=$attributes["address_city"]; }
-        if ($attributes["address_code"]){ $mod["postalCode"][0]=$attributes["address_code"]; }
+        if ($attributes["address_city"]) {
+            $mod["l"][0]=$attributes["address_city"];
+        }
+        if ($attributes["address_code"]) {
+            $mod["postalCode"][0]=$attributes["address_code"];
+        }
         //if ($attributes["address_country"]){ $mod["countryCode"][0]=$attributes["address_country"]; } // use country codes?
-        if ($attributes["address_country"]){ $mod["c"][0]=$attributes["address_country"]; }
-        if ($attributes["address_pobox"]){ $mod["postOfficeBox"][0]=$attributes["address_pobox"]; }
-        if ($attributes["address_state"]){ $mod["st"][0]=$attributes["address_state"]; }
-        if ($attributes["address_street"]){ $mod["streetAddress"][0]=$attributes["address_street"]; }
-        if ($attributes["company"]){ $mod["company"][0]=$attributes["company"]; }
-        if ($attributes["change_password"]){ $mod["pwdLastSet"][0]=0; }
-        if ($attributes["department"]){ $mod["department"][0]=$attributes["department"]; }
-        if ($attributes["description"]){ $mod["description"][0]=$attributes["description"]; }
-        if ($attributes["display_name"]){ $mod["displayName"][0]=$attributes["display_name"]; }
-        if ($attributes["email"]){ $mod["mail"][0]=$attributes["email"]; }
-        if ($attributes["expires"]){ $mod["accountExpires"][0]=$attributes["expires"]; } //unix epoch format?
-        if ($attributes["firstname"]){ $mod["givenName"][0]=$attributes["firstname"]; }
-        if ($attributes["home_directory"]){ $mod["homeDirectory"][0]=$attributes["home_directory"]; }
-        if ($attributes["home_drive"]){ $mod["homeDrive"][0]=$attributes["home_drive"]; }
-        if ($attributes["initials"]){ $mod["initials"][0]=$attributes["initials"]; }
-        if ($attributes["logon_name"]){ $mod["userPrincipalName"][0]=$attributes["logon_name"]; }
-        if ($attributes["manager"]){ $mod["manager"][0]=$attributes["manager"]; }  //UNTESTED ***Use DistinguishedName***
-        if ($attributes["office"]){ $mod["physicalDeliveryOfficeName"][0]=$attributes["office"]; }
-        if ($attributes["password"]){ $mod["unicodePwd"][0]=$this->user()->encodePassword($attributes["password"]); }
-        if ($attributes["profile_path"]){ $mod["profilepath"][0]=$attributes["profile_path"]; }
-        if ($attributes["script_path"]){ $mod["scriptPath"][0]=$attributes["script_path"]; }
-        if ($attributes["surname"]){ $mod["sn"][0]=$attributes["surname"]; }
-        if ($attributes["title"]){ $mod["title"][0]=$attributes["title"]; }
-        if ($attributes["telephone"]){ $mod["telephoneNumber"][0]=$attributes["telephone"]; }
-        if ($attributes["mobile"]){ $mod["mobile"][0]=$attributes["mobile"]; }
-        if ($attributes["pager"]){ $mod["pager"][0]=$attributes["pager"]; }
-        if ($attributes["ipphone"]){ $mod["ipphone"][0]=$attributes["ipphone"]; }
-        if ($attributes["web_page"]){ $mod["wWWHomePage"][0]=$attributes["web_page"]; }
-        if ($attributes["fax"]){ $mod["facsimileTelephoneNumber"][0]=$attributes["fax"]; }
-        if ($attributes["enabled"]){ $mod["userAccountControl"][0]=$attributes["enabled"]; }
-        if ($attributes["homephone"]){ $mod["homephone"][0]=$attributes["homephone"]; }
+        if ($attributes["address_country"]) {
+            $mod["c"][0]=$attributes["address_country"];
+        }
+        if ($attributes["address_pobox"]) {
+            $mod["postOfficeBox"][0]=$attributes["address_pobox"];
+        }
+        if ($attributes["address_state"]) {
+            $mod["st"][0]=$attributes["address_state"];
+        }
+        if ($attributes["address_street"]) {
+            $mod["streetAddress"][0]=$attributes["address_street"];
+        }
+        if ($attributes["company"]) {
+            $mod["company"][0]=$attributes["company"];
+        }
+        if ($attributes["change_password"]) {
+            $mod["pwdLastSet"][0]=0;
+        }
+        if ($attributes["department"]) {
+            $mod["department"][0]=$attributes["department"];
+        }
+        if ($attributes["description"]) {
+            $mod["description"][0]=$attributes["description"];
+        }
+        if ($attributes["display_name"]) {
+            $mod["displayName"][0]=$attributes["display_name"];
+        }
+        if ($attributes["email"]) {
+            $mod["mail"][0]=$attributes["email"];
+        }
+        if ($attributes["expires"]) {
+            $mod["accountExpires"][0]=$attributes["expires"];
+        } //unix epoch format?
+        if ($attributes["firstname"]) {
+            $mod["givenName"][0]=$attributes["firstname"];
+        }
+        if ($attributes["home_directory"]) {
+            $mod["homeDirectory"][0]=$attributes["home_directory"];
+        }
+        if ($attributes["home_drive"]) {
+            $mod["homeDrive"][0]=$attributes["home_drive"];
+        }
+        if ($attributes["initials"]) {
+            $mod["initials"][0]=$attributes["initials"];
+        }
+        if ($attributes["logon_name"]) {
+            $mod["userPrincipalName"][0]=$attributes["logon_name"];
+        }
+        if ($attributes["manager"]) {
+            $mod["manager"][0]=$attributes["manager"];
+        }  //UNTESTED ***Use DistinguishedName***
+        if ($attributes["office"]) {
+            $mod["physicalDeliveryOfficeName"][0]=$attributes["office"];
+        }
+        if ($attributes["password"]) {
+            $mod["unicodePwd"][0]=$this->user()->encodePassword($attributes["password"]);
+        }
+        if ($attributes["profile_path"]) {
+            $mod["profilepath"][0]=$attributes["profile_path"];
+        }
+        if ($attributes["script_path"]) {
+            $mod["scriptPath"][0]=$attributes["script_path"];
+        }
+        if ($attributes["surname"]) {
+            $mod["sn"][0]=$attributes["surname"];
+        }
+        if ($attributes["title"]) {
+            $mod["title"][0]=$attributes["title"];
+        }
+        if ($attributes["telephone"]) {
+            $mod["telephoneNumber"][0]=$attributes["telephone"];
+        }
+        if ($attributes["mobile"]) {
+            $mod["mobile"][0]=$attributes["mobile"];
+        }
+        if ($attributes["pager"]) {
+            $mod["pager"][0]=$attributes["pager"];
+        }
+        if ($attributes["ipphone"]) {
+            $mod["ipphone"][0]=$attributes["ipphone"];
+        }
+        if ($attributes["web_page"]) {
+            $mod["wWWHomePage"][0]=$attributes["web_page"];
+        }
+        if ($attributes["fax"]) {
+            $mod["facsimileTelephoneNumber"][0]=$attributes["fax"];
+        }
+        if ($attributes["enabled"]) {
+            $mod["userAccountControl"][0]=$attributes["enabled"];
+        }
+        if ($attributes["homephone"]) {
+            $mod["homephone"][0]=$attributes["homephone"];
+        }
 
         // Distribution List specific schema
-        if ($attributes["group_sendpermission"]){ $mod["dlMemSubmitPerms"][0]=$attributes["group_sendpermission"]; }
-        if ($attributes["group_rejectpermission"]){ $mod["dlMemRejectPerms"][0]=$attributes["group_rejectpermission"]; }
+        if ($attributes["group_sendpermission"]) {
+            $mod["dlMemSubmitPerms"][0]=$attributes["group_sendpermission"];
+        }
+        if ($attributes["group_rejectpermission"]) {
+            $mod["dlMemRejectPerms"][0]=$attributes["group_rejectpermission"];
+        }
 
         // Exchange Schema
-        if ($attributes["exchange_homemdb"]){ $mod["homeMDB"][0]=$attributes["exchange_homemdb"]; }
-        if ($attributes["exchange_mailnickname"]){ $mod["mailNickname"][0]=$attributes["exchange_mailnickname"]; }
-        if ($attributes["exchange_proxyaddress"]){ $mod["proxyAddresses"][0]=$attributes["exchange_proxyaddress"]; }
-        if ($attributes["exchange_usedefaults"]){ $mod["mDBUseDefaults"][0]=$attributes["exchange_usedefaults"]; }
-        if ($attributes["exchange_policyexclude"]){ $mod["msExchPoliciesExcluded"][0]=$attributes["exchange_policyexclude"]; }
-        if ($attributes["exchange_policyinclude"]){ $mod["msExchPoliciesIncluded"][0]=$attributes["exchange_policyinclude"]; }
-        if ($attributes["exchange_addressbook"]){ $mod["showInAddressBook"][0]=$attributes["exchange_addressbook"]; }
-        if ($attributes["exchange_altrecipient"]){ $mod["altRecipient"][0]=$attributes["exchange_altrecipient"]; }
-        if ($attributes["exchange_deliverandredirect"]){ $mod["deliverAndRedirect"][0]=$attributes["exchange_deliverandredirect"]; }
+        if ($attributes["exchange_homemdb"]) {
+            $mod["homeMDB"][0]=$attributes["exchange_homemdb"];
+        }
+        if ($attributes["exchange_mailnickname"]) {
+            $mod["mailNickname"][0]=$attributes["exchange_mailnickname"];
+        }
+        if ($attributes["exchange_proxyaddress"]) {
+            $mod["proxyAddresses"][0]=$attributes["exchange_proxyaddress"];
+        }
+        if ($attributes["exchange_usedefaults"]) {
+            $mod["mDBUseDefaults"][0]=$attributes["exchange_usedefaults"];
+        }
+        if ($attributes["exchange_policyexclude"]) {
+            $mod["msExchPoliciesExcluded"][0]=$attributes["exchange_policyexclude"];
+        }
+        if ($attributes["exchange_policyinclude"]) {
+            $mod["msExchPoliciesIncluded"][0]=$attributes["exchange_policyinclude"];
+        }
+        if ($attributes["exchange_addressbook"]) {
+            $mod["showInAddressBook"][0]=$attributes["exchange_addressbook"];
+        }
+        if ($attributes["exchange_altrecipient"]) {
+            $mod["altRecipient"][0]=$attributes["exchange_altrecipient"];
+        }
+        if ($attributes["exchange_deliverandredirect"]) {
+            $mod["deliverAndRedirect"][0]=$attributes["exchange_deliverandredirect"];
+        }
 
         // This schema is designed for contacts
-        if ($attributes["exchange_hidefromlists"]){ $mod["msExchHideFromAddressLists"][0]=$attributes["exchange_hidefromlists"]; }
-        if ($attributes["contact_email"]){ $mod["targetAddress"][0]=$attributes["contact_email"]; }
+        if ($attributes["exchange_hidefromlists"]) {
+            $mod["msExchHideFromAddressLists"][0]=$attributes["exchange_hidefromlists"];
+        }
+        if ($attributes["contact_email"]) {
+            $mod["targetAddress"][0]=$attributes["contact_email"];
+        }
 
         //echo ("<pre>"); print_r($mod);
         /*
@@ -869,14 +998,17 @@ class adLDAP {
         }
         */
 
-        if (count($mod)==0){ return (false); }
+        if (count($mod)==0) {
+            return (false);
+        }
         return ($mod);
     }
 
     /**
     * Convert 8bit characters e.g. accented characters to UTF8 encoded characters
     */
-    protected function encode8Bit(&$item, $key) {
+    protected function encode8Bit(&$item, $key)
+    {
         $encode = false;
         if (is_string($item)) {
             for ($i=0; $i<strlen($item); $i++) {
@@ -922,7 +1054,8 @@ class adLDAP {
     *
     * @return bool
     */
-    protected function pingController($host) {
+    protected function pingController($host)
+    {
         $port = $this->adPort;
         fsockopen($host, $port, $errno, $errstr, 10);
         if ($errno > 0) {
@@ -930,7 +1063,6 @@ class adLDAP {
         }
         return true;
     }
-
 }
 
 /**
@@ -946,4 +1078,6 @@ class adLDAP {
 *   exit();
 * }
 */
-class adLDAPException extends Exception {}
+class adLDAPException extends Exception
+{
+}

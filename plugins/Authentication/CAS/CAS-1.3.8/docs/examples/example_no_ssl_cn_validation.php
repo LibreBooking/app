@@ -49,7 +49,7 @@ phpCAS::forceAuthentication();
 
 // logout if desired
 if (isset($_REQUEST['logout'])) {
-	phpCAS::logout();
+    phpCAS::logout();
 }
 
 // for this test, simply print that the authentication was successfull

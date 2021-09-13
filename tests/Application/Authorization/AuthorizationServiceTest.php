@@ -173,10 +173,10 @@ class AuthorizationServiceTests extends TestBase
         $userId = 123;
         $expectedIsAdmin = true;
 
-        $groups = array(
+        $groups = [
             new UserGroup(1, null, null, RoleLevel::APPLICATION_ADMIN),
             new UserGroup(3, null, null, RoleLevel::APPLICATION_ADMIN),
-        );
+        ];
 
         $user = new User();
         $user->WithGroups($groups);
@@ -204,10 +204,10 @@ class AuthorizationServiceTests extends TestBase
         $userId = 123;
         $expectedIsAdmin = true;
 
-        $groups = array(
+        $groups = [
             new UserGroup(1, null, null, RoleLevel::APPLICATION_ADMIN),
             new UserGroup(3, null, null, RoleLevel::RESOURCE_ADMIN),
-        );
+        ];
 
         $user = new User();
         $user->WithGroups($groups);
@@ -222,10 +222,10 @@ class AuthorizationServiceTests extends TestBase
         $userId = 123;
         $expectedIsAdmin = true;
 
-        $groups = array(
+        $groups = [
             new UserGroup(1, null, null, RoleLevel::APPLICATION_ADMIN),
             new UserGroup(3, null, null, RoleLevel::GROUP_ADMIN),
-        );
+        ];
 
         $user = new User();
         $user->WithGroups($groups);
@@ -282,5 +282,4 @@ class AuthorizationServiceTests extends TestBase
 
         $this->assertTrue($canApprove, "should be able to approve because user is in admin group");
     }
-
 }

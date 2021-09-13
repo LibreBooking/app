@@ -8,90 +8,90 @@ require_once(ROOT_DIR . 'WebServices/Responses/Reservation/ReservationRetryParam
 
 class ReservationRequest
 {
-	/**
-	 * @var array|ReservationAccessoryRequest[]
-	 */
-	public $accessories = array();
-	/**
-	 * @var array|AttributeValueRequest[]
-	 */
-	public $customAttributes = array();
-	public $description;
-	public $endDateTime;
-	/**
-	 * @var array|int[]
-	 */
-	public $invitees = array();
-	/**
-	 * @var array|int[]
-	 */
-	public $participants = array();
-	/**
-	 * @var array|string[]
-	 */
-	public $participatingGuests = array();
-	/**
-	 * @var array|string[]
-	 */
-	public $invitedGuests = array();
-	/**
-	 * @var RecurrenceRequestResponse
-	 */
-	public $recurrenceRule;
-	public $resourceId;
-	/**
-	 * @var array|int[]
-	 */
-	public $resources = array();
-	public $startDateTime;
-	public $title;
-	public $userId;
-	/**
-	 * @var ReminderRequestResponse
-	 */
-	public $startReminder;
-	/**
-	 * @var ReminderRequestResponse
-	 */
-	public $endReminder;
+    /**
+     * @var array|ReservationAccessoryRequest[]
+     */
+    public $accessories = [];
+    /**
+     * @var array|AttributeValueRequest[]
+     */
+    public $customAttributes = [];
+    public $description;
+    public $endDateTime;
+    /**
+     * @var array|int[]
+     */
+    public $invitees = [];
+    /**
+     * @var array|int[]
+     */
+    public $participants = [];
+    /**
+     * @var array|string[]
+     */
+    public $participatingGuests = [];
+    /**
+     * @var array|string[]
+     */
+    public $invitedGuests = [];
+    /**
+     * @var RecurrenceRequestResponse
+     */
+    public $recurrenceRule;
+    public $resourceId;
+    /**
+     * @var array|int[]
+     */
+    public $resources = [];
+    public $startDateTime;
+    public $title;
+    public $userId;
+    /**
+     * @var ReminderRequestResponse
+     */
+    public $startReminder;
+    /**
+     * @var ReminderRequestResponse
+     */
+    public $endReminder;
 
-	/**
-	 * @var bool
-	 */
-	public $allowParticipation;
+    /**
+     * @var bool
+     */
+    public $allowParticipation;
 
-	/**
-	 * @var ReservationRetryParameterRequestResponse[]
-	 */
-	public $retryParameters;
+    /**
+     * @var ReservationRetryParameterRequestResponse[]
+     */
+    public $retryParameters;
     /**
      * @var bool
      */
     public $termsAccepted;
 
     public static function Example()
-	{
-		$date = Date::Now()->ToIso();
-		$request = new ReservationRequest();
-		$request->accessories = array(new ReservationAccessoryRequest(1, 2));
-		$request->customAttributes = array(new AttributeValueRequest(2, 'some value'));
-		$request->description = 'reservation description';
-		$request->endDateTime = $date;
-		$request->invitees = array(1, 2, 3);
-		$request->participants = array(1, 2);
-		$request->participatingGuests = array('participating.guest@email.com');
-		$request->invitedGuests = array('invited.guest@email.com');
-		$request->recurrenceRule = RecurrenceRequestResponse::Example();
-		$request->resourceId = 1;
-		$request->resources = array(2, 3);
-		$request->startDateTime = $date;
-		$request->title = 'reservation title';
-		$request->userId = 1;
-		$request->startReminder = ReminderRequestResponse::Example();
-		$request->allowParticipation = true;
-		$request->retryParameters = array(ReservationRetryParameterRequestResponse::Example());
-		$request->termsAccepted = true;
+    {
+        $date = Date::Now()->ToIso();
+        $request = new ReservationRequest();
+        $request->accessories = [new ReservationAccessoryRequest(1, 2)];
+        $request->customAttributes = [new AttributeValueRequest(2, 'some value')];
+        $request->description = 'reservation description';
+        $request->endDateTime = $date;
+        $request->invitees = [1, 2, 3];
+        $request->participants = [1, 2];
+        $request->participatingGuests = ['participating.guest@email.com'];
+        $request->invitedGuests = ['invited.guest@email.com'];
+        $request->recurrenceRule = RecurrenceRequestResponse::Example();
+        $request->resourceId = 1;
+        $request->resources = [2, 3];
+        $request->startDateTime = $date;
+        $request->title = 'reservation title';
+        $request->userId = 1;
+        $request->startReminder = ReminderRequestResponse::Example();
+        $request->allowParticipation = true;
+        $request->retryParameters = [ReservationRetryParameterRequestResponse::Example()];
+        $request->termsAccepted = true;
 
-		return $request;
-	}
+        return $request;
+    }
 }

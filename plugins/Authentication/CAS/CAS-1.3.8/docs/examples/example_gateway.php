@@ -54,17 +54,16 @@ $auth = phpCAS::checkAuthentication();
   <body>
 <?php
 if ($auth) {
-    // for this test, simply print that the authentication was successfull
-        ?>
+    // for this test, simply print that the authentication was successfull?>
     <h1>Successfull Authentication!</h1>
     <?php include 'script_info.php' ?>
     <p>the user's login is <b><?php echo phpCAS::getUser(); ?></b>.</p>
     <p><a href="?logout=">Logout</a></p><?php
 } else {
-                                        ?>
+        ?>
     <h1>Guest mode</h1>
     <p><a href="?login=">Login</a></p><?php
-}
+    }
                                       ?>
     <p>phpCAS version is <b><?php echo phpCAS::getVersion(); ?></b>.</p>
   </body>

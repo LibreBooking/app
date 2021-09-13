@@ -4,42 +4,43 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php'
 
 class ReservationConflictResolutionTests extends TestBase
 {
-	public function setUp(): void
-	{
-		parent::setup();
-	}
+    public function setUp(): void
+    {
+        parent::setup();
+    }
 
-	public function testDeletesReservation()
-	{
-		$id = 123;
-		$reservationView = new TestReservationItemView($id, Date::Now(), Date::Now());
+    public function testDeletesReservation()
+    {
+        $id = 123;
+        $reservationView = new TestReservationItemView($id, Date::Now(), Date::Now());
 
-		$repo = $this->createMock('IReservationRepository');
-		$notificationService = new FakeReservationNotificationService();
-		$handler = new ReservationConflictDelete($repo, $notificationService);
+        $repo = $this->createMock('IReservationRepository');
+        $notificationService = new FakeReservationNotificationService();
+        $handler = new ReservationConflictDelete($repo, $notificationService);
 
-		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithId($id);
-		$reservation = $builder->Build();
+        $builder = new ExistingReservationSeriesBuilder();
+        $builder->WithId($id);
+        $reservation = $builder->Build();
 
-		$repo->expects($this->once())
-			 ->method('LoadById')
-			 ->with($this->equalTo($id))
-			 ->will($this->returnValue($reservation));
+        $repo->expects($this->once())
+             ->method('LoadById')
+             ->with($this->equalTo($id))
+             ->will($this->returnValue($reservation));
 
-		$repo->expects($this->once())
-			 ->method('Delete')
-			 ->with($this->equalTo($reservation));
+        $repo->expects($this->once())
+             ->method('Delete')
+             ->with($this->equalTo($reservation));
 
-		$handled = $handler->Handle($reservationView, new Blackout(DateRange::Create('2016-01-01', '2016-01-01', 'America/Chicago')));
+        $handled = $handler->Handle($reservationView, new Blackout(DateRange::Create('2016-01-01', '2016-01-01', 'America/Chicago')));
 
-		$this->assertTrue($handled);
+        $this->assertTrue($handled);
 
-		$this->assertEquals(SeriesUpdateScope::ThisInstance, $reservation->SeriesUpdateScope());
-		$this->assertEquals($reservation, $notificationService->_ReservationNotified);
-	}
+        $this->assertEquals(SeriesUpdateScope::ThisInstance, $reservation->SeriesUpdateScope());
+        $this->assertEquals($reservation, $notificationService->_ReservationNotified);
+    }
 
-	public function testCanBlackoutAroundReservations() {
+    public function testCanBlackoutAroundReservations()
+    {
         $timezone = 'America/Chicago';
         $date1 = DateRange::Create('2016-05-15 12:00', '2016-05-15 16:00', $timezone);
         $daily = new RepeatDaily(1, Date::Parse('2016-05-20', $timezone));
@@ -53,7 +54,7 @@ class ReservationConflictResolutionTests extends TestBase
         $reservation = new TestReservationItemView(1, Date::Parse('2016-05-16 13:00', $timezone), Date::Parse('2016-05-16 14:00', $timezone));
         $handled = $handler->Handle($reservation, $blackouts[1]);
 
-		/** @var Blackout[] $adjustedBlackouts */
+        /** @var Blackout[] $adjustedBlackouts */
         $adjustedBlackouts = array_values($blackoutSeries->AllBlackouts());
 
         $this->assertTrue($handled);
@@ -65,7 +66,8 @@ class ReservationConflictResolutionTests extends TestBase
         $this->assertEquals(Date::Parse('2016-05-16 16:00', $timezone)->ToUtc(), $adjustedBlackouts[2]->EndDate()->ToUtc());
     }
 
-    public function testIfTotallyConflictsThenDoNotHandle() {
+    public function testIfTotallyConflictsThenDoNotHandle()
+    {
         $timezone = 'America/Chicago';
         $date1 = DateRange::Create('2016-05-16 13:00', '2016-05-16 13:30', $timezone);
 
@@ -83,7 +85,8 @@ class ReservationConflictResolutionTests extends TestBase
         $this->assertEquals(1, count($adjustedBlackouts));
     }
 
-    public function testIfTotallyConflictsThenDeleteOccurrence() {
+    public function testIfTotallyConflictsThenDeleteOccurrence()
+    {
         $timezone = 'America/Chicago';
         $date1 = DateRange::Create('2016-05-15 13:00', '2016-05-15 13:30', $timezone);
         $daily = new RepeatDaily(1, Date::Parse('2016-05-20', $timezone));
@@ -94,9 +97,8 @@ class ReservationConflictResolutionTests extends TestBase
 
         $reservation = new TestReservationItemView(1, Date::Parse('2016-05-16 13:00', $timezone), Date::Parse('2016-05-16 14:00', $timezone));
 
-        while ($blackout = $blackoutSeries->NextBlackout())
-        {
-           $handler->Handle($reservation, $blackout);
+        while ($blackout = $blackoutSeries->NextBlackout()) {
+            $handler->Handle($reservation, $blackout);
         }
 
         $adjustedBlackouts = $blackoutSeries->AllBlackouts();

@@ -65,11 +65,13 @@ class AccountController implements IAccountController
      */
     private $attributeService;
 
-    public function __construct(IRegistration $registration,
-                                IUserRepository $userRepository,
-                                IAccountRequestValidator $requestValidator,
-                                PasswordEncryption $passwordEncryption,
-                                IAttributeService $attributeService)
+    public function __construct(
+        IRegistration $registration,
+        IUserRepository $userRepository,
+        IAccountRequestValidator $requestValidator,
+        PasswordEncryption $passwordEncryption,
+        IAttributeService $attributeService
+    )
     {
         $this->registration = $registration;
         $this->requestValidator = $requestValidator;
@@ -86,12 +88,13 @@ class AccountController implements IAccountController
             return new AccountControllerResult(null, $errors);
         }
 
-        $attributes = array();
+        $attributes = [];
         foreach ($request->GetCustomAttributes() as $a) {
             $attributes[] = new AttributeValue($a->attributeId, $a->attributeValue);
         }
 
-        $user = $this->registration->Register($request->userName,
+        $user = $this->registration->Register(
+            $request->userName,
             $request->emailAddress,
             $request->firstName,
             $request->lastName,
@@ -105,7 +108,7 @@ class AccountController implements IAccountController
             $request->acceptTermsOfService
         );
 
-        return new AccountControllerResult($user->Id(), null, $user->StatusId() == AccountStatus::AWAITING_ACTIVATION ? array() : null);
+        return new AccountControllerResult($user->Id(), null, $user->StatusId() == AccountStatus::AWAITING_ACTIVATION ? [] : null);
     }
 
     public function Update(UpdateAccountRequest $request, WebServiceUserSession $session)
@@ -117,7 +120,7 @@ class AccountController implements IAccountController
         }
 
         $user = $this->userRepository->LoadById($session->UserId);
-        $attributes = array();
+        $attributes = [];
         foreach ($request->GetCustomAttributes() as $a) {
             $attributes[] = new AttributeValue($a->attributeId, $a->attributeValue);
         }
@@ -159,13 +162,12 @@ class AccountController implements IAccountController
 
     public function GetUserAttributes(WebServiceUserSession $session)
     {
-        return $this->attributeService->GetAttributes(CustomAttributeCategory::USER, array($session->UserId));
+        return $this->attributeService->GetAttributes(CustomAttributeCategory::USER, [$session->UserId]);
     }
 }
 
 class AccountControllerResult
 {
-
     /**
      * @var int
      */
@@ -174,7 +176,7 @@ class AccountControllerResult
     /**
      * @var array|string[]
      */
-    private $errors = array();
+    private $errors = [];
     /**
      * @var array|string[]
      */
@@ -185,7 +187,7 @@ class AccountControllerResult
      * @param array|string[] $errors
      * @param array|string[] $messages
      */
-    public function __construct($userId, $errors = array(), $messages = array())
+    public function __construct($userId, $errors = [], $messages = [])
     {
         $this->userId = $userId;
         $this->errors = $errors;

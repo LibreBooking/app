@@ -39,8 +39,13 @@ interface IGroupViewRepository
      * @param ISqlFilter $filter
      * @return PageableData|GroupItemView[]
      */
-    public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null,
-                            $filter = null);
+    public function GetList(
+        $pageNumber = null,
+        $pageSize = null,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    );
 
     /**
      * @param int|array|int[] $groupIds
@@ -50,8 +55,13 @@ interface IGroupViewRepository
      * @param AccountStatus|int $accountStatus
      * @return PageableData|UserItemView[]
      */
-    public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null,
-                                    $accountStatus = AccountStatus::ALL);
+    public function GetUsersInGroup(
+        $groupIds,
+        $pageNumber = null,
+        $pageSize = null,
+        $filter = null,
+        $accountStatus = AccountStatus::ALL
+    );
 
     /**
      * @param $roleLevel int|RoleLevel
@@ -85,8 +95,13 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
      * @param ISqlFilter $filter
      * @return PageableData|GroupItemView[]
      */
-    public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null,
-                            $filter = null)
+    public function GetList(
+        $pageNumber = null,
+        $pageSize = null,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    )
     {
         $command = new GetAllGroupsCommand();
 
@@ -94,7 +109,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
             $command = new FilterCommand($command, $filter);
         }
 
-        $builder = array('GroupItemView', 'Create');
+        $builder = ['GroupItemView', 'Create'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
 
@@ -106,8 +121,13 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
      * @param AccountStatus|int $accountStatus
      * @return PageableData|UserItemView[]
      */
-    public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null,
-                                    $accountStatus = AccountStatus::ACTIVE)
+    public function GetUsersInGroup(
+        $groupIds,
+        $pageNumber = null,
+        $pageSize = null,
+        $filter = null,
+        $accountStatus = AccountStatus::ACTIVE
+    )
     {
         $command = new GetAllGroupUsersCommand($groupIds, $accountStatus);
 
@@ -115,7 +135,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
             $command = new FilterCommand($command, $filter);
         }
 
-        $builder = array('UserItemView', 'Create');
+        $builder = ['UserItemView', 'Create'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
     }
 
@@ -145,8 +165,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
         while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::PERMISSION_TYPE] == ResourcePermissionType::Full) {
                 $group->WithFullPermission($row[ColumnNames::RESOURCE_ID]);
-            }
-            else {
+            } else {
                 $group->WithViewablePermission($row[ColumnNames::RESOURCE_ID]);
             }
         }
@@ -226,7 +245,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
     public function GetGroupsByRole($roleLevel)
     {
         $reader = ServiceLocator::GetDatabase()->Query(new GetAllGroupsByRoleCommand($roleLevel));
-        $groups = array();
+        $groups = [];
         while ($row = $reader->GetRow()) {
             $groups[] = GroupItemView::Create($row);
         }
@@ -239,7 +258,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
     {
         $reader = ServiceLocator::GetDatabase()->Query(new GetAllGroupResourcePermissions());
 
-        $groups = array();
+        $groups = [];
         while ($row = $reader->GetRow()) {
             $groups[] = GroupResourcePermission::Create($row);
         }
@@ -256,7 +275,8 @@ class GroupUserView
         return new GroupUserView(
             $row[ColumnNames::USER_ID],
             $row[ColumnNames::FIRST_NAME],
-            $row[ColumnNames::LAST_NAME]);
+            $row[ColumnNames::LAST_NAME]
+        );
     }
 
     public $UserId;
@@ -376,7 +396,7 @@ class GroupItemView
         return $this->IsGroupAdmin() || $this->IsScheduleAdmin() || $this->IsResourceAdmin();
     }
 
-    public function __construct($groupId, $groupName, $adminGroupName = null, $isDefault = 0, $roles = array())
+    public function __construct($groupId, $groupName, $adminGroupName = null, $isDefault = 0, $roles = [])
     {
         $this->Id = $groupId;
         $this->Name = $groupName;

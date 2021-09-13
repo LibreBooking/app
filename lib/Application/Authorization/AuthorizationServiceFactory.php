@@ -2,11 +2,11 @@
 
 class AuthorizationServiceFactory
 {
-	/**
-	 * @return IAuthorizationService
-	 */
-	public static function GetAuthorizationService()
-	{
-		return PluginManager::Instance()->LoadAuthorization();
-	}
+    /**
+     * @return IAuthorizationService
+     */
+    public static function GetAuthorizationService()
+    {
+        return PluginManager::Instance()->LoadAuthorization();
+    }
 }

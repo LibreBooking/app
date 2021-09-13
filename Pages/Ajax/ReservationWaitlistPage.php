@@ -128,7 +128,7 @@ class ReservationWaitlistPage extends SecurePage implements IReservationWaitlist
 
     public function GetRetryParameters()
     {
-        return array();
+        return [];
     }
 
     /**

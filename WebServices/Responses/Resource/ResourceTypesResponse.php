@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
 class ResourceTypesResponse extends RestResponse
 {
-    public $types = array();
+    public $types = [];
 
     /**
      * @param IRestServer $server
@@ -12,15 +12,14 @@ class ResourceTypesResponse extends RestResponse
      */
     public function __construct(IRestServer $server, $types)
     {
-        foreach($types as $type)
-        {
+        foreach ($types as $type) {
             $this->AddType($type->Id(), $type->Description());
         }
     }
 
     protected function AddType($id, $description)
     {
-        $this->types[] = array('id' => $id, 'description' => $description);
+        $this->types[] = ['id' => $id, 'description' => $description];
     }
 
     public static function Example()

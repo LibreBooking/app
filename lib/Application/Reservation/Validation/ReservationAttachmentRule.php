@@ -2,35 +2,32 @@
 
 class ReservationAttachmentRule implements IReservationValidationRule
 {
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @param $retryParameters
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries, $retryParameters)
-	{
-		$attachments = $reservationSeries->AddedAttachments();
+    /**
+     * @param ReservationSeries $reservationSeries
+     * @param $retryParameters
+     * @return ReservationRuleResult
+     */
+    public function Validate($reservationSeries, $retryParameters)
+    {
+        $attachments = $reservationSeries->AddedAttachments();
 
-		$allowedExtensionsConfig = Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_RESERVATION_EXTENSIONS);
+        $allowedExtensionsConfig = Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_RESERVATION_EXTENSIONS);
 
-		if (empty($allowedExtensionsConfig) || empty($attachments))
-		{
-			return new ReservationRuleResult();
-		}
+        if (empty($allowedExtensionsConfig) || empty($attachments)) {
+            return new ReservationRuleResult();
+        }
 
-		$allowedExtensions = str_replace('.', '', $allowedExtensionsConfig);
-		$allowedExtensions = str_replace(' ', '', $allowedExtensions);
-		$allowedExtensionList = explode(',', $allowedExtensions);
+        $allowedExtensions = str_replace('.', '', $allowedExtensionsConfig);
+        $allowedExtensions = str_replace(' ', '', $allowedExtensions);
+        $allowedExtensionList = explode(',', $allowedExtensions);
 
-		foreach ($attachments as $attachment)
-		{
-			$isValid = in_array($attachment->FileExtension(), $allowedExtensionList);
-			if (!$isValid)
-			{
-				return new ReservationRuleResult($isValid, Resources::GetInstance()->GetString('InvalidAttachmentExtension', $allowedExtensionsConfig));
-			}
-		}
+        foreach ($attachments as $attachment) {
+            $isValid = in_array($attachment->FileExtension(), $allowedExtensionList);
+            if (!$isValid) {
+                return new ReservationRuleResult($isValid, Resources::GetInstance()->GetString('InvalidAttachmentExtension', $allowedExtensionsConfig));
+            }
+        }
 
-		return new ReservationRuleResult();
-	}
+        return new ReservationRuleResult();
+    }
 }

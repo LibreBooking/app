@@ -10,7 +10,7 @@ class GuestAddedEmail extends ReservationEmailMessage
     protected $guestEmail;
 
     public function __construct(User $reservationOwner, $guestEmail, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
-	{
+    {
         parent::__construct($reservationOwner, $reservationSeries, $reservationOwner->Language(), $attributeRepository, $userRepository);
 
         $this->reservationOwner = $reservationOwner;
@@ -21,12 +21,12 @@ class GuestAddedEmail extends ReservationEmailMessage
 
     public function To()
     {
-        return array(new EmailAddress($this->guestEmail));
+        return [new EmailAddress($this->guestEmail)];
     }
 
     public function Subject()
     {
-        return $this->Translate('ParticipantAddedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
+        return $this->Translate('ParticipantAddedSubjectWithResource', [$this->reservationOwner->FullName(), $this->primaryResource->GetName()]);
     }
 
     public function From()
@@ -51,15 +51,15 @@ class GuestAddedEmail extends ReservationEmailMessage
 
 class GuestUpdatedEmail extends GuestAddedEmail
 {
-	public function Subject()
-	{
-		return $this->Translate('ParticipantUpdatedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
-	}
+    public function Subject()
+    {
+        return $this->Translate('ParticipantUpdatedSubjectWithResource', [$this->reservationOwner->FullName(), $this->primaryResource->GetName()]);
+    }
 
-	public function PopulateTemplate()
-	{
-		parent::PopulateTemplate();
-		$this->Set("Deleted", false);
-		$this->Set("Updated", true);
-	}
+    public function PopulateTemplate()
+    {
+        parent::PopulateTemplate();
+        $this->Set("Deleted", false);
+        $this->Set("Updated", true);
+    }
 }

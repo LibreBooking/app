@@ -4,83 +4,82 @@ require_once(ROOT_DIR . 'lib/Email/Messages/AccountActivationEmail.php');
 
 class AccountActivation implements IAccountActivation
 {
-	/**
-	 * @var IAccountActivationRepository
-	 */
-	private $activationRepository;
+    /**
+     * @var IAccountActivationRepository
+     */
+    private $activationRepository;
 
-	/**
-	 * @var IUserRepository
-	 */
-	private $userRepository;
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
 
-	public function __construct(IAccountActivationRepository $activationRepository, IUserRepository $userRepository)
-	{
-		$this->activationRepository = $activationRepository;
-		$this->userRepository = $userRepository;
-	}
+    public function __construct(IAccountActivationRepository $activationRepository, IUserRepository $userRepository)
+    {
+        $this->activationRepository = $activationRepository;
+        $this->userRepository = $userRepository;
+    }
 
-	public function Notify(User $user)
-	{
-		$activationCode = BookedStringHelper::Random(30);
+    public function Notify(User $user)
+    {
+        $activationCode = BookedStringHelper::Random(30);
 
-		$this->activationRepository->AddActivation($user, $activationCode);
+        $this->activationRepository->AddActivation($user, $activationCode);
 
-		ServiceLocator::GetEmailService()->Send(new AccountActivationEmail($user, $activationCode));
-	}
+        ServiceLocator::GetEmailService()->Send(new AccountActivationEmail($user, $activationCode));
+    }
 
-	public function Activate($activationCode)
-	{
-		$userId = $this->activationRepository->FindUserIdByCode($activationCode);
-		$this->activationRepository->DeleteActivation($activationCode);
+    public function Activate($activationCode)
+    {
+        $userId = $this->activationRepository->FindUserIdByCode($activationCode);
+        $this->activationRepository->DeleteActivation($activationCode);
 
-		if ($userId != null)
-		{
-			$user = $this->userRepository->LoadById($userId);
-			$user->Activate();
-			$this->userRepository->Update($user);
-			return new ActivationResult(true, $user);
-		}
+        if ($userId != null) {
+            $user = $this->userRepository->LoadById($userId);
+            $user->Activate();
+            $this->userRepository->Update($user);
+            return new ActivationResult(true, $user);
+        }
 
-		return new ActivationResult(false);
-	}
+        return new ActivationResult(false);
+    }
 }
 
 class ActivationResult
 {
-	/**
-	 * @var bool
-	 */
-	private $activated;
+    /**
+     * @var bool
+     */
+    private $activated;
 
-	/**
-	 * @var null|User
-	 */
-	private $user;
+    /**
+     * @var null|User
+     */
+    private $user;
 
-	/**
-	 * @param bool $activated
-	 * @param User|null $user
-	 */
-	public function __construct($activated, $user = null)
-	{
-		$this->activated = $activated;
-		$this->user = $user;
-	}
+    /**
+     * @param bool $activated
+     * @param User|null $user
+     */
+    public function __construct($activated, $user = null)
+    {
+        $this->activated = $activated;
+        $this->user = $user;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function Activated()
-	{
-		return $this->activated;
-	}
+    /**
+     * @return boolean
+     */
+    public function Activated()
+    {
+        return $this->activated;
+    }
 
-	/**
-	 * @return null|User
-	 */
-	public function User()
-	{
-		return $this->user;
-	}
+    /**
+     * @return null|User
+     */
+    public function User()
+    {
+        return $this->user;
+    }
 }

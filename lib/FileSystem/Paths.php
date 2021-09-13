@@ -2,47 +2,39 @@
 
 class Paths
 {
-	/**
-	 * Filesystem directory for storing reservation attachments. Always contains trailing slash
-	 *
-	 * @static
-	 * @return string
-	 */
-	public static function ReservationAttachments()
-	{
-		$uploadDir = Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_RESERVATION_ATTACHMENTS);
+    /**
+     * Filesystem directory for storing reservation attachments. Always contains trailing slash
+     *
+     * @static
+     * @return string
+     */
+    public static function ReservationAttachments()
+    {
+        $uploadDir = Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_RESERVATION_ATTACHMENTS);
 
-		if (empty($uploadDir))
-		{
-			$uploadDir = dirname(__FILE__) . '/' . ROOT_DIR . 'uploads/reservation';
-		}
+        if (empty($uploadDir)) {
+            $uploadDir = dirname(__FILE__) . '/' . ROOT_DIR . 'uploads/reservation';
+        }
 
-		if (!is_dir($uploadDir))
-		{
-			$uploadDir =  dirname(__FILE__) . '/' . ROOT_DIR . $uploadDir;
-		}
+        if (!is_dir($uploadDir)) {
+            $uploadDir =  dirname(__FILE__) . '/' . ROOT_DIR . $uploadDir;
+        }
 
-		if (!BookedStringHelper::EndsWith($uploadDir, '/'))
-		{
-			$uploadDir = $uploadDir . '/';
-		}
+        if (!BookedStringHelper::EndsWith($uploadDir, '/')) {
+            $uploadDir = $uploadDir . '/';
+        }
 
-		if (!is_dir($uploadDir))
-		{
-			Log::Debug('Could not find directory %s. Attempting to create it', $uploadDir);
-			$created = mkdir($uploadDir);
-			if ($created)
-			{
-				Log::Debug('Created %s', $uploadDir);
-			}
-			else
-			{
-				Log::Debug('Could not create %s', $uploadDir);
-			}
-
-		}
-		return $uploadDir;
-	}
+        if (!is_dir($uploadDir)) {
+            Log::Debug('Could not find directory %s. Attempting to create it', $uploadDir);
+            $created = mkdir($uploadDir);
+            if ($created) {
+                Log::Debug('Created %s', $uploadDir);
+            } else {
+                Log::Debug('Could not create %s', $uploadDir);
+            }
+        }
+        return $uploadDir;
+    }
 
     /**
      * Filesystem directory for storing terms of service file. Always contains trailing slash
@@ -50,7 +42,7 @@ class Paths
      * @static
      * @return string
      */
-	public static function Terms()
+    public static function Terms()
     {
         return ROOT_DIR . 'Web/uploads/tos/';
     }

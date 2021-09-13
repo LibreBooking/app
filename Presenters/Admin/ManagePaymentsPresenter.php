@@ -6,9 +6,9 @@ require_once(ROOT_DIR . 'Domain/Access/PaymentRepository.php');
 
 class ManagePaymentsActions
 {
-    const UPDATE_CREDIT_COST = 'updateCreditCost';
-    const UPDATE_PAYMENT_GATEWAYS = 'updatePaymentGateways';
-    const ISSUE_REFUND = 'issueRefund';
+    public const UPDATE_CREDIT_COST = 'updateCreditCost';
+    public const UPDATE_PAYMENT_GATEWAYS = 'updatePaymentGateways';
+    public const ISSUE_REFUND = 'issueRefund';
 }
 
 class ManagePaymentsPresenter extends ActionPresenter
@@ -74,8 +74,7 @@ class ManagePaymentsPresenter extends ActionPresenter
     {
         if ($dataRequest == 'transactionLog') {
             $this->GetTransactionLog();
-        }
-        else {
+        } else {
             $this->GetTransactionDetails();
         }
     }
@@ -109,8 +108,7 @@ class ManagePaymentsPresenter extends ActionPresenter
             $refund = $gateway->Refund($transactionLogView, $amount, $this->paymentLogger);
 
             $this->page->BindRefundIssued($refund->state == 'completed');
-        }
-        else{
+        } else {
             $gateway = $this->paymentRepository->GetStripeGateway();
 
             $refunded = $gateway->Refund($transactionLogView, $amount, $this->paymentLogger);

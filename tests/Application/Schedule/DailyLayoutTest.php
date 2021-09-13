@@ -28,7 +28,7 @@ class DailyLayoutTests extends TestBase
         $startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
         $endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
         $reservation = new TestReservationListItem($startDate, $endDate, $resourceId);
-        $reservations = array($reservation);
+        $reservations = [$reservation];
 
         $listing->expects($this->once())
             ->method('OnDateForResource')
@@ -143,11 +143,11 @@ class DailyLayoutTests extends TestBase
         $listing = $this->createMock('IReservationListing');
 
         $firstReservation = new TestReservationListItem($start, $end, $resourceId);
-        $reservations = array(
+        $reservations = [
             $firstReservation,
             new TestReservationListItem($start, $end, $resourceId),
             new TestBlackoutListItem($start, $end, $resourceId),
-        );
+        ];
 
         $listing->expects($this->once())
             ->method('OnDateForResource')

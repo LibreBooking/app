@@ -2,88 +2,88 @@
 
 class EditReservationPresenterTests extends TestBase
 {
-	/**
-	 * @var UserSession
-	 */
-	private $user;
+    /**
+     * @var UserSession
+     */
+    private $user;
 
-	private $userId;
+    private $userId;
 
-	/**
-	 * @var IExistingReservationPage
-	 */
-	private $page;
+    /**
+     * @var IExistingReservationPage
+     */
+    private $page;
 
-	/**
-	 * @var IReservationViewRepository
-	 */
-	private $reservationViewRepository;
+    /**
+     * @var IReservationViewRepository
+     */
+    private $reservationViewRepository;
 
-	/**
-	 * @var IReservationPreconditionService
-	 */
-	private $preconditionService;
+    /**
+     * @var IReservationPreconditionService
+     */
+    private $preconditionService;
 
-	/**
-	 * @var IReservationInitializerFactory
-	 */
-	private $initializerFactory;
+    /**
+     * @var IReservationInitializerFactory
+     */
+    private $initializerFactory;
 
-	/**
-	 * @var IReservationInitializer
-	 */
-	private $initializer;
+    /**
+     * @var IReservationInitializer
+     */
+    private $initializer;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->user = $this->fakeServer->UserSession;
-		$this->userId = $this->user->UserId;
+        $this->user = $this->fakeServer->UserSession;
+        $this->userId = $this->user->UserId;
 
-		$this->page = $this->createMock('IExistingReservationPage');
+        $this->page = $this->createMock('IExistingReservationPage');
 
-		$this->initializerFactory = $this->createMock('IReservationInitializerFactory');
-		$this->initializer = $this->createMock('IReservationInitializer');
+        $this->initializerFactory = $this->createMock('IReservationInitializerFactory');
+        $this->initializer = $this->createMock('IReservationInitializer');
 
-		$this->preconditionService = $this->createMock('EditReservationPreconditionService');
-		$this->reservationViewRepository = $this->createMock('IReservationViewRepository');
-	}
+        $this->preconditionService = $this->createMock('EditReservationPreconditionService');
+        $this->reservationViewRepository = $this->createMock('IReservationViewRepository');
+    }
 
-	public function teardown(): void
-	{
-		parent::teardown();
-	}
+    public function teardown(): void
+    {
+        parent::teardown();
+    }
 
-	public function testPullsReservationViewFromRepository()
-	{
-		$referenceNumber = '1234';
+    public function testPullsReservationViewFromRepository()
+    {
+        $referenceNumber = '1234';
 
-		$reservationView = new ReservationView();
+        $reservationView = new ReservationView();
 
-		$this->page->expects($this->once())
-			->method('GetReferenceNumber')
-			->will($this->returnValue($referenceNumber));
+        $this->page->expects($this->once())
+            ->method('GetReferenceNumber')
+            ->will($this->returnValue($referenceNumber));
 
-		$this->reservationViewRepository->expects($this->once())
-			->method('GetReservationForEditing')
-			->with($referenceNumber)
-			->will($this->returnValue($reservationView));
+        $this->reservationViewRepository->expects($this->once())
+            ->method('GetReservationForEditing')
+            ->with($referenceNumber)
+            ->will($this->returnValue($reservationView));
 
-		$this->preconditionService->expects($this->once())
-			->method('CheckAll')
-			->with($this->page, $this->user, $reservationView);
+        $this->preconditionService->expects($this->once())
+            ->method('CheckAll')
+            ->with($this->page, $this->user, $reservationView);
 
-		$this->initializerFactory->expects($this->once())
-			->method('GetExistingInitializer')
-			->with($this->equalTo($this->page), $this->equalTo($reservationView))
-			->will($this->returnValue($this->initializer));
+        $this->initializerFactory->expects($this->once())
+            ->method('GetExistingInitializer')
+            ->with($this->equalTo($this->page), $this->equalTo($reservationView))
+            ->will($this->returnValue($this->initializer));
 
-		$this->initializer->expects($this->once())
-			->method('Initialize');
+        $this->initializer->expects($this->once())
+            ->method('Initialize');
 
-		$presenter = new EditReservationPresenter($this->page, $this->initializerFactory, $this->preconditionService, $this->reservationViewRepository);
+        $presenter = new EditReservationPresenter($this->page, $this->initializerFactory, $this->preconditionService, $this->reservationViewRepository);
 
-		$presenter->PageLoad();
-	}
+        $presenter->PageLoad();
+    }
 }

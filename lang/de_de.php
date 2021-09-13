@@ -938,13 +938,13 @@ class de_de extends en_gb
          * and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag');
+        $days['full'] = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
         // The three letter abbreviation
-        $days['abbr'] = array('So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa');
+        $days['abbr'] = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
         // The two letter abbreviation
-        $days['two'] = array('So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa');
+        $days['two'] = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
         // The one letter abbreviation
-        $days['letter'] = array('S', 'M', 'D', 'M', 'D', 'F', 'S');
+        $days['letter'] = ['S', 'M', 'D', 'M', 'D', 'F', 'S'];
 
         $this->Days = $days;
 
@@ -964,9 +964,9 @@ class de_de extends en_gb
          * and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
+        $months['full'] = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
         // The three letter month name
-        $months['abbr'] = array('Jan', 'Feb', 'Mrz', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez');
+        $months['abbr'] = ['Jan', 'Feb', 'Mrz', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
 
         $this->Months = $months;
 
@@ -978,7 +978,7 @@ class de_de extends en_gb
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
         return $this->Letters;
     }

@@ -1,6 +1,6 @@
 <?php
 
-require_once (ROOT_DIR . 'Domain/Values/Currency.php');
+require_once(ROOT_DIR . 'Domain/Values/Currency.php');
 use Booked\Currency;
 
 class CreditCost

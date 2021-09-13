@@ -11,17 +11,19 @@ class GroupAdminManageReservationsPage extends ManageReservationsPage
         parent::__construct();
 
         $userRepository = new UserRepository();
-        $this->presenter = new ManageReservationsPresenter($this,
+        $this->presenter = new ManageReservationsPresenter(
+            $this,
             new GroupAdminManageReservationsService(new ReservationViewRepository(), $userRepository, new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
             new ScheduleRepository(),
             new ResourceRepository(),
             new AttributeService(new AttributeRepository()),
             $userRepository,
-            new TermsOfServiceRepository());
+            new TermsOfServiceRepository()
+        );
 
         $this->SetCanUpdateResourceStatus(false);
     }
 }
 
-$page = new RoleRestrictedPageDecorator(new GroupAdminManageReservationsPage(), array(RoleLevel::GROUP_ADMIN));
+$page = new RoleRestrictedPageDecorator(new GroupAdminManageReservationsPage(), [RoleLevel::GROUP_ADMIN]);
 $page->PageLoad();

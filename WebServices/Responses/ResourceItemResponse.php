@@ -4,15 +4,15 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
 class ResourceItemResponse extends RestResponse
 {
-	public $id;
-	public $name;
+    public $id;
+    public $name;
     public $type;
     public $groups;
 
-	public function __construct(IRestServer $server, $id, $name)
-	{
-		$this->id = $id;
-		$this->name = $name;
+    public function __construct(IRestServer $server, $id, $name)
+    {
+        $this->id = $id;
+        $this->name = $name;
 
         /*
          * Unfortunately we have to get the full resource here to be able to get the
@@ -21,10 +21,9 @@ class ResourceItemResponse extends RestResponse
         $resourceRepository = new ResourceRepository();
         $resource = $resourceRepository->LoadById($id);
 
-        if ($resource->HasResourceType())
-		{
+        if ($resource->HasResourceType()) {
             $this->type = $resourceRepository->LoadResourceType($resource->GetResourceTypeId())->Name();
-       }
+        }
 
         /*
          * For every resource we want to see the full hierarchical path of groups it belongs to.
@@ -32,43 +31,43 @@ class ResourceItemResponse extends RestResponse
          * This is added here so it is not necessary to retrieve this in separate queries for
          * every resource and group it's assigned to.
          */
-		$this->groups = array();
+        $this->groups = [];
 
-        foreach( $resource->GetResourceGroupIds() as $resourceGroupId )
-        {
+        foreach ($resource->GetResourceGroupIds() as $resourceGroupId) {
             $this->groups[$resourceGroupId] = $this->BuildParentList($resourceGroupId);
         }
 
-		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $id));
-	}
+        $this->AddService($server, WebServices::GetResource, [WebServiceParams::ResourceId => $id]);
+    }
 
-    private function BuildParentList($resourceGroupId,&$parents=array())
+    private function BuildParentList($resourceGroupId, &$parents=[])
     {
         $groupsReader = ServiceLocator::GetDatabase()->Query(new GetResourceGroupCommand($resourceGroupId));
-        if ($group = $groupsReader->GetRow())
-        {
-            $parents[$group[ColumnNames::RESOURCE_GROUP_ID]] = new ResourceGroup($group[ColumnNames::RESOURCE_GROUP_ID],
-                                                                                 $group[ColumnNames::RESOURCE_GROUP_NAME],
-                                                                                 $group[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
+        if ($group = $groupsReader->GetRow()) {
+            $parents[$group[ColumnNames::RESOURCE_GROUP_ID]] = new ResourceGroup(
+                $group[ColumnNames::RESOURCE_GROUP_ID],
+                $group[ColumnNames::RESOURCE_GROUP_NAME],
+                $group[ColumnNames::RESOURCE_GROUP_PARENT_ID]
+            );
 
-            $this->BuildParentList($group[ColumnNames::RESOURCE_GROUP_PARENT_ID],$parents);
+            $this->BuildParentList($group[ColumnNames::RESOURCE_GROUP_PARENT_ID], $parents);
         }
         $groupsReader->Free();
 
         return $parents;
     }
 
-	public static function Example()
-	{
-		return new ExampleResourceItemResponse();
-	}
+    public static function Example()
+    {
+        return new ExampleResourceItemResponse();
+    }
 }
 
 class ExampleResourceItemResponse extends ResourceItemResponse
 {
-	public function __construct()
-	{
-		$this->id = 123;
-		$this->name = 'resource name';
-	}
+    public function __construct()
+    {
+        $this->id = 123;
+        $this->name = 'resource name';
+    }
 }

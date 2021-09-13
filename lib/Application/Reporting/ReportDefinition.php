@@ -33,7 +33,7 @@ class ReportDefinition implements IReportDefinition
     /**
      * @var array|ReportColumn[]
      */
-    private $columns = array();
+    private $columns = [];
 
     /**
      * @var int
@@ -49,7 +49,7 @@ class ReportDefinition implements IReportDefinition
     {
         $dateTimeFormat = Resources::GetInstance()->ShortDateTimeFormat();
         $dateFormat = Resources::GetInstance()->GeneralDateFormat();
-        $orderedColumns = array(
+        $orderedColumns = [
             ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
             ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
             ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Total()),
@@ -79,7 +79,7 @@ class ReportDefinition implements IReportDefinition
             ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartColumnDefinition::Total()),
             ColumnNames::DATE => new ReportDateColumn('Date', $timezone, $dateFormat, ChartColumnDefinition::Date()),
             ColumnNames::UTILIZATION => new ReportUtilizationColumn('Utilization', ChartColumnDefinition::Total()),
-        );
+        ];
 
         if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter())) {
             $orderedColumns[ColumnNames::CREDIT_COUNT] = new ReportStringColumn('Credits', ChartColumnDefinition::Null());
@@ -126,7 +126,7 @@ class ReportDefinition implements IReportDefinition
             $row[ColumnNames::PARTICIPANT_LIST] = str_replace('!sep!', ', ', $row[ColumnNames::PARTICIPANT_LIST]);
         }
 
-        $formattedRow = array();
+        $formattedRow = [];
         foreach ($this->columns as $key => $column) {
             if ($key == ColumnNames::TOTAL || $key == ColumnNames::TOTAL_TIME) {
                 $this->sum += $row[$key];
@@ -138,12 +138,13 @@ class ReportDefinition implements IReportDefinition
                 $this->AddCustomAttributes(CustomAttributeCategory::USER, $userAttributes, $formattedRow, $key, $column);
                 $this->AddCustomAttributes(CustomAttributeCategory::RESOURCE, $resourceAttributes, $formattedRow, $key, $column);
                 $this->AddCustomAttributes(CustomAttributeCategory::RESOURCE_TYPE, $resourceTypeAttributes, $formattedRow, $key, $column);
-            }
-            else {
-                $formattedRow[] = new ReportCell($column->GetData($row[$key]),
+            } else {
+                $formattedRow[] = new ReportCell(
+                    $column->GetData($row[$key]),
                     $column->GetChartData($row, $key),
                     $column->GetChartColumnType(),
-                    $column->GetChartGroup());
+                    $column->GetChartGroup()
+                );
             }
         }
 
@@ -182,8 +183,7 @@ class ReportDefinition implements IReportDefinition
     {
         if (array_key_exists(ColumnNames::TOTAL, $this->columns)) {
             return ChartType::Total;
-        }
-        elseif (array_key_exists(ColumnNames::TOTAL_TIME, $this->columns)) {
+        } elseif (array_key_exists(ColumnNames::TOTAL_TIME, $this->columns)) {
             return ChartType::TotalTime;
         }
 

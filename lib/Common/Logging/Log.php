@@ -48,7 +48,7 @@ class Log
      * @param string $message
      * @param mixed $args
      */
-    public static function Debug($message, $args = array())
+    public static function Debug($message, $args = [])
     {
         if (!self::GetInstance()->logger->isDebugEnabled()) {
             return;
@@ -58,9 +58,8 @@ class Log
             $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             if (is_array($debug)) {
                 $debugInfo = $debug[0];
-            }
-            else {
-                $debugInfo = array('file' => null, 'line' => null);
+            } else {
+                $debugInfo = ['file' => null, 'line' => null];
             }
 
             $args = func_get_args();
@@ -79,7 +78,7 @@ class Log
      * @param string $message
      * @param mixed $args
      */
-    public static function Error($message, $args = array())
+    public static function Error($message, $args = [])
     {
         if (!self::GetInstance()->logger->isEnabledFor(LoggerLevel::getLevelError())) {
             return;
@@ -89,9 +88,8 @@ class Log
             $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             if (is_array($debug)) {
                 $debugInfo = $debug[0];
-            }
-            else {
-                $debugInfo = array('file' => null, 'line' => null);
+            } else {
+                $debugInfo = ['file' => null, 'line' => null];
             }
 
             $args = func_get_args();
@@ -111,7 +109,7 @@ class Log
      * @param mixed $args
      * @return void
      */
-    public static function Sql($message, $args = array())
+    public static function Sql($message, $args = [])
     {
         try {
             if (!self::GetInstance()->sqlLogger->isDebugEnabled()) {
@@ -138,12 +136,10 @@ class NullLog4php
 {
     public function error($log)
     {
-
     }
 
     public function debug($log)
     {
-
     }
 
     public function isDebugEnabled()

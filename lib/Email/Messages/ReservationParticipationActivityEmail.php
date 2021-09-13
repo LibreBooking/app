@@ -49,14 +49,12 @@ class ReservationParticipationActivityEmail extends EmailMessage
     public function Subject()
     {
         $subject = 'ReservationParticipantAccept';
-        if ($this->invitationAction == InvitationAction::Decline || $this->invitationAction == InvitationAction::CancelAll || $this->invitationAction == InvitationAction::CancelInstance){
+        if ($this->invitationAction == InvitationAction::Decline || $this->invitationAction == InvitationAction::CancelAll || $this->invitationAction == InvitationAction::CancelInstance) {
             $subject = 'ReservationParticipantDecline';
-        }
-        else if ($this->invitationAction == InvitationAction::Join || $this->invitationAction == InvitationAction::JoinAll)
-        {
+        } elseif ($this->invitationAction == InvitationAction::Join || $this->invitationAction == InvitationAction::JoinAll) {
             $subject = 'ReservationParticipantJoin';
         }
-        return $this->Translate($subject, array($this->participantDetails, $this->series->Resource()->GetName(), $this->series->CurrentInstance()->StartDate()->ToTimezone($this->timezone)->Format(Resources::GetInstance()->GeneralDateFormat())));
+        return $this->Translate($subject, [$this->participantDetails, $this->series->Resource()->GetName(), $this->series->CurrentInstance()->StartDate()->ToTimezone($this->timezone)->Format(Resources::GetInstance()->GeneralDateFormat())]);
     }
 
     public function Body()
@@ -72,9 +70,8 @@ class ReservationParticipationActivityEmail extends EmailMessage
         $this->Set('ParticipantDetails', $this->participantDetails);
         $this->Set('InvitationAction', $this->invitationAction);
 
-        $resourceNames = array();
-        foreach ($this->series->AllResources() as $resource)
-        {
+        $resourceNames = [];
+        foreach ($this->series->AllResources() as $resource) {
             $resourceNames[] = $resource->GetName();
         }
         $this->Set('ResourceNames', $resourceNames);

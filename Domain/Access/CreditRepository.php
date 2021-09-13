@@ -1,7 +1,7 @@
 <?php
 
-require_once (ROOT_DIR . 'Domain/Values/CreditLogView.php');
-require_once (ROOT_DIR . 'Domain/Access/PageableDataStore.php');
+require_once(ROOT_DIR . 'Domain/Values/CreditLogView.php');
+require_once(ROOT_DIR . 'Domain/Access/PageableDataStore.php');
 
 interface ICreditRepository
 {
@@ -23,12 +23,11 @@ class CreditRepository implements ICreditRepository
     {
         $command = new GetAllCreditLogsCommand($userId);
 
-        if ($filter != null)
-        {
+        if ($filter != null) {
             $command = new FilterCommand($command, $filter);
         }
 
-        $builder = array('CreditLogView', 'Populate');
+        $builder = ['CreditLogView', 'Populate'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
 }

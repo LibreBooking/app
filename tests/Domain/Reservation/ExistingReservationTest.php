@@ -54,8 +54,11 @@ class ExistingReservationTests extends TestBase
         $seriesBranchedEvent = new SeriesBranchedEvent($series);
         $this->assertEquals(1, count($events));
         $this->assertEquals($seriesBranchedEvent, $events[0], "should have been branched");
-        $this->assertEquals(new RepeatNone(), $series->RepeatOptions(),
-            "repeat options should be cleared for new instance");
+        $this->assertEquals(
+            new RepeatNone(),
+            $series->RepeatOptions(),
+            "repeat options should be cleared for new instance"
+        );
     }
 
     public function testWhenApplyingRecurrenceUpdatesToFutureInstancesSeries()
@@ -78,7 +81,7 @@ class ExistingReservationTests extends TestBase
         $repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
 
         $builder = new ExistingReservationSeriesBuilder();
-//		$builder->WithBookedBy($this->fakeUser);
+        //		$builder->WithBookedBy($this->fakeUser);
         $builder->WithRepeatOptions($currentRepeatOptions);
         $builder->WithInstance($oldReservation);
         $builder->WithInstance($currentInstance);
@@ -103,10 +106,14 @@ class ExistingReservationTests extends TestBase
         $instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2, $series);
         $seriesBranchedEvent = new SeriesBranchedEvent($series);
 
-        $this->assertTrue(in_array($instanceRemovedEvent1, $events),
-            "missing ref {$futureReservation1->ReferenceNumber()}");
-        $this->assertTrue(in_array($instanceRemovedEvent2, $events),
-            "missing ref {$futureReservation2->ReferenceNumber()}");
+        $this->assertTrue(
+            in_array($instanceRemovedEvent1, $events),
+            "missing ref {$futureReservation1->ReferenceNumber()}"
+        );
+        $this->assertTrue(
+            in_array($instanceRemovedEvent2, $events),
+            "missing ref {$futureReservation2->ReferenceNumber()}"
+        );
         $this->assertTrue(in_array($seriesBranchedEvent, $events), "should have been branched");
 
         // recreate all future events
@@ -206,8 +213,10 @@ class ExistingReservationTests extends TestBase
         $instanceRemovedEvent1 = new InstanceRemovedEvent($afterTodayButBeforeCurrent, $series);
         $instanceRemovedEvent2 = new InstanceRemovedEvent($afterCurrent, $series);
 
-        $this->assertTrue(in_array($instanceRemovedEvent1, $events),
-            "missing ref {$afterTodayButBeforeCurrent->ReferenceNumber()}");
+        $this->assertTrue(
+            in_array($instanceRemovedEvent1, $events),
+            "missing ref {$afterTodayButBeforeCurrent->ReferenceNumber()}"
+        );
         $this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$afterCurrent->ReferenceNumber()}");
 
         // recreate all future events
@@ -305,8 +314,11 @@ class ExistingReservationTests extends TestBase
 
     public function testWhenApplyingSimpleUpdatesToFullSeriesCurrentTimesCanBeEdited()
     {
-        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT,
-            ReservationStartTimeConstraint::CURRENT);
+        $this->fakeConfig->SetSectionKey(
+            ConfigSection::RESERVATION,
+            ConfigKeys::RESERVATION_START_TIME_CONSTRAINT,
+            ReservationStartTimeConstraint::CURRENT
+        );
         $timezone = 'UTC';
         $currentResource = new FakeBookableResource(8);
         $newResource = new FakeBookableResource(10);
@@ -329,8 +341,11 @@ class ExistingReservationTests extends TestBase
 
     public function testWhenApplyingSimpleUpdatesToFullSeriesAndThereIsNoStartTimeConstraint()
     {
-        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT,
-            ReservationStartTimeConstraint::NONE);
+        $this->fakeConfig->SetSectionKey(
+            ConfigSection::RESERVATION,
+            ConfigKeys::RESERVATION_START_TIME_CONSTRAINT,
+            ReservationStartTimeConstraint::NONE
+        );
         $timezone = 'UTC';
         $currentResource = new FakeBookableResource(8);
         $newResource = new FakeBookableResource(10);
@@ -380,12 +395,11 @@ class ExistingReservationTests extends TestBase
         $newInstance2Start = Date::Parse('2015-01-09 09:30:00', 'UTC');
         $newInstance2End = Date::Parse('2015-01-10 00:00:00', 'UTC');
 
-//		$this->assertEquals(new DateRange($newInstance1Start, $newInstance1End), $series->GetInstance($newInstance1Start)->Duration());
-//		$this->assertEquals(new DateRange($newInstance2Start, $newInstance2End), $series->GetInstance($newInstance2Start)->Duration());
+        //		$this->assertEquals(new DateRange($newInstance1Start, $newInstance1End), $series->GetInstance($newInstance1Start)->Duration());
+        //		$this->assertEquals(new DateRange($newInstance2Start, $newInstance2End), $series->GetInstance($newInstance2Start)->Duration());
 
         $events = $series->GetEvents();
         $this->assertTrue(in_array(new InstanceUpdatedEvent($instance1, $series), $events));
-
     }
 
     public function testUpdateSingleInstanceToAnEarlierTime()
@@ -451,8 +465,8 @@ class ExistingReservationTests extends TestBase
 
     public function testChangingParticipantsAddsNewRemovesOldAndKeepsOverlap()
     {
-        $existingParticipants = array(1, 2, 3, 4);
-        $newParticipants = array(1, 5, 4, 6);
+        $existingParticipants = [1, 2, 3, 4];
+        $newParticipants = [1, 5, 4, 6];
 
         $reservation = new TestReservation();
         $reservation->WithParticipants($existingParticipants);
@@ -464,15 +478,15 @@ class ExistingReservationTests extends TestBase
         $series->ChangeParticipants($newParticipants);
 
         $this->assertEquals(2, count($reservation->AddedParticipants()));
-        $this->assertEquals(array(5, 6), $reservation->AddedParticipants());
-        $this->assertEquals(array(2, 3), $reservation->RemovedParticipants());
-        $this->assertEquals(array(1, 4), $reservation->UnchangedParticipants());
+        $this->assertEquals([5, 6], $reservation->AddedParticipants());
+        $this->assertEquals([2, 3], $reservation->RemovedParticipants());
+        $this->assertEquals([1, 4], $reservation->UnchangedParticipants());
     }
 
     public function testChangingInviteesAddsNewRemovesOldAndKeepsOverlap()
     {
-        $existingInvitees = array(1, 2, 3, 4);
-        $newInvitees = array(1, 5, 4, 6);
+        $existingInvitees = [1, 2, 3, 4];
+        $newInvitees = [1, 5, 4, 6];
 
         $reservation = new TestReservation();
         $reservation->WithInvitees($existingInvitees);
@@ -484,23 +498,23 @@ class ExistingReservationTests extends TestBase
         $series->ChangeInvitees($newInvitees);
 
         $this->assertEquals(2, count($reservation->AddedInvitees()));
-        $this->assertEquals(array(5, 6), $reservation->AddedInvitees());
-        $this->assertEquals(array(2, 3), $reservation->RemovedInvitees());
-        $this->assertEquals(array(1, 4), $reservation->UnchangedInvitees());
+        $this->assertEquals([5, 6], $reservation->AddedInvitees());
+        $this->assertEquals([2, 3], $reservation->RemovedInvitees());
+        $this->assertEquals([1, 4], $reservation->UnchangedInvitees());
     }
 
     public function testDuplicateEventsAreIgnored()
     {
         $reservation = new TestReservation();
-        $reservation->WithInvitees(array(1));
+        $reservation->WithInvitees([1]);
         $reservation->SetReservationId(100);
 
         $builder = new ExistingReservationSeriesBuilder();
         $builder->WithInstance($reservation);
         $series = $builder->Build();
 
-        $series->ChangeInvitees(array(2));
-        $series->ChangeInvitees(array(3));
+        $series->ChangeInvitees([2]);
+        $series->ChangeInvitees([3]);
 
         $events = $series->GetEvents();
         $unique = array_unique($events);
@@ -513,15 +527,15 @@ class ExistingReservationTests extends TestBase
         $userId = 1;
 
         $r1 = new TestReservation();
-        $r1->WithInvitees(array($userId));
+        $r1->WithInvitees([$userId]);
         $r1->SetReservationId(100);
 
         $r2 = new TestReservation();
-        $r2->WithInvitees(array($userId));
+        $r2->WithInvitees([$userId]);
         $r2->SetReservationId(100);
 
         $r3 = new TestReservation();
-        $r3->WithParticipants(array($userId));
+        $r3->WithParticipants([$userId]);
         $r3->SetReservationId(100);
 
         $builder = new ExistingReservationSeriesBuilder();
@@ -552,15 +566,15 @@ class ExistingReservationTests extends TestBase
         $userId = 1;
 
         $r1 = new TestReservation();
-        $r1->WithInvitees(array($userId));
+        $r1->WithInvitees([$userId]);
         $r1->SetReservationId(100);
 
         $r2 = new TestReservation();
-        $r2->WithInvitees(array($userId));
+        $r2->WithInvitees([$userId]);
         $r2->SetReservationId(100);
 
         $r3 = new TestReservation();
-        $r3->WithParticipants(array($userId));
+        $r3->WithParticipants([$userId]);
         $r3->SetReservationId(100);
 
         $builder = new ExistingReservationSeriesBuilder();
@@ -588,15 +602,15 @@ class ExistingReservationTests extends TestBase
         $userId = 1;
 
         $r1 = new TestReservation();
-        $r1->WithInvitees(array($userId));
+        $r1->WithInvitees([$userId]);
         $r1->SetReservationId(100);
 
         $r2 = new TestReservation();
-        $r2->WithInvitees(array($userId));
+        $r2->WithInvitees([$userId]);
         $r2->SetReservationId(100);
 
         $r3 = new TestReservation();
-        $r3->WithInvitees(array(10));
+        $r3->WithInvitees([10]);
         $r3->SetReservationId(100);
 
         $builder = new ExistingReservationSeriesBuilder();
@@ -626,15 +640,15 @@ class ExistingReservationTests extends TestBase
         $userId = 1;
 
         $r1 = new TestReservation();
-        $r1->WithInvitees(array($userId));
+        $r1->WithInvitees([$userId]);
         $r1->SetReservationId(100);
 
         $r2 = new TestReservation();
-        $r2->WithInvitees(array($userId));
+        $r2->WithInvitees([$userId]);
         $r2->SetReservationId(100);
 
         $r3 = new TestReservation();
-        $r3->WithInvitees(array(10));
+        $r3->WithInvitees([10]);
         $r3->SetReservationId(100);
 
         $builder = new ExistingReservationSeriesBuilder();
@@ -846,7 +860,7 @@ class ExistingReservationTests extends TestBase
         $series->WithResource($becomesPrimary);
 
         $series->Update($series->UserId(), $becomesPrimary, $series->Title(), $series->Description(), $this->fakeUser);
-        $series->ChangeResources(array($unchanged, $added));
+        $series->ChangeResources([$unchanged, $added]);
 
         $events = $series->GetEvents();
 
@@ -862,8 +876,10 @@ class ExistingReservationTests extends TestBase
         $removeAdditionalIndex = array_search($removeAdditionalEvent, $events);
         $addAdditionalIndex = array_search($addAdditionalEvent, $events);
 
-        $this->assertTrue($removeAdditionalIndex < $addAdditionalIndex,
-            "should remove existing relationship before adding new one");
+        $this->assertTrue(
+            $removeAdditionalIndex < $addAdditionalIndex,
+            "should remove existing relationship before adding new one"
+        );
     }
 
     public function testApproveUpdatesStateAndFiresEvent()
@@ -876,7 +892,6 @@ class ExistingReservationTests extends TestBase
 
         $this->assertEquals(ReservationStatus::Created, $series->StatusId());
         $this->assertTrue(in_array(new SeriesApprovedEvent($series), $events));
-
     }
 
     public function testChangeAccessories()
@@ -894,7 +909,7 @@ class ExistingReservationTests extends TestBase
         $series->WithAccessory($accessory2);
         $series->WithAccessory($accessory3);
 
-        $accessories = array($accessory1WithDifferentQuantity, $accessory2, $accessory4);
+        $accessories = [$accessory1WithDifferentQuantity, $accessory2, $accessory4];
         $series->ChangeAccessories($accessories);
 
         $this->assertEquals($accessories, $series->Accessories());
@@ -946,10 +961,14 @@ class ExistingReservationTests extends TestBase
 
         $events = $series->GetEvents();
 
-        $this->assertTrue(in_array(new ReminderAddedEvent($series, $start->MinutesPrior(), ReservationReminderType::Start),
-            $events));
-        $this->assertTrue(in_array(new ReminderAddedEvent($series, $end->MinutesPrior(), ReservationReminderType::End),
-            $events));
+        $this->assertTrue(in_array(
+            new ReminderAddedEvent($series, $start->MinutesPrior(), ReservationReminderType::Start),
+            $events
+        ));
+        $this->assertTrue(in_array(
+            new ReminderAddedEvent($series, $end->MinutesPrior(), ReservationReminderType::End),
+            $events
+        ));
     }
 
     public function testDoesNothingIfReminderDoesNotChange()
@@ -983,10 +1002,14 @@ class ExistingReservationTests extends TestBase
 
         $events = $series->GetEvents();
 
-        $this->assertTrue(in_array(new ReminderRemovedEvent($series, ReservationReminderType::Start),
-            $events));
-        $this->assertTrue(in_array(new ReminderRemovedEvent($series, ReservationReminderType::End),
-            $events));
+        $this->assertTrue(in_array(
+            new ReminderRemovedEvent($series, ReservationReminderType::Start),
+            $events
+        ));
+        $this->assertTrue(in_array(
+            new ReminderRemovedEvent($series, ReservationReminderType::End),
+            $events
+        ));
     }
 
     public function testWhenUpdatingReservationDatesPastCheckedInTime_RequireCheckInAgain()
@@ -1022,7 +1045,7 @@ class ExistingReservationTests extends TestBase
         $tz = 'UTC';
         $this->fakeUser->Timezone = $tz;
         Date::_SetNow(Date::Parse('2017-08-01', $tz));
-        $reservations = array();
+        $reservations = [];
         $now = Date::Parse('2017-08-10', $tz);
         for ($i = 0; $i < 5; $i++) {
             $date = new DateRange($now->AddDays($i)->SetTime(Time::Parse('13:00')), $now->AddDays($i)->SetTime(Time::Parse('14:00')));
@@ -1058,7 +1081,7 @@ class ExistingReservationTests extends TestBase
         $originalRange = DateRange::Create('2018-10-01 12:00', '2018-10-01 13:00', $tz);
         $reservation = $builder
             ->WithCurrentInstance(new TestReservation(1, $originalRange))
-            ->WithRepeatOptions(new RepeatWeekly(1, Date::Parse('2018-10-29', $tz), array(DayOfWeek::MONDAY)))
+            ->WithRepeatOptions(new RepeatWeekly(1, Date::Parse('2018-10-29', $tz), [DayOfWeek::MONDAY]))
             ->WithInstance(new TestReservation(2, $originalRange->AddDays(7)))
             ->WithInstance(new TestReservation(3, $originalRange->AddDays(14)))
             ->WithInstance(new TestReservation(4, $originalRange->AddDays(21)))
@@ -1068,17 +1091,15 @@ class ExistingReservationTests extends TestBase
 
         $reservation->UpdateBookedBy($admin);
         $reservation->UpdateDuration($originalRange->AddDays(1));
-        $reservation->Repeats(new RepeatWeekly(1, Date::Parse('2018-10-30', $tz), array(DayOfWeek::TUESDAY)));
+        $reservation->Repeats(new RepeatWeekly(1, Date::Parse('2018-10-30', $tz), [DayOfWeek::TUESDAY]));
 
         $instances = $reservation->Instances();
 
         $events = $reservation->GetEvents();
 
         $removedReferenceNumbers = [];
-        foreach ($events as $e)
-        {
-            if (is_a($e, 'InstanceRemovedEvent'))
-            {
+        foreach ($events as $e) {
+            if (is_a($e, 'InstanceRemovedEvent')) {
                 /** @var InstanceRemovedEvent $e */
                 $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
@@ -1122,22 +1143,18 @@ class ExistingReservationTests extends TestBase
         $removedReferenceNumbers = [];
         $addedReferenceNumbers = [];
         $updatedReferenceNumbers = [];
-        foreach ($events as $e)
-        {
-            if (is_a($e, 'InstanceRemovedEvent'))
-            {
+        foreach ($events as $e) {
+            if (is_a($e, 'InstanceRemovedEvent')) {
                 /** @var InstanceRemovedEvent $e */
                 $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
 
-            if (is_a($e, 'InstanceAddedEvent'))
-            {
+            if (is_a($e, 'InstanceAddedEvent')) {
                 /** @var InstanceAddedEvent $e */
                 $addedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
 
-            if (is_a($e, 'InstanceUpdatedEvent'))
-            {
+            if (is_a($e, 'InstanceUpdatedEvent')) {
                 /** @var InstanceAddedEvent $e */
                 $updatedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
@@ -1146,7 +1163,7 @@ class ExistingReservationTests extends TestBase
         $this->assertEquals(4, count($instances));
         $this->assertEquals(0, count($removedReferenceNumbers));
         $this->assertEquals(0, count($addedReferenceNumbers));
-		sort($updatedReferenceNumbers);
+        sort($updatedReferenceNumbers);
         $this->assertEquals([1, 2, 3, 4], $updatedReferenceNumbers);
         $this->assertEquals($instances[1]->StartDate(), $date1->GetBegin()->AddDays(1));
         $this->assertEquals($instances[1]->EndDate(), $date1->GetBegin()->AddDays(1)->SetTimeString("13:00"));
@@ -1185,16 +1202,13 @@ class ExistingReservationTests extends TestBase
 
         $removedReferenceNumbers = [];
         $addedReferenceNumbers = [];
-        foreach ($events as $e)
-        {
-            if (is_a($e, 'InstanceRemovedEvent'))
-            {
+        foreach ($events as $e) {
+            if (is_a($e, 'InstanceRemovedEvent')) {
                 /** @var InstanceRemovedEvent $e */
                 $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
 
-            if (is_a($e, 'InstanceAddedEvent'))
-            {
+            if (is_a($e, 'InstanceAddedEvent')) {
                 /** @var InstanceAddedEvent $e */
                 $addedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
@@ -1237,16 +1251,13 @@ class ExistingReservationTests extends TestBase
 
         $removedReferenceNumbers = [];
         $addedReferenceNumbers = [];
-        foreach ($events as $e)
-        {
-            if (is_a($e, 'InstanceRemovedEvent'))
-            {
+        foreach ($events as $e) {
+            if (is_a($e, 'InstanceRemovedEvent')) {
                 /** @var InstanceRemovedEvent $e */
                 $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
 
-            if (is_a($e, 'InstanceAddedEvent'))
-            {
+            if (is_a($e, 'InstanceAddedEvent')) {
                 /** @var InstanceAddedEvent $e */
                 $addedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
             }
@@ -1255,7 +1266,7 @@ class ExistingReservationTests extends TestBase
         $this->assertEquals(2, count($instances), "the original/current is in the past");
         $this->assertEquals(3, count($removedReferenceNumbers));
         $this->assertEquals(2, count($addedReferenceNumbers));
-		sort($removedReferenceNumbers);
+        sort($removedReferenceNumbers);
         $this->assertEquals([2, 3, 4], $removedReferenceNumbers);
     }
 }

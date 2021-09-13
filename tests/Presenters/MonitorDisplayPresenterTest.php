@@ -38,17 +38,19 @@ class MonitorDisplayPresenterTests extends TestBase
         $this->scheduleService = new FakeScheduleService();
         $this->reservationService = new FakeReservationService();
 
-        $this->presenter = new MonitorDisplayPresenter($this->page,
+        $this->presenter = new MonitorDisplayPresenter(
+            $this->page,
             $this->resourceService,
             $this->reservationService,
             $this->scheduleService,
-            new ScheduleLayoutFactory());
+            new ScheduleLayoutFactory()
+        );
     }
 
     public function testBindsConfigurationOptions()
     {
-        $this->scheduleService->_AllSchedules = array(new FakeSchedule(1, '1', false), new FakeSchedule(2, '2', true));
-        $this->resourceService->_ScheduleResources = array(new TestResourceDto(1), new TestResourceDto(2));
+        $this->scheduleService->_AllSchedules = [new FakeSchedule(1, '1', false), new FakeSchedule(2, '2', true)];
+        $this->resourceService->_ScheduleResources = [new TestResourceDto(1), new TestResourceDto(2)];
 
         $this->presenter->PageLoad();
 
@@ -59,11 +61,11 @@ class MonitorDisplayPresenterTests extends TestBase
     public function testRebindsResourcesForSchedule()
     {
         $this->page->_ScheduleId = 1;
-        $this->resourceService->_ScheduleResources = array(new TestResourceDto(1, '1'), new TestResourceDto(2, '2'));
+        $this->resourceService->_ScheduleResources = [new TestResourceDto(1, '1'), new TestResourceDto(2, '2')];
 
         $this->presenter->ProcessDataRequest('resources');
 
-        $this->assertEquals(array(array('id' => 1, 'name' => '1'), array('id' => 2, 'name' => '2')), $this->page->_ReBoundResources);
+        $this->assertEquals([['id' => 1, 'name' => '1'], ['id' => 2, 'name' => '2']], $this->page->_ReBoundResources);
     }
 
     public function testShowsSchedule()
@@ -156,9 +158,9 @@ class TestMonitorDisplayPage extends MonitorDisplayPage
 
     public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources, $format)
     {
-       $this->_DateRange = $range;
-       $this->_DailyLayout = $layout;
-       $this->_Resources = $resources;
+        $this->_DateRange = $range;
+        $this->_DailyLayout = $layout;
+        $this->_Resources = $resources;
     }
 
     public function GetDaysToView()

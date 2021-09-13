@@ -42,9 +42,8 @@ class AnnouncementRepositoryTests extends TestBase
         $rows = $fakeAnc->GetRows();
         $this->db->SetRow(0, $rows);
 
-        $expectedAnnouncements = array();
-        foreach ($rows as $item)
-        {
+        $expectedAnnouncements = [];
+        foreach ($rows as $item) {
             $expectedAnnouncements[] = Announcement::FromRow($item);
         }
 
@@ -69,16 +68,16 @@ class AnnouncementRepositoryTests extends TestBase
         $resources1 = '9,10,11';
         $displayPage = 1;
 
-        $rows = array();
+        $rows = [];
         $rows[] = $this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1, $groups1, $resources1, $displayPage);
         $rows[] = $this->GetAnnouncementRow(2, $text2, $start2, $end2, $priority2);
         $this->db->SetRows($rows);
         $announcements = $this->repository->GetAll();
 
-        $expectedAnnouncements = array(
-            new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1, array(1,2,3), array(9,10,11), $displayPage),
-            new Announcement(2, $text2, Date::FromDatabase($start2), Date::FromDatabase($end2), $priority2, array(), array(), $displayPage),
-        );
+        $expectedAnnouncements = [
+            new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1, [1,2,3], [9,10,11], $displayPage),
+            new Announcement(2, $text2, Date::FromDatabase($start2), Date::FromDatabase($end2), $priority2, [], [], $displayPage),
+        ];
 
         $this->assertEquals(new GetAllAnnouncementsCommand(), $this->db->_LastCommand);
         $this->assertEquals($expectedAnnouncements, $announcements);
@@ -92,8 +91,8 @@ class AnnouncementRepositoryTests extends TestBase
         $start = Date::Parse('2011-01-01', 'America/Chicago');
         $end = NullDate::Instance();
         $priority = 1;
-        $groups = array(1,2,3);
-        $resources = array(9,10,11);
+        $groups = [1,2,3];
+        $resources = [9,10,11];
         $displayPage = 1;
 
         $announcement = Announcement::Create($text, $start, $end, $priority, $groups, $resources, $displayPage);
@@ -125,13 +124,13 @@ class AnnouncementRepositoryTests extends TestBase
         $resources1 = '9,10,11';
         $displayPage = 1;
 
-        $rows = array($this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1, $groups1, $resources1));
+        $rows = [$this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1, $groups1, $resources1)];
         $this->db->SetRows($rows);
 
         $id = 1232;
         $actual = $this->repository->LoadById($id);
 
-        $expected = new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1, array(1,2,3), array(9, 10, 11), $displayPage);
+        $expected = new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1, [1,2,3], [9, 10, 11], $displayPage);
         $this->assertEquals(new GetAnnouncementByIdCommand($id), $this->db->_LastCommand);
         $this->assertEquals($actual, $expected);
     }
@@ -143,8 +142,8 @@ class AnnouncementRepositoryTests extends TestBase
         $start1 = Date::Parse('2011-01-01', 'UTC');
         $end1 = Date::Parse('2011-01-01', 'UTC');
         $priority1 = 3;
-        $groupIds = array(1, 2, 3);
-        $resourceIds = array(9, 10, 11);
+        $groupIds = [1, 2, 3];
+        $resourceIds = [9, 10, 11];
         $displayPage = 1;
         $a = new Announcement($id, $text1, $start1, $end1, $priority1, $groupIds, $resourceIds, $displayPage);
 
@@ -156,29 +155,29 @@ class AnnouncementRepositoryTests extends TestBase
     public function testAppliesToUserIfNoGroupsOrResources()
     {
         $displayPage = 1;
-        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(), array(), $displayPage);
+        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, [], [], $displayPage);
         $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
     }
 
     public function testAppliesToUserIfResourceAllowed()
     {
         $displayPage = 1;
-        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(), array(1,2,3), $displayPage);
-        $this->permissionService->ReturnValues = array(true, true, true);
+        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, [], [1,2,3], $displayPage);
+        $this->permissionService->ReturnValues = [true, true, true];
         $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
     }
 
     public function testAppliesToUserIfInGroup()
     {
         $displayPage = 1;
-        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(1,2,3), array(), $displayPage);
-        $this->fakeUser->Groups = array(2);
+        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, [1,2,3], [], $displayPage);
+        $this->fakeUser->Groups = [2];
         $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
     }
 
     private function GetAnnouncementRow($id, $text, $startDate, $endDate, $priority, $groups = '', $resources = '', $displayPage = 1)
     {
-        return array(
+        return [
             ColumnNames::ANNOUNCEMENT_ID => $id,
             ColumnNames::ANNOUNCEMENT_TEXT => $text,
             ColumnNames::ANNOUNCEMENT_START => $startDate,
@@ -187,6 +186,6 @@ class AnnouncementRepositoryTests extends TestBase
             ColumnNames::GROUP_IDS => $groups,
             ColumnNames::RESOURCE_IDS => $resources,
             ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => $displayPage,
-        );
+        ];
     }
 }

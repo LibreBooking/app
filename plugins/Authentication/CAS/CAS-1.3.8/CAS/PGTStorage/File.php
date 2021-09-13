@@ -55,7 +55,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      *
      * @private
      */
-    var $_path;
+    public $_path;
 
     /**
      * This method returns the name of the directory where PGT's should be stored
@@ -65,7 +65,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      *
      * @private
      */
-    function getPath()
+    public function getPath()
     {
         return $this->_path;
     }
@@ -81,7 +81,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      * @return string an informational string.
      * @public
      */
-    function getStorageType()
+    public function getStorageType()
     {
         return "file";
     }
@@ -93,7 +93,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      * @return string an informational string.
      * @public
      */
-    function getStorageInfo()
+    public function getStorageInfo()
     {
         return 'path=`'.$this->getPath().'\'';
     }
@@ -112,7 +112,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      *
      * @public
      */
-    function __construct($cas_parent,$path)
+    public function __construct($cas_parent, $path)
     {
         phpCAS::traceBegin();
         // call the ancestor's constructor
@@ -122,15 +122,12 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
             $path = CAS_PGT_STORAGE_FILE_DEFAULT_PATH;
         }
         // check that the path is an absolute path
-        if (getenv("OS")=="Windows_NT" || strtoupper(substr(PHP_OS,0,3)) == 'WIN') {
-
+        if (getenv("OS")=="Windows_NT" || strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             if (!preg_match('`^[a-zA-Z]:`', $path)) {
                 phpCAS::error('an absolute path is needed for PGT storage to file');
             }
-
         } else {
-
-            if ( $path[0] != '/' ) {
+            if ($path[0] != '/') {
                 phpCAS::error('an absolute path is needed for PGT storage to file');
             }
 
@@ -153,7 +150,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      * @return void
      * @public
      */
-    function init()
+    public function init()
     {
         phpCAS::traceBegin();
         // if the storage has already been initialized, return immediatly
@@ -177,7 +174,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      * @return string a filename
      * @private
      */
-    function getPGTIouFilename($pgt_iou)
+    public function getPGTIouFilename($pgt_iou)
     {
         phpCAS::traceBegin();
         $filename = $this->getPath()."phpcas-".hash("sha256", $pgt_iou);
@@ -198,7 +195,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      *
      * @public
      */
-    function write($pgt,$pgt_iou)
+    public function write($pgt, $pgt_iou)
     {
         phpCAS::traceBegin();
         $fname = $this->getPGTIouFilename($pgt_iou);
@@ -231,7 +228,7 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
      *
      * @public
      */
-    function read($pgt_iou)
+    public function read($pgt_iou)
     {
         phpCAS::traceBegin();
         $pgt = false;
@@ -256,6 +253,4 @@ class CAS_PGTStorage_File extends CAS_PGTStorage_AbstractStorage
     }
 
     /** @} */
-
 }
-?>

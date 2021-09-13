@@ -5,10 +5,10 @@ interface IDomainEvent
     /**
      * @return string
      */
-    function EventType();
+    public function EventType();
 
     /**
      * @return EventCategory|string
      */
-    function EventCategory();
+    public function EventCategory();
 }

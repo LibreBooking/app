@@ -37,9 +37,6 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
-class CAS_Request_Exception
-extends Exception
-implements CAS_Exception
+class CAS_Request_Exception extends Exception implements CAS_Exception
 {
-
 }

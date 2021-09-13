@@ -2,14 +2,13 @@
 
 interface IDisplayableReportPage
 {
-	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns);
+    public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns);
 
-	public function DisplayError();
+    public function DisplayError();
 
-	public function ShowResults();
+    public function ShowResults();
 
-	public function PrintReport();
+    public function PrintReport();
 
-	public function ShowCsv();
+    public function ShowCsv();
 }
-

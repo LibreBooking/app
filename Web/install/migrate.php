@@ -149,12 +149,12 @@ class MigrationSession
 
     public static function SetLegacyDb($legacyUserName, $legacyPassword, $legacyHostSpec, $legacyDatabaseName)
     {
-        ServiceLocator::GetServer()->SetSession('migrate-legacy-db', array(
+        ServiceLocator::GetServer()->SetSession('migrate-legacy-db', [
             'username' => $legacyUserName,
             'password' => $legacyPassword,
             'hostspec' => $legacyHostSpec,
             'databasename' => $legacyDatabaseName
-        ));
+        ]);
     }
 
     private static function GetLastId($key)
@@ -247,16 +247,13 @@ class MigrationPresenter
             $runTarget = $this->page->GetRunTarget();
             if (!empty($runTarget)) {
                 $this->Migrate($runTarget, $legacyDatabase, $currentDatabase);
-            }
-            elseif ($this->page->IsLoggingIn()) {
+            } elseif ($this->page->IsLoggingIn()) {
                 if ($this->TestInstallPassword() && $this->TestLegacyConnection()) {
                     $this->page->StartMigration();
-                }
-                else {
+                } else {
                     $this->page->DisplayMigrationPrompt();
                 }
-            }
-            else {
+            } else {
                 $this->page->DisplayMigrationPrompt();
             }
         } catch (Exception $ex) {
@@ -312,8 +309,7 @@ class MigrationPresenter
             $legacyPassword = $sessionValues['password'];
             $legacyHostSpec = $sessionValues['hostspec'];
             $legacyDatabaseName = $sessionValues['databasename'];
-        }
-        else {
+        } else {
             $legacyUserName = $this->page->GetLegacyUserName();
             $legacyPassword = $this->page->GetLegacyPassword();
             $legacyHostSpec = $this->page->GetLegacyHostSpec();
@@ -369,7 +365,7 @@ class MigrationPresenter
         $getExistingSchedules = new AdHocCommand('select legacyid from schedules where legacyid is not null');
         $reader = $currentDatabase->Query($getExistingSchedules);
 
-        $knownIds = array();
+        $knownIds = [];
         while ($row = $reader->GetRow()) {
             $knownIds[] = $row['legacyid'];
             $schedulesMigrated++;
@@ -389,8 +385,10 @@ class MigrationPresenter
                 continue;
             }
 
-            $newId = $scheduleRepo->Add(new Schedule(null, $row['scheduletitle'], false, $row['weekdaystart'], $row['viewdays']),
-                1);
+            $newId = $scheduleRepo->Add(
+                new Schedule(null, $row['scheduletitle'], false, $row['weekdaystart'], $row['viewdays']),
+                1
+            );
 
             $currentDatabase->Execute(new AdHocCommand("update schedules set legacyid = \"{$row['scheduleid']}\" where schedule_id = $newId"));
             $timezone = Configuration::Instance()->GetDefaultTimezone();
@@ -426,7 +424,7 @@ class MigrationPresenter
         $getExisting = new AdHocCommand('select legacyid from resources where legacyid is not null');
         $reader = $currentDatabase->Query($getExisting);
 
-        $knownIds = array();
+        $knownIds = [];
         while ($row = $reader->GetRow()) {
             $knownIds[] = $row['legacyid'];
             $resourcesMigrated++;
@@ -458,7 +456,8 @@ class MigrationPresenter
             $max_notice_time = $row['max_notice_time'] * 60;
 
             $newId = $resourceRepo->Add(
-                new BookableResource(null,
+                new BookableResource(
+                    null,
                     $row['name'],
                     $row['location'],
                     $row['rphone'],
@@ -475,7 +474,9 @@ class MigrationPresenter
                     $newScheduleId,
                     null,
                     $min_notice_time,
-                    $min_notice_time));
+                    $min_notice_time
+                )
+            );
 
             $currentDatabase->Execute(new AdHocCommand("update resources set legacyid = \"{$row['machid']}\" where resource_id = $newId"));
 
@@ -505,7 +506,7 @@ class MigrationPresenter
         $getExisting = new AdHocCommand('select legacyid from accessories where legacyid is not null');
         $reader = $currentDatabase->Query($getExisting);
 
-        $knownIds = array();
+        $knownIds = [];
         while ($row = $reader->GetRow()) {
             $knownIds[] = $row['legacyid'];
             $accessoriesMigrated++;
@@ -548,7 +549,7 @@ class MigrationPresenter
         $getExisting = new AdHocCommand('select legacyid from groups where legacyid is not null');
         $reader = $currentDatabase->Query($getExisting);
 
-        $knownIds = array();
+        $knownIds = [];
         while ($row = $reader->GetRow()) {
             $knownIds[] = $row['legacyid'];
             $groupsMigrated++;
@@ -592,7 +593,7 @@ class MigrationPresenter
         $getExisting = new AdHocCommand('select legacyid from users where legacyid is not null order by legacyid');
         $reader = $currentDatabase->Query($getExisting);
 
-        $knownIds = array();
+        $knownIds = [];
         while ($row = $reader->GetRow()) {
             $knownIds[] = $row['legacyid'];
             $usersMigrated++;
@@ -603,25 +604,25 @@ class MigrationPresenter
         $getGroups = new AdHocCommand('select groupid, memberid from user_groups');
         $reader = $legacyDatabase->Query($getGroups);
 
-        $userGroups = array();
+        $userGroups = [];
         while ($row = $reader->GetRow()) {
             $memberId = $row['memberid'];
             if (!array_key_exists($memberId, $userGroups)) {
-                $userGroups[$memberId] = array();
+                $userGroups[$memberId] = [];
             }
             $userGroups[$memberId][] = $row['groupid'];
         }
 
         $getGroupMapping = new AdHocCommand('select group_id, legacyid from groups');
         $reader = $currentDatabase->Query($getGroupMapping);
-        $groupMap = array();
+        $groupMap = [];
         while ($row = $reader->GetRow()) {
             $groupMap[$row['legacyid']] = $row['group_id'];
         }
 
         $getResourceMapping = new AdHocCommand('select resource_id, legacyid from resources');
         $reader = $currentDatabase->Query($getResourceMapping);
-        $resourceMap = array();
+        $resourceMap = [];
         while ($row = $reader->GetRow()) {
             $resourceMap[$row['legacyid']] = $row['resource_id'];
         }
@@ -653,7 +654,8 @@ class MigrationPresenter
                 AccountStatus::ACTIVE,
                 null,
                 null,
-                null);
+                null
+            );
 
             $newId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
             $legacypassword = $row['password'];
@@ -669,7 +671,7 @@ class MigrationPresenter
 
             $getPermissions = new AdHocCommand("select * from permission where memberid='$legacyId'");
             $permissionReader = $legacyDatabase->Query($getPermissions);
-            $insertPermissionSqls = array();
+            $insertPermissionSqls = [];
             while ($row = $permissionReader->GetRow()) {
                 $machId = $row['machid'];
                 if (array_key_exists($machId, $resourceMap)) {
@@ -680,7 +682,7 @@ class MigrationPresenter
 
             if (!empty($insertPermissionSqls)) {
                 $insertPermission = "insert ignore into user_resource_permissions (resource_id, user_id) values " . implode(',', $insertPermissionSqls);
-//				die($insertPermission);
+                //				die($insertPermission);
                 $currentDatabase->ExecuteInsert(new AdHocCommand($insertPermission));
             }
 
@@ -727,7 +729,7 @@ class MigrationPresenter
         $getExisting = new AdHocCommand('select legacyid from reservation_series where legacyid is not null');
         $reader = $currentDatabase->Query($getExisting);
 
-        $knownIds = array();
+        $knownIds = [];
         while ($row = $reader->GetRow()) {
             $knownIds[] = $row['legacyid'];
         }
@@ -739,45 +741,45 @@ class MigrationPresenter
         $getUserMapping = new AdHocCommand('select user_id, legacyid from users');
         $getResourceMapping = new AdHocCommand('select resource_id, legacyid from resources');
 
-        $accessoryMapping = array();
+        $accessoryMapping = [];
         $accessoryMappingReader = $currentDatabase->Query($getAccessoryMapping);
         while ($row = $accessoryMappingReader->GetRow()) {
             $legacyId = $row['legacyid'];
             $accessoryMapping[$legacyId] = $row['accessory_id'];
         }
 
-        $userMapping = array();
+        $userMapping = [];
         $userMappingReader = $currentDatabase->Query($getUserMapping);
         while ($row = $userMappingReader->GetRow()) {
             $legacyId = $row['legacyid'];
             $userMapping[$legacyId] = $row['user_id'];
         }
 
-        $resourceMapping = array();
+        $resourceMapping = [];
         $resourceMappingReader = $currentDatabase->Query($getResourceMapping);
         while ($row = $resourceMappingReader->GetRow()) {
             $legacyId = $row['legacyid'];
             $resourceMapping[$legacyId] = $row['resource_id'];
         }
 
-        $reservationAccessories = array();
+        $reservationAccessories = [];
         $legacyAccessoryReader = $legacyDatabase->Query($getLegacyReservationAccessories);
         while ($row = $legacyAccessoryReader->GetRow()) {
             $resId = $row['resid'];
             if (!array_key_exists($resId, $reservationAccessories)) {
-                $reservationAccessories[$resId] = array();
+                $reservationAccessories[$resId] = [];
             }
             $reservationAccessories[$resId][] = $row['resourceid'];
         }
 
-        $reservationParticipants = array();
+        $reservationParticipants = [];
         $legacyParticipantReader = $legacyDatabase->Query($getLegacyReservationParticipants);
         while ($row = $legacyParticipantReader->GetRow()) {
             $resId = $row['resid'];
             if (!array_key_exists($resId, $reservationParticipants)) {
-                $reservationParticipants[$resId] = array();
+                $reservationParticipants[$resId] = [];
             }
-            $reservationParticipants[$resId][] = array('id' => $row['memberid'], 'invited' => $row['invited']);
+            $reservationParticipants[$resId][] = ['id' => $row['memberid'], 'invited' => $row['invited']];
         }
 
         $legacyReservationReader = $legacyDatabase->Query($getLegacyReservations);
@@ -800,26 +802,24 @@ class MigrationPresenter
 
                 $newId = $blackoutRepository->Add($blackout);
                 $currentDatabase->Execute(new AdHocCommand("update blackout_series set legacyid = \"$legacyId\" where blackout_series_id = $newId"));
-            }
-            else {
+            } else {
                 // handle reservation
 
-                $mappedParticipantIds = array();
-                $mappedInviteeIds = array();
+                $mappedParticipantIds = [];
+                $mappedInviteeIds = [];
                 if (array_key_exists($legacyId, $reservationParticipants)) {
                     $legacyParticipants = $reservationParticipants[$legacyId];
                     foreach ($legacyParticipants as $legacyParticipantId) {
                         $userId = $userMapping[$legacyParticipantId['id']];
                         if (empty($legacyParticipantId['invited'])) {
                             $mappedParticipantIds[] = $userId;
-                        }
-                        else {
+                        } else {
                             $mappedInviteeIds[] = $userId;
                         }
                     }
                 }
 
-                $mappedAccessoryList = array();
+                $mappedAccessoryList = [];
                 if (array_key_exists($legacyId, $reservationAccessories)) {
                     $legacyAccessories = $reservationAccessories[$legacyId];
                     foreach ($legacyAccessories as $legacyAccessoryId) {
@@ -834,8 +834,15 @@ class MigrationPresenter
                 $currentUser->Timezone = Configuration::Instance()->GetDefaultTimezone();
                 $mappedResource = new MigrateBookableResource($mappedResourceId);
 
-                $reservation = ReservationSeries::Create($mappedUserId, $mappedResource, '', $row['summary'], $date,
-                    new RepeatNone(), $currentUser);
+                $reservation = ReservationSeries::Create(
+                    $mappedUserId,
+                    $mappedResource,
+                    '',
+                    $row['summary'],
+                    $date,
+                    new RepeatNone(),
+                    $currentUser
+                );
                 foreach ($mappedAccessoryList as $accessory) {
                     $reservation->AddAccessory($accessory);
                 }
@@ -859,10 +866,10 @@ class MigrationPresenter
 
         Log::Debug('Done migrating reservations (%s reservations)', $reservationsMigrated);
         $getLegacyCount = new AdHocCommand('select count(*) as count from reservations');
-//		$getMigratedCount = new AdHocCommand('SELECT
-//		(select count(*) from reservation_series where legacyid is not null) +
-//		(select count(*) from blackout_series where legacyid is not null )
-//		as count');
+        //		$getMigratedCount = new AdHocCommand('SELECT
+        //		(select count(*) from reservation_series where legacyid is not null) +
+        //		(select count(*) from blackout_series where legacyid is not null )
+        //		as count');
 
         $progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
         $this->page->SetProgress($progressCounts);
@@ -967,8 +974,7 @@ class ProgressCounts
         $this->RemainingCount = $legacyCount - $migratedCount;
         if ($legacyCount > 0) {
             $this->PercentComplete = round((($migratedCount / $legacyCount) * 100), 2);
-        }
-        else {
+        } else {
             $this->PercentComplete = 100;
         }
     }

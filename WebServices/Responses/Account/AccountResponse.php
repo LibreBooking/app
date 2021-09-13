@@ -15,7 +15,7 @@ class AccountResponse extends RestResponse
     public $organization;
     public $position;
     /** @var array|CustomAttributeResponse[] */
-    public $customAttributes = array();
+    public $customAttributes = [];
     public $icsUrl;
 
     public function __construct(IRestServer $server, User $user, IEntityAttributeList $attributeList)
@@ -43,9 +43,9 @@ class AccountResponse extends RestResponse
             $this->icsUrl = $url->__toString();
         }
 
-        $this->AddService($server, WebServices::GetAccount, array(WebServiceParams::UserId, $this->userId));
-        $this->AddService($server, WebServices::UpdateAccount, array(WebServiceParams::UserId, $this->userId));
-        $this->AddService($server, WebServices::UpdatePassword, array(WebServiceParams::UserId, $this->userId));
+        $this->AddService($server, WebServices::GetAccount, [WebServiceParams::UserId, $this->userId]);
+        $this->AddService($server, WebServices::UpdateAccount, [WebServiceParams::UserId, $this->userId]);
+        $this->AddService($server, WebServices::UpdatePassword, [WebServiceParams::UserId, $this->userId]);
     }
 
     public static function Example()
@@ -68,7 +68,7 @@ class ExampleAccountResponse extends AccountResponse
         $this->lastName = 'last';
         $this->firstName = 'first';
         $this->userName = 'username';
-        $this->customAttributes = array(CustomAttributeResponse::Example());
+        $this->customAttributes = [CustomAttributeResponse::Example()];
         $this->icsUrl = 'webcal://path-to-calendar';
     }
 }

@@ -46,7 +46,6 @@ interface IMonitorDisplayPage extends IPage, IActionPage
      * @param int $format
      */
     public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources, $format);
-
 }
 
 class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
@@ -60,11 +59,13 @@ class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
     {
         parent::__construct('Schedule');
         $resourceService = new ResourceService(new ResourceRepository(), new GuestPermissionService(), new AttributeService(new AttributeRepository()), new UserRepository(), new AccessoryRepository());
-        $this->presenter = new MonitorDisplayPresenter($this,
+        $this->presenter = new MonitorDisplayPresenter(
+            $this,
             $resourceService,
             new ReservationService(new ReservationViewRepository(), new ReservationListingFactory()),
             new ScheduleService(new ScheduleRepository(), $resourceService, new DailyLayoutFactory()),
-            new ScheduleLayoutFactory());
+            new ScheduleLayoutFactory()
+        );
 
         $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
         $this->Set('Enabled', $this->IsEnabled());

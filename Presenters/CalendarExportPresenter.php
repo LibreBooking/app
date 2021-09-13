@@ -6,54 +6,54 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class CalendarExportPresenter
 {
-	/**
-	 * @var ICalendarExportPage
-	 */
-	private $page;
+    /**
+     * @var ICalendarExportPage
+     */
+    private $page;
 
-	/**
-	 * @var IReservationViewRepository
-	 */
-	private $reservationViewRepository;
+    /**
+     * @var IReservationViewRepository
+     */
+    private $reservationViewRepository;
 
-	/**
-	 * @var ICalendarExportValidator
-	 */
-	private $validator;
+    /**
+     * @var ICalendarExportValidator
+     */
+    private $validator;
 
-	/**
-	 * @var IReservationAuthorization
-	 */
-	private $privacyFilter;
+    /**
+     * @var IReservationAuthorization
+     */
+    private $privacyFilter;
 
-	public function __construct(ICalendarExportPage $page,
-								IReservationViewRepository $reservationViewRepository,
-								ICalendarExportValidator $validator,
-								IPrivacyFilter $privacyFilter)
-	{
-		$this->page = $page;
-		$this->reservationViewRepository = $reservationViewRepository;
-		$this->validator = $validator;
-		$this->privacyFilter = $privacyFilter;
-	}
+    public function __construct(
+        ICalendarExportPage $page,
+        IReservationViewRepository $reservationViewRepository,
+        ICalendarExportValidator $validator,
+        IPrivacyFilter $privacyFilter
+    )
+    {
+        $this->page = $page;
+        $this->reservationViewRepository = $reservationViewRepository;
+        $this->validator = $validator;
+        $this->privacyFilter = $privacyFilter;
+    }
 
-	public function PageLoad(UserSession $currentUser)
-	{
-		if (!$this->validator->IsValid())
-		{
-			return;
-		}
+    public function PageLoad(UserSession $currentUser)
+    {
+        if (!$this->validator->IsValid()) {
+            return;
+        }
 
-		$referenceNumber = $this->page->GetReferenceNumber();
+        $referenceNumber = $this->page->GetReferenceNumber();
 
-		$reservations = array();
-		if (!empty($referenceNumber))
-		{
-			$res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
-			$item = ReservationItemView::FromReservationView($res);
-			$reservations = array(new iCalendarReservationView($item, $currentUser, $this->privacyFilter));
-		}
+        $reservations = [];
+        if (!empty($referenceNumber)) {
+            $res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
+            $item = ReservationItemView::FromReservationView($res);
+            $reservations = [new iCalendarReservationView($item, $currentUser, $this->privacyFilter)];
+        }
 
-		$this->page->SetReservations($reservations);
-	}
+        $this->page->SetReservations($reservations);
+    }
 }

@@ -60,8 +60,8 @@ class SqlRepeatingFilterColumn implements ISqlFilterColumn
 abstract class BaseSqlFilter implements ISqlFilter
 {
     protected $criteria;
-    private $_and = array();
-    private $_or = array();
+    private $_and = [];
+    private $_or = [];
 
     /**
      * @param string|ISqlFilterColumn $columnName
@@ -71,8 +71,7 @@ abstract class BaseSqlFilter implements ISqlFilter
     {
         if (is_string($columnName)) {
             $this->criteria = $this->GetCriteria($columnName, $columnValue);
-        }
-        else {
+        } else {
             $this->criteria = $columnName->GetCriteria($columnValue);
         }
     }
@@ -89,7 +88,7 @@ abstract class BaseSqlFilter implements ISqlFilter
 
     public function Criteria()
     {
-        $criteria = array();
+        $criteria = [];
 
         /** @var $filter ISqlFilter */
         foreach ($this->_and as $filter) {
@@ -141,7 +140,7 @@ abstract class BaseSqlFilter implements ISqlFilter
         return $sql;
     }
 
-    protected abstract function GetSql();
+    abstract protected function GetSql();
 }
 
 class Criteria
@@ -206,7 +205,7 @@ class SqlFilterFreeForm extends BaseSqlFilter
     /**
      * @var Criteria[]
      */
-    private $_criteria = array();
+    private $_criteria = [];
     private $sql = '';
 
     public function __construct($sql)
@@ -245,7 +244,6 @@ class SqlFilterLike extends BaseSqlFilter
     public function __construct($columnName, $columnValue)
     {
         if (!BookedStringHelper::Contains($columnValue, '%')) {
-
             $columnValue = '%' . $columnValue . '%';
         }
         parent::__construct($columnName, $columnValue);
@@ -381,7 +379,7 @@ class SqlFilterIn extends BaseSqlFilter
     /**
      * @var array
      */
-    private $possibleValues = array();
+    private $possibleValues = [];
 
     /**
      * @param string|ISqlFilterColumn $columnName
@@ -395,7 +393,7 @@ class SqlFilterIn extends BaseSqlFilter
 
     protected function GetSql()
     {
-        $escapedValues = array();
+        $escapedValues = [];
         foreach ($this->possibleValues as $value) {
             $escapedValues[] = str_replace("'", "''", $value);
         }

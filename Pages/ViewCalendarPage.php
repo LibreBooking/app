@@ -18,7 +18,8 @@ class ViewCalendarPage extends CalendarPage
             new GuestPermissionService(),
             new AttributeService(new AttributeRepository()),
             $userRepository,
-            new AccessoryRepository());
+            new AccessoryRepository()
+        );
         $subscriptionService = new CalendarSubscriptionService($userRepository, $resourceRepository, $scheduleRepository);
         $privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 
@@ -26,7 +27,8 @@ class ViewCalendarPage extends CalendarPage
         $allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING, new BooleanConverter());
         $factory = ($viewReservations || $allowGuestBookings) ? new SlotLabelFactory() : new NullSlotLabelFactory();
 
-        $this->presenter = new CalendarPresenter($this,
+        $this->presenter = new CalendarPresenter(
+            $this,
             new CalendarFactory(),
             new ReservationViewRepository(),
             $scheduleRepository,
@@ -34,7 +36,8 @@ class ViewCalendarPage extends CalendarPage
             $resourceService,
             $subscriptionService,
             $privacyFilter,
-            $factory);
+            $factory
+        );
     }
 
     public function DisplayPage()

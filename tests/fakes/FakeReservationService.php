@@ -62,19 +62,18 @@ class FakeReservationService implements IReservationService
 
     public function Search(DateRange $dateRange, $scheduleId, $resourceIds = null, $ownerId = null, $participantId = null)
     {
-		$this->_LastDateRange = $dateRange;
+        $this->_LastDateRange = $dateRange;
         return $this->_ReservationsAndBlackouts;
     }
 }
 
 class FakeReservationListing implements IReservationListing
 {
-
     /**
      * @var array|ReservationListItem[]
 
      */
-    public $_Reservations = array();
+    public $_Reservations = [];
 
     /**
      * @return int

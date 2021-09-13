@@ -64,7 +64,7 @@ class ResourceRequest extends JsonRequest
     /**
      * @var array|AttributeValueRequest[]
      */
-    public $customAttributes = array();
+    public $customAttributes = [];
     /**
      * @var int
      */
@@ -98,10 +98,10 @@ class ResourceRequest extends JsonRequest
      * @var int|null
      */
     public $peakCreditsPerSlot;
-	/**
-	 * @var int|null
-	 */
-	public $maxConcurrentReservations;
+    /**
+     * @var int|null
+     */
+    public $maxConcurrentReservations;
 
     /**
      * @return ExampleResourceRequest
@@ -119,7 +119,7 @@ class ResourceRequest extends JsonRequest
         if (!empty($this->customAttributes)) {
             return $this->customAttributes;
         }
-        return array();
+        return [];
     }
 }
 
@@ -141,7 +141,7 @@ class ExampleResourceRequest extends ResourceRequest
         $this->description = 'description';
         $this->scheduleId = 10;
         $this->autoAssignPermissions = true;
-        $this->customAttributes = array(AttributeValueRequest::Example());
+        $this->customAttributes = [AttributeValueRequest::Example()];
         $this->sortOrder = 1;
         $this->statusId = ResourceStatus::AVAILABLE;
         $this->statusReasonId = 2;

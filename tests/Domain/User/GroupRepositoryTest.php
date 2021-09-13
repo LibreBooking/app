@@ -28,12 +28,12 @@ class GroupRepositoryTests extends TestBase
         $pageSize = 100;
         $count = 1000;
 
-        $countRow = array(ColumnNames::TOTAL => $count);
+        $countRow = [ColumnNames::TOTAL => $count];
         $itemRows = new GroupItemRow();
         $itemRows->With(1, 'g1')->With(2, 'g2');
         $rows = $itemRows->Rows();
 
-        $this->db->SetRow(0, array($countRow));
+        $this->db->SetRow(0, [$countRow]);
         $this->db->SetRow(1, $rows);
 
         $baseCommand = new GetAllGroupsCommand();
@@ -55,7 +55,7 @@ class GroupRepositoryTests extends TestBase
     {
         $rows[] = $this->GetGroupUserRow(1, 'f', 'l');
         $rows[] = $this->GetGroupUserRow(2, '2f', '2l');
-        $this->db->SetRow(0, array(array(ColumnNames::TOTAL => 20)));
+        $this->db->SetRow(0, [[ColumnNames::TOTAL => 20]]);
         $this->db->SetRow(1, $rows);
 
         $groupId = 50;
@@ -77,26 +77,26 @@ class GroupRepositoryTests extends TestBase
         $groupAdminId = 1111;
         $isDefault = 1;
 
-        $rows = array();
-        $rows[] = array(ColumnNames::GROUP_ID => $groupId,
+        $rows = [];
+        $rows[] = [ColumnNames::GROUP_ID => $groupId,
             ColumnNames::GROUP_NAME => $groupName,
             ColumnNames::GROUP_ADMIN_GROUP_ID => $groupAdminId,
-            ColumnNames::GROUP_ISDEFAULT => $isDefault);
+            ColumnNames::GROUP_ISDEFAULT => $isDefault];
 
-        $groupUsers = array(
-            array(ColumnNames::USER_ID => 1),
-            array(ColumnNames::USER_ID => 2),
-        );
-        $permissions = array(
-            array(ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 1),
-            array(ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 2),
+        $groupUsers = [
+            [ColumnNames::USER_ID => 1],
+            [ColumnNames::USER_ID => 2],
+        ];
+        $permissions = [
+            [ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 1],
+            [ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 2],
 
-        );
-        $roles = array(
-            array(ColumnNames::ROLE_ID => 1, ColumnNames::ROLE_NAME => 'thing', ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
-            array(ColumnNames::ROLE_ID => 2, ColumnNames::ROLE_NAME => 'name', ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
+        ];
+        $roles = [
+            [ColumnNames::ROLE_ID => 1, ColumnNames::ROLE_NAME => 'thing', ColumnNames::ROLE_LEVEL => RoleLevel::NONE],
+            [ColumnNames::ROLE_ID => 2, ColumnNames::ROLE_NAME => 'name', ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN],
 
-        );
+        ];
         $this->db->SetRow(0, $rows);
         $this->db->SetRow(1, $groupUsers);
         $this->db->SetRow(2, $permissions);
@@ -178,8 +178,8 @@ class GroupRepositoryTests extends TestBase
         $group->WithFullPermission($resource1);
         $group->WithFullPermission($resource3);
         $group->WithViewablePermission($resource2);
-        $group->ChangeAllowedPermissions(array($resource2));
-        $group->ChangeViewPermissions(array($resource1));
+        $group->ChangeAllowedPermissions([$resource2]);
+        $group->ChangeViewPermissions([$resource1]);
 
         $this->repository->Update($group);
 
@@ -252,7 +252,7 @@ class GroupRepositoryTests extends TestBase
         $group->WithRole($roleId1);
         $group->WithRole($roleId3);
 
-        $group->ChangeRoles(array($roleId2, $roleId3));
+        $group->ChangeRoles([$roleId2, $roleId3]);
 
         $this->repository->Update($group);
 
@@ -283,7 +283,7 @@ class GroupRepositoryTests extends TestBase
 
     private function GetGroupUserRow($userId, $firstName, $lastName)
     {
-        return array(
+        return [
             ColumnNames::USER_ID => $userId,
             ColumnNames::FIRST_NAME => $firstName,
             ColumnNames::LAST_NAME => $lastName,
@@ -300,6 +300,6 @@ class GroupRepositoryTests extends TestBase
             ColumnNames::POSITION => 'head honcho',
             ColumnNames::ORGANIZATION => 'earth',
             ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
-        );
+        ];
     }
 }

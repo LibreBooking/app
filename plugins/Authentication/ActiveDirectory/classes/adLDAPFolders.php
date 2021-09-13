@@ -39,7 +39,8 @@ require_once(dirname(__FILE__) . '/../adLDAP.php');
 /**
 * FOLDER / OU MANAGEMENT FUNCTIONS
 */
-class adLDAPFolders {
+class adLDAPFolders
+{
     /**
     * The current adLDAP connection via dependency injection
     *
@@ -47,7 +48,8 @@ class adLDAPFolders {
     */
     protected $adldap;
 
-    public function __construct(adLDAP $adldap) {
+    public function __construct(adLDAP $adldap)
+    {
         $this->adldap = $adldap;
     }
 
@@ -58,7 +60,8 @@ class adLDAPFolders {
     * @param string $dn The distinguished name to delete
     * @return bool
     */
-    public function delete($dn){
+    public function delete($dn)
+    {
         $result = ldap_delete($this->adldap->getLdapConnection(), $dn);
         if ($result != true) {
             return false;
@@ -78,13 +81,17 @@ class adLDAPFolders {
     * @param bool $type Specify a type of object to search for
     * @return array
     */
-    public function listing($folderName = NULL, $dnType = adLDAP::ADLDAP_FOLDER, $recursive = NULL, $type = NULL)
+    public function listing($folderName = null, $dnType = adLDAP::ADLDAP_FOLDER, $recursive = null, $type = null)
     {
-        if ($recursive === NULL) { $recursive = $this->adldap->getRecursiveGroups(); } //use the default option if they haven't set it
-        if (!$this->adldap->getLdapBind()) { return false; }
+        if ($recursive === null) {
+            $recursive = $this->adldap->getRecursiveGroups();
+        } //use the default option if they haven't set it
+        if (!$this->adldap->getLdapBind()) {
+            return false;
+        }
 
         $filter = '(&';
-        if ($type !== NULL) {
+        if ($type !== null) {
             switch ($type) {
                 case 'contact':
                     $filter .= '(objectClass=contact)';
@@ -108,8 +115,7 @@ class adLDAPFolders {
                     $filter .= '(objectClass=user)';
                     break;
             }
-        }
-        else {
+        } else {
             $filter .= '(objectClass=*)';
         }
         // If the folder name is null then we will search the root level of AD
@@ -119,20 +125,18 @@ class adLDAPFolders {
             $ou = $dnType . "=" . implode("," . $dnType . "=", $folderName);
             $filter .= '(!(distinguishedname=' . $ou . ',' . $this->adldap->getBaseDn() . ')))';
             $searchOu = $ou . ',' . $this->adldap->getBaseDn();
-        }
-        else {
+        } else {
             $filter .= '(!(distinguishedname=' . $this->adldap->getBaseDn() . ')))';
         }
 
         if ($recursive === true) {
-            $sr = ldap_search($this->adldap->getLdapConnection(), $searchOu, $filter, array('objectclass', 'distinguishedname', 'samaccountname'));
+            $sr = ldap_search($this->adldap->getLdapConnection(), $searchOu, $filter, ['objectclass', 'distinguishedname', 'samaccountname']);
             $entries = @ldap_get_entries($this->adldap->getLdapConnection(), $sr);
             if (is_array($entries)) {
                 return $entries;
             }
-        }
-        else {
-            $sr = ldap_list($this->adldap->getLdapConnection(), $searchOu, $filter, array('objectclass', 'distinguishedname', 'samaccountname'));
+        } else {
+            $sr = ldap_list($this->adldap->getLdapConnection(), $searchOu, $filter, ['objectclass', 'distinguishedname', 'samaccountname']);
             $entries = @ldap_get_entries($this->adldap->getLdapConnection(), $sr);
             if (is_array($entries)) {
                 return $entries;
@@ -150,14 +154,22 @@ class adLDAPFolders {
     */
     public function create($attributes)
     {
-        if (!is_array($attributes)){ return "Attributes must be an array"; }
-        if (!is_array($attributes["container"])) { return "Container attribute must be an array."; }
-        if (!array_key_exists("ou_name",$attributes)) { return "Missing compulsory field [ou_name]"; }
-        if (!array_key_exists("container",$attributes)) { return "Missing compulsory field [container]"; }
+        if (!is_array($attributes)) {
+            return "Attributes must be an array";
+        }
+        if (!is_array($attributes["container"])) {
+            return "Container attribute must be an array.";
+        }
+        if (!array_key_exists("ou_name", $attributes)) {
+            return "Missing compulsory field [ou_name]";
+        }
+        if (!array_key_exists("container", $attributes)) {
+            return "Missing compulsory field [container]";
+        }
 
         $attributes["container"] = array_reverse($attributes["container"]);
 
-        $add=array();
+        $add=[];
         $add["objectClass"] = "organizationalUnit";
         $add["OU"] = $attributes['ou_name'];
         $containers = "";
@@ -173,5 +185,4 @@ class adLDAPFolders {
 
         return true;
     }
-
 }

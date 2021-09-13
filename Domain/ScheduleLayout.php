@@ -65,7 +65,7 @@ interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
      * @param string $label optional label for the period
      * @param DayOfWeek|int|null $dayOfWeek
      */
-    function AppendPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
+    public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
 
     /**
      * Appends a period that is not reservable to the schedule layout
@@ -76,14 +76,14 @@ interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
      * @param DayOfWeek|int|null $dayOfWeek
      * @return void
      */
-    function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
+    public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
 
     /**
      *
      * @param DayOfWeek|int|null $dayOfWeek
      * @return LayoutPeriod[] array of LayoutPeriod
      */
-    function GetSlots($dayOfWeek = null);
+    public function GetSlots($dayOfWeek = null);
 
     /**
      * @return int
@@ -93,8 +93,8 @@ interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
 
 class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 {
-    const Custom = 1;
-    const Standard = 0;
+    public const Custom = 1;
+    public const Standard = 0;
 
     /**
      * @var PeakTimes
@@ -104,7 +104,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
     /**
      * @var array|LayoutPeriod[]
      */
-    private $_periods = array();
+    private $_periods = [];
 
     /**
      * @var string
@@ -116,7 +116,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
      */
     private $cached = false;
 
-    private $cachedPeriods = array();
+    private $cachedPeriods = [];
 
     /**
      * @var bool
@@ -131,7 +131,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
     /**
      * @var string[]
      */
-    private $startTimes = array();
+    private $startTimes = [];
 
     /**
      * @param string $targetTimezone target timezone of layout
@@ -156,8 +156,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
                 throw new Exception('ScheduleLayout->GetSlots() $dayOfWeek required when using daily layouts');
             }
             $periods = $this->_periods;
-        }
-        else {
+        } else {
             if (!$this->usingDailyLayouts) {
                 throw new Exception('ScheduleLayout->GetSlots() $dayOfWeek cannot be provided when using single layout');
             }
@@ -194,8 +193,13 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
         $this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::NONRESERVABLE, $label, $dayOfWeek);
     }
 
-    protected function AppendGenericPeriod(Time $startTime, Time $endTime, $periodType, $label = null,
-                                           $dayOfWeek = null)
+    protected function AppendGenericPeriod(
+        Time $startTime,
+        Time $endTime,
+        $periodType,
+        $label = null,
+        $dayOfWeek = null
+    )
     {
         if ($this->StartTimeCanBeAdded($startTime, $dayOfWeek)) {
             $this->layoutTimezone = $startTime->Timezone();
@@ -203,8 +207,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
             if (!is_null($dayOfWeek)) {
                 $this->usingDailyLayouts = true;
                 $this->_periods[$dayOfWeek][] = $layoutPeriod;
-            }
-            else {
+            } else {
                 $this->_periods[] = $layoutPeriod;
             }
         }
@@ -248,8 +251,15 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
         }
 
         $layoutTimezone = $periods[0]->Timezone();
-        $workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0,
-            $layoutTimezone);
+        $workingDate = Date::Create(
+            $layoutDate->Year(),
+            $layoutDate->Month(),
+            $layoutDate->Day(),
+            0,
+            0,
+            0,
+            $layoutTimezone
+        );
         $midnight = $layoutDate->GetDate();
 
         /* @var $period LayoutPeriod */
@@ -285,8 +295,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
                     $start = $layoutDate->SetTime($startTime);
                     $end = $periodEnd->AddDays(1);
                     $list->Add($this->BuildPeriod($periodType, $start, $end, $label, $labelEnd));
-                }
-                else {
+                } else {
                     // add compensating period at start
                     $start = $periodStart->AddDays(-1);
                     $end = $layoutDate->SetTime($endTime, true);
@@ -321,8 +330,15 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
         }
 
         // check cache
-        $baseDateInLayoutTz = Date::Create($requestedDate->Year(), $requestedDate->Month(), $requestedDate->Day(),
-            0, 0, 0, $this->layoutTimezone);
+        $baseDateInLayoutTz = Date::Create(
+            $requestedDate->Year(),
+            $requestedDate->Month(),
+            $requestedDate->Day(),
+            0,
+            0,
+            0,
+            $this->layoutTimezone
+        );
 
 
         $list = new PeriodList();
@@ -334,8 +350,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
             $adjustment = 0;
             if ($requestedDateInTargetTz->Format('YmdH') < $requestedDate->Format('YmdH')) {
                 $adjustment = -1;
-            }
-            else {
+            } else {
                 if ($requestedDateInTargetTz->Format('YmdH') > $requestedDate->Format('YmdH')) {
                     $adjustment = 1;
                 }
@@ -413,7 +428,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
     protected function SortItems(&$items)
     {
-        usort($items, array("ScheduleLayout", "SortBeginTimes"));
+        usort($items, ["ScheduleLayout", "SortBeginTimes"]);
     }
 
     public function Timezone()
@@ -440,7 +455,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
      * @param SchedulePeriod|LayoutPeriod $period2
      * @return int
      */
-    static function SortBeginTimes($period1, $period2)
+    public static function SortBeginTimes($period1, $period2)
     {
         return $period1->Compare($period2);
     }
@@ -469,8 +484,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
     public static function ParseDaily($timezone, $reservableSlots, $blockedSlots)
     {
         if (count($reservableSlots) != DayOfWeek::NumberOfDays || count($blockedSlots) != DayOfWeek::NumberOfDays) {
-            throw new Exception(sprintf('LayoutParser ParseDaily missing slots. $reservableSlots=%s, $blockedSlots=%s',
-                count($reservableSlots), count($blockedSlots)));
+            throw new Exception(sprintf(
+                'LayoutParser ParseDaily missing slots. $reservableSlots=%s, $blockedSlots=%s',
+                count($reservableSlots),
+                count($blockedSlots)
+            ));
         }
 
         for ($day = 0; $day < DayOfWeek::NumberOfDays; $day++) {
@@ -501,10 +519,24 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
         /** @var $period LayoutPeriod */
         foreach ($periods as $period) {
-            $start = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->Start->Hour(),
-                $period->Start->Minute(), 0, $timezone);
-            $end = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->End->Hour(),
-                $period->End->Minute(), 0, $timezone);
+            $start = Date::Create(
+                $tempDate->Year(),
+                $tempDate->Month(),
+                $tempDate->Day(),
+                $period->Start->Hour(),
+                $period->Start->Minute(),
+                0,
+                $timezone
+            );
+            $end = Date::Create(
+                $tempDate->Year(),
+                $tempDate->Month(),
+                $tempDate->Day(),
+                $period->End->Hour(),
+                $period->End->Minute(),
+                0,
+                $timezone
+            );
 
             if ($end->IsMidnight()) {
                 $end = $end->AddDays(1);
@@ -528,8 +560,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
         if ($this->usingDailyLayouts) {
             $dayOfWeek = $layoutDate->Weekday();
             return $this->_periods[$dayOfWeek];
-        }
-        else {
+        } else {
             return $this->_periods;
         }
     }
@@ -542,7 +573,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
         }
 
         if (!array_key_exists($day, $this->startTimes)) {
-            $this->startTimes[$day] = array();
+            $this->startTimes[$day] = [];
         }
 
         if (array_key_exists($startTime->ToString(), $this->startTimes[$day])) {
@@ -583,8 +614,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
                 $isPeak = $this->HasPeakTimesDefined() && $this->peakTimes->IsWithinPeak($testDate->SetTime($period->Start));
                 if ($isPeak) {
                     $peakSlots++;
-                }
-                else {
+                } else {
                     $slots++;
                 }
             }
@@ -723,7 +753,7 @@ class PeakTimes
     private $beginTime = null;
     private $endTime = null;
     private $everyDay = false;
-    private $weekdays = array();
+    private $weekdays = [];
     private $allYear = false;
     private $beginDay = 0;
     private $beginMonth = 0;
@@ -777,7 +807,7 @@ class PeakTimes
 
         $everyDay = intval($row[ColumnNames::PEAK_EVERY_DAY]);
 
-        $weekdays = !empty($row[ColumnNames::PEAK_DAYS]) ? explode(',', $row[ColumnNames::PEAK_DAYS]) : array();
+        $weekdays = !empty($row[ColumnNames::PEAK_DAYS]) ? explode(',', $row[ColumnNames::PEAK_DAYS]) : [];
 
 
         $allYear = intval($row[ColumnNames::PEAK_ALL_YEAR]);
@@ -871,13 +901,13 @@ class LayoutParser
 
     public function AddReservable($reservableSlots, $dayOfWeek = null)
     {
-        $cb = array($this, 'appendPeriod');
+        $cb = [$this, 'appendPeriod'];
         $this->ParseSlots($reservableSlots, $dayOfWeek, $cb);
     }
 
     public function AddBlocked($blockedSlots, $dayOfWeek = null)
     {
-        $cb = array($this, 'appendBlocked');
+        $cb = [$this, 'appendBlocked'];
 
         $this->ParseSlots($blockedSlots, $dayOfWeek, $cb);
     }
@@ -889,33 +919,41 @@ class LayoutParser
 
     private function appendPeriod($start, $end, $label, $dayOfWeek = null)
     {
-        $this->layout->AppendPeriod(Time::Parse($start, $this->timezone),
+        $this->layout->AppendPeriod(
+            Time::Parse($start, $this->timezone),
             Time::Parse($end, $this->timezone),
             $label,
-            $dayOfWeek);
+            $dayOfWeek
+        );
     }
 
     private function appendBlocked($start, $end, $label, $dayOfWeek = null)
     {
-        $this->layout->AppendBlockedPeriod(Time::Parse($start, $this->timezone),
+        $this->layout->AppendBlockedPeriod(
+            Time::Parse($start, $this->timezone),
             Time::Parse($end, $this->timezone),
             $label,
-            $dayOfWeek);
+            $dayOfWeek
+        );
     }
 
     private function ParseSlots($allSlots, $dayOfWeek, $callback)
     {
         $trimmedSlots = trim($allSlots);
-//		if (empty($trimmedSlots) && $dayOfWeek == null)
-//		{
-//			throw new Exception('Empty slots on ' . $dayOfWeek);
-//		}
+        //		if (empty($trimmedSlots) && $dayOfWeek == null)
+        //		{
+        //			throw new Exception('Empty slots on ' . $dayOfWeek);
+        //		}
 
         $lines = preg_split("/[\n]/", $trimmedSlots, -1, PREG_SPLIT_NO_EMPTY);
         foreach ($lines as $slotLine) {
             $label = null;
-            $parts = preg_split('/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/', trim($slotLine), -1,
-                PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            $parts = preg_split(
+                '/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/',
+                trim($slotLine),
+                -1,
+                PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
+            );
             $times = explode('-', $parts[0]);
             $start = trim($times[0]);
             $end = trim($times[1]);
@@ -1009,10 +1047,10 @@ class PeriodList
     /**
      * @var SchedulePeriod[]
      */
-    private $items = array();
-    private $_addedStarts = array();
-    private $_addedTimes = array();
-    private $_addedEnds = array();
+    private $items = [];
+    private $_addedStarts = [];
+    private $_addedTimes = [];
+    private $_addedEnds = [];
 
     public function Add(SchedulePeriod $period)
     {
@@ -1074,7 +1112,7 @@ class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
     /**
      * @var SchedulePeriod[]
      */
-    private $cache = array();
+    private $cache = [];
 
     /**
      * @param string $targetTimezone
@@ -1102,11 +1140,10 @@ class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
     {
         if ($this->IsCached($layoutDate)) {
             $allPeriods = $this->GetCached($layoutDate);
-        }
-        else {
+        } else {
             $periods = $this->repository->GetCustomLayoutPeriods($layoutDate, $this->scheduleId);
             if (count($periods) == 0) {
-                return array();
+                return [];
             }
 
             $allPeriods = [];
@@ -1124,8 +1161,7 @@ class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
                 if (!$lastPeriod->EndDate()->IsMidnight()) {
                     $allPeriods[] = new NonSchedulePeriod($lastPeriod->EndDate(), $lastPeriod->EndDate()->AddDays(1)->GetDate());
                 }
-            }
-            else {
+            } else {
                 $allPeriods = $periods;
             }
 
@@ -1137,7 +1173,6 @@ class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
 
     public function GetLayoutSlots(Date $startDate, Date $endDate)
     {
-
     }
 
     public function FitsToHours()
@@ -1196,11 +1231,9 @@ class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
 
     public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null)
     {
-
     }
 
     public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null)
     {
-
     }
 }

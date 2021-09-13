@@ -31,12 +31,12 @@ class RegistrationTests extends TestBase
     private $phone = '123.123.1234';
     private $organization = 'organization';
     private $position = 'position';
-    private $additionalFields = array();
+    private $additionalFields = [];
     private $password = 'password';
     private $timezone = 'US/Eastern';
     private $language = 'en_US';
     private $homepageId = 1;
-    private $attributes = array();
+    private $attributes = [];
     private $groups = null;
     private $acceptTerms = true;
 
@@ -50,8 +50,8 @@ class RegistrationTests extends TestBase
         $this->fakeEncryption = new FakePasswordEncryption();
         $this->registration = new Registration($this->fakeEncryption, $this->userRepository, null, null, $this->groupRepository);
 
-        $this->additionalFields = array('phone' => $this->phone, 'organization' => $this->organization, 'position' => $this->position);
-        $this->attributes = array(new AttributeValue(1, 1));
+        $this->additionalFields = ['phone' => $this->phone, 'organization' => $this->organization, 'position' => $this->position];
+        $this->attributes = [new AttributeValue(1, 1)];
     }
 
     public function teardown(): void
@@ -64,9 +64,10 @@ class RegistrationTests extends TestBase
     {
         $this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_REQUIRE_ACTIVATION, null);
 
-        $this->groups = array(new UserGroup(1, 'whaterver'));
+        $this->groups = [new UserGroup(1, 'whaterver')];
 
-        $user = User::Create($this->fname,
+        $user = User::Create(
+            $this->fname,
             $this->lname,
             $this->email,
             $this->login,
@@ -74,7 +75,8 @@ class RegistrationTests extends TestBase
             $this->timezone,
             $this->fakeEncryption->_Encrypted,
             $this->fakeEncryption->_Salt,
-            $this->homepageId);
+            $this->homepageId
+        );
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
         $user->ChangeCustomAttributes($this->attributes);
@@ -97,7 +99,8 @@ class RegistrationTests extends TestBase
             $this->additionalFields,
             $this->attributes,
             $this->groups,
-            $this->acceptTerms);
+            $this->acceptTerms
+        );
 
         $this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
         $this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
@@ -108,7 +111,8 @@ class RegistrationTests extends TestBase
     {
         $this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_REQUIRE_ACTIVATION, 'true');
 
-        $user = User::CreatePending($this->fname,
+        $user = User::CreatePending(
+            $this->fname,
             $this->lname,
             $this->email,
             $this->login,
@@ -116,7 +120,8 @@ class RegistrationTests extends TestBase
             $this->timezone,
             $this->fakeEncryption->_Encrypted,
             $this->fakeEncryption->_Salt,
-            $this->homepageId);
+            $this->homepageId
+        );
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
         $user->ChangeCustomAttributes($this->attributes);
@@ -135,7 +140,8 @@ class RegistrationTests extends TestBase
             $this->language,
             $this->homepageId,
             $this->additionalFields,
-            $this->attributes);
+            $this->attributes
+        );
 
         $this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
         $this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
@@ -146,7 +152,8 @@ class RegistrationTests extends TestBase
     {
         $this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_REQUIRE_ACTIVATION, 'true');
 
-        $user = User::Create($this->fname,
+        $user = User::Create(
+            $this->fname,
             $this->lname,
             $this->email,
             $this->login,
@@ -154,7 +161,8 @@ class RegistrationTests extends TestBase
             $this->timezone,
             $this->fakeEncryption->_Encrypted,
             $this->fakeEncryption->_Salt,
-            $this->homepageId);
+            $this->homepageId
+        );
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
         $user->ChangeCustomAttributes($this->attributes);
@@ -175,7 +183,8 @@ class RegistrationTests extends TestBase
             $this->language,
             $this->homepageId,
             $this->additionalFields,
-            $this->attributes);
+            $this->attributes
+        );
 
         $this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
         $this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
@@ -190,8 +199,17 @@ class RegistrationTests extends TestBase
             ->with($this->anything())
             ->will($this->returnValue($expectedUserId));
 
-        $this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password,
-            $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
+        $this->registration->Register(
+            $this->login,
+            $this->email,
+            $this->fname,
+            $this->lname,
+            $this->password,
+            $this->timezone,
+            $this->language,
+            $this->homepageId,
+            $this->additionalFields
+        );
 
         $command = new AutoAssignPermissionsCommand($expectedUserId);
 
@@ -202,7 +220,8 @@ class RegistrationTests extends TestBase
     {
         $this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_AUTO_SUBSCRIBE_EMAIL, 'true');
 
-        $user = User::Create($this->fname,
+        $user = User::Create(
+            $this->fname,
             $this->lname,
             $this->email,
             $this->login,
@@ -210,7 +229,8 @@ class RegistrationTests extends TestBase
             $this->timezone,
             $this->fakeEncryption->_Encrypted,
             $this->fakeEncryption->_Salt,
-            $this->homepageId);
+            $this->homepageId
+        );
 
         $user->ChangeAttributes($this->phone, $this->organization, $this->position);
 
@@ -225,9 +245,17 @@ class RegistrationTests extends TestBase
             ->method('Add')
             ->with($this->equalTo($user));
 
-        $this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password,
-            $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
-
+        $this->registration->Register(
+            $this->login,
+            $this->email,
+            $this->fname,
+            $this->lname,
+            $this->password,
+            $this->timezone,
+            $this->language,
+            $this->homepageId,
+            $this->additionalFields
+        );
     }
 
     public function testSynchronizeUpdatesExistingUser()
@@ -243,9 +271,9 @@ class RegistrationTests extends TestBase
         $title = 'title';
         $encryptedPassword = $this->fakeEncryption->_Encrypted;
         $salt = $this->fakeEncryption->_Salt;
-        $groups = array(new UserGroup(1, '1'), new UserGroup(2, '2'));
+        $groups = [new UserGroup(1, '1'), new UserGroup(2, '2')];
 
-        $this->groupRepository->_AddGroup(new GroupItemView(1,'1'));
+        $this->groupRepository->_AddGroup(new GroupItemView(1, '1'));
         $this->groupRepository->_AddGroup(new GroupItemView(2, '2'));
 
         $updatedUser = new User();
@@ -266,7 +294,7 @@ class RegistrationTests extends TestBase
             ->with($this->equalTo($updatedUser))
             ->will($this->returnValue($updatedUser));
 
-        $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, array('1', '2'));
+        $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, ['1', '2']);
         $expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
 
         $this->registration->Synchronize($user);
@@ -286,7 +314,7 @@ class RegistrationTests extends TestBase
         $langCode = 'en_US';
         $timezone = 'UTC';
 
-        $groups = array('group1', 'g2');
+        $groups = ['group1', 'g2'];
 
         $this->groupRepository->_AddGroup(new GroupItemView(1, 'group1'));
         $this->groupRepository->_AddGroup(new GroupItemView(2, 'g2'));
@@ -296,7 +324,8 @@ class RegistrationTests extends TestBase
 
         $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title, $groups);
 
-        $expectedUser = User::Create($fname,
+        $expectedUser = User::Create(
+            $fname,
             $lname,
             $email,
             $username,
@@ -304,10 +333,11 @@ class RegistrationTests extends TestBase
             $timezone,
             $encryptedPassword,
             $salt,
-            Pages::DEFAULT_HOMEPAGE_ID);
+            Pages::DEFAULT_HOMEPAGE_ID
+        );
 
         $expectedUser->ChangeAttributes($phone, $inst, $title);
-        $expectedUser->WithGroups(array(new UserGroup(1, 'group1'), new UserGroup(2, 'g2')));
+        $expectedUser->WithGroups([new UserGroup(1, 'group1'), new UserGroup(2, 'g2')]);
 
         $this->userRepository->expects($this->once())
             ->method('UserExists')
@@ -349,7 +379,7 @@ class RegistrationTests extends TestBase
         $username = 'un';
         $email = 'e';
 
-        $user = new AuthenticatedUser($username, $email, '', '', 'password', '', '', '', '', '', array('Group1', 'Group2', 'Group3'));
+        $user = new AuthenticatedUser($username, $email, '', '', 'password', '', '', '', '', '', ['Group1', 'Group2', 'Group3']);
 
         $this->groupRepository->_AddGroup(new GroupItemView(1, 'Group1'));
         $this->groupRepository->_AddGroup(new GroupItemView(3, 'Group3'));

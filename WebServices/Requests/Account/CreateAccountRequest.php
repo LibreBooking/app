@@ -20,7 +20,7 @@ class CreateAccountRequest extends AccountRequestBase
         $request->organization = 'organization';
         $request->phone = 'phone';
         $request->position = 'position';
-        $request->customAttributes = array(AttributeValueRequest::Example());
+        $request->customAttributes = [AttributeValueRequest::Example()];
 
         $request->password = 'plaintextpassword';
         $request->acceptTermsOfService = true;

@@ -26,7 +26,7 @@ class MissedCheckinEmail extends EmailMessage
 
     public function Subject()
     {
-        return $this->Translate('MissedCheckinEmailSubject', array($this->reservation->ResourceName));
+        return $this->Translate('MissedCheckinEmailSubject', [$this->reservation->ResourceName]);
     }
 
     public function Body()
@@ -38,8 +38,12 @@ class MissedCheckinEmail extends EmailMessage
         $this->Set('Description', $this->reservation->Description);
         $this->Set('IsAutoRelease', $this->reservation->AutoReleaseMinutes != null);
         $this->Set('AutoReleaseTime', $this->reservation->StartDate->AddMinutes($this->reservation->AutoReleaseMinutes));
-        $this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER,
-            $this->reservation->ReferenceNumber));
+        $this->Set('ReservationUrl', sprintf(
+            "%s?%s=%s",
+            Pages::RESERVATION,
+            QueryStringKeys::REFERENCE_NUMBER,
+            $this->reservation->ReferenceNumber
+        ));
 
         return $this->FetchTemplate('MissedCheckinEmail.tpl');
     }

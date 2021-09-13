@@ -5,7 +5,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
     /**
      * @var array|string[]
      */
-    private $creationStrategies = array();
+    private $creationStrategies = [];
 
     public function __construct()
     {
@@ -19,8 +19,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 
     public function Create($reservationAction, $userSession)
     {
-        if (array_key_exists($reservationAction, $this->creationStrategies))
-        {
+        if (array_key_exists($reservationAction, $this->creationStrategies)) {
             $createMethod = $this->creationStrategies[$reservationAction];
             return $this->$createMethod($userSession);
         }
@@ -46,40 +45,37 @@ class ReservationValidationFactory implements IReservationValidationFactory
         return $factory->CreatePreDeleteService($userSession);
     }
 
-	private function CreateApprovalService(UserSession $userSession)
+    private function CreateApprovalService(UserSession $userSession)
     {
         $factory = PluginManager::Instance()->LoadPreReservation();
-		if (method_exists($factory,'CreatePreApprovalService'))
-		{
-			return $factory->CreatePreApprovalService($userSession);
-		}
-		return new NullReservationValidationService();
+        if (method_exists($factory, 'CreatePreApprovalService')) {
+            return $factory->CreatePreApprovalService($userSession);
+        }
+        return new NullReservationValidationService();
     }
 
     private function CreateCheckinService(UserSession $userSession)
     {
         $factory = PluginManager::Instance()->LoadPreReservation();
-		if (method_exists($factory,'CreatePreCheckinService'))
-		{
-			return $factory->CreatePreCheckinService($userSession);
-		}
-		return new NullReservationValidationService();
+        if (method_exists($factory, 'CreatePreCheckinService')) {
+            return $factory->CreatePreCheckinService($userSession);
+        }
+        return new NullReservationValidationService();
     }
 
     private function CreateCheckoutService(UserSession $userSession)
     {
         $factory = PluginManager::Instance()->LoadPreReservation();
-		if (method_exists($factory,'CreatePreCheckoutService'))
-		{
-			return $factory->CreatePreCheckoutService($userSession);
-		}
-		return new NullReservationValidationService();
+        if (method_exists($factory, 'CreatePreCheckoutService')) {
+            return $factory->CreatePreCheckoutService($userSession);
+        }
+        return new NullReservationValidationService();
     }
 }
 
 class NullReservationValidationService implements IReservationValidationService
 {
-    function Validate($reservation, $retryParameters = null)
+    public function Validate($reservation, $retryParameters = null)
     {
         return new ReservationValidationResult();
     }

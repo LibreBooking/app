@@ -37,8 +37,13 @@ class CAS extends Authentication implements IAuthentication
         if ($this->options->IsCasDebugOn()) {
             phpCAS::setDebug($this->options->DebugFile());
         }
-        phpCAS::client($this->options->CasVersion(), $this->options->HostName(), $this->options->Port(),
-            $this->options->ServerUri(), $this->options->ChangeSessionId());
+        phpCAS::client(
+            $this->options->CasVersion(),
+            $this->options->HostName(),
+            $this->options->Port(),
+            $this->options->ServerUri(),
+            $this->options->ChangeSessionId()
+        );
         if ($this->options->CasHandlesLogouts()) {
             phpCAS::handleLogoutRequests(true, $this->options->LogoutServers());
         }
@@ -53,7 +58,6 @@ class CAS extends Authentication implements IAuthentication
     {
         try {
             phpCAS::forceAuthentication();
-
         } catch (Exception $ex) {
             Log::Error('CAS exception: %s', $ex);
             return false;
@@ -165,18 +169,17 @@ class CAS extends Authentication implements IAuthentication
                 null,
                 null,
                 null,
-                $this->getGroups($attributes))
+                $this->getGroups($attributes)
+            )
         );
     }
 
     private function getAttribute($username, $attributes, $key)
     {
         $attributeMapping = $this->options->AttributeMapping();
-        if (array_key_exists($key, $attributeMapping))
-        {
+        if (array_key_exists($key, $attributeMapping)) {
             $mappedName = $attributeMapping[$key];
-            if (array_key_exists($mappedName, $attributes))
-            {
+            if (array_key_exists($mappedName, $attributes)) {
                 return $attributes[$mappedName];
             }
         }
@@ -187,15 +190,12 @@ class CAS extends Authentication implements IAuthentication
     private function getGroups($attributes)
     {
         $attributeMapping = $this->options->AttributeMapping();
-        if (array_key_exists('groups', $attributeMapping))
-        {
+        if (array_key_exists('groups', $attributeMapping)) {
             $mappedName = $attributeMapping['groups'];
-            if (array_key_exists($mappedName, $attributes))
-            {
+            if (array_key_exists($mappedName, $attributes)) {
                 $userGroups = $attributes[$mappedName];
-                if (!is_array($userGroups))
-                {
-                    return array($userGroups);
+                if (!is_array($userGroups)) {
+                    return [$userGroups];
                 }
                 return $userGroups;
             }

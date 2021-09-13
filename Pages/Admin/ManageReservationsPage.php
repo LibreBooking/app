@@ -341,13 +341,15 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
     {
         parent::__construct('ManageReservations', 1);
 
-        $this->presenter = new ManageReservationsPresenter($this,
+        $this->presenter = new ManageReservationsPresenter(
+            $this,
             new ManageReservationsService(new ReservationViewRepository()),
             new ScheduleRepository(),
             new ResourceRepository(),
             new AttributeService(new AttributeRepository()),
             new UserRepository(),
-            new TermsOfServiceRepository());
+            new TermsOfServiceRepository()
+        );
 
         $this->pageablePage = new PageablePage($this);
 
@@ -480,17 +482,17 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
         $this->Set('ReferenceNumber', $referenceNumber);
     }
 
-    function GetPageNumber()
+    public function GetPageNumber()
     {
         return $this->pageablePage->GetPageNumber();
     }
 
-    function GetPageSize()
+    public function GetPageSize()
     {
         return $this->pageablePage->GetPageSize();
     }
 
-    function BindPageInfo(PageInfo $pageInfo)
+    public function BindPageInfo(PageInfo $pageInfo)
     {
         $this->pageablePage->BindPageInfo($pageInfo);
     }
@@ -583,7 +585,6 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
     public function GetResourceFilterTitle()
     {
         return $this->GetQuerystring(QueryStringKeys::RESERVATION_TITLE);
-
     }
 
     public function GetResourceFilterDescription()
@@ -594,7 +595,6 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
     public function SetCanUpdateResourceStatus($canUpdate)
     {
         $this->Set('CanUpdateResourceStatus', $canUpdate);
-
     }
 
     public function CanUpdateResourceStatuses()
@@ -667,7 +667,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
     {
         $ids = $this->GetForm(FormKeys::RESERVATION_ID);
         if (!is_array($ids)) {
-            return array($ids);
+            return [$ids];
         }
 
         return $ids;

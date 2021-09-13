@@ -10,7 +10,7 @@ class GroupAdminGroupsRepositoryTests extends TestBase
         $adminGroup1 = new UserGroup(1, null, null, RoleLevel::GROUP_ADMIN);
         $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::GROUP_ADMIN);
         $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::GROUP_ADMIN);
-        $user->WithOwnedGroups(array($adminGroup1, $adminGroup2, $adminGroup3));
+        $user->WithOwnedGroups([$adminGroup1, $adminGroup2, $adminGroup3]);
 
         $userRepo = $this->createMock('IUserRepository');
         $userRepo->expects($this->once())
@@ -20,11 +20,11 @@ class GroupAdminGroupsRepositoryTests extends TestBase
 
         $groupRepository = new GroupAdminGroupRepository($userRepo, $this->fakeUser);
 
-		$groupRows = new GroupItemRow();
-		$groupRows->With(1, '1');
-		$rows = $groupRows->Rows();
+        $groupRows = new GroupItemRow();
+        $groupRows->With(1, '1');
+        $rows = $groupRows->Rows();
 
-        $this->db->SetRow(0, array( array(ColumnNames::TOTAL => 4) ));
+        $this->db->SetRow(0, [ [ColumnNames::TOTAL => 4] ]);
         $this->db->SetRow(1, $rows);
 
         $filter = null;
@@ -32,7 +32,7 @@ class GroupAdminGroupsRepositoryTests extends TestBase
 
         $getGroupsCommand = new GetAllGroupsCommand();
 
-        $filterCommand = new FilterCommand($getGroupsCommand, new SqlFilterIn(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ID), array(1, 2, 3)));
+        $filterCommand = new FilterCommand($getGroupsCommand, new SqlFilterIn(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ID), [1, 2, 3]));
         $countCommand = new CountCommand($filterCommand);
 
         $this->assertEquals($countCommand, $this->db->_Commands[0]);

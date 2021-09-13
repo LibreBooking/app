@@ -1,16 +1,15 @@
 <?php
 
-class Actions {
-
-    private function __construct() {
-
+class Actions
+{
+    private function __construct()
+    {
     }
 
-    const CHANGE_PASSWORD = 'change_password';
-    const GET_REPORT = 'get_report';
-    const LOGIN = 'login';
-    const REGISTER = 'register';
-    const RESET = 'reset';
-    const SAVE = 'save';
+    public const CHANGE_PASSWORD = 'change_password';
+    public const GET_REPORT = 'get_report';
+    public const LOGIN = 'login';
+    public const REGISTER = 'register';
+    public const RESET = 'reset';
+    public const SAVE = 'save';
 }
-

@@ -17,10 +17,10 @@ class ServiceLocator
      */
     private static $_emailService = null;
 
-	/**
-	 * @var \Booked\IFileSystem
-	 */
-	private static $_fileSystem = null;
+    /**
+     * @var \Booked\IFileSystem
+     */
+    private static $_fileSystem = null;
 
     /**
      * @return Database
@@ -29,8 +29,7 @@ class ServiceLocator
     {
         require_once(ROOT_DIR . 'lib/Database/namespace.php');
 
-        if (self::$_database == null)
-        {
+        if (self::$_database == null) {
             self::$_database = DatabaseFactory::GetDatabase();
         }
         return self::$_database;
@@ -48,8 +47,7 @@ class ServiceLocator
     {
         require_once(ROOT_DIR . 'lib/Server/namespace.php');
 
-        if (self::$_server == null)
-        {
+        if (self::$_server == null) {
             self::$_server = new Server();
         }
         return self::$_server;
@@ -60,23 +58,19 @@ class ServiceLocator
         self::$_server = $server;
     }
 
-	/**
-	 * @static
-	 * @return IEmailService
-	 */
-	public static function GetEmailService()
+    /**
+     * @static
+     * @return IEmailService
+     */
+    public static function GetEmailService()
     {
         require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
-        if (self::$_emailService == null)
-        {
-            if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()))
-            {
+        if (self::$_emailService == null) {
+            if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter())) {
                 self::$_emailService = new EmailService();
 //                self::$_emailService = new EmailLogger();
-            }
-            else
-            {
+            } else {
                 self::$_emailService = new NullEmailService();
             }
         }
@@ -88,25 +82,23 @@ class ServiceLocator
         self::$_emailService = $emailService;
     }
 
-	/**
-	 * @static
-	 * @return \Booked\FileSystem
-	 */
-	public static function GetFileSystem()
-	{
-		require_once(ROOT_DIR . 'lib/FileSystem/namespace.php');
+    /**
+     * @static
+     * @return \Booked\FileSystem
+     */
+    public static function GetFileSystem()
+    {
+        require_once(ROOT_DIR . 'lib/FileSystem/namespace.php');
 
-		if (self::$_fileSystem == null)
-		{
-			self::$_fileSystem = new \Booked\FileSystem();
-		}
+        if (self::$_fileSystem == null) {
+            self::$_fileSystem = new \Booked\FileSystem();
+        }
 
-		return self::$_fileSystem;
-	}
+        return self::$_fileSystem;
+    }
 
-	public static function SetFileSystem(\Booked\IFileSystem $fileSystem)
-	{
-		self::$_fileSystem = $fileSystem;
-	}
-
+    public static function SetFileSystem(\Booked\IFileSystem $fileSystem)
+    {
+        self::$_fileSystem = $fileSystem;
+    }
 }

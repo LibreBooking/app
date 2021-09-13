@@ -54,9 +54,9 @@ interface IGroupSaveController
 class GroupControllerResult
 {
     private $groupId;
-    private $errors = array();
+    private $errors = [];
 
-    public function __construct($groupId, $errors = array())
+    public function __construct($groupId, $errors = [])
     {
         $this->groupId = $groupId;
         $this->errors = $errors;
@@ -158,7 +158,7 @@ class GroupSaveController implements IGroupSaveController
      */
     public function Delete($groupId, $session)
     {
-        $errors = empty($groupId) ? array('groupId is required') : array();
+        $errors = empty($groupId) ? ['groupId is required'] : [];
         if (!empty($errors)) {
             return new GroupControllerResult(null, $errors);
         }
@@ -175,7 +175,7 @@ class GroupSaveController implements IGroupSaveController
      */
     private function ValidateRequest($request)
     {
-        $errors = array();
+        $errors = [];
 
         if (empty($request->name)) {
             $errors[] = 'name is required';
@@ -191,7 +191,8 @@ class GroupSaveController implements IGroupSaveController
             $this->groupRepository,
             $this->resourceRepository,
             $this->scheduleRepository,
-            new UserRepository());
+            new UserRepository()
+        );
     }
 
     /**
@@ -449,8 +450,6 @@ class CreateGroupFacade extends GroupControllerPageFacade
     {
         // TODO: Implement GetScheduleAdminIds() method.
     }
-
-
 }
 
 class UpdateGroupRolesFacade extends GroupControllerPageFacade
@@ -541,7 +540,7 @@ class UpdateGroupPermissionsFacade extends GroupControllerPageFacade
 
     public function GetAllowedResourceIds()
     {
-        $ids = array();
+        $ids = [];
         $full = $this->request->permissions;
         $view = $this->request->viewPermissions;
 

@@ -85,7 +85,7 @@ class ReservationViewRepositoryTests extends TestBase
         $getReminders = new GetReservationReminders($seriesId);
         $getGuests = new GetReservationGuestsCommand($reservationId);
 
-        $reservationRow = array(
+        $reservationRow = [
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESOURCE_ID => $resourceId,
@@ -112,25 +112,40 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::CREDIT_COUNT => 20,
             ColumnNames::PHONE_NUMBER => $phone,
             ColumnNames::RESERVATION_TERMS_ACCEPTANCE_DATE => null
-        );
+        ];
 
-        $resourceRows = array(
-            $this->GetResourceRow($reservationId, $resourceId1, $resourceName1, $adminGroupId1, $scheduleId,
-                $scheduleAdminGroupId, ResourceStatus::AVAILABLE, $resourceCheckIn1, $resourceAutoRelease1),
-            $this->GetResourceRow($reservationId, $resourceId2, $resourceName2, null, $scheduleId,
-                $scheduleAdminGroupId),
-        );
+        $resourceRows = [
+            $this->GetResourceRow(
+                $reservationId,
+                $resourceId1,
+                $resourceName1,
+                $adminGroupId1,
+                $scheduleId,
+                $scheduleAdminGroupId,
+                ResourceStatus::AVAILABLE,
+                $resourceCheckIn1,
+                $resourceAutoRelease1
+            ),
+            $this->GetResourceRow(
+                $reservationId,
+                $resourceId2,
+                $resourceName2,
+                null,
+                $scheduleId,
+                $scheduleAdminGroupId
+            ),
+        ];
 
-        $participantRows = array(
+        $participantRows = [
             $this->GetParticipantRow($reservationId, $userId1, $fname1, $lname1, $email1, $ownerLevel),
             $this->GetParticipantRow($reservationId, $userId2, $fname2, $lname2, $email2, $participantLevel),
             $this->GetParticipantRow($reservationId, $userId3, $fname3, $lname3, $email3, $inviteeLevel),
-        );
+        ];
 
-        $guestRows = array(
-            array(ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::INVITEE, ColumnNames::EMAIL => 'i1@email.com'),
-            array(ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::PARTICIPANT, ColumnNames::EMAIL => 'p1@email.com')
-        );
+        $guestRows = [
+            [ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::INVITEE, ColumnNames::EMAIL => 'i1@email.com'],
+            [ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::PARTICIPANT, ColumnNames::EMAIL => 'p1@email.com']
+        ];
 
         $accessory1 = 123;
         $accessory2 = 1232;
@@ -172,7 +187,7 @@ class ReservationViewRepositoryTests extends TestBase
         $attachmentRows->With($fileId1, $seriesId, $fileName1)
             ->With($fileId2, $seriesId, $fileName2);
 
-        $this->db->SetRow(0, array($reservationRow));
+        $this->db->SetRow(0, [$reservationRow]);
         $this->db->SetRow(1, $resourceRows);
         $this->db->SetRow(2, $participantRows);
         $this->db->SetRow(3, $accessoryRows->Rows());
@@ -196,7 +211,7 @@ class ReservationViewRepositoryTests extends TestBase
         $this->assertEquals($getGuests, $commands[7]);
 
         $expectedView = new ReservationView();
-        $expectedView->AdditionalResourceIds = array($resourceId1, $resourceId2);
+        $expectedView->AdditionalResourceIds = [$resourceId1, $resourceId2];
         $expectedView->Description = $description;
         $expectedView->EndDate = $endDate;
         $expectedView->OwnerId = $ownerId;
@@ -221,28 +236,35 @@ class ReservationViewRepositoryTests extends TestBase
         $expectedView->CheckoutDate = $checkout;
         $expectedView->OriginalEndDate = $previousEnd;
 
-        $expectedView->Participants = array(
+        $expectedView->Participants = [
             new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),
-        );
+        ];
 
-        $expectedView->Invitees = array(
+        $expectedView->Invitees = [
             new ReservationUserView($userId3, $fname3, $lname3, $email3, $inviteeLevel),
-        );
+        ];
 
-        $expectedView->Resources = array(
-            new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE,
-                $resourceCheckIn1, $resourceAutoRelease1),
+        $expectedView->Resources = [
+            new ReservationResourceView(
+                $resourceId1,
+                $resourceName1,
+                $adminGroupId1,
+                $scheduleId,
+                $scheduleAdminGroupId,
+                ResourceStatus::AVAILABLE,
+                $resourceCheckIn1,
+                $resourceAutoRelease1
+            ),
             new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, false, null),
-        );
-		foreach($expectedView->Resources as $r)
-		{
-			$r->SetColor('color');
-		}
+        ];
+        foreach ($expectedView->Resources as $r) {
+            $r->SetColor('color');
+        }
 
-        $expectedView->Accessories = array(
+        $expectedView->Accessories = [
             new ReservationAccessoryView($accessory1, $quantity1, $accessoryName1, $accessoryQuantity1),
             new ReservationAccessoryView($accessory2, $quantity2, $accessoryName2, $accessoryQuantity2),
-        );
+        ];
 
         $expectedView->AddAttribute(new AttributeValue($attributeId1, $attributeValue1, $attributeLabel1));
         $expectedView->AddAttribute(new AttributeValue($attributeId2, $attributeValue2, $attributeLabel2));
@@ -255,8 +277,8 @@ class ReservationViewRepositoryTests extends TestBase
 
         $expectedView->AllowParticipation = true;
 
-        $expectedView->ParticipatingGuests = array('p1@email.com');
-        $expectedView->InvitedGuests = array('i1@email.com');
+        $expectedView->ParticipatingGuests = ['p1@email.com'];
+        $expectedView->InvitedGuests = ['i1@email.com'];
         $expectedView->CreditsConsumed = 20;
         $expectedView->TermsAcceptanceDate = NullDate::Instance();
         $expectedView->RepeatTerminationDate = NullDate::Instance();
@@ -267,18 +289,18 @@ class ReservationViewRepositoryTests extends TestBase
     public function testIsCheckinEnabled()
     {
         $view = new ReservationView();
-        $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
+        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null)];
 
         $this->assertTrue($view->IsCheckinEnabled());
     }
 
     public function testIsCheckinAvailableWithin5MinutesOfStart()
     {
-		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, 5);
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, 5);
 
         $view = new ReservationView();
         $view->StartDate = Date::Now()->AddMinutes(4);
-        $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
+        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null)];
 
         $this->assertTrue($view->IsCheckinAvailable());
     }
@@ -288,7 +310,7 @@ class ReservationViewRepositoryTests extends TestBase
         $view = new ReservationView();
         $view->StartDate = Date::Now()->AddMinutes(-20);
         $view->CheckinDate = Date::Now();
-        $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
+        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null)];
 
         $this->assertTrue($view->IsCheckoutAvailable());
     }
@@ -322,16 +344,56 @@ class ReservationViewRepositoryTests extends TestBase
         $enableCheckIn = true;
         $autoReleaseMin = 20;
 
-        $rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId,
-            $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-            $userId, $phone, $organization, $position, $participant_list, $invitee_list, $attributes, $preferences,
-            $bufferTime, Date::Now(), Date::Now(), Date::Now(), $enableCheckIn, $autoReleaseMin);
-        $rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null,
-            null, null, null, null, null);
+        $rows[] = $this->GetReservationListRow(
+            $referenceNumber1,
+            $resource1,
+            $start1,
+            $end1,
+            $resourceId,
+            $instanceId,
+            $userLevelId,
+            $title,
+            $description,
+            $scheduleId,
+            $fname,
+            $lname,
+            $userId,
+            $phone,
+            $organization,
+            $position,
+            $participant_list,
+            $invitee_list,
+            $attributes,
+            $preferences,
+            $bufferTime,
+            Date::Now(),
+            Date::Now(),
+            Date::Now(),
+            $enableCheckIn,
+            $autoReleaseMin
+        );
+        $rows[] = $this->GetReservationListRow(
+            "2",
+            "resource",
+            Date::Now(),
+            Date::Now(),
+            1,
+            1,
+            1,
+            null,
+            null,
+            1,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
 
         $this->db->SetRows($rows);
 
-        $reservationCommand = new GetReservationListCommand($startDate, $endDate, array($userId), ReservationUserLevel::OWNER, array($scheduleId), array($resourceId), null);
+        $reservationCommand = new GetReservationListCommand($startDate, $endDate, [$userId], ReservationUserLevel::OWNER, [$scheduleId], [$resourceId], null);
         $reservationColorsCommand = new GetReservationColorRulesCommand();
         $reservations = $this->repository->GetReservations($startDate, $endDate, $userId, null, $scheduleId, $resourceId);
 
@@ -359,7 +421,7 @@ class ReservationViewRepositoryTests extends TestBase
         $this->assertEquals(1, count($reservations));
 
         $expected = ReservationItemView::Populate($rows[0]);
-        $expected->ResourceNames = array("1", "2");
+        $expected->ResourceNames = ["1", "2"];
         $this->assertEquals($expected, $reservations[0]);
     }
 
@@ -418,8 +480,22 @@ class ReservationViewRepositoryTests extends TestBase
         $repeat = new RepeatDaily(1, $end->AddDays(2));
         $repeatOptions = $repeat->ConfigurationString();
 
-        $rows[] = $this->GetBlackoutRow($instanceId, $start, $end, $resourceId, $userid, $scheduleId, $title,
-            $description, $firstName, $lastName, $resourceName, $seriesId, $repeatType, $repeatOptions);
+        $rows[] = $this->GetBlackoutRow(
+            $instanceId,
+            $start,
+            $end,
+            $resourceId,
+            $userid,
+            $scheduleId,
+            $title,
+            $description,
+            $firstName,
+            $lastName,
+            $resourceName,
+            $seriesId,
+            $repeatType,
+            $repeatOptions
+        );
         $rows[] = $this->GetBlackoutRow("1", Date::Now(), Date::Now());
 
         $this->db->SetRows($rows);
@@ -428,8 +504,22 @@ class ReservationViewRepositoryTests extends TestBase
 
         $blackouts = $this->repository->GetBlackoutsWithin($dateRange);
 
-        $b = new BlackoutItemView($instanceId, $start->ToUtc(), $end->ToUtc(), $resourceId, $userid, $scheduleId, $title, $description, $firstName, $lastName,
-            $resourceName, $seriesId, $repeatOptions, $repeatType);
+        $b = new BlackoutItemView(
+            $instanceId,
+            $start->ToUtc(),
+            $end->ToUtc(),
+            $resourceId,
+            $userid,
+            $scheduleId,
+            $title,
+            $description,
+            $firstName,
+            $lastName,
+            $resourceName,
+            $seriesId,
+            $repeatOptions,
+            $repeatType
+        );
 
         $this->assertEquals($getBlackoutsCommand, $this->db->_LastCommand);
         $this->assertEquals(2, count($blackouts));
@@ -440,8 +530,26 @@ class ReservationViewRepositoryTests extends TestBase
     {
         $participant_list = '2=name name!sep!3=name name';
         $invitee_list = '4=name name!sep!5=name name';
-        $reservationView = new ReservationItemView('ref', Date::Now(), Date::Now(), 'resource', 1, 1, ReservationUserLevel::OWNER, 'title', 'desc', 1, 'f', 'l',
-            1, null, null, null, $participant_list, $invitee_list);
+        $reservationView = new ReservationItemView(
+            'ref',
+            Date::Now(),
+            Date::Now(),
+            'resource',
+            1,
+            1,
+            ReservationUserLevel::OWNER,
+            'title',
+            'desc',
+            1,
+            'f',
+            'l',
+            1,
+            null,
+            null,
+            null,
+            $participant_list,
+            $invitee_list
+        );
         $this->assertTrue($reservationView->IsUserParticipating(2));
         $this->assertTrue($reservationView->IsUserParticipating(3));
         $this->assertFalse($reservationView->IsUserParticipating(4));
@@ -455,7 +563,7 @@ class ReservationViewRepositoryTests extends TestBase
 
     public function testGetsCorrectReservationColor()
     {
-		$this->fakeConfig->SetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_PER_USER_COLORS, true);
+        $this->fakeConfig->SetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_PER_USER_COLORS, true);
         $preferences = UserPreferences::Parse(UserPreferences::RESERVATION_COLOR . '=000000');
         $reservationItemView = new ReservationItemView();
         $reservationItemView->ResourceColor = 'ffffff';
@@ -470,21 +578,29 @@ class ReservationViewRepositoryTests extends TestBase
 
     private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
     {
-        return array(
+        return [
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
             ColumnNames::USER_ID => $userId,
             ColumnNames::FIRST_NAME => $fname,
             ColumnNames::LAST_NAME => $lname,
             ColumnNames::EMAIL => $email,
             ColumnNames::RESERVATION_USER_LEVEL => $levelId,
-        );
+        ];
     }
 
-    private function GetResourceRow($reservationId, $resourceId, $resourceName, $adminGroupId, $scheduleId,
-                                    $scheduleAdminGroupId, $statusId = ResourceStatus::AVAILABLE, $checkinEnabled = false,
-                                    $autoReleaseMinutes = null)
+    private function GetResourceRow(
+        $reservationId,
+        $resourceId,
+        $resourceName,
+        $adminGroupId,
+        $scheduleId,
+        $scheduleAdminGroupId,
+        $statusId = ResourceStatus::AVAILABLE,
+        $checkinEnabled = false,
+        $autoReleaseMinutes = null
+    )
     {
-        return array(
+        return [
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
             ColumnNames::RESOURCE_ID => $resourceId,
             ColumnNames::RESOURCE_NAME => $resourceName,
@@ -495,19 +611,39 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::RESOURCE_STATUS_ID => $statusId,
             ColumnNames::ENABLE_CHECK_IN => $checkinEnabled,
             ColumnNames::AUTO_RELEASE_MINUTES => $autoReleaseMinutes,
-        );
-
+        ];
     }
 
-    private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId,
-                                           $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-                                           $userId, $phone = 'phone', $organization = 'organization',
-                                           $position = 'position',
-                                           $participant_list = '', $invitee_list = null,
-                                           $attributes = null, $preferences = null, $bufferTime = 0, $checkinDate = null, $checkoutDate = null,
-                                           $previousEndDate = null, $requireCheckin = false, $autoReleaseMinutes = null)
+    private function GetReservationListRow(
+        $referenceNumber,
+        $resourceName,
+        Date $startDate,
+        Date $endDate,
+        $resourceId,
+        $instanceId,
+        $userLevelId,
+        $title,
+        $description,
+        $scheduleId,
+        $fname,
+        $lname,
+        $userId,
+        $phone = 'phone',
+        $organization = 'organization',
+        $position = 'position',
+        $participant_list = '',
+        $invitee_list = null,
+        $attributes = null,
+        $preferences = null,
+        $bufferTime = 0,
+        $checkinDate = null,
+        $checkoutDate = null,
+        $previousEndDate = null,
+        $requireCheckin = false,
+        $autoReleaseMinutes = null
+    )
     {
-        return array(
+        return [
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESOURCE_NAME => $resourceName,
             ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
@@ -540,20 +676,26 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::CREDIT_COUNT => null,
             ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS => null,
             ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS => null,
-        );
+        ];
     }
 
-    private function GetAccessoryRow($referenceNumber, Date $startDate, Date $endDate, $accessoryName, $accessoryId,
-                                     $quantityReserved)
+    private function GetAccessoryRow(
+        $referenceNumber,
+        Date $startDate,
+        Date $endDate,
+        $accessoryName,
+        $accessoryId,
+        $quantityReserved
+    )
     {
-        return array(
+        return [
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
             ColumnNames::RESERVATION_END => $endDate->ToDatabase(),
             ColumnNames::ACCESSORY_NAME => $accessoryName,
             ColumnNames::ACCESSORY_ID => $accessoryId,
             ColumnNames::QUANTITY => $quantityReserved,
-        );
+        ];
     }
 
     private function GetBlackoutRow(
@@ -570,9 +712,10 @@ class ReservationViewRepositoryTests extends TestBase
         $resourceName = 'resource name',
         $seriesId = 999,
         $repeatType = RepeatType::None,
-        $repeatOptions = '')
+        $repeatOptions = ''
+    )
     {
-        return array(
+        return [
             ColumnNames::BLACKOUT_INSTANCE_ID => $instanceId,
             ColumnNames::BLACKOUT_START => $start->ToDatabase(),
             ColumnNames::BLACKOUT_END => $end->ToDatabase(),
@@ -587,6 +730,6 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::BLACKOUT_SERIES_ID => $seriesId,
             ColumnNames::REPEAT_TYPE => $repeatType,
             ColumnNames::REPEAT_OPTIONS => $repeatOptions,
-        );
+        ];
     }
 }

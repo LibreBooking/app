@@ -2,21 +2,19 @@
 
 class JsonRequest
 {
-	public function __construct($jsonObject = null)
-	{
-		$this->Hydrate($jsonObject);
-	}
+    public function __construct($jsonObject = null)
+    {
+        $this->Hydrate($jsonObject);
+    }
 
-	private function Hydrate($jsonObject)
-	{
-		if (empty($jsonObject))
-		{
-			return;
-		}
+    private function Hydrate($jsonObject)
+    {
+        if (empty($jsonObject)) {
+            return;
+        }
 
-		foreach ($jsonObject as $key => $value)
-		{
-			$this->$key = $value;
-		}
-	}
+        foreach ($jsonObject as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 }

@@ -52,7 +52,6 @@ namespace Booked {
          * @return void
          */
         public function FlushSmartyCache();
-
     }
 
     class FileSystem implements IFileSystem

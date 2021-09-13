@@ -2,8 +2,8 @@
 
 interface IReservationNotification
 {
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 */
-	function Notify($reservationSeries);
+    /**
+     * @param ReservationSeries $reservationSeries
+     */
+    public function Notify($reservationSeries);
 }

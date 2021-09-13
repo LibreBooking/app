@@ -1,7 +1,7 @@
 <?php
 
-require_once (ROOT_DIR. 'Pages/Page.php');
-require_once (ROOT_DIR. 'Domain/Access/namespace.php');
+require_once(ROOT_DIR. 'Pages/Page.php');
+require_once(ROOT_DIR. 'Domain/Access/namespace.php');
 
 class TermsOfServicePage extends Page
 {
@@ -15,8 +15,7 @@ class TermsOfServicePage extends Page
         $repo = new TermsOfServiceRepository();
         $tos = $repo->Load();
 
-        if ($tos != null)
-        {
+        if ($tos != null) {
             $this->Set('TermsContent', $tos->Text());
         }
         $this->Display('tos.tpl');

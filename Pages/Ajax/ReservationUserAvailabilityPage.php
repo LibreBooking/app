@@ -4,7 +4,6 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUserAvailabilityPrese
 
 interface IReservationUserAvailabilityPage
 {
-
     /**
      * @return int[]
      */
@@ -69,7 +68,8 @@ class ReservationUserAvailabilityPage extends Page implements IReservationUserAv
             new ReservationViewRepository(),
             new ScheduleRepository(),
             new UserRepository(),
-            new ResourceRepository());
+            new ResourceRepository()
+        );
     }
 
     public function PageLoad()
@@ -115,7 +115,7 @@ class ReservationUserAvailabilityPage extends Page implements IReservationUserAv
 
     public function GetStartDate()
     {
-       return $this->GetQuerystring(QueryStringKeys::START_DATE);
+        return $this->GetQuerystring(QueryStringKeys::START_DATE);
     }
 
     public function GetStartTime()

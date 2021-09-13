@@ -102,7 +102,7 @@ class CalendarSubscriptionDetails
 
 class CalendarSubscriptionService implements ICalendarSubscriptionService
 {
-    private $cache = array();
+    private $cache = [];
 
     /**
      * @var IUserRepository
@@ -119,9 +119,11 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
      */
     private $scheduleRepository;
 
-    public function __construct(IUserRepository $userRepository,
-                                IResourceRepository $resourceRepository,
-                                IScheduleRepository $scheduleRepository)
+    public function __construct(
+        IUserRepository $userRepository,
+        IResourceRepository $resourceRepository,
+        IScheduleRepository $scheduleRepository
+    )
     {
         $this->userRepository = $userRepository;
         $this->resourceRepository = $resourceRepository;
@@ -176,7 +178,7 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
             $group = $this->resourceRepository->LoadResourceGroupByPublicId($publicResourceGroupId);
 
             if ($group == null) {
-                return array();
+                return [];
             }
 
             $groups = $this->resourceRepository->GetResourceGroups();
@@ -195,8 +197,7 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
 
         if (!empty($scheduleId)) {
             $schedule = $this->scheduleRepository->LoadById($scheduleId);
-            if ($schedule != null)
-            {
+            if ($schedule != null) {
                 $schedulePublicId = $schedule->GetPublicId();
             }
         }
@@ -209,7 +210,8 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
 
         return new CalendarSubscriptionDetails(
             $user->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl($user->GetPublicId(), $schedulePublicId, $resourcePublicId));
+            new CalendarSubscriptionUrl($user->GetPublicId(), $schedulePublicId, $resourcePublicId)
+        );
     }
 
     /**
@@ -220,14 +222,14 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
     {
         $resource = $this->resourceRepository->LoadById($resourceId);
 
-        if ($resource == null)
-        {
+        if ($resource == null) {
             return new CalendarSubscriptionDetails(false);
         }
 
         return new CalendarSubscriptionDetails(
             $resource->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl(null, null, $resource->GetPublicId()));
+            new CalendarSubscriptionUrl(null, null, $resource->GetPublicId())
+        );
     }
 
     /**
@@ -238,13 +240,13 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
     {
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
 
-        if ($schedule == null)
-        {
+        if ($schedule == null) {
             return new CalendarSubscriptionDetails(false);
         }
 
         return new CalendarSubscriptionDetails(
             $schedule->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl(null, $schedule->GetPublicId(), null));
+            new CalendarSubscriptionUrl(null, $schedule->GetPublicId(), null)
+        );
     }
 }

@@ -83,26 +83,22 @@ class Reminder
             $row[ColumnNames::REMINDER_REFNUMBER]
         );
     }
-    public static function SendItOut(Reminder $reminder){
+    public static function SendItOut(Reminder $reminder)
+    {
         $message = $reminder->Message();
         $subject = "Automatic Reminder from Booked Scheduler";
-	/* replace 'username' and 'password' with your GoogleVoice sign-in */
+        /* replace 'username' and 'password' with your GoogleVoice sign-in */
         $gv = new GoogleVoice("username", "password");
-        $addresses = explode(',',str_replace(' ', '', $reminder->Address()));
-        foreach($addresses as $address)
-        {
-            if(ctype_digit($address))
-            {
-                $gv->sms($address,$message);
-            }
-            else
-            {
-                mail($address,$subject,$message);
+        $addresses = explode(',', str_replace(' ', '', $reminder->Address()));
+        foreach ($addresses as $address) {
+            if (ctype_digit($address)) {
+                $gv->sms($address, $message);
+            } else {
+                mail($address, $subject, $message);
             }
         }
         $repository = new ReminderRepository();
         $repository->DeleteReminder($reminder->ReminderID());
         return;
     }
-
 }

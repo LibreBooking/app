@@ -10,11 +10,13 @@ class GroupAdminManageGroupsPage extends ManageGroupsPage
         parent::__construct();
 
         $this->CanChangeRoles = false;
-        $this->presenter = new ManageGroupsPresenter($this,
+        $this->presenter = new ManageGroupsPresenter(
+            $this,
             new GroupAdminGroupRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
             new ResourceRepository(),
             new ScheduleRepository(),
-            new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()));
+            new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession())
+        );
     }
 
     public function ProcessPageLoad()
@@ -22,4 +24,3 @@ class GroupAdminManageGroupsPage extends ManageGroupsPage
         parent::ProcessPageLoad();
     }
 }
-

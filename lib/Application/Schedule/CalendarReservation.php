@@ -17,9 +17,9 @@ class CalendarReservation
      */
     public $ResourceName;
 
-     /**
-     * @var int
-     */
+    /**
+    * @var int
+    */
     public $ResourceId;
 
     /**
@@ -114,8 +114,8 @@ class CalendarReservation
      */
     public static function FromViewList($reservations, $timezone, $user, $groupSeriesByResource = false)
     {
-        $knownSeries = array();
-        $results = array();
+        $knownSeries = [];
+        $results = [];
 
         foreach ($reservations as $reservation) {
             if ($groupSeriesByResource) {
@@ -150,8 +150,10 @@ class CalendarReservation
 
         $res->Title = $reservation->Title;
         $res->Description = $reservation->Description;
-        $res->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
-            ConfigKeys::RESERVATION_LABELS_MY_CALENDAR));
+        $res->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(
+            ConfigSection::RESERVATION_LABELS,
+            ConfigKeys::RESERVATION_LABELS_MY_CALENDAR
+        ));
         $res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
         $res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
         $res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
@@ -185,15 +187,15 @@ class CalendarReservation
             $factory = new SlotLabelFactory($userSession);
         }
 
-        $knownSeries = array();
+        $knownSeries = [];
 
-        $resourceMap = array();
+        $resourceMap = [];
         /** @var $resource ResourceDto */
         foreach ($resources as $resource) {
             $resourceMap[$resource->GetResourceId()] = $resource->GetName();
         }
 
-        $res = array();
+        $res = [];
         foreach ($reservations as $reservation) {
             if (!array_key_exists($reservation->ResourceId, $resourceMap)) {
                 continue;
@@ -216,8 +218,10 @@ class CalendarReservation
             $cr->OwnerName = new FullName($reservation->FirstName, $reservation->LastName);
             $cr->OwnerFirst = $reservation->FirstName;
             $cr->OwnerLast = $reservation->LastName;
-            $cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
-                ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
+            $cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(
+                ConfigSection::RESERVATION_LABELS,
+                ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR
+            ));
             $color = $reservation->GetColor();
             if (!empty($color)) {
                 $cr->Color = $reservation->GetColor() . ' !important';
@@ -281,14 +285,12 @@ class CalendarReservation
         }
 
         return 'reserved';
-
     }
 
     public function AsFullCalendarEvent()
     {
-
         $dateFormat = Resources::GetInstance()->GetDateFormat('fullcalendar');
-        return array(
+        return [
             'id' => $this->ReferenceNumber,
             'title' => $this->DisplayTitle,
             'start' => $this->StartDate->Format($dateFormat),
@@ -299,7 +301,7 @@ class CalendarReservation
             'textColor' => $this->TextColor,
             'className' => $this->Class,
             'startEditable' => $this->IsEditable
-        );
+        ];
     }
 
     /**

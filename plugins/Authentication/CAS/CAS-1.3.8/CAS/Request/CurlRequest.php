@@ -37,11 +37,8 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
-class CAS_Request_CurlRequest
-extends CAS_Request_AbstractRequest
-implements CAS_Request_RequestInterface
+class CAS_Request_CurlRequest extends CAS_Request_AbstractRequest implements CAS_Request_RequestInterface
 {
-
     /**
      * Set additional curl options
      *
@@ -49,18 +46,18 @@ implements CAS_Request_RequestInterface
      *
      * @return void
      */
-    public function setCurlOptions (array $options)
+    public function setCurlOptions(array $options)
     {
         $this->_curlOptions = $options;
     }
-    private $_curlOptions = array();
+    private $_curlOptions = [];
 
     /**
      * Send the request and store the results.
      *
      * @return bool true on success, false on failure.
      */
-    protected function sendRequest ()
+    protected function sendRequest()
     {
         phpCAS::traceBegin();
 
@@ -73,7 +70,7 @@ implements CAS_Request_RequestInterface
          * Perform the query
         *********************************************************/
         $buf = curl_exec($ch);
-        if ( $buf === false ) {
+        if ($buf === false) {
             phpCAS::trace('curl_exec() failed');
             $this->storeErrorMessage(
                 'CURL error #'.curl_errno($ch).': '.curl_error($ch)
@@ -83,7 +80,6 @@ implements CAS_Request_RequestInterface
             $this->storeResponseBody($buf);
             phpCAS::trace("Response Body: \n".$buf."\n");
             $res = true;
-
         }
         // close the CURL session
         curl_close($ch);
@@ -139,13 +135,13 @@ implements CAS_Request_RequestInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         // get the HTTP header with a callback
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, '_curlReadHeaders'));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, '_curlReadHeaders']);
 
         /*********************************************************
          * Add cookie headers to our request.
         *********************************************************/
         if (count($this->cookies)) {
-            $cookieStrings = array();
+            $cookieStrings = [];
             foreach ($this->cookies as $name => $val) {
                 $cookieStrings[] = $name.'='.$val;
             }
@@ -179,7 +175,7 @@ implements CAS_Request_RequestInterface
      *
      * @return void
      */
-    private function _storeResponseBody ($body)
+    private function _storeResponseBody($body)
     {
         $this->storeResponseBody($body);
     }
@@ -192,7 +188,7 @@ implements CAS_Request_RequestInterface
      *
      * @return int
      */
-    private function _curlReadHeaders ($ch, $header)
+    private function _curlReadHeaders($ch, $header)
     {
         $this->storeResponseHeader($header);
         return strlen($header);

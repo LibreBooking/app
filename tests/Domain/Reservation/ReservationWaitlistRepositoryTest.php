@@ -1,6 +1,6 @@
 <?php
 
-require_once (ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class ReservationWaitlistRepositoryTests extends TestBase
 {
@@ -21,13 +21,12 @@ class ReservationWaitlistRepositoryTests extends TestBase
         $startDate = Date::Now();
         $endDate = Date::Now();
         $userId = 1;
-        $resourceIds = array(1, 2, 3);
+        $resourceIds = [1, 2, 3];
         $request = ReservationWaitlistRequest::Create($userId, $startDate, $endDate, $resourceIds);
 
         $id = $this->repository->Add($request);
 
         $this->assertEquals($this->db->_ExpectedInsertId, $id);
         $this->assertEquals(new AddReservationWaitlistCommand($userId, $startDate, $endDate, $resourceIds), $this->db->_LastCommand);
-
     }
 }

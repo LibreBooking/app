@@ -7,26 +7,26 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/GuestPermissionServiceFac
 
 class ReadOnlyReservationPage extends ExistingReservationPage
 {
-	public function __construct()
-	{
-		$this->permissionServiceFactory = new GuestPermissionServiceFactory();
-		parent::__construct();
-		$this->IsEditable = false;
-		$this->IsApprovable = false;
-	}
+    public function __construct()
+    {
+        $this->permissionServiceFactory = new GuestPermissionServiceFactory();
+        parent::__construct();
+        $this->IsEditable = false;
+        $this->IsApprovable = false;
+    }
 
-	public function PageLoad()
-	{
-		parent::PageLoad();
-	}
+    public function PageLoad()
+    {
+        parent::PageLoad();
+    }
 
-	function SetIsEditable($canBeEdited)
-	{
-		// no-op
-	}
+    public function SetIsEditable($canBeEdited)
+    {
+        // no-op
+    }
 
-	public function SetIsApprovable($canBeApproved)
-	{
-		// no-op
-	}
+    public function SetIsApprovable($canBeApproved)
+    {
+        // no-op
+    }
 }

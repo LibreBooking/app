@@ -5,41 +5,41 @@
  * Constant-interface.
  * Defines configuration keys.
  */
-interface ShibbolethConfig {
+interface ShibbolethConfig
+{
+    /**
+     * @var string
+     */
+    public const CONFIG_ID = 'shibboleth';
 
     /**
      * @var string
      */
-    const CONFIG_ID = 'shibboleth';
+    public const USERNAME = 'shibboleth.username';
 
     /**
      * @var string
      */
-    const USERNAME = 'shibboleth.username';
+    public const FIRSTNAME = 'shibboleth.firstname';
 
     /**
      * @var string
      */
-    const FIRSTNAME = 'shibboleth.firstname';
-
-    /**
-     * @var string
-     */
-    const LASTNAME = 'shibboleth.lastname';
+    public const LASTNAME = 'shibboleth.lastname';
 
 
     /**
      * @var string
      */
-    const EMAIL = 'shibboleth.email';
+    public const EMAIL = 'shibboleth.email';
 
     /**
      * @var string
      */
-    const PHONE = 'shibboleth.phone';
+    public const PHONE = 'shibboleth.phone';
 
     /**
      * @var string
      */
-    const ORGANIZATION = 'shibboleth.organization';
+    public const ORGANIZATION = 'shibboleth.organization';
 }

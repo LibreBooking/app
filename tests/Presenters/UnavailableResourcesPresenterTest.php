@@ -36,13 +36,13 @@ class UnavailableResourcesPresenterTests extends TestBase
         $this->reservationConflictIdentifier = new FakeReservationConflictIdentifier();
         $this->page = new FakeAvailableResourcesPage($this->fakeUser);
         $this->resourceRepository = new FakeResourceRepository();
-        $this->resourceRepository->_ScheduleResourceList = array(
+        $this->resourceRepository->_ScheduleResourceList = [
             new FakeBookableResource(1),
             new FakeBookableResource(2),
             new FakeBookableResource(3),
             new FakeBookableResource(4),
             new FakeBookableResource(5),
-        );
+        ];
 
         $this->reservationRepository = new FakeReservationRepository();
 
@@ -66,7 +66,7 @@ class UnavailableResourcesPresenterTests extends TestBase
 
         $bound = $this->page->_BoundAvailability;
 
-        $this->assertEquals(array(3, 5), $bound);
+        $this->assertEquals([3, 5], $bound);
         $this->assertEquals($this->page->GetDuration()->ToUtc(), $series->CurrentInstance()->Duration()->ToUtc());
     }
 
@@ -83,7 +83,7 @@ class UnavailableResourcesPresenterTests extends TestBase
 
         $bound = $this->page->_BoundAvailability;
 
-        $this->assertEquals(array(3, 5), $bound);
+        $this->assertEquals([3, 5], $bound);
         $this->assertEquals($this->resourceRepository->_ScheduleResourceList[0], $this->reservationConflictIdentifier->_Series[0]->Resource());
     }
 }

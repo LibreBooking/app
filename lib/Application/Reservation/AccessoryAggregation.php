@@ -2,77 +2,68 @@
 
 class AccessoryAggregation
 {
-	private $knownAccessoryIds = array();
+    private $knownAccessoryIds = [];
 
-	/**
-	 * @var \DateRange
-	 */
-	private $duration;
+    /**
+     * @var \DateRange
+     */
+    private $duration;
 
-	/**
-	 * @var string[]
-	 */
-	private $addedReservations = array();
+    /**
+     * @var string[]
+     */
+    private $addedReservations = [];
 
-	private $accessoryQuantity = array();
+    private $accessoryQuantity = [];
 
-	/**
-	 * @param array|AccessoryToCheck[] $accessories
-	 * @param DateRange $duration
-	 */
-	public function __construct($accessories, $duration)
-	{
-		foreach ($accessories as $a)
-		{
+    /**
+     * @param array|AccessoryToCheck[] $accessories
+     * @param DateRange $duration
+     */
+    public function __construct($accessories, $duration)
+    {
+        foreach ($accessories as $a) {
             $this->knownAccessoryIds[$a->GetId()] = 1;
-		}
+        }
 
-		$this->duration = $duration;
-	}
+        $this->duration = $duration;
+    }
 
-	/**
-	 * @param AccessoryReservation $accessoryReservation
-	 */
-	public function Add(AccessoryReservation $accessoryReservation)
-	{
-		if ($accessoryReservation->GetStartDate()->GreaterThanOrEqual($this->duration->GetEnd()) || $accessoryReservation->GetEndDate()->LessThanOrEqual($this->duration->GetBegin()))
-		{
-			return;
-		}
+    /**
+     * @param AccessoryReservation $accessoryReservation
+     */
+    public function Add(AccessoryReservation $accessoryReservation)
+    {
+        if ($accessoryReservation->GetStartDate()->GreaterThanOrEqual($this->duration->GetEnd()) || $accessoryReservation->GetEndDate()->LessThanOrEqual($this->duration->GetBegin())) {
+            return;
+        }
 
-		$accessoryId = $accessoryReservation->GetAccessoryId();
+        $accessoryId = $accessoryReservation->GetAccessoryId();
 
-		$key = $accessoryReservation->GetReferenceNumber() . $accessoryId;
+        $key = $accessoryReservation->GetReferenceNumber() . $accessoryId;
 
-		if (array_key_exists($key, $this->addedReservations))
-		{
-			return;
-		}
+        if (array_key_exists($key, $this->addedReservations)) {
+            return;
+        }
 
-		$this->addedReservations[$key] = true;
+        $this->addedReservations[$key] = true;
 
-		if (array_key_exists($accessoryId, $this->accessoryQuantity))
-        {
+        if (array_key_exists($accessoryId, $this->accessoryQuantity)) {
             $this->accessoryQuantity[$accessoryId] += $accessoryReservation->QuantityReserved();
-
-        }
-        else {
+        } else {
             $this->accessoryQuantity[$accessoryId] = $accessoryReservation->QuantityReserved();
-
         }
-	}
+    }
 
-	/**
-	 * @param int $accessoryId
-	 * @return int
-	 */
-	public function GetQuantity($accessoryId)
-	{
-
-	    if (array_key_exists($accessoryId, $this->accessoryQuantity))
-        {
+    /**
+     * @param int $accessoryId
+     * @return int
+     */
+    public function GetQuantity($accessoryId)
+    {
+        if (array_key_exists($accessoryId, $this->accessoryQuantity)) {
             return $this->accessoryQuantity[$accessoryId];
         }
         return 0;
-	}
+    }
 }

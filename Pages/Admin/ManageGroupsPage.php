@@ -154,7 +154,8 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
             new GroupRepository(),
             new ResourceRepository(),
             new ScheduleRepository(),
-            new UserRepository());
+            new UserRepository()
+        );
 
         $this->pageable = new PageablePage($this);
     }
@@ -258,7 +259,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 
     public function GetUserIds()
     {
-        return array();
+        return [];
     }
 
     public function BindSchedules($schedules)
@@ -310,4 +311,3 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
         return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
 }
-

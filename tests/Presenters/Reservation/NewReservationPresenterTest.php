@@ -6,50 +6,50 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class NewReservationPresenterTests extends TestBase
 {
-	/**
-	 * @var UserSession
-	 */
-	private $_user;
+    /**
+     * @var UserSession
+     */
+    private $_user;
 
-	/**
-	 * @var int
-	 */
-	private $_userId;
+    /**
+     * @var int
+     */
+    private $_userId;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->_user = $this->fakeServer->UserSession;
-		$this->_userId = $this->_user->UserId;
-	}
+        $this->_user = $this->fakeServer->UserSession;
+        $this->_userId = $this->_user->UserId;
+    }
 
-	public function teardown(): void
-	{
-		parent::teardown();
-	}
+    public function teardown(): void
+    {
+        parent::teardown();
+    }
 
-	public function testPageLoadValidatesAllPreconditionsAndGetsReservationInitializerAndInitializes()
-	{
-		$page = $this->createMock('INewReservationPage');
+    public function testPageLoadValidatesAllPreconditionsAndGetsReservationInitializerAndInitializes()
+    {
+        $page = $this->createMock('INewReservationPage');
 
-		$reservationPreconditionService = $this->createMock('INewReservationPreconditionService');
-		$reservationPreconditionService->expects($this->once())
-			->method('CheckAll')
-			->with($this->equalTo($page), $this->equalTo($this->_user));
+        $reservationPreconditionService = $this->createMock('INewReservationPreconditionService');
+        $reservationPreconditionService->expects($this->once())
+            ->method('CheckAll')
+            ->with($this->equalTo($page), $this->equalTo($this->_user));
 
-		$reservationInitializerFactory = $this->createMock('IReservationInitializerFactory');
-		$initializer = $this->createMock('IReservationInitializer');
+        $reservationInitializerFactory = $this->createMock('IReservationInitializerFactory');
+        $initializer = $this->createMock('IReservationInitializer');
 
-		$reservationInitializerFactory->expects($this->once())
-			->method('GetNewInitializer')
-			->with($this->equalTo($page))
-			->will($this->returnValue($initializer));
+        $reservationInitializerFactory->expects($this->once())
+            ->method('GetNewInitializer')
+            ->with($this->equalTo($page))
+            ->will($this->returnValue($initializer));
 
-		$initializer->expects($this->once())
-			->method('Initialize');
+        $initializer->expects($this->once())
+            ->method('Initialize');
 
-		$presenter = new ReservationPresenter($page, $reservationInitializerFactory, $reservationPreconditionService);
-		$presenter->PageLoad();
-	}
+        $presenter = new ReservationPresenter($page, $reservationInitializerFactory, $reservationPreconditionService);
+        $presenter->PageLoad();
+    }
 }

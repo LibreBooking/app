@@ -112,5 +112,3 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
         return 'Der Dienst `<b>%s</b>\' ist nicht verf&uuml;gbar (<b>%s</b>).';
     }
 }
-
-?>

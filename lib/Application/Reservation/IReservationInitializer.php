@@ -2,5 +2,5 @@
 
 interface IReservationInitializer
 {
-	public function Initialize();
+    public function Initialize();
 }

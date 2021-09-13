@@ -41,7 +41,7 @@ $cas_server_ca_cert_path = '/path/to/cachain.pem';
 
 // The "real" hosts of clustered cas server that send SAML logout messages
 // Assumes the cas server is load balanced across multiple hosts
-$cas_real_hosts = array('cas-real-1.example.com', 'cas-real-2.example.com');
+$cas_real_hosts = ['cas-real-1.example.com', 'cas-real-2.example.com'];
 
 // Client config for cookie hardening
 $client_domain = '127.0.0.1';
@@ -101,4 +101,3 @@ session_name(
 );
 // Set an UTF-8 encoding header for internation characters (User attributes)
 header('Content-Type: text/html; charset=utf-8');
-?>

@@ -4,25 +4,25 @@ require_once(ROOT_DIR. 'lib/Application/Reservation/namespace.php');
 
 class FakeReservationHandler implements IReservationHandler
 {
-	/**
-	 * @var bool
-	 */
-	public $_Success = false;
+    /**
+     * @var bool
+     */
+    public $_Success = false;
 
-	/**
-	 * @var ReservationSeries
-	 */
-	public $_LastSeries;
+    /**
+     * @var ReservationSeries
+     */
+    public $_LastSeries;
 
-	/**
-	 * @var string[]
-	 */
-	public $_Errors = array();
+    /**
+     * @var string[]
+     */
+    public $_Errors = [];
 
-	public function Handle($reservationSeries, IReservationSaveResultsView $view)
-	{
-		$this->_LastSeries = $reservationSeries;
-		$view->SetErrors($this->_Errors);
-		return $this->_Success;
-	}
+    public function Handle($reservationSeries, IReservationSaveResultsView $view)
+    {
+        $this->_LastSeries = $reservationSeries;
+        $view->SetErrors($this->_Errors);
+        return $this->_Success;
+    }
 }

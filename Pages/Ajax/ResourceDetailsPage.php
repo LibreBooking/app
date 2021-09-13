@@ -32,7 +32,7 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
         $this->Set('contactInformation', $resource->GetContact());
         $this->Set('locationInformation', $resource->GetLocation());
         $this->Set('allowMultiday', $resource->GetAllowMultiday());
-		$this->Set('minimumDuration', $resource->GetMinLength());
+        $this->Set('minimumDuration', $resource->GetMinLength());
         $this->Set('maximumDuration', $resource->GetMaxLength());
 
         $this->Set('maxParticipants', $resource->GetMaxParticipants());
@@ -48,56 +48,55 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
         $this->Set('peakCredits', $resource->GetPeakCreditsPerSlot());
         $this->Set('offPeakCredits', $resource->GetCreditsPerSlot());
 
-        if ($resource->HasImage())
-        {
-            $this->Set('imageUrl', $resource->GetImage() );
-            $this->Set('images', $resource->GetImages() );
+        if ($resource->HasImage()) {
+            $this->Set('imageUrl', $resource->GetImage());
+            $this->Set('images', $resource->GetImages());
         }
     }
 
-	public function BindAttributes($attributes)
-	{
-		$this->Set('Attributes', $attributes);
-	}
+    public function BindAttributes($attributes)
+    {
+        $this->Set('Attributes', $attributes);
+    }
 
     public function GetResourceId()
     {
         return ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
     }
 
-	/**
-	 * @param ResourceType $resourceType
-	 * @param Attribute[] $attributes
-	 */
-	public function BindResourceType(ResourceType $resourceType, $attributes)
-	{
-		$this->Set('resourceType', $resourceType->Name());
-		$this->Set('ResourceTypeAttributes', $attributes);
-	}
+    /**
+     * @param ResourceType $resourceType
+     * @param Attribute[] $attributes
+     */
+    public function BindResourceType(ResourceType $resourceType, $attributes)
+    {
+        $this->Set('resourceType', $resourceType->Name());
+        $this->Set('ResourceTypeAttributes', $attributes);
+    }
 }
 
 interface IResourceDetailsPage
 {
-	/**
-	 * @param BookableResource $resource
-	 */
-	public function BindResource(BookableResource $resource);
+    /**
+     * @param BookableResource $resource
+     */
+    public function BindResource(BookableResource $resource);
 
-	/**
-	 * @param Attribute[] $attributes
-	 */
-	public function BindAttributes($attributes);
+    /**
+     * @param Attribute[] $attributes
+     */
+    public function BindAttributes($attributes);
 
-	/**
-	 * @param ResourceType $resourceType
-	 * @param Attribute[] $attributes
-	 */
-	public function BindResourceType(ResourceType $resourceType, $attributes);
+    /**
+     * @param ResourceType $resourceType
+     * @param Attribute[] $attributes
+     */
+    public function BindResourceType(ResourceType $resourceType, $attributes);
 
-	/**
-	 * @return int
-	 */
-	public function GetResourceId();
+    /**
+     * @return int
+     */
+    public function GetResourceId();
 }
 
 class ResourceDetailsPresenter
@@ -112,21 +111,21 @@ class ResourceDetailsPresenter
      */
     private $page;
 
-	/**
-	 * @var IAttributeService
-	 */
+    /**
+     * @var IAttributeService
+     */
     private $attributeService;
 
     /**
      * @param IResourceDetailsPage $page
      * @param IResourceRepository $resourceRepository
-	 * @param IAttributeService $attributeService
+     * @param IAttributeService $attributeService
      */
     public function __construct(IResourceDetailsPage $page, IResourceRepository $resourceRepository, IAttributeService $attributeService)
     {
         $this->page = $page;
         $this->resourceRepository = $resourceRepository;
-		$this->attributeService = $attributeService;
+        $this->attributeService = $attributeService;
     }
 
     public function PageLoad()
@@ -135,16 +134,14 @@ class ResourceDetailsPresenter
         $resource = $this->resourceRepository->LoadById($resourceId);
         $this->page->BindResource($resource);
 
-		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceId);
-		$this->page->BindAttributes($attributeList->GetAttributes($resourceId));
+        $attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceId);
+        $this->page->BindAttributes($attributeList->GetAttributes($resourceId));
 
-		if ($resource->HasResourceType())
-		{
-			$resourceType = $this->resourceRepository->LoadResourceType($resource->GetResourceTypeId());
-			$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE_TYPE, $resource->GetResourceTypeId());
+        if ($resource->HasResourceType()) {
+            $resourceType = $this->resourceRepository->LoadResourceType($resource->GetResourceTypeId());
+            $attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE_TYPE, $resource->GetResourceTypeId());
 
-			$this->page->BindResourceType($resourceType, $attributeList->GetAttributes($resource->GetResourceTypeId()));
-		}
+            $this->page->BindResourceType($resourceType, $attributeList->GetAttributes($resource->GetResourceTypeId()));
+        }
     }
 }
-

@@ -6,4 +6,3 @@ require_once(ROOT_DIR . 'Pages/PasswordPage.php');
 
 $page = new PasswordPage();
 $page->PageLoad();
-

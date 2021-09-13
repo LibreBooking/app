@@ -72,7 +72,7 @@ class PaymentRepository implements IPaymentRepository
             return new CreditCost($row[ColumnNames::CREDIT_COST], $row[ColumnNames::CREDIT_CURRENCY]);
         }
 
-		$reader->Free();
+        $reader->Free();
         return new CreditCost();
     }
 
@@ -106,16 +106,14 @@ class PaymentRepository implements IPaymentRepository
         while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::CLIENT_ID) {
                 $clientId = $row[ColumnNames::GATEWAY_SETTING_VALUE];
-            }
-            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::SECRET) {
+            } elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::SECRET) {
                 $secret = $row[ColumnNames::GATEWAY_SETTING_VALUE];
-            }
-            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::ENVIRONMENT) {
+            } elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::ENVIRONMENT) {
                 $environment = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
         }
 
-		$reader->Free();
+        $reader->Free();
         return PayPalGateway::Create($clientId, $secret, $environment);
     }
 
@@ -128,13 +126,12 @@ class PaymentRepository implements IPaymentRepository
         while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::PUBLISHABLE_KEY) {
                 $publishableKey = $row[ColumnNames::GATEWAY_SETTING_VALUE];
-            }
-            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::SECRET_KEY) {
+            } elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::SECRET_KEY) {
                 $secretKey = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
         }
 
-		$reader->Free();
+        $reader->Free();
         return StripeGateway::Create($publishableKey, $secretKey);
     }
 
@@ -155,7 +152,7 @@ class PaymentRepository implements IPaymentRepository
             $command = new FilterCommand($command, $filter);
         }
 
-        $builder = array('TransactionLogView', 'Populate');
+        $builder = ['TransactionLogView', 'Populate'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
 
@@ -167,13 +164,12 @@ class PaymentRepository implements IPaymentRepository
     {
         $command = new GetTransactionLogCommand($transactionLogId);
         $reader = ServiceLocator::GetDatabase()->Query($command);
-        if ($row = $reader->GetRow())
-        {
-			$reader->Free();
+        if ($row = $reader->GetRow()) {
+            $reader->Free();
             return TransactionLogView::Populate($row);
         }
 
-		$reader->Free();
+        $reader->Free();
         return null;
     }
 }

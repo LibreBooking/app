@@ -29,13 +29,14 @@ class ReservationUserAvailabilityPresenter
      */
     private $resourceRepository;
 
-    public function __construct(IReservationUserAvailabilityPage $page,
-                                IReservationViewRepository $reservationViewRepository,
-                                IScheduleRepository $scheduleRepository,
-                                IUserRepository $userRepository,
-                                IResourceRepository $resourceRepository)
+    public function __construct(
+        IReservationUserAvailabilityPage $page,
+        IReservationViewRepository $reservationViewRepository,
+        IScheduleRepository $scheduleRepository,
+        IUserRepository $userRepository,
+        IResourceRepository $resourceRepository
+    )
     {
-
         $this->page = $page;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->scheduleRepository = $scheduleRepository;
@@ -45,10 +46,10 @@ class ReservationUserAvailabilityPresenter
 
     public function PageLoad(UserSession $userSession)
     {
-        $resources = array();
+        $resources = [];
         $user = null;
-        $invitees = array();
-        $participants = array();
+        $invitees = [];
+        $participants = [];
 
         $resourceIds = $this->page->GetResourceIds();
         $inviteeIds = $this->page->GetInviteeIds();
@@ -82,8 +83,7 @@ class ReservationUserAvailabilityPresenter
             $invitees[] = $this->userRepository->GetById($inviteeId);
         }
 
-        foreach ($resourceIds as $resourceId)
-        {
+        foreach ($resourceIds as $resourceId) {
             $resources[] = $this->resourceRepository->LoadById($resourceId);
         }
 
@@ -95,7 +95,8 @@ class ReservationUserAvailabilityPresenter
             $user,
             $participants,
             $invitees,
-            $dates);
+            $dates
+        );
     }
 
     /**

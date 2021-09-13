@@ -9,8 +9,8 @@ class AccountActionResponse extends RestResponse
     public function __construct(IRestServer $server, $userId)
     {
         $this->userId = $userId;
-        $this->AddService($server, WebServices::GetAccount, array(WebServiceParams::UserId => $userId));
-        $this->AddService($server, WebServices::UpdateAccount, array(WebServiceParams::UserId => $userId));
+        $this->AddService($server, WebServices::GetAccount, [WebServiceParams::UserId => $userId]);
+        $this->AddService($server, WebServices::UpdateAccount, [WebServiceParams::UserId => $userId]);
     }
 
     public static function Example()

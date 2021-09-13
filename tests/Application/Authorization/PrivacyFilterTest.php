@@ -4,200 +4,200 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class PrivacyFilterTests extends TestBase
 {
-	/**
-	 * @var PrivacyFilter
-	 */
-	private $privacyFilter;
+    /**
+     * @var PrivacyFilter
+     */
+    private $privacyFilter;
 
-	/**
-	 * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $reservationAuthorization;
+    /**
+     * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $reservationAuthorization;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->reservationAuthorization = $this->createMock('IReservationAuthorization');
+        $this->reservationAuthorization = $this->createMock('IReservationAuthorization');
 
-		$this->privacyFilter = new PrivacyFilter($this->reservationAuthorization);
-	}
+        $this->privacyFilter = new PrivacyFilter($this->reservationAuthorization);
+    }
 
-	public function testCanViewUserDetailsIfConfigured()
-	{
-		$this->hideUserDetails(false);
+    public function testCanViewUserDetailsIfConfigured()
+    {
+        $this->hideUserDetails(false);
 
-		$user = new UserSession(1);
+        $user = new UserSession(1);
 
-		$canView = $this->privacyFilter->CanViewUser($user, null);
+        $canView = $this->privacyFilter->CanViewUser($user, null);
 
-		$this->assertTrue($canView);
-	}
+        $this->assertTrue($canView);
+    }
 
-	public function testHidesDetailsIfUserIsNotAnAdminAndNoReservationProvided()
-	{
-		$this->hideUserDetails(true);
+    public function testHidesDetailsIfUserIsNotAnAdminAndNoReservationProvided()
+    {
+        $this->hideUserDetails(true);
 
-		$user = new UserSession(1);
+        $user = new UserSession(1);
 
-		$canView = $this->privacyFilter->CanViewUser($user, null);
+        $canView = $this->privacyFilter->CanViewUser($user, null);
 
-		$this->assertFalse($canView);
-	}
+        $this->assertFalse($canView);
+    }
 
-	public function testCanViewIfUserIsAnAdminAndNoReservationProvided()
-	{
-		$this->hideUserDetails(true);
+    public function testCanViewIfUserIsAnAdminAndNoReservationProvided()
+    {
+        $this->hideUserDetails(true);
 
-		$user = new UserSession(1);
-		$user->IsAdmin = true;
+        $user = new UserSession(1);
+        $user->IsAdmin = true;
 
-		$canView = $this->privacyFilter->CanViewUser($user, null);
+        $canView = $this->privacyFilter->CanViewUser($user, null);
 
-		$this->assertTrue($canView);
-	}
+        $this->assertTrue($canView);
+    }
 
-	public function testCanViewIfUserIsOwner()
-	{
-		$this->hideUserDetails(true);
+    public function testCanViewIfUserIsOwner()
+    {
+        $this->hideUserDetails(true);
 
-		$userId = 1;
-		$user = new UserSession($userId);
+        $userId = 1;
+        $user = new UserSession($userId);
 
-		$canView = $this->privacyFilter->CanViewUser($user, null, $userId);
+        $canView = $this->privacyFilter->CanViewUser($user, null, $userId);
 
-		$this->assertTrue($canView);
-	}
+        $this->assertTrue($canView);
+    }
 
-	public function testChecksReservationAuthorizationAndCachesResultIfUserNotAnAdminAndReservationProvided()
-	{
-		$this->hideUserDetails(true);
+    public function testChecksReservationAuthorizationAndCachesResultIfUserNotAnAdminAndReservationProvided()
+    {
+        $this->hideUserDetails(true);
 
-		$user = new UserSession(1);
-		$reservation = new ReservationView();
+        $user = new UserSession(1);
+        $reservation = new ReservationView();
 
-		$this->reservationAuthorization->expects($this->once())
-									   ->method('CanViewDetails')
-									   ->with($this->equalTo($reservation), $this->equalTo($user))
-									   ->will($this->returnValue(true));
+        $this->reservationAuthorization->expects($this->once())
+                                       ->method('CanViewDetails')
+                                       ->with($this->equalTo($reservation), $this->equalTo($user))
+                                       ->will($this->returnValue(true));
 
-		$canView = $this->privacyFilter->CanViewUser($user, $reservation);
-		$canView2 = $this->privacyFilter->CanViewUser($user, $reservation);
+        $canView = $this->privacyFilter->CanViewUser($user, $reservation);
+        $canView2 = $this->privacyFilter->CanViewUser($user, $reservation);
 
-		$this->assertTrue($canView);
-		$this->assertTrue($canView2);
-	}
+        $this->assertTrue($canView);
+        $this->assertTrue($canView2);
+    }
 
-	public function testCanViewReservationDetailsIfConfigured()
-	{
-		$this->hideReservationDetails(false);
+    public function testCanViewReservationDetailsIfConfigured()
+    {
+        $this->hideReservationDetails(false);
 
-		$user = new UserSession(1);
+        $user = new UserSession(1);
 
-		$canView = $this->privacyFilter->CanViewDetails($user, null);
+        $canView = $this->privacyFilter->CanViewDetails($user, null);
 
-		$this->assertTrue($canView);
-	}
+        $this->assertTrue($canView);
+    }
 
-	public function testHidesReservationDetailsIfUserIsNotAnAdminAndNoReservationProvided()
-	{
-		$this->hideReservationDetails(true);
+    public function testHidesReservationDetailsIfUserIsNotAnAdminAndNoReservationProvided()
+    {
+        $this->hideReservationDetails(true);
 
-		$user = new UserSession(1);
+        $user = new UserSession(1);
 
-		$canView = $this->privacyFilter->CanViewDetails($user, null);
+        $canView = $this->privacyFilter->CanViewDetails($user, null);
 
-		$this->assertFalse($canView);
-	}
+        $this->assertFalse($canView);
+    }
 
-	public function testCanViewReservationIfUserIsAnAdminAndNoReservationProvided()
-	{
-		$this->hideReservationDetails(true);
+    public function testCanViewReservationIfUserIsAnAdminAndNoReservationProvided()
+    {
+        $this->hideReservationDetails(true);
 
-		$user = new UserSession(1);
-		$user->IsAdmin = true;
+        $user = new UserSession(1);
+        $user->IsAdmin = true;
 
-		$canView = $this->privacyFilter->CanViewDetails($user, null);
+        $canView = $this->privacyFilter->CanViewDetails($user, null);
 
-		$this->assertTrue($canView);
-	}
+        $this->assertTrue($canView);
+    }
 
-	public function testCanViewReservationIfUserIsOwner()
-	{
-		$this->hideReservationDetails(true);
+    public function testCanViewReservationIfUserIsOwner()
+    {
+        $this->hideReservationDetails(true);
 
-		$userId = 1;
-		$user = new UserSession($userId);
+        $userId = 1;
+        $user = new UserSession($userId);
 
-		$canView = $this->privacyFilter->CanViewDetails($user, null, $userId);
+        $canView = $this->privacyFilter->CanViewDetails($user, null, $userId);
 
-		$this->assertTrue($canView);
-	}
+        $this->assertTrue($canView);
+    }
 
-	public function testReservationDetailsChecksReservationAuthorizationAndCachesResultIfUserNotAnAdminAndReservationProvided()
-	{
-		$this->hideReservationDetails(true);
+    public function testReservationDetailsChecksReservationAuthorizationAndCachesResultIfUserNotAnAdminAndReservationProvided()
+    {
+        $this->hideReservationDetails(true);
 
-		$user = new UserSession(1);
-		$reservation = new ReservationView();
+        $user = new UserSession(1);
+        $reservation = new ReservationView();
 
-		$this->reservationAuthorization->expects($this->once())
-									   ->method('CanViewDetails')
-									   ->with($this->equalTo($reservation), $this->equalTo($user))
-									   ->will($this->returnValue(true));
+        $this->reservationAuthorization->expects($this->once())
+                                       ->method('CanViewDetails')
+                                       ->with($this->equalTo($reservation), $this->equalTo($user))
+                                       ->will($this->returnValue(true));
 
-		$canView = $this->privacyFilter->CanViewDetails($user, $reservation);
-		$canView2 = $this->privacyFilter->CanViewDetails($user, $reservation);
+        $canView = $this->privacyFilter->CanViewDetails($user, $reservation);
+        $canView2 = $this->privacyFilter->CanViewDetails($user, $reservation);
 
-		$this->assertTrue($canView);
-		$this->assertTrue($canView2);
-	}
+        $this->assertTrue($canView);
+        $this->assertTrue($canView2);
+    }
 
-	public function testHidesPast()
-	{
-		$this->hideReservationDetails('past');
+    public function testHidesPast()
+    {
+        $this->hideReservationDetails('past');
 
-		$user = new UserSession(1);
-		$res = new ReservationView();
-		$res->StartDate = Date::Now()->AddDays(-2);
-		$res->EndDate = Date::Now()->AddDays(-1);
+        $user = new UserSession(1);
+        $res = new ReservationView();
+        $res->StartDate = Date::Now()->AddDays(-2);
+        $res->EndDate = Date::Now()->AddDays(-1);
 
-		$this->reservationAuthorization->expects($this->once())
-									   ->method('CanViewDetails')
-									   ->with($this->equalTo($res), $this->equalTo($user))
-									   ->will($this->returnValue(false));
+        $this->reservationAuthorization->expects($this->once())
+                                       ->method('CanViewDetails')
+                                       ->with($this->equalTo($res), $this->equalTo($user))
+                                       ->will($this->returnValue(false));
 
-		$canView = $this->privacyFilter->CanViewDetails($user, $res);
+        $canView = $this->privacyFilter->CanViewDetails($user, $res);
 
-		$this->assertFalse($canView);
-	}
+        $this->assertFalse($canView);
+    }
 
-	public function testHidesFuture()
-	{
-		$this->hideReservationDetails('future');
+    public function testHidesFuture()
+    {
+        $this->hideReservationDetails('future');
 
-		$user = new UserSession(1);
-		$res = new ReservationView();
-		$res->StartDate = Date::Now()->AddDays(1);
-		$res->EndDate = Date::Now()->AddDays(2);
+        $user = new UserSession(1);
+        $res = new ReservationView();
+        $res->StartDate = Date::Now()->AddDays(1);
+        $res->EndDate = Date::Now()->AddDays(2);
 
-		$this->reservationAuthorization->expects($this->once())
-									   ->method('CanViewDetails')
-									   ->with($this->equalTo($res), $this->equalTo($user))
-									   ->will($this->returnValue(false));
+        $this->reservationAuthorization->expects($this->once())
+                                       ->method('CanViewDetails')
+                                       ->with($this->equalTo($res), $this->equalTo($user))
+                                       ->will($this->returnValue(false));
 
-		$canView = $this->privacyFilter->CanViewDetails($user, $res);
+        $canView = $this->privacyFilter->CanViewDetails($user, $res);
 
-		$this->assertFalse($canView);
-	}
+        $this->assertFalse($canView);
+    }
 
-	private function hideUserDetails($hide)
-	{
-		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, $hide);
-	}
+    private function hideUserDetails($hide)
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, $hide);
+    }
 
-	private function hideReservationDetails($hide)
-	{
-		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, $hide);
-	}
+    private function hideReservationDetails($hide)
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, $hide);
+    }
 }

@@ -2,12 +2,11 @@
 
 class ReportActions
 {
-	const Generate = 'generate';
-	const PrintReport = 'print';
-	const Csv = 'csv';
-	const Save = 'save';
-	const Email = 'email';
-	const Delete = 'delete';
-	const SaveColumns = 'saveColumns';
+    public const Generate = 'generate';
+    public const PrintReport = 'print';
+    public const Csv = 'csv';
+    public const Save = 'save';
+    public const Email = 'email';
+    public const Delete = 'delete';
+    public const SaveColumns = 'saveColumns';
 }
-

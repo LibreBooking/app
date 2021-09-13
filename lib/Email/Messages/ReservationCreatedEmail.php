@@ -7,7 +7,7 @@ class ReservationCreatedEmail extends ReservationEmailMessage
 {
     public function Subject()
     {
-        return $this->Translate('ReservationCreatedSubjectWithResource', array($this->primaryResource->GetName()));
+        return $this->Translate('ReservationCreatedSubjectWithResource', [$this->primaryResource->GetName()]);
     }
 
     protected function GetTemplateName()

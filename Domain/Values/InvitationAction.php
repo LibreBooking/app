@@ -2,10 +2,10 @@
 
 class InvitationAction
 {
-	const Accept = 'accept';
-	const CancelAll = 'cancelAll';
-	const CancelInstance = 'cancelInstance';
-	const Decline = 'decline';
-	const Join = 'join';
-	const JoinAll = 'joinAll';
+    public const Accept = 'accept';
+    public const CancelAll = 'cancelAll';
+    public const CancelInstance = 'cancelInstance';
+    public const Decline = 'decline';
+    public const Join = 'join';
+    public const JoinAll = 'joinAll';
 }

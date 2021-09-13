@@ -7,7 +7,7 @@ class FakeScheduleService implements IScheduleService
     /**
      * @var Schedule[]
      */
-    public $_AllSchedules = array();
+    public $_AllSchedules = [];
 
     public $_Layout;
 

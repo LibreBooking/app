@@ -17,7 +17,7 @@ class PaymentRepositoryTests extends TestBase
 
     public function testGetsCreditCost()
     {
-        $expectedRows = array(array(ColumnNames::CREDIT_COST => 32.99, ColumnNames::CREDIT_CURRENCY => 'USD'));
+        $expectedRows = [[ColumnNames::CREDIT_COST => 32.99, ColumnNames::CREDIT_CURRENCY => 'USD']];
         $this->db->SetRows($expectedRows);
 
         $cost = $this->repository->GetCreditCost();
@@ -56,11 +56,11 @@ class PaymentRepositoryTests extends TestBase
 
     public function testLoadsPayPal()
     {
-        $this->db->SetRows(array(
+        $this->db->SetRows([
             $this->GetRow(PaymentGateways::PAYPAL, PayPalGateway::CLIENT_ID, 'cid'),
             $this->GetRow(PaymentGateways::PAYPAL, PayPalGateway::SECRET, 'secret'),
             $this->GetRow(PaymentGateways::PAYPAL, PayPalGateway::ENVIRONMENT, 'env'),
-        ));
+        ]);
 
         $paypal = $this->repository->GetPayPalGateway();
 
@@ -73,10 +73,10 @@ class PaymentRepositoryTests extends TestBase
 
     public function testLoadsStripe()
     {
-        $this->db->SetRows(array(
+        $this->db->SetRows([
             $this->GetRow(PaymentGateways::STRIPE, StripeGateway::PUBLISHABLE_KEY, 'pk'),
             $this->GetRow(PaymentGateways::STRIPE, StripeGateway::SECRET_KEY, 'secret'),
-        ));
+        ]);
 
         $stripe = $this->repository->GetStripeGateway();
 
@@ -88,9 +88,8 @@ class PaymentRepositoryTests extends TestBase
 
     private function GetRow($gatewayType, $name, $value)
     {
-        return array(ColumnNames::GATEWAY_TYPE => $gatewayType,
+        return [ColumnNames::GATEWAY_TYPE => $gatewayType,
             ColumnNames::GATEWAY_SETTING_NAME => $name,
-            ColumnNames::GATEWAY_SETTING_VALUE => $value);
-
+            ColumnNames::GATEWAY_SETTING_VALUE => $value];
     }
 }

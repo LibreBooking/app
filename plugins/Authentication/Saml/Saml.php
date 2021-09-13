@@ -19,191 +19,186 @@ require_once(ROOT_DIR . 'plugins/Authentication/Saml/namespace.php');
  */
 class Saml extends Authentication implements IAuthentication
 {
-	/**
-	 * @var IAuthentication
-	 */
-	private $authToDecorate;
+    /**
+     * @var IAuthentication
+     */
+    private $authToDecorate;
 
-	/**
-	 * @var AdSamlWrapper
-	 */
-	private $saml;
+    /**
+     * @var AdSamlWrapper
+     */
+    private $saml;
 
-	/**
-	 * @var SamlOptions
-	 */
-	private $options;
+    /**
+     * @var SamlOptions
+     */
+    private $options;
 
-	/**
-	 * @var IRegistration
-	 */
-	private $_registration;
+    /**
+     * @var IRegistration
+     */
+    private $_registration;
 
-	/**
-	 * @var PasswordEncryption
-	 */
-	private $_encryption;
+    /**
+     * @var PasswordEncryption
+     */
+    private $_encryption;
 
-	/**
-	 * @var SamlUser
-	 */
-	private $user;
+    /**
+     * @var SamlUser
+     */
+    private $user;
 
-	/**
-	 * @var string
-	 *
-	 */
-	private $username;
+    /**
+     * @var string
+     *
+     */
+    private $username;
 
-	/**
-	 * @var string
-	 */
-	private $password;
+    /**
+     * @var string
+     */
+    private $password;
 
-	public function SetRegistration($registration)
-	{
-		$this->_registration = $registration;
-	}
+    public function SetRegistration($registration)
+    {
+        $this->_registration = $registration;
+    }
 
-	private function GetRegistration()
-	{
-		if ($this->_registration == null)
-		{
-			$this->_registration = new Registration();
-		}
+    private function GetRegistration()
+    {
+        if ($this->_registration == null) {
+            $this->_registration = new Registration();
+        }
 
-		return $this->_registration;
-	}
+        return $this->_registration;
+    }
 
-	public function SetEncryption($passwordEncryption)
-	{
-		$this->_encryption = $passwordEncryption;
-	}
+    public function SetEncryption($passwordEncryption)
+    {
+        $this->_encryption = $passwordEncryption;
+    }
 
-	private function GetEncryption()
-	{
-		if ($this->_encryption == null)
-		{
-			$this->_encryption = new PasswordEncryption();
-		}
+    private function GetEncryption()
+    {
+        if ($this->_encryption == null) {
+            $this->_encryption = new PasswordEncryption();
+        }
 
-		return $this->_encryption;
-	}
+        return $this->_encryption;
+    }
 
 
-	/**
-	 * @param IAuthentication $authentication Authentication class to decorate
-	 * @param ISaml $samlImplementation The actual SAML implementation to work against
-	 * @param SamlOptions $samlOptions Options to use for SAML configuration
-	 */
-	public function __construct(IAuthentication $authentication, $samlImplementation = null, $samlOptions = null)
-	{
-		$this->authToDecorate = $authentication;
+    /**
+     * @param IAuthentication $authentication Authentication class to decorate
+     * @param ISaml $samlImplementation The actual SAML implementation to work against
+     * @param SamlOptions $samlOptions Options to use for SAML configuration
+     */
+    public function __construct(IAuthentication $authentication, $samlImplementation = null, $samlOptions = null)
+    {
+        $this->authToDecorate = $authentication;
 
-		$this->options = $samlOptions;
-		if ($samlOptions == null)
-		{
-			$this->options = new SamlOptions();
-		}
+        $this->options = $samlOptions;
+        if ($samlOptions == null) {
+            $this->options = new SamlOptions();
+        }
 
-		$this->saml = $samlImplementation;
-		if ($samlImplementation == null)
-		{
-			$this->saml = new AdSamlWrapper($this->options);
-		}
-	}
+        $this->saml = $samlImplementation;
+        if ($samlImplementation == null) {
+            $this->saml = new AdSamlWrapper($this->options);
+        }
+    }
 
-	public function Validate($username, $password)
-	{
+    public function Validate($username, $password)
+    {
+        $this->saml->Connect();
+        $isValid = $this->saml->Authenticate();
 
-		$this->saml->Connect();
-		$isValid = $this->saml->Authenticate();
+        if ($isValid) {
+            $this->user = $this->saml->GetSamlUser();
+            $userLoaded = $this->SamlUserExists();
 
-		if ($isValid)
-		{
-			$this->user = $this->saml->GetSamlUser();
-			$userLoaded = $this->SamlUserExists();
+            if (!$userLoaded) {
+                Log::Error(
+                    'Could not load user details from SinmpleSamlPhpSSO. Check your SSO settings. User: %s',
+                    $username
+                );
+            }
+            return $userLoaded;
+        }
 
-			if (!$userLoaded)
-			{
-				Log::Error('Could not load user details from SinmpleSamlPhpSSO. Check your SSO settings. User: %s',
-						   $username);
-			}
-			return $userLoaded;
-		}
+        return false;
+    }
 
-		return false;
-	}
+    public function Login($username, $loginContext)
+    {
+        $this->username = $username;
+        if (empty($this->username)) {
+            $this->username = $this->user->GetUserName();
+        }
+        if ($this->SamlUserExists()) {
+            $this->Synchronize($this->username);
+        }
 
-	public function Login($username, $loginContext)
-	{
-		$this->username = $username;
-		if (empty($this->username))
-		{
-			$this->username = $this->user->GetUserName();
-		}
-		if ($this->SamlUserExists())
-		{
-			$this->Synchronize($this->username);
-		}
+        return $this->authToDecorate->Login($this->username, $loginContext);
+    }
 
-		return $this->authToDecorate->Login($this->username, $loginContext);
-	}
-
-	public function Logout(UserSession $user)
-	{
+    public function Logout(UserSession $user)
+    {
         $this->authToDecorate->Logout($user);
-	    $this->saml->Logout();
-	}
+        $this->saml->Logout();
+    }
 
-	public function AreCredentialsKnown()
-	{
-		return true;
-	}
+    public function AreCredentialsKnown()
+    {
+        return true;
+    }
 
-	private function SamlUserExists()
-	{
-		return $this->user != null;
-	}
+    private function SamlUserExists()
+    {
+        return $this->user != null;
+    }
 
-	private function Synchronize($username)
-	{
-		$registration = $this->GetRegistration();
+    private function Synchronize($username)
+    {
+        $registration = $this->GetRegistration();
 
-		$registration->Synchronize(
-			new AuthenticatedUser(
-				$username,
-				$this->user->GetEmail(),
-				$this->user->GetFirstName(),
-				$this->user->GetLastName(),
-				$this->password,
-				Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-				Configuration::Instance()->GetDefaultTimezone(),
-				$this->user->GetPhone(), $this->user->GetInstitution(),
-				$this->user->GetTitle(),
-                $this->user->GetGroups())
-		);
-	}
+        $registration->Synchronize(
+            new AuthenticatedUser(
+                $username,
+                $this->user->GetEmail(),
+                $this->user->GetFirstName(),
+                $this->user->GetLastName(),
+                $this->password,
+                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+                Configuration::Instance()->GetDefaultTimezone(),
+                $this->user->GetPhone(),
+                $this->user->GetInstitution(),
+                $this->user->GetTitle(),
+                $this->user->GetGroups()
+            )
+        );
+    }
 
-	public function ShowForgotPasswordPrompt()
-	{
-		return false;
-	}
+    public function ShowForgotPasswordPrompt()
+    {
+        return false;
+    }
 
-	public function ShowPasswordPrompt()
-	{
-		return true;
-	}
+    public function ShowPasswordPrompt()
+    {
+        return true;
+    }
 
-	public function ShowPersistLoginPrompt()
-	{
-		return false;
-	}
+    public function ShowPersistLoginPrompt()
+    {
+        return false;
+    }
 
-	public function ShowUsernamePrompt()
-	{
-		return true;
-	}
+    public function ShowUsernamePrompt()
+    {
+        return true;
+    }
 
 
     public function AllowUsernameChange()

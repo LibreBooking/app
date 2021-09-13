@@ -57,7 +57,7 @@ phpCAS::setNoCasServerValidation();
 // 				'/^https:\/\/app[0-9]\.example\.com\/rest\//',
 // 				'http://client.example.com/'
 // 			)));
-phpCAS::allowProxyChain(new CAS_ProxyChain(array($pgtUrlRegexp)));
+phpCAS::allowProxyChain(new CAS_ProxyChain([$pgtUrlRegexp]));
 
 // For quick testing or in certain production screnarios you might want to
 // allow allow any other valid service to proxy your service. To do so, add
@@ -102,4 +102,3 @@ if (!isset($_SESSION['n'])) {
     $_SESSION['n'] = 0;
 }
 echo '<p>request #' . (++$_SESSION['n']) . '</p>';
-

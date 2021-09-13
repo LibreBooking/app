@@ -2,6 +2,6 @@
 
 class ReservationTypes
 {
-	const Reservation = 1;
-	const Blackout = 2;
+    public const Reservation = 1;
+    public const Blackout = 2;
 }

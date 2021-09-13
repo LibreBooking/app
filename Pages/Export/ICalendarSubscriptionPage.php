@@ -46,5 +46,4 @@ interface ICalendarSubscriptionPage
      * @return int
      */
     public function GetFutureNumberOfDays();
-
 }

@@ -38,8 +38,8 @@ class ReservationRepositoryTests extends TestBase
         $duration = DateRange::Create($startCst, $endCst, 'CST');
         $levelId = ReservationUserLevel::OWNER;
         $repeatOptions = new RepeatNone();
-        $participantIds = array(2, 9);
-        $inviteeIds = array(20, 90);
+        $participantIds = [2, 9];
+        $inviteeIds = [20, 90];
         $accessory = new ReservationAccessory(928, 3);
         $attribute = new AttributeValue(1, 'value');
         $attachment = new FakeReservationAttachment(1);
@@ -66,7 +66,8 @@ class ReservationRepositoryTests extends TestBase
             $description,
             $duration,
             $repeatOptions,
-            $userSession);
+            $userSession
+        );
         $reservation->CurrentInstance()->SetCreditsRequired($creditsRequired);
 
         $repeatType = $repeatOptions->RepeatType();
@@ -93,38 +94,53 @@ class ReservationRepositoryTests extends TestBase
             $userId,
             $allowParticipation,
             null,
-            $userSession->UserId);
+            $userSession->UserId
+        );
 
         $insertReservation = new AddReservationCommand(
             $startUtc,
             $endUtc,
             $referenceNumber,
             $seriesId,
-            $creditsRequired);
+            $creditsRequired
+        );
 
         $insertReservationResource = new AddReservationResourceCommand(
             $seriesId,
             $resourceId,
-            ResourceLevel::Primary);
+            ResourceLevel::Primary
+        );
 
         $insertReservationUser = $this->GetAddUserCommand(
             $reservationId,
             $userId,
-            $levelId);
+            $levelId
+        );
 
         $insertReservationAccessory = new AddReservationAccessoryCommand($accessory->AccessoryId, $accessory->QuantityReserved, $seriesId);
         $insertReservationAttribute = new AddAttributeValueCommand($attribute->AttributeId, $attribute->Value, $seriesId, CustomAttributeCategory::RESERVATION);
 
-        $insertParticipant1 = $this->GetAddUserCommand($reservationId, $participantIds[0],
-            ReservationUserLevel::PARTICIPANT);
-        $insertParticipant2 = $this->GetAddUserCommand($reservationId, $participantIds[1],
-            ReservationUserLevel::PARTICIPANT);
+        $insertParticipant1 = $this->GetAddUserCommand(
+            $reservationId,
+            $participantIds[0],
+            ReservationUserLevel::PARTICIPANT
+        );
+        $insertParticipant2 = $this->GetAddUserCommand(
+            $reservationId,
+            $participantIds[1],
+            ReservationUserLevel::PARTICIPANT
+        );
 
         $insertInvitee1 = $this->GetAddUserCommand($reservationId, $inviteeIds[0], ReservationUserLevel::INVITEE);
         $insertInvitee2 = $this->GetAddUserCommand($reservationId, $inviteeIds[1], ReservationUserLevel::INVITEE);
 
-        $addAttachment = new AddReservationAttachmentCommand($attachment->FileName(), $attachment->FileType(), $attachment->FileSize(),
-            $attachment->FileExtension(), $seriesId);
+        $addAttachment = new AddReservationAttachmentCommand(
+            $attachment->FileName(),
+            $attachment->FileType(),
+            $attachment->FileSize(),
+            $attachment->FileExtension(),
+            $seriesId
+        );
         $this->assertEquals(12, count($this->db->_Commands));
 
         $this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
@@ -172,8 +188,15 @@ class ReservationRepositoryTests extends TestBase
 
         $userSession = new FakeUserSession();
 
-        $reservation = ReservationSeries::Create(1, new FakeBookableResource(1), null, null, $duration, $repeats,
-            $userSession);
+        $reservation = ReservationSeries::Create(
+            1,
+            new FakeBookableResource(1),
+            null,
+            null,
+            $duration,
+            $repeats,
+            $userSession
+        );
 
         $this->db->_ExpectedInsertIds[0] = $reservationSeriesId;
         $this->db->_ExpectedInsertIds[1] = $reservationId;
@@ -190,10 +213,13 @@ class ReservationRepositoryTests extends TestBase
                 $instance->EndDate()->ToUtc(),
                 $instance->ReferenceNumber(),
                 $reservationSeriesId,
-                $instance->GetCreditsRequired());
+                $instance->GetCreditsRequired()
+            );
 
-            $this->assertTrue(in_array($insertRepeatCommand, $this->db->_Commands),
-                "command $insertRepeatCommand not found");
+            $this->assertTrue(
+                in_array($insertRepeatCommand, $this->db->_Commands),
+                "command $insertRepeatCommand not found"
+            );
         }
     }
 
@@ -262,14 +288,14 @@ class ReservationRepositoryTests extends TestBase
         $terminationDate = Date::FromDatabase($terminationDateString);
         $repeatOptions = new RepeatDaily($interval, $terminationDate);
 
-        $instance1Invitees = array(1, 2, 3);
-        $instance1Participants = array(4, 5);
-        $instance1InvitedGuests = array('g1@email.com', 'g2@email.com');
-        $instance1ParticipatingGuests = array('g3@email.com', 'g4@email.com');
-        $instance2Invitees = array(6);
-        $instance2Participants = array(7, 8, 9);
-        $instance2ParticipatingGuests = array('g2@email.com', 'g3@email.com');
-        $instance2InvitedGuests = array('g4@email.com', 'g5@email.com');
+        $instance1Invitees = [1, 2, 3];
+        $instance1Participants = [4, 5];
+        $instance1InvitedGuests = ['g1@email.com', 'g2@email.com'];
+        $instance1ParticipatingGuests = ['g3@email.com', 'g4@email.com'];
+        $instance2Invitees = [6];
+        $instance2Participants = [7, 8, 9];
+        $instance2ParticipatingGuests = ['g2@email.com', 'g3@email.com'];
+        $instance2InvitedGuests = ['g4@email.com', 'g5@email.com'];
 
         $resourceName = 'primary resource';
         $location = 'l';
@@ -304,14 +330,59 @@ class ReservationRepositoryTests extends TestBase
         $expected = new ExistingReservationSeries();
         $expected->WithId($seriesId);
         $expected->WithOwner($ownerId);
-        $expected->WithPrimaryResource(new BookableResource($resourceId, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign,
-            $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
+        $expected->WithPrimaryResource(new BookableResource(
+            $resourceId,
+            $resourceName,
+            $location,
+            $contact,
+            $notes,
+            $minLength,
+            $maxLength,
+            $autoAssign,
+            $requiresApproval,
+            $allowMultiDay,
+            $maxParticipants,
+            $minNotice,
+            $maxNotice,
+            null,
+            $scheduleId
+        ));
         $expected->WithTitle($title);
         $expected->WithDescription($description);
-        $expected->WithResource(new BookableResource($resourceId1, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign,
-            $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
-        $expected->WithResource(new BookableResource($resourceId2, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign,
-            $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
+        $expected->WithResource(new BookableResource(
+            $resourceId1,
+            $resourceName,
+            $location,
+            $contact,
+            $notes,
+            $minLength,
+            $maxLength,
+            $autoAssign,
+            $requiresApproval,
+            $allowMultiDay,
+            $maxParticipants,
+            $minNotice,
+            $maxNotice,
+            null,
+            $scheduleId
+        ));
+        $expected->WithResource(new BookableResource(
+            $resourceId2,
+            $resourceName,
+            $location,
+            $contact,
+            $notes,
+            $minLength,
+            $maxLength,
+            $autoAssign,
+            $requiresApproval,
+            $allowMultiDay,
+            $maxParticipants,
+            $minNotice,
+            $maxNotice,
+            null,
+            $scheduleId
+        ));
         $expected->WithRepeatOptions($repeatOptions);
         $expected->WithStatus($statusId);
         $expected->WithAccessory(new ReservationAccessory($accessoryId1, $quantity1));
@@ -378,8 +449,22 @@ class ReservationRepositoryTests extends TestBase
             ->WithInstance($instance2->ReservationId(), $instance2->ReferenceNumber(), $instance2->Duration())
             ->WithInstance($reservationId, $expectedInstance->ReferenceNumber(), $expectedInstance->Duration());
 
-        $reservationResourceRow = new ReservationResourceRow($reservationId, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign,
-            $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, $scheduleId);
+        $reservationResourceRow = new ReservationResourceRow(
+            $reservationId,
+            $resourceName,
+            $location,
+            $contact,
+            $notes,
+            $minLength,
+            $maxLength,
+            $autoAssign,
+            $requiresApproval,
+            $allowMultiDay,
+            $maxParticipants,
+            $minNotice,
+            $maxNotice,
+            $scheduleId
+        );
         $reservationResourceRow
             ->WithPrimary($resourceId)
             ->WithAdditional($resourceId1)
@@ -479,7 +564,8 @@ class ReservationRepositoryTests extends TestBase
             $existingReservation->StatusId(),
             $userId,
             $allowParticipation,
-            $updatedBy->UserId);
+            $updatedBy->UserId
+        );
         $this->assertEquals(1, count($this->db->_Commands));
         $this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
     }
@@ -636,7 +722,8 @@ class ReservationRepositoryTests extends TestBase
             $userId,
             $allowParticipation,
             null,
-            $updatedBy->UserId);
+            $updatedBy->UserId
+        );
 
         $updateReservationCommand = $this->GetUpdateReservationCommand($seriesId, $currentReservation);
 
@@ -700,7 +787,8 @@ class ReservationRepositoryTests extends TestBase
             $userId,
             $allowParticipation,
             null,
-            $updatedBy->UserId);
+            $updatedBy->UserId
+        );
 
         $updateReservationCommand1 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance1);
         $updateReservationCommand2 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance2);
@@ -812,58 +900,70 @@ class ReservationRepositoryTests extends TestBase
     {
         $instanceId1 = 100;
         $reservation1 = new TestReservation(null, null, $instanceId1);
-        $reservation1->WithParticipants(array(1, 2, 3));
+        $reservation1->WithParticipants([1, 2, 3]);
 
         $instanceId2 = 101;
         $reservation2 = new TestReservation(null, null, $instanceId2);
-        $reservation2->WithParticipants(array(2, 3));
+        $reservation2->WithParticipants([2, 3]);
 
         $builder = new ExistingReservationSeriesBuilder();
         $builder->WithInstance($reservation1);
         $builder->WithInstance($reservation2);
 
         $series = $builder->BuildTestVersion();
-        $series->ChangeParticipants(array(3, 4));
+        $series->ChangeParticipants([3, 4]);
 
         $this->repository->Update($series);
 
         $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 1)));
         $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 2)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 4,
-            ReservationUserLevel::PARTICIPANT)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand(
+            $instanceId1,
+            4,
+            ReservationUserLevel::PARTICIPANT
+        )));
 
         $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 2)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4,
-            ReservationUserLevel::PARTICIPANT)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand(
+            $instanceId2,
+            4,
+            ReservationUserLevel::PARTICIPANT
+        )));
     }
 
     public function testChangesInviteesForAllInstances()
     {
         $instanceId1 = 100;
         $reservation1 = new TestReservation(null, null, $instanceId1);
-        $reservation1->WithInvitees(array(1, 2, 3));
+        $reservation1->WithInvitees([1, 2, 3]);
 
         $instanceId2 = 101;
         $reservation2 = new TestReservation(null, null, $instanceId2);
-        $reservation2->WithInvitees(array(2, 3));
+        $reservation2->WithInvitees([2, 3]);
 
         $builder = new ExistingReservationSeriesBuilder();
         $builder->WithInstance($reservation1);
         $builder->WithInstance($reservation2);
 
         $series = $builder->BuildTestVersion();
-        $series->ChangeInvitees(array(3, 4));
+        $series->ChangeInvitees([3, 4]);
 
         $this->repository->Update($series);
 
         $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 1)));
         $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 2)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 4,
-            ReservationUserLevel::INVITEE)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand(
+            $instanceId1,
+            4,
+            ReservationUserLevel::INVITEE
+        )));
 
         $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 2)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4,
-            ReservationUserLevel::INVITEE)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand(
+            $instanceId2,
+            4,
+            ReservationUserLevel::INVITEE
+        )));
     }
 
     public function testChangesGuestsForAllInstances()
@@ -884,7 +984,7 @@ class ReservationRepositoryTests extends TestBase
         $builder->WithInstance($reservation2);
 
         $series = $builder->BuildTestVersion();
-        $series->ChangeGuests(array('g3@email.com', 'g4@email.com'), array());
+        $series->ChangeGuests(['g3@email.com', 'g4@email.com'], []);
 
         $this->repository->Update($series);
 
@@ -904,7 +1004,7 @@ class ReservationRepositoryTests extends TestBase
         $builder = new ExistingReservationSeriesBuilder();
         $series = $builder->BuildTestVersion();
         $series->WithResource(new FakeBookableResource($removedId));
-        $series->ChangeResources(array(new FakeBookableResource($addedId)));
+        $series->ChangeResources([new FakeBookableResource($addedId)]);
 
         $this->repository->Update($series);
 
@@ -920,7 +1020,7 @@ class ReservationRepositoryTests extends TestBase
         $builder = new ExistingReservationSeriesBuilder();
         $series = $builder->BuildTestVersion();
         $series->WithAccessory(new ReservationAccessory(1, 1));
-        $series->ChangeAccessories(array(new ReservationAccessory(2, 2)));
+        $series->ChangeAccessories([new ReservationAccessory(2, 2)]);
 
         $seriesId = $series->SeriesId();
         $this->repository->Update($series);
@@ -973,8 +1073,8 @@ class ReservationRepositoryTests extends TestBase
         $series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
 
         $series->Update($newUserId, $series->Resource(), '', '', $this->fakeUser);
-        $series->ChangeResources(array($resource));
-        $series->ChangeAccessories(array($accessory));
+        $series->ChangeResources([$resource]);
+        $series->ChangeAccessories([$accessory]);
 
         $this->repository->Update($series);
 
@@ -997,11 +1097,11 @@ class ReservationRepositoryTests extends TestBase
         $series->WithAttribute(new AttributeValue(1, '1abc'));
         $series->WithAttribute(new AttributeValue(2, '2abc'));
         $series->WithAttribute(new AttributeValue(3, '3abc'));
-        $updatedAttributes = array(
+        $updatedAttributes = [
             new AttributeValue(2, '22abc'),
             new AttributeValue(3, '3abc'),
             new AttributeValue(4, '4abc'),
-        );
+        ];
         $series->ChangeAttributes($updatedAttributes);
 
         $seriesId = $series->SeriesId();
@@ -1029,8 +1129,14 @@ class ReservationRepositoryTests extends TestBase
         $fileExtension = 'doc';
         $seriesId = 10;
 
-        $attachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension,
-            $seriesId);
+        $attachment = ReservationAttachment::Create(
+            $fileName,
+            $fileType,
+            $fileSize,
+            $fileContent,
+            $fileExtension,
+            $seriesId
+        );
         $command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileExtension, $seriesId);
 
         $this->db->_ExpectedInsertId = $expectedFileId;
@@ -1055,28 +1161,36 @@ class ReservationRepositoryTests extends TestBase
         $fileExtension = 'doc';
         $seriesId = 10;
 
-        $expectedAttachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent,
-            $fileExtension, $seriesId);
+        $expectedAttachment = ReservationAttachment::Create(
+            $fileName,
+            $fileType,
+            $fileSize,
+            $fileContent,
+            $fileExtension,
+            $seriesId
+        );
         $expectedAttachment->WithFileId($attachmentId);
 
         $this->fileSystem->_ExpectedContents = $fileContent;
 
-        $this->db->SetRows(array(array(
+        $this->db->SetRows([[
             ColumnNames::FILE_ID => $attachmentId,
             ColumnNames::FILE_EXTENSION => $fileExtension,
             ColumnNames::FILE_NAME => $fileName,
             ColumnNames::FILE_SIZE => $fileSize,
             ColumnNames::FILE_TYPE => $fileType,
-            ColumnNames::SERIES_ID => $seriesId)
-        ));
+            ColumnNames::SERIES_ID => $seriesId]
+        ]);
 
         $command = new GetReservationAttachmentCommand($attachmentId);
         $actualAttachment = $this->repository->LoadReservationAttachment($attachmentId);
 
         $this->assertEquals($command, $this->db->_LastCommand);
         $this->assertEquals($expectedAttachment, $actualAttachment);
-        $this->assertEquals($this->fileSystem->GetReservationAttachmentsPath() . "$attachmentId.$fileExtension",
-            $this->fileSystem->_ContentsPath);
+        $this->assertEquals(
+            $this->fileSystem->GetReservationAttachmentsPath() . "$attachmentId.$fileExtension",
+            $this->fileSystem->_ContentsPath
+        );
     }
 
     public function testAddAttachmentToExistingReservation()
@@ -1094,8 +1208,14 @@ class ReservationRepositoryTests extends TestBase
         $fileContent = 'contents';
         $fileExtension = 'doc';
 
-        $attachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension,
-            $seriesId);
+        $attachment = ReservationAttachment::Create(
+            $fileName,
+            $fileType,
+            $fileSize,
+            $fileContent,
+            $fileExtension,
+            $seriesId
+        );
         $series->AddAttachment($attachment);
 
         $command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileExtension, $seriesId);
@@ -1130,8 +1250,10 @@ class ReservationRepositoryTests extends TestBase
         $this->assertTrue($this->db->ContainsCommand($command1));
         $this->assertTrue($this->db->ContainsCommand($command2));
         $this->assertEquals(2, count($this->fileSystem->_RemovedFiles));
-        $this->assertTrue(in_array($this->fileSystem->GetReservationAttachmentsPath() . "$fileId2.$fileExt2",
-            $this->fileSystem->_RemovedFiles));
+        $this->assertTrue(in_array(
+            $this->fileSystem->GetReservationAttachmentsPath() . "$fileId2.$fileExt2",
+            $this->fileSystem->_RemovedFiles
+        ));
     }
 
     public function testReplacesReminder()
@@ -1192,7 +1314,8 @@ class ReservationRepositoryTests extends TestBase
             $expectedInstance->CheckinDate(),
             $expectedInstance->CheckoutDate(),
             $expectedInstance->PreviousEndDate(),
-            $expectedInstance->GetCreditsRequired());
+            $expectedInstance->GetCreditsRequired()
+        );
     }
 
     private function GetAddReservationCommand($expectedSeriesId, Reservation $expectedInstance)
@@ -1202,7 +1325,8 @@ class ReservationRepositoryTests extends TestBase
             $expectedInstance->EndDate(),
             $expectedInstance->ReferenceNumber(),
             $expectedSeriesId,
-            $expectedInstance->GetCreditsRequired());
+            $expectedInstance->GetCreditsRequired()
+        );
     }
 
     private function GetAddUserCommand($reservationId, $userId, $levelId)

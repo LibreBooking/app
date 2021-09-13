@@ -72,7 +72,8 @@ class CalendarPresenterTests extends TestBase
             $this->resourceService,
             $this->subscriptionService,
             $this->privacyFilter,
-            new SlotLabelFactory());
+            new SlotLabelFactory()
+        );
     }
 
     public function testBindsDefaultScheduleByMonthWhenNothingSelected()
@@ -101,9 +102,9 @@ class CalendarPresenterTests extends TestBase
         $r1 = new FakeBookableResource(1, 'dude1');
         $r2 = new FakeBookableResource($resourceId, $resourceName);
 
-        $resources = array($r1, $r2);
+        $resources = [$r1, $r2];
         /** @var Schedule[] $schedules */
-        $schedules = array(new Schedule(1, null, false, 2, null), new Schedule($defaultScheduleId, null, true, 3, null),);
+        $schedules = [new Schedule(1, null, false, 2, null), new Schedule($defaultScheduleId, null, true, 3, null),];
 
         $this->scheduleRepository
             ->expects($this->atLeastOnce())
@@ -163,10 +164,10 @@ class CalendarPresenterTests extends TestBase
 
         $r1 = new FakeBookableResource(1, 'dude1');
 
-        $reservations = array($res1, $res2);
-        $blackouts = array($b1, $b2);
-        $resources = array($r1);
-        $availableSlots = array();
+        $reservations = [$res1, $res2];
+        $blackouts = [$b1, $b2];
+        $resources = [$r1];
+        $availableSlots = [];
 
         $actualReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, $availableSlots, $resources, $this->fakeUser);
 
@@ -190,11 +191,11 @@ class CalendarPresenterTests extends TestBase
         $r3->SeriesId = 2;
         $r3->ReferenceNumber = 2;
 
-        $reservations = array($r1, $r2, $r3);
-        $blackouts = array();
-        $resources = array(new FakeBookableResource(1, '1'), new FakeBookableResource(2, '2'));
+        $reservations = [$r1, $r2, $r3];
+        $blackouts = [];
+        $resources = [new FakeBookableResource(1, '1'), new FakeBookableResource(2, '2')];
 
-        $calendarReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, array(), $resources, $this->fakeUser, true);
+        $calendarReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, [], $resources, $this->fakeUser, true);
 
         $this->assertEquals(2, count($calendarReservations));
     }
@@ -203,11 +204,11 @@ class CalendarPresenterTests extends TestBase
     {
         $resourceId = 1;
         $scheduleId = 2;
-        $resources = array();
-        $reservations = array();
-        $blackouts = array();
+        $resources = [];
+        $reservations = [];
+        $blackouts = [];
         $layout = new FakeScheduleLayout();
-        $layout->_Layout[] = array(new SchedulePeriod(Date::Now(), Date::Now()->AddHours(1)));
+        $layout->_Layout[] = [new SchedulePeriod(Date::Now(), Date::Now()->AddHours(1))];
 
         $this->page
             ->expects($this->atLeastOnce())
@@ -239,6 +240,5 @@ class CalendarPresenterTests extends TestBase
             ->will($this->returnValue($layout));
 
         $this->presenter->ProcessDataRequest('events');
-
     }
 }

@@ -39,8 +39,9 @@ require_once(dirname(__FILE__) . '/../adLDAP.php');
 /**
 * UTILITY FUNCTIONS
 */
-class adLDAPUtils {
-    const ADLDAP_VERSION = '4.0.4';
+class adLDAPUtils
+{
+    public const ADLDAP_VERSION = '4.0.4';
 
     /**
     * The current adLDAP connection via dependency injection
@@ -49,7 +50,8 @@ class adLDAPUtils {
     */
     protected $adldap;
 
-    public function __construct(adLDAP $adldap) {
+    public function __construct(adLDAP $adldap)
+    {
         $this->adldap = $adldap;
     }
 
@@ -62,9 +64,8 @@ class adLDAPUtils {
     */
     public function niceNames($groups)
     {
-
-        $groupArray = array();
-        for ($i=0; $i<$groups["count"]; $i++){ // For each group
+        $groupArray = [];
+        for ($i=0; $i<$groups["count"]; $i++) { // For each group
             $line = $groups[$i];
 
             if (strlen($line)>0) {
@@ -84,7 +85,8 @@ class adLDAPUtils {
     * @param string $str
     * @return string
     */
-    public function escapeCharacters($str) {
+    public function escapeCharacters($str)
+    {
         $str = str_replace(",", "\,", $str);
         return $str;
     }
@@ -99,13 +101,16 @@ class adLDAPUtils {
     * @author Port by Andreas Gohr <andi@splitbrain.org>
     * @return string
     */
-    public function ldapSlashes($str){
-        return preg_replace_callback('/([\x00-\x1F\*\(\)\\\\])/',
-            function($matches) {
-                foreach($matches as $match) {
-                    return join("", unpack("H2","$1"));
+    public function ldapSlashes($str)
+    {
+        return preg_replace_callback(
+            '/([\x00-\x1F\*\(\)\\\\])/',
+            function ($matches) {
+                foreach ($matches as $match) {
+                    return join("", unpack("H2", "$1"));
                 }
-            }, $str
+            },
+            $str
         );
     }
 
@@ -143,7 +148,8 @@ class adLDAPUtils {
     * @param string $binsid A Binary SID
     * @return string
     */
-     public function getTextSID($binsid) {
+    public function getTextSID($binsid)
+    {
         $hex_sid = bin2hex($binsid);
         $rev = hexdec(substr($hex_sid, 0, 2));
         $subcount = hexdec(substr($hex_sid, 2, 2));
@@ -153,12 +159,12 @@ class adLDAPUtils {
         for ($x=0;$x < $subcount; $x++) {
             $subauth[$x] =
                 hexdec($this->littleEndian(substr($hex_sid, 16 + ($x * 8), 8)));
-                $result .= "-" . $subauth[$x];
+            $result .= "-" . $subauth[$x];
         }
 
         // Cheat by tacking on the S-
         return 'S-' . $result;
-     }
+    }
 
     /**
     * Converts a little-endian hex number to one that hexdec() can convert
@@ -166,16 +172,16 @@ class adLDAPUtils {
     * @param string $hex A hex code
     * @return string
     */
-     public function littleEndian($hex)
-     {
+    public function littleEndian($hex)
+    {
         $result = '';
         for ($x = strlen($hex) - 2; $x >= 0; $x = $x - 2) {
             $result .= substr($hex, $x, 2);
         }
         return $result;
-     }
+    }
 
-     /**
+    /**
     * Converts a binary attribute to a string
     *
     * @param string $bin A binary LDAP attribute
@@ -185,15 +191,15 @@ class adLDAPUtils {
     {
         $hex_guid = bin2hex($bin);
         $hex_guid_to_guid_str = '';
-        for($k = 1; $k <= 4; ++$k) {
+        for ($k = 1; $k <= 4; ++$k) {
             $hex_guid_to_guid_str .= substr($hex_guid, 8 - 2 * $k, 2);
         }
         $hex_guid_to_guid_str .= '-';
-        for($k = 1; $k <= 2; ++$k) {
+        for ($k = 1; $k <= 2; ++$k) {
             $hex_guid_to_guid_str .= substr($hex_guid, 12 - 2 * $k, 2);
         }
         $hex_guid_to_guid_str .= '-';
-        for($k = 1; $k <= 2; ++$k) {
+        for ($k = 1; $k <= 2; ++$k) {
             $hex_guid_to_guid_str .= substr($hex_guid, 16 - 2 * $k, 2);
         }
         $hex_guid_to_guid_str .= '-' . substr($hex_guid, 16, 4);
@@ -209,7 +215,9 @@ class adLDAPUtils {
     */
     public function decodeGuid($binaryGuid)
     {
-        if ($binaryGuid === null){ return "Missing compulsory field [binaryGuid]"; }
+        if ($binaryGuid === null) {
+            return "Missing compulsory field [binaryGuid]";
+        }
 
         $strGUID = $this->binaryToText($binaryGuid);
         return $strGUID;
@@ -230,7 +238,8 @@ class adLDAPUtils {
     /**
     * Convert 8bit characters e.g. accented characters to UTF8 encoded characters
     */
-    public function encode8Bit(&$item, $key) {
+    public function encode8Bit(&$item, $key)
+    {
         $encode = false;
         if (is_string($item)) {
             for ($i=0; $i<strlen($item); $i++) {
@@ -249,7 +258,8 @@ class adLDAPUtils {
     *
     * @return string
     */
-    public function getVersion() {
+    public function getVersion()
+    {
         return self::ADLDAP_VERSION;
     }
 
@@ -259,8 +269,9 @@ class adLDAPUtils {
     * @param long $windowsTime
     * @return long $unixTime
     */
-    public static function convertWindowsTimeToUnixTime($windowsTime) {
-      $unixTime = round($windowsTime / 10000000) - 11644477200;
-      return $unixTime;
+    public static function convertWindowsTimeToUnixTime($windowsTime)
+    {
+        $unixTime = round($windowsTime / 10000000) - 11644477200;
+        return $unixTime;
     }
 }

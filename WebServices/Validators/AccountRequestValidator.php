@@ -50,9 +50,8 @@ class AccountRequestValidator implements IAccountRequestValidator
 
     public function ValidateCreate($request)
     {
-        if (empty($request))
-        {
-            return array('Request was not properly formatted');
+        if (empty($request)) {
+            return ['Request was not properly formatted'];
         }
 
         $validators[] = new RequestRequiredValueValidator($request->password, 'password');
@@ -64,9 +63,8 @@ class AccountRequestValidator implements IAccountRequestValidator
 
     public function ValidateUpdate($request, WebServiceUserSession $session)
     {
-        if (empty($request))
-        {
-            return array('Request was not properly formatted');
+        if (empty($request)) {
+            return ['Request was not properly formatted'];
         }
 
         $validators[] = new UniqueEmailValidator($this->userRepository, $request->emailAddress, $session->UserId);
@@ -81,15 +79,12 @@ class AccountRequestValidator implements IAccountRequestValidator
         $validators[] = new PasswordComplexityValidator($request->newPassword);
         $validators[] = new PasswordValidator($request->currentPassword, $this->userRepository->LoadById($session->UserId));
 
-        $errors = array();
+        $errors = [];
         /** @var $validator IValidator */
-        foreach ($validators as $validator)
-        {
+        foreach ($validators as $validator) {
             $validator->Validate();
-            if (!$validator->IsValid())
-            {
-                foreach ($validator->Messages() as $message)
-                {
+            if (!$validator->IsValid()) {
+                foreach ($validator->Messages() as $message) {
                     $errors[] = $message;
                 }
             }
@@ -102,7 +97,7 @@ class AccountRequestValidator implements IAccountRequestValidator
      * @param IValidator[] $additionalValidators
      * @return array|string[]
      */
-    private function Validate($request, $additionalValidators = array())
+    private function Validate($request, $additionalValidators = [])
     {
         $validators = $additionalValidators;
         $validators[] = new RequestRequiredValueValidator($request->firstName, 'firstName');
@@ -111,22 +106,18 @@ class AccountRequestValidator implements IAccountRequestValidator
         $validators[] = new RequestRequiredValueValidator($request->emailAddress, 'emailAddress');
         $validators[] = new EmailValidator($request->emailAddress);
 
-        $attributes = array();
-        foreach ($request->GetCustomAttributes() as $attribute)
-        {
+        $attributes = [];
+        foreach ($request->GetCustomAttributes() as $attribute) {
             $attributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
         }
         $validators[] = new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $attributes);
 
-        $errors = array();
+        $errors = [];
         /** @var $validator IValidator */
-        foreach ($validators as $validator)
-        {
+        foreach ($validators as $validator) {
             $validator->Validate();
-            if (!$validator->IsValid())
-            {
-                foreach ($validator->Messages() as $message)
-                {
+            if (!$validator->IsValid()) {
+                foreach ($validator->Messages() as $message) {
                     $errors[] = $message;
                 }
             }

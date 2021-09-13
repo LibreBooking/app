@@ -1,10 +1,9 @@
 <?php
 
-require_once (ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class FakeReservationWaitlistRepository implements IReservationWaitlistRepository
 {
-
     /**
      * @var ReservationWaitlistRequest
      */
@@ -15,7 +14,7 @@ class FakeReservationWaitlistRepository implements IReservationWaitlistRepositor
     /**
      * @var ReservationWaitlistRequest[]
      */
-    public $_AllRequests = array();
+    public $_AllRequests = [];
 
     /**
      * @param ReservationWaitlistRequest $request
@@ -32,7 +31,7 @@ class FakeReservationWaitlistRepository implements IReservationWaitlistRepositor
      */
     public function GetAll()
     {
-       return $this->_AllRequests;
+        return $this->_AllRequests;
     }
 
     /**

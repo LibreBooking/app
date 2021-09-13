@@ -50,7 +50,6 @@ interface IEmbeddedCalendarPage
      * @param EmbeddedCalendarTitleFormatter $formatter
      */
     public function BindTitleFormatter(EmbeddedCalendarTitleFormatter $formatter);
-
 }
 
 class EmbeddedCalendarPage extends Page implements IEmbeddedCalendarPage
@@ -126,8 +125,6 @@ class EmbeddedCalendarPage extends Page implements IEmbeddedCalendarPage
 
     public function BindTitleFormatter(EmbeddedCalendarTitleFormatter $formatter)
     {
-       $this->Set('TitleFormatter', $formatter);
+        $this->Set('TitleFormatter', $formatter);
     }
-
-
 }

@@ -2,44 +2,42 @@
 
 class AttributeFormElement
 {
-	/**
-	 * @var int
-	 */
-	public $Id;
+    /**
+     * @var int
+     */
+    public $Id;
 
-	/**
-	 * @var mixed
-	 */
-	public $Value;
+    /**
+     * @var mixed
+     */
+    public $Value;
 
-	public function __construct($id, $value)
-	{
-		$this->Id = $id;
-		$this->Value = $value;
-	}
+    public function __construct($id, $value)
+    {
+        $this->Id = $id;
+        $this->Value = $value;
+    }
 }
 
 class AttributeFormParser
 {
-	/**
-	 * @static
-	 * @param $attributes string|string[]|null The result of $this->GetForm(FormKeys::ATTRIBUTE_PREFIX)
-	 * @return array|AttributeFormElement[]
-	 */
-	public static function GetAttributes($attributes)
-	{
-		if (is_array($attributes))
-		{
-			$af = array();
+    /**
+     * @static
+     * @param $attributes string|string[]|null The result of $this->GetForm(FormKeys::ATTRIBUTE_PREFIX)
+     * @return array|AttributeFormElement[]
+     */
+    public static function GetAttributes($attributes)
+    {
+        if (is_array($attributes)) {
+            $af = [];
 
-			foreach ($attributes as $id => $value)
-			{
-				$af[] = new AttributeFormElement($id, $value);
-			}
+            foreach ($attributes as $id => $value) {
+                $af[] = new AttributeFormElement($id, $value);
+            }
 
-			return $af;
-		}
+            return $af;
+        }
 
-		return array();
-	}
+        return [];
+    }
 }

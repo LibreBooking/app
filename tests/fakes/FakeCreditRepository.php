@@ -1,6 +1,6 @@
 <?php
 
-require_once (ROOT_DIR . 'Domain/Access/CreditRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/CreditRepository.php');
 
 class FakeCreditRepository implements ICreditRepository
 {

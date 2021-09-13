@@ -2,12 +2,12 @@
 
 class WebServiceParams
 {
-	const AccessoryId = 'accessoryId';
-	const AttributeId = 'attributeId';
-	const AttributeCategoryId = 'categoryId';
-	const GroupId = 'groupId';
-	const ReferenceNumber = 'referenceNumber';
-	const ResourceId = 'resourceId';
-	const ScheduleId = 'scheduleId';
-	const UserId = 'userId';
+    public const AccessoryId = 'accessoryId';
+    public const AttributeId = 'attributeId';
+    public const AttributeCategoryId = 'categoryId';
+    public const GroupId = 'groupId';
+    public const ReferenceNumber = 'referenceNumber';
+    public const ResourceId = 'resourceId';
+    public const ScheduleId = 'scheduleId';
+    public const UserId = 'userId';
 }

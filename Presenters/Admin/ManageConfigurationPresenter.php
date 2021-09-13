@@ -7,8 +7,8 @@ require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 class ConfigActions
 {
-    const Update = 'update';
-    const SetHomepage = 'setHomepage';
+    public const Update = 'update';
+    public const SetHomepage = 'setHomepage';
 }
 
 class ManageConfigurationPresenter extends ActionPresenter
@@ -31,15 +31,15 @@ class ManageConfigurationPresenter extends ActionPresenter
     /**
      * @var string[]|array[]
      */
-    private $deletedSettings = array(
+    private $deletedSettings = [
         'password.pattern',
-        'use.local.jquery');
+        'use.local.jquery'];
 
-    private $deletedSectionSettings = array(
-        ConfigSection::AUTHENTICATION => array('allow.social.login'),
-        ConfigSection::ICS => array('require.login', 'import', 'import.key'),
-		ConfigSection::RESERVATION => array('maximum.resources')
-    );
+    private $deletedSectionSettings = [
+        ConfigSection::AUTHENTICATION => ['allow.social.login'],
+        ConfigSection::ICS => ['require.login', 'import', 'import.key'],
+        ConfigSection::RESERVATION => ['maximum.resources']
+    ];
 
     /**
      * @var string
@@ -60,9 +60,11 @@ class ManageConfigurationPresenter extends ActionPresenter
 
     public function PageLoad()
     {
-        $shouldShowConfig = Configuration::Instance()->GetSectionKey(ConfigSection::PAGES,
+        $shouldShowConfig = Configuration::Instance()->GetSectionKey(
+            ConfigSection::PAGES,
             ConfigKeys::PAGES_ENABLE_CONFIGURATION,
-            new BooleanConverter());
+            new BooleanConverter()
+        );
         $this->page->SetIsPageEnabled($shouldShowConfig);
 
         if (!$shouldShowConfig) {
@@ -85,8 +87,10 @@ class ManageConfigurationPresenter extends ActionPresenter
             return;
         }
 
-        Log::Debug('Loading and displaying config file for editing by %s',
-            ServiceLocator::GetServer()->GetUserSession()->Email);
+        Log::Debug(
+            'Loading and displaying config file for editing by %s',
+            ServiceLocator::GetServer()->GetUserSession()->Email
+        );
 
         $this->BringConfigFileUpToDate();
 
@@ -100,8 +104,7 @@ class ManageConfigurationPresenter extends ActionPresenter
                         $this->page->AddSectionSetting(new ConfigSetting($sectionkey, $section, $sectionvalue));
                     }
                 }
-            }
-            else {
+            } else {
                 if (!$this->ShouldBeSkipped($key)) {
                     $this->page->AddSetting(new ConfigSetting($key, null, $value));
                 }
@@ -114,8 +117,8 @@ class ManageConfigurationPresenter extends ActionPresenter
 
     private function PopulateHomepages()
     {
-        $homepageValues = array();
-        $homepageOutput = array();
+        $homepageValues = [];
+        $homepageOutput = [];
 
         $pages = Pages::GetAvailablePages();
         foreach ($pages as $pageid => $page) {
@@ -128,13 +131,13 @@ class ManageConfigurationPresenter extends ActionPresenter
 
     private function PopulatePlugins()
     {
-        $plugins = array();
+        $plugins = [];
         $dit = new RecursiveDirectoryIterator(ROOT_DIR . 'plugins');
 
         /** @var $path SplFileInfo */
         foreach ($dit as $path) {
             if ($path->isDir() && basename($path->getPathname()) != '.' && basename($path->getPathname()) != '..') {
-                $plugins[basename($path->getPathname())] = array();
+                $plugins[basename($path->getPathname())] = [];
                 /** @var $plugin SplFileInfo */
                 foreach (new RecursiveDirectoryIterator($path) as $plugin) {
                     if ($plugin->isDir() && basename($plugin->getPathname()) != '.' && basename($plugin->getPathname()) != '..') {
@@ -158,9 +161,11 @@ class ManageConfigurationPresenter extends ActionPresenter
 
     public function Update()
     {
-        $shouldShowConfig = Configuration::Instance()->GetSectionKey(ConfigSection::PAGES,
+        $shouldShowConfig = Configuration::Instance()->GetSectionKey(
+            ConfigSection::PAGES,
             ConfigKeys::PAGES_ENABLE_CONFIGURATION,
-            new BooleanConverter());
+            new BooleanConverter()
+        );
 
         if (!$shouldShowConfig) {
             Log::Debug('Show configuration UI is turned off. No updates are allowed');
@@ -172,13 +177,12 @@ class ManageConfigurationPresenter extends ActionPresenter
         $configFiles = $this->GetConfigFiles();
         $this->HandleSelectedConfigFile($configFiles);
 
-        $newSettings = array();
+        $newSettings = [];
 
         foreach ($configSettings as $setting) {
             if (!empty($setting->Section)) {
                 $newSettings[$setting->Section][$setting->Key] = $setting->Value;
-            }
-            else {
+            } else {
                 $newSettings[$setting->Key] = $setting->Value;
             }
         }
@@ -241,7 +245,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 
     private function GetConfigFiles()
     {
-        $files = array(new ConfigFileOption('config.php', ''));
+        $files = [new ConfigFileOption('config.php', '')];
 
         $pluginBaseDir = ROOT_DIR . 'plugins/';
         if ($h = opendir($pluginBaseDir)) {
@@ -381,6 +385,6 @@ class ConfigSetting
 
 class ConfigSettingType
 {
-    const String = 'string';
-    const Boolean = 'boolean';
+    public const String = 'string';
+    public const Boolean = 'boolean';
 }

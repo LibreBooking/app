@@ -54,6 +54,4 @@
  */
 interface CAS_Exception
 {
-
 }
-?>

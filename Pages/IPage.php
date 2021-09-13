@@ -1,8 +1,8 @@
 <?php
 
-interface IPage {
-
-	  public function PageLoad();
+interface IPage
+{
+    public function PageLoad();
 
     public function Redirect($url);
 

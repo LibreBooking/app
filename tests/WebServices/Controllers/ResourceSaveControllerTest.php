@@ -4,211 +4,217 @@ require_once(ROOT_DIR . 'WebServices/Controllers/ResourceSaveController.php');
 
 class ResourceSaveControllerTests extends TestBase
 {
-	/**
-	 * @var ResourceSaveController
-	 */
-	private $controller;
+    /**
+     * @var ResourceSaveController
+     */
+    private $controller;
 
-	/**
-	 * @var WebServiceUserSession
-	 */
-	private $session;
+    /**
+     * @var WebServiceUserSession
+     */
+    private $session;
 
-	/**
-	 * @var IResourceRepository
-	 */
-	private $repository;
+    /**
+     * @var IResourceRepository
+     */
+    private $repository;
 
-	/**
-	 * @var IResourceRequestValidator
-	 */
-	private $validator;
+    /**
+     * @var IResourceRequestValidator
+     */
+    private $validator;
 
-	public function setUp(): void
-	{
-		$this->validator = $this->createMock('IResourceRequestValidator');
-		$this->repository = $this->createMock('IResourceRepository');
-		$this->session = new FakeWebServiceUserSession(1);
-		$this->controller = new ResourceSaveController($this->repository, $this->validator);
+    public function setUp(): void
+    {
+        $this->validator = $this->createMock('IResourceRequestValidator');
+        $this->repository = $this->createMock('IResourceRepository');
+        $this->session = new FakeWebServiceUserSession(1);
+        $this->controller = new ResourceSaveController($this->repository, $this->validator);
 
-		parent::setup();
-	}
+        parent::setup();
+    }
 
-	public function testAddsNewResource()
-	{
-		$resourceId = 122;
-		$request = ResourceRequest::Example();
-		$expectedCreateResource = BookableResource::CreateNew($request->name,
-															  $request->scheduleId,
-															  $request->autoAssignPermissions,
-															  $request->sortOrder);
+    public function testAddsNewResource()
+    {
+        $resourceId = 122;
+        $request = ResourceRequest::Example();
+        $expectedCreateResource = BookableResource::CreateNew(
+            $request->name,
+            $request->scheduleId,
+            $request->autoAssignPermissions,
+            $request->sortOrder
+        );
 
-		$expectedUpdateResource = new BookableResource($resourceId,
-													   $request->name,
-													   $request->location,
-													   $request->contact,
-													   $request->notes,
-													   $request->minLength,
-													   $request->maxLength,
-													   $request->autoAssignPermissions,
-													   $request->requiresApproval,
-													   $request->allowMultiday,
-													   $request->maxParticipants,
-													   $request->minNotice,
-													   $request->maxNotice,
-													   $request->description,
-													   $request->scheduleId);
+        $expectedUpdateResource = new BookableResource(
+            $resourceId,
+            $request->name,
+            $request->location,
+            $request->contact,
+            $request->notes,
+            $request->minLength,
+            $request->maxLength,
+            $request->autoAssignPermissions,
+            $request->requiresApproval,
+            $request->allowMultiday,
+            $request->maxParticipants,
+            $request->minNotice,
+            $request->maxNotice,
+            $request->description,
+            $request->scheduleId
+        );
 
-		$expectedUpdateResource->SetSortOrder($request->sortOrder);
-		$expectedUpdateResource->ChangeStatus($request->statusId, $request->statusReasonId);
-		$attributes = array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue));
-		$expectedUpdateResource->ChangeAttributes($attributes);
-		$expectedUpdateResource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
-        $expectedUpdateResource->SetColor($request->color);
-        $expectedUpdateResource->SetCreditsPerSlot($request->creditsPerSlot);
-        $expectedUpdateResource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
-
-		$this->validator->expects($this->once())
-				->method('ValidateCreateRequest')
-				->with($this->equalTo($request))
-				->will($this->returnValue(array()));
-
-		$this->repository->expects($this->once())
-				->method('Add')
-				->with($this->equalTo($expectedCreateResource))
-				->will($this->returnValue($resourceId));
-
-		$this->repository->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($expectedUpdateResource));
-
-		$response = $this->controller->Create($request, $this->session);
-
-		$this->assertTrue($response->WasSuccessful());
-		$this->assertEquals($resourceId, $response->ResourceId());
-		$this->assertEmpty($response->Errors());
-	}
-
-	public function testWhenAddValidationFails()
-	{
-		$errors = array('something failed');
-
-		$request = ResourceRequest::Example();
-		$this->validator->expects($this->once())
-				->method('ValidateCreateRequest')
-				->with($this->anything())
-				->will($this->returnValue($errors));
-
-		$response = $this->controller->Create($request, $this->session);
-
-		$this->assertFalse($response->WasSuccessful());
-		$this->assertNull($response->ResourceId());
-		$this->assertEquals($errors, $response->Errors());
-	}
-
-	public function testUpdatesResource()
-	{
-		$resourceId = 122;
-		$request = ResourceRequest::Example();
-		$expectedUpdateResource = new BookableResource($resourceId,
-													   $request->name,
-													   $request->location,
-													   $request->contact,
-													   $request->notes,
-													   $request->minLength,
-													   $request->maxLength,
-													   $request->autoAssignPermissions,
-													   $request->requiresApproval,
-													   $request->allowMultiday,
-													   $request->maxParticipants,
-													   $request->minNotice,
-													   $request->maxNotice,
-													   $request->description,
-													   $request->scheduleId);
-
-		$expectedUpdateResource->SetSortOrder($request->sortOrder);
-		$expectedUpdateResource->ChangeStatus($request->statusId, $request->statusReasonId);
-		$attributes = array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue));
-		$expectedUpdateResource->ChangeAttributes($attributes);
+        $expectedUpdateResource->SetSortOrder($request->sortOrder);
+        $expectedUpdateResource->ChangeStatus($request->statusId, $request->statusReasonId);
+        $attributes = [new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue)];
+        $expectedUpdateResource->ChangeAttributes($attributes);
         $expectedUpdateResource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
         $expectedUpdateResource->SetColor($request->color);
         $expectedUpdateResource->SetCreditsPerSlot($request->creditsPerSlot);
         $expectedUpdateResource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
 
-		$this->validator->expects($this->once())
-				->method('ValidateUpdateRequest')
-				->with($this->equalTo($resourceId), $this->equalTo($request))
-				->will($this->returnValue(array()));
+        $this->validator->expects($this->once())
+                ->method('ValidateCreateRequest')
+                ->with($this->equalTo($request))
+                ->will($this->returnValue([]));
 
-		$this->repository->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($expectedUpdateResource));
+        $this->repository->expects($this->once())
+                ->method('Add')
+                ->with($this->equalTo($expectedCreateResource))
+                ->will($this->returnValue($resourceId));
 
-		$response = $this->controller->Update($resourceId, $request, $this->session);
+        $this->repository->expects($this->once())
+                ->method('Update')
+                ->with($this->equalTo($expectedUpdateResource));
 
-		$this->assertTrue($response->WasSuccessful());
-		$this->assertEquals($resourceId, $response->ResourceId());
-		$this->assertEmpty($response->Errors());
-	}
+        $response = $this->controller->Create($request, $this->session);
 
-	public function testWhenUpdateValidationFails()
-	{
-		$resourceId = 123;
-		$errors = array('something failed');
+        $this->assertTrue($response->WasSuccessful());
+        $this->assertEquals($resourceId, $response->ResourceId());
+        $this->assertEmpty($response->Errors());
+    }
 
-		$request = ResourceRequest::Example();
-		$this->validator->expects($this->once())
-				->method('ValidateUpdateRequest')
-				->with($this->anything(), $this->anything())
-				->will($this->returnValue($errors));
+    public function testWhenAddValidationFails()
+    {
+        $errors = ['something failed'];
 
-		$response = $this->controller->Update($resourceId, $request, $this->session);
+        $request = ResourceRequest::Example();
+        $this->validator->expects($this->once())
+                ->method('ValidateCreateRequest')
+                ->with($this->anything())
+                ->will($this->returnValue($errors));
 
-		$this->assertFalse($response->WasSuccessful());
-		$this->assertNull($response->ResourceId());
-		$this->assertEquals($errors, $response->Errors());
-	}
+        $response = $this->controller->Create($request, $this->session);
 
-	public function testDeletesResource()
-	{
-		$resourceId = 998;
-		$resource = new FakeBookableResource($resourceId);
+        $this->assertFalse($response->WasSuccessful());
+        $this->assertNull($response->ResourceId());
+        $this->assertEquals($errors, $response->Errors());
+    }
 
-		$this->validator->expects($this->once())
-				->method('ValidateDeleteRequest')
-				->with($this->equalTo($resourceId))
-				->will($this->returnValue(array()));
+    public function testUpdatesResource()
+    {
+        $resourceId = 122;
+        $request = ResourceRequest::Example();
+        $expectedUpdateResource = new BookableResource(
+            $resourceId,
+            $request->name,
+            $request->location,
+            $request->contact,
+            $request->notes,
+            $request->minLength,
+            $request->maxLength,
+            $request->autoAssignPermissions,
+            $request->requiresApproval,
+            $request->allowMultiday,
+            $request->maxParticipants,
+            $request->minNotice,
+            $request->maxNotice,
+            $request->description,
+            $request->scheduleId
+        );
 
-		$this->repository->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($resourceId))
-				->will($this->returnValue($resource));
+        $expectedUpdateResource->SetSortOrder($request->sortOrder);
+        $expectedUpdateResource->ChangeStatus($request->statusId, $request->statusReasonId);
+        $attributes = [new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue)];
+        $expectedUpdateResource->ChangeAttributes($attributes);
+        $expectedUpdateResource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
+        $expectedUpdateResource->SetColor($request->color);
+        $expectedUpdateResource->SetCreditsPerSlot($request->creditsPerSlot);
+        $expectedUpdateResource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
 
-		$this->repository->expects($this->once())
-				->method('Delete')
-				->with($this->equalTo($resource));
+        $this->validator->expects($this->once())
+                ->method('ValidateUpdateRequest')
+                ->with($this->equalTo($resourceId), $this->equalTo($request))
+                ->will($this->returnValue([]));
 
-		$response = $this->controller->Delete($resourceId, $this->session);
+        $this->repository->expects($this->once())
+                ->method('Update')
+                ->with($this->equalTo($expectedUpdateResource));
 
-		$this->assertTrue($response->WasSuccessful());
-		$this->assertEquals($resourceId, $response->ResourceId());
-		$this->assertEmpty($response->Errors());
-	}
+        $response = $this->controller->Update($resourceId, $request, $this->session);
 
-	public function testWhenDeleteFails()
-	{
-		$resourceId = 998;
-		$errors = array('error');
+        $this->assertTrue($response->WasSuccessful());
+        $this->assertEquals($resourceId, $response->ResourceId());
+        $this->assertEmpty($response->Errors());
+    }
 
-		$this->validator->expects($this->once())
-				->method('ValidateDeleteRequest')
-				->with($this->equalTo($resourceId))
-				->will($this->returnValue($errors));
+    public function testWhenUpdateValidationFails()
+    {
+        $resourceId = 123;
+        $errors = ['something failed'];
 
-		$response = $this->controller->Delete($resourceId, $this->session);
+        $request = ResourceRequest::Example();
+        $this->validator->expects($this->once())
+                ->method('ValidateUpdateRequest')
+                ->with($this->anything(), $this->anything())
+                ->will($this->returnValue($errors));
 
-		$this->assertFalse($response->WasSuccessful());
-		$this->assertEquals($errors, $response->Errors());
-		$this->assertEmpty($response->ResourceId());
-	}
+        $response = $this->controller->Update($resourceId, $request, $this->session);
+
+        $this->assertFalse($response->WasSuccessful());
+        $this->assertNull($response->ResourceId());
+        $this->assertEquals($errors, $response->Errors());
+    }
+
+    public function testDeletesResource()
+    {
+        $resourceId = 998;
+        $resource = new FakeBookableResource($resourceId);
+
+        $this->validator->expects($this->once())
+                ->method('ValidateDeleteRequest')
+                ->with($this->equalTo($resourceId))
+                ->will($this->returnValue([]));
+
+        $this->repository->expects($this->once())
+                ->method('LoadById')
+                ->with($this->equalTo($resourceId))
+                ->will($this->returnValue($resource));
+
+        $this->repository->expects($this->once())
+                ->method('Delete')
+                ->with($this->equalTo($resource));
+
+        $response = $this->controller->Delete($resourceId, $this->session);
+
+        $this->assertTrue($response->WasSuccessful());
+        $this->assertEquals($resourceId, $response->ResourceId());
+        $this->assertEmpty($response->Errors());
+    }
+
+    public function testWhenDeleteFails()
+    {
+        $resourceId = 998;
+        $errors = ['error'];
+
+        $this->validator->expects($this->once())
+                ->method('ValidateDeleteRequest')
+                ->with($this->equalTo($resourceId))
+                ->will($this->returnValue($errors));
+
+        $response = $this->controller->Delete($resourceId, $this->session);
+
+        $this->assertFalse($response->WasSuccessful());
+        $this->assertEquals($errors, $response->Errors());
+        $this->assertEmpty($response->ResourceId());
+    }
 }

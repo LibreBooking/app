@@ -14,8 +14,16 @@ class ReservationResourceView implements IResource
     private $autoReleaseMinutes;
     private $color;
 
-    public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId,
-                                $statusId = ResourceStatus::AVAILABLE, $enableCheckin, $autoReleaseMinutes)
+    public function __construct(
+        $resourceId,
+        $resourceName,
+        $adminGroupId,
+        $scheduleId,
+        $scheduleAdminGroupId,
+        $statusId = ResourceStatus::AVAILABLE,
+        $enableCheckin,
+        $autoReleaseMinutes
+    )
     {
         $this->id = $resourceId;
         $this->resourceName = $resourceName;

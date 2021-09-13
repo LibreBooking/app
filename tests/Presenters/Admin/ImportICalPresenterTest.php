@@ -4,32 +4,31 @@ require_once(ROOT_DIR . 'Presenters/Admin/Import/ICalImportPresenter.php');
 
 class ImportICalPresenterTests extends TestBase
 {
+    public function testCreatesEverything()
+    {
+        $page = new FakeICalImportPage();
+        $userRepo = new FakeUserRepository();
+        $resourceRepo = new FakeResourceAccess();
+        $reservationRepo = new FakeReservationRepository();
+        $registration = new FakeRegistration();
+        $scheduleRepo = new FakeScheduleRepository();
 
-	public function testCreatesEverything()
-	{
-		$page = new FakeICalImportPage();
-		$userRepo = new FakeUserRepository();
-		$resourceRepo = new FakeResourceAccess();
-		$reservationRepo = new FakeReservationRepository();
-		$registration = new FakeRegistration();
-		$scheduleRepo = new FakeScheduleRepository();
+        $page->_File = new FakeUploadedFile();
+        $page->_File->Contents = $this->GetEvents();
 
-		$page->_File = new FakeUploadedFile();
-		$page->_File->Contents = $this->GetEvents();
+        $userRepo->_User = new FakeUser(2);
 
-		$userRepo->_User = new FakeUser(2);
+        $resource1 = new FakeBookableResource(1);
+        $resource2 = new FakeBookableResource(1);
 
-		$resource1 = new FakeBookableResource(1);
-		$resource2 = new FakeBookableResource(1);
+        $resourceRepo->_NamedResources = ['name1' => $resource1, 'name2' => $resource2];
 
-		$resourceRepo->_NamedResources = array('name1' => $resource1, 'name2' => $resource2);
+        $presenter = new ICalImportPresenter($page, $userRepo, $resourceRepo, $reservationRepo, $registration, $scheduleRepo);
 
-		$presenter = new ICalImportPresenter($page, $userRepo, $resourceRepo, $reservationRepo, $registration, $scheduleRepo);
+        $presenter->Import();
 
-		$presenter->Import();
-
-		$title = 'test 11';
-		$description = 'Project xyz Review Meeting Minutes\n
+        $title = 'test 11';
+        $description = 'Project xyz Review Meeting Minutes\n
  Agenda\n1. Review of project version 1.0 requirements.\n2.
  Definition
   of project processes.\n3. Review of project schedule.\n
@@ -41,66 +40,64 @@ class ImportICalPresenterTests extends TestBase
   dates.\n-New schedule will be distributed by Friday.\n-
  Next weeks meeting is cancelled. No meeting until 3/23.';
 
-		$date = DateRange::Create('20160112', '20160116', 'UTC');
+        $date = DateRange::Create('20160112', '20160116', 'UTC');
 
-		$reservation = ReservationSeries::Create($userRepo->_User->Id(), $resource1, $title, $description, $date, new RepeatNone(), $this->fakeUser);
-		$reservation->ChangeParticipants(array(2, 2));
+        $reservation = ReservationSeries::Create($userRepo->_User->Id(), $resource1, $title, $description, $date, new RepeatNone(), $this->fakeUser);
+        $reservation->ChangeParticipants([2, 2]);
 
-		$firstAddedReservation = $reservationRepo->_FirstAddedReservation;
-		$this->assertEquals($userRepo->_User->Id(), $firstAddedReservation->UserId());
-		$this->assertEquals($resource1, $firstAddedReservation->Resource());
-		$this->assertEquals($title, $firstAddedReservation->Title());
-		$this->assertEquals($date, $firstAddedReservation->CurrentInstance()->Duration());
-		$this->assertEquals($this->fakeUser, $firstAddedReservation->BookedBy());
-	}
+        $firstAddedReservation = $reservationRepo->_FirstAddedReservation;
+        $this->assertEquals($userRepo->_User->Id(), $firstAddedReservation->UserId());
+        $this->assertEquals($resource1, $firstAddedReservation->Resource());
+        $this->assertEquals($title, $firstAddedReservation->Title());
+        $this->assertEquals($date, $firstAddedReservation->CurrentInstance()->Duration());
+        $this->assertEquals($this->fakeUser, $firstAddedReservation->BookedBy());
+    }
 
-	public function testParseIcs()
-	{
-		$this->markTestSkipped('just parses ics file');
-		$ical   = new ICal( ROOT_DIR . 'tests/Presenters/Admin/MyCal.ics');
-		$events = $ical->events();
+    public function testParseIcs()
+    {
+        $this->markTestSkipped('just parses ics file');
+        $ical   = new ICal(ROOT_DIR . 'tests/Presenters/Admin/MyCal.ics');
+        $events = $ical->events();
 
-//		var_dump($events[1]);
-		foreach ($events as $event) {
+        //		var_dump($events[1]);
+        foreach ($events as $event) {
 
 //			$user = $this->GetOrCreateUser($event['ORGANIZER']);
-//			$resource = $this->GetOrCreateResource($event['LOCATION']);
+            //			$resource = $this->GetOrCreateResource($event['LOCATION']);
 //
-//			$reservation = ReservationSeries::Create($user->Id(), $resource, $title, $description, $date, new RepeatNone(), $bookedBy);
-//			$reservation->ChangeParticipants($participantIds);
-			if (array_key_exists('ATTENDEE_array', $event))
-			{
-				foreach ($event['ATTENDEE_array'] as $attendee)
-				{
-					var_dump($attendee);
-				}
-			}
-			$ts =  date('Y-m-d H:i:s', $ical->iCalDateToUnixTimestamp($event['DTSTART']) );
-			$parsed = Date::Parse($ts, 'UTC');
-			echo $parsed . '\n';
-			$start = Date::Parse($event['DTSTART'], 'UTC');
-			echo $start->ToString() . '\n';
-		    echo 'SUMMARY: ' . @$event['SUMMARY'] . "<br />\n";
-		    echo 'DTSTART: ' . $event['DTSTART'] . ' - UNIX-Time: ' . $ical->iCalDateToUnixTimestamp($event['DTSTART']) . "<br />\n";
-		    echo 'DTEND: ' . $event['DTEND'] . "<br />\n";
-		    echo 'DTSTAMP: ' . $event['DTSTAMP'] . "<br />\n";
-		    echo 'UID: ' . @$event['UID'] . "<br />\n";
-		    echo 'CREATED: ' . @$event['CREATED'] . "<br />\n";
-		    echo 'LAST-MODIFIED: ' . @$event['LAST-MODIFIED'] . "<br />\n";
-		    echo 'DESCRIPTION: ' . @$event['DESCRIPTION'] . "<br />\n";
-		    echo 'LOCATION: ' . @$event['LOCATION'] . "<br />\n";
-		    echo 'SEQUENCE: ' . @$event['SEQUENCE'] . "<br />\n";
-		    echo 'STATUS: ' . @$event['STATUS'] . "<br />\n";
-		    echo 'TRANSP: ' . @$event['TRANSP'] . "<br />\n";
-		    echo 'ORGANIZER: ' . @$event['ORGANIZER'] . "<br />\n";
-		    echo 'ATTENDEE(S): ' . @$event['ATTENDEE'] . "<br />\n";
-		    echo '<hr/>';
-		}
-	}
+            //			$reservation = ReservationSeries::Create($user->Id(), $resource, $title, $description, $date, new RepeatNone(), $bookedBy);
+            //			$reservation->ChangeParticipants($participantIds);
+            if (array_key_exists('ATTENDEE_array', $event)) {
+                foreach ($event['ATTENDEE_array'] as $attendee) {
+                    var_dump($attendee);
+                }
+            }
+            $ts =  date('Y-m-d H:i:s', $ical->iCalDateToUnixTimestamp($event['DTSTART']));
+            $parsed = Date::Parse($ts, 'UTC');
+            echo $parsed . '\n';
+            $start = Date::Parse($event['DTSTART'], 'UTC');
+            echo $start->ToString() . '\n';
+            echo 'SUMMARY: ' . @$event['SUMMARY'] . "<br />\n";
+            echo 'DTSTART: ' . $event['DTSTART'] . ' - UNIX-Time: ' . $ical->iCalDateToUnixTimestamp($event['DTSTART']) . "<br />\n";
+            echo 'DTEND: ' . $event['DTEND'] . "<br />\n";
+            echo 'DTSTAMP: ' . $event['DTSTAMP'] . "<br />\n";
+            echo 'UID: ' . @$event['UID'] . "<br />\n";
+            echo 'CREATED: ' . @$event['CREATED'] . "<br />\n";
+            echo 'LAST-MODIFIED: ' . @$event['LAST-MODIFIED'] . "<br />\n";
+            echo 'DESCRIPTION: ' . @$event['DESCRIPTION'] . "<br />\n";
+            echo 'LOCATION: ' . @$event['LOCATION'] . "<br />\n";
+            echo 'SEQUENCE: ' . @$event['SEQUENCE'] . "<br />\n";
+            echo 'STATUS: ' . @$event['STATUS'] . "<br />\n";
+            echo 'TRANSP: ' . @$event['TRANSP'] . "<br />\n";
+            echo 'ORGANIZER: ' . @$event['ORGANIZER'] . "<br />\n";
+            echo 'ATTENDEE(S): ' . @$event['ATTENDEE'] . "<br />\n";
+            echo '<hr/>';
+        }
+    }
 
-	private function GetEvents()
-	{
-		return <<<EOF
+    private function GetEvents()
+    {
+        return <<<EOF
 BEGIN:VCALENDAR
 PRODID:-//Google Inc//Google Calendar 70.9054//EN
 VERSION:2.0
@@ -307,98 +304,97 @@ TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR
 EOF;
-
-	}
+    }
 }
 
 class FakeICalImportPage implements IICalImportPage
 {
-	/**
-	 * @var FakeUploadedFile
-	 */
-	public $_File;
+    /**
+     * @var FakeUploadedFile
+     */
+    public $_File;
 
-	public function __construct()
-	{
-		$this->_File = new FakeUploadedFile();
-	}
+    public function __construct()
+    {
+        $this->_File = new FakeUploadedFile();
+    }
 
-	/**
-	 * @return UploadedFile
-	 */
-	public function GetImportFile()
-	{
-		return $this->_File;
-	}
+    /**
+     * @return UploadedFile
+     */
+    public function GetImportFile()
+    {
+        return $this->_File;
+    }
 
-	public function TakingAction()
-	{
-		// TODO: Implement TakingAction() method.
-	}
+    public function TakingAction()
+    {
+        // TODO: Implement TakingAction() method.
+    }
 
-	public function GetAction()
-	{
-		// TODO: Implement GetAction() method.
-	}
+    public function GetAction()
+    {
+        // TODO: Implement GetAction() method.
+    }
 
-	public function RequestingData()
-	{
-		// TODO: Implement RequestingData() method.
-	}
+    public function RequestingData()
+    {
+        // TODO: Implement RequestingData() method.
+    }
 
-	public function GetDataRequest()
-	{
-		// TODO: Implement GetDataRequest() method.
-	}
+    public function GetDataRequest()
+    {
+        // TODO: Implement GetDataRequest() method.
+    }
 
-	public function PageLoad()
-	{
-		// TODO: Implement PageLoad() method.
-	}
+    public function PageLoad()
+    {
+        // TODO: Implement PageLoad() method.
+    }
 
-	public function Redirect($url)
-	{
-		// TODO: Implement Redirect() method.
-	}
+    public function Redirect($url)
+    {
+        // TODO: Implement Redirect() method.
+    }
 
-	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
-	{
-		// TODO: Implement RedirectToError() method.
-	}
+    public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+    {
+        // TODO: Implement RedirectToError() method.
+    }
 
-	public function IsPostBack()
-	{
-		// TODO: Implement IsPostBack() method.
-	}
+    public function IsPostBack()
+    {
+        // TODO: Implement IsPostBack() method.
+    }
 
-	public function IsValid()
-	{
-		// TODO: Implement IsValid() method.
-	}
+    public function IsValid()
+    {
+        // TODO: Implement IsValid() method.
+    }
 
-	public function GetLastPage($defaultPage = '')
-	{
-		// TODO: Implement GetLastPage() method.
-	}
+    public function GetLastPage($defaultPage = '')
+    {
+        // TODO: Implement GetLastPage() method.
+    }
 
-	public function RegisterValidator($validatorId, $validator)
-	{
-		// TODO: Implement RegisterValidator() method.
-	}
+    public function RegisterValidator($validatorId, $validator)
+    {
+        // TODO: Implement RegisterValidator() method.
+    }
 
-	public function EnforceCSRFCheck()
-	{
-		// TODO: Implement EnforceCSRFCheck() method.
-	}
+    public function EnforceCSRFCheck()
+    {
+        // TODO: Implement EnforceCSRFCheck() method.
+    }
 
-	/**
-	 * @param int $numberImported
-	 * @param int $numberSkipped
-	 */
-	public function SetNumberImported($numberImported, $numberSkipped)
-	{
-		// TODO: Implement SetNumberImported() method.
-	}
+    /**
+     * @param int $numberImported
+     * @param int $numberSkipped
+     */
+    public function SetNumberImported($numberImported, $numberSkipped)
+    {
+        // TODO: Implement SetNumberImported() method.
+    }
 
     public function GetSortField()
     {

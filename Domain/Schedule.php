@@ -69,7 +69,7 @@ class Schedule implements ISchedule
     protected $_totalConcurrentReservations = 0;
     protected $_maxResourcesPerReservation = 0;
 
-    const Today = 100;
+    public const Today = 100;
 
     public function __construct(
         $id,
@@ -78,7 +78,8 @@ class Schedule implements ISchedule
         $weekdayStart,
         $daysVisible,
         $timezone = null,
-        $layoutId = null)
+        $layoutId = null
+    )
     {
         $this->_id = $id;
         $this->_name = $name;
@@ -198,9 +199,9 @@ class Schedule implements ISchedule
      */
     public function SetAdminGroupId($adminGroupId)
     {
-    	if (empty($adminGroupId)) {
-    		$adminGroupId = null;
-		}
+        if (empty($adminGroupId)) {
+            $adminGroupId = null;
+        }
         $this->_adminGroupId = $adminGroupId;
     }
 
@@ -292,7 +293,7 @@ class Schedule implements ISchedule
      * @static
      * @return Schedule
      */
-    public static function Null()
+    public static function null()
     {
         return new Schedule(null, null, false, null, null);
     }
@@ -304,13 +305,15 @@ class Schedule implements ISchedule
      */
     public static function FromRow($row)
     {
-        $schedule = new Schedule($row[ColumnNames::SCHEDULE_ID],
+        $schedule = new Schedule(
+            $row[ColumnNames::SCHEDULE_ID],
             $row[ColumnNames::SCHEDULE_NAME],
             $row[ColumnNames::SCHEDULE_DEFAULT],
             $row[ColumnNames::SCHEDULE_WEEKDAY_START],
             $row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
             $row[ColumnNames::TIMEZONE_NAME],
-            $row[ColumnNames::LAYOUT_ID]);
+            $row[ColumnNames::LAYOUT_ID]
+        );
 
         $schedule->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
         $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
@@ -346,73 +349,79 @@ class Schedule implements ISchedule
         return new CalendarSubscriptionUrl(null, $this->GetPublicId(), null);
     }
 
-	/**
-	 * @param $layoutType int
-	 */
+    /**
+     * @param $layoutType int
+     */
     public function SetLayoutType($layoutType)
     {
         $this->_layoutType = $layoutType;
     }
 
-	/**
-	 * @return int
-	 */
+    /**
+     * @return int
+     */
     public function GetLayoutType()
     {
         return $this->_layoutType;
     }
 
-	/**
-	 * @return bool
-	 */
+    /**
+     * @return bool
+     */
     public function HasCustomLayout()
     {
         return $this->_layoutType == ScheduleLayout::Custom;
     }
 
-	/**
-	 * @param $totalConcurrent int
-	 */
-    public function SetTotalConcurrentReservations($totalConcurrent) {
-    	$total = intval($totalConcurrent);
-    	$this->_totalConcurrentReservations = min(65535, max($total, 0));
-	}
+    /**
+     * @param $totalConcurrent int
+     */
+    public function SetTotalConcurrentReservations($totalConcurrent)
+    {
+        $total = intval($totalConcurrent);
+        $this->_totalConcurrentReservations = min(65535, max($total, 0));
+    }
 
-	/**
-	 * @return int
-	 */
-	public function GetTotalConcurrentReservations() {
-    	return $this->_totalConcurrentReservations;
-	}
+    /**
+     * @return int
+     */
+    public function GetTotalConcurrentReservations()
+    {
+        return $this->_totalConcurrentReservations;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function EnforceConcurrentReservationMaximum() {
-    	return $this->_totalConcurrentReservations > 0;
-	}
+    /**
+     * @return bool
+     */
+    public function EnforceConcurrentReservationMaximum()
+    {
+        return $this->_totalConcurrentReservations > 0;
+    }
 
-	/**
-	 * @param $max int
-	 */
-    public function SetMaxResourcesPerReservation($max) {
-    	$total = intval($max);
-    	$this->_maxResourcesPerReservation = min(65535, max($total, 0));
-	}
+    /**
+     * @param $max int
+     */
+    public function SetMaxResourcesPerReservation($max)
+    {
+        $total = intval($max);
+        $this->_maxResourcesPerReservation = min(65535, max($total, 0));
+    }
 
-	/**
-	 * @return int
-	 */
-	public function GetMaxResourcesPerReservation() {
-    	return $this->_maxResourcesPerReservation;
-	}
+    /**
+     * @return int
+     */
+    public function GetMaxResourcesPerReservation()
+    {
+        return $this->_maxResourcesPerReservation;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function EnforceMaxResourcesPerReservation() {
-    	return $this->_maxResourcesPerReservation > 0;
-	}
+    /**
+     * @return bool
+     */
+    public function EnforceMaxResourcesPerReservation()
+    {
+        return $this->_maxResourcesPerReservation > 0;
+    }
 }
 
 class NullSchedule extends Schedule
@@ -426,8 +435,8 @@ class NullSchedule extends Schedule
 
 class ScheduleStyle
 {
-    const Standard = 0;
-    const Wide = 1;
-    const Tall = 2;
-    const CondensedWeek = 3;
+    public const Standard = 0;
+    public const Wide = 1;
+    public const Tall = 2;
+    public const CondensedWeek = 3;
 }

@@ -5,65 +5,65 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class PasswordMigrationTests extends TestBase
 {
-	/**
-	 * @var FakeDatabase
-	 */
-	private $_db;
-	private $plaintext = 'password';
-	private $newEncryption;
-	private $oldEncryption;
+    /**
+     * @var FakeDatabase
+     */
+    private $_db;
+    private $plaintext = 'password';
+    private $newEncryption;
+    private $oldEncryption;
 
-	function setup(): void
-	{
-		$this->_db = new FakeDatabase();
-		ServiceLocator::SetDatabase($this->_db);
+    public function setup(): void
+    {
+        $this->_db = new FakeDatabase();
+        ServiceLocator::SetDatabase($this->_db);
 
-		$this->newEncryption = new PasswordEncryption();
-		$this->oldEncryption = new RetiredPasswordEncryption();
-	}
+        $this->newEncryption = new PasswordEncryption();
+        $this->oldEncryption = new RetiredPasswordEncryption();
+    }
 
-	function teardown(): void
-	{
-		$this->_db = null;
-	}
+    public function teardown(): void
+    {
+        $this->_db = null;
+    }
 
-	function testPasswordValidatesWithNewValidationAndDoesNotMigrate()
-	{
-		$userid = 1;
-		$oldpassword = '';
-		$salt = $this->newEncryption->Salt();
-		$newpassword = $this->newEncryption->Encrypt($this->plaintext, $salt);
+    public function testPasswordValidatesWithNewValidationAndDoesNotMigrate()
+    {
+        $userid = 1;
+        $oldpassword = '';
+        $salt = $this->newEncryption->Salt();
+        $newpassword = $this->newEncryption->Encrypt($this->plaintext, $salt);
 
-		$migration = new PasswordMigration();
-		$password = $migration->Create($this->plaintext, $oldpassword, $newpassword);
+        $migration = new PasswordMigration();
+        $password = $migration->Create($this->plaintext, $oldpassword, $newpassword);
 
-		$isValid = $password->Validate($salt);
+        $isValid = $password->Validate($salt);
 
-		$this->assertTrue($isValid, 'should have validated against the new password');
+        $this->assertTrue($isValid, 'should have validated against the new password');
 
-		$password->Migrate($userid);
-		$this->assertEquals(0, count($this->_db->_Commands));
-	}
+        $password->Migrate($userid);
+        $this->assertEquals(0, count($this->_db->_Commands));
+    }
 
-	function testOldPasswordValidatesWithOldValidatorAndMigrates()
-	{
-		$userid = 1;
-		$fakeEncryption = new FakePasswordEncryption();
-		$salt = $fakeEncryption->Salt();
+    public function testOldPasswordValidatesWithOldValidatorAndMigrates()
+    {
+        $userid = 1;
+        $fakeEncryption = new FakePasswordEncryption();
+        $salt = $fakeEncryption->Salt();
 
-		$oldpassword = $this->oldEncryption->Encrypt($this->plaintext);
-		$newpassword = '';
+        $oldpassword = $this->oldEncryption->Encrypt($this->plaintext);
+        $newpassword = '';
 
-		$migration = new PasswordMigration();
-		$password = $migration->Create($this->plaintext, $oldpassword, $newpassword);
-		$password->Encryption = $fakeEncryption;
+        $migration = new PasswordMigration();
+        $password = $migration->Create($this->plaintext, $oldpassword, $newpassword);
+        $password->Encryption = $fakeEncryption;
 
-		$isValid = $password->Validate('');
+        $isValid = $password->Validate('');
 
-		$this->assertTrue($isValid, 'should have validated against the old password');
+        $this->assertTrue($isValid, 'should have validated against the old password');
 
-		$password->Migrate($userid);
-		$encrypted = $fakeEncryption->Encrypt($this->plaintext, $salt);
-		$this->assertTrue($this->_db->ContainsCommand(new MigratePasswordCommand($userid, $encrypted, $salt)), "did not migrate the password");
-	}
+        $password->Migrate($userid);
+        $encrypted = $fakeEncryption->Encrypt($this->plaintext, $salt);
+        $this->assertTrue($this->_db->ContainsCommand(new MigratePasswordCommand($userid, $encrypted, $salt)), "did not migrate the password");
+    }
 }

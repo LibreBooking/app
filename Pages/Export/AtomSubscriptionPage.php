@@ -10,110 +10,111 @@ require_once(ROOT_DIR . 'lib/external/FeedWriter/FeedItem.php');
 
 class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 {
-	/**
-	 * @var CalendarSubscriptionPresenter
-	 */
-	private $presenter;
+    /**
+     * @var CalendarSubscriptionPresenter
+     */
+    private $presenter;
 
-	/**
-	 * @var iCalendarReservationView[]
-	 */
-	private $reservations = array();
+    /**
+     * @var iCalendarReservationView[]
+     */
+    private $reservations = [];
 
-	public function __construct()
-	{
-		$authorization = new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization());
-		$service = new CalendarSubscriptionService(new UserRepository(), new ResourceRepository(), new ScheduleRepository());
-		$subscriptionValidator = new CalendarSubscriptionValidator($this, $service);
-		$this->presenter = new CalendarSubscriptionPresenter($this,
-															 new ReservationViewRepository(),
-															 $subscriptionValidator,
-															 $service,
-															 new PrivacyFilter($authorization));
-		parent::__construct('', 1);
-	}
+    public function __construct()
+    {
+        $authorization = new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization());
+        $service = new CalendarSubscriptionService(new UserRepository(), new ResourceRepository(), new ScheduleRepository());
+        $subscriptionValidator = new CalendarSubscriptionValidator($this, $service);
+        $this->presenter = new CalendarSubscriptionPresenter(
+            $this,
+            new ReservationViewRepository(),
+            $subscriptionValidator,
+            $service,
+            new PrivacyFilter($authorization)
+        );
+        parent::__construct('', 1);
+    }
 
-	public function GetSubscriptionKey()
-	{
-		return $this->GetQuerystring(QueryStringKeys::SUBSCRIPTION_KEY);
-	}
+    public function GetSubscriptionKey()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SUBSCRIPTION_KEY);
+    }
 
-	public function GetUserId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::USER_ID);
-	}
+    public function GetUserId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::USER_ID);
+    }
 
-	public function PageLoad()
-	{
-		ob_clean();
-		$this->presenter->PageLoad();
+    public function PageLoad()
+    {
+        ob_clean();
+        $this->presenter->PageLoad();
 
-		$config = Configuration::Instance();
+        $config = Configuration::Instance();
 
-		$feed = new FeedWriter(ATOM);
-		$title = $config->GetKey(ConfigKeys::APP_TITLE);
-		$feed->setTitle(Resources::GetInstance()->GetString('AtomFeedTitle', array($title)));
-		$url = $config->GetScriptUrl();
-		$feed->setLink($url);
+        $feed = new FeedWriter(ATOM);
+        $title = $config->GetKey(ConfigKeys::APP_TITLE);
+        $feed->setTitle(Resources::GetInstance()->GetString('AtomFeedTitle', [$title]));
+        $url = $config->GetScriptUrl();
+        $feed->setLink($url);
 
-		$lastUpdated = Date::Min();
-		$feed->setChannelElement('author', array('name'=>$title));
+        $lastUpdated = Date::Min();
+        $feed->setChannelElement('author', ['name'=>$title]);
 
-		foreach ($this->reservations as $reservation)
-		{
-			/** @var FeedItem $item */
-			$item = $feed->createNewItem();
-			$item->setTitle($reservation->Summary);
-			$item->setLink($reservation->ReservationUrl);
-			$item->setDate($reservation->DateCreated->Timestamp());
-			$item->setDescription($this->FormatReservationDescription($reservation, ServiceLocator::GetServer()->GetUserSession()));
+        foreach ($this->reservations as $reservation) {
+            /** @var FeedItem $item */
+            $item = $feed->createNewItem();
+            $item->setTitle($reservation->Summary);
+            $item->setLink($reservation->ReservationUrl);
+            $item->setDate($reservation->DateCreated->Timestamp());
+            $item->setDescription($this->FormatReservationDescription($reservation, ServiceLocator::GetServer()->GetUserSession()));
 
-			$feed->addItem($item);
+            $feed->addItem($item);
 
-			if ($reservation->DateCreated->GreaterThan($lastUpdated)) {
+            if ($reservation->DateCreated->GreaterThan($lastUpdated)) {
                 $lastUpdated = $reservation->DateCreated;
             }
-            if ($reservation->LastModified != null && $reservation->LastModified->GreaterThan($lastUpdated)){
-			    $lastUpdated = $reservation->LastModified;
+            if ($reservation->LastModified != null && $reservation->LastModified->GreaterThan($lastUpdated)) {
+                $lastUpdated = $reservation->LastModified;
             }
-		}
+        }
 
         $feed->setChannelElement('updated', $lastUpdated->Format(DATE_ATOM));
         $feed->genarateFeed();
-	}
+    }
 
-	public function SetReservations($reservations)
-	{
-		$this->reservations = $reservations;
-	}
+    public function SetReservations($reservations)
+    {
+        $this->reservations = $reservations;
+    }
 
-	public function GetScheduleId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-	}
+    public function GetScheduleId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+    }
 
-	public function GetResourceId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
-	}
+    public function GetResourceId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+    }
 
-	public function GetAccessoryIds()
-	{
-		// no op
-	}
+    public function GetAccessoryIds()
+    {
+        // no op
+    }
 
     public function GetResourceGroupId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::RESOURCE_GROUP_ID);
-	}
+    {
+        return $this->GetQuerystring(QueryStringKeys::RESOURCE_GROUP_ID);
+    }
 
-	public function FormatReservationDescription(iCalendarReservationView $reservation, UserSession $user)
-	{
-		$factory = new SlotLabelFactory($user);
-		return $factory->Format($reservation->ReservationItemView, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RSS_DESCRIPTION));
-	}
+    public function FormatReservationDescription(iCalendarReservationView $reservation, UserSession $user)
+    {
+        $factory = new SlotLabelFactory($user);
+        return $factory->Format($reservation->ReservationItemView, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RSS_DESCRIPTION));
+    }
 
-	public function GetPastNumberOfDays()
+    public function GetPastNumberOfDays()
     {
         return $this->GetQuerystring(QueryStringKeys::SUBSCRIPTION_DAYS_PAST);
     }

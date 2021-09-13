@@ -2,9 +2,9 @@
 
 interface IReservationPersistenceFactory
 {
-	/**
-	 * @param ReservationAction $reservationAction
-	 * @return IReservationPersistenceService
-	 */
-	function Create($reservationAction);
+    /**
+     * @param ReservationAction $reservationAction
+     * @return IReservationPersistenceService
+     */
+    public function Create($reservationAction);
 }

@@ -1,4 +1,5 @@
 <?php
+
 //require_once "phing/Task.php";
 
 class CombineDbFilesTask
@@ -10,14 +11,14 @@ class CombineDbFilesTask
         $this->schemaDir = $schemadir;
     }
 
-	private $schemaFile = null;
+    private $schemaFile = null;
 
     public function setSchemafile($schemaFile)
     {
         $this->schemaFile = $schemaFile;
     }
 
-	private $dataFile = null;
+    private $dataFile = null;
 
     public function setDatafile($dataFile)
     {
@@ -39,16 +40,14 @@ class CombineDbFilesTask
     {
         $upgradeDir = "{$this->schemaDir}/upgrades";
 
-		print("Searching $upgradeDir for upgrade directories\n");
+        print("Searching $upgradeDir for upgrade directories\n");
 
         $upgrades = scandir($upgradeDir);
 
-        usort($upgrades, array($this, 'SortDirectories'));
+        usort($upgrades, [$this, 'SortDirectories']);
 
-        foreach ($upgrades as $upgrade)
-        {
-            if ($upgrade === '.' || $upgrade === '..' || strpos($upgrade, '.') === 0)
-            {
+        foreach ($upgrades as $upgrade) {
+            if ($upgrade === '.' || $upgrade === '..' || strpos($upgrade, '.') === 0) {
                 continue;
             }
 
@@ -59,8 +58,7 @@ class CombineDbFilesTask
     private function Combine($upgradeDir, $versionNumber)
     {
         $fullUpgradeDir = "$upgradeDir/$versionNumber";
-        if (!is_dir($fullUpgradeDir))
-        {
+        if (!is_dir($fullUpgradeDir)) {
             return;
         }
 
@@ -72,37 +70,37 @@ class CombineDbFilesTask
         print("Finished combining database files for version $versionNumber\n");
     }
 
-	private function CombineMainFiles($upgradeDir, $versionNumber)
-	{
-		$versionInfo = "\r\n\r\n-- UPGRADE TO VERSION $versionNumber\r\n\r\n";
+    private function CombineMainFiles($upgradeDir, $versionNumber)
+    {
+        $versionInfo = "\r\n\r\n-- UPGRADE TO VERSION $versionNumber\r\n\r\n";
 
-		// schema
-		$schemaHandle = fopen($this->schemaFile, "a");
-		$upgradeSchema = $this->GetSchemaFileContents($upgradeDir);
-		$newContents = "$versionInfo\r\n\r\n$upgradeSchema";
+        // schema
+        $schemaHandle = fopen($this->schemaFile, "a");
+        $upgradeSchema = $this->GetSchemaFileContents($upgradeDir);
+        $newContents = "$versionInfo\r\n\r\n$upgradeSchema";
 
-		fwrite($schemaHandle, $newContents);
-		fclose($schemaHandle);
+        fwrite($schemaHandle, $newContents);
+        fclose($schemaHandle);
 
-		// data
-		$dataHandle = fopen($this->dataFile, "a");
-		$upgradeData = $this->GetDataFileContents($upgradeDir);
-		$newContents = "$versionInfo\r\n\r\n$upgradeData";
+        // data
+        $dataHandle = fopen($this->dataFile, "a");
+        $upgradeData = $this->GetDataFileContents($upgradeDir);
+        $newContents = "$versionInfo\r\n\r\n$upgradeData";
 
-		fwrite($dataHandle, $newContents);
-		fclose($dataHandle);
-	}
+        fwrite($dataHandle, $newContents);
+        fclose($dataHandle);
+    }
 
-	private function CombineUpgradeFiles($upgradeDir, $versionNumber)
-	{
-		$upgradeHandle = fopen("$upgradeDir/upgrade.sql", "w+");
+    private function CombineUpgradeFiles($upgradeDir, $versionNumber)
+    {
+        $upgradeHandle = fopen("$upgradeDir/upgrade.sql", "w+");
 
-		$upgradeSchema = $this->GetSchemaFileContents($upgradeDir);
-		$upgradeData = $this->GetDataFileContents($upgradeDir);
+        $upgradeSchema = $this->GetSchemaFileContents($upgradeDir);
+        $upgradeData = $this->GetDataFileContents($upgradeDir);
 
-		fwrite($upgradeHandle, "\r\n\r\n$upgradeSchema\r\n\r\n$upgradeData");
-		fclose($upgradeHandle);
-	}
+        fwrite($upgradeHandle, "\r\n\r\n$upgradeSchema\r\n\r\n$upgradeData");
+        fclose($upgradeHandle);
+    }
 
     private function GetFullSql($file)
     {
@@ -112,23 +110,22 @@ class CombineDbFilesTask
         return $sql;
     }
 
-	private function GetSchemaFileContents($upgradeDir)
-	{
-		return $this->GetFullSql("$upgradeDir/schema.sql");
-	}
+    private function GetSchemaFileContents($upgradeDir)
+    {
+        return $this->GetFullSql("$upgradeDir/schema.sql");
+    }
 
-	private function GetDataFileContents($upgradeDir)
-	{
-		return $this->GetFullSql("$upgradeDir/data.sql");
-	}
+    private function GetDataFileContents($upgradeDir)
+    {
+        return $this->GetFullSql("$upgradeDir/data.sql");
+    }
 
     private function SortDirectories($dir1, $dir2)
     {
         $d1 = floatval($dir1);
         $d2 = floatval($dir2);
 
-        if ($d1 == $d2)
-        {
+        if ($d1 == $d2) {
             return 0;
         }
         return ($d1 < $d2) ? -1 : 1;

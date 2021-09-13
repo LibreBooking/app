@@ -93,7 +93,8 @@ class ResourceDisplayPresenterTests extends TestBase
         $this->reservationRepository = new FakeReservationRepository();
         $this->termsOfServiceRepository = new FakeTermsOfServiceRepository();
 
-        $this->presenter = new ResourceDisplayPresenter($this->page,
+        $this->presenter = new ResourceDisplayPresenter(
+            $this->page,
             $this->resourceRepository,
             $this->reservationService,
             $this->authorizationService,
@@ -103,7 +104,8 @@ class ResourceDisplayPresenterTests extends TestBase
             $this->guestUserService,
             $this->attributeService,
             $this->reservationRepository,
-            $this->termsOfServiceRepository);
+            $this->termsOfServiceRepository
+        );
     }
 
     public function testDisplaysReservationsIfResourceAllowsDisplay()
@@ -123,14 +125,16 @@ class ResourceDisplayPresenterTests extends TestBase
         $this->scheduleRepository->_Schedule = $schedule;
         $this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
         $this->scheduleRepository->_Layout->AppendPeriod(Time::Parse('22:00', $timezone), Time::Parse('22:30', $timezone));
-        $this->attributeService->_ReservationAttributes = array();
+        $this->attributeService->_ReservationAttributes = [];
 
         $this->presenter->reservationCreateHandler = $this->reservationCreateHandler;
         $this->presenter->DisplayResource($publicId);
         $expectedDate = DateRange::Create($now->ToTimezone($timezone)->GetDate()->ToUtc(), $now->ToTimezone($timezone)->GetDate()->AddDays(1)->ToUtc(), 'UTC');
 
-        $this->assertEquals(new DailyLayout($this->reservationService->_ReservationListing,
-            $this->scheduleRepository->_Layout), $this->page->_DailyLayout);
+        $this->assertEquals(new DailyLayout(
+            $this->reservationService->_ReservationListing,
+            $this->scheduleRepository->_Layout
+        ), $this->page->_DailyLayout);
         $this->assertEquals($expectedDate, $this->reservationService->_LastDateRange);
         $this->assertEquals(1, $this->reservationService->_LastResourceId);
         $this->assertEquals($resource, $this->page->_BoundResource);
@@ -148,15 +152,15 @@ class ResourceDisplayPresenterTests extends TestBase
         $pastItem = new ReservationListItem(new TestReservationItemView(1, $now->SubtractMinutes(60), $now->SubtractMinutes(30)));
         $currentItem = new ReservationListItem(new TestReservationItemView(2, $now->SubtractMinutes(30), $now->AddMinutes(30)));
         $nextItem = new ReservationListItem(new TestReservationItemView(3, $now->AddMinutes(60), $now->AddMinutes(90)));
-        $this->reservationService->_ReservationListing->_Reservations = array(
+        $this->reservationService->_ReservationListing->_Reservations = [
             $pastItem,
             $currentItem,
             $nextItem
-        );
+        ];
 
         $this->presenter->DisplayResource(1);
 
-        $this->assertEquals(array($nextItem), $this->page->_UpcomingReservations);
+        $this->assertEquals([$nextItem], $this->page->_UpcomingReservations);
         $this->assertEquals($nextItem, $this->page->_NextReservation);
     }
 
@@ -172,11 +176,11 @@ class ResourceDisplayPresenterTests extends TestBase
         $r1 = new TestReservationItemView(1, $now->AddMinutes(-90), $now->AddMinutes(-30), 1, "refnum1");
         $r2 = new TestReservationItemView(3, $now->AddMinutes(90), $now->AddMinutes(120), 1, "refnum2");
 
-        $this->reservationService->_ReservationListing->_Reservations = array(
+        $this->reservationService->_ReservationListing->_Reservations = [
             new ReservationListItem($r1),
             new ReservationListItem($next),
             new ReservationListItem($r2),
-        );
+        ];
 
         $this->presenter->DisplayResource(1);
 
@@ -193,11 +197,11 @@ class ResourceDisplayPresenterTests extends TestBase
         $pastItem = new ReservationListItem(new TestReservationItemView(1, $now->SubtractMinutes(60), $now->SubtractMinutes(30)));
         $currentItem = new ReservationListItem(new TestReservationItemView(2, $now->SubtractMinutes(30), $now));
         $nextItem = new ReservationListItem(new TestReservationItemView(3, $now->AddMinutes(15), $now->AddMinutes(90)));
-        $this->reservationService->_ReservationListing->_Reservations = array(
+        $this->reservationService->_ReservationListing->_Reservations = [
             $pastItem,
             $currentItem,
             $nextItem
-        );
+        ];
 
         $this->presenter->DisplayResource(1);
 
@@ -214,11 +218,11 @@ class ResourceDisplayPresenterTests extends TestBase
         $pastItem = new ReservationListItem(new TestReservationItemView(1, $now->SubtractMinutes(60), $now->SubtractMinutes(30)));
         $currentItem = new ReservationListItem(new TestReservationItemView(2, $now->SubtractMinutes(30), $now->AddMinutes(15)));
         $nextItem = new ReservationListItem(new TestReservationItemView(3, $now->AddMinutes(60), $now->AddMinutes(90)));
-        $this->reservationService->_ReservationListing->_Reservations = array(
+        $this->reservationService->_ReservationListing->_Reservations = [
             $pastItem,
             $currentItem,
             $nextItem
-        );
+        ];
 
         $this->presenter->DisplayResource(1);
 
@@ -253,14 +257,16 @@ class ResourceDisplayPresenterTests extends TestBase
         $this->scheduleRepository->_Schedule = $schedule;
         $this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
         $this->scheduleRepository->_Layout->AppendPeriod(Time::Parse('10:00', $timezone), Time::Parse('10:30', $timezone));
-        $this->attributeService->_ReservationAttributes = array();
+        $this->attributeService->_ReservationAttributes = [];
 
         $this->presenter->reservationCreateHandler = $this->reservationCreateHandler;
         $this->presenter->DisplayResource($publicId);
         $expectedDate = DateRange::Create($now->ToTimezone($timezone)->GetDate()->AddDays(1)->ToUtc(), $now->ToTimezone($timezone)->GetDate()->AddDays(2)->ToUtc(), 'UTC');
 
-        $this->assertEquals(new DailyLayout($this->reservationService->_ReservationListing,
-            $this->scheduleRepository->_Layout), $this->page->_DailyLayout);
+        $this->assertEquals(new DailyLayout(
+            $this->reservationService->_ReservationListing,
+            $this->scheduleRepository->_Layout
+        ), $this->page->_DailyLayout);
         $this->assertEquals($expectedDate, $this->reservationService->_LastDateRange);
     }
 
@@ -307,7 +313,7 @@ class ResourceDisplayPresenterTests extends TestBase
         $userAccount = new FakeUserSession(123);
         $this->guestUserService->_UserSession = $userAccount;
         $this->reservationCreateHandler->_Success = false;
-        $this->reservationCreateHandler->_Errors = array('one', 'two');
+        $this->reservationCreateHandler->_Errors = ['one', 'two'];
 
         $resource = new FakeBookableResource(122);
         $this->resourceRepository->_Resource = $resource;
@@ -334,7 +340,7 @@ class ResourceDisplayPresenterTests extends TestBase
         $this->scheduleRepository->_Schedule = $schedule;
         $this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
         $this->scheduleRepository->_Layout->AppendPeriod(Time::Parse('22:00', $timezone), Time::Parse('22:30', $timezone));
-        $this->attributeService->_ReservationAttributes = array();
+        $this->attributeService->_ReservationAttributes = [];
     }
 
     public function testChecksInAnonymously()
@@ -361,7 +367,7 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     public $_Username;
     public $_Password;
     public $_BoundInvalidLogin = false;
-    public $_BoundResourceList = array();
+    public $_BoundResourceList = [];
     public $_ResourceId;
     public $_ActivatedResourceId;
     public $_PublicResourceId;
@@ -383,8 +389,8 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
 
     public $_Attributes;
 
-    public $_AttributeFormElements = array();
-    public $_UpcomingReservations = array();
+    public $_AttributeFormElements = [];
+    public $_UpcomingReservations = [];
 
     /**
      * @var ReservationListItem
@@ -559,8 +565,8 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
         // TODO: Implement GetTermsOfServiceAcknowledgement() method.
     }
 
-	public function DisplayInstructions()
-	{
-		// TODO: Implement DisplayInstructions() method.
-	}
+    public function DisplayInstructions()
+    {
+        // TODO: Implement DisplayInstructions() method.
+    }
 }

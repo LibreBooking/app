@@ -8,47 +8,47 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 interface IRegistrationPage extends IPage, IActionPage
 {
-	public function RegisterClicked();
+    public function RegisterClicked();
 
-	public function SetTimezones($timezoneValues, $timezoneOutput);
-	public function SetTimezone($timezone);
-	public function SetHomepages($homepageValues, $homepageOutput);
-	public function SetHomepage($homepage);
-	public function SetLoginName($loginName);
-	public function SetEmail($email);
-	public function SetFirstName($firstName);
-	public function SetLastName($lastName);
-	public function SetPhone($phoneNumber);
-	public function SetOrganization($organization);
-	public function SetPosition($position);
-	public function SetPassword($password);
-	public function SetPasswordConfirm($passwordConfirm);
+    public function SetTimezones($timezoneValues, $timezoneOutput);
+    public function SetTimezone($timezone);
+    public function SetHomepages($homepageValues, $homepageOutput);
+    public function SetHomepage($homepage);
+    public function SetLoginName($loginName);
+    public function SetEmail($email);
+    public function SetFirstName($firstName);
+    public function SetLastName($lastName);
+    public function SetPhone($phoneNumber);
+    public function SetOrganization($organization);
+    public function SetPosition($position);
+    public function SetPassword($password);
+    public function SetPasswordConfirm($passwordConfirm);
     public function SetCaptchaImageUrl($captchaUrl);
 
-	public function GetTimezone();
-	public function GetHomepage();
-	public function GetLoginName();
-	public function GetEmail();
-	public function GetFirstName();
-	public function GetLastName();
-	public function GetPhone();
-	public function GetOrganization();
-	public function GetPosition();
-	public function GetPassword();
-	public function GetPasswordConfirm();
-	public function GetCaptcha();
+    public function GetTimezone();
+    public function GetHomepage();
+    public function GetLoginName();
+    public function GetEmail();
+    public function GetFirstName();
+    public function GetLastName();
+    public function GetPhone();
+    public function GetOrganization();
+    public function GetPosition();
+    public function GetPassword();
+    public function GetPasswordConfirm();
+    public function GetCaptcha();
 
-	/**
-	 * @param $attributeValues array|Attribute[]
-	 */
-	public function SetAttributes($attributeValues);
+    /**
+     * @param $attributeValues array|Attribute[]
+     */
+    public function SetAttributes($attributeValues);
 
-	/**
-	 * @return AttributeFormElement[]
-	 */
-	public function GetAttributes();
+    /**
+     * @return AttributeFormElement[]
+     */
+    public function GetAttributes();
 
-	public function RedirectPage($url);
+    public function RedirectPage($url);
 
     /**
      * @return bool
@@ -63,17 +63,17 @@ interface IRegistrationPage extends IPage, IActionPage
 
 class RegistrationPage extends ActionPage implements IRegistrationPage
 {
-	private $_presenter;
+    private $_presenter;
 
-	public function __construct()
-	{
-		parent::__construct('Registration');
+    public function __construct()
+    {
+        parent::__construct('Registration');
 
-		$this->_presenter = new RegistrationPresenter($this);
-	}
+        $this->_presenter = new RegistrationPresenter($this);
+    }
 
-	public function ProcessPageLoad()
-	{
+    public function ProcessPageLoad()
+    {
         $this->Set('EnableCaptcha', Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()));
         $this->Set('RequirePhone', Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_PHONE, new BooleanConverter()));
         $this->Set('RequirePosition', Configuration::Instance()->GetSectionKey(ConfigSection::REGISTRATION, ConfigKeys::REGISTRATION_REQUIRE_POSITION, new BooleanConverter()));
@@ -81,135 +81,135 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 
         $this->_presenter->PageLoad();
 
-		$this->Display('register.tpl');
-	}
+        $this->Display('register.tpl');
+    }
 
-	public function RegisterClicked()
-	{
-		return $this->GetForm(Actions::REGISTER);
-	}
+    public function RegisterClicked()
+    {
+        return $this->GetForm(Actions::REGISTER);
+    }
 
-	public function SetTimezones($timezoneValues, $timezoneOutput)
-	{
-		$this->Set('TimezoneValues', $timezoneValues);
-		$this->Set('TimezoneOutput', $timezoneOutput);
-	}
+    public function SetTimezones($timezoneValues, $timezoneOutput)
+    {
+        $this->Set('TimezoneValues', $timezoneValues);
+        $this->Set('TimezoneOutput', $timezoneOutput);
+    }
 
-	public function SetTimezone($timezone)
-	{
-		$this->Set('Timezone', $timezone);
-	}
+    public function SetTimezone($timezone)
+    {
+        $this->Set('Timezone', $timezone);
+    }
 
-	public function SetHomepages($homepageValues, $homepageOutput)
-	{
-		$this->Set('HomepageValues', $homepageValues);
-		$this->Set('HomepageOutput', $homepageOutput);
-	}
+    public function SetHomepages($homepageValues, $homepageOutput)
+    {
+        $this->Set('HomepageValues', $homepageValues);
+        $this->Set('HomepageOutput', $homepageOutput);
+    }
 
-	public function SetHomepage($homepage)
-	{
-		$this->Set('Homepage', $homepage);
-	}
+    public function SetHomepage($homepage)
+    {
+        $this->Set('Homepage', $homepage);
+    }
 
-	public function SetLoginName($loginName)
-	{
-		$this->Set('LoginName', $loginName);
-	}
+    public function SetLoginName($loginName)
+    {
+        $this->Set('LoginName', $loginName);
+    }
 
-	public function SetEmail($email)
-	{
-		$this->Set('Email', $email);
-	}
+    public function SetEmail($email)
+    {
+        $this->Set('Email', $email);
+    }
 
-	public function SetFirstName($firstName)
-	{
-		$this->Set('FirstName', $firstName);
-	}
+    public function SetFirstName($firstName)
+    {
+        $this->Set('FirstName', $firstName);
+    }
 
-	public function SetLastName($lastName)
-	{
-		$this->Set('LastName', $lastName);
-	}
+    public function SetLastName($lastName)
+    {
+        $this->Set('LastName', $lastName);
+    }
 
-	public function SetPhone($phoneNumber)
-	{
-		$this->Set('PhoneNumber', $phoneNumber);
-	}
+    public function SetPhone($phoneNumber)
+    {
+        $this->Set('PhoneNumber', $phoneNumber);
+    }
 
-	public function SetOrganization($organization)
-	{
-       	$this->Set('Organization', $organization);
-	}
+    public function SetOrganization($organization)
+    {
+        $this->Set('Organization', $organization);
+    }
 
-	public function SetPosition($position)
-	{
-		$this->Set('Position', $position);
-	}
+    public function SetPosition($position)
+    {
+        $this->Set('Position', $position);
+    }
 
-	public function SetPassword($password)
-	{
-		$this->Set('Password', $password);
-	}
+    public function SetPassword($password)
+    {
+        $this->Set('Password', $password);
+    }
 
-	public function SetPasswordConfirm($passwordConfirm)
-	{
-		$this->Set('PasswordConfirm', $passwordConfirm);
-	}
+    public function SetPasswordConfirm($passwordConfirm)
+    {
+        $this->Set('PasswordConfirm', $passwordConfirm);
+    }
 
-	public function GetTimezone()
-	{
-		return $this->GetForm(FormKeys::TIMEZONE);
-	}
+    public function GetTimezone()
+    {
+        return $this->GetForm(FormKeys::TIMEZONE);
+    }
 
-	public function GetHomepage()
-	{
-		return $this->GetForm(FormKeys::DEFAULT_HOMEPAGE);
-	}
+    public function GetHomepage()
+    {
+        return $this->GetForm(FormKeys::DEFAULT_HOMEPAGE);
+    }
 
-	public function GetLoginName()
-	{
-		return $this->GetForm(FormKeys::LOGIN);
-	}
+    public function GetLoginName()
+    {
+        return $this->GetForm(FormKeys::LOGIN);
+    }
 
-	public function GetEmail()
-	{
-		return $this->GetForm(FormKeys::EMAIL);
-	}
+    public function GetEmail()
+    {
+        return $this->GetForm(FormKeys::EMAIL);
+    }
 
-	public function GetFirstName()
-	{
-		return $this->GetForm(FormKeys::FIRST_NAME);
-	}
+    public function GetFirstName()
+    {
+        return $this->GetForm(FormKeys::FIRST_NAME);
+    }
 
-	public function GetLastName()
-	{
-		return $this->GetForm(FormKeys::LAST_NAME);
-	}
+    public function GetLastName()
+    {
+        return $this->GetForm(FormKeys::LAST_NAME);
+    }
 
-	public function GetPhone()
-	{
-		return $this->GetForm(FormKeys::PHONE);
-	}
+    public function GetPhone()
+    {
+        return $this->GetForm(FormKeys::PHONE);
+    }
 
-	public function GetOrganization()
-	{
-		return $this->GetForm(FormKeys::ORGANIZATION);
-	}
+    public function GetOrganization()
+    {
+        return $this->GetForm(FormKeys::ORGANIZATION);
+    }
 
-	public function GetPosition()
-	{
-		return $this->GetForm(FormKeys::POSITION);
-	}
+    public function GetPosition()
+    {
+        return $this->GetForm(FormKeys::POSITION);
+    }
 
-	public function GetPassword()
-	{
-		return $this->GetRawForm(FormKeys::PASSWORD);
-	}
+    public function GetPassword()
+    {
+        return $this->GetRawForm(FormKeys::PASSWORD);
+    }
 
-	public function GetPasswordConfirm()
-	{
-		return $this->GetRawForm(FormKeys::PASSWORD_CONFIRM);
-	}
+    public function GetPasswordConfirm()
+    {
+        return $this->GetRawForm(FormKeys::PASSWORD_CONFIRM);
+    }
 
     public function SetCaptchaImageUrl($captchaUrl)
     {
@@ -221,40 +221,40 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
         return $this->GetForm(FormKeys::CAPTCHA);
     }
 
-	public function ProcessAction()
-	{
-		$this->_presenter->ProcessAction();
-	}
+    public function ProcessAction()
+    {
+        $this->_presenter->ProcessAction();
+    }
 
-	public function ProcessDataRequest($dataRequest)
-	{
-		// no-op
-	}
+    public function ProcessDataRequest($dataRequest)
+    {
+        // no-op
+    }
 
-	public function SetAttributes($attributeValues)
-	{
-		$this->Set('Attributes', $attributeValues);
-	}
+    public function SetAttributes($attributeValues)
+    {
+        $this->Set('Attributes', $attributeValues);
+    }
 
-	public function Redirect($url)
-	{
-		$this->SetJson(array('url' => $url));
-	}
+    public function Redirect($url)
+    {
+        $this->SetJson(['url' => $url]);
+    }
 
-	public function RedirectPage($url)
-	{
-		parent::Redirect($url);
-	}
+    public function RedirectPage($url)
+    {
+        parent::Redirect($url);
+    }
 
-	public function GetAttributes()
-	{
-		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
-	}
+    public function GetAttributes()
+    {
+        return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+    }
 
-	public function EnforceCSRFCheck()
-	{
-		return false;
-	}
+    public function EnforceCSRFCheck()
+    {
+        return false;
+    }
 
     public function GetTermsOfServiceAcknowledgement()
     {
@@ -263,6 +263,6 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 
     public function SetTerms($terms)
     {
-       $this->Set('Terms', $terms);
+        $this->Set('Terms', $terms);
     }
 }

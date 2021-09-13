@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the Net_LDAP2_RootDSE interface class.
@@ -61,10 +62,10 @@ class Net_LDAP2_RootDSE extends PEAR
             return PEAR::raiseError("Unable to fetch Schema: Parameter \$ldap must be a Net_LDAP2 object!");
         }
 
-        if (is_array($attrs) && count($attrs) > 0 ) {
+        if (is_array($attrs) && count($attrs) > 0) {
             $attributes = $attrs;
         } else {
-            $attributes = array('vendorName',
+            $attributes = ['vendorName',
                                 'vendorVersion',
                                 'namingContexts',
                                 'altServer',
@@ -72,9 +73,9 @@ class Net_LDAP2_RootDSE extends PEAR
                                 'supportedControl',
                                 'supportedSASLMechanisms',
                                 'supportedLDAPVersion',
-                                'subschemaSubentry' );
+                                'subschemaSubentry' ];
         }
-        $result = $ldap->search('', '(objectClass=*)', array('attributes' => $attributes, 'scope' => 'base'));
+        $result = $ldap->search('', '(objectClass=*)', ['attributes' => $attributes, 'scope' => 'base']);
         if (self::isError($result)) {
             return $result;
         }
@@ -112,7 +113,7 @@ class Net_LDAP2_RootDSE extends PEAR
     public function get_value()
     {
         $args = func_get_args();
-        return call_user_func_array(array( &$this, 'getValue' ), $args);
+        return call_user_func_array([ &$this, 'getValue' ], $args);
     }
 
     /**
@@ -137,7 +138,7 @@ class Net_LDAP2_RootDSE extends PEAR
     public function supported_extension()
     {
         $args = func_get_args();
-        return call_user_func_array(array( &$this, 'supportedExtension'), $args);
+        return call_user_func_array([ &$this, 'supportedExtension'], $args);
     }
 
     /**
@@ -162,7 +163,7 @@ class Net_LDAP2_RootDSE extends PEAR
     public function supported_version()
     {
         $args = func_get_args();
-        return call_user_func_array(array(&$this, 'supportedVersion'), $args);
+        return call_user_func_array([&$this, 'supportedVersion'], $args);
     }
 
     /**
@@ -187,7 +188,7 @@ class Net_LDAP2_RootDSE extends PEAR
     public function supported_control()
     {
         $args = func_get_args();
-        return call_user_func_array(array(&$this, 'supportedControl' ), $args);
+        return call_user_func_array([&$this, 'supportedControl' ], $args);
     }
 
     /**
@@ -212,7 +213,7 @@ class Net_LDAP2_RootDSE extends PEAR
     public function supported_sasl_mechanism()
     {
         $args = func_get_args();
-        return call_user_func_array(array(&$this, 'supportedSASLMechanism'), $args);
+        return call_user_func_array([&$this, 'supportedSASLMechanism'], $args);
     }
 
     /**
@@ -226,7 +227,9 @@ class Net_LDAP2_RootDSE extends PEAR
     */
     protected function checkAttr($values, $attr)
     {
-        if (!is_array($values)) $values = array($values);
+        if (!is_array($values)) {
+            $values = [$values];
+        }
 
         foreach ($values as $value) {
             if (!@in_array($value, $this->get_value($attr, 'all'))) {
@@ -236,4 +239,3 @@ class Net_LDAP2_RootDSE extends PEAR
         return true;
     }
 }
-

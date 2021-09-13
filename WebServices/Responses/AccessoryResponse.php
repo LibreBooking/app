@@ -5,7 +5,7 @@ class AccessoryResponse extends RestResponse
     public $id;
     public $name;
     public $quantityAvailable;
-    public $associatedResources = array();
+    public $associatedResources = [];
 
     public function __construct(IRestServer $server, Accessory $accessory)
     {
@@ -27,7 +27,7 @@ class AccessoryResponse extends RestResponse
      */
     private function GetResources(IRestServer $server, $resources)
     {
-        $items = array();
+        $items = [];
         foreach ($resources as $r) {
             $items[] = new AssociatedResourceResponse($server, $r);
         }
@@ -47,7 +47,7 @@ class AssociatedResourceResponse extends RestResponse
         $this->resourceId = $resourceAccessory->ResourceId;
         $this->minQuantity = $resourceAccessory->MinQuantity;
         $this->maxQuantity = $resourceAccessory->MaxQuantity;
-        $this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceAccessory->ResourceId));
+        $this->AddService($server, WebServices::GetResource, [WebServiceParams::ResourceId => $resourceAccessory->ResourceId]);
     }
 
     public static function Example()
@@ -63,7 +63,7 @@ class ExampleAccessoryResponse extends AccessoryResponse
         $this->id = 1;
         $this->name = 'accessoryName';
         $this->quantityAvailable = 10;
-        $this->associatedResources = array(AssociatedResourceResponse::Example());
+        $this->associatedResources = [AssociatedResourceResponse::Example()];
     }
 }
 
@@ -74,6 +74,5 @@ class ExampleAssociatedResourceResponse extends AssociatedResourceResponse
         $this->resourceId = 1;
         $this->maxQuantity = 10;
         $this->minQuantity = 4;
-
     }
 }

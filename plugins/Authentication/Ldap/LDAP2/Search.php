@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the Net_LDAP2_Search interface class.
@@ -86,7 +87,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     * @access protected
     * @var array
     */
-    protected $_iteratorCache = array();
+    protected $_iteratorCache = [];
 
     /**
     * What attributes we searched for
@@ -101,7 +102,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     * @access protected
     * @var array
     */
-    protected $_searchedAttrs = array();
+    protected $_searchedAttrs = [];
 
     /**
     * Cache variable for storing entries fetched internally
@@ -131,7 +132,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     *
     * @access public
     */
-    public function __construct($search, $ldap, $attributes = array())
+    public function __construct($search, $ldap, $attributes = [])
     {
         parent::__construct('Net_LDAP2_Error');
 
@@ -158,7 +159,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     */
     public function entries()
     {
-        $entries = array();
+        $entries = [];
 
         if (false === $this->_entry_cache) {
             // cache is empty: fetch from LDAP
@@ -183,19 +184,23 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     public function shiftEntry()
     {
         if (is_null($this->_entry)) {
-            if(!$this->_entry = @ldap_first_entry($this->_link, $this->_search)) {
+            if (!$this->_entry = @ldap_first_entry($this->_link, $this->_search)) {
                 $false = false;
                 return $false;
             }
             $entry = Net_LDAP2_Entry::createConnected($this->_ldap, $this->_entry);
-            if ($entry instanceof PEAR_Error) $entry = false;
+            if ($entry instanceof PEAR_Error) {
+                $entry = false;
+            }
         } else {
             if (!$this->_entry = @ldap_next_entry($this->_link, $this->_entry)) {
                 $false = false;
                 return $false;
             }
             $entry = Net_LDAP2_Entry::createConnected($this->_ldap, $this->_entry);
-            if ($entry instanceof PEAR_Error) $entry = false;
+            if ($entry instanceof PEAR_Error) {
+                $entry = false;
+            }
         }
         return $entry;
     }
@@ -209,7 +214,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     public function shift_entry()
     {
         $args = func_get_args();
-        return call_user_func_array(array( $this, 'shiftEntry' ), $args);
+        return call_user_func_array([ $this, 'shiftEntry' ], $args);
     }
 
     /**
@@ -228,7 +233,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
         }
 
         $return = array_pop($this->_entry_cache);
-        return (null === $return)? false : $return;
+        return (null === $return) ? false : $return;
     }
 
     /**
@@ -240,7 +245,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     public function pop_entry()
     {
         $args = func_get_args();
-        return call_user_func_array(array( $this, 'popEntry' ), $args);
+        return call_user_func_array([ $this, 'popEntry' ], $args);
     }
 
     /**
@@ -264,7 +269,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     * @return array|Net_LDAP2_Error   Array with sorted entries or error
     * @todo what about server side sorting as specified in http://www.ietf.org/rfc/rfc2891.txt?
     */
-    public function sorted_as_struct($attrs = array('cn'), $order = SORT_ASC)
+    public function sorted_as_struct($attrs = ['cn'], $order = SORT_ASC)
     {
         /*
         * Old Code, suitable and fast for single valued sorting
@@ -316,9 +321,9 @@ class Net_LDAP2_Search extends PEAR implements Iterator
         }
 
         // reformat entrys array for later use with array_multisort()
-        $to_sort = array(); // <- will be a numeric array similar to ldap_get_entries
+        $to_sort = []; // <- will be a numeric array similar to ldap_get_entries
         foreach ($entries as $dn => $entry_attr) {
-            $row       = array();
+            $row       = [];
             $row['dn'] = $dn;
             foreach ($entry_attr as $attr_name => $attr_values) {
                 $row[$attr_name] = $attr_values;
@@ -328,7 +333,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
 
         // Build columns for array_multisort()
         // each requested attribute is one row
-        $columns = array();
+        $columns = [];
         foreach ($attrs as $attr_name) {
             foreach ($to_sort as $key => $row) {
                 $columns[$attr_name][$key] =& $to_sort[$key][$attr_name][0];
@@ -371,9 +376,9 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     * @return array|Net_LDAP2_Error   Array with sorted Net_LDAP2_Entries or error
     * @todo Entry object construction could be faster. Maybe we could use one of the factorys instead of fetching the entry again
     */
-    public function sorted($attrs = array('cn'), $order = SORT_ASC)
+    public function sorted($attrs = ['cn'], $order = SORT_ASC)
     {
-        $return = array();
+        $return = [];
         $sorted = $this->sorted_as_struct($attrs, $order);
         if (PEAR::isError($sorted)) {
             return $sorted;
@@ -418,15 +423,15 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     */
     public function as_struct()
     {
-        $return  = array();
+        $return  = [];
         $entries = $this->entries();
         foreach ($entries as $entry) {
-            $attrs            = array();
+            $attrs            = [];
             $entry_attributes = $entry->attributes();
             foreach ($entry_attributes as $attr_name) {
                 $attr_values = $entry->getValue($attr_name, 'all');
                 if (!is_array($attr_values)) {
-                    $attr_values = array($attr_values);
+                    $attr_values = [$attr_values];
                 }
                 $attrs[$attr_name] = $attr_values;
             }
@@ -562,7 +567,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
             reset($this->_iteratorCache);
         }
         $entry = current($this->_iteratorCache);
-        return ($entry instanceof Net_LDAP2_Entry)? $entry : false;
+        return ($entry instanceof Net_LDAP2_Entry) ? $entry : false;
     }
 
     /**
@@ -574,7 +579,7 @@ class Net_LDAP2_Search extends PEAR implements Iterator
     public function key()
     {
         $entry = $this->current();
-        return ($entry instanceof Net_LDAP2_Entry)? $entry->dn() :false;
+        return ($entry instanceof Net_LDAP2_Entry) ? $entry->dn() : false;
     }
 
     /**
@@ -627,4 +632,3 @@ class Net_LDAP2_Search extends PEAR implements Iterator
         reset($this->_iteratorCache);
     }
 }
-

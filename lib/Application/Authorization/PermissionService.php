@@ -2,12 +2,12 @@
 
 interface IPermissionService
 {
-	/**
-	 * @param IPermissibleResource $resource
-	 * @param UserSession $user
-	 * @return bool
-	 */
-	public function CanAccessResource(IPermissibleResource $resource, UserSession $user);
+    /**
+     * @param IPermissibleResource $resource
+     * @param UserSession $user
+     * @return bool
+     */
+    public function CanAccessResource(IPermissibleResource $resource, UserSession $user);
 
     /**
      * @param IPermissibleResource $resource
@@ -22,17 +22,16 @@ interface IPermissionService
      * @return bool
      */
     public function CanViewResource(IPermissibleResource $resource, UserSession $user);
-
 }
 
 class PermissionService implements IPermissionService
 {
-	/**
-	 * @var IResourcePermissionStore
-	 */
-	private $_store;
+    /**
+     * @var IResourcePermissionStore
+     */
+    private $_store;
 
-	private $_allowedResourceIds;
+    private $_allowedResourceIds;
 
     private $_bookableResourceIds;
 
@@ -40,32 +39,30 @@ class PermissionService implements IPermissionService
 
 
     /**
-	 * @param IResourcePermissionStore $store
-	 */
-	public function __construct(IResourcePermissionStore $store)
-	{
-		$this->_store = $store;
-	}
+     * @param IResourcePermissionStore $store
+     */
+    public function __construct(IResourcePermissionStore $store)
+    {
+        $this->_store = $store;
+    }
 
-	/**
-	 * @param IPermissibleResource $resource
-	 * @param UserSession $user
-	 * @return bool
-	 */
-	public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
-	{
-		if ($user->IsAdmin)
-		{
-			return true;
-		}
+    /**
+     * @param IPermissibleResource $resource
+     * @param UserSession $user
+     * @return bool
+     */
+    public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
+    {
+        if ($user->IsAdmin) {
+            return true;
+        }
 
-		if ($this->_allowedResourceIds == null)
-		{
-			$this->_allowedResourceIds = $this->_store->GetAllResources($user->UserId);
-		}
+        if ($this->_allowedResourceIds == null) {
+            $this->_allowedResourceIds = $this->_store->GetAllResources($user->UserId);
+        }
 
         return in_array($resource->GetResourceId(), $this->_allowedResourceIds);
-	}
+    }
 
     /**
      * @param IPermissibleResource $resource
@@ -74,13 +71,11 @@ class PermissionService implements IPermissionService
      */
     public function CanBookResource(IPermissibleResource $resource, UserSession $user)
     {
-        if ($user->IsAdmin)
-        {
+        if ($user->IsAdmin) {
             return true;
         }
 
-        if ($this->_bookableResourceIds == null)
-        {
+        if ($this->_bookableResourceIds == null) {
             $this->_bookableResourceIds = $this->_store->GetBookableResources($user->UserId);
         }
 
@@ -94,13 +89,11 @@ class PermissionService implements IPermissionService
      */
     public function CanViewResource(IPermissibleResource $resource, UserSession $user)
     {
-        if ($user->IsAdmin)
-        {
+        if ($user->IsAdmin) {
             return true;
         }
 
-        if ($this->_viewOnlyResourceIds == null)
-        {
+        if ($this->_viewOnlyResourceIds == null) {
             $this->_viewOnlyResourceIds = $this->_store->GetViewOnlyResources($user->UserId);
         }
 

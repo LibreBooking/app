@@ -727,7 +727,7 @@ class es extends en_gb
         $strings['ReservationDetails'] = 'Detalles de la Reserva';
         $strings['StartTime'] = 'Hora de Comienzo';
         $strings['EndTime'] = 'Hora de Fin';
-		$strings['ReservationSeriesEndingPreference'] = 'Cuando mi reserva recurrente está por terminar';
+        $strings['ReservationSeriesEndingPreference'] = 'Cuando mi reserva recurrente está por terminar';
         // End Strings
 
         // Install
@@ -953,7 +953,6 @@ class es extends en_gb
         $this->Strings = $strings;
 
         return $this->Strings;
-
     }
 
     protected function _LoadDays()
@@ -966,13 +965,13 @@ class es extends en_gb
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
+        $days['full'] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
         // The three letter abbreviation
-        $days['abbr'] = array('Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb');
+        $days['abbr'] = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
         // The two letter abbreviation
-        $days['two'] = array('Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa');
+        $days['two'] = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
         // The one letter abbreviation
-        $days['letter'] = array('D', 'L', 'M', 'X', 'J', 'V', 'S');
+        $days['letter'] = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
 
         $this->Days = $days;
 
@@ -989,9 +988,9 @@ class es extends en_gb
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+        $months['full'] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         // The three letter month name
-        $months['abbr'] = array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic');
+        $months['abbr'] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
         $this->Months = $months;
 
@@ -1000,7 +999,7 @@ class es extends en_gb
 
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         return $this->Letters;
     }
 
@@ -1009,4 +1008,3 @@ class es extends en_gb
         return 'es';
     }
 }
-

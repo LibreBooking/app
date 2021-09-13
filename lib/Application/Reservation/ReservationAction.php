@@ -2,11 +2,11 @@
 
 class ReservationAction
 {
-	const Create = 'create';
-	const Delete = 'delete';
-	const Update = 'update';
-	const Approve = 'approve';
-	const Checkin = 'checkin';
-	const Checkout = 'checkout';
-	const WaitList = 'waitlist';
+    public const Create = 'create';
+    public const Delete = 'delete';
+    public const Update = 'update';
+    public const Approve = 'approve';
+    public const Checkin = 'checkin';
+    public const Checkout = 'checkout';
+    public const WaitList = 'waitlist';
 }

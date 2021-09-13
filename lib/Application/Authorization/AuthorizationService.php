@@ -76,7 +76,6 @@ interface IAuthorizationService extends IRoleService
      * @return bool
      */
     public function CanApproveForResource(UserSession $user, IResource $resource);
-
 }
 
 class AuthorizationService implements IAuthorizationService
@@ -113,8 +112,7 @@ class AuthorizationService implements IAuthorizationService
      */
     public function CanReserveFor(UserSession $reserver, $reserveForId)
     {
-        if ($reserveForId == $reserver->UserId)
-        {
+        if ($reserveForId == $reserver->UserId) {
             return true;
         }
 
@@ -236,7 +234,6 @@ class AuthorizationService implements IAuthorizationService
 
 class GuestAuthorizationService implements IAuthorizationService
 {
-
     public function IsApplicationAdministrator(User $user)
     {
         return false;

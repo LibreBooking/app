@@ -6,24 +6,23 @@ require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminUserRepository.php');
 
 interface IUserRepositoryFactory
 {
-	/**
-	 * @param UserSession $session
-	 * @return IUserRepository
-	 */
-	public function Create(UserSession $session);
+    /**
+     * @param UserSession $session
+     * @return IUserRepository
+     */
+    public function Create(UserSession $session);
 }
 
 class UserRepositoryFactory implements IUserRepositoryFactory
 {
-	public function Create(UserSession $session)
-	{
-		$hideUsers = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+    public function Create(UserSession $session)
+    {
+        $hideUsers = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
 
-		if ($session->IsAdmin || !$hideUsers)
-		{
-			return new UserRepository();
-		}
+        if ($session->IsAdmin || !$hideUsers) {
+            return new UserRepository();
+        }
 
-		return new GroupAdminUserRepository(new GroupRepository(), $session);
-	}
+        return new GroupAdminUserRepository(new GroupRepository(), $session);
+    }
 }

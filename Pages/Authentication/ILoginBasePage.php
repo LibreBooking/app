@@ -2,8 +2,8 @@
 
 interface ILoginBasePage extends IPage
 {
-	/**
-	 * @return string
-	 */
-	public function GetResumeUrl();
+    /**
+     * @return string
+     */
+    public function GetResumeUrl();
 }

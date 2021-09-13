@@ -9,12 +9,12 @@ class GroupAdminManageReservationsServiceTests extends TestBase
         $user = new User();
         $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::GROUP_ADMIN);
         $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::GROUP_ADMIN);
-        $user->WithOwnedGroups(array($adminGroup2, $adminGroup3));
+        $user->WithOwnedGroups([$adminGroup2, $adminGroup3]);
 
-		$reservationRepo = $this->createMock('IReservationViewRepository');
-		$reservationAuth = $this->createMock('IReservationAuthorization');
-		$handler = $this->createMock('IReservationHandler');
-		$persistenceService = $this->createMock('IUpdateReservationPersistenceService');
+        $reservationRepo = $this->createMock('IReservationViewRepository');
+        $reservationAuth = $this->createMock('IReservationAuthorization');
+        $handler = $this->createMock('IReservationHandler');
+        $persistenceService = $this->createMock('IUpdateReservationPersistenceService');
         $userRepo = $this->createMock('IUserRepository');
         $userRepo->expects($this->once())
                 ->method('LoadById')
@@ -24,13 +24,13 @@ class GroupAdminManageReservationsServiceTests extends TestBase
         $service = new GroupAdminManageReservationsService($reservationRepo, $userRepo, $reservationAuth, $handler, $persistenceService);
 
         $reservationRows = FakeReservationRepository::GetReservationRows();
-        $this->db->SetRow(0, array( array(ColumnNames::TOTAL => 4) ));
+        $this->db->SetRow(0, [ [ColumnNames::TOTAL => 4] ]);
         $this->db->SetRow(1, $reservationRows);
 
         $filter = new ReservationFilter();
         $results = $service->LoadFiltered(1, 2, null, null, $filter, $this->fakeUser);
 
-        $getGroupReservationsCommand = new GetFullGroupReservationListCommand(array(2, 3));
+        $getGroupReservationsCommand = new GetFullGroupReservationListCommand([2, 3]);
 
         $filterCommand = new FilterCommand($getGroupReservationsCommand, $filter->GetFilter());
         $countCommand = new CountCommand($filterCommand);

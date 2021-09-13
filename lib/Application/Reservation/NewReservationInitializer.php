@@ -34,8 +34,7 @@ class NewReservationInitializer extends ReservationInitializerBase
         IScheduleRepository $scheduleRepository,
         IResourceRepository $resourceRepository,
         ITermsOfServiceRepository $termsOfServiceRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->scheduleRepository = $scheduleRepository;
         $this->resourceRepository = $resourceRepository;
@@ -46,7 +45,8 @@ class NewReservationInitializer extends ReservationInitializerBase
             $dateBinder,
             $resourceBinder,
             $userSession,
-            $termsOfServiceRepository);
+            $termsOfServiceRepository
+        );
     }
 
     public function Initialize()
@@ -85,8 +85,7 @@ class NewReservationInitializer extends ReservationInitializerBase
             if (!empty($requestedResourceId)) {
                 $resource = $this->resourceRepository->LoadById($requestedResourceId);
                 $this->scheduleId = $resource->GetScheduleId();
-            }
-            else {
+            } else {
                 $schedules = $this->scheduleRepository->GetAll();
 
                 foreach ($schedules as $s) {
@@ -138,7 +137,6 @@ class NewReservationInitializer extends ReservationInitializerBase
         if ($start != null) {
             $this->page->SetEndReminder($end['value'], $end['interval']);
         }
-
     }
 
     private function GetReminderPieces($reminder)
@@ -178,7 +176,7 @@ class BindableResourceData
     public function __construct()
     {
         $this->ReservationResource = new NullResourceDto();
-        $this->AvailableResources = array();
+        $this->AvailableResources = [];
     }
 
     /**

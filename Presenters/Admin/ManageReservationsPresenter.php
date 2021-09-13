@@ -12,12 +12,12 @@ require_once(ROOT_DIR . 'lib/FileSystem/namespace.php');
 
 class ManageReservationsActions
 {
-    const UpdateAttribute = 'updateAttribute';
-    const ChangeStatus = 'changeStatus';
-    const Import = 'Import';
-    const DeleteMultiple = 'DeleteMultiple';
-    const UpdateTermsOfService = 'termsOfService';
-    const DeleteTermsOfService = 'deleteTerms';
+    public const UpdateAttribute = 'updateAttribute';
+    public const ChangeStatus = 'changeStatus';
+    public const Import = 'Import';
+    public const DeleteMultiple = 'DeleteMultiple';
+    public const UpdateTermsOfService = 'termsOfService';
+    public const DeleteTermsOfService = 'deleteTerms';
 }
 
 class ManageReservationsPresenter extends ActionPresenter
@@ -64,7 +64,8 @@ class ManageReservationsPresenter extends ActionPresenter
         IResourceRepository $resourceRepository,
         IAttributeService $attributeService,
         IUserRepository $userRepository,
-        ITermsOfServiceRepository $termsOfServiceRepository)
+        ITermsOfServiceRepository $termsOfServiceRepository
+    )
     {
         parent::__construct($page);
 
@@ -91,7 +92,7 @@ class ManageReservationsPresenter extends ActionPresenter
         $this->page->BindSchedules($this->scheduleRepository->GetAll());
         $this->page->BindResources($this->resourceRepository->GetResourceList());
 
-        $statusReasonList = array();
+        $statusReasonList = [];
         foreach ($this->resourceRepository->GetStatusReasons() as $reason) {
             $statusReasonList[$reason->Id()] = $reason;
         }
@@ -134,13 +135,12 @@ class ManageReservationsPresenter extends ActionPresenter
             $missedCheckin = $filterPreferences->GetMissedCheckin();
             $missedCheckout = $filterPreferences->GetMissedCheckout();
             $filters = $filterPreferences->GetFilterCustomAttributes();
-        }
-        else {
+        } else {
             $startOffset = $this->GetDateOffsetFromToday($startDate, $userTimezone);
             $endOffset = $this->GetDateOffsetFromToday($endDate, $userTimezone);
 
             $formFilters = $this->page->GetAttributeFilters();
-            $filters = array();
+            $filters = [];
             foreach ($formFilters as $filter) {
                 $filters[$filter->Id] = $filter->Value;
             }
@@ -166,7 +166,7 @@ class ManageReservationsPresenter extends ActionPresenter
 
         $reservationAttributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
 
-        $attributeFilters = array();
+        $attributeFilters = [];
         foreach ($reservationAttributes as $attribute) {
             $attributeValue = null;
             if (is_array($filters) && array_key_exists($attribute->Id(), $filters)) {
@@ -192,23 +192,38 @@ class ManageReservationsPresenter extends ActionPresenter
         $this->page->SetMissedCheckin($missedCheckin);
         $this->page->SetMissedCheckout($missedCheckout);
 
-        $filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId,
-            $reservationStatusId, $resourceStatusId, $resourceReasonId, $attributeFilters, $title, $description,
-            $missedCheckin, $missedCheckout);
+        $filter = new ReservationFilter(
+            $startDate,
+            $endDate,
+            $referenceNumber,
+            $scheduleId,
+            $resourceId,
+            $userId,
+            $reservationStatusId,
+            $resourceStatusId,
+            $resourceReasonId,
+            $attributeFilters,
+            $title,
+            $description,
+            $missedCheckin,
+            $missedCheckout
+        );
 
-        $reservations = $this->manageReservationsService->LoadFiltered($this->page->GetPageNumber(),
+        $reservations = $this->manageReservationsService->LoadFiltered(
+            $this->page->GetPageNumber(),
             $this->page->GetPageSize(),
             $this->page->GetSortField(),
             $this->page->GetSortDirection(),
             $filter,
-            $session);
+            $session
+        );
 
         /** @var ReservationItemView[] $reservationList */
         $reservationList = $reservations->Results();
         $this->page->BindReservations($reservationList);
         $this->page->BindPageInfo($reservations->PageInfo());
 
-        $seriesIds = array();
+        $seriesIds = [];
         /** @var $reservationItemView ReservationItemView */
         foreach ($reservationList as $reservationItemView) {
             $seriesIds[] = $reservationItemView->SeriesId;
@@ -216,8 +231,7 @@ class ManageReservationsPresenter extends ActionPresenter
 
         if ($this->page->GetFormat() == 'csv') {
             $this->page->ShowCsv();
-        }
-        else {
+        } else {
             $this->page->ShowPage();
         }
     }
@@ -232,8 +246,7 @@ class ManageReservationsPresenter extends ActionPresenter
 
         if (is_null($dateString)) {
             $date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
-        }
-        elseif (!empty($dateString)) {
+        } elseif (!empty($dateString)) {
             $date = Date::Parse($dateString, $timezone);
         }
 
@@ -266,31 +279,36 @@ class ManageReservationsPresenter extends ActionPresenter
         $resourceId = $this->page->GetUpdateResourceId();
         $updateScope = $this->page->GetUpdateScope();
 
-        Log::Debug('Updating resource status. ResourceId=%s, ReferenceNumber=%s, StatusId=%s, ReasonId=%s, UserId=%s',
+        Log::Debug(
+            'Updating resource status. ResourceId=%s, ReferenceNumber=%s, StatusId=%s, ReasonId=%s, UserId=%s',
             $resourceId,
             $referenceNumber,
             $statusId,
             $reasonId,
-            $session->UserId);
+            $session->UserId
+        );
 
-        $resourceIds = array();
+        $resourceIds = [];
 
         if (empty($updateScope)) {
             $resourceIds[] = $resourceId;
-        }
-        else {
+        } else {
             $reservations = $this->manageReservationsService->LoadFiltered(
                 null,
                 null,
                 $this->page->GetSortField(),
                 $this->page->GetSortDirection(),
-                new ReservationFilter(null, null,
+                new ReservationFilter(
+                    null,
+                    null,
                     $referenceNumber,
                     null,
                     null,
                     null,
-                    null),
-                $session);
+                    null
+                ),
+                $session
+            );
 
             /** @var $reservation ReservationItemView */
             foreach ($reservations->Results() as $reservation) {
@@ -310,36 +328,35 @@ class ManageReservationsPresenter extends ActionPresenter
         if ($dataRequest == 'load') {
             $referenceNumber = $this->page->GetReferenceNumber();
 
-            $rv = $this->manageReservationsService->LoadByReferenceNumber($referenceNumber,
-                ServiceLocator::GetServer()->GetUserSession());
+            $rv = $this->manageReservationsService->LoadByReferenceNumber(
+                $referenceNumber,
+                ServiceLocator::GetServer()->GetUserSession()
+            );
             $this->page->SetReservationJson($rv);
-        }
-        elseif ($dataRequest == 'template') {
+        } elseif ($dataRequest == 'template') {
             $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
-            $importAttributes = array();
+            $importAttributes = [];
             foreach ($attributes as $attribute) {
                 if (!$attribute->HasSecondaryEntities()) {
                     $importAttributes[] = $attribute;
                 }
             }
             $this->page->ShowTemplateCSV($importAttributes);
-        }
-        elseif ($dataRequest == 'tos') {
+        } elseif ($dataRequest == 'tos') {
             $terms = $this->termsOfServiceRepository->Load();
 
             if ($terms != null) {
                 $this->page->BindTerms(
-                    array(
+                    [
                         'text' => $terms->Text(),
                         'url' => $terms->Url(),
                         'filename' => $terms->FileName(),
-                        'applicability' => $terms->Applicability()));
-            }
-            else {
+                        'applicability' => $terms->Applicability()]
+                );
+            } else {
                 $this->page->BindTerms(null);
             }
         }
-
     }
 
     public function UpdateAttribute()
@@ -350,11 +367,20 @@ class ManageReservationsPresenter extends ActionPresenter
 
         $attributeId = $inlineAttribute->AttributeId;
         $attributeValue = $inlineAttribute->Value;
-        Log::Debug('Updating reservation attribute. UserId=%s, AttributeId=%s, AttributeValue=%s, ReferenceNumber=%s',
-            $userSession->UserId, $attributeId, $attributeValue, $referenceNumber);
+        Log::Debug(
+            'Updating reservation attribute. UserId=%s, AttributeId=%s, AttributeValue=%s, ReferenceNumber=%s',
+            $userSession->UserId,
+            $attributeId,
+            $attributeValue,
+            $referenceNumber
+        );
 
-        $errors = $this->manageReservationsService->UpdateAttribute($referenceNumber, $attributeId, $attributeValue,
-            $userSession);
+        $errors = $this->manageReservationsService->UpdateAttribute(
+            $referenceNumber,
+            $attributeId,
+            $attributeValue,
+            $userSession
+        );
         if (!empty($errors)) {
             $this->page->BindAttributeUpdateErrors($errors);
         }
@@ -375,7 +401,7 @@ class ManageReservationsPresenter extends ActionPresenter
     {
         $userSession = ServiceLocator::GetServer()->GetUserSession();
         if (!$userSession->IsAdmin) {
-            $this->page->SetImportResult(new CsvImportResult(0, array(), 'User is not an admin'));
+            $this->page->SetImportResult(new CsvImportResult(0, [], 'User is not an admin'));
             return;
         }
 
@@ -383,14 +409,14 @@ class ManageReservationsPresenter extends ActionPresenter
 
         $resources = $this->resourceRepository->GetResourceList();
         /** @var BookableResource[] $resourcesIndexed */
-        $resourcesIndexed = array();
+        $resourcesIndexed = [];
         foreach ($resources as $resource) {
             $resourcesIndexed[strtolower($resource->GetName())] = $resource;
         }
 
         $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
         /** @var CustomAttribute[] $attributesIndexed */
-        $attributesIndexed = array();
+        $attributesIndexed = [];
         /** @var CustomAttribute $attribute */
         foreach ($attributes as $attribute) {
             if (!$attribute->HasSecondaryEntities()) {
@@ -400,7 +426,7 @@ class ManageReservationsPresenter extends ActionPresenter
 
         $users = $this->userRepository->GetAll();
         /** @var User[] $usersIndexed */
-        $usersIndexed = array();
+        $usersIndexed = [];
         foreach ($users as $user) {
             $usersIndexed[strtolower($user->EmailAddress())] = $user;
         }
@@ -409,12 +435,12 @@ class ManageReservationsPresenter extends ActionPresenter
         $csv = new ReservationImportCsv($importFile, $attributesIndexed);
 
         $importCount = 0;
-        $messages = array();
+        $messages = [];
 
         $rows = $csv->GetRows();
 
         if (count($rows) == 0) {
-            $this->page->SetImportResult(new CsvImportResult(0, array(), 'Empty file or missing header row'));
+            $this->page->SetImportResult(new CsvImportResult(0, [], 'Empty file or missing header row'));
             return;
         }
 
@@ -422,7 +448,7 @@ class ManageReservationsPresenter extends ActionPresenter
             $rowNum = $i + 1;
             $row = $rows[$i];
             try {
-                $resources = array();
+                $resources = [];
                 foreach ($row->resourceNames as $name) {
                     $name = strtolower($name);
                     if (array_key_exists($name, $resourcesIndexed)) {
@@ -446,14 +472,12 @@ class ManageReservationsPresenter extends ActionPresenter
                             $attribute = $attributesIndexed[$label];
                             $reservation->AddAttributeValue(new AttributeValue($attribute->Id(), $value));
                         }
-
                     }
 
                     $this->manageReservationsService->UnsafeAdd($reservation);
 
                     $importCount++;
-                }
-                else {
+                } else {
                     $messages[] = 'Invalid data in row ' . $rowNum . '. Ensure the user and resource in this row exist.';
                 }
             } catch (Exception $ex) {
@@ -486,11 +510,9 @@ class ManageReservationsPresenter extends ActionPresenter
 
         if ($source == 'manual') {
             $termsText = $this->page->GetTermsText();
-        }
-        elseif ($source == 'url') {
+        } elseif ($source == 'url') {
             $termsUrl = $this->page->GetTermsUrl();
-        }
-        else {
+        } else {
             $file = $this->page->GetTermsUpload();
 
             if ($file != null && $file->Extension() == 'pdf') {
@@ -714,7 +736,7 @@ class ReservationFilterPreferences
             return unserialize($this->FilterCustomAttributes);
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -725,7 +747,7 @@ class ReservationFilterPreferences
         $this->FilterCustomAttributes = serialize($filters);
     }
 
-    static $filterKeys = array('FilterStartDateDelta' => -7,
+    public static $filterKeys = ['FilterStartDateDelta' => -7,
         'FilterEndDateDelta' => +7,
         'FilterUserId' => '',
         'FilterUserName' => '',
@@ -740,7 +762,7 @@ class ReservationFilterPreferences
         'FilterDescription' => '',
         'FilterMissedCheckin' => 0,
         'FilterMissedCheckout' => 0,
-    );
+    ];
 
 
     public function Load()

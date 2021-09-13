@@ -112,6 +112,6 @@ class ManageEmailTemplatesPage extends ActionPage implements IManageEmailTemplat
 
     public function SetSaveResult($saveResult)
     {
-        $this->SetJson(array('saveResult' => $saveResult));
+        $this->SetJson(['saveResult' => $saveResult]);
     }
 }

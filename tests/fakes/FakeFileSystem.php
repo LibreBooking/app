@@ -32,12 +32,12 @@ class FakeFileSystem implements \Booked\IFileSystem
     /**
      * @var string[]
      */
-    public $_RemovedFiles = array();
+    public $_RemovedFiles = [];
 
     /**
      * @var string[]
      */
-    public $_Files = array();
+    public $_Files = [];
 
     public $_Saved = true;
     public $_Removed = true;
@@ -45,7 +45,7 @@ class FakeFileSystem implements \Booked\IFileSystem
     /**
      * @var bool|bool[]
      */
-    public $_Exists = array();
+    public $_Exists = [];
 
     public function Save($path, $fileName, $fileContents)
     {

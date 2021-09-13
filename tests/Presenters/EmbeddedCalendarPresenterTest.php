@@ -55,15 +55,15 @@ class EmbeddedCalendarPresenterTests extends TestBase
         $r3 = new TestReservationItemView(1, Date::Now(), Date::Now());
         $r3->ScheduleId = 2;
         $r3->ResourceId = 1;
-        $reservations = array($r1, $r2, $r3);
+        $reservations = [$r1, $r2, $r3];
         $this->reservationRepository->_Reservations = $reservations;
 
-        $this->scheduleRepository->_PublicScheduleIds = array(1 => 'public1');
-        $this->resourceRepository->_PublicResourceIds = array(1 => 'public1');
+        $this->scheduleRepository->_PublicScheduleIds = [1 => 'public1'];
+        $this->resourceRepository->_PublicResourceIds = [1 => 'public1'];
 
         $this->presenter->PageLoad();
 
-        $this->assertEquals(array(new ReservationListItem($r2), new ReservationListItem($r3)), $this->page->_Reservations->Reservations());
+        $this->assertEquals([new ReservationListItem($r2), new ReservationListItem($r3)], $this->page->_Reservations->Reservations());
         $this->assertEquals($timezone, $this->page->_Timezone);
         $this->assertTrue($this->page->_AgendaDisplayed);
         $this->assertEquals(new DateRange(Date::Now(), Date::Now()->ToTimezone($timezone)->GetDate()->AddDays(8)), $this->reservationRepository->_LastRange);

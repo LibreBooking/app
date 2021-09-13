@@ -2,8 +2,8 @@
 
 interface IEmailService
 {
-	/**
-	 * @param IEmailMessage $emailMessage
-	 */
-	function Send(IEmailMessage $emailMessage);
+    /**
+     * @param IEmailMessage $emailMessage
+     */
+    public function Send(IEmailMessage $emailMessage);
 }

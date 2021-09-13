@@ -15,12 +15,9 @@ class ResourceQRRouterPage extends Page
         $resourceId = $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 
         $referenceNumber = $this->GetReferenceNumber($resourceId);
-        if (!empty($referenceNumber))
-        {
+        if (!empty($referenceNumber)) {
             $page = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $referenceNumber);
-
-        }
-        else{
+        } else {
             $page = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::RESOURCE_ID, $resourceId);
         }
 
@@ -33,14 +30,12 @@ class ResourceQRRouterPage extends Page
         /** @var ReservationItemView[] $reservations */
         $reservations = $repo->GetReservations(Date::Now(), Date::Now(), null, null, null, $resourceId);
 
-        foreach ($reservations as $reservation)
-        {
-          if ($reservation->StartDate->LessThanOrEqual(Date::Now())
+        foreach ($reservations as $reservation) {
+            if ($reservation->StartDate->LessThanOrEqual(Date::Now())
               && $reservation->EndDate->GreaterThanOrEqual(Date::Now())
-              && $reservation->RequiresCheckin())
-          {
-              return $reservation->ReferenceNumber;
-          }
+              && $reservation->RequiresCheckin()) {
+                return $reservation->ReferenceNumber;
+            }
         }
 
         return null;

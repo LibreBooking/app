@@ -2,45 +2,45 @@
 
 class ReportColumns implements IReportColumns
 {
-	private $knownColumns = array();
-	private $attributeColumns = array();
+    private $knownColumns = [];
+    private $attributeColumns = [];
 
-	/**
-	 * @param $columnName string
-	 */
-	public function Add($columnName)
-	{
-		$this->knownColumns[] = $columnName;
-	}
+    /**
+     * @param $columnName string
+     */
+    public function Add($columnName)
+    {
+        $this->knownColumns[] = $columnName;
+    }
 
-	/**
-	 * @param $attributeTypeId int|CustomAttributeCategory
-	 * @param $attributeId int
-	 * @param $label string
-	 */
-	public function AddAttribute($attributeTypeId, $attributeId, $label)
-	{
-		$this->attributeColumns[] = new AttributeReportColumn("{$attributeTypeId}attribute{$attributeId}", $label);
-	}
+    /**
+     * @param $attributeTypeId int|CustomAttributeCategory
+     * @param $attributeId int
+     * @param $label string
+     */
+    public function AddAttribute($attributeTypeId, $attributeId, $label)
+    {
+        $this->attributeColumns[] = new AttributeReportColumn("{$attributeTypeId}attribute{$attributeId}", $label);
+    }
 
-	public function Exists($columnName)
-	{
-		return in_array($columnName, $this->knownColumns);
-	}
+    public function Exists($columnName)
+    {
+        return in_array($columnName, $this->knownColumns);
+    }
 
-	/**
-	 * @return string[]
-	 */
-	public function GetAll()
-	{
-		return $this->knownColumns;
-	}
+    /**
+     * @return string[]
+     */
+    public function GetAll()
+    {
+        return $this->knownColumns;
+    }
 
-	/**
-	 * @return string[]
-	 */
-	public function GetCustomAttributes()
-	{
-		return $this->attributeColumns;
-	}
+    /**
+     * @return string[]
+     */
+    public function GetCustomAttributes()
+    {
+        return $this->attributeColumns;
+    }
 }

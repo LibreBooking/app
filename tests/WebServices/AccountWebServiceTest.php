@@ -48,7 +48,7 @@ class AccountWebServiceTests extends TestBase
         $userRequest = new CreateAccountRequest();
         $this->server->SetRequest($userRequest);
 
-        $errors = array('error');
+        $errors = ['error'];
         $controllerResult = new AccountControllerResult(null, $errors);
 
         $this->controller->_Result = $controllerResult;
@@ -85,7 +85,7 @@ class AccountWebServiceTests extends TestBase
         $this->server->SetRequest($userRequest);
         $this->server->SetSession(new WebServiceUserSession($userId));
 
-        $errors = array('error');
+        $errors = ['error'];
         $controllerResult = new AccountControllerResult(null, $errors);
 
         $this->controller->_Result = $controllerResult;
@@ -117,7 +117,7 @@ class AccountWebServiceTests extends TestBase
     {
         $userId = 123;
 
-        $errors = array('error');
+        $errors = ['error'];
         $controllerResult = new AccountControllerResult(null, $errors);
         $this->controller->_Result = $controllerResult;
 

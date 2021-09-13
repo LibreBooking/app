@@ -39,11 +39,13 @@ class ReservationCreditsPresenterTests extends TestBase
         $this->resourceRepository = new FakeResourceRepository();
         $this->paymentRepository = new FakePaymentRepository();
 
-        $this->presenter = new ReservationCreditsPresenter($this->page,
+        $this->presenter = new ReservationCreditsPresenter(
+            $this->page,
             $this->reservationRepository,
             $this->scheduleRepository,
             $this->resourceRepository,
-            $this->paymentRepository);
+            $this->paymentRepository
+        );
 
         $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
         $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, 'true');
@@ -81,7 +83,7 @@ class ReservationCreditsPresenterTests extends TestBase
 
     public function testReturnsNumberOfCreditsConsumedForExistingReservation()
     {
-    	$pageDate = Date::Now()->AddDays(1);
+        $pageDate = Date::Now()->AddDays(1);
         $scheduleId = 100;
         $resource1 = new FakeBookableResource(1);
         $resource1->SetCreditsPerSlot(1);
@@ -99,7 +101,7 @@ class ReservationCreditsPresenterTests extends TestBase
         $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
 
         $this->page->_ResourceId = 1;
-        $this->page->_ResourceIds = array(2);
+        $this->page->_ResourceIds = [2];
         $this->page->_ReferenceNumber = '123';
         $this->page->_StartDate = $pageDate->Format('Y-m-d');
         $this->page->_StartTime = '01:00';
@@ -263,8 +265,8 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
 
     public function SetCreditRequired($creditsRequired, $cost)
     {
-       $this->_CreditsRequired = $creditsRequired;
-       $this->_CreditCost = $cost;
+        $this->_CreditsRequired = $creditsRequired;
+        $this->_CreditCost = $cost;
     }
 
     public function GetRepeatCustomDates()

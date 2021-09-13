@@ -5,17 +5,17 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 interface IManageUsersServiceFactory
 {
-	/**
-	 * @return IManageUsersService
-	 */
-	public function CreateAdmin();
+    /**
+     * @return IManageUsersService
+     */
+    public function CreateAdmin();
 }
 
 class ManageUsersServiceFactory implements IManageUsersServiceFactory
 {
-	public function CreateAdmin()
-	{
-		$userRepository = new UserRepository();
-		return new ManageUsersService(new AdminRegistration(), $userRepository, new GroupRepository(), $userRepository, new PasswordEncryption());
-	}
+    public function CreateAdmin()
+    {
+        $userRepository = new UserRepository();
+        return new ManageUsersService(new AdminRegistration(), $userRepository, new GroupRepository(), $userRepository, new PasswordEncryption());
+    }
 }

@@ -25,7 +25,6 @@ class ReservationWaitlistPresenterTests extends TestBase
         $this->page = new FakeReservationWaitlistPage();
         $this->repository = new FakeReservationWaitlistRepository();
         $this->presenter = new ReservationWaitlistPresenter($this->page, $this->fakeUser, $this->repository);
-
     }
 
     public function testAddsWaitlistRequest()

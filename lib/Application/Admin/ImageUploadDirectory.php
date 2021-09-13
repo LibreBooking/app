@@ -26,5 +26,4 @@ class ImageUploadDirectory
     {
         return Configuration::Instance()->GetScriptUrl() . '/' . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL);
     }
-
 }

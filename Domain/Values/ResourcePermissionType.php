@@ -2,7 +2,7 @@
 
 class ResourcePermissionType
 {
-    const None = -1;
-    const Full = 0;
-    const View = 1;
+    public const None = -1;
+    public const Full = 0;
+    public const View = 1;
 }

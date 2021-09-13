@@ -90,9 +90,8 @@ abstract class adLDAPCollection
                 if (strtolower($keyAttr) == strtolower($attribute)) {
                     if ($this->info[0][strtolower($attribute)]['count'] == 1) {
                         return $this->info[0][strtolower($attribute)][0];
-                    }
-                    else {
-                        $array = array();
+                    } else {
+                        $array = [];
                         foreach ($this->info[0][strtolower($attribute)] as $key => $value) {
                             if ((string)$key != 'count') {
                                 $array[$key] = $value;
@@ -102,9 +101,8 @@ abstract class adLDAPCollection
                     }
                 }
             }
-        }
-        else {
-            return NULL;
+        } else {
+            return null;
         }
     }
 
@@ -123,7 +121,8 @@ abstract class adLDAPCollection
     * @param string $attribute
     * @return bool
     */
-    public function __isset($attribute) {
+    public function __isset($attribute)
+    {
         if (isset($this->info[0]) && is_array($this->info[0])) {
             foreach ($this->info[0] as $keyAttr => $valueAttr) {
                 if (strtolower($keyAttr) == strtolower($attribute)) {
@@ -132,5 +131,5 @@ abstract class adLDAPCollection
             }
         }
         return false;
-     }
+    }
 }

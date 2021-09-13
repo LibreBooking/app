@@ -18,18 +18,20 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
     /**
      * @var array|iCalendarReservationView[]
      */
-    private $reservations = array();
+    private $reservations = [];
 
     public function __construct()
     {
         $authorization = new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization());
         $service = new CalendarSubscriptionService(new UserRepository(), new ResourceRepository(), new ScheduleRepository());
         $icalSubscriptionValidator = new CalendarSubscriptionValidator($this, $service);
-        $this->presenter = new CalendarSubscriptionPresenter($this,
+        $this->presenter = new CalendarSubscriptionPresenter(
+            $this,
             new ReservationViewRepository(),
             $icalSubscriptionValidator,
             $service,
-            new PrivacyFilter($authorization));
+            new PrivacyFilter($authorization)
+        );
         parent::__construct('', 1);
     }
 
@@ -51,7 +53,7 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
         header("Content-Disposition: inline; filename=calendar.ics");
 
         $display = new CalendarExportDisplay();
-        echo preg_replace('~\R~u',"\r\n", $display->Render($this->reservations));
+        echo preg_replace('~\R~u', "\r\n", $display->Render($this->reservations));
     }
 
     public function SetReservations($reservations)
@@ -74,7 +76,7 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
         return $this->GetQuerystring(QueryStringKeys::ACCESSORY_ID);
     }
 
-    function GetResourceGroupId()
+    public function GetResourceGroupId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESOURCE_GROUP_ID);
     }

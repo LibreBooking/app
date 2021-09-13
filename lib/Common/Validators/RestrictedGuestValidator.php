@@ -1,6 +1,6 @@
 <?php
 
-require_once (ROOT_DIR . 'lib/Application/Authentication/GuestUserService.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/GuestUserService.php');
 
 class RestrictedGuestValidator extends ValidatorBase implements IValidator
 {
@@ -20,8 +20,7 @@ class RestrictedGuestValidator extends ValidatorBase implements IValidator
     {
         $this->isValid = $this->guestUserService->EmailExists($this->email);
 
-        if (!$this->isValid)
-        {
+        if (!$this->isValid) {
             $this->AddMessageKey('RegisteredAccountRequired');
         }
     }

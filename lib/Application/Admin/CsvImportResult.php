@@ -3,8 +3,8 @@
 class CsvImportResult
 {
     public $importCount = 0;
-    public $skippedRows = array();
-    public $messages = array();
+    public $skippedRows = [];
+    public $messages = [];
 
     /**
      * @param $imported int
@@ -15,6 +15,6 @@ class CsvImportResult
     {
         $this->importCount = $imported;
         $this->skippedRows = $skippedRows;
-        $this->messages = is_array($messages) ? $messages : array($messages);
+        $this->messages = is_array($messages) ? $messages : [$messages];
     }
 }

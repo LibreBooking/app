@@ -5,63 +5,63 @@ require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 
 class AnnouncementPresenterTests extends TestBase
 {
-	private $permissionService;
-	/**
-	 * @var AnnouncementPresenter
-	 */
-	private $presenter;
+    private $permissionService;
+    /**
+     * @var AnnouncementPresenter
+     */
+    private $presenter;
 
-	/**
-	 * @var FakeAnnouncementsControl
-	 */
-	private $page;
+    /**
+     * @var FakeAnnouncementsControl
+     */
+    private $page;
 
-	/**
-	 * @var FakeAnnouncementRepository
-	 */
-	private $announcements;
+    /**
+     * @var FakeAnnouncementRepository
+     */
+    private $announcements;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		Date::_SetNow(new Date());
+        Date::_SetNow(new Date());
 
-		$this->page = new FakeAnnouncementsControl();
+        $this->page = new FakeAnnouncementsControl();
 
-		$this->announcements = new FakeAnnouncementRepository();
-		$this->permissionService = new FakePermissionService();
-		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements, $this->permissionService);
-	}
+        $this->announcements = new FakeAnnouncementRepository();
+        $this->permissionService = new FakePermissionService();
+        $this->presenter = new AnnouncementPresenter($this->page, $this->announcements, $this->permissionService);
+    }
 
-	public function teardown(): void
-	{
-		parent::teardown();
+    public function teardown(): void
+    {
+        parent::teardown();
 
-		Date::_ResetNow();
-	}
+        Date::_ResetNow();
+    }
 
-	public function testShowsAllAnnouncements()
-	{
-		$now = Date::Now();
+    public function testShowsAllAnnouncements()
+    {
+        $now = Date::Now();
         $displayPage = 1;
 
-		$announcement = new Announcement(1, 'text', $now, $now, 1, array(), array(), $displayPage);
-		$this->announcements->_ExpectedAnnouncements = array($announcement);
+        $announcement = new Announcement(1, 'text', $now, $now, 1, [], [], $displayPage);
+        $this->announcements->_ExpectedAnnouncements = [$announcement];
 
-		$this->presenter->PageLoad();
+        $this->presenter->PageLoad();
 
-		$this->assertEquals($this->announcements->_ExpectedAnnouncements, $this->page->_LastAnnouncements);
-		$this->assertTrue($this->announcements->_GetFutureCalled);
-	}
+        $this->assertEquals($this->announcements->_ExpectedAnnouncements, $this->page->_LastAnnouncements);
+        $this->assertTrue($this->announcements->_GetFutureCalled);
+    }
 }
 
 class FakeAnnouncementsControl implements IAnnouncementsControl
 {
-	public $_LastAnnouncements = array();
+    public $_LastAnnouncements = [];
 
-	public function SetAnnouncements($announcements)
-	{
-		$this->_LastAnnouncements = $announcements;
-	}
+    public function SetAnnouncements($announcements)
+    {
+        $this->_LastAnnouncements = $announcements;
+    }
 }

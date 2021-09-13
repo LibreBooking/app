@@ -15,33 +15,28 @@ Log::Debug('Running sendreminders.php');
 
 JobCop::EnsureCommandLine();
 
-try
-{
+try {
     $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
-    if (!$emailEnabled)
-    {
+    if (!$emailEnabled) {
         return;
     }
 
-	$repository = new ReminderRepository();
-	$now = Date::Now();
+    $repository = new ReminderRepository();
+    $now = Date::Now();
 
-	$startNotices = $repository->GetReminderNotices($now, ReservationReminderType::Start);
-	Log::Debug('Found %s start reminders', count($startNotices));
-	foreach ($startNotices as $notice)
-	{
-		ServiceLocator::GetEmailService()->Send(new ReminderStartEmail($notice));
-	}
+    $startNotices = $repository->GetReminderNotices($now, ReservationReminderType::Start);
+    Log::Debug('Found %s start reminders', count($startNotices));
+    foreach ($startNotices as $notice) {
+        ServiceLocator::GetEmailService()->Send(new ReminderStartEmail($notice));
+    }
 
-	$endNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::End);
-	Log::Debug('Found %s end reminders', count($endNotices));
-	foreach ($endNotices as $notice)
-	{
-		ServiceLocator::GetEmailService()->Send(new ReminderEndEmail($notice));
-	}
-} catch (Exception $ex)
-{
-	Log::Error('Error running sendreminders.php: %s', $ex);
+    $endNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::End);
+    Log::Debug('Found %s end reminders', count($endNotices));
+    foreach ($endNotices as $notice) {
+        ServiceLocator::GetEmailService()->Send(new ReminderEndEmail($notice));
+    }
+} catch (Exception $ex) {
+    Log::Error('Error running sendreminders.php: %s', $ex);
 }
 
 Log::Debug('Finished running sendreminders.php');

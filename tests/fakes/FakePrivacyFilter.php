@@ -4,43 +4,43 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/PrivacyFilter.php');
 
 class FakePrivacyFilter implements IPrivacyFilter
 {
-	public $_CanViewUser = true;
-	public $_CanViewDetails = true;
+    public $_CanViewUser = true;
+    public $_CanViewDetails = true;
 
-	/**
-	 * @var UserSession
-	 */
-	public $_LastViewUserUserSession;
+    /**
+     * @var UserSession
+     */
+    public $_LastViewUserUserSession;
 
-	/**
-	 * @var ReservationView
-	 */
-	public $_LastViewUserReservation;
+    /**
+     * @var ReservationView
+     */
+    public $_LastViewUserReservation;
 
-	/**
-	 * @var UserSession
-	 */
-	public $_LastViewDetailsUserSession;
+    /**
+     * @var UserSession
+     */
+    public $_LastViewDetailsUserSession;
 
-	/**
-	 * @var ReservationView
-	 */
-	public $_LastViewDetailsReservation;
+    /**
+     * @var ReservationView
+     */
+    public $_LastViewDetailsReservation;
 
-	public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null)
-	{
-		$this->_LastViewUserUserSession = $currentUser;
-		$this->_LastViewUserReservation = $reservationView;
+    public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null)
+    {
+        $this->_LastViewUserUserSession = $currentUser;
+        $this->_LastViewUserReservation = $reservationView;
 
-		return $this->_CanViewUser;
-	}
+        return $this->_CanViewUser;
+    }
 
 
-	public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
-	{
-		$this->_LastViewDetailsUserSession = $currentUser;
-		$this->_LastViewDetailsReservation = $reservationView;
+    public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
+    {
+        $this->_LastViewDetailsUserSession = $currentUser;
+        $this->_LastViewDetailsReservation = $reservationView;
 
-		return $this->_CanViewDetails;
-	}
+        return $this->_CanViewDetails;
+    }
 }

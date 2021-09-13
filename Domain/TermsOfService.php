@@ -2,8 +2,8 @@
 
 class TermsOfService
 {
-    const RESERVATION = 'RESERVATION';
-    const REGISTRATION = 'REGISTRATION';
+    public const RESERVATION = 'RESERVATION';
+    public const REGISTRATION = 'REGISTRATION';
 
     private $id;
     private $termsText;
@@ -98,15 +98,14 @@ class TermsOfService
     /**
      * @return string
      */
-    public function DisplayUrl() {
+    public function DisplayUrl()
+    {
         $scriptUrl = Configuration::Instance()->GetScriptUrl();
 
-        if ($this->IsText())
-        {
+        if ($this->IsText()) {
             return $scriptUrl . '/tos.php';
         }
-        if ($this->IsUrl())
-        {
+        if ($this->IsUrl()) {
             return $this->termsUrl;
         }
 

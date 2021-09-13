@@ -31,11 +31,13 @@ class Registration implements IRegistration
      */
     private $groupRepository;
 
-    public function __construct($passwordEncryption = null,
-                                $userRepository = null,
-                                $notificationStrategy = null,
-                                $permissionAssignmentStrategy = null,
-                                $groupRepository = null)
+    public function __construct(
+        $passwordEncryption = null,
+        $userRepository = null,
+        $notificationStrategy = null,
+        $permissionAssignmentStrategy = null,
+        $groupRepository = null
+    )
     {
         $this->passwordEncryption = $passwordEncryption;
         $this->userRepository = $userRepository;
@@ -64,8 +66,20 @@ class Registration implements IRegistration
         }
     }
 
-    public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-                             $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false)
+    public function Register(
+        $username,
+        $email,
+        $firstName,
+        $lastName,
+        $password,
+        $timezone,
+        $language,
+        $homepageId,
+        $additionalFields = [],
+        $attributeValues = [],
+        $groups = null,
+        $acceptTerms = false
+    )
     {
         $homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
         $encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
@@ -75,8 +89,7 @@ class Registration implements IRegistration
 
         if ($this->CreatePending()) {
             $user = User::CreatePending($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
-        }
-        else {
+        } else {
             $user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
         }
 
@@ -143,11 +156,11 @@ class Registration implements IRegistration
                 $updatedUser->ChangeGroups($this->GetUserGroups($user));
                 $this->userRepository->Update($updatedUser);
             }
-        }
-        else {
+        } else {
             $defaultHomePageId = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE, new IntConverter());
-            $additionalFields = array('phone' => $user->Phone(), 'organization' => $user->Organization(), 'position' => $user->Title());
-            $this->Register($user->UserName(),
+            $additionalFields = ['phone' => $user->Phone(), 'organization' => $user->Organization(), 'position' => $user->Title()];
+            $this->Register(
+                $user->UserName(),
                 $user->Email(),
                 $user->FirstName(),
                 $user->LastName(),
@@ -156,8 +169,9 @@ class Registration implements IRegistration
                 $user->LanguageCode(),
                 empty($defaultHomePageId) ? Pages::DEFAULT_HOMEPAGE_ID : $defaultHomePageId,
                 $additionalFields,
-                array(),
-                $this->GetUserGroups($user));
+                [],
+                $this->GetUserGroups($user)
+            );
         }
     }
 
@@ -169,24 +183,22 @@ class Registration implements IRegistration
     {
         $userGroups = $user->GetGroups();
 
-        if (empty($userGroups))
-        {
+        if (empty($userGroups)) {
             return null;
         }
 
-        $groupsToSync = array();
+        $groupsToSync = [];
         if ($userGroups != null) {
             $lowercaseGroups = array_map('strtolower', $userGroups);
 
-            $groupsToSync = array();
+            $groupsToSync = [];
             $groups = $this->groupRepository->GetList()->Results();
             /** @var GroupItemView $group */
             foreach ($groups as $group) {
                 if (in_array(strtolower($group->Name()), $lowercaseGroups)) {
                     Log::Debug('Syncing group %s for user %s', $group->Name(), $user->Username());
                     $groupsToSync[] = new UserGroup($group->Id(), $group->Name());
-                }
-                else {
+                } else {
                     Log::Debug('User %s is not part of group %s, sync skipped', $group->Name(), $user->Username());
                 }
             }

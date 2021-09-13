@@ -8,4 +8,3 @@ require_once(ROOT_DIR . 'Presenters/ForgotPwdPresenter.php');
 $page = new ForgotPwdPage();
 
 $page->PageLoad();
-

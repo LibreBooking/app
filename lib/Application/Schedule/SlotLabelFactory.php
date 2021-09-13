@@ -56,8 +56,8 @@ class SlotLabelFactory
         $shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
         $shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
         $shouldHideReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
-        
-		if ($shouldHideUser || $shouldHideDetails) {
+
+        if ($shouldHideUser || $shouldHideDetails) {
             $canSeeUserDetails = $reservation->OwnerId == $this->user->UserId || $this->user->IsAdmin || $this->user->IsAdminForGroup($reservation->OwnerGroupIds());
             $canEditResource = $this->authorizationService->CanEditForResource($this->user, new SlotLabelResource($reservation));
             $shouldHideUser = $shouldHideUser && !$canSeeUserDetails && !$canEditResource;
@@ -67,14 +67,16 @@ class SlotLabelFactory
         if ($shouldHideDetails) {
             return '';
         }
-		
+
         if (!$shouldHideReservations && !$this->user->IsLoggedIn()) {
             return '';
         }
 
         if (empty($format)) {
-            $format = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE,
-                ConfigKeys::SCHEDULE_RESERVATION_LABEL);
+            $format = Configuration::Instance()->GetSectionKey(
+                ConfigSection::SCHEDULE,
+                ConfigKeys::SCHEDULE_RESERVATION_LABEL
+            );
         }
 
         if ($format == 'none' || empty($format)) {
@@ -104,7 +106,7 @@ class SlotLabelFactory
             $label = str_replace('{invitees}', trim(implode(', ', $reservation->InviteeNames)), $label);
         }
 
-        $matches = array();
+        $matches = [];
         preg_match_all('/\{(att\d+?)\}/', $format, $matches);
 
         $matches = $matches[0];
@@ -208,7 +210,7 @@ class SlotLabelResource implements IResource
 
     public function GetAdminGroupId()
     {
-       return $this->adminGroupId;
+        return $this->adminGroupId;
     }
 
     public function GetScheduleId()
@@ -223,7 +225,7 @@ class SlotLabelResource implements IResource
 
     public function GetStatusId()
     {
-       return $this->statusId;
+        return $this->statusId;
     }
 
     public function GetResourceId()

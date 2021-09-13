@@ -76,13 +76,15 @@ try {
 
         $reservation = $reservationRepository->LoadByReferenceNumber($referenceNumber);
 
-        Log::Debug('Sending series ending email. ReferenceNumber=%s, User=%s',
-            $referenceNumber, $reservation->UserId());
+        Log::Debug(
+            'Sending series ending email. ReferenceNumber=%s, User=%s',
+            $referenceNumber,
+            $reservation->UserId()
+        );
 
         ServiceLocator::GetEmailService()->Send(new ReservationSeriesEndingEmail($reservation, $language, $timezone, $email));
     }
     $reader->Free();
-
 } catch (Exception $ex) {
     Log::Error('Error running sendseriesend.php: %s', $ex);
 }

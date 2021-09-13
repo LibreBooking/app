@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the Net_LDAP2_SchemaCache interface class.

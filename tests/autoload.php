@@ -1,7 +1,6 @@
 <?php
 
-if (!defined('ROOT_DIR'))
-{
+if (!defined('ROOT_DIR')) {
     define('ROOT_DIR', dirname(__FILE__) . '/../');
 }
 

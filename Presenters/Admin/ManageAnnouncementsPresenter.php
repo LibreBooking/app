@@ -7,10 +7,10 @@ require_once(ROOT_DIR . 'lib/Email/Messages/AnnouncementEmail.php');
 
 class ManageAnnouncementsActions
 {
-    const Add = 'addAnnouncement';
-    const Change = 'changeAnnouncement';
-    const Delete = 'deleteAnnouncement';
-    const Email = 'emailAnnouncement';
+    public const Add = 'addAnnouncement';
+    public const Change = 'changeAnnouncement';
+    public const Delete = 'deleteAnnouncement';
+    public const Email = 'emailAnnouncement';
 }
 
 class ManageAnnouncementsPresenter extends ActionPresenter
@@ -48,12 +48,14 @@ class ManageAnnouncementsPresenter extends ActionPresenter
      * @param IPermissionService $permissionService
      * @param IUserViewRepository $userViewRepository
      */
-    public function __construct(IManageAnnouncementsPage $page,
-                                IAnnouncementRepository $announcementRepository,
-                                IGroupViewRepository $groupViewRepository,
-                                IResourceRepository $resourceRepository,
-                                IPermissionService $permissionService,
-                                IUserViewRepository $userViewRepository)
+    public function __construct(
+        IManageAnnouncementsPage $page,
+        IAnnouncementRepository $announcementRepository,
+        IGroupViewRepository $groupViewRepository,
+        IResourceRepository $resourceRepository,
+        IPermissionService $permissionService,
+        IUserViewRepository $userViewRepository
+    )
     {
         parent::__construct($page);
 
@@ -81,8 +83,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
     {
         $user = ServiceLocator::GetServer()->GetUserSession();
         $text = $this->page->GetText();
-		$text = str_replace('&lt;script&gt;', '', $text);
-		$text = str_replace('&lt;/script&gt;', '', $text);
+        $text = str_replace('&lt;script&gt;', '', $text);
+        $text = str_replace('&lt;/script&gt;', '', $text);
         $start = Date::Parse($this->page->GetStart(), $user->Timezone);
         $end = Date::Parse($this->page->GetEnd(), $user->Timezone);
         $priority = $this->page->GetPriority();
@@ -134,7 +136,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
         $this->announcementRepository->Delete($id);
     }
 
-    public function EmailAnnouncement() {
+    public function EmailAnnouncement()
+    {
         $announcementId = $this->page->GetAnnouncementId();
         $announcement = $this->announcementRepository->LoadById($announcementId);
         $this->SendAsEmail($announcement, ServiceLocator::GetServer()->GetUserSession());
@@ -157,9 +160,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
     {
         /** @var GroupItemView[] $groups */
         $groups = $this->groupViewRepository->GetList()->Results();
-        $indexedGroups = array();
-        foreach ($groups as $group)
-        {
+        $indexedGroups = [];
+        foreach ($groups as $group) {
             $indexedGroups[$group->Id] = $group;
         }
 
@@ -173,9 +175,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
     {
         /** @var BookableResource[] $resources */
         $resources = $this->resourceRepository->GetList(null, null)->Results();
-        $indexedResources = array();
-        foreach ($resources as $resource)
-        {
+        $indexedResources = [];
+        foreach ($resources as $resource) {
             $indexedResources[$resource->GetId()] = $resource;
         }
 
@@ -184,8 +185,7 @@ class ManageAnnouncementsPresenter extends ActionPresenter
 
     public function ProcessDataRequest($dataRequest)
     {
-        if ($dataRequest == 'emailCount')
-        {
+        if ($dataRequest == 'emailCount') {
             $announcementId = $this->page->GetAnnouncementId();
             $announcement = $this->announcementRepository->LoadById($announcementId);
             $user = ServiceLocator::GetServer()->GetUserSession();
@@ -200,23 +200,22 @@ class ManageAnnouncementsPresenter extends ActionPresenter
      */
     private function GetUsersToSendTo(Announcement $announcement, UserSession $user)
     {
-        $allUsers = array();
-        $usersToSendTo = array();
-        $validUsers = array();
+        $allUsers = [];
+        $usersToSendTo = [];
+        $validUsers = [];
 
-		$groupIds = $announcement->GroupIds();
-		$resourceIds = $announcement->ResourceIds();
-		if (empty($groupIds) && empty($resourceIds)) {
+        $groupIds = $announcement->GroupIds();
+        $resourceIds = $announcement->ResourceIds();
+        if (empty($groupIds) && empty($resourceIds)) {
             $userList = $this->userViewRepository->GetList(null, null, null, null, null, AccountStatus::ACTIVE)->Results();
             foreach ($userList as $user) {
                 $allUsers[$user->Id] = $user;
                 $usersToSendTo[] = $user;
             }
             return $usersToSendTo;
-        }
-        else {
-            $groupUserIds = array();
-            $resourceUserIds = array();
+        } else {
+            $groupUserIds = [];
+            $resourceUserIds = [];
 
             $groupUsers = $this->groupViewRepository->GetUsersInGroup($announcement->GroupIds())->Results();
 
@@ -228,16 +227,14 @@ class ManageAnnouncementsPresenter extends ActionPresenter
             foreach ($announcement->ResourceIds() as $resourceId) {
                 $resourceUsers = $this->resourceRepository->GetUsersWithPermissionsIncludingGroups($resourceId)->Results();
                 foreach ($resourceUsers as $resourceUser) {
-
                     $resourceUserIds[] = $resourceUser->Id;
                     $allUsers[$resourceUser->Id] = $resourceUser;
                 }
             }
 
-			$usersToSendTo = array_unique(array_merge($groupUserIds, $resourceUserIds));
+            $usersToSendTo = array_unique(array_merge($groupUserIds, $resourceUserIds));
 
-            foreach ($usersToSendTo as $userId)
-            {
+            foreach ($usersToSendTo as $userId) {
                 $validUsers[] = $allUsers[$userId];
             }
 

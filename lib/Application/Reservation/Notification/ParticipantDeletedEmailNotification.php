@@ -9,10 +9,10 @@ class ParticipantDeletedEmailNotification implements IReservationNotification
      */
     private $userRepository;
 
-	/**
-	 * @var IAttributeRepository
-	 */
-	private $attributeRepository;
+    /**
+     * @var IAttributeRepository
+     */
+    private $attributeRepository;
 
     public function __construct(IUserRepository $userRepository, IAttributeRepository $attributeRepository)
     {
@@ -23,13 +23,12 @@ class ParticipantDeletedEmailNotification implements IReservationNotification
     /**
      * @param ReservationSeries $reservationSeries
      */
-    function Notify($reservationSeries)
+    public function Notify($reservationSeries)
     {
         $instance = $reservationSeries->CurrentInstance();
         $owner = $this->userRepository->LoadById($reservationSeries->UserId());
 
-        foreach ($instance->UnchangedParticipants() as $userId)
-        {
+        foreach ($instance->UnchangedParticipants() as $userId) {
             $participant = $this->userRepository->LoadById($userId);
 
             $message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository, $this->userRepository);

@@ -17,7 +17,7 @@ class sk extends en_gb
      */
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = [];
 
         $strings['FirstName'] = 'Meno';
         $strings['LastName'] = 'Priezvisko';
@@ -59,8 +59,8 @@ class sk extends en_gb
         $strings['Announcements'] = 'Obmedzenie prevádzky';
         $strings['NoUpcomingReservations'] = 'Nemáte žiadne naplánované rezervácie.';
         $strings['UpcomingReservations'] = 'Naplánované rezervácie';
-		$strings['AllNoUpcomingReservations'] = 'Nie sú žiadne pripravované rezervácie';
-		$strings['AllUpcomingReservations'] = 'Všetky pripravované rezervácie';
+        $strings['AllNoUpcomingReservations'] = 'Nie sú žiadne pripravované rezervácie';
+        $strings['AllUpcomingReservations'] = 'Všetky pripravované rezervácie';
         $strings['ShowHide'] = 'Zobraziť/skryť';
         $strings['Error'] = 'Chyba';
         $strings['ReturnToPreviousPage'] = 'Vrátiť sa speť';
@@ -134,8 +134,8 @@ class sk extends en_gb
         $strings['ResourceMinNoticeNone'] = 'Rezerváciu je možné spraviť až do súčasnej doby';
         $strings['ResourceMaxNotice'] = 'Rezervácia nesmie končit viac než %s pred súčastnosťou';
         $strings['ResourceMaxNoticeNone'] = 'Rezervácia môže skončiť kedykoľvek v budúcnosti';
-		$strings['ResourceBufferTime'] = 'Musí byť %s medzi rezervácie';
-		$strings['ResourceBufferTimeNone'] = 'Neexistujú žiadne prostriedky rezervácie';
+        $strings['ResourceBufferTime'] = 'Musí byť %s medzi rezervácie';
+        $strings['ResourceBufferTimeNone'] = 'Neexistujú žiadne prostriedky rezervácie';
         $strings['ResourceAllowMultiDay'] = 'Rezervácia môže byť vytvorená na niekoľko dní';
         $strings['ResourceNotAllowMultiDay'] = 'Rezerváciu nieje možné spraviť v rámci niekoľko dní';
         $strings['ResourceCapacity'] = 'Tento prostriedok má obmedzenú kapacitu na %s osôb';
@@ -168,7 +168,7 @@ class sk extends en_gb
         $strings['Attending'] = 'Účasť';
         $strings['QuotaConfiguration'] = 'pre %s pre %s uživateľom v %s obmezenie počtu %s %s na %s';
         $strings['reservations'] = 'rezervácií';
-		$strings['reservation'] = 'rezervácia';
+        $strings['reservation'] = 'rezervácia';
         $strings['ChangeCalendar'] = 'Zmeniť kalendár';
         $strings['AddQuota'] = 'Pridať kvótu';
         $strings['FindUser'] = 'Nájsť užívateľa';
@@ -243,7 +243,7 @@ class sk extends en_gb
         $strings['ReservationCreated'] = 'Rezervácia bola vytvorená.';
         $strings['ReservationUpdated'] = 'Rezervácia bola upravená.';
         $strings['ReservationRemoved'] = 'Rezervácia bola odstránená.';
-		$strings['ReservationRequiresApproval'] = 'Jedna alebo viac rezervácií vyžaduje schválenie. Táto rezervácia čaká, kým nebude schválená adminom.';
+        $strings['ReservationRequiresApproval'] = 'Jedna alebo viac rezervácií vyžaduje schválenie. Táto rezervácia čaká, kým nebude schválená adminom.';
         $strings['YourReferenceNumber'] = 'Referenčné číslo: %s';
         $strings['UpdatingReservation'] = 'Obnovenie rezervácie';
         $strings['ChangeUser'] = 'Zmeniť užívateľa';
@@ -299,7 +299,7 @@ class sk extends en_gb
         $strings['BringDown'] = 'Znížit';
         $strings['ChangeLayout'] = 'Zmeniť rozvrhnutie';
         $strings['AddSchedule'] = 'Pridať rozvrh';
-	$strings['StartsOn'] = 'Začína od';
+        $strings['StartsOn'] = 'Začína od';
         $strings['NumberOfDaysVisible'] = 'Viditelné dní';
         $strings['UseSameLayoutAs'] = 'Použiť rozvrhnutie ako';
         $strings['Format'] = 'Formát';
@@ -330,8 +330,8 @@ class sk extends en_gb
         $strings['Private'] = 'Súkromné';
         $strings['Accept'] = 'Potvrdiť';
         $strings['Decline'] = 'Zamietnuť';
-	$strings['ShowFullWeek'] = 'Zobraziť celý týždeň';
-	$strings['CustomAttributes'] = 'Upraviť atribúty';
+        $strings['ShowFullWeek'] = 'Zobraziť celý týždeň';
+        $strings['CustomAttributes'] = 'Upraviť atribúty';
         $strings['AddAttribute'] = 'Pridať atribút';
         $strings['EditAttribute'] = 'Upraviť atribút';
         $strings['DisplayLabel'] = 'Zobrazit pole';
@@ -352,152 +352,152 @@ class sk extends en_gb
         $strings['AdditionalAttributes'] = 'Dalšie atribúty';
         $strings['True'] = 'Áno';
         $strings['False'] = 'Nie';
-	$strings['ForgotPasswordEmailSent'] = 'Na zadaný e-mail boly odeslané inštrukcie pre obnovenie hesla.';
-	$strings['ActivationEmailSent'] = 'Čoskoro obdržíte aktivačný e-mail.';
-	$strings['AccountActivationError'] = 'Ospravedlňujeme sa, Váš učet ešte nieje schválený.';
-	$strings['Attachments'] = 'Prílohy';
-	$strings['AttachFile'] = 'Príloha';
-	$strings['Maximum'] = 'limit';
-	$strings['NoScheduleAdministratorLabel'] = '(Žiadny správca)';
-	$strings['ScheduleAdministrator'] = 'Správca Rozvrhu';
-	$strings['Total'] = 'Celkom';
-	$strings['QuantityReserved'] = 'Rezervované množstvo';
-	$strings['AllAccessories'] = 'Všetko príslušenstvo';
-	$strings['GetReport'] = 'Zobrazit prehľad';
-	$strings['NoResultsFound'] = 'Nenájdená žiadna zhoda';
-	$strings['SaveThisReport'] = 'Uložiť prehľad';
-	$strings['ReportSaved'] = 'Prehľad uložený!';
-	$strings['EmailReport'] = 'Poslať prehľad e-mailom';
-	$strings['ReportSent'] = 'Prehľad odoslaný na e-mail!';
-	$strings['RunReport'] = 'Spustiť prehľad';
-	$strings['NoSavedReports'] = 'Nemáte uložený žiadny prehľad.';
-	$strings['CurrentWeek'] = 'Tento týžden';
-	$strings['CurrentMonth'] = 'Tento mesiac';
-	$strings['AllTime'] = 'Všetko';
-	$strings['FilterBy'] = 'Filtrovať podľa';
-	$strings['Select'] = 'Typ prehľadu';
-	$strings['List'] = 'Zoznam';
-	$strings['TotalTime'] = 'Celkový čas';
-	$strings['Count'] = 'Počet';
-	$strings['Usage'] = 'Využitie';
-	$strings['AggregateBy'] = 'Rozdelenie';
-	$strings['Range'] = 'Obdobie';
-	$strings['Choose'] = 'Vyberte';
-	$strings['All'] = 'Všetko';
-	$strings['ViewAsChart'] = 'Zobraziť ako graf';
-	$strings['ReservedResources'] = 'Rezervované ihriská';
-	$strings['ReservedAccessories'] = 'Rezervované príslušenstvo';
-	$strings['ResourceUsageTimeBooked'] = 'Využitie prostriedkov - celkový čas';
-	$strings['ResourceUsageReservationCount'] = 'Využitie prostriedkov - počet rezervácií';
-	$strings['Top20UsersTimeBooked'] = '20 najväčších užívateľov - celkový čas';
-	$strings['Top20UsersReservationCount'] = '20 najväčších užívateľov - počet rezervácií';
-    $strings['ConfigurationUpdated'] = 'Konfiguračný súbor bol aktualizovaný';
-    $strings['ConfigurationUiNotEnabled'] = 'Táto stránka nemôže byť zobrazená, preto že $conf[\'settings\'][\'pages\'][\'enable.configuration\'] je nastavená na hodnotu false alebo chýba.';
-    $strings['ConfigurationFileNotWritable'] = 'Konfiguračný súbor nie je zapisovateľný. Skontrolujte prosím oprávnenie tohto súboru a skúste to znova.';
-    $strings['ConfigurationUpdateHelp'] = 'Pozrite sa do časti Konfigurácia <a target=_blank href=%s>súbor Pomocníka</a> k dokumentácii o týchto nastaveniach.';
-    $strings['GeneralConfigSettings'] = 'nastavenie';
-    $strings['UseSameLayoutForAllDays'] = 'Použite rovnaké rozloženie pre všetky dni';
-    $strings['LayoutVariesByDay'] = 'Plán sa líši podľa dňa';
-    $strings['ManageReminders'] = 'Prípomienky';
-    $strings['ReminderUser'] = 'Uživateľské ID';
-    $strings['ReminderMessage'] = 'Správa';
-    $strings['ReminderAddress'] = 'Adresa';
-    $strings['ReminderSendtime'] = 'Čas odoslania';
-    $strings['ReminderRefNumber'] = 'Referenčné číslo rezervácie';
-    $strings['ReminderSendtimeDate'] = 'Dátum pripomienky';
-    $strings['ReminderSendtimeTime'] = 'Čas prípomienky (HH:MM)';
-    $strings['ReminderSendtimeAMPM'] = 'Ráno / Poobede';
-    $strings['AddReminder'] = 'Pridať prípomienku';
-    $strings['DeleteReminderWarning'] = 'Ste si tým istý?';
-    $strings['NoReminders'] = 'Nemáte žiadne nadchádzajúce prípomienky.';
-    $strings['Reminders'] = 'Prípomienky';
-    $strings['SendReminder'] = 'Poslať prípomienku';
-    $strings['minutes'] = 'minút';
-    $strings['hours'] = 'hodín';
-    $strings['days'] = 'dní';
-    $strings['ReminderBeforeStart'] = 'pred začiatkom času';
-    $strings['ReminderBeforeEnd'] = 'pred koncom času';
-    $strings['Logo'] = 'Logo';
-    $strings['CssFile'] = 'CSS Súbor';
-    $strings['ThemeUploadSuccess'] = 'Vaše zmeny boli uložené. Pre zobrazenie zmien refrešnite stránku.';
-    $strings['MakeDefaultSchedule'] = 'Nastaviť toto zobrazenie ako moje základné';
-    $strings['DefaultScheduleSet'] = 'Vaše základné zobrazenie bolo nastavené';
-    $strings['FlipSchedule'] = 'Prepnúť zobrazenie';
-    $strings['Next'] = 'Další';
-    $strings['Success'] = 'Úspech';
-    $strings['Participant'] = 'Pozvánka';
-		$strings['ResourceFilter'] = 'Filter kalendára';
-		$strings['ResourceGroups'] = 'Skupina kalendárov';
-		$strings['AddNewGroup'] = 'Pridať novú skupinu';
-		$strings['Quit'] = 'Ukončiť';
-		$strings['AddGroup'] = 'Pridať skupinu';
-		$strings['StandardScheduleDisplay'] = 'Použite týždenné zobrazenie kalendára';
-		$strings['TallScheduleDisplay'] = 'Použite denné zobrazenie kalendára';
-		$strings['WideScheduleDisplay'] = 'Zobraziť iba jeden deň';
-		$strings['CondensedWeekScheduleDisplay'] = 'Zobraziť celý týždeň a počtom rezervácií';
-		$strings['ResourceGroupHelp1'] = '(Drag and drop) ťahaj a pusti zdroj skupiny pre zmenu.';
-		$strings['ResourceGroupHelp2'] = 'Kliknite pravým tlačidlom myši na názov skupiny zdrojov pre ďalšie akcie.';
-		$strings['ResourceGroupHelp3'] = '(Drag and drop) ťahaj a pusti zdroje pre ich pridanie do skupín.';
-		$strings['ResourceGroupWarning'] = 'Pri použití skupín kalendárov, musí byť každý zdroj priradený aspoň do jednej skupiny. Nepriradené zdroje nebudú môcť byť vyhradené.';
-		$strings['ResourceType'] = 'Typ zdroja';
-		$strings['AppliesTo'] = 'Platí pre';
-		$strings['UniquePerInstance'] = 'Unikátny pre každú inštanciu';
-		$strings['AddResourceType'] = 'Pridať typ zdrojov';
-		$strings['NoResourceTypeLabel'] = '(žiadny typ zdroja sady)';
-		$strings['ClearFilter'] = 'Vymazať filter';
-		$strings['MinimumCapacity'] = 'Minimálna kapacita';
-		$strings['Color'] = 'Farba';
-		$strings['Available'] = 'Dostupné';
-		$strings['Unavailable'] = 'Nie je k dispozícii';
-		$strings['Hidden'] = 'Skryté';
-		$strings['ResourceStatus'] = 'Stav kalendárov';
-		$strings['CurrentStatus'] = 'Súčasný stav';
-		$strings['AllReservationResources'] = 'Všetky zdroje rezervácií';
-		$strings['File'] = 'Súbor';
-		$strings['BulkResourceUpdate'] = 'Aktualizácia množstva zdrojov ';
-		$strings['Unchanged'] = 'Nezmenený';
-		$strings['Common'] = 'Spoločný';
-		$strings['AdvancedFilter'] = 'Rozšírený filter';
-    // End Strings
+        $strings['ForgotPasswordEmailSent'] = 'Na zadaný e-mail boly odeslané inštrukcie pre obnovenie hesla.';
+        $strings['ActivationEmailSent'] = 'Čoskoro obdržíte aktivačný e-mail.';
+        $strings['AccountActivationError'] = 'Ospravedlňujeme sa, Váš učet ešte nieje schválený.';
+        $strings['Attachments'] = 'Prílohy';
+        $strings['AttachFile'] = 'Príloha';
+        $strings['Maximum'] = 'limit';
+        $strings['NoScheduleAdministratorLabel'] = '(Žiadny správca)';
+        $strings['ScheduleAdministrator'] = 'Správca Rozvrhu';
+        $strings['Total'] = 'Celkom';
+        $strings['QuantityReserved'] = 'Rezervované množstvo';
+        $strings['AllAccessories'] = 'Všetko príslušenstvo';
+        $strings['GetReport'] = 'Zobrazit prehľad';
+        $strings['NoResultsFound'] = 'Nenájdená žiadna zhoda';
+        $strings['SaveThisReport'] = 'Uložiť prehľad';
+        $strings['ReportSaved'] = 'Prehľad uložený!';
+        $strings['EmailReport'] = 'Poslať prehľad e-mailom';
+        $strings['ReportSent'] = 'Prehľad odoslaný na e-mail!';
+        $strings['RunReport'] = 'Spustiť prehľad';
+        $strings['NoSavedReports'] = 'Nemáte uložený žiadny prehľad.';
+        $strings['CurrentWeek'] = 'Tento týžden';
+        $strings['CurrentMonth'] = 'Tento mesiac';
+        $strings['AllTime'] = 'Všetko';
+        $strings['FilterBy'] = 'Filtrovať podľa';
+        $strings['Select'] = 'Typ prehľadu';
+        $strings['List'] = 'Zoznam';
+        $strings['TotalTime'] = 'Celkový čas';
+        $strings['Count'] = 'Počet';
+        $strings['Usage'] = 'Využitie';
+        $strings['AggregateBy'] = 'Rozdelenie';
+        $strings['Range'] = 'Obdobie';
+        $strings['Choose'] = 'Vyberte';
+        $strings['All'] = 'Všetko';
+        $strings['ViewAsChart'] = 'Zobraziť ako graf';
+        $strings['ReservedResources'] = 'Rezervované ihriská';
+        $strings['ReservedAccessories'] = 'Rezervované príslušenstvo';
+        $strings['ResourceUsageTimeBooked'] = 'Využitie prostriedkov - celkový čas';
+        $strings['ResourceUsageReservationCount'] = 'Využitie prostriedkov - počet rezervácií';
+        $strings['Top20UsersTimeBooked'] = '20 najväčších užívateľov - celkový čas';
+        $strings['Top20UsersReservationCount'] = '20 najväčších užívateľov - počet rezervácií';
+        $strings['ConfigurationUpdated'] = 'Konfiguračný súbor bol aktualizovaný';
+        $strings['ConfigurationUiNotEnabled'] = 'Táto stránka nemôže byť zobrazená, preto že $conf[\'settings\'][\'pages\'][\'enable.configuration\'] je nastavená na hodnotu false alebo chýba.';
+        $strings['ConfigurationFileNotWritable'] = 'Konfiguračný súbor nie je zapisovateľný. Skontrolujte prosím oprávnenie tohto súboru a skúste to znova.';
+        $strings['ConfigurationUpdateHelp'] = 'Pozrite sa do časti Konfigurácia <a target=_blank href=%s>súbor Pomocníka</a> k dokumentácii o týchto nastaveniach.';
+        $strings['GeneralConfigSettings'] = 'nastavenie';
+        $strings['UseSameLayoutForAllDays'] = 'Použite rovnaké rozloženie pre všetky dni';
+        $strings['LayoutVariesByDay'] = 'Plán sa líši podľa dňa';
+        $strings['ManageReminders'] = 'Prípomienky';
+        $strings['ReminderUser'] = 'Uživateľské ID';
+        $strings['ReminderMessage'] = 'Správa';
+        $strings['ReminderAddress'] = 'Adresa';
+        $strings['ReminderSendtime'] = 'Čas odoslania';
+        $strings['ReminderRefNumber'] = 'Referenčné číslo rezervácie';
+        $strings['ReminderSendtimeDate'] = 'Dátum pripomienky';
+        $strings['ReminderSendtimeTime'] = 'Čas prípomienky (HH:MM)';
+        $strings['ReminderSendtimeAMPM'] = 'Ráno / Poobede';
+        $strings['AddReminder'] = 'Pridať prípomienku';
+        $strings['DeleteReminderWarning'] = 'Ste si tým istý?';
+        $strings['NoReminders'] = 'Nemáte žiadne nadchádzajúce prípomienky.';
+        $strings['Reminders'] = 'Prípomienky';
+        $strings['SendReminder'] = 'Poslať prípomienku';
+        $strings['minutes'] = 'minút';
+        $strings['hours'] = 'hodín';
+        $strings['days'] = 'dní';
+        $strings['ReminderBeforeStart'] = 'pred začiatkom času';
+        $strings['ReminderBeforeEnd'] = 'pred koncom času';
+        $strings['Logo'] = 'Logo';
+        $strings['CssFile'] = 'CSS Súbor';
+        $strings['ThemeUploadSuccess'] = 'Vaše zmeny boli uložené. Pre zobrazenie zmien refrešnite stránku.';
+        $strings['MakeDefaultSchedule'] = 'Nastaviť toto zobrazenie ako moje základné';
+        $strings['DefaultScheduleSet'] = 'Vaše základné zobrazenie bolo nastavené';
+        $strings['FlipSchedule'] = 'Prepnúť zobrazenie';
+        $strings['Next'] = 'Další';
+        $strings['Success'] = 'Úspech';
+        $strings['Participant'] = 'Pozvánka';
+        $strings['ResourceFilter'] = 'Filter kalendára';
+        $strings['ResourceGroups'] = 'Skupina kalendárov';
+        $strings['AddNewGroup'] = 'Pridať novú skupinu';
+        $strings['Quit'] = 'Ukončiť';
+        $strings['AddGroup'] = 'Pridať skupinu';
+        $strings['StandardScheduleDisplay'] = 'Použite týždenné zobrazenie kalendára';
+        $strings['TallScheduleDisplay'] = 'Použite denné zobrazenie kalendára';
+        $strings['WideScheduleDisplay'] = 'Zobraziť iba jeden deň';
+        $strings['CondensedWeekScheduleDisplay'] = 'Zobraziť celý týždeň a počtom rezervácií';
+        $strings['ResourceGroupHelp1'] = '(Drag and drop) ťahaj a pusti zdroj skupiny pre zmenu.';
+        $strings['ResourceGroupHelp2'] = 'Kliknite pravým tlačidlom myši na názov skupiny zdrojov pre ďalšie akcie.';
+        $strings['ResourceGroupHelp3'] = '(Drag and drop) ťahaj a pusti zdroje pre ich pridanie do skupín.';
+        $strings['ResourceGroupWarning'] = 'Pri použití skupín kalendárov, musí byť každý zdroj priradený aspoň do jednej skupiny. Nepriradené zdroje nebudú môcť byť vyhradené.';
+        $strings['ResourceType'] = 'Typ zdroja';
+        $strings['AppliesTo'] = 'Platí pre';
+        $strings['UniquePerInstance'] = 'Unikátny pre každú inštanciu';
+        $strings['AddResourceType'] = 'Pridať typ zdrojov';
+        $strings['NoResourceTypeLabel'] = '(žiadny typ zdroja sady)';
+        $strings['ClearFilter'] = 'Vymazať filter';
+        $strings['MinimumCapacity'] = 'Minimálna kapacita';
+        $strings['Color'] = 'Farba';
+        $strings['Available'] = 'Dostupné';
+        $strings['Unavailable'] = 'Nie je k dispozícii';
+        $strings['Hidden'] = 'Skryté';
+        $strings['ResourceStatus'] = 'Stav kalendárov';
+        $strings['CurrentStatus'] = 'Súčasný stav';
+        $strings['AllReservationResources'] = 'Všetky zdroje rezervácií';
+        $strings['File'] = 'Súbor';
+        $strings['BulkResourceUpdate'] = 'Aktualizácia množstva zdrojov ';
+        $strings['Unchanged'] = 'Nezmenený';
+        $strings['Common'] = 'Spoločný';
+        $strings['AdvancedFilter'] = 'Rozšírený filter';
+        // End Strings
 
-// Install
-		$strings['InstallApplication'] = 'nainštalujte phpScheduleIt (MySQL only)';
-		$strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect.';
-		$strings['SetInstallPassword'] = 'You must set an install password before the installation can be run.';
-		$strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';
-		$strings['NoUpgradeNeeded'] = 'There is no upgrade needed. Running the installation http://www.rezervacie.eurogalaxy.sk/s will delete all existing data and install a new copy of phpScheduleIt!';
-		$strings['ProvideInstallPassword'] = 'Please provide your installation password.';
-		$strings['InstallPasswordLocation'] = 'This can be found at %s in %s.';
-		$strings['VerifyInstallSettings'] = 'Verify the following default settings before continuing. Or you can change them in %s.';
-		$strings['DatabaseName'] = 'Database Name';
-		$strings['DatabaseUser'] = 'Database User';
-		$strings['DatabaseHost'] = 'Database Host';
-		$strings['DatabaseCredentials'] = 'You must provide credentials of a MySQL user who has privileges to create databases. If you do not know, contact your database admin. In many cases, root will work.';
-		$strings['MySQLUser'] = 'MySQL User';
-		$strings['InstallOptionsWarning'] = 'The following options will probably not work in a hosted environment. If you are installing in a hosted environment, use the MySQL wizard tools to complete these steps.';
-		$strings['CreateDatabase'] = 'Create the database';
-		$strings['CreateDatabaseUser'] = 'Create the database user';
-		$strings['PopulateExampleData'] = 'Import sample data. Creates admin account: admin/password and user account: user/password';
-		$strings['DataWipeWarning'] = 'Warning: This will delete any existing data';
-		$strings['RunInstallation'] = 'Run Installation';
-		$strings['UpgradeNotice'] = 'You are upgrading from version <b>%s</b> to version <b>%s</b>';
-		$strings['RunUpgrade'] = 'Run Upgrade';
-		$strings['Executing'] = 'Executing';
-		$strings['StatementFailed'] = 'Failed. Details:';
-		$strings['SQLStatement'] = 'SQL Statement:';
-		$strings['ErrorCode'] = 'Error Code:';
-		$strings['ErrorText'] = 'Error Text:';
-		$strings['InstallationSuccess'] = 'Installation completed successfully!';
-		$strings['RegisterAdminUser'] = 'Register your admin user. This is required if you did not import the sample data. Ensure that $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in your %s file.';
-		$strings['LoginWithSampleAccounts'] = 'If you imported the sample data, you can log in with admin/password for admin user or user/password for basic user.';
-		$strings['InstalledVersion'] = 'You are now running version %s of phpScheduleIt';
-		$strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
-		$strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-		$strings['ConfigureApplication'] = 'Configure Booked Scheduler';
-		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
-		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
-		$strings['SelectUser'] = 'Vybrať užívateľa';
-		// End Install
+        // Install
+        $strings['InstallApplication'] = 'nainštalujte phpScheduleIt (MySQL only)';
+        $strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect.';
+        $strings['SetInstallPassword'] = 'You must set an install password before the installation can be run.';
+        $strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';
+        $strings['NoUpgradeNeeded'] = 'There is no upgrade needed. Running the installation http://www.rezervacie.eurogalaxy.sk/s will delete all existing data and install a new copy of phpScheduleIt!';
+        $strings['ProvideInstallPassword'] = 'Please provide your installation password.';
+        $strings['InstallPasswordLocation'] = 'This can be found at %s in %s.';
+        $strings['VerifyInstallSettings'] = 'Verify the following default settings before continuing. Or you can change them in %s.';
+        $strings['DatabaseName'] = 'Database Name';
+        $strings['DatabaseUser'] = 'Database User';
+        $strings['DatabaseHost'] = 'Database Host';
+        $strings['DatabaseCredentials'] = 'You must provide credentials of a MySQL user who has privileges to create databases. If you do not know, contact your database admin. In many cases, root will work.';
+        $strings['MySQLUser'] = 'MySQL User';
+        $strings['InstallOptionsWarning'] = 'The following options will probably not work in a hosted environment. If you are installing in a hosted environment, use the MySQL wizard tools to complete these steps.';
+        $strings['CreateDatabase'] = 'Create the database';
+        $strings['CreateDatabaseUser'] = 'Create the database user';
+        $strings['PopulateExampleData'] = 'Import sample data. Creates admin account: admin/password and user account: user/password';
+        $strings['DataWipeWarning'] = 'Warning: This will delete any existing data';
+        $strings['RunInstallation'] = 'Run Installation';
+        $strings['UpgradeNotice'] = 'You are upgrading from version <b>%s</b> to version <b>%s</b>';
+        $strings['RunUpgrade'] = 'Run Upgrade';
+        $strings['Executing'] = 'Executing';
+        $strings['StatementFailed'] = 'Failed. Details:';
+        $strings['SQLStatement'] = 'SQL Statement:';
+        $strings['ErrorCode'] = 'Error Code:';
+        $strings['ErrorText'] = 'Error Text:';
+        $strings['InstallationSuccess'] = 'Installation completed successfully!';
+        $strings['RegisterAdminUser'] = 'Register your admin user. This is required if you did not import the sample data. Ensure that $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in your %s file.';
+        $strings['LoginWithSampleAccounts'] = 'If you imported the sample data, you can log in with admin/password for admin user or user/password for basic user.';
+        $strings['InstalledVersion'] = 'You are now running version %s of phpScheduleIt';
+        $strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
+        $strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
+        $strings['ConfigureApplication'] = 'Configure Booked Scheduler';
+        $strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
+        $strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
+        $strings['SelectUser'] = 'Vybrať užívateľa';
+        // End Install
 
         // Errors
         $strings['LoginError'] = 'Chybne zadané uživateľské meno alebo heslo.';
@@ -513,24 +513,24 @@ class sk extends en_gb
         $strings['StartIsInPast'] = 'Začiatok rezervácie nemôže být vytvorený v minulosti';
         $strings['EmailDisabled'] = 'Administrátor zakázal odosielanie e-mailových upozornení.';
         $strings['ValidLayoutRequired'] = 'Časový úsek musí byť vytvorený na celý deň - 24 hodín';
-	$strings['CustomAttributeErrors'] = 'Chybné s dalšími hodnotami:';
+        $strings['CustomAttributeErrors'] = 'Chybné s dalšími hodnotami:';
         $strings['CustomAttributeRequired'] = '%s je povinné pole';
         $strings['CustomAttributeInvalid'] = 'Hodnota pre %s je chybná';
         $strings['AttachmentLoadingError'] = 'Ospravedlňujeme sa, došlo k chybe pri načítání požadovaného súboru.';
         $strings['InvalidAttachmentExtension'] = 'Môžete nahrať iba súbory týchto typov: %s';
-		$strings['InvalidStartSlot'] = 'Dátum a čas začatia o ktorý žiadate nie je platný.';
-		$strings['InvalidEndSlot'] = 'Dátum a čas ukončenia o ktorý žiadate nie je platný.';
-		$strings['MaxParticipantsError'] = '%s môže iba podpora %s účastníci.';
-		$strings['ReservationCriticalError'] = 'Pri ukladaní Vašich rezervácií nastala chyba. Ak by tento trend pokračoval, obráťte sa na správcu systému.';
-		$strings['InvalidStartReminderTime'] = 'Počiatočný čas pripomenutia nie je platný.';
-		$strings['InvalidEndReminderTime'] = 'Koniec času pripomenutia nie je platný.';
-		$strings['QuotaExceeded'] = 'Maximálna kvóta prekročená.';
-		$strings['MultiDayRule'] = '%s neumožňuje rezervácie viac dní.';
-		$strings['InvalidReservationData'] = 'Nastali problémy s Vašou žiadosťou o rezerváciu.';
-		$strings['PasswordError'] = 'Heslo musí obsahovať aspoň %s písmeno/á a aspoň %s číslo/a.';
-		$strings['PasswordErrorRequirements'] = 'Heslo musí obsahovať kombináciu aspoň %s veľké a malé písmeno/á a %s číslo/a.';
-		$strings['NoReservationAccess'] = 'Nie ste oprávnený meniť túto rezerváciu.';
-		// End Errors
+        $strings['InvalidStartSlot'] = 'Dátum a čas začatia o ktorý žiadate nie je platný.';
+        $strings['InvalidEndSlot'] = 'Dátum a čas ukončenia o ktorý žiadate nie je platný.';
+        $strings['MaxParticipantsError'] = '%s môže iba podpora %s účastníci.';
+        $strings['ReservationCriticalError'] = 'Pri ukladaní Vašich rezervácií nastala chyba. Ak by tento trend pokračoval, obráťte sa na správcu systému.';
+        $strings['InvalidStartReminderTime'] = 'Počiatočný čas pripomenutia nie je platný.';
+        $strings['InvalidEndReminderTime'] = 'Koniec času pripomenutia nie je platný.';
+        $strings['QuotaExceeded'] = 'Maximálna kvóta prekročená.';
+        $strings['MultiDayRule'] = '%s neumožňuje rezervácie viac dní.';
+        $strings['InvalidReservationData'] = 'Nastali problémy s Vašou žiadosťou o rezerváciu.';
+        $strings['PasswordError'] = 'Heslo musí obsahovať aspoň %s písmeno/á a aspoň %s číslo/a.';
+        $strings['PasswordErrorRequirements'] = 'Heslo musí obsahovať kombináciu aspoň %s veľké a malé písmeno/á a %s číslo/a.';
+        $strings['NoReservationAccess'] = 'Nie ste oprávnený meniť túto rezerváciu.';
+        // End Errors
 
         // Page Titles
         $strings['CreateReservation'] = 'Vytvoriť rezerváciu';
@@ -583,12 +583,12 @@ class sk extends en_gb
         $strings['CommonReports'] = 'Spoločné prehľady';
         $strings['ViewDay'] = 'Zobraziť denný prehľad';
         $strings['Group'] = 'Skupina';
-		$strings['ManageConfiguration'] = 'Konfigurácia';
-		$strings['LookAndFeel'] = 'Vzhľad';
-		$strings['ManageResourceGroups'] = 'Skupiny kalendárov';
-		$strings['ManageResourceTypes'] = 'Typy kalendárov';
-		$strings['ManageResourceStatus'] = 'Stavy kalendárov';
-       // End Page Titles
+        $strings['ManageConfiguration'] = 'Konfigurácia';
+        $strings['LookAndFeel'] = 'Vzhľad';
+        $strings['ManageResourceGroups'] = 'Skupiny kalendárov';
+        $strings['ManageResourceTypes'] = 'Typy kalendárov';
+        $strings['ManageResourceStatus'] = 'Stavy kalendárov';
+        // End Page Titles
 
 
         // Day representations
@@ -599,7 +599,7 @@ class sk extends en_gb
         $strings['DayThursdaySingle'] = 'Št';
         $strings['DayFridaySingle'] = 'Pia';
         $strings['DaySaturdaySingle'] = 'So';
-		$strings['DaySundaySingle'] = 'Ne';
+        $strings['DaySundaySingle'] = 'Ne';
 
         $strings['DaySundayAbbr'] = 'Ne';
         $strings['DayMondayAbbr'] = 'Po';
@@ -608,7 +608,7 @@ class sk extends en_gb
         $strings['DayThursdayAbbr'] = 'Št';
         $strings['DayFridayAbbr'] = 'Pia';
         $strings['DaySaturdayAbbr'] = 'So';
-		// End Day representations
+        // End Day representations
 
         // Email Subjects
         $strings['ReservationApprovedSubject'] = 'Vaša rezervácia bola potvrdená';
@@ -624,9 +624,9 @@ class sk extends en_gb
         $strings['ResetPassword'] = 'Požiadavka na resetovanie hesla';
         $strings['ActivateYourAccount'] = 'Prosíme Vás, aktivujte si svoj účet';
         $strings['ReportSubject'] = 'Vaše požadované správy (%s)';
-		$strings['ReservationStartingSoonSubject'] = 'Rezervácia pre %s začína čoskoro';
-		$strings['ReservationEndingSoonSubject'] = 'Rezervácia pre %s končí čoskoro';
-		$strings['UserAdded'] = 'Nový užívateľ bol pridaný';
+        $strings['ReservationStartingSoonSubject'] = 'Rezervácia pre %s začína čoskoro';
+        $strings['ReservationEndingSoonSubject'] = 'Rezervácia pre %s končí čoskoro';
+        $strings['UserAdded'] = 'Nový užívateľ bol pridaný';
         // End Email Subjects
 
         $this->Strings = $strings;
@@ -639,7 +639,7 @@ class sk extends en_gb
      */
     protected function _LoadDays()
     {
-        $days = array();
+        $days = [];
 
         /***
         DAY NAMES
@@ -647,13 +647,13 @@ class sk extends en_gb
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('Nedela', 'Pondelok', 'Útorok', 'Streda', 'Štvrtok', 'Piatok', 'Sobota');
+        $days['full'] = ['Nedela', 'Pondelok', 'Útorok', 'Streda', 'Štvrtok', 'Piatok', 'Sobota'];
         // The three letter abbreviation
-        $days['abbr'] = array('Ne', 'Po', 'Út', 'St', 'Št', 'Pia', 'So');
+        $days['abbr'] = ['Ne', 'Po', 'Út', 'St', 'Št', 'Pia', 'So'];
         // The two letter abbreviation
-        $days['two'] = array('Ne', 'Po', 'Út', 'St', 'Št', 'Pia', 'So');
+        $days['two'] = ['Ne', 'Po', 'Út', 'St', 'Št', 'Pia', 'So'];
         // The one letter abbreviation
-        $days['letter'] = array('Ne', 'Po', 'Út', 'St', 'Št', 'Pia', 'So');
+        $days['letter'] = ['Ne', 'Po', 'Út', 'St', 'Št', 'Pia', 'So'];
 
         $this->Days = $days;
 
@@ -665,7 +665,7 @@ class sk extends en_gb
      */
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = [];
 
         /***
         MONTH NAMES
@@ -673,9 +673,9 @@ class sk extends en_gb
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December');
+        $months['full'] = ['Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December'];
         // The three letter month name
-        $months['abbr'] = array('Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December');
+        $months['abbr'] = ['Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl', 'August', 'September', 'Október', 'November', 'December'];
 
         $this->Months = $months;
 
@@ -687,7 +687,7 @@ class sk extends en_gb
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
         return $this->Letters;
     }

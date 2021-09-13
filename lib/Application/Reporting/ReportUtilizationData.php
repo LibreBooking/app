@@ -5,16 +5,16 @@ class ReportUtilizationData
     /**
      * @var IScheduleLayout[]
      */
-    private $layouts = array();
+    private $layouts = [];
     /**
      * @var ReportDailyAvailability[]
      */
-    private $weekdayAvailability = array();
+    private $weekdayAvailability = [];
 
     /**
      * @var ReportDailyAvailability[]
      */
-    private $customAvailability = array();
+    private $customAvailability = [];
 
     /**
      * @var array
@@ -31,11 +31,11 @@ class ReportUtilizationData
     /**
      * @var int[]
      */
-    private $totals = array();
+    private $totals = [];
     /**
      * @var int[]
      */
-    private $unavailable = array();
+    private $unavailable = [];
     /**
      * @var string
      */
@@ -59,7 +59,7 @@ class ReportUtilizationData
     {
         $earliest = Date::Max();
         $latest = Date::Min();
-        $resources = array();
+        $resources = [];
 
         foreach ($this->data as $row) {
             $scheduleId = $row[ColumnNames::SCHEDULE_ID];
@@ -82,18 +82,16 @@ class ReportUtilizationData
 
             if ($type == 1) {
                 $this->AddReservation($start, $end, $resourceId, $scheduleId);
-            }
-            else {
+            } else {
                 $this->AddBlackout($start, $end, $resourceId, $scheduleId);
             }
         }
 
-        $rows = array();
+        $rows = [];
         $rowIndex = 0;
         if ($this->range->Equals(Report_Range::ALL_TIME)) {
             $dates = (new DateRange($earliest, $latest))->Dates();
-        }
-        else {
+        } else {
             $dates = $this->range->Dates();
         }
 
@@ -253,28 +251,23 @@ class ReportUtilizationData
 
                 if ($date->DateEquals($start)) {
                     $secondsReserved = DateDiff::BetweenDates($date, $date->SetTimeString($a->Latest(), true))->TotalSeconds();
-                }
-                elseif ($date->DateEquals($end)) {
+                } elseif ($date->DateEquals($end)) {
                     $secondsReserved = DateDiff::BetweenDates($date->SetTimeString($a->Earliest()), $date)->TotalSeconds();
-                }
-                else {
+                } else {
                     $secondsReserved = $a->TotalSeconds();
                 }
 
                 if ($add) {
                     $this->AddTotal($date, $resourceId, $secondsReserved);
-                }
-                else {
+                } else {
                     $this->SubtractAvailable($date, $resourceId, $secondsReserved);
                 }
             }
-        }
-        else {
+        } else {
             $secondsReserved = DateDiff::BetweenDates($start, $end)->TotalSeconds();
             if ($add) {
                 $this->AddTotal($start, $resourceId, $secondsReserved);
-            }
-            else {
+            } else {
                 $this->SubtractAvailable($start, $resourceId, $secondsReserved);
             }
         }
@@ -287,8 +280,7 @@ class ReportUtilizationData
         $key = $resourceId . $date->GetDate()->Timestamp();
         if (!array_key_exists($key, $this->totals)) {
             $this->totals[$key] = $total;
-        }
-        else {
+        } else {
             $this->totals[$key] += $total;
         }
     }

@@ -305,8 +305,8 @@ class du_be extends en_gb
         $strings['Pending'] = 'In wachtlijst';
         $strings['Past'] = 'Verleden';
         $strings['Restricted'] = 'Restricted';
-		$strings['ViewAll'] = 'View All';
-		$strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
+        $strings['ViewAll'] = 'View All';
+        $strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
 
         // Errors
         $strings['LoginError'] = 'Ongeldige usernaam of paswoord opgegeven';
@@ -403,13 +403,13 @@ class du_be extends en_gb
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag');
+        $days['full'] = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
         // The three letter abbreviation
-        $days['abbr'] = array('Zon', 'Maa', 'Din', 'Woe', 'Don', 'Vri', 'Zat');
+        $days['abbr'] = ['Zon', 'Maa', 'Din', 'Woe', 'Don', 'Vri', 'Zat'];
         // The two letter abbreviation
-        $days['two'] = array('Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za');
+        $days['two'] = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
         // The one letter abbreviation
-        $days['letter'] = array('Z', 'M', 'D', 'W', 'D', 'V', 'Z');
+        $days['letter'] = ['Z', 'M', 'D', 'W', 'D', 'V', 'Z'];
 
         $this->Days = $days;
     }
@@ -424,16 +424,16 @@ class du_be extends en_gb
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December');
+        $months['full'] = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
         // The three letter month name
-        $months['abbr'] = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec');
+        $months['abbr'] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
 
         $this->Months = $months;
     }
 
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     }
 
     protected function _GetHtmlLangCode()

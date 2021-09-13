@@ -12,13 +12,13 @@ class ReservationRequiresApprovalEmailAdmin extends ReservationCreatedEmailAdmin
      * @param IAttributeRepository $attributeRepository
      * @param IUserRepository $userRepository
      */
-	public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
-	{
-		parent::__construct($adminDto, $reservationOwner, $reservationSeries, $primaryResource, $attributeRepository, $userRepository);
-	}
+    public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+    {
+        parent::__construct($adminDto, $reservationOwner, $reservationSeries, $primaryResource, $attributeRepository, $userRepository);
+    }
 
-	public function Subject()
-	{
-        return $this->Translate('ReservationApprovalAdminSubjectWithResource', array($this->resource->GetName()));
-	}
+    public function Subject()
+    {
+        return $this->Translate('ReservationApprovalAdminSubjectWithResource', [$this->resource->GetName()]);
+    }
 }

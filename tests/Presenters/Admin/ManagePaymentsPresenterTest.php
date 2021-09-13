@@ -90,9 +90,9 @@ class ManagePaymentsPresenterTests extends TestBase
         $this->page->_CurrentPage = 10;
         $this->page->_PageSize = 50;
 
-        $this->paymentRepository->_TransactionLogs = new PageableData(array(
+        $this->paymentRepository->_TransactionLogs = new PageableData([
             $this->GetTransactionLogView()
-        ));
+        ]);
 
         $this->presenter->GetTransactionLog();
 
@@ -163,7 +163,8 @@ class ManagePaymentsPresenterTests extends TestBase
             'refundref',
             'gatewaydate',
             $gateway,
-            100);
+            100
+        );
     }
 }
 

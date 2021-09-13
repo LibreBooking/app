@@ -5,34 +5,34 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class ReminderValidationRuleTests extends TestBase
 {
-	public function testWhenEnabledAndValid()
-	{
-		$series = new TestReservationSeries();
-		$series->AddStartReminder(new ReservationReminder(2, ReservationReminderInterval::Days));
-		$series->AddEndReminder(new ReservationReminder(1, ReservationReminderInterval::Days));
-		$rule = new ReminderValidationRule();
-		$result = $rule->Validate($series, null);
+    public function testWhenEnabledAndValid()
+    {
+        $series = new TestReservationSeries();
+        $series->AddStartReminder(new ReservationReminder(2, ReservationReminderInterval::Days));
+        $series->AddEndReminder(new ReservationReminder(1, ReservationReminderInterval::Days));
+        $rule = new ReminderValidationRule();
+        $result = $rule->Validate($series, null);
 
-		$this->assertTrue($result->IsValid());
-	}
+        $this->assertTrue($result->IsValid());
+    }
 
-	public function testWhenEnabledAnInvalidValue()
-	{
-		$series = new TestReservationSeries();
-		$series->AddStartReminder(new ReservationReminder('abc', ReservationReminderInterval::Days));
-		$rule = new ReminderValidationRule();
-		$result = $rule->Validate($series, null);
+    public function testWhenEnabledAnInvalidValue()
+    {
+        $series = new TestReservationSeries();
+        $series->AddStartReminder(new ReservationReminder('abc', ReservationReminderInterval::Days));
+        $rule = new ReminderValidationRule();
+        $result = $rule->Validate($series, null);
 
-		$this->assertFalse($result->IsValid());
-	}
+        $this->assertFalse($result->IsValid());
+    }
 
-	public function testWhenEnabledAnInvalidInterval()
-	{
-		$series = new TestReservationSeries();
-		$series->AddEndReminder(new ReservationReminder('abc', ReservationReminderInterval::Days));
-		$rule = new ReminderValidationRule();
-		$result = $rule->Validate($series, null);
+    public function testWhenEnabledAnInvalidInterval()
+    {
+        $series = new TestReservationSeries();
+        $series->AddEndReminder(new ReservationReminder('abc', ReservationReminderInterval::Days));
+        $rule = new ReminderValidationRule();
+        $result = $rule->Validate($series, null);
 
-		$this->assertFalse($result->IsValid());
-	}
+        $this->assertFalse($result->IsValid());
+    }
 }

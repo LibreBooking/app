@@ -4,7 +4,7 @@ require_once(ROOT_DIR . '/lib/Config/namespace.php');
 
 class LdapOptions
 {
-    private $_options = array();
+    private $_options = [];
 
     public function __construct()
     {
@@ -12,7 +12,8 @@ class LdapOptions
 
         Configuration::Instance()->Register(
             dirname(__FILE__) . '/Ldap.config.php',
-            LdapConfig::CONFIG_ID);
+            LdapConfig::CONFIG_ID
+        );
     }
 
     public function Ldap2Config()
@@ -84,12 +85,12 @@ class LdapOptions
 
     public function AttributeMapping()
     {
-        $attributes = array('sn' => 'sn',
+        $attributes = ['sn' => 'sn',
             'givenname' => 'givenname',
             'mail' => 'mail',
             'telephonenumber' => 'telephonenumber',
             'physicaldeliveryofficename' => 'physicaldeliveryofficename',
-            'title' => 'title');
+            'title' => 'title'];
         $configValue = $this->GetConfig(LdapConfig::ATTRIBUTE_MAPPING);
 
         if (!empty($configValue)) {

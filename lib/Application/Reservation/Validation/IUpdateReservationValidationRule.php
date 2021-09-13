@@ -2,9 +2,9 @@
 
 interface IUpdateReservationValidationRule
 {
-	/**
-	 * @param ExistingReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	function Validate($reservationSeries);
+    /**
+     * @param ExistingReservationSeries $reservationSeries
+     * @return ReservationRuleResult
+     */
+    public function Validate($reservationSeries);
 }

@@ -2,12 +2,12 @@
 
 class ReservationUserLevel
 {
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 
-	const ALL = 0;
-	const OWNER = 1;
-	const PARTICIPANT = 2;
-	const INVITEE = 3;
+    public const ALL = 0;
+    public const OWNER = 1;
+    public const PARTICIPANT = 2;
+    public const INVITEE = 3;
 }

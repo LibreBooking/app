@@ -37,10 +37,7 @@
 
 class adLDAPGroupCollection extends adLDAPCollection
 {
-
     public function __set($attribute, $value)
     {
-
     }
 }
-

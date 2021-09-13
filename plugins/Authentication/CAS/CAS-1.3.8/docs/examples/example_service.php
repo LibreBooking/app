@@ -57,12 +57,12 @@ phpCAS::setNoCasServerValidation();
 // 				'/^https:\/\/app[0-9]\.example\.com\/rest\//',
 // 				'http://client.example.com/'
 // 			)));
-phpCAS::allowProxyChain(new CAS_ProxyChain(array($pgtUrlRegexp)));
+phpCAS::allowProxyChain(new CAS_ProxyChain([$pgtUrlRegexp]));
 phpCAS::allowProxyChain(
     new CAS_ProxyChain(
-        array('/^' . $pgtBase . 'example_service_that_proxies.php$/',
+        ['/^' . $pgtBase . 'example_service_that_proxies.php$/',
             '/^' . $pgtBase . 'example_proxy_serviceWeb_chaining.php$/'
-        )
+        ]
     )
 );
 
@@ -92,5 +92,3 @@ if (!isset($_SESSION['n'])) {
     $_SESSION['n'] = 0;
 }
 echo '<p>request #' . (++$_SESSION['n']) . '</p>';
-
-?>

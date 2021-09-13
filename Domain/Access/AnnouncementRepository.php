@@ -6,7 +6,7 @@ class AnnouncementRepository implements IAnnouncementRepository
 {
     public function GetFuture($displayPage = -1)
     {
-        $announcements = array();
+        $announcements = [];
 
         $reader = ServiceLocator::GetDatabase()->Query(new GetDashboardAnnouncementsCommand(Date::Now(), $displayPage));
 
@@ -21,7 +21,7 @@ class AnnouncementRepository implements IAnnouncementRepository
 
     public function GetAll($sortField = null, $sortDirection = null)
     {
-        $announcements = array();
+        $announcements = [];
 
         $command = new GetAllAnnouncementsCommand();
 
@@ -52,7 +52,9 @@ class AnnouncementRepository implements IAnnouncementRepository
                 $announcement->Start(),
                 $announcement->End(),
                 $announcement->Priority(),
-                $announcement->DisplayPage()));
+                $announcement->DisplayPage()
+            )
+        );
 
         foreach ($announcement->GroupIds() as $groupId) {
             $db->ExecuteInsert(new AddAnnouncementGroupCommand($announcementId, $groupId));
@@ -84,7 +86,7 @@ class AnnouncementRepository implements IAnnouncementRepository
             $announcement = Announcement::FromRow($row);
         }
 
-		$reader->Free();
+        $reader->Free();
         return $announcement;
     }
 

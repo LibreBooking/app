@@ -71,8 +71,19 @@ class AddAnnouncementResourceCommand extends SqlCommand
 
 class AddAttributeCommand extends SqlCommand
 {
-    public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityIds,
-                                $isPrivate)
+    public function __construct(
+        $label,
+        $type,
+        $category,
+        $regex,
+        $required,
+        $possibleValues,
+        $sortOrder,
+        $adminOnly,
+        $secondaryCategory,
+        $secondaryEntityIds,
+        $isPrivate
+    )
     {
         parent::__construct(Queries::ADD_ATTRIBUTE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
@@ -266,8 +277,21 @@ class AddPaymentTransactionLogCommand extends SqlCommand
      * @param string $gatewayDateCreated
      * @param string $gatewayResponse
      */
-    public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref,
-                                $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
+    public function __construct(
+        $userId,
+        $status,
+        $invoiceNumber,
+        $transactionId,
+        $totalAmount,
+        $transactionFee,
+        $currency,
+        $transactionHref,
+        $refundHref,
+        $dateCreated,
+        $gatewayDateCreated,
+        $gatewayName,
+        $gatewayResponse
+    )
     {
         parent::__construct(Queries::ADD_PAYMENT_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -350,8 +374,18 @@ class AddRefundTransactionLogCommand extends SqlCommand
      * @param string $gatewayDateCreated
      * @param string $refundResponse
      */
-    public function __construct($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref,
-                                $dateCreated, $gatewayDateCreated, $refundResponse)
+    public function __construct(
+        $paymentTransactionLogId,
+        $status,
+        $transactionId,
+        $totalRefundAmount,
+        $paymentRefundAmount,
+        $feeRefundAmount,
+        $transactionHref,
+        $dateCreated,
+        $gatewayDateCreated,
+        $refundResponse
+    )
     {
         parent::__construct(Queries::ADD_REFUND_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $paymentTransactionLogId));
@@ -369,19 +403,19 @@ class AddRefundTransactionLogCommand extends SqlCommand
 
 class AddReservationSeriesCommand extends SqlCommand
 {
-    public function __construct(Date $dateCreated,
-                                $title,
-                                $description,
-                                $repeatType,
-                                $repeatOptions,
-                                $reservationTypeIds,
-                                $statusId,
-                                $ownerId,
-                                $allowParticipation,
-                                $termsAcceptanceDate,
-                                $lastActionBy
-    )
-    {
+    public function __construct(
+        Date $dateCreated,
+        $title,
+        $description,
+        $repeatType,
+        $repeatOptions,
+        $reservationTypeIds,
+        $statusId,
+        $ownerId,
+        $allowParticipation,
+        $termsAcceptanceDate,
+        $lastActionBy
+    ) {
         parent::__construct(Queries::ADD_RESERVATION_SERIES);
 
         if ($termsAcceptanceDate == null) {
@@ -468,11 +502,13 @@ class AddReservationResourceCommand extends SqlCommand
 
 class AddReservationCommand extends SqlCommand
 {
-    public function __construct(Date $startDate,
-                                Date $endDateUtc,
-                                $referenceNumber,
-                                $seriesId,
-                                $credits)
+    public function __construct(
+        Date $startDate,
+        Date $endDateUtc,
+        $referenceNumber,
+        $seriesId,
+        $credits
+    )
     {
         parent::__construct(Queries::ADD_RESERVATION);
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
@@ -527,11 +563,26 @@ class AddReservationWaitlistCommand extends SqlCommand
 
 class AddResourceCommand extends SqlCommand
 {
-    public function __construct($name, $schedule_id, $autoassign = 1, $admin_group_id = null,
-                                $location = null, $contact_info = null, $description = null, $notes = null,
-                                $status_id = 1, $min_duration = null, $min_increment = null, $max_duration = null,
-                                $unit_cost = null, $requires_approval = 0, $allow_multiday = 1,
-                                $max_participants = null, $min_notice_time_add = null, $max_notice_time = null)
+    public function __construct(
+        $name,
+        $schedule_id,
+        $autoassign = 1,
+        $admin_group_id = null,
+        $location = null,
+        $contact_info = null,
+        $description = null,
+        $notes = null,
+        $status_id = 1,
+        $min_duration = null,
+        $min_increment = null,
+        $max_duration = null,
+        $unit_cost = null,
+        $requires_approval = 0,
+        $allow_multiday = 1,
+        $max_participants = null,
+        $min_notice_time_add = null,
+        $max_notice_time = null
+    )
     {
         parent::__construct(Queries::ADD_RESOURCE);
 
@@ -1648,7 +1699,7 @@ class GetReservationsByAccessoryNameCommand extends SqlCommand
 
 class GetFullGroupReservationListCommand extends GetFullReservationListCommand
 {
-    public function __construct($groupIds = array())
+    public function __construct($groupIds = [])
     {
         parent::__construct();
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupIds));
@@ -1659,12 +1710,16 @@ class GetFullGroupReservationListCommand extends GetFullReservationListCommand
         $query = parent::GetQuery();
 
         $pos = strripos($query, 'WHERE');
-        $newQuery = substr_replace($query, 'INNER JOIN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) ss on ss.user_id = owner_id WHERE', $pos,
-            strlen('WHERE'));
+        $newQuery = substr_replace(
+            $query,
+            'INNER JOIN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) ss on ss.user_id = owner_id WHERE',
+            $pos,
+            strlen('WHERE')
+        );
 
-//		$newQuery = preg_replace('/WHERE/',
-//								 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ',
-//								 $query, 1);
+        //		$newQuery = preg_replace('/WHERE/',
+        //								 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ',
+        //								 $query, 1);
 
         return $newQuery;
     }
@@ -2123,8 +2178,24 @@ class MigratePasswordCommand extends SqlCommand
 
 class RegisterUserCommand extends SqlCommand
 {
-    public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
-                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId, $termsAcceptedDate)
+    public function __construct(
+        $username,
+        $email,
+        $fname,
+        $lname,
+        $password,
+        $salt,
+        $timezone,
+        $language,
+        $homepageId,
+        $phone,
+        $organization,
+        $position,
+        $userStatusId,
+        $publicId,
+        $scheduleId,
+        $termsAcceptedDate
+    )
     {
         parent::__construct(Queries::REGISTER_USER);
 
@@ -2228,7 +2299,6 @@ class RemoveReservationAccessoryCommand extends SqlCommand
 
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
-
     }
 }
 
@@ -2424,8 +2494,20 @@ class UpdateAnnouncementCommand extends SqlCommand
 
 class UpdateAttributeCommand extends SqlCommand
 {
-    public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory,
-                                $secondaryEntityIds, $isPrivate)
+    public function __construct(
+        $attributeId,
+        $label,
+        $type,
+        $category,
+        $regex,
+        $required,
+        $possibleValues,
+        $sortOrder,
+        $adminOnly,
+        $secondaryCategory,
+        $secondaryEntityIds,
+        $isPrivate
+    )
     {
         parent::__construct(Queries::UPDATE_ATTRIBUTE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
@@ -2502,14 +2584,16 @@ class UpdateFutureReservationsCommand extends SqlCommand
 
 class UpdateReservationCommand extends SqlCommand
 {
-    public function __construct($referenceNumber,
-                                $seriesId,
-                                Date $startDate,
-                                Date $endDate,
-                                Date $checkinDate,
-                                Date $checkoutDate,
-                                Date $previousEndDate,
-                                $credits)
+    public function __construct(
+        $referenceNumber,
+        $seriesId,
+        Date $startDate,
+        Date $endDate,
+        Date $checkinDate,
+        Date $checkoutDate,
+        Date $previousEndDate,
+        $credits
+    )
     {
         parent::__construct(Queries::UPDATE_RESERVATION_INSTANCE);
 
@@ -2526,18 +2610,18 @@ class UpdateReservationCommand extends SqlCommand
 
 class UpdateReservationSeriesCommand extends SqlCommand
 {
-    public function __construct($seriesId,
-                                $title,
-                                $description,
-                                $repeatType,
-                                $repeatOptions,
-                                Date $dateModified,
-                                $statusId,
-                                $ownerId,
-                                $allowParticipation,
-                                $lastActionBy
-    )
-    {
+    public function __construct(
+        $seriesId,
+        $title,
+        $description,
+        $repeatType,
+        $repeatOptions,
+        Date $dateModified,
+        $statusId,
+        $ownerId,
+        $allowParticipation,
+        $lastActionBy
+    ) {
         parent::__construct(Queries::UPDATE_RESERVATION_SERIES);
 
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
@@ -2555,39 +2639,41 @@ class UpdateReservationSeriesCommand extends SqlCommand
 
 class UpdateResourceCommand extends SqlCommand
 {
-    public function __construct($id,
-                                $name,
-                                $location,
-                                $contact,
-                                $notes,
-                                TimeInterval $minDuration,
-                                TimeInterval $maxDuration,
-                                $autoAssign,
-                                $requiresApproval,
-                                $allowMultiday,
-                                $maxParticipants,
-                                TimeInterval $minNoticeTimeAdd,
-                                TimeInterval $maxNoticeTime,
-                                $description,
-                                $imageName,
-                                $scheduleId,
-                                $adminGroupId,
-                                $allowCalendarSubscription,
-                                $publicId,
-                                $sortOrder,
-                                $resourceTypeId,
-                                $statusId,
-                                $reasonId,
-                                TimeInterval $bufferTime,
-                                $color,
-                                $checkinEnabled,
-                                $autoReleaseMinutes,
-                                $isDisplayEnabled,
-                                $credits,
-                                $peakCredits,
-                                TimeInterval $minNoticeTimeUpdate,
-                                TimeInterval $minNoticeTimeDelete,
-                                $serializedProperties)
+    public function __construct(
+        $id,
+        $name,
+        $location,
+        $contact,
+        $notes,
+        TimeInterval $minDuration,
+        TimeInterval $maxDuration,
+        $autoAssign,
+        $requiresApproval,
+        $allowMultiday,
+        $maxParticipants,
+        TimeInterval $minNoticeTimeAdd,
+        TimeInterval $maxNoticeTime,
+        $description,
+        $imageName,
+        $scheduleId,
+        $adminGroupId,
+        $allowCalendarSubscription,
+        $publicId,
+        $sortOrder,
+        $resourceTypeId,
+        $statusId,
+        $reasonId,
+        TimeInterval $bufferTime,
+        $color,
+        $checkinEnabled,
+        $autoReleaseMinutes,
+        $isDisplayEnabled,
+        $credits,
+        $peakCredits,
+        TimeInterval $minNoticeTimeUpdate,
+        TimeInterval $minNoticeTimeDelete,
+        $serializedProperties
+    )
     {
         parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2662,21 +2748,21 @@ class UpdateResourceTypeCommand extends SqlCommand
 
 class UpdateScheduleCommand extends SqlCommand
 {
-    public function __construct($scheduleId,
-                                $name,
-                                $isDefault,
-                                $weekdayStart,
-                                $daysVisible,
-                                $subscriptionEnabled,
-                                $publicId,
-                                $adminGroupId,
-                                Date $availabilityBegin,
-                                Date $availabilityEnd,
-                                $defaultStyle,
-                                $totalConcurrentReservations,
-                                $maxResourcesPerReservation
-    )
-    {
+    public function __construct(
+        $scheduleId,
+        $name,
+        $isDefault,
+        $weekdayStart,
+        $daysVisible,
+        $subscriptionEnabled,
+        $publicId,
+        $adminGroupId,
+        Date $availabilityBegin,
+        Date $availabilityEnd,
+        $defaultStyle,
+        $totalConcurrentReservations,
+        $maxResourcesPerReservation
+    ) {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
@@ -2724,7 +2810,8 @@ class UpdateUserCommand extends SqlCommand
         $publicId,
         $language,
         $scheduleId,
-        $currentCreditCount)
+        $currentCreditCount
+    )
     {
         parent::__construct(Queries::UPDATE_USER);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -2744,7 +2831,6 @@ class UpdateUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCreditCount));
-
     }
 }
 
@@ -2755,8 +2841,7 @@ class UpdateUserAttributesCommand extends SqlCommand
         $phoneNumber,
         $organization,
         $position
-    )
-    {
+    ) {
         parent::__construct(Queries::UPDATE_USER_ATTRIBUTES);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::PHONE, $phoneNumber));

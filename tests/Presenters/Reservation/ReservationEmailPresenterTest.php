@@ -73,7 +73,7 @@ class ReservationEmailPresenterTests extends TestBase
         $reservation->WithOwner($this->fakeUser->UserId);
         $reservation->WithCurrentInstance(new TestReservation());
 
-        $this->page->_EmailAddresses = array('email1', 'email2');
+        $this->page->_EmailAddresses = ['email1', 'email2'];
         $this->reservationRepository->_Series = $reservation;
 
         $user = new FakeUser($this->fakeUser->UserId);
@@ -95,7 +95,7 @@ class ReservationEmailPresenterTests extends TestBase
         $this->permissionService->_CanViewResource[2] = true;
         $this->permissionService->_CanViewResource[3] = true;
 
-        $this->page->_EmailAddresses = array('email1', 'email2');
+        $this->page->_EmailAddresses = ['email1', 'email2'];
         $this->reservationRepository->_Series = $reservation;
 
         $user = new FakeUser($this->fakeUser->UserId);
@@ -117,7 +117,7 @@ class ReservationEmailPresenterTests extends TestBase
         $this->permissionService->_CanViewResource[2] = false;
         $this->permissionService->_CanViewResource[3] = false;
 
-        $this->page->_EmailAddresses = array('email1', 'email2');
+        $this->page->_EmailAddresses = ['email1', 'email2'];
         $this->reservationRepository->_Series = $reservation;
 
         $user = new FakeUser($this->fakeUser->UserId);
@@ -134,7 +134,7 @@ class ReservationEmailPresenterTests extends TestBase
 class FakeReservationEmailPage implements IReservationEmailPage
 {
     public $_ReferenceNumber = 'reference number';
-    public $_EmailAddresses = array();
+    public $_EmailAddresses = [];
 
     public function GetReferenceNumber()
     {

@@ -4,142 +4,136 @@ require_once(ROOT_DIR . 'Domain/Schedule.php');
 
 class CalendarWeek implements ICalendarSegment
 {
-	/**
-	 * @var array|CalendarDay[]
-	 */
-	private $indexedDays = array();
+    /**
+     * @var array|CalendarDay[]
+     */
+    private $indexedDays = [];
 
-	/**
-	 * @var array|CalendarDay[]
-	 */
-	private $days = array();
+    /**
+     * @var array|CalendarDay[]
+     */
+    private $days = [];
 
-	/**
-	 * @var string
-	 */
-	private $timezone;
+    /**
+     * @var string
+     */
+    private $timezone;
 
-	/**
-	 * @var array|CalendarReservation[]
-	 */
-	private $reservations;
+    /**
+     * @var array|CalendarReservation[]
+     */
+    private $reservations;
 
-	public function __construct($timezone)
-	{
-		$this->timezone = $timezone;
+    public function __construct($timezone)
+    {
+        $this->timezone = $timezone;
 
-		for ($i = 0; $i < 7; $i++)
-		{
-			$this->indexedDays[$i] = CalendarDay::Null();
-		}
-	}
+        for ($i = 0; $i < 7; $i++) {
+            $this->indexedDays[$i] = CalendarDay::Null();
+        }
+    }
 
-	public static function FromDate($year, $month, $day, $timezone, $firstDayOfWeek = 0)
-	{
-		$week = new CalendarWeek($timezone);
+    public static function FromDate($year, $month, $day, $timezone, $firstDayOfWeek = 0)
+    {
+        $week = new CalendarWeek($timezone);
 
-		$date = Date::Create($year, $month, $day, 0, 0, 0, $timezone);
+        $date = Date::Create($year, $month, $day, 0, 0, 0, $timezone);
 
-		$start = $date->Weekday();
+        $start = $date->Weekday();
 
-		if ($firstDayOfWeek == Schedule::Today)
-		{
-			$firstDayOfWeek = 0;
-		}
+        if ($firstDayOfWeek == Schedule::Today) {
+            $firstDayOfWeek = 0;
+        }
 
-		$adjustedDays = ($firstDayOfWeek - $start);
+        $adjustedDays = ($firstDayOfWeek - $start);
 
-		if ($start < $firstDayOfWeek)
-		{
-			$adjustedDays = $adjustedDays - 7;
-		}
+        if ($start < $firstDayOfWeek) {
+            $adjustedDays = $adjustedDays - 7;
+        }
 
-		$date = $date->AddDays($adjustedDays);
+        $date = $date->AddDays($adjustedDays);
 
-		for ($i = 0; $i < 7; $i++)
-		{
-			$week->AddDay(new CalendarDay($date->AddDays($i)));
-		}
+        for ($i = 0; $i < 7; $i++) {
+            $week->AddDay(new CalendarDay($date->AddDays($i)));
+        }
 
-		return $week;
-	}
+        return $week;
+    }
 
-	public function FirstDay()
-	{
-		return $this->days[0]->Date();
-	}
+    public function FirstDay()
+    {
+        return $this->days[0]->Date();
+    }
 
-	public function LastDay()
-	{
-		return $this->days[count($this->days) - 1]->Date();
-	}
+    public function LastDay()
+    {
+        return $this->days[count($this->days) - 1]->Date();
+    }
 
-	public function AddReservations($reservations)
-	{
-		/** @var $reservation CalendarReservation */
-		foreach ($reservations as $reservation)
-		{
-			$this->AddReservation($reservation);
-		}
-	}
+    public function AddReservations($reservations)
+    {
+        /** @var $reservation CalendarReservation */
+        foreach ($reservations as $reservation) {
+            $this->AddReservation($reservation);
+        }
+    }
 
-	public function AddDay(CalendarDay $day)
-	{
-		$this->days[] = $day;
-		$this->indexedDays[$day->Weekday()] = $day;
-	}
+    public function AddDay(CalendarDay $day)
+    {
+        $this->days[] = $day;
+        $this->indexedDays[$day->Weekday()] = $day;
+    }
 
-	/**
-	 * @return array|ICalendarDay[]
-	 */
-	public function Days()
-	{
-		return $this->indexedDays;
-	}
+    /**
+     * @return array|ICalendarDay[]
+     */
+    public function Days()
+    {
+        return $this->indexedDays;
+    }
 
-	/**
-	 * @param $reservation CalendarReservation
-	 * @return void
-	 */
-	public function AddReservation($reservation)
-	{
-		$this->reservations[] = $reservation;
-		/** @var $day CalendarDay */
-		foreach ($this->indexedDays as $day)
-		{
-			$day->AddReservation($reservation);
-		}
-	}
+    /**
+     * @param $reservation CalendarReservation
+     * @return void
+     */
+    public function AddReservation($reservation)
+    {
+        $this->reservations[] = $reservation;
+        /** @var $day CalendarDay */
+        foreach ($this->indexedDays as $day) {
+            $day->AddReservation($reservation);
+        }
+    }
 
-	/**
-	 * @return string|CalendarTypes
-	 */
-	public function GetType()
-	{
-		return CalendarTypes::Week;
-	}
+    /**
+     * @return string|CalendarTypes
+     */
+    public function GetType()
+    {
+        return CalendarTypes::Week;
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function GetPreviousDate()
-	{
-		return $this->FirstDay()->AddDays(-7);
-	}
+    /**
+     * @return Date
+     */
+    public function GetPreviousDate()
+    {
+        return $this->FirstDay()->AddDays(-7);
+    }
 
-	/**
-	 * @return Date
-	 */
-	public function GetNextDate()
-	{
-		return $this->FirstDay()->AddDays(7);
-	}
+    /**
+     * @return Date
+     */
+    public function GetNextDate()
+    {
+        return $this->FirstDay()->AddDays(7);
+    }
 
-	/**
-	 * @return array|CalendarReservation[]
-	 */
-	public function Reservations()
-	{
-		return $this->reservations;
-	}
+    /**
+     * @return array|CalendarReservation[]
+     */
+    public function Reservations()
+    {
+        return $this->reservations;
+    }
 }

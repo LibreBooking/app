@@ -18,8 +18,7 @@ class ScheduleAvailabilityRule implements IReservationValidationRule
     {
         $schedule = $this->scheduleRepository->LoadById($reservationSeries->ScheduleId());
 
-        if (!$schedule->HasAvailability())
-        {
+        if (!$schedule->HasAvailability()) {
             return new ReservationRuleResult();
         }
 
@@ -43,8 +42,12 @@ class ScheduleAvailabilityRule implements IReservationValidationRule
         $format = $resources->GetDateFormat(ResourceKeys::DATE_GENERAL);
         $tz = $schedule->GetTimezone();
 
-        return new ReservationRuleResult($isValid, $resources->GetString('ScheduleAvailabilityError',
-            array($beginAvailability->ToTimezone($tz)->Format($format), $endAvailability->ToTimezone($tz)->Format($format)))
+        return new ReservationRuleResult(
+            $isValid,
+            $resources->GetString(
+            'ScheduleAvailabilityError',
+            [$beginAvailability->ToTimezone($tz)->Format($format), $endAvailability->ToTimezone($tz)->Format($format)]
+        )
         );
     }
 

@@ -6,7 +6,7 @@ interface ICalendarExportValidator
      * @abstract
      * @return bool
      */
-    function IsValid();
+    public function IsValid();
 }
 
 class CalendarSubscriptionValidator implements ICalendarExportValidator
@@ -32,8 +32,7 @@ class CalendarSubscriptionValidator implements ICalendarExportValidator
         $key = Configuration::Instance()->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY);
         $providedKey = $this->page->GetSubscriptionKey();
 
-        if (empty($key) || $providedKey != $key)
-        {
+        if (empty($key) || $providedKey != $key) {
             Log::Debug('Empty or invalid subscription key. Key provided: %s', $providedKey);
 
             return false;
@@ -43,18 +42,15 @@ class CalendarSubscriptionValidator implements ICalendarExportValidator
         $scheduleId = $this->page->GetScheduleId();
         $userId = $this->page->GetUserId();
 
-        if (!empty($resourceId))
-        {
+        if (!empty($resourceId)) {
             return $this->subscriptionService->GetResource($resourceId)->GetIsCalendarSubscriptionAllowed();
         }
 
-        if (!empty($scheduleId))
-        {
+        if (!empty($scheduleId)) {
             return $this->subscriptionService->GetSchedule($scheduleId)->GetIsCalendarSubscriptionAllowed();
         }
 
-        if (!empty($userId))
-        {
+        if (!empty($userId)) {
             return $this->subscriptionService->GetUser($userId)->GetIsCalendarSubscriptionAllowed();
         }
 

@@ -6,7 +6,6 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 
 class ImportPage extends AdminPage
 {
-
     public function __construct()
     {
         parent::__construct('Import', 1);

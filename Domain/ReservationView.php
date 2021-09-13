@@ -67,37 +67,37 @@ class ReservationView
     /**
      * @var int[]
      */
-    public $AdditionalResourceIds = array();
+    public $AdditionalResourceIds = [];
 
     /**
      * @var ReservationResourceView[]
      */
-    public $Resources = array();
+    public $Resources = [];
 
     /**
      * @var ReservationUserView[]
      */
-    public $Participants = array();
+    public $Participants = [];
 
     /**
      * @var ReservationUserView[]
      */
-    public $Invitees = array();
+    public $Invitees = [];
 
     /**
      * @var array|ReservationAccessoryView[]
      */
-    public $Accessories = array();
+    public $Accessories = [];
 
     /**
      * @var array|AttributeValue[]
      */
-    public $Attributes = array();
+    public $Attributes = [];
 
     /**
      * @var array|ReservationAttachmentView[]
      */
-    public $Attachments = array();
+    public $Attachments = [];
 
     /**
      * @var ReservationReminderView|null
@@ -112,12 +112,12 @@ class ReservationView
     /**
      * @var string[]
      */
-    public $ParticipatingGuests = array();
+    public $ParticipatingGuests = [];
 
     /**
      * @var string[]
      */
-    public $InvitedGuests = array();
+    public $InvitedGuests = [];
 
     /**
      * @var bool
@@ -166,8 +166,7 @@ class ReservationView
      */
     public function GetAttributeValue($attributeId)
     {
-        if (array_key_exists($attributeId, $this->Attributes))
-        {
+        if (array_key_exists($attributeId, $this->Attributes)) {
             return $this->Attributes[$attributeId]->Value;
         }
 
@@ -208,10 +207,8 @@ class ReservationView
 
     public function IsCheckinEnabled()
     {
-        foreach ($this->Resources as $resource)
-        {
-            if ($resource->IsCheckInEnabled())
-            {
+        foreach ($this->Resources as $resource) {
+            if ($resource->IsCheckInEnabled()) {
                 return true;
             }
         }
@@ -221,10 +218,9 @@ class ReservationView
 
     public function IsCheckinAvailable()
     {
-		$checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
+        $checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
 
-        if ($this->CheckinDate->ToString() == '' && Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate))
-        {
+        if ($this->CheckinDate->ToString() == '' && Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate)) {
             return $this->IsCheckinEnabled();
         }
 
@@ -235,8 +231,7 @@ class ReservationView
     {
         if ($this->StartDate->LessThan(Date::Now()) &&
             $this->CheckoutDate->ToString() == '' &&
-            $this->CheckinDate->ToString() != '')
-        {
+            $this->CheckinDate->ToString() != '') {
             return $this->IsCheckinEnabled();
         }
 
@@ -246,17 +241,14 @@ class ReservationView
     public function AutoReleaseMinutes()
     {
         $autoRelease = 0;
-        foreach ($this->Resources as $resource)
-        {
+        foreach ($this->Resources as $resource) {
             $min = $resource->GetAutoReleaseMinutes();
-            if (!empty($min) && ($autoRelease == 0 || $min < $autoRelease))
-            {
+            if (!empty($min) && ($autoRelease == 0 || $min < $autoRelease)) {
                 $autoRelease = $min;
             }
         }
 
-        if (!empty($autoRelease))
-        {
+        if (!empty($autoRelease)) {
             return $autoRelease;
         }
 
@@ -274,8 +266,7 @@ class NullReservationView extends ReservationView
 
     public static function Instance()
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::$instance = new NullReservationView();
         }
 

@@ -2,10 +2,10 @@
 
 interface IReservationNotificationFactory
 {
-	/**
-	 * @param ReservationAction $reservationAction
-	 * @param UserSession $userSession
-	 * @return IReservationNotificationService
-	 */
-	function Create($reservationAction, $userSession);
+    /**
+     * @param ReservationAction $reservationAction
+     * @param UserSession $userSession
+     * @return IReservationNotificationService
+     */
+    public function Create($reservationAction, $userSession);
 }

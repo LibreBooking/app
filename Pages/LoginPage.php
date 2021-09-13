@@ -1,9 +1,8 @@
 <?php
 
 // debugging tools / libs
-if (file_exists(ROOT_DIR . 'vendor/autoload.php'))
-{
-	require ROOT_DIR . 'vendor/autoload.php';
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+    require ROOT_DIR . 'vendor/autoload.php';
 }
 
 require_once(ROOT_DIR . 'Pages/Page.php');
@@ -176,8 +175,7 @@ class LoginPage extends Page implements ILoginPage
         $resumeUrl = $this->GetForm(FormKeys::RESUME);
         if (empty($resumeUrl)) {
             return $this->GetQuerystring(QueryStringKeys::REDIRECT);
-        }
-        else {
+        } else {
             return $this->GetForm(FormKeys::RESUME);
         }
     }

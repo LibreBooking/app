@@ -9,60 +9,61 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 interface IICalImportPage extends IActionPage
 {
-	/**
-	 * @return UploadedFile
-	 */
-	public function GetImportFile();
+    /**
+     * @return UploadedFile
+     */
+    public function GetImportFile();
 
-	/**
-	 * @param int $numberImported
-	 * @param int $numberSkipped
-	 */
-	public function SetNumberImported($numberImported, $numberSkipped);
+    /**
+     * @param int $numberImported
+     * @param int $numberSkipped
+     */
+    public function SetNumberImported($numberImported, $numberSkipped);
 }
 
 class ICalImportPage extends ActionPage implements IICalImportPage
 {
+    /**
+     * @var ICalImportPresenter
+     */
+    private $presenter;
 
-	/**
-	 * @var ICalImportPresenter
-	 */
-	private $presenter;
+    public function __construct()
+    {
+        $this->presenter = new ICalImportPresenter(
+            $this,
+            new UserRepository(),
+            new ResourceRepository(),
+            new ReservationRepository(),
+            new Registration(),
+            new ScheduleRepository()
+        );
 
-	public function __construct()
-	{
-		$this->presenter = new ICalImportPresenter($this,
-												   new UserRepository(),
-												   new ResourceRepository(),
-												   new ReservationRepository(),
-												   new Registration(),
-												   new ScheduleRepository());
+        parent::__construct('ImportICS', 1);
+    }
 
-		parent::__construct('ImportICS', 1);
-	}
+    public function ProcessAction()
+    {
+        $this->presenter->ProcessAction();
+    }
 
-	public function ProcessAction()
-	{
-		$this->presenter->ProcessAction();
-	}
+    public function ProcessDataRequest($dataRequest)
+    {
+        // no-op
+    }
 
-	public function ProcessDataRequest($dataRequest)
-	{
-		// no-op
-	}
+    public function ProcessPageLoad()
+    {
+        $this->Display('Admin/Import/ics_import.tpl');
+    }
 
-	public function ProcessPageLoad()
-	{
-		$this->Display('Admin/Import/ics_import.tpl');
-	}
+    public function GetImportFile()
+    {
+        return $this->server->GetFile(FormKeys::ICS_IMPORT_FILE);
+    }
 
-	public function GetImportFile()
-	{
-		return $this->server->GetFile(FormKeys::ICS_IMPORT_FILE);
-	}
-
-	public function SetNumberImported($numberImported, $numberSkipped)
-	{
-		$this->SetJson(array('importCount' => $numberImported, 'skippedRows' => $numberSkipped));
-	}
+    public function SetNumberImported($numberImported, $numberSkipped)
+    {
+        $this->SetJson(['importCount' => $numberImported, 'skippedRows' => $numberSkipped]);
+    }
 }

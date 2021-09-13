@@ -13,21 +13,21 @@ class FakeReservationSavePage implements IReservationSavePage
     public $endDate = '2010-01-02';
     public $startTime = '05:30';
     public $endTime = '04:00';
-    public $resourceIds = array(11, 22, 120);
+    public $resourceIds = [11, 22, 120];
     public $repeatType = RepeatType::Daily;
     public $repeatInterval = 2;
-    public $repeatWeekdays = array(0, 1, 2);
+    public $repeatWeekdays = [0, 1, 2];
     public $repeatMonthlyType = RepeatMonthlyType::DayOfMonth;
     public $repeatTerminationDate = '2010-10-10';
     public $saveSuccessful = false;
-    public $errors = array();
-    public $warnings = array();
+    public $errors = [];
+    public $warnings = [];
     public $referenceNumber;
     public $requiresApproval;
-    public $participants = array(10, 20, 40);
-    public $invitees = array(11, 21, 41);
-    public $accessories = array();
-    public $attributes = array();
+    public $participants = [10, 20, 40];
+    public $invitees = [11, 21, 41];
+    public $accessories = [];
+    public $attributes = [];
     public $attachment;
     public $startReminderValue = "15";
     public $startReminderInterval = ReservationReminderInterval::Minutes;
@@ -36,10 +36,10 @@ class FakeReservationSavePage implements IReservationSavePage
     public $hasEndReminder = true;
     public $allowParticipation;
     public $canBeRetried = false;
-    public $retryParameters = array();
-    public $retryMessages = array();
-    public $participatingGuests = array();
-    public $invitedGuests = array();
+    public $retryParameters = [];
+    public $retryMessages = [];
+    public $participatingGuests = [];
+    public $invitedGuests = [];
     public $canJoinWaitlist = false;
     public $repeatCustomDates = [];
 
@@ -49,8 +49,8 @@ class FakeReservationSavePage implements IReservationSavePage
         $this->startDate = $now->AddDays(5)->Format('Y-m-d');
         $this->endDate = $now->AddDays(6)->Format('Y-m-d');
         $this->repeatTerminationDate = $now->AddDays(60)->Format('Y-m-d');
-        $this->accessories = array(new FakeAccessoryFormElement(1, 2, 'accessoryname'));
-        $this->attributes = array(new AttributeFormElement(1, "something"));
+        $this->accessories = [new FakeAccessoryFormElement(1, 2, 'accessoryname')];
+        $this->attributes = [new AttributeFormElement(1, "something")];
         $this->attachment = new FakeUploadedFile();
     }
 
@@ -161,7 +161,7 @@ class FakeReservationSavePage implements IReservationSavePage
 
     public function GetAttachments()
     {
-        return array($this->attachment);
+        return [$this->attachment];
     }
 
     /**

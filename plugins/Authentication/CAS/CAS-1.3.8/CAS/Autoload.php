@@ -31,7 +31,7 @@ function CAS_autoload($class)
     }
     // Setup the include path if it's not already set from a previous call
     if (empty($include_path)) {
-        $include_path = array(dirname(dirname(__FILE__)), dirname(dirname(__FILE__)) . '/../test/' );
+        $include_path = [dirname(dirname(__FILE__)), dirname(dirname(__FILE__)) . '/../test/' ];
     }
 
     // Declare local variable to store the expected full path to the file
@@ -61,16 +61,16 @@ function CAS_autoload($class)
     );
     $trace = $e->getTrace();
     if (isset($trace[2]) && isset($trace[2]['function'])
-        && in_array($trace[2]['function'], array('class_exists', 'interface_exists'))
+        && in_array($trace[2]['function'], ['class_exists', 'interface_exists'])
     ) {
         return false;
     }
     if (isset($trace[1]) && isset($trace[1]['function'])
-        && in_array($trace[1]['function'], array('class_exists', 'interface_exists'))
+        && in_array($trace[1]['function'], ['class_exists', 'interface_exists'])
     ) {
         return false;
     }
-    die ((string) $e);
+    die((string) $e);
 }
 
 // set up __autoload
@@ -86,5 +86,3 @@ if (!(spl_autoload_functions())
         spl_autoload_register('__autoload');
     }
 }
-
-?>

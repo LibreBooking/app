@@ -2,6 +2,6 @@
 
 class ResourceLevel
 {
-	const Primary = 1;
-	const Additional = 2;
+    public const Primary = 1;
+    public const Additional = 2;
 }

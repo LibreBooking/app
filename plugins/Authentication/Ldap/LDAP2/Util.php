@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the Net_LDAP2_Util interface class.
@@ -40,7 +41,7 @@ class Net_LDAP2_Util extends PEAR
      */
     public function __construct()
     {
-         // We do nothing here, since all methods can be called statically.
+        // We do nothing here, since all methods can be called statically.
          // In Net_LDAP <= 0.7, we needed a instance of Util, because
          // it was possible to do utf8 encoding and decoding, but this
          // has been moved to the LDAP class. The constructor remains only
@@ -88,14 +89,20 @@ class Net_LDAP2_Util extends PEAR
     * @return array   Parts of the exploded DN
     * @todo implement BER
     */
-    public static function ldap_explode_dn($dn, $options = array('casefold' => 'upper'))
+    public static function ldap_explode_dn($dn, $options = ['casefold' => 'upper'])
     {
-        if (!isset($options['onlyvalues'])) $options['onlyvalues']  = false;
-        if (!isset($options['reverse']))    $options['reverse']     = false;
-        if (!isset($options['casefold']))   $options['casefold']    = 'upper';
+        if (!isset($options['onlyvalues'])) {
+            $options['onlyvalues']  = false;
+        }
+        if (!isset($options['reverse'])) {
+            $options['reverse']     = false;
+        }
+        if (!isset($options['casefold'])) {
+            $options['casefold']    = 'upper';
+        }
 
         // Escaping of DN and stripping of "OID."
-        $dn = self::canonical_dn($dn, array('casefold' => $options['casefold']));
+        $dn = self::canonical_dn($dn, ['casefold' => $options['casefold']]);
 
         // splitting the DN
         $dn_array = preg_split('/(?<=[^\\\\]),/', $dn);
@@ -121,7 +128,7 @@ class Net_LDAP2_Util extends PEAR
                             },
                             $subrdn_v
                         );
-                    } else if ($options['casefold'] == 'lower') {
+                    } elseif ($options['casefold'] == 'lower') {
                         $subrdn_v = preg_replace_callback(
                             "/^\w+=/",
                             function ($matches) {
@@ -156,7 +163,7 @@ class Net_LDAP2_Util extends PEAR
                         },
                         $value
                     );
-                } else if ($options['casefold'] == 'lower') {
+                } elseif ($options['casefold'] == 'lower') {
                     $value = preg_replace_callback(
                         "/^\w+=/",
                         function ($matches) {
@@ -199,24 +206,24 @@ class Net_LDAP2_Util extends PEAR
     * @static
     * @return array The array $values, but escaped
     */
-    public static function escape_dn_value($values = array())
+    public static function escape_dn_value($values = [])
     {
         // Parameter validation
         if (!is_array($values)) {
-            $values = array($values);
+            $values = [$values];
         }
 
         foreach ($values as $key => $val) {
             // Escaping of filter meta characters
             $val = str_replace('\\', '\\\\', $val);
-            $val = str_replace(',',    '\,', $val);
-            $val = str_replace('+',    '\+', $val);
-            $val = str_replace('"',    '\"', $val);
-            $val = str_replace('<',    '\<', $val);
-            $val = str_replace('>',    '\>', $val);
-            $val = str_replace(';',    '\;', $val);
-            $val = str_replace('#',    '\#', $val);
-            $val = str_replace('=',    '\=', $val);
+            $val = str_replace(',', '\,', $val);
+            $val = str_replace('+', '\+', $val);
+            $val = str_replace('"', '\"', $val);
+            $val = str_replace('<', '\<', $val);
+            $val = str_replace('>', '\>', $val);
+            $val = str_replace(';', '\;', $val);
+            $val = str_replace('#', '\#', $val);
+            $val = str_replace('=', '\=', $val);
 
             // ASCII < 32 escaping
             $val = self::asc2hex32($val);
@@ -232,7 +239,9 @@ class Net_LDAP2_Util extends PEAR
                 }
             }
 
-            if (null === $val) $val = '\0';  // apply escaped "null" if string is empty
+            if (null === $val) {
+                $val = '\0';
+            }  // apply escaped "null" if string is empty
 
             $values[$key] = $val;
         }
@@ -251,24 +260,24 @@ class Net_LDAP2_Util extends PEAR
     * @return array Same as $values, but unescaped
     * @static
     */
-    public static function unescape_dn_value($values = array())
+    public static function unescape_dn_value($values = [])
     {
         // Parameter validation
         if (!is_array($values)) {
-            $values = array($values);
+            $values = [$values];
         }
 
         foreach ($values as $key => $val) {
             // strip slashes from special chars
             $val = str_replace('\\\\', '\\', $val);
-            $val = str_replace('\,',    ',', $val);
-            $val = str_replace('\+',    '+', $val);
-            $val = str_replace('\"',    '"', $val);
-            $val = str_replace('\<',    '<', $val);
-            $val = str_replace('\>',    '>', $val);
-            $val = str_replace('\;',    ';', $val);
-            $val = str_replace('\#',    '#', $val);
-            $val = str_replace('\=',    '=', $val);
+            $val = str_replace('\,', ',', $val);
+            $val = str_replace('\+', '+', $val);
+            $val = str_replace('\"', '"', $val);
+            $val = str_replace('\<', '<', $val);
+            $val = str_replace('\>', '>', $val);
+            $val = str_replace('\;', ';', $val);
+            $val = str_replace('\#', '#', $val);
+            $val = str_replace('\=', '=', $val);
 
             // Translate hex code into ascii
             $values[$key] = self::hex2asc($val);
@@ -313,9 +322,11 @@ class Net_LDAP2_Util extends PEAR
     * @return false|string The canonical DN or FALSE
     * @todo implement option mbcescape
     */
-    public static function canonical_dn($dn, $options = array('casefold' => 'upper', 'separator' => ','))
+    public static function canonical_dn($dn, $options = ['casefold' => 'upper', 'separator' => ','])
     {
-        if ($dn === '') return $dn;  // empty DN is valid!
+        if ($dn === '') {
+            return $dn;
+        }  // empty DN is valid!
 
         // options check
         if (!isset($options['reverse'])) {
@@ -323,8 +334,12 @@ class Net_LDAP2_Util extends PEAR
         } else {
             $options['reverse'] = true;
         }
-        if (!isset($options['casefold']))  $options['casefold'] = 'upper';
-        if (!isset($options['separator'])) $options['separator'] = ',';
+        if (!isset($options['casefold'])) {
+            $options['casefold'] = 'upper';
+        }
+        if (!isset($options['separator'])) {
+            $options['separator'] = ',';
+        }
 
 
         if (!is_array($dn)) {
@@ -344,7 +359,7 @@ class Net_LDAP2_Util extends PEAR
             }
             // convert to indexed, if associative array detected
             if ($assoc) {
-                $newdn = array();
+                $newdn = [];
                 foreach ($dn as $dn_key => $dn_part) {
                     if (is_array($dn_part)) {
                         ksort($dn_part, SORT_STRING); // we assume here, that the rdn parts are also associative
@@ -369,7 +384,9 @@ class Net_LDAP2_Util extends PEAR
                         $subval = $subkey.'='.$subval;
                     }
                     $subval_processed = self::canonical_dn($subval);
-                    if (false === $subval_processed) return false;
+                    if (false === $subval_processed) {
+                        return false;
+                    }
                     $dnval_new .= $subval_processed.'+';
                 }
                 $dn[$pos] = substr($dnval_new, 0, -1); // store RDN part, strip last plus
@@ -384,12 +401,13 @@ class Net_LDAP2_Util extends PEAR
                     sort($rdns, SORT_STRING); // Sort RDN keys alphabetically
                     foreach ($rdns as $rdn) {
                         $subval_processed = self::canonical_dn($rdn);
-                        if (false === $subval_processed) return false;
+                        if (false === $subval_processed) {
+                            return false;
+                        }
                         $rdn_string .= $subval_processed.'+';
                     }
 
                     $dn[$pos] = substr($rdn_string, 0, -1); // store RDN part, strip last plus
-
                 } else {
                     // no multivalued RDN!
                     // split at first unescaped "="
@@ -401,14 +419,18 @@ class Net_LDAP2_Util extends PEAR
                     if (substr(strtolower($ocl), 0, 4) == 'oid.') {
                         $ocl = substr($ocl, 4);
                     } else {
-                        if ($options['casefold'] == 'upper') $ocl = strtoupper($ocl);
-                        if ($options['casefold'] == 'lower') $ocl = strtolower($ocl);
-                        $ocl = self::escape_dn_value(array($ocl));
+                        if ($options['casefold'] == 'upper') {
+                            $ocl = strtoupper($ocl);
+                        }
+                        if ($options['casefold'] == 'lower') {
+                            $ocl = strtolower($ocl);
+                        }
+                        $ocl = self::escape_dn_value([$ocl]);
                         $ocl = $ocl[0];
                     }
 
                     // escaping of dn-value
-                    $val = self::escape_dn_value(array($val));
+                    $val = self::escape_dn_value([$val]);
                     $val = str_replace('/', '\/', $val[0]);
 
                     $dn[$pos] = $ocl.'='.$val;
@@ -416,7 +438,9 @@ class Net_LDAP2_Util extends PEAR
             }
         }
 
-        if ($options['reverse']) $dn = array_reverse($dn);
+        if ($options['reverse']) {
+            $dn = array_reverse($dn);
+        }
         return implode($options['separator'], $dn);
     }
 
@@ -432,24 +456,26 @@ class Net_LDAP2_Util extends PEAR
     * @static
     * @return array Array $values, but escaped
     */
-    public static function escape_filter_value($values = array())
+    public static function escape_filter_value($values = [])
     {
         // Parameter validation
         if (!is_array($values)) {
-            $values = array($values);
+            $values = [$values];
         }
 
         foreach ($values as $key => $val) {
             // Escaping of filter meta characters
             $val = str_replace('\\', '\5c', $val);
-            $val = str_replace('*',  '\2a', $val);
-            $val = str_replace('(',  '\28', $val);
-            $val = str_replace(')',  '\29', $val);
+            $val = str_replace('*', '\2a', $val);
+            $val = str_replace('(', '\28', $val);
+            $val = str_replace(')', '\29', $val);
 
             // ASCII < 32 escaping
             $val = self::asc2hex32($val);
 
-            if (null === $val) $val = '\0';  // apply escaped "null" if string is empty
+            if (null === $val) {
+                $val = '\0';
+            }  // apply escaped "null" if string is empty
 
             $values[$key] = $val;
         }
@@ -467,11 +493,11 @@ class Net_LDAP2_Util extends PEAR
     * @static
     * @return array Array $values, but unescaped
     */
-    public static function unescape_filter_value($values = array())
+    public static function unescape_filter_value($values = [])
     {
         // Parameter validation
         if (!is_array($values)) {
-            $values = array($values);
+            $values = [$values];
         }
 
         foreach ($values as $key => $value) {
@@ -496,7 +522,9 @@ class Net_LDAP2_Util extends PEAR
             $char = substr($string, $i, 1);
             if (ord($char) < 32) {
                 $hex = dechex(ord($char));
-                if (strlen($hex) == 1) $hex = '0'.$hex;
+                if (strlen($hex) == 1) {
+                    $hex = '0'.$hex;
+                }
                 $string = str_replace($char, '\\'.$hex, $string);
             }
         }
@@ -577,7 +605,9 @@ class Net_LDAP2_Util extends PEAR
     */
     public static function split_attribute_string($attr, $extended=false, $withDelim=false)
     {
-	if ($withDelim) $withDelim = PREG_SPLIT_DELIM_CAPTURE;
+        if ($withDelim) {
+            $withDelim = PREG_SPLIT_DELIM_CAPTURE;
+        }
 
         if (!$extended) {
             return preg_split('/(?<!\\\\)(=)/', $attr, 2, $withDelim);
@@ -595,7 +625,7 @@ class Net_LDAP2_Util extends PEAR
     * @return array Corrected array
     * @access protected
     */
-    protected static function correct_dn_splitting($dn = array(), $separator = ',')
+    protected static function correct_dn_splitting($dn = [], $separator = ',')
     {
         foreach ($dn as $key => $dn_value) {
             $dn_value = $dn[$key]; // refresh value (foreach caches!)

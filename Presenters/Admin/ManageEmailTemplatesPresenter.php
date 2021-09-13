@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class EmailTemplatesActions
 {
-    const Update = 'update';
+    public const Update = 'update';
 }
 
 class ManageEmailTemplatesPresenter extends ActionPresenter
@@ -29,7 +29,6 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
         $this->page = $page;
 
         $this->AddAction(EmailTemplatesActions::Update, 'UpdateEmailTemplate');
-
     }
 
     public function PageLoad()
@@ -65,9 +64,7 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
     {
         if ($dataRequest == 'template') {
             $this->LoadTemplate();
-        }
-        elseif ($dataRequest == 'originalTemplate')
-        {
+        } elseif ($dataRequest == 'originalTemplate') {
             $this->LoadOriginalTemplate();
         }
     }
@@ -81,20 +78,18 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
     {
         $templateName = strtolower($this->page->GetTemplateName());
         if (!BookedStringHelper::EndsWith($templateName, ".tpl")
-            || BookedStringHelper::Contains($templateName,"..")
-            || BookedStringHelper::Contains($templateName,"\\")
-            || BookedStringHelper::Contains($templateName,"/")) {
+            || BookedStringHelper::Contains($templateName, "..")
+            || BookedStringHelper::Contains($templateName, "\\")
+            || BookedStringHelper::Contains($templateName, "/")) {
             return "";
         }
         $templatePath = Paths::EmailTemplates($this->GetSelectedLanguage()) . $this->page->GetTemplateName();
         $customTemplatePath = str_replace('.tpl', '-custom.tpl', $templatePath);
         if ($this->filesystem->Exists($customTemplatePath)) {
             $contents = $this->filesystem->GetFileContents($customTemplatePath);
-        }
-        elseif($this->filesystem->Exists($templatePath)) {
+        } elseif ($this->filesystem->Exists($templatePath)) {
             $contents = $this->filesystem->GetFileContents($templatePath);
-        }
-        else {
+        } else {
             $defaultTemplatePath = Paths::EmailTemplates('en_us') . $this->page->GetTemplateName();
             $contents = $this->filesystem->GetFileContents($defaultTemplatePath);
         }
@@ -105,9 +100,9 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
     {
         $templateName = strtolower($this->page->GetTemplateName());
         if (!BookedStringHelper::EndsWith($templateName, ".tpl")
-            || BookedStringHelper::Contains($templateName,"..")
-            || BookedStringHelper::Contains($templateName,"\\")
-            || BookedStringHelper::Contains($templateName,"/")) {
+            || BookedStringHelper::Contains($templateName, "..")
+            || BookedStringHelper::Contains($templateName, "\\")
+            || BookedStringHelper::Contains($templateName, "/")) {
             return "";
         }
         $templatePath = Paths::EmailTemplates($this->GetSelectedLanguage()) . $this->page->GetTemplateName();
@@ -129,9 +124,7 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
 
             Log::Debug('Update email template results. Template=%s, Result=%s', $templateName, $saveResult);
             $this->page->SetSaveResult($saveResult);
-        }
-        catch(Exception $exception)
-        {
+        } catch (Exception $exception) {
             Log::Error('Error updating email template. Template=%s. %s', $templateName, $exception);
             $this->page->SetSaveResult(false);
         }
@@ -174,7 +167,7 @@ class EmailTemplateFile
 
     public static function FromFiles($templates)
     {
-        $templateList = array();
+        $templateList = [];
         foreach ($templates as $template) {
             if (
                 BookedStringHelper::Contains($template, 'help.tpl') ||

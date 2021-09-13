@@ -4,108 +4,108 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 
 class UserTests extends TestBase
 {
-	public function testUserIsGroupAdminIfAtLeastOneGroupIsAnAdminGroup()
-	{
-		$user = new User();
+    public function testUserIsGroupAdminIfAtLeastOneGroupIsAnAdminGroup()
+    {
+        $user = new User();
 
-		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
-		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::GROUP_ADMIN);
-		$groups = array($nonAdminGroup, $adminGroup);
+        $nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+        $adminGroup = new UserGroup(2, 'admin', null, RoleLevel::GROUP_ADMIN);
+        $groups = [$nonAdminGroup, $adminGroup];
 
-		$user->WithGroups($groups);
+        $user->WithGroups($groups);
 
-		$this->assertTrue($user->IsGroupAdmin());
-	}
+        $this->assertTrue($user->IsGroupAdmin());
+    }
 
-	public function testUserIsApplicationAdminIfAtLeastOneGroupIsAnAdminGroup()
-	{
-		$user = new User();
+    public function testUserIsApplicationAdminIfAtLeastOneGroupIsAnAdminGroup()
+    {
+        $user = new User();
 
-		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
-		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::APPLICATION_ADMIN);
-		$groups = array($nonAdminGroup, $adminGroup);
+        $nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+        $adminGroup = new UserGroup(2, 'admin', null, RoleLevel::APPLICATION_ADMIN);
+        $groups = [$nonAdminGroup, $adminGroup];
 
-		$user->WithGroups($groups);
+        $user->WithGroups($groups);
 
-		$this->assertTrue($user->IsInRole(RoleLevel::APPLICATION_ADMIN));
-	}
+        $this->assertTrue($user->IsInRole(RoleLevel::APPLICATION_ADMIN));
+    }
 
-	public function testUserIsResourceAdminIfAtLeastOneGroupIsAnAdminGroup()
-	{
-		$user = new User();
+    public function testUserIsResourceAdminIfAtLeastOneGroupIsAnAdminGroup()
+    {
+        $user = new User();
 
-		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
-		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::RESOURCE_ADMIN);
-		$groups = array($nonAdminGroup, $adminGroup);
+        $nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+        $adminGroup = new UserGroup(2, 'admin', null, RoleLevel::RESOURCE_ADMIN);
+        $groups = [$nonAdminGroup, $adminGroup];
 
-		$user->WithGroups($groups);
+        $user->WithGroups($groups);
 
-		$this->assertTrue($user->IsInRole(RoleLevel::RESOURCE_ADMIN));
-	}
+        $this->assertTrue($user->IsInRole(RoleLevel::RESOURCE_ADMIN));
+    }
 
-	public function testUserIsScheduleAdminIfAtLeastOneGroupIsAnAdminGroup()
-	{
-		$user = new User();
+    public function testUserIsScheduleAdminIfAtLeastOneGroupIsAnAdminGroup()
+    {
+        $user = new User();
 
-		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
-		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
-		$groups = array($nonAdminGroup, $adminGroup);
+        $nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+        $adminGroup = new UserGroup(2, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
+        $groups = [$nonAdminGroup, $adminGroup];
 
-		$user->WithGroups($groups);
+        $user->WithGroups($groups);
 
-		$this->assertTrue($user->IsInRole(RoleLevel::SCHEDULE_ADMIN));
-	}
+        $this->assertTrue($user->IsInRole(RoleLevel::SCHEDULE_ADMIN));
+    }
 
-	public function testWhenUserIsInAGroupThatCanAdminAnotherGroup()
-	{
-		$adminGroupId = 99;
-		$groupId1 = 1;
-		$groupId2 = 2;
+    public function testWhenUserIsInAGroupThatCanAdminAnotherGroup()
+    {
+        $adminGroupId = 99;
+        $groupId1 = 1;
+        $groupId2 = 2;
 
-		$adminUser = new User();
-		$user = new User();
+        $adminUser = new User();
+        $user = new User();
 
-		$adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::NONE);
-		$adminGroup->AddRole(RoleLevel::GROUP_ADMIN);
-		$group1 = new UserGroup($groupId1, 'random group');
-		$group2 = new UserGroup($groupId2, 'group with admin', $adminGroupId, RoleLevel::NONE);
+        $adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::NONE);
+        $adminGroup->AddRole(RoleLevel::GROUP_ADMIN);
+        $group1 = new UserGroup($groupId1, 'random group');
+        $group2 = new UserGroup($groupId2, 'group with admin', $adminGroupId, RoleLevel::NONE);
 
-		$adminUserGroups = array($group1, $adminGroup);
-		$userGroups = array($group2);
+        $adminUserGroups = [$group1, $adminGroup];
+        $userGroups = [$group2];
 
-		$adminUser->WithGroups($adminUserGroups);
-		$user->WithGroups($userGroups);
+        $adminUser->WithGroups($adminUserGroups);
+        $user->WithGroups($userGroups);
 
-		$this->assertTrue($adminUser->IsAdminFor($user), 'admin of group 2');
-	}
+        $this->assertTrue($adminUser->IsAdminFor($user), 'admin of group 2');
+    }
 
-	public function testWhenUserIsNotInAGroupThatCanAdminAnotherGroup()
-	{
-		$adminGroupId = 99;
-		$groupId1 = 1;
-		$groupId2 = 2;
+    public function testWhenUserIsNotInAGroupThatCanAdminAnotherGroup()
+    {
+        $adminGroupId = 99;
+        $groupId1 = 1;
+        $groupId2 = 2;
 
-		$adminUser = new User();
-		$user = new User();
+        $adminUser = new User();
+        $user = new User();
 
-		$adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::GROUP_ADMIN);
-		$group1 = new UserGroup($groupId1, 'random group');
-		$group2 = new UserGroup($groupId2, 'group with admin', $groupId1, RoleLevel::NONE);
+        $adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::GROUP_ADMIN);
+        $group1 = new UserGroup($groupId1, 'random group');
+        $group2 = new UserGroup($groupId2, 'group with admin', $groupId1, RoleLevel::NONE);
 
-		$adminUserGroups = array($group1, $adminGroup);
-		$userGroups = array($group1, $group2);
+        $adminUserGroups = [$group1, $adminGroup];
+        $userGroups = [$group1, $group2];
 
-		$adminUser->WithGroups($adminUserGroups);
-		$user->WithGroups($userGroups);
+        $adminUser->WithGroups($adminUserGroups);
+        $user->WithGroups($userGroups);
 
-		$this->assertFalse($adminUser->IsAdminFor($user), 'admin is not in any group that can admin group 1 or 2');
-	}
+        $this->assertFalse($adminUser->IsAdminFor($user), 'admin is not in any group that can admin group 1 or 2');
+    }
 
     public function testWhenUserIsInAdminGroupForResource()
     {
         $adminGroupId = 223;
         $resource = new FakeBookableResource(1, 'n');
-		$resource->SetAdminGroupId($adminGroupId);
+        $resource->SetAdminGroupId($adminGroupId);
 
         $adminUser = new User();
         $regularUser = new User();
@@ -114,8 +114,8 @@ class UserTests extends TestBase
         $group1 = new UserGroup(1, 'random group');
         $group2 = new UserGroup(2, 'group with admin');
 
-        $adminUserGroups = array($group1, $adminGroup);
-        $userGroups = array($group1, $group2);
+        $adminUserGroups = [$group1, $adminGroup];
+        $userGroups = [$group1, $group2];
 
         $adminUser->WithGroups($adminUserGroups);
         $regularUser->WithGroups($userGroups);
@@ -124,52 +124,52 @@ class UserTests extends TestBase
         $this->assertFalse($regularUser->IsResourceAdminFor($resource));
     }
 
-	public function testWhenUserIsInAdminGroupForResourcesSchedule()
-	{
-		$adminGroupId = 223;
-		$resource = new FakeBookableResource(1, 'n');
-		$resource->SetScheduleAdminGroupId($adminGroupId);
+    public function testWhenUserIsInAdminGroupForResourcesSchedule()
+    {
+        $adminGroupId = 223;
+        $resource = new FakeBookableResource(1, 'n');
+        $resource->SetScheduleAdminGroupId($adminGroupId);
 
-		$adminUser = new User();
-		$regularUser = new User();
+        $adminUser = new User();
+        $regularUser = new User();
 
-		$adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
-		$group1 = new UserGroup(1, 'random group');
-		$group2 = new UserGroup(2, 'group with admin');
+        $adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
+        $group1 = new UserGroup(1, 'random group');
+        $group2 = new UserGroup(2, 'group with admin');
 
-		$adminUserGroups = array($group1, $adminGroup);
-		$userGroups = array($group1, $group2);
+        $adminUserGroups = [$group1, $adminGroup];
+        $userGroups = [$group1, $group2];
 
-		$adminUser->WithGroups($adminUserGroups);
-		$regularUser->WithGroups($userGroups);
+        $adminUser->WithGroups($adminUserGroups);
+        $regularUser->WithGroups($userGroups);
 
-		$this->assertTrue($adminUser->IsResourceAdminFor($resource));
-		$this->assertFalse($regularUser->IsResourceAdminFor($resource));
-	}
+        $this->assertTrue($adminUser->IsResourceAdminFor($resource));
+        $this->assertFalse($regularUser->IsResourceAdminFor($resource));
+    }
 
-	public function testWhenUserIsInAdminGroupForSchedule()
-	{
-		$scheduleId = 123;
-		$adminGroupId = 223;
-		$schedule = new FakeSchedule($scheduleId);
-		$schedule->SetAdminGroupId($adminGroupId);
+    public function testWhenUserIsInAdminGroupForSchedule()
+    {
+        $scheduleId = 123;
+        $adminGroupId = 223;
+        $schedule = new FakeSchedule($scheduleId);
+        $schedule->SetAdminGroupId($adminGroupId);
 
-		$adminUser = new User();
-		$regularUser = new User();
+        $adminUser = new User();
+        $regularUser = new User();
 
-		$adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
-		$group1 = new UserGroup(1, 'random group');
-		$group2 = new UserGroup(2, 'group with admin');
+        $adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
+        $group1 = new UserGroup(1, 'random group');
+        $group2 = new UserGroup(2, 'group with admin');
 
-		$adminUserGroups = array($group1, $adminGroup);
-		$userGroups = array($group1, $group2);
+        $adminUserGroups = [$group1, $adminGroup];
+        $userGroups = [$group1, $group2];
 
-		$adminUser->WithGroups($adminUserGroups);
-		$regularUser->WithGroups($userGroups);
+        $adminUser->WithGroups($adminUserGroups);
+        $regularUser->WithGroups($userGroups);
 
-		$this->assertTrue($adminUser->IsScheduleAdminFor($schedule));
-		$this->assertFalse($regularUser->IsScheduleAdminFor($schedule));
-	}
+        $this->assertTrue($adminUser->IsScheduleAdminFor($schedule));
+        $this->assertFalse($regularUser->IsScheduleAdminFor($schedule));
+    }
 
     public function testCanGetGroupsThatUserHasAdminOver()
     {
@@ -178,7 +178,7 @@ class UserTests extends TestBase
         $adminGroup1 = new UserGroup(3, 'admin group', null, RoleLevel::GROUP_ADMIN);
         $adminGroup2 = new UserGroup(4, 'group i can admin', 3, RoleLevel::NONE);
 
-        $groups = array($adminGroup1, $adminGroup2);
+        $groups = [$adminGroup1, $adminGroup2];
 
         $user->WithOwnedGroups($groups);
 
@@ -188,27 +188,27 @@ class UserTests extends TestBase
         $this->assertContains($adminGroup2, $adminGroups);
     }
 
-	public function testIsGroupAdminForGroup()
-	{
-		$user = new User();
-		$user->WithOwnedGroups(array(new UserGroup(1, 'g1'), new UserGroup(2, 'g2')));
-		$user->WithGroups(array(new UserGroup(4, 'g4'), new UserGroup(5, 'g5')));
-
-		$this->assertTrue($user->IsGroupAdminFor(1));
-		$this->assertTrue($user->IsGroupAdminFor(2));
-		$this->assertFalse($user->IsGroupAdminFor(4));
-		$this->assertFalse($user->IsGroupAdminFor(5));
-	}
-
-	public function testIsGroupAdminForArray()
+    public function testIsGroupAdminForGroup()
     {
         $user = new User();
-        $user->WithOwnedGroups(array(new UserGroup(1, 'g1'), new UserGroup(2, 'g2')));
-        $user->WithGroups(array(new UserGroup(4, 'g4'), new UserGroup(5, 'g5')));
+        $user->WithOwnedGroups([new UserGroup(1, 'g1'), new UserGroup(2, 'g2')]);
+        $user->WithGroups([new UserGroup(4, 'g4'), new UserGroup(5, 'g5')]);
 
-        $this->assertTrue($user->IsGroupAdminFor(array(1, 100)));
-        $this->assertTrue($user->IsGroupAdminFor(array(2, 100)));
-        $this->assertFalse($user->IsGroupAdminFor(array(4, 100)));
-        $this->assertFalse($user->IsGroupAdminFor(array(5, 100)));
+        $this->assertTrue($user->IsGroupAdminFor(1));
+        $this->assertTrue($user->IsGroupAdminFor(2));
+        $this->assertFalse($user->IsGroupAdminFor(4));
+        $this->assertFalse($user->IsGroupAdminFor(5));
+    }
+
+    public function testIsGroupAdminForArray()
+    {
+        $user = new User();
+        $user->WithOwnedGroups([new UserGroup(1, 'g1'), new UserGroup(2, 'g2')]);
+        $user->WithGroups([new UserGroup(4, 'g4'), new UserGroup(5, 'g5')]);
+
+        $this->assertTrue($user->IsGroupAdminFor([1, 100]));
+        $this->assertTrue($user->IsGroupAdminFor([2, 100]));
+        $this->assertFalse($user->IsGroupAdminFor([4, 100]));
+        $this->assertFalse($user->IsGroupAdminFor([5, 100]));
     }
 }

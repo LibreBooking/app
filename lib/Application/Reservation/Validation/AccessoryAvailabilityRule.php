@@ -30,7 +30,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 
     public function Validate($reservationSeries, $retryParameters)
     {
-        $conflicts = array();
+        $conflicts = [];
         $reservationAccessories = $reservationSeries->Accessories();
 
         if (count($reservationAccessories) == 0) {
@@ -39,7 +39,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
         }
 
         /** @var AccessoryToCheck[] $accessories */
-        $accessories = array();
+        $accessories = [];
         foreach ($reservationAccessories as $accessory) {
             $a = $this->accessoryRepository->LoadById($accessory->AccessoryId);
             if (!$a->HasUnlimitedQuantity()) {
@@ -59,14 +59,12 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
             for ($i = 0; $i < count($dates); $i++) {
                 if ($i == 0) {
                     $start = $reservation->StartDate();
-                }
-                else {
+                } else {
                     $start = $dates[$i]->GetDate();
                 }
                 if ($i == count($dates) - 1) {
                     $end = $reservation->EndDate();
-                }
-                else {
+                } else {
                     $end = $dates[$i]->GetDate()->AddDays(1);
                 }
 
@@ -85,20 +83,20 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
                 }
 
                 foreach ($accessories as $accessory) {
-
                     $alreadyReserved = $aggregation->GetQuantity($accessory->GetId());
                     $requested = $accessory->QuantityReserved();
 
                     if ($requested + $alreadyReserved > $accessory->QuantityAvailable()) {
-                        Log::Debug("Accessory over limit. Reference Number %s, Date %s, Quantity already reserved %s, Quantity requested: %s",
+                        Log::Debug(
+                            "Accessory over limit. Reference Number %s, Date %s, Quantity already reserved %s, Quantity requested: %s",
                             $reservation->ReferenceNumber(),
                             $reservation->Duration(),
                             $alreadyReserved,
-                            $requested);
+                            $requested
+                        );
 
-                        array_push($conflicts, array('name' => $accessory->GetName(), 'date' => $reservation->StartDate()));
+                        array_push($conflicts, ['name' => $accessory->GetName(), 'date' => $reservation->StartDate()]);
                     }
-
                 }
             }
 
@@ -107,7 +105,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
             if ($thereAreConflicts) {
                 return new ReservationRuleResult(false, $this->GetErrorString($conflicts));
             }
-            }
+        }
 
 
 

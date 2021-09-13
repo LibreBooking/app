@@ -11,8 +11,8 @@ require_once(ROOT_DIR . 'Presenters/Calendar/CalendarFilters.php');
 
 class CalendarActions
 {
-    const ActionEnableSubscription = 'enable';
-    const ActionDisableSubscription = 'disable';
+    public const ActionEnableSubscription = 'enable';
+    public const ActionDisableSubscription = 'disable';
 }
 
 interface ICommonCalendarPage extends IActionPage
@@ -122,7 +122,6 @@ interface ICommonCalendarPage extends IActionPage
 
 abstract class CommonCalendarPage extends ActionPage implements ICommonCalendarPage
 {
-
     public function GetDay()
     {
         return $this->GetQuerystring(QueryStringKeys::DAY);
@@ -177,7 +176,8 @@ abstract class CommonCalendarPage extends ActionPage implements ICommonCalendarP
     {
         $this->Set('filters', $filters);
         $this->Set('IsAccessible', !$filters->IsEmpty());
-        $this->Set('ResourceGroupsAsJson', json_encode($filters->GetResourceGroupTree()->GetGroups(false)));;
+        $this->Set('ResourceGroupsAsJson', json_encode($filters->GetResourceGroupTree()->GetGroups(false)));
+        ;
     }
 
     public function GetScheduleId()
@@ -254,7 +254,7 @@ abstract class CommonCalendarPage extends ActionPage implements ICommonCalendarP
 
     public function BindEvents($reservationList)
     {
-        $events = array();
+        $events = [];
         foreach ($reservationList as $r) {
             $events[] = $r->AsFullCalendarEvent();
         }
@@ -315,15 +315,17 @@ abstract class CommonCalendarPresenter extends ActionPresenter
      */
     protected $slotLabelFactory;
 
-    public function __construct(ICommonCalendarPage $page,
-                                ICalendarFactory $calendarFactory,
-                                IReservationViewRepository $reservationRepository,
-                                IScheduleRepository $scheduleRepository,
-                                IUserRepository $userRepository,
-                                IResourceService $resourceService,
-                                ICalendarSubscriptionService $subscriptionService,
-                                IPrivacyFilter $privacyFilter,
-                                SlotLabelFactory $factory)
+    public function __construct(
+        ICommonCalendarPage $page,
+        ICalendarFactory $calendarFactory,
+        IReservationViewRepository $reservationRepository,
+        IScheduleRepository $scheduleRepository,
+        IUserRepository $userRepository,
+        IResourceService $resourceService,
+        ICalendarSubscriptionService $subscriptionService,
+        IPrivacyFilter $privacyFilter,
+        SlotLabelFactory $factory
+    )
     {
         parent::__construct($page);
         $this->page = $page;
@@ -366,7 +368,7 @@ abstract class CommonCalendarPresenter extends ActionPresenter
         $resourceGroups = $this->resourceService->GetResourceGroups(null, $userSession);
 
         if (!empty($selectedGroupId)) {
-            $tempResources = array();
+            $tempResources = [];
             $resourceIds = $resourceGroups->GetResourceIds($selectedGroupId);
             $selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
             $this->page->BindSelectedGroup($selectedGroup);
@@ -422,8 +424,7 @@ abstract class CommonCalendarPresenter extends ActionPresenter
     {
         if ($dataRequest == 'events') {
             $this->BindCalendarEvents();
-        }
-        else {
+        } else {
             $this->BindSubscriptionDetails(ServiceLocator::GetServer()->GetUserSession(), $this->page->GetResourceId(), $this->page->GetScheduleId());
             $this->page->RenderSubscriptionDetails();
         }
@@ -494,14 +495,14 @@ abstract class CommonCalendarPresenter extends ActionPresenter
      * @param int|null $selectedUserId
      * @param int|null $selectedParticipantId
      */
-    protected abstract function BindEvents($userSession, $selectedScheduleId, $selectedResourceId, $selectedUserId, $selectedParticipantId);
+    abstract protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId, $selectedUserId, $selectedParticipantId);
 
     /**
      * @param UserSession $userSession
      * @param int $resourceId
      * @param int $scheduleId
      */
-    protected abstract function BindSubscriptionDetails($userSession, $resourceId, $scheduleId);
+    abstract protected function BindSubscriptionDetails($userSession, $resourceId, $scheduleId);
 }
 
 class UserCalendarFilter
@@ -512,7 +513,6 @@ class UserCalendarFilter
 
     public function __construct($resourceId, $scheduleId, $groupId)
     {
-
         $this->ResourceId = $resourceId;
         $this->ScheduleId = $scheduleId;
         $this->GroupId = $groupId;

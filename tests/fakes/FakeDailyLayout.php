@@ -3,23 +3,23 @@
 class FakeDailyLayout implements IDailyLayout
 {
     public $_Timezone;
-    private $_Layouts = array();
+    private $_Layouts = [];
 
     /**
      * @param Date $date
      * @param int $resourceId
      * @return array|IReservationSlot[]
      */
-    function GetLayout(Date $date, $resourceId)
+    public function GetLayout(Date $date, $resourceId)
     {
-       return $this->_Layouts[$date->GetDate()->Timestamp() . $resourceId];
+        return $this->_Layouts[$date->GetDate()->Timestamp() . $resourceId];
     }
 
     /**
      * @param Date $date
      * @return bool
      */
-    function IsDateReservable(Date $date)
+    public function IsDateReservable(Date $date)
     {
         // TODO: Implement IsDateReservable() method.
     }
@@ -28,7 +28,7 @@ class FakeDailyLayout implements IDailyLayout
      * @param Date $displayDate
      * @return string[]
      */
-    function GetLabels(Date $displayDate)
+    public function GetLabels(Date $displayDate)
     {
         // TODO: Implement GetLabels() method.
     }
@@ -37,7 +37,7 @@ class FakeDailyLayout implements IDailyLayout
      * @param Date $displayDate
      * @return mixed
      */
-    function GetPeriods(Date $displayDate)
+    public function GetPeriods(Date $displayDate)
     {
         // TODO: Implement GetPeriods() method.
     }
@@ -47,7 +47,7 @@ class FakeDailyLayout implements IDailyLayout
      * @param int $resourceId
      * @return DailyReservationSummary
      */
-    function GetSummary(Date $date, $resourceId)
+    public function GetSummary(Date $date, $resourceId)
     {
         // TODO: Implement GetSummary() method.
     }

@@ -26,10 +26,12 @@ class ParticipationPresenter
      */
     private $participationNotification;
 
-    public function __construct(IParticipationPage $page,
-                                IReservationRepository $reservationRepository,
-                                IReservationViewRepository $reservationViewRepository,
-                                IParticipationNotification $participationNotification)
+    public function __construct(
+        IParticipationPage $page,
+        IReservationRepository $reservationRepository,
+        IReservationViewRepository $reservationViewRepository,
+        IParticipationNotification $participationNotification
+    )
     {
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;
@@ -80,10 +82,9 @@ class ParticipationPresenter
         $series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
 
         if ($invitationAction == InvitationAction::Join || $invitationAction == InvitationAction::CancelInstance) {
-            $rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRuleUpdate($user), new ResourceMaximumNoticeCurrentInstanceRule($user));
-        }
-        else {
-            $rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRuleAdd($user), new ResourceMaximumNoticeRule($user));
+            $rules = [new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRuleUpdate($user), new ResourceMaximumNoticeCurrentInstanceRule($user)];
+        } else {
+            $rules = [new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRuleAdd($user), new ResourceMaximumNoticeRule($user)];
         }
 
         /** @var IReservationValidationRule $rule */
@@ -113,8 +114,7 @@ class ParticipationPresenter
         if ($invitationAction == InvitationAction::Join) {
             if (!$series->GetAllowParticipation()) {
                 $error = Resources::GetInstance()->GetString('ParticipationNotAllowed');
-            }
-            else {
+            } else {
                 $series->JoinReservation($userId);
                 $error = $this->CheckCapacityAndReturnAnyError($series);
             }
@@ -122,8 +122,7 @@ class ParticipationPresenter
         if ($invitationAction == InvitationAction::JoinAll) {
             if (!$series->GetAllowParticipation()) {
                 $error = Resources::GetInstance()->GetString('ParticipationNotAllowed');
-            }
-            else {
+            } else {
                 $series->JoinReservationSeries($userId);
                 $error = $this->CheckCapacityAndReturnAnyError($series);
             }
@@ -152,7 +151,7 @@ class ParticipationPresenter
             foreach ($series->Instances() as $instance) {
                 $numberOfParticipants = count($instance->Participants()) + count($instance->ParticipatingGuests());
                 if ($numberOfParticipants > $resource->GetMaxParticipants()) {
-                    return Resources::GetInstance()->GetString('MaxParticipantsError', array($resource->GetName(), $resource->GetMaxParticipants()));
+                    return Resources::GetInstance()->GetString('MaxParticipantsError', [$resource->GetName(), $resource->GetMaxParticipants()]);
                 }
             }
         }

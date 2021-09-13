@@ -25,10 +25,12 @@ class UserCreditsPresenter extends ActionPresenter
      */
     private $creditRepository;
 
-    public function __construct(IUserCreditsPage $page,
-                                IUserRepository $userRepository,
-                                IPaymentRepository $paymentRepository,
-                                ICreditRepository $creditRepository)
+    public function __construct(
+        IUserCreditsPage $page,
+        IUserRepository $userRepository,
+        IPaymentRepository $paymentRepository,
+        ICreditRepository $creditRepository
+    )
     {
         parent::__construct($page);
 
@@ -56,11 +58,9 @@ class UserCreditsPresenter extends ActionPresenter
     {
         if ($dataRequest == 'creditLog') {
             $this->GetCreditLog($userSession);
-        }
-        elseif ($dataRequest == 'transactionLog') {
+        } elseif ($dataRequest == 'transactionLog') {
             $this->GetTransactionLog($userSession);
-        }
-        else {
+        } else {
             $quantity = $this->page->GetQuantity();
             $cost = $this->paymentRepository->GetCreditCost();
             $this->page->SetTotalCost($cost->GetFormattedTotal($quantity));

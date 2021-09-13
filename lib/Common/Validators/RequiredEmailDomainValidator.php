@@ -2,37 +2,34 @@
 
 class RequiredEmailDomainValidator extends ValidatorBase implements IValidator
 {
-	private $value;
+    private $value;
 
-	public function __construct($value)
-	{
-		$this->value = $value;
-	}
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
 
-	public function Validate()
-	{
-		$this->isValid = true;
+    public function Validate()
+    {
+        $this->isValid = true;
 
-		$domains = Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_REQUIRED_EMAIL_DOMAINS);
+        $domains = Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_REQUIRED_EMAIL_DOMAINS);
 
-		if (empty($domains))
-		{
-			return;
-		}
+        if (empty($domains)) {
+            return;
+        }
 
-		$allDomains = preg_split('/[\,\s;]/', $domains);
+        $allDomains = preg_split('/[\,\s;]/', $domains);
 
-		$trimmed = trim($this->value);
+        $trimmed = trim($this->value);
 
-		foreach ($allDomains as $d)
-		{
-			$d = str_replace('@', '', trim($d));
-			if (BookedStringHelper::EndsWith($trimmed, '@' . $d))
-			{
-				return;
-			}
-		}
+        foreach ($allDomains as $d) {
+            $d = str_replace('@', '', trim($d));
+            if (BookedStringHelper::EndsWith($trimmed, '@' . $d)) {
+                return;
+            }
+        }
 
-		$this->isValid = false;
-	}
+        $this->isValid = false;
+    }
 }

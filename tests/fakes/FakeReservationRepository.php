@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class FakeReservationRepository implements IReservationRepository
 {
-    public $_Reservations = array();
+    public $_Reservations = [];
     public $_LastAddedReservation;
     public $_FirstAddedReservation;
     /**
@@ -22,7 +22,7 @@ class FakeReservationRepository implements IReservationRepository
 
     public static function GetReservationRows()
     {
-        $row1 = array(ColumnNames::RESERVATION_INSTANCE_ID => 1,
+        $row1 = [ColumnNames::RESERVATION_INSTANCE_ID => 1,
             ColumnNames::RESERVATION_START => '2008-05-20 09:00:00',
             ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
             ColumnNames::RESERVATION_TYPE => 1,
@@ -57,9 +57,9 @@ class FakeReservationRepository implements IReservationRepository
             ColumnNames::CREDIT_COUNT => null,
             ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS => null,
             ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS => null,
-        );
+        ];
 
-        $row2 = array(ColumnNames::RESERVATION_INSTANCE_ID => 1,
+        $row2 = [ColumnNames::RESERVATION_INSTANCE_ID => 1,
             ColumnNames::RESERVATION_START => '2008-05-20 09:00:00',
             ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
             ColumnNames::RESERVATION_TYPE => 1,
@@ -95,9 +95,9 @@ class FakeReservationRepository implements IReservationRepository
             ColumnNames::CREDIT_COUNT => 1,
             ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS => null,
             ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS => null,
-        );
+        ];
 
-        $row3 = array(ColumnNames::RESERVATION_INSTANCE_ID => 2,
+        $row3 = [ColumnNames::RESERVATION_INSTANCE_ID => 2,
             ColumnNames::RESERVATION_START => '2008-05-22 06:00:00',
             ColumnNames::RESERVATION_END => '2008-05-24 09:30:00',
             ColumnNames::RESERVATION_TYPE => 1,
@@ -133,13 +133,13 @@ class FakeReservationRepository implements IReservationRepository
             ColumnNames::CREDIT_COUNT => 0,
             ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS => null,
             ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS => null,
-        );
+        ];
 
-        return array(
+        return [
             $row1,
             $row2,
             $row3
-        );
+        ];
     }
 
     /**

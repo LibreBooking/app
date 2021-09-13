@@ -15,7 +15,7 @@ class el_gr extends en_gb
      */
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = [];
 
         $dates['general_date'] = 'd/m/Y';
         $dates['general_datetime'] = 'd/m/Y g:i:s A';
@@ -50,7 +50,7 @@ class el_gr extends en_gb
      */
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = [];
 
         $strings['FirstName'] = 'Όνομα';
         $strings['LastName'] = 'Επώνυμο';
@@ -1025,7 +1025,7 @@ class el_gr extends en_gb
      */
     protected function _LoadDays()
     {
-        $days = array();
+        $days = [];
 
         /***
          * DAY NAMES
@@ -1033,13 +1033,13 @@ class el_gr extends en_gb
          * and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο');
+        $days['full'] = ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'];
         // The three letter abbreviation
-        $days['abbr'] = array('Κυρ', 'Δευ', 'Τρί', 'Τετ', 'Πέμ', 'Παρ', 'Σάβ');
+        $days['abbr'] = ['Κυρ', 'Δευ', 'Τρί', 'Τετ', 'Πέμ', 'Παρ', 'Σάβ'];
         // The two letter abbreviation
-        $days['two'] = array('Κυ', 'Δε', 'Τρ', 'Τε', 'Πέ', 'Πα', 'Σά');
+        $days['two'] = ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πέ', 'Πα', 'Σά'];
         // The one letter abbreviation
-        $days['letter'] = array('Κ', 'Δ', 'T', 'Τ', 'Π', 'Π', 'Σ');
+        $days['letter'] = ['Κ', 'Δ', 'T', 'Τ', 'Π', 'Π', 'Σ'];
 
         $this->Days = $days;
 
@@ -1051,7 +1051,7 @@ class el_gr extends en_gb
      */
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = [];
 
         /***
          * MONTH NAMES
@@ -1059,9 +1059,9 @@ class el_gr extends en_gb
          * and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος');
+        $months['full'] = ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος'];
         // The three letter month name
-        $months['abbr'] = array('Ιαν', 'Φεβ', 'Μάρ', 'Απρ', 'Μάι', 'Ιούν', 'Ιούλ', 'Αύγ', 'Σεπ', 'Οκτ', 'Νοέ', 'Δεκ');
+        $months['abbr'] = ['Ιαν', 'Φεβ', 'Μάρ', 'Απρ', 'Μάι', 'Ιούν', 'Ιούλ', 'Αύγ', 'Σεπ', 'Οκτ', 'Νοέ', 'Δεκ'];
 
         $this->Months = $months;
 
@@ -1073,7 +1073,7 @@ class el_gr extends en_gb
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω');
+        $this->Letters = ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
 
         return $this->Letters;
     }

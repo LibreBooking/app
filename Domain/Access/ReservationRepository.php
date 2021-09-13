@@ -69,22 +69,24 @@ class ReservationRepository implements IReservationRepository
 
             /** @var $instance Reservation */
             foreach ($reservationSeries->Instances() as $instance) {
-                $updateReservationCommand = new UpdateReservationCommand($instance->ReferenceNumber(),
+                $updateReservationCommand = new UpdateReservationCommand(
+                    $instance->ReferenceNumber(),
                     $newSeriesId,
                     $instance->StartDate(),
                     $instance->EndDate(),
                     $instance->CheckinDate(),
                     $instance->CheckoutDate(),
                     $instance->PreviousEndDate(),
-                    $instance->GetCreditsRequired());
+                    $instance->GetCreditsRequired()
+                );
 
                 $database->Execute($updateReservationCommand);
             }
-        }
-        else {
+        } else {
             Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
 
-            $updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(),
+            $updateSeries = new UpdateReservationSeriesCommand(
+                $reservationSeries->SeriesId(),
                 $reservationSeries->Title(),
                 $reservationSeries->Description(),
                 $reservationSeries->RepeatOptions()->RepeatType(),
@@ -93,7 +95,8 @@ class ReservationRepository implements IReservationRepository
                 $reservationSeries->StatusId(),
                 $reservationSeries->UserId(),
                 $reservationSeries->GetAllowParticipation(),
-                $reservationSeries->BookedBy()->UserId);
+                $reservationSeries->BookedBy()->UserId
+            );
 
             $database->Execute($updateSeries);
 
@@ -103,8 +106,13 @@ class ReservationRepository implements IReservationRepository
 
             $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetOriginalCreditsConsumed();
 
-            Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
-                $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+            Log::Debug(
+                'CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                $reservationSeries->UserId(),
+                $creditsToDeduct,
+                $reservationSeries->GetCreditsRequired(),
+                $reservationSeries->GetCreditsConsumed()
+            );
 
             if ($creditsToDeduct != 0) {
                 try {
@@ -127,7 +135,8 @@ class ReservationRepository implements IReservationRepository
     {
         $database = ServiceLocator::GetDatabase();
 
-        $insertReservationSeries = new AddReservationSeriesCommand(Date::Now(),
+        $insertReservationSeries = new AddReservationSeriesCommand(
+            Date::Now(),
             $reservationSeries->Title(),
             $reservationSeries->Description(),
             $reservationSeries->RepeatOptions()->RepeatType(),
@@ -137,7 +146,8 @@ class ReservationRepository implements IReservationRepository
             $reservationSeries->UserId(),
             $reservationSeries->GetAllowParticipation(),
             $reservationSeries->TermsAcceptanceDate(),
-            $reservationSeries->BookedBy()->UserId);
+            $reservationSeries->BookedBy()->UserId
+        );
 
         $reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 
@@ -159,8 +169,12 @@ class ReservationRepository implements IReservationRepository
         }
 
         foreach ($reservationSeries->AttributeValues() as $attribute) {
-            $insertAttributeValue = new AddAttributeValueCommand($attribute->AttributeId, $attribute->Value, $reservationSeriesId,
-                CustomAttributeCategory::RESERVATION);
+            $insertAttributeValue = new AddAttributeValueCommand(
+                $attribute->AttributeId,
+                $attribute->Value,
+                $reservationSeriesId,
+                CustomAttributeCategory::RESERVATION
+            );
             $database->Execute($insertAttributeValue);
         }
 
@@ -182,8 +196,13 @@ class ReservationRepository implements IReservationRepository
 
         $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
 
-        Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
-            $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+        Log::Debug(
+            'CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+            $reservationSeries->UserId(),
+            $creditsToDeduct,
+            $reservationSeries->GetCreditsRequired(),
+            $reservationSeries->GetCreditsConsumed()
+        );
 
         if ($creditsToDeduct != 0) {
             try {
@@ -201,8 +220,8 @@ class ReservationRepository implements IReservationRepository
         $database = ServiceLocator::GetDatabase();
 
 //        $creditAdjustment = 0 - $existingReservationSeries->GetCreditsConsumed();
-//		$creditAdjustment = $existingReservationSeries->GetCreditsRequired() - $existingReservationSeries->GetOriginalCreditsConsumed();
-		$creditAdjustment = 0 - $existingReservationSeries->GetUnusedCreditBalance();
+        //		$creditAdjustment = $existingReservationSeries->GetCreditsRequired() - $existingReservationSeries->GetOriginalCreditsConsumed();
+        $creditAdjustment = 0 - $existingReservationSeries->GetUnusedCreditBalance();
         if ($creditAdjustment != 0) {
             Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 
@@ -283,9 +302,9 @@ class ReservationRepository implements IReservationRepository
             $instance = new Reservation($series, $duration, $row[ColumnNames::RESERVATION_INSTANCE_ID], $row[ColumnNames::REFERENCE_NUMBER]);
             $instance->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
             $instance->WithCreditsConsumed($row[ColumnNames::CREDIT_COUNT]);
-			$instance->SetCreditsRequired($row[ColumnNames::CREDIT_COUNT]);
+            $instance->SetCreditsRequired($row[ColumnNames::CREDIT_COUNT]);
 
-			$series->WithCurrentInstance($instance);
+            $series->WithCurrentInstance($instance);
         }
         $reader->Free();
 
@@ -301,10 +320,12 @@ class ReservationRepository implements IReservationRepository
             $start = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
             $end = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
 
-            $reservation = new Reservation($series,
+            $reservation = new Reservation(
+                $series,
                 new DateRange($start, $end),
                 $row[ColumnNames::RESERVATION_INSTANCE_ID],
-                $row[ColumnNames::REFERENCE_NUMBER]);
+                $row[ColumnNames::REFERENCE_NUMBER]
+            );
             $reservation->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
             $reservation->WithCreditsConsumed($row[ColumnNames::CREDIT_COUNT]);
             $reservation->SetCreditsRequired($row[ColumnNames::CREDIT_COUNT]);
@@ -323,8 +344,7 @@ class ReservationRepository implements IReservationRepository
             $resource = BookableResource::Create($row);
             if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Primary) {
                 $series->WithPrimaryResource($resource);
-            }
-            else {
+            } else {
                 $series->WithResource($resource);
             }
         }
@@ -401,8 +421,7 @@ class ReservationRepository implements IReservationRepository
             $reminder = ReservationReminder::FromMinutes($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
             if ($row[ColumnNames::REMINDER_TYPE] == ReservationReminderType::Start) {
                 $series->WithStartReminder($reminder);
-            }
-            else {
+            } else {
                 $series->WithEndReminder($reminder);
             }
         }
@@ -413,8 +432,14 @@ class ReservationRepository implements IReservationRepository
     {
         $configuration = RepeatConfiguration::Create($repeatType, $configurationString);
         $factory = new RepeatOptionsFactory();
-        return $factory->Create($repeatType, $configuration->Interval, $configuration->TerminationDate,
-            $configuration->Weekdays, $configuration->MonthlyType, $repeatDates);
+        return $factory->Create(
+            $repeatType,
+            $configuration->Interval,
+            $configuration->TerminationDate,
+            $configuration->Weekdays,
+            $configuration->MonthlyType,
+            $repeatDates
+        );
     }
 
     // LOAD BY ID HELPER FUNCTIONS END
@@ -433,12 +458,14 @@ class ReservationRepository implements IReservationRepository
             $extension = $row[ColumnNames::FILE_EXTENSION];
             $fileSystem = ServiceLocator::GetFileSystem();
             $contents = $fileSystem->GetFileContents($fileSystem->GetReservationAttachmentsPath() . "$fileId.$extension");
-            $attachment = ReservationAttachment::Create($row[ColumnNames::FILE_NAME],
+            $attachment = ReservationAttachment::Create(
+                $row[ColumnNames::FILE_NAME],
                 $row[ColumnNames::FILE_TYPE],
                 $row[ColumnNames::FILE_SIZE],
                 $contents,
                 $row[ColumnNames::FILE_EXTENSION],
-                $row[ColumnNames::SERIES_ID]);
+                $row[ColumnNames::SERIES_ID]
+            );
             $attachment->WithFileId($fileId);
 
             return $attachment;
@@ -453,8 +480,13 @@ class ReservationRepository implements IReservationRepository
      */
     public function AddReservationAttachment(ReservationAttachment $attachmentFile)
     {
-        $command = new AddReservationAttachmentCommand($attachmentFile->FileName(), $attachmentFile->FileType(), $attachmentFile->FileSize(),
-            $attachmentFile->FileExtension(), $attachmentFile->SeriesId());
+        $command = new AddReservationAttachmentCommand(
+            $attachmentFile->FileName(),
+            $attachmentFile->FileType(),
+            $attachmentFile->FileSize(),
+            $attachmentFile->FileExtension(),
+            $attachmentFile->SeriesId()
+        );
         $id = ServiceLocator::GetDatabase()->ExecuteInsert($command);
         $extension = $attachmentFile->FileExtension();
         $attachmentFile->WithFileId($id);
@@ -473,7 +505,7 @@ class ReservationRepository implements IReservationRepository
         $command = new GetReservationColorRulesCommand();
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
-        $rules = array();
+        $rules = [];
         while ($row = $reader->GetRow()) {
             $rules[] = ReservationColorRule::FromRow($row);
         }
@@ -512,7 +544,7 @@ class ReservationRepository implements IReservationRepository
 
 class ReservationEventMapper
 {
-    private $buildMethods = array();
+    private $buildMethods = [];
     private static $instance;
 
     private function __construct()
@@ -611,8 +643,10 @@ class ReservationEventMapper
 
     private function BuildAddAttributeCommand(AttributeAddedEvent $event, ExistingReservationSeries $series)
     {
-        return new EventCommand(new AddAttributeValueCommand($event->AttributeId(), $event->Value(), $series->SeriesId(), CustomAttributeCategory::RESERVATION),
-            $series);
+        return new EventCommand(
+            new AddAttributeValueCommand($event->AttributeId(), $event->Value(), $series->SeriesId(), CustomAttributeCategory::RESERVATION),
+            $series
+        );
     }
 
     private function BuildRemoveAttributeCommand(AttributeRemovedEvent $event, ExistingReservationSeries $series)
@@ -715,11 +749,13 @@ class InstanceAddedEventCommand extends EventCommand
 
     public function Execute(Database $database)
     {
-        $insertReservation = new AddReservationCommand($this->instance->StartDate(),
+        $insertReservation = new AddReservationCommand(
+            $this->instance->StartDate(),
             $this->instance->EndDate(),
             $this->instance->ReferenceNumber(),
             $this->series->SeriesId(),
-            $this->instance->GetCreditsRequired());
+            $this->instance->GetCreditsRequired()
+        );
 
         $reservationId = $database->ExecuteInsert($insertReservation);
 //
@@ -776,14 +812,16 @@ class InstanceUpdatedEventCommand extends EventCommand
     public function Execute(Database $database)
     {
         $instanceId = $this->instance->ReservationId();
-        $updateReservationCommand = new UpdateReservationCommand($this->instance->ReferenceNumber(),
+        $updateReservationCommand = new UpdateReservationCommand(
+            $this->instance->ReferenceNumber(),
             $this->series->SeriesId(),
             $this->instance->StartDate(),
             $this->instance->EndDate(),
             $this->instance->CheckinDate(),
             $this->instance->CheckoutDate(),
             $this->instance->PreviousEndDate(),
-            $this->instance->GetCreditsRequired());
+            $this->instance->GetCreditsRequired()
+        );
 
         $database->Execute($updateReservationCommand);
 

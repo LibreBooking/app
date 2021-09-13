@@ -10,47 +10,47 @@ class ja_jp extends en_gb
         parent::__construct();
     }
 
-	/**
-	 * @return array
-	 */
-	protected function _LoadDates()
-	{
-		$dates = array();
+    /**
+     * @return array
+     */
+    protected function _LoadDates()
+    {
+        $dates = [];
 
-		$dates['general_date'] = 'Y-m-d';
+        $dates['general_date'] = 'Y-m-d';
         $dates['general_datetime'] = 'Y-m-d H:i:s';
-		$dates['short_datetime'] = 'Y-m-d g:i A';
+        $dates['short_datetime'] = 'Y-m-d g:i A';
         $dates['schedule_daily'] = 'Y-m-d (l)';
         $dates['reservation_email'] = 'Y-m-d @ g:i A (e)';
         $dates['res_popup'] = 'Y-m-d g:i A';
-		$dates['res_popup_time'] = 'g:i A';
-		$dates['short_reservation_date'] = 'Y-m-d g:i A';
+        $dates['res_popup_time'] = 'g:i A';
+        $dates['short_reservation_date'] = 'Y-m-d g:i A';
         $dates['dashboard'] = 'Y-m-d (l) g:i A';
         $dates['period_time'] = "g:i A";
-		$dates['timepicker'] = 'h:i a';
-		$dates['mobile_reservation_date'] = 'M/d g:i A';
+        $dates['timepicker'] = 'h:i a';
+        $dates['mobile_reservation_date'] = 'M/d g:i A';
         $dates['general_date_js'] = "yy-mm-dd";
         $dates['general_time_js'] = 'h:mm tt';
         $dates['timepicker_js'] = 'h:i a';
         $dates['momentjs_datetime'] = 'YY-m-d h:mm A';
         $dates['calendar_time'] = 'h:mmt';
         $dates['calendar_dates'] = 'm/d';
-		$dates['embedded_date'] = 'D d';
-		$dates['embedded_time'] = 'g:i A';
-		$dates['embedded_datetime'] = 'm/d g:i A';
-		$dates['report_date'] = '%m/%d';
+        $dates['embedded_date'] = 'D d';
+        $dates['embedded_time'] = 'g:i A';
+        $dates['embedded_datetime'] = 'm/d g:i A';
+        $dates['report_date'] = '%m/%d';
 
-		$this->Dates = $dates;
+        $this->Dates = $dates;
 
-		return $this->Dates;
-	}
+        return $this->Dates;
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function _LoadStrings()
-	{
-		$strings = array();
+    /**
+     * @return array
+     */
+    protected function _LoadStrings()
+    {
+        $strings = [];
 
         $strings['FirstName'] = '名';
         $strings['LastName'] = '姓';
@@ -1011,13 +1011,13 @@ class ja_jp extends en_gb
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日');
+        $days['full'] = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
         // The three letter abbreviation
-        $days['abbr'] = array('日', '月', '火', '水', '木', '金', '土');
+        $days['abbr'] = ['日', '月', '火', '水', '木', '金', '土'];
         // The two letter abbreviation
-        $days['two'] = array('日', '月', '火', '水', '木', '金', '土');
+        $days['two'] = ['日', '月', '火', '水', '木', '金', '土'];
         // The one letter abbreviation
-        $days['letter'] = array('日', '月', '火', '水', '木', '金', '土');
+        $days['letter'] = ['日', '月', '火', '水', '木', '金', '土'];
 
         $this->Days = $days;
 
@@ -1037,9 +1037,9 @@ class ja_jp extends en_gb
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月');
+        $months['full'] = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
         // The three letter month name
-        $months['abbr'] = array('1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月');
+        $months['abbr'] = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
         $this->Months = $months;
 
@@ -1051,7 +1051,7 @@ class ja_jp extends en_gb
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
         return $this->Letters;
     }

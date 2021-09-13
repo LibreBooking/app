@@ -91,6 +91,4 @@ interface CAS_Languages_LanguageInterface
      * @return string service unavailable
      */
     public function getServiceUnavailable();
-
 }
-?>

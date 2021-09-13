@@ -34,13 +34,13 @@ class ReportingServiceTests extends TestBase
         $start = '2010-01-01';
         $end = '2010-01-02';
 
-        $resourceId = array(1);
-        $scheduleId = array(2);
+        $resourceId = [1];
+        $scheduleId = [2];
         $userId = 3;
-        $groupId = array(4);
-        $accessoryId = array(5);
+        $groupId = [4];
+        $accessoryId = [5];
         $participantId = 6;
-        $resourceTypeId = array(7);
+        $resourceTypeId = [7];
 
         $usage = new Report_Usage(Report_Usage::RESOURCES);
         $selection = new Report_ResultSelection(Report_ResultSelection::FULL_LIST);
@@ -62,11 +62,11 @@ class ReportingServiceTests extends TestBase
             ->WithDeleted()
             ->GroupByGroup();
 
-        $rows = array(array(
+        $rows = [[
             ColumnNames::OWNER_FIRST_NAME => 'value',
             ColumnNames::OWNER_LAST_NAME => 'value',
             ColumnNames::OWNER_USER_ID => 'value',
-        ));
+        ]];
 
         $this->reportingRepository->_CustomReportData = $rows;
 
@@ -101,7 +101,7 @@ class ReportingServiceTests extends TestBase
 
     public function testGetsSavedReports()
     {
-        $reports = array(new FakeSavedReport());
+        $reports = [new FakeSavedReport()];
         $userId = 100;
 
         $this->reportingRepository->_SavedReports = $reports;
@@ -117,7 +117,7 @@ class ReportingServiceTests extends TestBase
         $userId = 2;
 
         $savedReport = new FakeSavedReport();
-        $data = array();
+        $data = [];
         $report = new CustomReport($data, new FakeAttributeRepository());
 
         $this->reportingRepository->_SavedReport = $savedReport;
@@ -191,12 +191,12 @@ class ReportingServiceTests extends TestBase
 
         $this->scheduleRepository->_Layout = $layout;
 
-        $data = array(
+        $data = [
             $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('12:00'), $saturday->SetTimeString('12:00'), 1, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('06:00'), $thursday->SetTimeString('08:00'), 2, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $saturday->SetTimeString('13:00'), $saturday->SetTimeString('15:00'), 1, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $sunday->SetTimeString('13:00'), $sunday->SetTimeString('15:00'), 2, 'r1'),
-        );
+        ];
 
         $this->reportingRepository->_CustomReportData = $data;
 
@@ -257,12 +257,12 @@ class ReportingServiceTests extends TestBase
 
         $this->scheduleRepository->_Layout = $layout;
 
-        $data = array(
+        $data = [
             $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('12:00'), $saturday->SetTimeString('12:00'), 1, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('06:00'), $thursday->SetTimeString('08:00'), 2, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $saturday->SetTimeString('13:00'), $saturday->SetTimeString('15:00'), 1, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $sunday->SetTimeString('13:00'), $sunday->SetTimeString('15:00'), 2, 'r1'),
-        );
+        ];
 
         $this->reportingRepository->_CustomReportData = $data;
 
@@ -310,25 +310,29 @@ class ReportingServiceTests extends TestBase
         $layout = new CustomScheduleLayout($tz, $s1, $this->scheduleRepository);
 
         $this->scheduleRepository->_Layout = $layout;
-        $this->scheduleRepository->_AddCustomLayout($thursday,
-            array(
+        $this->scheduleRepository->_AddCustomLayout(
+            $thursday,
+            [
                 new SchedulePeriod($thursday->SetTimeString('12:00'), $thursday->SetTimeString('14:00')),
                 new SchedulePeriod($thursday->SetTimeString('16:00'), $thursday->SetTimeString('18:00')),
-            ));
-        $this->scheduleRepository->_AddCustomLayout($friday, array());
+            ]
+        );
+        $this->scheduleRepository->_AddCustomLayout($friday, []);
 
-        $this->scheduleRepository->_AddCustomLayout($saturday,
-            array(
+        $this->scheduleRepository->_AddCustomLayout(
+            $saturday,
+            [
                 new SchedulePeriod($saturday->SetTimeString('12:00'), $saturday->SetTimeString('14:00')),
                 new SchedulePeriod($saturday->SetTimeString('16:00'), $saturday->SetTimeString('18:00')),
-            ));
+            ]
+        );
 
 
-        $data = array(
+        $data = [
             $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('12:00'), $thursday->SetTimeString('14:00'), 1, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $saturday->SetTimeString('12:00'), $saturday->SetTimeString('14:00'), 1, 'r1'),
             $this->GetUtilizationRow($r1, $s1, $saturday->SetTimeString('16:00'), $saturday->SetTimeString('18:00'), 1, 'r1'),
-        );
+        ];
 
         $this->reportingRepository->_CustomReportData = $data;
 
@@ -362,14 +366,14 @@ class ReportingServiceTests extends TestBase
      */
     private function GetUtilizationRow($resourceId, $scheduleId, $start, $end, $type = 1, $resourceName = 'name')
     {
-        return array(
+        return [
             ColumnNames::SCHEDULE_ID => $scheduleId,
             ColumnNames::RESOURCE_ID => $resourceId,
             ColumnNames::RESOURCE_NAME_ALIAS => $resourceName,
             ColumnNames::RESERVATION_START => $start->ToDatabase(),
             ColumnNames::RESERVATION_END => $end->ToDatabase(),
             ColumnNames::UTILIZATION_TYPE => $type,
-        );
+        ];
     }
 
     /**
@@ -380,9 +384,9 @@ class ReportingServiceTests extends TestBase
      */
     private function HourlyBetween($firstHour, $lastHour, $date)
     {
-        $slots = array();
+        $slots = [];
         if ($firstHour != 0) {
-            $slots = array(new NonSchedulePeriod($date->SetTimeString("00:00"), $date->SetTimeString("$firstHour:00", true)));
+            $slots = [new NonSchedulePeriod($date->SetTimeString("00:00"), $date->SetTimeString("$firstHour:00", true))];
         }
 
         for ($i = $firstHour; $i < $lastHour; $i++) {
@@ -400,7 +404,7 @@ class ReportingServiceTests extends TestBase
 
 class FakeReportingRepository implements IReportingRepository
 {
-    public $_CustomReportData = array();
+    public $_CustomReportData = [];
     public $_LastSavedReport;
     public $_SavedReports;
     public $_SavedReport;

@@ -14,7 +14,7 @@ abstract class AccountRequestBase extends JsonRequest
     public $organization;
     public $position;
     /** @var array|AttributeValueRequest[] */
-    public $customAttributes = array();
+    public $customAttributes = [];
 
     /**
      * @return string
@@ -48,7 +48,7 @@ abstract class AccountRequestBase extends JsonRequest
         if (!empty($this->customAttributes)) {
             return $this->customAttributes;
         }
-        return array();
+        return [];
     }
 
     /**
@@ -56,8 +56,8 @@ abstract class AccountRequestBase extends JsonRequest
      */
     public function GetAdditionalFields()
     {
-        return array('phone' => $this->phone,
+        return ['phone' => $this->phone,
             'organization' => $this->organization,
-            'position' => $this->position);
+            'position' => $this->position];
     }
 }

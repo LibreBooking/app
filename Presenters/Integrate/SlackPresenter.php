@@ -68,7 +68,7 @@ class SlackResponse
     /**
      * @var SlackAttachment[]
      */
-    public $attachments = array();
+    public $attachments = [];
     /**
      * {
      * "text": "Book now",
@@ -98,7 +98,7 @@ class SlackAttachment
     /**
      * @var SlackAction[]
      */
-    public $actions = array();
+    public $actions = [];
 
     public function __construct($buttonText, $buttonUrl)
     {
@@ -141,8 +141,7 @@ class SlackBookResponse extends SlackResponse
 
         if (!empty($resourceName)) {
             $this->text = $resources->GetString('SlackBookResource', $resourceName);
-        }
-        else {
+        } else {
             $this->text = $resources->GetString('SlackNotFound');
         }
         $this->attachments[] = new SlackAttachment($resources->GetString('SlackBookNow'), $url);

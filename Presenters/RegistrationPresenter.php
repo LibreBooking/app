@@ -7,7 +7,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
 class RegisterActions
 {
-    const Register = 'register';
+    public const Register = 'register';
 }
 
 class RegistrationPresenter extends ActionPresenter
@@ -56,7 +56,8 @@ class RegistrationPresenter extends ActionPresenter
         $authentication = null,
         $captchaService = null,
         $attributeService = null,
-        $termsOfServiceRepository = null)
+        $termsOfServiceRepository = null
+    )
     {
         parent::__construct($page);
 
@@ -74,8 +75,7 @@ class RegistrationPresenter extends ActionPresenter
     {
         if (is_null($registration)) {
             $this->registration = new Registration();
-        }
-        else {
+        } else {
             $this->registration = $registration;
         }
     }
@@ -84,8 +84,7 @@ class RegistrationPresenter extends ActionPresenter
     {
         if (is_null($authorization)) {
             $this->auth = PluginManager::Instance()->LoadAuthentication();
-        }
-        else {
+        } else {
             $this->auth = $authorization;
         }
     }
@@ -94,8 +93,7 @@ class RegistrationPresenter extends ActionPresenter
     {
         if (is_null($captchaService)) {
             $this->captchaService = CaptchaService::Create();
-        }
-        else {
+        } else {
             $this->captchaService = $captchaService;
         }
     }
@@ -104,8 +102,7 @@ class RegistrationPresenter extends ActionPresenter
     {
         if (is_null($attributeService)) {
             $this->attributeService = new AttributeService(new AttributeRepository());
-        }
-        else {
+        } else {
             $this->attributeService = $attributeService;
         }
     }
@@ -114,8 +111,7 @@ class RegistrationPresenter extends ActionPresenter
     {
         if (is_null($termsOfServiceRepository)) {
             $this->termsRepository = new TermsOfServiceRepository();
-        }
-        else {
+        } else {
             $this->termsRepository = $termsOfServiceRepository;
         }
     }
@@ -135,9 +131,9 @@ class RegistrationPresenter extends ActionPresenter
 
     public function Register()
     {
-        $additionalFields = array('phone' => $this->page->GetPhone(),
+        $additionalFields = ['phone' => $this->page->GetPhone(),
             'organization' => $this->page->GetOrganization(),
-            'position' => $this->page->GetPosition());
+            'position' => $this->page->GetPosition()];
 
         $language = Resources::GetInstance()->CurrentLanguage;
         $user = $this->registration->Register(
@@ -152,7 +148,8 @@ class RegistrationPresenter extends ActionPresenter
             $additionalFields,
             $this->GetAttributeValues(),
             null,
-            $this->page->GetTermsOfServiceAcknowledgement());
+            $this->page->GetTermsOfServiceAcknowledgement()
+        );
 
         $context = new WebLoginContext(new LoginData(false, $language));
         $plugin = PluginManager::Instance()->LoadPostRegistration();
@@ -164,7 +161,7 @@ class RegistrationPresenter extends ActionPresenter
      */
     private function GetAttributeValues()
     {
-        $attributes = array();
+        $attributes = [];
         foreach ($this->page->GetAttributes() as $attribute) {
             $attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
         }
@@ -180,8 +177,8 @@ class RegistrationPresenter extends ActionPresenter
 
     private function PopulateTimezones()
     {
-        $timezoneValues = array();
-        $timezoneOutput = array();
+        $timezoneValues = [];
+        $timezoneOutput = [];
 
         foreach ($GLOBALS['APP_TIMEZONES'] as $timezone) {
             $timezoneValues[] = $timezone;
@@ -200,8 +197,8 @@ class RegistrationPresenter extends ActionPresenter
 
     private function PopulateHomepages()
     {
-        $homepageValues = array();
-        $homepageOutput = array();
+        $homepageValues = [];
+        $homepageOutput = [];
 
         $pages = Pages::GetAvailablePages();
         foreach ($pages as $pageid => $page) {
@@ -222,8 +219,7 @@ class RegistrationPresenter extends ActionPresenter
     private function PopulateTerms()
     {
         $terms = $this->termsRepository->Load();
-        if ($terms != null && $terms->AppliesToRegistration())
-        {
+        if ($terms != null && $terms->AppliesToRegistration()) {
             $this->page->SetTerms($terms);
         }
     }

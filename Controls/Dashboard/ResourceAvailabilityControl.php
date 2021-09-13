@@ -171,15 +171,18 @@ class ResourceAvailabilityControl extends DashboardItem implements IResourceAvai
     {
         parent::__construct($smarty);
 
-        $this->presenter = new ResourceAvailabilityControlPresenter($this,
-            new ResourceService(new ResourceRepository(),
+        $this->presenter = new ResourceAvailabilityControlPresenter(
+            $this,
+            new ResourceService(
+                new ResourceRepository(),
                 new SchedulePermissionService(PluginManager::Instance()->LoadPermission()),
                 new AttributeService(new AttributeRepository()),
                 new UserRepository(),
                 new AccessoryRepository()
             ),
             new ReservationViewRepository(),
-            new ScheduleRepository());
+            new ScheduleRepository()
+        );
     }
 
     public function PageLoad()

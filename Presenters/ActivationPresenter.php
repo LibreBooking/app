@@ -29,25 +29,18 @@ class ActivationPresenter
     public function PageLoad()
     {
         $activationCode = $this->page->GetActivationCode();
-        if(empty($activationCode))
-        {
+        if (empty($activationCode)) {
             $this->page->ShowSent();
-        }
-        else
-        {
+        } else {
             $activationResult = $this->accountActivation->Activate($activationCode);
 
-            if ($activationResult->Activated())
-            {
+            if ($activationResult->Activated()) {
                 $user = $activationResult->User();
                 $this->authentication->Login($user->EmailAddress(), new WebLoginContext(new LoginData(false, $user->Language())));
                 $this->page->Redirect(Pages::UrlFromId($user->Homepage()));
-            }
-            else
-            {
+            } else {
                 $this->page->ShowError();
             }
         }
     }
 }
-

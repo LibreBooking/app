@@ -2,171 +2,169 @@
 
 class Accessory
 {
-	/**
-	 * @var int
-	 */
-	private $id;
+    /**
+     * @var int
+     */
+    private $id;
 
 
-	/**
-	 * @var string
-	 */
-	private $name;
+    /**
+     * @var string
+     */
+    private $name;
 
-	/**
-	 * @var int
-	 */
-	private $quantityAvailable;
+    /**
+     * @var int
+     */
+    private $quantityAvailable;
 
-	/**
-	 * @var ResourceAccessory[]
-	 */
-	private $resources = array();
+    /**
+     * @var ResourceAccessory[]
+     */
+    private $resources = [];
 
-	/**
-	 * @param int $id
-	 * @param string $name
-	 * @param int $quantityAvailable
-	 */
-	public function __construct($id, $name, $quantityAvailable)
-	{
-		$this->id = $id;
-		$this->SetName($name);
-		$this->SetQuantityAvailable($quantityAvailable);
-	}
+    /**
+     * @param int $id
+     * @param string $name
+     * @param int $quantityAvailable
+     */
+    public function __construct($id, $name, $quantityAvailable)
+    {
+        $this->id = $id;
+        $this->SetName($name);
+        $this->SetQuantityAvailable($quantityAvailable);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function GetId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function GetId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function GetName()
-	{
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function GetName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function SetName($name)
-	{
-		$this->name = $name;
-	}
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function SetName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @param int $quantity
-	 */
-	public function SetQuantityAvailable($quantity)
-	{
-		$q = intval($quantity);
-		$this->quantityAvailable = empty($q) ? null : $q;
-	}
+    /**
+     * @param int $quantity
+     */
+    public function SetQuantityAvailable($quantity)
+    {
+        $q = intval($quantity);
+        $this->quantityAvailable = empty($q) ? null : $q;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function GetQuantityAvailable()
-	{
-		return $this->quantityAvailable;
-	}
+    /**
+     * @return int
+     */
+    public function GetQuantityAvailable()
+    {
+        return $this->quantityAvailable;
+    }
 
-	/**
-	 * @return ResourceAccessory[]
-	 */
-	public function Resources()
-	{
-		return $this->resources;
-	}
+    /**
+     * @return ResourceAccessory[]
+     */
+    public function Resources()
+    {
+        return $this->resources;
+    }
 
-	/**
-	 * @return int[]
-	 */
-	public function ResourceIds()
-	{
-		$ids = array();
-		foreach ($this->resources as $resource)
-		{
-			$ids[] = $resource->ResourceId;
-		}
+    /**
+     * @return int[]
+     */
+    public function ResourceIds()
+    {
+        $ids = [];
+        foreach ($this->resources as $resource) {
+            $ids[] = $resource->ResourceId;
+        }
 
-		return $ids;
-	}
+        return $ids;
+    }
 
-	/**
-	 * @static
-	 * @param string $name
-	 * @param int $quantity
-	 * @return Accessory
-	 */
-	public static function Create($name, $quantity)
-	{
-		return new Accessory(null, $name, $quantity);
-	}
+    /**
+     * @static
+     * @param string $name
+     * @param int $quantity
+     * @return Accessory
+     */
+    public static function Create($name, $quantity)
+    {
+        return new Accessory(null, $name, $quantity);
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function HasUnlimitedQuantity()
-	{
-		return empty($this->quantityAvailable);
-	}
+    /**
+     * @return bool
+     */
+    public function HasUnlimitedQuantity()
+    {
+        return empty($this->quantityAvailable);
+    }
 
-	public function AddResource($resourceId, $minQuantity, $maxQuantity)
-	{
-		$this->resources[] = new ResourceAccessory($resourceId, $minQuantity, $maxQuantity);
-	}
+    public function AddResource($resourceId, $minQuantity, $maxQuantity)
+    {
+        $this->resources[] = new ResourceAccessory($resourceId, $minQuantity, $maxQuantity);
+    }
 
-	/**
-	 * @param ResourceAccessory[] $resources
-	 */
-	public function ChangeResources($resources)
-	{
-		$this->resources = $resources;
-	}
+    /**
+     * @param ResourceAccessory[] $resources
+     */
+    public function ChangeResources($resources)
+    {
+        $this->resources = $resources;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function IsTiedToResource()
-	{
-		return count($this->resources) > 0;
-	}
+    /**
+     * @return bool
+     */
+    public function IsTiedToResource()
+    {
+        return count($this->resources) > 0;
+    }
 
-	/**
-	 * @param int $resourceId
-	 * @return ResourceAccessory
-	 */
-	public function GetResource($resourceId)
-	{
-		foreach ($this->resources as $resource)
-		{
-			if ($resource->ResourceId == $resourceId)
-			{
-				return $resource;
-			}
-		}
+    /**
+     * @param int $resourceId
+     * @return ResourceAccessory
+     */
+    public function GetResource($resourceId)
+    {
+        foreach ($this->resources as $resource) {
+            if ($resource->ResourceId == $resourceId) {
+                return $resource;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 }
 
 class ResourceAccessory
 {
-	public $ResourceId;
-	public $MinQuantity;
-	public $MaxQuantity;
+    public $ResourceId;
+    public $MinQuantity;
+    public $MaxQuantity;
 
-	public function __construct($resourceId, $minQuantity, $maxQuantity)
-	{
-		$this->ResourceId = $resourceId;
-		$this->MinQuantity = empty($minQuantity) ? null : (int)$minQuantity;
-		$this->MaxQuantity = empty($maxQuantity) ? null : (int)$maxQuantity;;
-	}
+    public function __construct($resourceId, $minQuantity, $maxQuantity)
+    {
+        $this->ResourceId = $resourceId;
+        $this->MinQuantity = empty($minQuantity) ? null : (int)$minQuantity;
+        $this->MaxQuantity = empty($maxQuantity) ? null : (int)$maxQuantity;
+        ;
+    }
 }

@@ -37,8 +37,7 @@ class AccountWebService
         $session = $this->server->GetSession();
         $user = $this->controller->LoadUser($session);
         $userId = $user->Id();
-        if (empty($userId))
-        {
+        if (empty($userId)) {
             $this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
             return;
         }
@@ -56,10 +55,11 @@ class AccountWebService
      */
     public function Create()
     {
-        if (!Configuration::Instance()->GetSectionKey(ConfigSection::API, ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
-        {
-            $this->server->WriteResponse(new FailedResponse($this->server, array('allow.self.registration is not enabled for the API')),
-                RestResponse::UNAUTHORIZED_CODE);
+        if (!Configuration::Instance()->GetSectionKey(ConfigSection::API, ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter())) {
+            $this->server->WriteResponse(
+                new FailedResponse($this->server, ['allow.self.registration is not enabled for the API']),
+                RestResponse::UNAUTHORIZED_CODE
+            );
             return;
         }
 
@@ -70,19 +70,20 @@ class AccountWebService
 
         $result = $this->controller->Create($request);
 
-        if ($result->WasSuccessful())
-        {
+        if ($result->WasSuccessful()) {
             Log::Debug('AccountWebService.Create() - User Created. Created UserId=%s', $result->UserId());
 
-            $this->server->WriteResponse(new AccountActionResponse($this->server, $result->UserId()),
-                RestResponse::CREATED_CODE);
-        }
-        else
-        {
+            $this->server->WriteResponse(
+                new AccountActionResponse($this->server, $result->UserId()),
+                RestResponse::CREATED_CODE
+            );
+        } else {
             Log::Debug('AccountWebService.Create() - User Create Failed.');
 
-            $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
-                RestResponse::BAD_REQUEST_CODE);
+            $this->server->WriteResponse(
+                new FailedResponse($this->server, $result->Errors()),
+                RestResponse::BAD_REQUEST_CODE
+            );
         }
     }
 
@@ -102,19 +103,20 @@ class AccountWebService
 
         $result = $this->controller->Update($request, $this->server->GetSession());
 
-        if ($result->WasSuccessful())
-        {
+        if ($result->WasSuccessful()) {
             Log::Debug('AccountWebService.Update() - User Updated. Updated UserId=%s', $result->UserId());
 
-            $this->server->WriteResponse(new AccountActionResponse($this->server, $result->UserId()),
-                RestResponse::OK_CODE);
-        }
-        else
-        {
+            $this->server->WriteResponse(
+                new AccountActionResponse($this->server, $result->UserId()),
+                RestResponse::OK_CODE
+            );
+        } else {
             Log::Debug('AccountWebService.Update() - User Update Failed.');
 
-            $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
-                RestResponse::BAD_REQUEST_CODE);
+            $this->server->WriteResponse(
+                new FailedResponse($this->server, $result->Errors()),
+                RestResponse::BAD_REQUEST_CODE
+            );
         }
     }
 
@@ -134,19 +136,20 @@ class AccountWebService
 
         $result = $this->controller->UpdatePassword($request, $this->server->GetSession());
 
-        if ($result->WasSuccessful())
-        {
+        if ($result->WasSuccessful()) {
             Log::Debug('AccountWebService.UpdatePassword() - Password Updated. Updated UserId=%s', $result->UserId());
 
-            $this->server->WriteResponse(new AccountActionResponse($this->server, $result->UserId()),
-                RestResponse::OK_CODE);
-        }
-        else
-        {
+            $this->server->WriteResponse(
+                new AccountActionResponse($this->server, $result->UserId()),
+                RestResponse::OK_CODE
+            );
+        } else {
             Log::Debug('AccountWebService.Update() - User Update Failed.');
 
-            $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
-                RestResponse::BAD_REQUEST_CODE);
+            $this->server->WriteResponse(
+                new FailedResponse($this->server, $result->Errors()),
+                RestResponse::BAD_REQUEST_CODE
+            );
         }
     }
 }

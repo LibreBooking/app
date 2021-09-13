@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the Net_LDAP2_LDIF interface class.
@@ -71,7 +72,7 @@ class Net_LDAP2_LDIF extends PEAR
     * @access protected
     * @var array
     */
-    protected $_options = array('encode'    => 'base64',
+    protected $_options = ['encode'    => 'base64',
                                 'onerror'   => null,
                                 'change'    => 0,
                                 'lowercase' => 0,
@@ -79,7 +80,7 @@ class Net_LDAP2_LDIF extends PEAR
                                 'version'   => null,
                                 'wrap'      => 78,
                                 'raw'       => ''
-                               );
+                               ];
 
     /**
     * Errorcache
@@ -87,9 +88,9 @@ class Net_LDAP2_LDIF extends PEAR
     * @access protected
     * @var array
     */
-    protected $_error = array('error' => null,
+    protected $_error = ['error' => null,
                               'line'  => 0
-                             );
+                             ];
 
     /**
     * Filehandle for read/write
@@ -147,7 +148,7 @@ class Net_LDAP2_LDIF extends PEAR
     * @access protected
     * @var boolean
     */
-    protected $_lines_cur = array();
+    protected $_lines_cur = [];
 
     /**
     * Cache for lines that will build the next entry
@@ -155,7 +156,7 @@ class Net_LDAP2_LDIF extends PEAR
     * @access protected
     * @var boolean
     */
-    protected $_lines_next = array();
+    protected $_lines_next = [];
 
     /**
     * Open LDIF file for reading or for writing
@@ -216,7 +217,7 @@ class Net_LDAP2_LDIF extends PEAR
     * @param string           $mode    Mode to open filename
     * @param array            $options Options like described above
     */
-    public function __construct($file, $mode = 'r', $options = array())
+    public function __construct($file, $mode = 'r', $options = [])
     {
         parent::__construct('Net_LDAP2_Error'); // default error class
 
@@ -324,7 +325,7 @@ class Net_LDAP2_LDIF extends PEAR
     public function write_entry($entries)
     {
         if (!is_array($entries)) {
-            $entries = array($entries);
+            $entries = [$entries];
         }
 
         foreach ($entries as $entry) {
@@ -358,10 +359,10 @@ class Net_LDAP2_LDIF extends PEAR
                         $this->writeLine("changetype: delete".PHP_EOL);
                     } elseif ($entry->willBeMoved()) {
                         $this->writeLine("changetype: modrdn".PHP_EOL);
-                        $olddn     = Net_LDAP2_Util::ldap_explode_dn($entry->currentDN(), array('casefold' => 'none')); // maybe gives a bug if using multivalued RDNs
+                        $olddn     = Net_LDAP2_Util::ldap_explode_dn($entry->currentDN(), ['casefold' => 'none']); // maybe gives a bug if using multivalued RDNs
                         $oldrdn    = array_shift($olddn);
                         $oldparent = implode(',', $olddn);
-                        $newdn     = Net_LDAP2_Util::ldap_explode_dn($entry->dn(), array('casefold' => 'none')); // maybe gives a bug if using multivalued RDNs
+                        $newdn     = Net_LDAP2_Util::ldap_explode_dn($entry->dn(), ['casefold' => 'none']); // maybe gives a bug if using multivalued RDNs
                         $rdn       = array_shift($newdn);
                         $parent    = implode(',', $newdn);
                         $this->writeLine("newrdn: ".$rdn.PHP_EOL);
@@ -378,7 +379,9 @@ class Net_LDAP2_LDIF extends PEAR
                         foreach ($entry_attrs_changes as $changetype => $entry_attrs) {
                             foreach ($entry_attrs as $attr_name => $attr_values) {
                                 $this->writeLine("$changetype: $attr_name".PHP_EOL);
-                                if ($attr_values !== null) $this->writeAttribute($attr_name, $attr_values, $changetype);
+                                if ($attr_values !== null) {
+                                    $this->writeAttribute($attr_name, $attr_values, $changetype);
+                                }
                                 $this->writeLine("-".PHP_EOL);
                             }
                         }
@@ -399,7 +402,7 @@ class Net_LDAP2_LDIF extends PEAR
                         if (array_key_exists('objectclass', $entry_attrs)) {
                             $oc = $entry_attrs['objectclass'];
                             unset($entry_attrs['objectclass']);
-                            $entry_attrs = array_merge(array('objectclass' => $oc), $entry_attrs);
+                            $entry_attrs = array_merge(['objectclass' => $oc], $entry_attrs);
                         }
                     }
 
@@ -514,7 +517,7 @@ class Net_LDAP2_LDIF extends PEAR
     public function error($as_string = false)
     {
         if (Net_LDAP2::isError($this->_error['error'])) {
-            return ($as_string)? $this->_error['error']->getMessage() : $this->_error['error'];
+            return ($as_string) ? $this->_error['error']->getMessage() : $this->_error['error'];
         } else {
             return false;
         }
@@ -554,7 +557,7 @@ class Net_LDAP2_LDIF extends PEAR
     public function parseLines($lines)
     {
         // parse lines into an array of attributes and build the entry
-        $attributes = array();
+        $attributes = [];
         $dn = false;
         foreach ($lines as $line) {
             if (preg_match('/^(\w+(;binary)?)(:|::|:<)\s(.+)$/', $line, $matches)) {
@@ -572,7 +575,7 @@ class Net_LDAP2_LDIF extends PEAR
                     // file inclusion
                     // TODO: Is this the job of the LDAP-client or the server?
                     $this->dropError('File inclusions are currently not supported');
-                    //$attributes[$attr][] = ...;
+                //$attributes[$attr][] = ...;
                 } else {
                     // since the pattern above, the delimeter cannot be something else.
                     $this->dropError('Net_LDAP2_LDIF parsing error: invalid syntax at parsing entry line: '.$line);
@@ -632,7 +635,7 @@ class Net_LDAP2_LDIF extends PEAR
     {
         // if we already have those lines, just return them, otherwise read
         if (count($this->_lines_next) == 0 || $force) {
-            $this->_lines_next = array(); // empty in case something was left (if used $force)
+            $this->_lines_next = []; // empty in case something was left (if used $force)
             $entry_done        = false;
             $fh                = &$this->handle();
             $commentmode       = false; // if we are in an comment, for wrapping purposes
@@ -677,7 +680,6 @@ class Net_LDAP2_LDIF extends PEAR
                         }
                         // now we have either the file pointer at the beginning of
                         // a new data position or at the end of file causing feof() to return true
-
                     } else {
                         // build lines
                         if (preg_match('/^version:\s(.+)$/', $data, $match)) {
@@ -714,7 +716,6 @@ class Net_LDAP2_LDIF extends PEAR
                             $this->dropError('Net_LDAP2_LDIF error: invalid syntax at input line '.$this->_input_line, $this->_input_line);
                             continue;
                         }
-
                     }
                 }
             }
@@ -745,8 +746,8 @@ class Net_LDAP2_LDIF extends PEAR
             // ASCII-chars that are NOT safe for the
             // start and for being inside the value.
             // These are the int values of those chars.
-            $unsafe_init = array(0, 10, 13, 32, 58, 60);
-            $unsafe      = array(0, 10, 13);
+            $unsafe_init = [0, 10, 13, 32, 58, 60];
+            $unsafe      = [0, 10, 13];
 
             // Test for illegal init char
             $init_ord = ord(substr($attr_value, 0, 1));
@@ -775,7 +776,9 @@ class Net_LDAP2_LDIF extends PEAR
             }
 
             // Lowercase attr names if requested
-            if ($this->_options['lowercase']) $attr_name = strtolower($attr_name);
+            if ($this->_options['lowercase']) {
+                $attr_name = strtolower($attr_name);
+            }
 
             // Handle line wrapping
             if ($this->_options['wrap'] > 40 && strlen($attr_value) > $this->_options['wrap']) {
@@ -803,8 +806,8 @@ class Net_LDAP2_LDIF extends PEAR
         // ASCII-chars that are NOT safe for the
         // start and for being inside the dn.
         // These are the int values of those chars.
-        $unsafe_init = array(0, 10, 13, 32, 58, 60);
-        $unsafe      = array(0, 10, 13);
+        $unsafe_init = [0, 10, 13, 32, 58, 60];
+        $unsafe      = [0, 10, 13];
 
         // Test for illegal init char
         $init_ord = ord(substr($dn, 0, 1));
@@ -826,7 +829,7 @@ class Net_LDAP2_LDIF extends PEAR
         }
 
         // if converting is needed, do it
-        return ($base64)? 'dn:: '.base64_encode($dn) : 'dn: '.$dn;
+        return ($base64) ? 'dn:: '.base64_encode($dn) : 'dn: '.$dn;
     }
 
     /**
@@ -842,7 +845,7 @@ class Net_LDAP2_LDIF extends PEAR
     {
         // write out attribute content
         if (!is_array($attr_values)) {
-            $attr_values = array($attr_values);
+            $attr_values = [$attr_values];
         }
         foreach ($attr_values as $attr_val) {
             $line = $this->convertAttribute($attr_name, $attr_val).PHP_EOL;
@@ -864,7 +867,7 @@ class Net_LDAP2_LDIF extends PEAR
         if ($this->_options['encode'] == 'base64') {
             $dn = $this->convertDN($dn).PHP_EOL;
         } elseif ($this->_options['encode'] == 'canonical') {
-            $dn = Net_LDAP2_Util::canonical_dn($dn, array('casefold' => 'none')).PHP_EOL;
+            $dn = Net_LDAP2_Util::canonical_dn($dn, ['casefold' => 'none']).PHP_EOL;
         } else {
             $dn = $dn.PHP_EOL;
         }
@@ -913,7 +916,9 @@ class Net_LDAP2_LDIF extends PEAR
     protected function dropError($msg, $line = null)
     {
         $this->_error['error'] = new Net_LDAP2_Error($msg);
-        if ($line !== null) $this->_error['line'] = $line;
+        if ($line !== null) {
+            $this->_error['line'] = $line;
+        }
 
         if ($this->_options['onerror'] == 'die') {
             die($msg.PHP_EOL);

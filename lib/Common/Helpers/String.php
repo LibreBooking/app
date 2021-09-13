@@ -4,50 +4,50 @@ require_once(ROOT_DIR . 'lib/external/random/random.php');
 
 class BookedStringHelper
 {
-	/**
-	 * @static
-	 * @param $haystack string
-	 * @param $needle string
-	 * @return bool
-	 */
-	public static function StartsWith($haystack, $needle)
-	{
-		$length = strlen($needle);
-		return (substr($haystack, 0, $length) === $needle);
-	}
+    /**
+     * @static
+     * @param $haystack string
+     * @param $needle string
+     * @return bool
+     */
+    public static function StartsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
+    }
 
-	/**
-	 * @static
-	 * @param $haystack string
-	 * @param $needle string
-	 * @return bool
-	 */
-	public static function EndsWith($haystack, $needle)
-	{
-		$length = strlen($needle);
-	    if ($length == 0) {
-	        return true;
-	    }
+    /**
+     * @static
+     * @param $haystack string
+     * @param $needle string
+     * @return bool
+     */
+    public static function EndsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
 
-	    $start  = $length * -1;
-	    return (substr($haystack, $start) === $needle);
-	}
+        $start  = $length * -1;
+        return (substr($haystack, $start) === $needle);
+    }
 
-	/**
-	 * @static
-	 * @param $haystack string
-	 * @param $needle string
-	 * @return bool
-	 */
-	public static function Contains($haystack, $needle)
-	{
-		return strpos($haystack, $needle) !== false;
-	}
+    /**
+     * @static
+     * @param $haystack string
+     * @param $needle string
+     * @return bool
+     */
+    public static function Contains($haystack, $needle)
+    {
+        return strpos($haystack, $needle) !== false;
+    }
 
     /**
      * @return string
      */
-	public static function Random($length = 50)
+    public static function Random($length = 50)
     {
         try {
             $string = random_bytes(intval($length/2));

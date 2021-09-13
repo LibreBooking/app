@@ -172,8 +172,8 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 
     private function PopulateTimezones()
     {
-        $timezoneValues = array();
-        $timezoneOutput = array();
+        $timezoneValues = [];
+        $timezoneOutput = [];
 
         foreach ($GLOBALS['APP_TIMEZONES'] as $timezone) {
             $timezoneValues[] = $timezone;
@@ -188,11 +188,11 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
     {
         $settingNames = $this->GetRawForm('setting_names');
         $settings = explode(',', $settingNames);
-        $submittedSettings = array();
+        $submittedSettings = [];
         foreach ($settings as $setting) {
             $setting = trim($setting);
             if (!empty($setting)) {
-//				Log::Debug("%s=%s", $setting, $this->GetForm($setting));
+                //				Log::Debug("%s=%s", $setting, $this->GetForm($setting));
                 $submittedSettings[] = ConfigSetting::ParseForm($setting, stripslashes($this->GetRawForm($setting)));
             }
         }
@@ -256,6 +256,6 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 
     public function GetHomePageId()
     {
-       return $this->GetForm('homepage_id');
+        return $this->GetForm('homepage_id');
     }
 }

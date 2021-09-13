@@ -10,12 +10,14 @@ class ScheduleAdminManageReservationsPage extends ManageReservationsPage
         parent::__construct();
 
         $userRepository = new UserRepository();
-        $this->presenter = new ManageReservationsPresenter($this,
+        $this->presenter = new ManageReservationsPresenter(
+            $this,
             new ScheduleAdminManageReservationsService(new ReservationViewRepository(), $userRepository, new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
             new ScheduleAdminScheduleRepository($userRepository, ServiceLocator::GetServer()->GetUserSession()),
             new ResourceAdminResourceRepository($userRepository, ServiceLocator::GetServer()->GetUserSession()),
             new AttributeService(new AttributeRepository()),
             $userRepository,
-            new TermsOfServiceRepository());
+            new TermsOfServiceRepository()
+        );
     }
 }

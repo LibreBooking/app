@@ -1,9 +1,8 @@
 <?php
 
 // debugging tools / libs
-if (file_exists(ROOT_DIR . 'vendor/autoload.php'))
-{
-	require ROOT_DIR . 'vendor/autoload.php';
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+    require ROOT_DIR . 'vendor/autoload.php';
 }
 
 require_once(ROOT_DIR . 'Pages/IPage.php');
@@ -32,7 +31,7 @@ abstract class Page implements IPage
 
     protected function __construct($titleKey = '', $pageDepth = 0)
     {
-        ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
+        ExceptionHandler::SetExceptionHandler(new WebExceptionHandler([$this, 'RedirectToError']));
 
         $this->SetSecurityHeaders();
 
@@ -130,7 +129,6 @@ abstract class Page implements IPage
         $this->Set('IsDesktop', $this->IsDesktop);
         $this->Set('GoogleAnalyticsTrackingId', Configuration::Instance()->GetSectionKey(ConfigSection::GOOGLE_ANALYTICS, ConfigKeys::GOOGLE_ANALYTICS_TRACKING_ID));
         $this->Set('ShowNewVersion', $this->ShouldShowNewVersion());
-
     }
 
     protected function SetTitle($title)
@@ -306,18 +304,15 @@ abstract class Page implements IPage
     protected function GetQuerystring($key, $forceArray = false)
     {
         $val = $this->server->GetQuerystring($key);
-        if (!$forceArray)
-        {
+        if (!$forceArray) {
             return $val;
         }
 
-        if (empty($val))
-        {
-            return array();
+        if (empty($val)) {
+            return [];
         }
-        if (!is_array($val))
-        {
-            return array($val);
+        if (!is_array($val)) {
+            return [$val];
         }
 
         return $val;
@@ -345,9 +340,8 @@ abstract class Page implements IPage
 
         if (empty($error)) {
             $this->Set('data', json_encode($objectToSerialize));
-        }
-        else {
-            $this->Set('error', json_encode(array('response' => $objectToSerialize, 'errors' => $error)));
+        } else {
+            $this->Set('error', json_encode(['response' => $objectToSerialize, 'errors' => $error]));
         }
         $this->smarty->display('json_data.tpl');
     }
@@ -374,8 +368,7 @@ abstract class Page implements IPage
     {
         if (!$this->InMaintenanceMode()) {
             $this->smarty->display($templateName);
-        }
-        else {
+        } else {
             $this->smarty->display('maintenance.tpl');
         }
     }
@@ -408,8 +401,7 @@ abstract class Page implements IPage
 
         if (file_exists($localizedPath . '/' . $templateName)) {
             $this->smarty->AddTemplateDirectory($localizedPath);
-        }
-        else {
+        } else {
             $this->smarty->AddTemplateDirectory($defaultPath);
         }
 

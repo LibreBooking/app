@@ -60,14 +60,16 @@ class ReservationInitializationTests extends TestBase
         $this->resourceRepository = $this->createMock('IResourceRepository');
         $this->termsRepository = $this->createMock('ITermsOfServiceRepository');
 
-        $this->initializer = new NewReservationInitializer($this->page,
+        $this->initializer = new NewReservationInitializer(
+            $this->page,
             $this->userBinder,
             $this->dateBinder,
             $this->resourceBinder,
             $this->fakeUser,
             $this->scheduleRepository,
             $this->resourceRepository,
-            $this->termsRepository);
+            $this->termsRepository
+        );
     }
 
     public function teardown(): void
@@ -118,7 +120,7 @@ class ReservationInitializationTests extends TestBase
 
         $expectedStartPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 30, 0)), $dateInUserTimezone->SetTime(new Time(4, 30, 0)));
         $expectedEndPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(4, 30, 0)), $dateInUserTimezone->SetTime(new Time(7, 30, 0)));
-        $periods = array(
+        $periods = [
             new SchedulePeriod($dateInUserTimezone->SetTime(new Time(1, 0, 0)), $dateInUserTimezone->SetTime(new Time(2, 0, 0))),
             new SchedulePeriod($dateInUserTimezone->SetTime(new Time(2, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 0, 0))),
             new NonSchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 30, 0))),
@@ -126,7 +128,7 @@ class ReservationInitializationTests extends TestBase
             $expectedEndPeriod,
             new SchedulePeriod($dateInUserTimezone->SetTime(new Time(7, 30, 0)), $dateInUserTimezone->SetTime(new Time(17, 30, 0))),
             new SchedulePeriod($dateInUserTimezone->SetTime(new Time(17, 30, 0)), $dateInUserTimezone->SetTime(new Time(0, 0, 0))),
-        );
+        ];
 
         $page->expects($this->once())
             ->method('SetSelectedStart')
@@ -152,7 +154,8 @@ class ReservationInitializationTests extends TestBase
             $this->fakeUser,
             $this->scheduleRepository,
             $this->resourceRepository,
-            $this->termsRepository);
+            $this->termsRepository
+        );
         $initializer->SetDates($startDate, $endDate, $periods, $periods, 0);
     }
 

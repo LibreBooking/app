@@ -2,88 +2,88 @@
 
 class AccountActivationTests extends TestBase
 {
-	/**
-	 * @var IAccountActivationRepository|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $activationRepo;
+    /**
+     * @var IAccountActivationRepository|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $activationRepo;
 
-	/**
-	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $userRepo;
+    /**
+     * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $userRepo;
 
-	/**
-	 * @var AccountActivation
-	 */
-	private $activation;
+    /**
+     * @var AccountActivation
+     */
+    private $activation;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->activationRepo = $this->createMock('IAccountActivationRepository');
-		$this->userRepo = $this->createMock('IUserRepository');
-		$this->activation = new AccountActivation($this->activationRepo, $this->userRepo);
-	}
+        $this->activationRepo = $this->createMock('IAccountActivationRepository');
+        $this->userRepo = $this->createMock('IUserRepository');
+        $this->activation = new AccountActivation($this->activationRepo, $this->userRepo);
+    }
 
-	public function testGetsActivationCodeAndSendsEmail()
-	{
-		$user = new FakeUser(100);
+    public function testGetsActivationCodeAndSendsEmail()
+    {
+        $user = new FakeUser(100);
 
-		$this->activationRepo->expects($this->once())
-				->method('AddActivation')
-				->with($this->equalTo($user), $this->anything());
-		$this->activation->Notify($user);
+        $this->activationRepo->expects($this->once())
+                ->method('AddActivation')
+                ->with($this->equalTo($user), $this->anything());
+        $this->activation->Notify($user);
 
-		$this->assertInstanceOf('AccountActivationEmail', $this->fakeEmailService->_LastMessage);
-	}
+        $this->assertInstanceOf('AccountActivationEmail', $this->fakeEmailService->_LastMessage);
+    }
 
-	public function testWhenActivationCodeIsValid()
-	{
-		$userId = 11;
-		$homepage = Pages::CALENDAR;
-		$user = new FakeUser($userId);
-		$user->ChangeDefaultHomePage($homepage);
-		$user->SetStatus(AccountStatus::AWAITING_ACTIVATION);
+    public function testWhenActivationCodeIsValid()
+    {
+        $userId = 11;
+        $homepage = Pages::CALENDAR;
+        $user = new FakeUser($userId);
+        $user->ChangeDefaultHomePage($homepage);
+        $user->SetStatus(AccountStatus::AWAITING_ACTIVATION);
 
-		$activationCode = uniqid();
+        $activationCode = uniqid();
 
-		$this->activationRepo->expects($this->once())
-				->method('FindUserIdByCode')
-				->with($this->equalTo($activationCode))
-				->will($this->returnValue($userId));
+        $this->activationRepo->expects($this->once())
+                ->method('FindUserIdByCode')
+                ->with($this->equalTo($activationCode))
+                ->will($this->returnValue($userId));
 
-		$this->activationRepo->expects($this->once())
-				->method('DeleteActivation')
-				->with($this->equalTo($activationCode));
+        $this->activationRepo->expects($this->once())
+                ->method('DeleteActivation')
+                ->with($this->equalTo($activationCode));
 
-		$this->userRepo->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($userId))
-				->will($this->returnValue($user));
+        $this->userRepo->expects($this->once())
+                ->method('LoadById')
+                ->with($this->equalTo($userId))
+                ->will($this->returnValue($user));
 
-		$this->userRepo->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($user));
+        $this->userRepo->expects($this->once())
+                ->method('Update')
+                ->with($this->equalTo($user));
 
-		$result = $this->activation->Activate($activationCode);
+        $result = $this->activation->Activate($activationCode);
 
-		$this->assertTrue($result->Activated());
-		$this->assertEquals($user, $result->User());
-		$this->assertEquals(AccountStatus::ACTIVE, $user->StatusId());
-	}
+        $this->assertTrue($result->Activated());
+        $this->assertEquals($user, $result->User());
+        $this->assertEquals(AccountStatus::ACTIVE, $user->StatusId());
+    }
 
-	public function testWhenActivationCodeIsInvalid()
-	{
-		$activationCode = uniqid();
+    public function testWhenActivationCodeIsInvalid()
+    {
+        $activationCode = uniqid();
 
-		$this->activationRepo->expects($this->once())
-				->method('FindUserIdByCode')
-				->with($this->equalTo($activationCode))
-				->will($this->returnValue(null));
+        $this->activationRepo->expects($this->once())
+                ->method('FindUserIdByCode')
+                ->with($this->equalTo($activationCode))
+                ->will($this->returnValue(null));
 
-		$result = $this->activation->Activate($activationCode);
+        $result = $this->activation->Activate($activationCode);
 
-		$this->assertFalse($result->Activated());
-	}
+        $this->assertFalse($result->Activated());
+    }
 }

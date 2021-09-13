@@ -6,51 +6,51 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
 class PermissionValidationRuleTests extends TestBase
 {
-	public function setUp(): void
-	{
-		parent::setup();
-	}
+    public function setUp(): void
+    {
+        parent::setup();
+    }
 
-	public function teardown(): void
-	{
-		parent::teardown();
-	}
+    public function teardown(): void
+    {
+        parent::teardown();
+    }
 
-	public function testChecksIfUserHasPermission()
-	{
-		$userId = 98;
-		$user = new FakeUserSession();
-		$user->UserId = $userId;
+    public function testChecksIfUserHasPermission()
+    {
+        $userId = 98;
+        $user = new FakeUserSession();
+        $user->UserId = $userId;
 
-		$resourceId = 100;
-		$resourceId1 = 1;
-		$resourceId2 = 2;
+        $resourceId = 100;
+        $resourceId1 = 1;
+        $resourceId2 = 2;
 
-		$rr1 = new ReservationResource($resourceId);
-		$rr2 = new ReservationResource($resourceId1);
+        $rr1 = new ReservationResource($resourceId);
+        $rr2 = new ReservationResource($resourceId1);
 
-		$resource = new FakeBookableResource($resourceId, null);
-		$resource1 = new FakeBookableResource($resourceId1, null);
-		$resource2 = new FakeBookableResource($resourceId2, null);
+        $resource = new FakeBookableResource($resourceId, null);
+        $resource1 = new FakeBookableResource($resourceId1, null);
+        $resource2 = new FakeBookableResource($resourceId2, null);
 
-		$reservation = new TestReservationSeries();
-		$reservation->WithOwnerId($userId);
-		$reservation->WithResource($resource);
-		$reservation->AddResource($resource1);
-		$reservation->AddResource($resource2);
-		$reservation->WithBookedBy($user);
+        $reservation = new TestReservationSeries();
+        $reservation->WithOwnerId($userId);
+        $reservation->WithResource($resource);
+        $reservation->AddResource($resource1);
+        $reservation->AddResource($resource2);
+        $reservation->WithBookedBy($user);
 
-		$service = new FakePermissionService(array(true, false));
-		$service->_CanBookResource = false;
-		$factory = $this->createMock('IPermissionServiceFactory');
+        $service = new FakePermissionService([true, false]);
+        $service->_CanBookResource = false;
+        $factory = $this->createMock('IPermissionServiceFactory');
 
-		$factory->expects($this->once())
-			->method('GetPermissionService')
-			->will($this->returnValue($service));
+        $factory->expects($this->once())
+            ->method('GetPermissionService')
+            ->will($this->returnValue($service));
 
-		$rule = new PermissionValidationRule($factory);
-		$result = $rule->Validate($reservation, null);
+        $rule = new PermissionValidationRule($factory);
+        $result = $rule->Validate($reservation, null);
 
-		$this->assertEquals(false, $result->IsValid());
-	}
+        $this->assertEquals(false, $result->IsValid());
+    }
 }

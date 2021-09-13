@@ -11,7 +11,7 @@ class TestHelper
      * @param string[] $ignoreCallback
      * @return TestSuite
      */
-    public static function GetSuite($relativePath, $ignoreCallback = array())
+    public static function GetSuite($relativePath, $ignoreCallback = [])
     {
         $testDirectory = ROOT_DIR . $relativePath;
         $tests = TestHelper::GetTests($testDirectory, $ignoreCallback);
@@ -31,7 +31,7 @@ class TestHelper
 
     public static function GetTests($directory, $ignoreCallback)
     {
-        $tests = array();
+        $tests = [];
 
         if ($dh = opendir($directory)) {
             while (($file = readdir($dh)) !== false) {
@@ -40,8 +40,7 @@ class TestHelper
                     if (self::$Debug) {
                         echo "Adding $file\n";
                     }
-                }
-                else {
+                } else {
                     if (self::$Debug) {
                         echo "Ignored $file\n";
                     }
@@ -67,5 +66,4 @@ class TestHelper
         $start = $length * -1; //negative
         return (substr($haystack, $start, $length) === $needle);
     }
-
 }

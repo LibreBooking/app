@@ -62,7 +62,7 @@ phpCAS::forceAuthentication();
 <?php
   flush();
   // call a service and change the color depending on the result
-if ( phpCAS::serviceWeb($serviceUrl, $err_code, $output) ) {
+if (phpCAS::serviceWeb($serviceUrl, $err_code, $output)) {
     echo '<div class="success">';
 } else {
     echo '<div class="error">';

@@ -17,7 +17,7 @@ class Date
     private $timestring;
     private $timestamp;
 
-    const SHORT_FORMAT = "Y-m-d H:i:s";
+    public const SHORT_FORMAT = "Y-m-d H:i:s";
 
     // Only used for testing
     private static $_Now = null;
@@ -60,8 +60,15 @@ class Date
             $month = $month - ($yearOffset * 12);
         }
 
-        return new Date(sprintf('%04d-%02d-%02d %02d:%02d:%02d', $year, $month, $day, $hour, $minute,
-            $second), $timezone);
+        return new Date(sprintf(
+            '%04d-%02d-%02d %02d:%02d:%02d',
+            $year,
+            $month,
+            $day,
+            $hour,
+            $minute,
+            $second
+        ), $timezone);
     }
 
     /**
@@ -191,11 +198,11 @@ class Date
      */
     public function ToIso()
     {
-//		$offset = $this->date->getOffset();
-//		$hours = intval(intval($offset) / 3600);
-//		$minutes  = intval(($offset / 60) % 60);
-//		printf("offset = %d%d", $hours, $minutes);
-//		//die(' off '  .$offset . ' tz ' . $this->date->getTimezone()->getOffset());
+        //		$offset = $this->date->getOffset();
+        //		$hours = intval(intval($offset) / 3600);
+        //		$minutes  = intval(($offset / 60) % 60);
+        //		printf("offset = %d%d", $hours, $minutes);
+        //		//die(' off '  .$offset . ' tz ' . $this->date->getTimezone()->getOffset());
         return $this->Format(DateTime::ISO8601);
     }
 
@@ -269,8 +276,7 @@ class Date
 
         if ($this->Timestamp() < $date2->Timestamp()) {
             return -1;
-        }
-        else {
+        } else {
             if ($this->Timestamp() > $date2->Timestamp()) {
                 return 1;
             }
@@ -301,8 +307,7 @@ class Date
 
         if ($hourCompare < 0 || ($hourCompare == 0 && $minuteCompare < 0) || ($hourCompare == 0 && $minuteCompare == 0 && $secondCompare < 0)) {
             return -1;
-        }
-        else {
+        } else {
             if ($hourCompare > 0 || ($hourCompare == 0 && $minuteCompare > 0) || ($hourCompare == 0 && $minuteCompare == 0 && $secondCompare > 0)) {
                 return 1;
             }
@@ -511,8 +516,15 @@ class Date
      */
     public function SetTime(Time $time, $isEndTime = false)
     {
-        $date = Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(),
-            $time->Second(), $this->Timezone());
+        $date = Date::Create(
+            $this->Year(),
+            $this->Month(),
+            $this->Day(),
+            $time->Hour(),
+            $time->Minute(),
+            $time->Second(),
+            $this->Timezone()
+        );
 
         if ($isEndTime) {
             if ($time->Hour() == 0 && $time->Minute() == 0 && $time->Second() == 0) {
@@ -650,8 +662,7 @@ class Date
     {
         if (is_null($date)) {
             self::$_Now = null;
-        }
-        else {
+        } else {
             self::$_Now = $date;
         }
     }
@@ -868,16 +879,14 @@ class DateDiff
                 $day = $parts[0];
                 $hour = $parts[1];
                 $minute = $parts[2];
-            }
-            else {
+            } else {
                 $day = 0;
                 $hour = $parts[0];
                 $minute = $parts[1];
             }
             return self::Create($day, $hour, $minute);
-        }
-        else {
-            $matches = array();
+        } else {
+            $matches = [];
 
             preg_match('/(\d*d)?(\d*h)?(\d*m)?/i', $timeString, $matches);
 
@@ -928,7 +937,7 @@ class DateDiff
      * @static
      * @return DateDiff
      */
-    public static function Null()
+    public static function null()
     {
         return new DateDiff(0);
     }

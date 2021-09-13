@@ -68,7 +68,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $address = $this->adminDto->EmailAddress();
         $name = $this->adminDto->FullName();
 
-        return array(new EmailAddress($address, $name));
+        return [new EmailAddress($address, $name)];
     }
 
     public function From()
@@ -81,7 +81,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
      */
     public function Subject()
     {
-        return $this->Translate('ReservationCreatedAdminSubjectWithResource', array($this->resource->GetName()));
+        return $this->Translate('ReservationCreatedAdminSubjectWithResource', [$this->resource->GetName()]);
     }
 
     /**
@@ -111,17 +111,14 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $this->Set('Description', $this->reservationSeries->Description());
 
         $img = $this->reservationSeries->Resource()->GetImage();
-        if (!empty($img))
-        {
+        if (!empty($img)) {
             $this->Set('ResourceImage', $this->GetFullImagePath($img));
         }
 
-        $repeatDates = array();
-        $repeatRanges = array();
-        if ($this->reservationSeries->IsRecurring())
-        {
-            foreach ($this->reservationSeries->Instances() as $repeated)
-            {
+        $repeatDates = [];
+        $repeatRanges = [];
+        if ($this->reservationSeries->IsRecurring()) {
+            foreach ($this->reservationSeries->Instances() as $repeated) {
                 $repeatDates[] = $repeated->StartDate()->ToTimezone($this->timezone);
                 $repeatRanges[] = $repeated->Duration()->ToTimezone($this->timezone);
             }
@@ -131,18 +128,16 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
         $this->Set('ReservationUrl', Pages::RESERVATION . "?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
 
-        $resourceNames = array();
-        foreach ($this->reservationSeries->AllResources() as $resource)
-        {
+        $resourceNames = [];
+        foreach ($this->reservationSeries->AllResources() as $resource) {
             $resourceNames[] = $resource->GetName();
         }
         $this->Set('ResourceNames', $resourceNames);
         $this->Set('Accessories', $this->reservationSeries->Accessories());
 
         $attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
-        $attributeValues = array();
-        foreach ($attributes as $attribute)
-        {
+        $attributeValues = [];
+        foreach ($attributes as $attribute) {
             if (($attribute->HasSecondaryEntities()) && in_array($this->reservationSeries->ResourceId(), $attribute->SecondaryEntityIds())) {
                 $attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
             }
@@ -151,8 +146,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $this->Set('Attributes', $attributeValues);
 
         $bookedBy = $this->reservationSeries->BookedBy();
-        if ($bookedBy != null && ($bookedBy->UserId != $this->reservationOwner->Id()))
-        {
+        if ($bookedBy != null && ($bookedBy->UserId != $this->reservationOwner->Id())) {
             $this->Set('CreatedBy', new FullName($bookedBy->FirstName, $bookedBy->LastName));
         }
 
@@ -163,5 +157,4 @@ class ReservationCreatedEmailAdmin extends EmailMessage
     {
         return Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/' . $img;
     }
-
 }

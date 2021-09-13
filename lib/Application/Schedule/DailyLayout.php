@@ -11,32 +11,32 @@ interface IDailyLayout
      * @param int $resourceId
      * @return array|IReservationSlot[]
      */
-    function GetLayout(Date $date, $resourceId);
+    public function GetLayout(Date $date, $resourceId);
 
     /**
      * @param Date $date
      * @return bool
      */
-    function IsDateReservable(Date $date);
+    public function IsDateReservable(Date $date);
 
     /**
      * @param Date $displayDate
      * @return string[]
      */
-    function GetLabels(Date $displayDate);
+    public function GetLabels(Date $displayDate);
 
     /**
      * @param Date $displayDate
      * @return SchedulePeriod[]
      */
-    function GetPeriods(Date $displayDate);
+    public function GetPeriods(Date $displayDate);
 
     /**
      * @param Date $date
      * @param int $resourceId
      * @return DailyReservationSummary
      */
-    function GetSummary(Date $date, $resourceId);
+    public function GetSummary(Date $date, $resourceId);
 
     /**
      * @return string
@@ -86,14 +86,16 @@ class DailyLayout implements IDailyLayout
             $sw->Record('slots');
             $sw->Stop();
 
-            Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
+            Log::Debug(
+                'DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
                 $resourceId,
                 $date->ToString(),
                 $sw->GetRecordSeconds('listing'),
                 $sw->TimeBetween('slots', 'listing'),
                 $sw->GetTotalSeconds(),
                 count($items),
-                round(memory_get_usage() / 1048576, 2));
+                round(memory_get_usage() / 1048576, 2)
+            );
 
             return $slots;
         } catch (Exception $ex) {
@@ -125,14 +127,13 @@ class DailyLayout implements IDailyLayout
     {
         $hideBlocked = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_HIDE_BLOCKED_PERIODS, new BooleanConverter());
 
-        $labels = array();
+        $labels = [];
 
         $periods = $this->_scheduleLayout->GetLayout($displayDate, $hideBlocked);
 
         if ($periods[0]->BeginsBefore($displayDate)) {
             $labels[] = $periods[0]->Label($displayDate->GetDate());
-        }
-        else {
+        } else {
             $labels[] = $periods[0]->Label();
         }
 
@@ -154,7 +155,7 @@ class DailyLayout implements IDailyLayout
         }
 
         /** @var $periodsToReturn SpanablePeriod[] */
-        $periodsToReturn = array();
+        $periodsToReturn = [];
         for ($i = 0; $i < count($periods); $i++) {
             $span = 1;
             $currentPeriod = $periods[$i];
@@ -188,7 +189,7 @@ interface IDailyLayoutFactory
      * @param IScheduleLayout $layout
      * @return IDailyLayout
      */
-    function Create(IReservationListing $listing, IScheduleLayout $layout);
+    public function Create(IReservationListing $listing, IScheduleLayout $layout);
 }
 
 class DailyLayoutFactory implements IDailyLayoutFactory
@@ -209,7 +210,6 @@ class SpanablePeriod extends SchedulePeriod
         $this->span = $span;
         $this->period = $period;
         parent::__construct($period->BeginDate(), $period->EndDate(), $period->_label);
-
     }
 
     public function Span()

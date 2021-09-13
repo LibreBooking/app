@@ -7,19 +7,19 @@ class FakeReservationViewRepository implements IReservationViewRepository
     /**
      * @var ReservationItemView[]
      */
-    public $_Reservations = array();
+    public $_Reservations = [];
 
     /**
      * @var BlackoutItemView[]
      */
-    public $_Blackouts = array();
+    public $_Blackouts = [];
 
     public $_LastRange;
 
     /**
      * @var AccessoryReservation[]
      */
-    public $_AccessoryReservations = array();
+    public $_AccessoryReservations = [];
 
     public $_Filter;
 
@@ -41,7 +41,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
     /**
      * @var ReservationItemView[]
      */
-    public $_ReservationsIteration = array();
+    public $_ReservationsIteration = [];
 
     private $_Iteration = 0;
 
@@ -64,7 +64,8 @@ class FakeReservationViewRepository implements IReservationViewRepository
         $scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
         $resourceIds = ReservationViewRepository::ALL_RESOURCES,
         $consolidateByReferenceNumber = false,
-        $participantIds = ReservationViewRepository::ALL_USERS)
+        $participantIds = ReservationViewRepository::ALL_USERS
+    )
     {
         $this->_LastScheduleIds = $scheduleIds;
         $this->_LastResourceIds = $resourceIds;
@@ -79,7 +80,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
 
     public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)
     {
-        return array();
+        return [];
     }
 
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)

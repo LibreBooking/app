@@ -117,10 +117,11 @@ class ReservationListItem
     public function CollidesWith(Date $date)
     {
         if ($this->HasBufferTime()) {
-            $range = new DateRange($this->StartDate()->SubtractInterval($this->BufferTime()),
-                $this->EndDate()->AddInterval($this->BufferTime()));
-        }
-        else {
+            $range = new DateRange(
+                $this->StartDate()->SubtractInterval($this->BufferTime()),
+                $this->EndDate()->AddInterval($this->BufferTime())
+            );
+        } else {
             $range = new DateRange($this->StartDate(), $this->EndDate());
         }
 
@@ -134,10 +135,11 @@ class ReservationListItem
     public function CollidesWithRange(DateRange $dateRange)
     {
         if ($this->HasBufferTime()) {
-            $range = new DateRange($this->StartDate()->SubtractInterval($this->BufferTime()),
-                $this->EndDate()->AddInterval($this->BufferTime()));
-        }
-        else {
+            $range = new DateRange(
+                $this->StartDate()->SubtractInterval($this->BufferTime()),
+                $this->EndDate()->AddInterval($this->BufferTime())
+            );
+        } else {
             $range = new DateRange($this->StartDate(), $this->EndDate());
         }
 
@@ -295,8 +297,8 @@ class ReservationListItem
 
 class BufferItem extends ReservationListItem
 {
-    const LOCATION_BEFORE = 'begin';
-    const LOCATION_AFTER = 'end';
+    public const LOCATION_BEFORE = 'begin';
+    public const LOCATION_AFTER = 'end';
 
     /**
      * @var string
@@ -322,8 +324,7 @@ class BufferItem extends ReservationListItem
         if ($this->IsBefore()) {
             $this->startDate = $this->item->StartDate()->SubtractInterval($this->item->BufferTime());
             $this->endDate = $this->item->StartDate();
-        }
-        else {
+        } else {
             $this->startDate = $this->item->EndDate();
             $this->endDate = $this->item->EndDate()->AddInterval($this->item->BufferTime());
         }

@@ -49,11 +49,13 @@ class GuestReservationPresenterTests extends TestBase
             ->with($this->anything())
             ->will($this->returnValue($this->initializer));
 
-        $this->presenter = new GuestReservationPresenter($this->page,
+        $this->presenter = new GuestReservationPresenter(
+            $this->page,
             $this->registration,
             $this->authentication,
             $this->factory,
-            $this->preconditionService);
+            $this->preconditionService
+        );
         parent::setup();
     }
 
@@ -243,7 +245,7 @@ class FakeGuestReservationPage implements IGuestReservationPage
     {
     }
 
-    function SetAllowParticipantsToJoin($allowParticipation)
+    public function SetAllowParticipantsToJoin($allowParticipation)
     {
     }
 
@@ -295,8 +297,8 @@ class FakeGuestReservationPage implements IGuestReservationPage
         return true;
     }
 
-	public function SetMaximumResources($maximum)
-	{
-		// TODO: Implement SetMaximumResources() method.
-	}
+    public function SetMaximumResources($maximum)
+    {
+        // TODO: Implement SetMaximumResources() method.
+    }
 }

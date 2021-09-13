@@ -8,8 +8,8 @@
  *
  * @class ShibbolethUser
  */
-class ShibbolethUser {
-
+class ShibbolethUser
+{
     /**
      * The username.
      * @var string
@@ -54,7 +54,8 @@ class ShibbolethUser {
      * @param array $values A map of user attributes.
      * @param ShibbolethOptions $options The plugin configuration.
      */
-    public function __construct (array $values, ShibbolethOptions $options) {
+    public function __construct(array $values, ShibbolethOptions $options)
+    {
         $config = $options->GetShibbolethOptions();
         $this->_username = $this->GetValue($values, $config[ShibbolethConfig::USERNAME]);
         $this->_firstname = $this->GetValue($values, $config[ShibbolethConfig::FIRSTNAME]);
@@ -68,7 +69,8 @@ class ShibbolethUser {
      * Retrieves the username.
      * @return string|null
      */
-    public function GetUsername () {
+    public function GetUsername()
+    {
         return $this->_username;
     }
 
@@ -76,7 +78,8 @@ class ShibbolethUser {
      * Retrieve's the user's first name.
      * @return string|null
      */
-    public function GetFirstName () {
+    public function GetFirstName()
+    {
         return $this->_firstname;
     }
 
@@ -84,7 +87,8 @@ class ShibbolethUser {
      * Retrieves the user's last name.
      * @return string|null
      */
-    public function GetLastName () {
+    public function GetLastName()
+    {
         return $this->_lastname;
     }
 
@@ -92,7 +96,8 @@ class ShibbolethUser {
      * Retrieves the user's email address.
      * @return string|null
      */
-    public function GetEmailAddress () {
+    public function GetEmailAddress()
+    {
         return $this->_email;
     }
 
@@ -100,7 +105,8 @@ class ShibbolethUser {
      * Retrieves the user's phone number.
      * @return string|null
      */
-    public function GetPhone () {
+    public function GetPhone()
+    {
         return $this->_phone;
     }
 
@@ -108,7 +114,8 @@ class ShibbolethUser {
      * Retrieves the user's organization.
      * @return string|null
      */
-    public function GetOrganization () {
+    public function GetOrganization()
+    {
         return $this->_organization;
     }
 
@@ -119,7 +126,8 @@ class ShibbolethUser {
      * @param string $key The key.
      * @return string|null The value, or NULL if none was found.
      */
-    protected function GetValue (array $values, $key) {
+    protected function GetValue(array $values, $key)
+    {
         $value = null;
         if (array_key_exists($key, $values)) {
             $value = $values[$key];

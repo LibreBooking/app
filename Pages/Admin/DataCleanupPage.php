@@ -102,7 +102,7 @@ class DataCleanupPage extends AdminPage
 
             $reservationsReader = ServiceLocator::GetDatabase()->Query($command);
             if ($row = $reservationsReader->GetRow()) {
-                $this->SetJson(array('count' => $row['count']));
+                $this->SetJson(['count' => $row['count']]);
             }
             $reservationsReader->Free();
         }
@@ -112,7 +112,7 @@ class DataCleanupPage extends AdminPage
 
             $reservationsReader = ServiceLocator::GetDatabase()->Query($command);
             if ($row = $reservationsReader->GetRow()) {
-                $this->SetJson(array('count' => $row['count']));
+                $this->SetJson(['count' => $row['count']]);
             }
             $reservationsReader->Free();
         }
@@ -122,7 +122,7 @@ class DataCleanupPage extends AdminPage
 
             $reservationsReader = ServiceLocator::GetDatabase()->Query($command);
             if ($row = $reservationsReader->GetRow()) {
-                $this->SetJson(array('count' => $row['count']));
+                $this->SetJson(['count' => $row['count']]);
             }
             $reservationsReader->Free();
         }

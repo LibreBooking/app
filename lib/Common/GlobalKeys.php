@@ -2,5 +2,5 @@
 
 class GlobalKeys
 {
-	const TIMEZONES = 'APP_TIMEZONES';
+    public const TIMEZONES = 'APP_TIMEZONES';
 }

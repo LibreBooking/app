@@ -9,7 +9,7 @@ class AvailableLanguages
      */
     public static function GetAvailableLanguages()
     {
-        return array(
+        return [
             'ar' => new AvailableLanguage('ar', 'ar.php', 'عربى'),
             'eu_es' => new AvailableLanguage('eu_es', 'eu_es.php', 'Basque'),
             'bg_bg' => new AvailableLanguage('bg_bg', 'bg_bg.php', 'Bulgarian'),
@@ -47,7 +47,7 @@ class AvailableLanguages
             'vn_vn' => new AvailableLanguage('vn_vn', 'vn_vn.php', 'Tiếng Việt'),
             'zh_cn' => new AvailableLanguage('zh_cn', 'zh_cn.php', '简体中文'),
             'zh_tw' => new AvailableLanguage('zh_tw', 'zh_tw.php', '繁體中文'),
-        );
+        ];
     }
 
     public static function Contains($language)

@@ -69,17 +69,19 @@ class ResourceDisplayPresenter extends ActionPresenter
      */
     private $termsOfServiceRepository;
 
-    public function __construct(IResourceDisplayPage $page,
-                                IResourceRepository $resourceRepository,
-                                IReservationService $reservationService,
-                                IAuthorizationService $authorizationService,
-                                IWebAuthentication $authentication,
-                                IScheduleRepository $scheduleRepository,
-                                IDailyLayoutFactory $dailyLayoutFactory,
-                                IGuestUserService $guestUserService,
-                                IAttributeService $attributeService,
-                                IReservationRepository $reservationRepository,
-                                ITermsOfServiceRepository $termsOfServiceRepository)
+    public function __construct(
+        IResourceDisplayPage $page,
+        IResourceRepository $resourceRepository,
+        IReservationService $reservationService,
+        IAuthorizationService $authorizationService,
+        IWebAuthentication $authentication,
+        IScheduleRepository $scheduleRepository,
+        IDailyLayoutFactory $dailyLayoutFactory,
+        IGuestUserService $guestUserService,
+        IAttributeService $attributeService,
+        IReservationRepository $reservationRepository,
+        ITermsOfServiceRepository $termsOfServiceRepository
+    )
     {
         parent::__construct($page);
         $this->page = $page;
@@ -105,10 +107,9 @@ class ResourceDisplayPresenter extends ActionPresenter
         $resourceId = $this->page->GetPublicResourceId();
         if (!empty($resourceId)) {
             $this->page->DisplayResourceShell();
+        } else {
+            $this->page->DisplayInstructions();
         }
-        else {
-        	$this->page->DisplayInstructions();
-		}
     }
 
     public function Login()
@@ -121,7 +122,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         if ($isValid) {
             $this->authentication->Login($username, new WebLoginContext(new LoginData()));
             $user = ServiceLocator::GetServer()->GetUserSession();
-            $resourceList = array();
+            $resourceList = [];
             $resources = $this->resourceRepository->GetResourceList();
             foreach ($resources as $resource) {
                 if ($this->authorizationService->CanEditForResource($user, $resource)) {
@@ -130,8 +131,7 @@ class ResourceDisplayPresenter extends ActionPresenter
             }
 
             $this->page->BindResourceList($resourceList);
-        }
-        else {
+        } else {
             $this->page->BindInvalidLogin();
         }
     }
@@ -151,7 +151,6 @@ class ResourceDisplayPresenter extends ActionPresenter
         $resource = $this->resourceRepository->LoadByPublicId($resourcePublicId);
 
         if (!$resource->GetIsCalendarSubscriptionAllowed()) {
-
             $this->page->DisplayNotEnabled();
             return;
         }
@@ -171,10 +170,14 @@ class ResourceDisplayPresenter extends ActionPresenter
         $reservationSearchRange = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
         $reservations = $this->reservationService->GetReservations($reservationSearchRange, null, $timezone, $resource->GetResourceId());
 
-        $attributes = $this->attributeService->GetReservationAttributes(ServiceLocator::GetServer()->GetUserSession(),
-            new ReservationView(), 0, array($resource->GetResourceId()));
+        $attributes = $this->attributeService->GetReservationAttributes(
+            ServiceLocator::GetServer()->GetUserSession(),
+            new ReservationView(),
+            0,
+            [$resource->GetResourceId()]
+        );
 
-        $requiredAttributes = array();
+        $requiredAttributes = [];
         /** @var Attribute $attribute */
         foreach ($attributes as $attribute) {
             if ($attribute->Required()) {
@@ -279,8 +282,7 @@ class ResourceDisplayPresenter extends ActionPresenter
     {
         if ($action == 'reserve') {
             $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-            if (!Configuration::Instance()->GetSectionKey(ConfigSection::TABLET_VIEW, ConfigKeys::TABLET_VIEW_ALLOW_GUESTS, new BooleanConverter()))
-            {
+            if (!Configuration::Instance()->GetSectionKey(ConfigSection::TABLET_VIEW, ConfigKeys::TABLET_VIEW_ALLOW_GUESTS, new BooleanConverter())) {
                 $this->page->RegisterValidator('guestdenied', new RestrictedGuestValidator($this->page->GetEmail(), $this->guestUserService));
             }
         }
@@ -289,9 +291,11 @@ class ResourceDisplayPresenter extends ActionPresenter
     private function GetHandler($userSession)
     {
         if ($this->reservationCreateHandler == null) {
-            return ReservationHandler::Create(ReservationAction::Create,
+            return ReservationHandler::Create(
+                ReservationAction::Create,
                 new AddReservationPersistenceService($this->reservationRepository),
-                $userSession);
+                $userSession
+            );
         }
 
         return $this->reservationCreateHandler;
@@ -382,7 +386,7 @@ class ReservationResultCollector implements IReservationSaveResultsView
      */
     public function GetRetryParameters()
     {
-        return array();
+        return [];
     }
 
     /**

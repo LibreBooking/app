@@ -8,7 +8,7 @@ interface IScheduleUserRepository
      * @param $userId
      * @return IScheduleUser
      */
-    function GetUser($userId);
+    public function GetUser($userId);
 }
 
 class ScheduleUserRepository implements IScheduleUserRepository
@@ -16,11 +16,13 @@ class ScheduleUserRepository implements IScheduleUserRepository
     public function GetUser($userId)
     {
         $userPermissions = $this->GetUserPermissions($userId);
-        return new ScheduleUser($userId,
+        return new ScheduleUser(
+            $userId,
             $userPermissions['full'],
             $userPermissions['view'],
             $this->GetGroupPermissions($userId),
-            $this->GetGroupAdminPermissions($userId));
+            $this->GetGroupAdminPermissions($userId)
+        );
     }
 
     private function GetUserPermissions($userId)
@@ -28,20 +30,18 @@ class ScheduleUserRepository implements IScheduleUserRepository
         $userCommand = new GetUserPermissionsCommand($userId);
 
         $reader = ServiceLocator::GetDatabase()->Query($userCommand);
-        $resources['full'] = array();
-        $resources['view'] = array();
+        $resources['full'] = [];
+        $resources['view'] = [];
 
         while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::PERMISSION_TYPE] == ResourcePermissionType::Full) {
                 $resources['full'][] = new ScheduleResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
-
-            }
-            else {
+            } else {
                 $resources['view'][] = new ScheduleResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
             }
         }
 
-		$reader->Free();
+        $reader->Free();
 
         return $resources;
     }
@@ -55,7 +55,7 @@ class ScheduleUserRepository implements IScheduleUserRepository
         $groupCommand = new SelectUserGroupPermissions($userId);
 
         $reader = ServiceLocator::GetDatabase()->Query($groupCommand);
-        $groupList = array();
+        $groupList = [];
 
         while ($row = $reader->GetRow()) {
             $group_id = $row[ColumnNames::GROUP_ID];
@@ -63,21 +63,20 @@ class ScheduleUserRepository implements IScheduleUserRepository
             $resourceName = $row[ColumnNames::RESOURCE_NAME];
             $permissionType = $row[ColumnNames::PERMISSION_TYPE];
 
-            $groupList[$group_id][] = array($resourceId, $resourceName, $permissionType);
+            $groupList[$group_id][] = [$resourceId, $resourceName, $permissionType];
         }
 
-		$reader->Free();
+        $reader->Free();
 
-        $groups = array();
+        $groups = [];
         foreach ($groupList as $group_id => $resourceList) {
-            $resources = array();
-            $viewOnly = array();
+            $resources = [];
+            $viewOnly = [];
             foreach ($resourceList as $resourceItem) {
                 $permissionType = $resourceItem[2];
                 if ($permissionType == ResourcePermissionType::View) {
                     $viewOnly[] = new ScheduleResource($resourceItem[0], $resourceItem[1]);
-                }
-                else {
+                } else {
                     $resources[] = new ScheduleResource($resourceItem[0], $resourceItem[1]);
                 }
             }
@@ -92,13 +91,13 @@ class ScheduleUserRepository implements IScheduleUserRepository
         $userCommand = new SelectUserGroupResourceAdminPermissions($userId);
 
         $reader = ServiceLocator::GetDatabase()->Query($userCommand);
-        $resources = array();
+        $resources = [];
 
         while ($row = $reader->GetRow()) {
             $resources[] = new ScheduleResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
         }
 
-		$reader->Free();
+        $reader->Free();
 
         return $resources;
     }
@@ -187,7 +186,7 @@ class ScheduleUser implements IScheduleUser
 
     public function GetAllResources()
     {
-        $resources = array();
+        $resources = [];
 
         foreach ($this->GetUserPermissionsFull() as $resource) {
             $resources[] = $resource;
@@ -212,7 +211,7 @@ class ScheduleUser implements IScheduleUser
 
     public function GetBookableResources()
     {
-        $resources = array();
+        $resources = [];
 
         foreach ($this->GetUserPermissionsFull() as $resource) {
             $resources[] = $resource;
@@ -233,7 +232,7 @@ class ScheduleUser implements IScheduleUser
 
     public function GetViewOnlyResources()
     {
-        $resources = array();
+        $resources = [];
 
         foreach ($this->GetUserPermissionsView() as $resource) {
             $resources[] = $resource;

@@ -13,8 +13,8 @@ require_once ROOT_DIR . 'plugins/Authentication/Shibboleth/namespace.php';
  * @see IAuthorization
  * @see Authentication
  */
-class Shibboleth extends Authentication {
-
+class Shibboleth extends Authentication
+{
     /**
      * @var IAuthentication
      */
@@ -40,14 +40,16 @@ class Shibboleth extends Authentication {
      *
      * @param IAuthentication $authentication Authentication class to decorate.
      */
-    public function __construct(IAuthentication $authentication) {
+    public function __construct(IAuthentication $authentication)
+    {
         $this->authToDecorate = $authentication;
     }
 
     /*
      * @overrides Authentication::Validate()
      */
-    public function Validate($username, $password) {
+    public function Validate($username, $password)
+    {
         $user = $this->GetShibbolethUser();
         $uid = $user->GetUsername();
         if (! empty($uid)) {
@@ -59,8 +61,8 @@ class Shibboleth extends Authentication {
     /*
      * @overrides Authentication::Login()
      */
-    public function Login($username, $loginContext) {
-
+    public function Login($username, $loginContext)
+    {
         $user = $this->GetShibbolethUser();
         $registration = $this->GetRegistration();
 
@@ -87,49 +89,56 @@ class Shibboleth extends Authentication {
     /*
      * @overrides Authentication::Logout()
      */
-    public function Logout (UserSession $user) {
+    public function Logout(UserSession $user)
+    {
         $this->authToDecorate->Logout($user);
     }
 
     /*
      * @override Authentication::AreCredentialsKnown()
     */
-    public function AreCredentialsKnown () {
+    public function AreCredentialsKnown()
+    {
         return true;
     }
 
     /*
      * @overrides Authentication::ShowUsernamePrompt()
      */
-    public function ShowUsernamePrompt () {
+    public function ShowUsernamePrompt()
+    {
         return false;
     }
 
     /*
      * @overrides Authentication::ShowPasswordPrompt()
      */
-    public function ShowPasswordPrompt () {
+    public function ShowPasswordPrompt()
+    {
         return false;
     }
 
     /*
      * @overrides Authentication::ShowPersistLoginPrompt
      */
-    public function ShowPersistLoginPrompt () {
+    public function ShowPersistLoginPrompt()
+    {
         return false;
     }
 
     /*
      * @return Authentication::ShowForgotPasswordPrompt
      */
-    public function ShowForgotPasswordPrompt () {
+    public function ShowForgotPasswordPrompt()
+    {
         return false;
     }
 
     /*
      * @overrides Authentication::HandleLoginFailure
      */
-    public function HandleLoginFailure (IAuthenticationPage $loginPage) {
+    public function HandleLoginFailure(IAuthenticationPage $loginPage)
+    {
         // not implemented
     }
 
@@ -138,7 +147,8 @@ class Shibboleth extends Authentication {
      *
      * @return Registration
      */
-    protected function GetRegistration () {
+    protected function GetRegistration()
+    {
         if (! isset($this->_registration)) {
             $this->_registration = new Registration();
         }
@@ -151,7 +161,8 @@ class Shibboleth extends Authentication {
      *
      * @return ShibbolethOptions
      */
-    protected function GetConfiguration () {
+    protected function GetConfiguration()
+    {
         if (! isset($this->_config)) {
             $this->_config = new ShibbolethOptions();
         }
@@ -163,7 +174,8 @@ class Shibboleth extends Authentication {
      *
      * @return ShibbolethUser
      */
-    protected function GetShibbolethUser () {
+    protected function GetShibbolethUser()
+    {
         if (! isset($this->_user)) {
             // user attributes are passed in the global $_SERVER array, get them from there.
             $config =  $this->GetConfiguration();

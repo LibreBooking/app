@@ -1,9 +1,10 @@
 <?php
+
 class ApiHelpPage
 {
-	public static function Render(SlimWebServiceRegistry $registry, Slim\Slim $app)
-	{
-		$head = <<<EOT
+    public static function Render(SlimWebServiceRegistry $registry, Slim\Slim $app)
+    {
+        $head = <<<EOT
 	<!DOCTYPE html>
 	    <html>
 	        <head>
@@ -63,110 +64,94 @@ class ApiHelpPage
 	            <h1>Booked Scheduler API Documentation</h1>
 EOT;
 
-		$security = sprintf("<div id='security'>Pass the following headers for all secure service calls: <span>%s</span> and <span>%s</span></div>",
-							WebServiceHeaders::SESSION_TOKEN, WebServiceHeaders::USER_ID);
-		echo $head;
+        $security = sprintf(
+            "<div id='security'>Pass the following headers for all secure service calls: <span>%s</span> and <span>%s</span></div>",
+            WebServiceHeaders::SESSION_TOKEN,
+            WebServiceHeaders::USER_ID
+        );
+        echo $head;
 
-		echo $security;
+        echo $security;
 
-		echo '<ul>';
+        echo '<ul>';
 
-		foreach ($registry->Categories() as $category)
-		{
-			echo "<li><a href='#{$category->Name()}'>{$category->Name()}</a></li>";
-		}
+        foreach ($registry->Categories() as $category) {
+            echo "<li><a href='#{$category->Name()}'>{$category->Name()}</a></li>";
+        }
 
-		echo '</ul>';
-		foreach ($registry->Categories() as $category)
-		{
-			echo "<a name='{$category->Name()}'></a><h2>{$category->Name()}</h2>";
-			echo "<a href=''>Return To Top</a>";
-			echo '<h3>POST Services</h3>';
+        echo '</ul>';
+        foreach ($registry->Categories() as $category) {
+            echo "<a name='{$category->Name()}'></a><h2>{$category->Name()}</h2>";
+            echo "<a href=''>Return To Top</a>";
+            echo '<h3>POST Services</h3>';
 
-			foreach ($category->Posts() as $service)
-			{
-				echo '<div class="service">';
+            foreach ($category->Posts() as $service) {
+                echo '<div class="service">';
 
-				$md = $service->Metadata();
-				$request = $md->Request();
-				self::EchoCommon($md, $service, $app);
+                $md = $service->Metadata();
+                $request = $md->Request();
+                self::EchoCommon($md, $service, $app);
 
-				echo '<h4>Request</h4>';
-				if (is_object($request))
-				{
-					echo '<div class="code">' . json_encode($request) . '</div>';
-				}
-				elseif (is_null($request))
-				{
-					echo 'No request';
-				}
-				else
-				{
-					echo 'Unstructured request of type <i>' . $request . '</i>';
-				}
+                echo '<h4>Request</h4>';
+                if (is_object($request)) {
+                    echo '<div class="code">' . json_encode($request) . '</div>';
+                } elseif (is_null($request)) {
+                    echo 'No request';
+                } else {
+                    echo 'Unstructured request of type <i>' . $request . '</i>';
+                }
 
-				echo '</div>';
-			}
+                echo '</div>';
+            }
 
-			echo '<h3>GET Services</h3>';
+            echo '<h3>GET Services</h3>';
 
-			foreach ($category->Gets() as $service)
-			{
-				echo '<div class="service">';
-				$md = $service->Metadata();
-				self::EchoCommon($md, $service, $app);
-				echo '</div>';
-			}
+            foreach ($category->Gets() as $service) {
+                echo '<div class="service">';
+                $md = $service->Metadata();
+                self::EchoCommon($md, $service, $app);
+                echo '</div>';
+            }
 
-			echo '<h3>DELETE Services</h3>';
+            echo '<h3>DELETE Services</h3>';
 
-			foreach ($category->Deletes() as $service)
-			{
-				echo '<div class="service">';
-				$md = $service->Metadata();
-				self::EchoCommon($md, $service, $app);
-				echo '</div>';
-			}
-		}
+            foreach ($category->Deletes() as $service) {
+                echo '<div class="service">';
+                $md = $service->Metadata();
+                self::EchoCommon($md, $service, $app);
+                echo '</div>';
+            }
+        }
 
-		echo '</body></html>';
-	}
+        echo '</body></html>';
+    }
 
-	/**
-	 * @param SlimServiceMetadata $md
-	 * @param SlimServiceRegistration $endpoint
-	 * @param Slim\Slim $app
-	 */
-	private static function EchoCommon(SlimServiceMetadata $md, $endpoint, Slim\Slim $app)
-	{
-		$response = $md->Response();
-		echo "<h4>Name</h4>" . $md->Name();
-		echo "<h4>Description</h4>" . str_replace("\n", "<br/>", $md->Description());
-		echo '<h4>Route</h4>' . $app->urlFor($endpoint->RouteName());
+    /**
+     * @param SlimServiceMetadata $md
+     * @param SlimServiceRegistration $endpoint
+     * @param Slim\Slim $app
+     */
+    private static function EchoCommon(SlimServiceMetadata $md, $endpoint, Slim\Slim $app)
+    {
+        $response = $md->Response();
+        echo "<h4>Name</h4>" . $md->Name();
+        echo "<h4>Description</h4>" . str_replace("\n", "<br/>", $md->Description());
+        echo '<h4>Route</h4>' . $app->urlFor($endpoint->RouteName());
 
-		if ($endpoint->IsSecure())
-		{
-			echo '<h4 class="secure">This service is secure and requires authentication</h4>';
-		}
-		if ($endpoint->IsLimitedToAdmin())
-		{
-			echo '<h4 class="admin">This service is only available to application administrators</h4>';
-		}
+        if ($endpoint->IsSecure()) {
+            echo '<h4 class="secure">This service is secure and requires authentication</h4>';
+        }
+        if ($endpoint->IsLimitedToAdmin()) {
+            echo '<h4 class="admin">This service is only available to application administrators</h4>';
+        }
 
-		echo '<h4>Response</h4>';
-		if (is_object($response))
-		{
-			echo '<div class="code">' . json_encode($response) . '</div>';
-		}
-		elseif (is_null($response))
-		{
-			echo 'No response';
-		}
-		else
-		{
-			echo 'Unstructured response of type <i>' . $response . '</i>';
-		}
-
-	}
+        echo '<h4>Response</h4>';
+        if (is_object($response)) {
+            echo '<div class="code">' . json_encode($response) . '</div>';
+        } elseif (is_null($response)) {
+            echo 'No response';
+        } else {
+            echo 'Unstructured response of type <i>' . $response . '</i>';
+        }
+    }
 }
-

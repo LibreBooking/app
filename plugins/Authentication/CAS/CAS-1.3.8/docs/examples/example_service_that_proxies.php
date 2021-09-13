@@ -57,7 +57,7 @@ phpCAS::setNoCasServerValidation();
 // 				'/^https:\/\/app[0-9]\.example\.com\/rest\//',
 // 				'http://client.example.com/'
 // 			)));
-phpCAS::allowProxyChain(new CAS_ProxyChain(array($pgtUrlRegexp)));
+phpCAS::allowProxyChain(new CAS_ProxyChain([$pgtUrlRegexp]));
 
 // For quick testing or in certain production screnarios you might want to
 // allow allow any other valid service to proxy your service. To do so, add
@@ -93,7 +93,7 @@ phpCAS::forceAuthentication();
 <?php
   flush();
   // call a service and change the color depending on the result
-if ( phpCAS::serviceWeb($serviceUrl, $err_code, $output) ) {
+if (phpCAS::serviceWeb($serviceUrl, $err_code, $output)) {
     echo '<div class="success">';
 } else {
     echo '<div class="error">';

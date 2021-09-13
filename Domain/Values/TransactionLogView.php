@@ -89,8 +89,7 @@ class TransactionLogView
     public static function Populate($row)
     {
         $userName = '';
-        if (isset($row[ColumnNames::FIRST_NAME]))
-        {
+        if (isset($row[ColumnNames::FIRST_NAME])) {
             $userName = new FullName($row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME]);
             $userName = $userName->__toString();
         }
@@ -108,7 +107,8 @@ class TransactionLogView
             $row[ColumnNames::TRANSACTION_LOG_GATEWAY_DATE],
             $row[ColumnNames::TRANSACTION_LOG_GATEWAY_NAME],
             $row[ColumnNames::USER_ID],
-            $userName);
+            $userName
+        );
         $v->Id = $row[ColumnNames::TRANSACTION_LOG_ID];
         $v->AmountRefunded = floatval($row[ColumnNames::TRANSACTION_LOG_REFUND_AMOUNT]);
 

@@ -45,12 +45,14 @@ class ExternalAuthLoginPresenter
         $requiredDomainValidator->Validate();
         if (!$requiredDomainValidator->IsValid()) {
             Log::Debug('Social login with invalid domain. %s', $profile->email);
-            $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
+            $this->page->ShowError([Resources::GetInstance()->GetString('InvalidEmailDomain')]);
             return;
         }
 
         Log::Debug('Social login successful. Email=%s', $profile->email);
-        $this->registration->Synchronize(new AuthenticatedUser($profile->email,
+        $this->registration->Synchronize(
+            new AuthenticatedUser(
+            $profile->email,
             $profile->email,
             $profile->first_name,
             $profile->last_name,
@@ -59,9 +61,11 @@ class ExternalAuthLoginPresenter
             Configuration::Instance()->GetDefaultTimezone(),
             null,
             null,
-            null),
+            null
+        ),
             false,
-            false);
+            false
+        );
 
         $this->authentication->Login($profile->email, new WebLoginContext(new LoginData()));
         LoginRedirector::Redirect($this->page);

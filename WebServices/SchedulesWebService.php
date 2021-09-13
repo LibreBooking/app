@@ -59,8 +59,7 @@ class SchedulesWebService
         if ($schedule != null) {
             $layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($this->server->GetSession()->Timezone));
             $this->server->WriteResponse(new ScheduleResponse($this->server, $schedule, $layout));
-        }
-        else {
+        } else {
             $this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
         }
     }
@@ -77,9 +76,9 @@ class SchedulesWebService
      */
     public function GetSlots($scheduleId)
     {
-		$tz = $this->server->GetSession()->Timezone;
-		$startDate = $this->GetDate(WebServiceQueryStringKeys::START_DATE_TIME)->ToTimezone($tz);
-		$endDate = $this->GetDate(WebServiceQueryStringKeys::END_DATE_TIME)->ToTimezone($tz);
+        $tz = $this->server->GetSession()->Timezone;
+        $startDate = $this->GetDate(WebServiceQueryStringKeys::START_DATE_TIME)->ToTimezone($tz);
+        $endDate = $this->GetDate(WebServiceQueryStringKeys::END_DATE_TIME)->ToTimezone($tz);
 
         $resourceId = $this->server->GetQueryString(WebServiceQueryStringKeys::RESOURCE_ID);
 
@@ -91,9 +90,9 @@ class SchedulesWebService
         $builder = new ScheduleWebServicePageBuilder($startDate, $endDate, $resourceId);
         $reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
         $scheduleService = new ScheduleService($scheduleRepository, $resourceService, new DailyLayoutFactory());
-		$presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService);
+        $presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService);
 
-		$presenter->PageLoad($this->server->GetSession(), true);
+        $presenter->PageLoad($this->server->GetSession(), true);
 
         $layout = $scheduleWebServiceView->GetDailyLayout();
         $isError = $scheduleWebServiceView->IsPermissionError();
@@ -102,8 +101,7 @@ class SchedulesWebService
 
         if ($isError) {
             $this->server->WriteResponse(RestResponse::Unauthorized(), RestResponse::UNAUTHORIZED_CODE);
-        }
-        else {
+        } else {
             $response = new ScheduleSlotsResponse($this->server, $scheduleId, $layout, $dates, $resources, $this->privacyFilter);
             $this->server->WriteResponse($response);
         }
@@ -151,7 +149,7 @@ class ScheduleWebServicePageBuilder extends SchedulePageBuilder
 
     public function GetResourceIds($scheduleId, ISchedulePage $page)
     {
-        return array($this->resourceId);
+        return [$this->resourceId];
     }
 
     public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter, $resourceCustomAttributes, $resourceTypeCustomAttributes)
@@ -284,7 +282,7 @@ class ScheduleWebServiceView implements ISchedulePage
 
     public function GetSelectedDates()
     {
-        return array();
+        return [];
     }
 
     public function ShowInaccessibleResources()
@@ -340,11 +338,11 @@ class ScheduleWebServiceView implements ISchedulePage
      */
     public function GetResourceIds()
     {
-		if (empty($this->resourceId)) {
-			return array();
-		}
+        if (empty($this->resourceId)) {
+            return [];
+        }
 
-        return array($this->resourceId);
+        return [$this->resourceId];
     }
 
     public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
@@ -384,12 +382,12 @@ class ScheduleWebServiceView implements ISchedulePage
 
     public function GetResourceAttributes()
     {
-        return array();
+        return [];
     }
 
     public function GetResourceTypeAttributes()
     {
-        return array();
+        return [];
     }
 
     public function SetFilter($resourceFilter)

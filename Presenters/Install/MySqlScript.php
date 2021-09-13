@@ -3,8 +3,8 @@
 /**
  * Producing mySql query string
  */
-class MySqlScript {
-
+class MySqlScript
+{
     /**
      * @var string
      */
@@ -13,9 +13,10 @@ class MySqlScript {
     /**
      * @var array|string[]
      */
-    private $tokens = array();
+    private $tokens = [];
 
-    public function __construct($path) {
+    public function __construct($path)
+    {
         $this->path = $path;
     }
 
@@ -24,7 +25,8 @@ class MySqlScript {
      * $param null
      * @return string path to directory where mySql script are located
      */
-    public function Name() {
+    public function Name()
+    {
         return $this->path;
     }
 
@@ -33,7 +35,8 @@ class MySqlScript {
      * @param string $search databasename, username, etc ...
      * @param string $replace configured databasename, configured username, etc ...
      */
-    public function Replace($search, $replace) {
+    public function Replace($search, $replace)
+    {
         $this->tokens[$search] = $replace;
     }
 
@@ -42,7 +45,8 @@ class MySqlScript {
      * @param null
      * @return string $sql query string
      */
-    public function GetFullSql() {
+    public function GetFullSql()
+    {
         $f = fopen($this->path, "r");
         $sql = fread($f, filesize($this->path));
         fclose($f);
@@ -53,5 +57,4 @@ class MySqlScript {
 
         return $sql;
     }
-
 }

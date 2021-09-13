@@ -44,22 +44,24 @@ class AccountControllerTests extends TestBase
         $this->passwordEncryption = new FakePasswordEncryption();
         $this->attributeService = new FakeAttributeService();
 
-        $this->controller = new AccountController($this->registration,
+        $this->controller = new AccountController(
+            $this->registration,
             $this->userRepository,
             $this->requestValidator,
             $this->passwordEncryption,
-            $this->attributeService);
+            $this->attributeService
+        );
     }
 
     public function testRegistersAccount()
     {
         $request = CreateAccountRequest::Example();
-        $this->requestValidator->_Errors = array();
+        $this->requestValidator->_Errors = [];
         $this->registration->_RegisteredUser = new FakeUser(100);
 
         $result = $this->controller->Create($request);
 
-        $attributes = array();
+        $attributes = [];
         foreach ($request->GetCustomAttributes() as $a) {
             $attributes[] = new AttributeValue($a->attributeId, $a->attributeValue);
         }
@@ -83,7 +85,7 @@ class AccountControllerTests extends TestBase
     public function testWhenRegisterValidationFails()
     {
         $request = CreateAccountRequest::Example();
-        $this->requestValidator->_Errors = array('error1', 'error2');
+        $this->requestValidator->_Errors = ['error1', 'error2'];
 
         $result = $this->controller->Create($request);
 
@@ -97,7 +99,7 @@ class AccountControllerTests extends TestBase
         $this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, 'America/New_York');
         $this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, 'en_us');
         $request = UpdateAccountRequest::Example();
-        $this->requestValidator->_Errors = array();
+        $this->requestValidator->_Errors = [];
 
         $this->userRepository->_User = new FakeUser($this->session->UserId);
 
@@ -105,7 +107,7 @@ class AccountControllerTests extends TestBase
 
         $user = $this->userRepository->_UpdatedUser;
 
-        $attributes = array();
+        $attributes = [];
         foreach ($request->GetCustomAttributes() as $a) {
             $attributes[] = new AttributeValue($a->attributeId, $a->attributeValue);
         }
@@ -127,7 +129,7 @@ class AccountControllerTests extends TestBase
     public function testWhenUpdateValidationFails()
     {
         $request = UpdateAccountRequest::Example();
-        $this->requestValidator->_Errors = array('error1', 'error2');
+        $this->requestValidator->_Errors = ['error1', 'error2'];
 
         $result = $this->controller->Update($request, $this->session);
 
@@ -139,7 +141,7 @@ class AccountControllerTests extends TestBase
     public function testUpdatesPassword()
     {
         $request = UpdateAccountPasswordRequest::Example();
-        $this->requestValidator->_Errors = array();
+        $this->requestValidator->_Errors = [];
 
         $this->userRepository->_User = new FakeUser($this->session->UserId);
 
@@ -157,7 +159,7 @@ class AccountControllerTests extends TestBase
     public function testWhenPasswordValidationFails()
     {
         $request = UpdateAccountPasswordRequest::Example();
-        $this->requestValidator->_Errors = array('error1', 'error2');
+        $this->requestValidator->_Errors = ['error1', 'error2'];
 
         $result = $this->controller->UpdatePassword($request, $this->session);
 
@@ -189,4 +191,3 @@ class FakeAccountRequestValidator implements IAccountRequestValidator
         return $this->_Errors;
     }
 }
-

@@ -9,102 +9,99 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationApprovedEmail.php');
 
 abstract class OwnerEmailNotification implements IReservationNotification
 {
-	/**
-	 * @var IUserRepository
-	 */
-	protected $_userRepo;
+    /**
+     * @var IUserRepository
+     */
+    protected $_userRepo;
 
-	/**
-	 * @var IAttributeRepository
-	 */
+    /**
+     * @var IAttributeRepository
+     */
     protected $_attributeRepo;
 
-	/**
-	 * @param IUserRepository $userRepo
-	 * @param IAttributeRepository $attributeRepo
-	 */
-	public function __construct(IUserRepository $userRepo, IAttributeRepository $attributeRepo)
-	{
-		$this->_userRepo = $userRepo;
-		$this->_attributeRepo = $attributeRepo;
-	}
+    /**
+     * @param IUserRepository $userRepo
+     * @param IAttributeRepository $attributeRepo
+     */
+    public function __construct(IUserRepository $userRepo, IAttributeRepository $attributeRepo)
+    {
+        $this->_userRepo = $userRepo;
+        $this->_attributeRepo = $attributeRepo;
+    }
 
-	/**
-	 * @param ReservationSeries $reservation
-	 * @return void
-	 */
-	public function Notify($reservation)
-	{
-		$owner = $this->_userRepo->LoadById($reservation->UserId());
-		if ($this->ShouldSend($owner))
-		{
-			$message = $this->GetMessage($owner, $reservation, $this->_attributeRepo, $this->_userRepo);
-			ServiceLocator::GetEmailService()->Send($message);
-		}
-		else
-		{
-			Log::Debug('Owner does not want these types of email notifications. Email=%s, ReferenceNumber=%s', $owner->EmailAddress(), $reservation->CurrentInstance()->ReferenceNumber());
-		}
-	}
+    /**
+     * @param ReservationSeries $reservation
+     * @return void
+     */
+    public function Notify($reservation)
+    {
+        $owner = $this->_userRepo->LoadById($reservation->UserId());
+        if ($this->ShouldSend($owner)) {
+            $message = $this->GetMessage($owner, $reservation, $this->_attributeRepo, $this->_userRepo);
+            ServiceLocator::GetEmailService()->Send($message);
+        } else {
+            Log::Debug('Owner does not want these types of email notifications. Email=%s, ReferenceNumber=%s', $owner->EmailAddress(), $reservation->CurrentInstance()->ReferenceNumber());
+        }
+    }
 
-	/**
-	 * @abstract
-	 * @param $owner User
-	 * @return bool
-	 */
-	protected abstract function ShouldSend(User $owner);
+    /**
+     * @abstract
+     * @param $owner User
+     * @return bool
+     */
+    abstract protected function ShouldSend(User $owner);
 
-	/**
-	 * @param User $owner
-	 * @param ReservationSeries|ExistingReservationSeries $reservation
-	 * @param IAttributeRepository $attributeRepo
+    /**
+     * @param User $owner
+     * @param ReservationSeries|ExistingReservationSeries $reservation
+     * @param IAttributeRepository $attributeRepo
      * @param IUserRepository $userRepository
-	 * @return EmailMessage
-	 */
-	protected abstract function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepo, IUserRepository $userRepository);
+     * @return EmailMessage
+     */
+    abstract protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepo, IUserRepository $userRepository);
 }
 
 class OwnerEmailCreatedNotification extends OwnerEmailNotification
 {
-	protected function ShouldSend(User $owner)
-	{
-		return $owner->WantsEventEmail(new ReservationCreatedEvent());
-	}
+    protected function ShouldSend(User $owner)
+    {
+        return $owner->WantsEventEmail(new ReservationCreatedEvent());
+    }
 
-	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
-	{
-		return new ReservationCreatedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
-	}
+    protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+    {
+        return new ReservationCreatedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
+    }
 }
 
 class OwnerEmailUpdatedNotification extends OwnerEmailNotification
 {
-	protected function ShouldSend(User $owner)
-	{
-		return $owner->WantsEventEmail(new ReservationUpdatedEvent());
-	}
+    protected function ShouldSend(User $owner)
+    {
+        return $owner->WantsEventEmail(new ReservationUpdatedEvent());
+    }
 
-	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
-	{
-		return new ReservationUpdatedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
-	}
+    protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+    {
+        return new ReservationUpdatedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
+    }
 }
 
 class OwnerEmailApprovedNotification extends OwnerEmailNotification
 {
-	/**
-	 * @param $owner User
-	 * @return bool
-	 */
-	protected function ShouldSend(User $owner)
-	{
-		return $owner->WantsEventEmail(new ReservationApprovedEvent());
-	}
+    /**
+     * @param $owner User
+     * @return bool
+     */
+    protected function ShouldSend(User $owner)
+    {
+        return $owner->WantsEventEmail(new ReservationApprovedEvent());
+    }
 
-	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
-	{
-		return new ReservationApprovedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
-	}
+    protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+    {
+        return new ReservationApprovedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
+    }
 }
 
 class OwnerEmailDeletedNotification extends OwnerEmailNotification

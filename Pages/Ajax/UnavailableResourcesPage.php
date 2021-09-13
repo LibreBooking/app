@@ -34,11 +34,13 @@ class UnavailableResourcesPage extends Page implements IAvailableResourcesPage
 
     public function PageLoad()
     {
-        $presenter = new UnavailableResourcesPresenter($this,
+        $presenter = new UnavailableResourcesPresenter(
+            $this,
             new ReservationConflictIdentifier(new ResourceAvailability(new ReservationViewRepository())),
             ServiceLocator::GetServer()->GetUserSession(),
             new ResourceRepository(),
-            new ReservationRepository());
+            new ReservationRepository()
+        );
         $presenter->PageLoad();
     }
 

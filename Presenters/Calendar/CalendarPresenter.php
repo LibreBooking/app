@@ -35,22 +35,21 @@ class CalendarPresenter extends CommonCalendarPresenter
         $blackouts = $this->reservationRepository->GetBlackoutsWithin(
             $dateRange,
             $selectedScheduleId,
-            $selectedResourceId);
+            $selectedResourceId
+        );
 
-        $availableSlots = array();
+        $availableSlots = [];
         if (!empty($selectedResourceId) || !empty($selectedScheduleId)) {
-
             if (is_array($selectedResourceId) && !empty($selectedResourceId)) {
-            	$resources = array();
-            	foreach($selectedResourceId as $id) {
-					$resources[] = $this->resourceService->GetResource($id);
-				}
+                $resources = [];
+                foreach ($selectedResourceId as $id) {
+                    $resources[] = $this->resourceService->GetResource($id);
+                }
+                $selectedScheduleId = $resources[0]->GetScheduleId();
+            } elseif (!empty($selectedResourceId)) {
+                $resources = [$this->resourceService->GetResource($selectedResourceId)];
                 $selectedScheduleId = $resources[0]->GetScheduleId();
             }
-            elseif(!empty($selectedResourceId)) {
-				$resources = array($this->resourceService->GetResource($selectedResourceId));
-				$selectedScheduleId = $resources[0]->GetScheduleId();
-			}
 
             $scheduleLayout = $this->scheduleRepository->GetLayout($selectedScheduleId, new ScheduleLayoutFactory());
             if ($scheduleLayout->UsesCustomLayout()) {
@@ -72,19 +71,18 @@ class CalendarPresenter extends CommonCalendarPresenter
             $resources,
             $userSession,
             $this->privacyFilter,
-            $this->slotLabelFactory));
+            $this->slotLabelFactory
+        ));
     }
 
     protected function BindSubscriptionDetails($userSession, $selectedResourceId, $selectedScheduleId)
     {
         if (!empty($selectedResourceId)) {
             $subscriptionDetails = $this->subscriptionService->ForResource($selectedResourceId);
-        }
-        else {
+        } else {
             if (!empty($selectedScheduleId)) {
                 $subscriptionDetails = $this->subscriptionService->ForSchedule($selectedScheduleId);
-            }
-            else {
+            } else {
                 $subscriptionDetails = new CalendarSubscriptionDetails(false);
             }
         }
@@ -121,4 +119,3 @@ class CalendarPresenter extends CommonCalendarPresenter
         return false;
     }
 }
-

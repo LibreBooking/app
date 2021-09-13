@@ -24,16 +24,16 @@ class ManageEmailTemplatesPresenterTests extends TestBase
 
     public function testShowsAvailableTemplates()
     {
-        $this->fileSystem->_Files = array(
+        $this->fileSystem->_Files = [
             '/some/path/help.tpl',
             '/some/path/help-admin.tpl',
             '/some/path/file1.tpl',
             '/some/path/file2.tpl',
-            '/some/path/file2-custom.tpl');
+            '/some/path/file2-custom.tpl'];
 
         $this->presenter->PageLoad();
 
-        $this->assertEquals(array(new EmailTemplateFile('file1', 'file1.tpl'), new EmailTemplateFile('file2', 'file2.tpl')), $this->page->_BoundTemplateNames);
+        $this->assertEquals([new EmailTemplateFile('file1', 'file1.tpl'), new EmailTemplateFile('file2', 'file2.tpl')], $this->page->_BoundTemplateNames);
     }
 
     public function testLoadsRequestedTemplate()
@@ -85,7 +85,7 @@ class ManageEmailTemplatesPresenterTests extends TestBase
 
 class FakeManageEmailTemplatesPage extends ManageEmailTemplatesPage
 {
-    public $_BoundTemplateNames = array();
+    public $_BoundTemplateNames = [];
     public $_TemplateName;
     public $_UpdatedTemplateName;
     public $_BoundTemplateContents;

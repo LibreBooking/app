@@ -189,4 +189,3 @@ class LoadReservationRequestBuilder
         return new LoadReservationRequest(new DateRange($this->start, $this->end), $this->scheduleId, $this->resourceIds, $this->specificDates, $this->ownerId, $this->participantId);
     }
 }
-

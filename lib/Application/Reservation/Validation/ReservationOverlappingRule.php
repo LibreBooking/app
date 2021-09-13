@@ -12,18 +12,18 @@ class ReservationOverlappingRule implements IReservationValidationRule
         $this->timezone = $timezone;
     }
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @param $retryParameters
-	 * @return ReservationRuleResult
-	 * @throws Exception
-	 */
-	public function Validate($reservationSeries, $retryParameters)
-	{
-		$instances = $reservationSeries->SortedInstances();
+    /**
+     * @param ReservationSeries $reservationSeries
+     * @param $retryParameters
+     * @return ReservationRuleResult
+     * @throws Exception
+     */
+    public function Validate($reservationSeries, $retryParameters)
+    {
+        $instances = $reservationSeries->SortedInstances();
         $repeat = $reservationSeries->RepeatOptions();
 
-        $overlap = array();
+        $overlap = [];
         $prev = null;
         foreach ($instances as $key => $value) {
             if (!$prev) {
@@ -53,13 +53,13 @@ class ReservationOverlappingRule implements IReservationValidationRule
                 $this->GetErrorString($overlap),
                 true, // retry
                 Resources::GetInstance()->GetString('RetrySkipConflicts'),
-                array(new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)),
+                [new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)],
                 false // wait list
             );
         }
 
-		return new ReservationRuleResult();
-	}
+        return new ReservationRuleResult();
+    }
 
     /**
      * @param array|DateRange[] $overlaps
@@ -75,9 +75,11 @@ class ReservationOverlappingRule implements IReservationValidationRule
 
         foreach ($overlaps as $conflict) {
             $errorString->Append(
-                sprintf("%s > %s\n",
-                        $conflict->GetBegin()->ToTimezone($this->timezone)->Format($format),
-                        $conflict->GetEnd()->ToTimezone($this->timezone)->Format($format))
+                sprintf(
+                    "%s > %s\n",
+                    $conflict->GetBegin()->ToTimezone($this->timezone)->Format($format),
+                    $conflict->GetEnd()->ToTimezone($this->timezone)->Format($format)
+                )
             );
         }
 

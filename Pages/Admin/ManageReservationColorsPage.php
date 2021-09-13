@@ -7,151 +7,149 @@ require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IManageReservationColorsPage extends IActionPage
 {
-	/**
-	 * @param Attribute[] $attributes
-	 */
-	public function SetAttributes($attributes);
+    /**
+     * @param Attribute[] $attributes
+     */
+    public function SetAttributes($attributes);
 
-	/**
-	 * @param ReservationColorRule[] $rules
-	 */
-	public function SetRules($rules);
+    /**
+     * @param ReservationColorRule[] $rules
+     */
+    public function SetRules($rules);
 
-	/**
-	 * @return array|AttributeFormElement[]
-	 */
-	public function GetAttributes();
+    /**
+     * @return array|AttributeFormElement[]
+     */
+    public function GetAttributes();
 
-	/**
-	 * @return string
-	 */
-	public function GetColor();
+    /**
+     * @return string
+     */
+    public function GetColor();
 
-	/**
-	 * @return int
-	 */
-	public function GetRuleId();
+    /**
+     * @return int
+     */
+    public function GetRuleId();
 }
 
 class ManageReservationColorsPresenter extends ActionPresenter
 {
-	/**
-	 * @var IReservationRepository
-	 */
-	private $reservationRepository;
+    /**
+     * @var IReservationRepository
+     */
+    private $reservationRepository;
 
-	/**
-	 * @var IAttributeRepository
-	 */
-	private $attributeRepository;
+    /**
+     * @var IAttributeRepository
+     */
+    private $attributeRepository;
 
-	/**
-	 * @var IManageReservationColorsPage
-	 */
-	private $page;
+    /**
+     * @var IManageReservationColorsPage
+     */
+    private $page;
 
-	public function __construct(IManageReservationColorsPage $page, IReservationRepository $reservationRepository, IAttributeRepository $attributeRepository)
-	{
-		parent::__construct($page);
-		$this->page = $page;
-		$this->reservationRepository = $reservationRepository;
-		$this->attributeRepository = $attributeRepository;
+    public function __construct(IManageReservationColorsPage $page, IReservationRepository $reservationRepository, IAttributeRepository $attributeRepository)
+    {
+        parent::__construct($page);
+        $this->page = $page;
+        $this->reservationRepository = $reservationRepository;
+        $this->attributeRepository = $attributeRepository;
 
-		$this->AddAction('add', 'Add');
-		$this->AddAction('delete', 'Delete');
-	}
+        $this->AddAction('add', 'Add');
+        $this->AddAction('delete', 'Delete');
+    }
 
-	public function PageLoad()
-	{
-		$attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
+    public function PageLoad()
+    {
+        $attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
 
-		$attrs = array();
-		foreach ($attributes as $a)
-		{
-			$attrs[] = new Attribute($a);
-		}
-		$this->page->SetAttributes($attrs);
+        $attrs = [];
+        foreach ($attributes as $a) {
+            $attrs[] = new Attribute($a);
+        }
+        $this->page->SetAttributes($attrs);
 
-		$rules = $this->reservationRepository->GetReservationColorRules();
-		$this->page->SetRules($rules);
-	}
+        $rules = $this->reservationRepository->GetReservationColorRules();
+        $this->page->SetRules($rules);
+    }
 
-	public function Add()
-	{
-		$attributes = $this->page->GetAttributes();
-		if (count($attributes) == 1)
-		{
-			$colorRule = ReservationColorRule::Create($attributes[0]->Id, $attributes[0]->Value, $this->page->GetColor());
-			$this->reservationRepository->AddReservationColorRule($colorRule);
-		}
-	}
+    public function Add()
+    {
+        $attributes = $this->page->GetAttributes();
+        if (count($attributes) == 1) {
+            $colorRule = ReservationColorRule::Create($attributes[0]->Id, $attributes[0]->Value, $this->page->GetColor());
+            $this->reservationRepository->AddReservationColorRule($colorRule);
+        }
+    }
 
-	public function Delete()
-	{
-		$ruleId = $this->page->GetRuleId();
-		$rule = $this->reservationRepository->GetReservationColorRule($ruleId);
-		$this->reservationRepository->DeleteReservationColorRule($rule);
-	}
+    public function Delete()
+    {
+        $ruleId = $this->page->GetRuleId();
+        $rule = $this->reservationRepository->GetReservationColorRule($ruleId);
+        $this->reservationRepository->DeleteReservationColorRule($rule);
+    }
 }
 
 class ManageReservationColorsPage extends ActionPage implements IManageReservationColorsPage
 {
-	/**
-	 * @var ManageReservationColorsPresenter
-	 */
-	private $presenter;
+    /**
+     * @var ManageReservationColorsPresenter
+     */
+    private $presenter;
 
-	public function __construct()
-	{
-		parent::__construct('ReservationColors', 1);
+    public function __construct()
+    {
+        parent::__construct('ReservationColors', 1);
 
-		$this->presenter = new ManageReservationColorsPresenter($this, new ReservationRepository(), new AttributeRepository());
-	}
+        $this->presenter = new ManageReservationColorsPresenter($this, new ReservationRepository(), new AttributeRepository());
+    }
 
-	public function ProcessAction()
-	{
-		$this->presenter->ProcessAction();
-	}
+    public function ProcessAction()
+    {
+        $this->presenter->ProcessAction();
+    }
 
-	public function ProcessDataRequest($dataRequest)
-	{
-		// TODO: Implement ProcessDataRequest() method.
-	}
+    public function ProcessDataRequest($dataRequest)
+    {
+        // TODO: Implement ProcessDataRequest() method.
+    }
 
-	public function ProcessPageLoad()
-	{
-		$this->presenter->PageLoad();
-		$this->Display('Admin/Reservations/manage_reservation_colors.tpl');
-	}
+    public function ProcessPageLoad()
+    {
+        $this->presenter->PageLoad();
+        $this->Display('Admin/Reservations/manage_reservation_colors.tpl');
+    }
 
-	public function SetAttributes($attributes)
-	{
-		$this->Set('Attributes', $attributes);
-	}
+    public function SetAttributes($attributes)
+    {
+        $this->Set('Attributes', $attributes);
+    }
 
-	public function SetRules($rules)
-	{
-		$this->Set('Rules', $rules);
-	}
+    public function SetRules($rules)
+    {
+        $this->Set('Rules', $rules);
+    }
 
-	/**
-	 * @return array|AttributeFormElement[]
-	 */
-	public function GetAttributes()
-	{
-		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
-	}
+    /**
+     * @return array|AttributeFormElement[]
+     */
+    public function GetAttributes()
+    {
+        return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+    }
 
-	/**
-	 * @return string
-	 */
-	public function GetColor()
-	{
-		return $this->GetForm(FormKeys::RESERVATION_COLOR);
-	}
+    /**
+     * @return string
+     */
+    public function GetColor()
+    {
+        return $this->GetForm(FormKeys::RESERVATION_COLOR);
+    }
 
-	public function GetRuleId()
-	{
-		return $this->GetForm(FormKeys::RESERVATION_COLOR_RULE_ID);
-	}
+    public function GetRuleId()
+    {
+        return $this->GetForm(FormKeys::RESERVATION_COLOR_RULE_ID);
+    }
 }

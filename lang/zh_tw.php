@@ -1,20 +1,20 @@
 <?php
 
 /**
-* 
-* 
+*
+*
 * Translated by lujisheng in CSDN (Simplified Chinese)
 *
 * http://blog.csdn.net/lujisheng/article/details/7821538
-* 
+*
 * Converted and edited by mingminghome (Traditional Chinese & Simplified Chinese))
 * E-mail: mingminghomework@gmail.com
 *
-* 
+*
 * Tested on Booked Scheduler 2.4.2
-* 
-* 
-* 
+*
+*
+*
 */
 require_once('Language.php');
 require_once('en_us.php');
@@ -40,9 +40,9 @@ class zh_tw extends en_us
         $dates['res_popup'] = 'Y/m/d g:i A';
         $dates['dashboard'] = 'l, Y/m/d g:i A';
         $dates['period_time'] = 'g:i A';
-		$dates['general_date_js'] = 'yy/mm/dd';
-		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M/d';
+        $dates['general_date_js'] = 'yy/mm/dd';
+        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_dates'] = 'M/d';
 
         $this->Dates = $dates;
 
@@ -164,7 +164,7 @@ class zh_tw extends en_us
         $strings['ResourceRequiresApproval'] = '預約必須得到批准';
         $strings['ResourceRequiresApprovalNone'] = '預約不需要審批';
         $strings['ResourcePermissionAutoGranted'] = '自動授予權限';
-		$strings['ResourcePermissionNotAutoGranted'] = '沒有自動獲得許可';
+        $strings['ResourcePermissionNotAutoGranted'] = '沒有自動獲得許可';
         $strings['ResourceMinNotice'] = '必須在開始時間前至少 %s 完成預約';
         $strings['ResourceMinNoticeNone'] = '到當前時間均可以預約';
         $strings['ResourceMaxNotice'] = '預約不能在當前時間 %s 後前結束';
@@ -220,7 +220,7 @@ class zh_tw extends en_us
         $strings['ReservationTitle'] = '預約名稱';
         $strings['ReservationDescription'] = '預約說明';
         $strings['ResourceList'] = '待預約資源';
-        $strings['Accessories'] = '設備/附件';        
+        $strings['Accessories'] = '設備/附件';
         $strings['ParticipantList'] = '參與者';
         $strings['InvitationList'] = '受邀請者';
         $strings['AccessoryName'] = '附件名稱';
@@ -305,10 +305,10 @@ class zh_tw extends en_us
         $strings['ReservationConflicts'] = '存在有衝突的預約時間';
         $strings['UsersInGroup'] = '這個群組裡的成員';
         $strings['Browse'] = '瀏覽';
-		$strings['DeleteGroupWarning'] = '刪除這個群組會移除所有關聯的資源許可，組內成員都將擁有相關資源的權限.';
+        $strings['DeleteGroupWarning'] = '刪除這個群組會移除所有關聯的資源許可，組內成員都將擁有相關資源的權限.';
         $strings['WhatRolesApplyToThisGroup'] = '哪些角色適用於本群組?';
         $strings['WhoCanManageThisGroup'] = '誰能管理這個群組?';
-		$strings['WhoCanManageThisSchedule'] = '誰能管理這時間表?';
+        $strings['WhoCanManageThisSchedule'] = '誰能管理這時間表?';
         $strings['AddGroup'] = '添加群組';
         $strings['AllQuotas'] = '全部配額';
         $strings['QuotaReminder'] = '請記住：配額是強制性地基於已計劃的時間分區的.';
@@ -382,119 +382,119 @@ class zh_tw extends en_us
         $strings['AdditionalAttributes'] = '附加屬性';
         $strings['True'] = '是';
         $strings['False'] = '否';
-		$strings['ForgotPasswordEmailSent'] = '一封包含重設密碼提示的電子郵件已經發往您提供的的電子郵寄地址';
-		$strings['ActivationEmailSent'] = '您會立即收到一封有關啟動的電子郵件.';
-		$strings['AccountActivationError'] = '對不起，我們不能啟動您的帳號.';
-		$strings['Attachments'] = '附件';
-		$strings['AttachFile'] = '附件檔';
-		$strings['Maximum'] = '最大值';
-  		$strings['NoScheduleAdministratorLabel'] = '沒有時間表管理員';
-		$strings['ScheduleAdministrator'] = '時間表管理員';
-		$strings['Total'] = '總數';
-		$strings['QuantityReserved'] = '已預約數量';
-		$strings['AllAccessories'] = '所有設備/附件';
-		$strings['GetReport'] = '取得報告';
-		$strings['NoResultsFound'] = '沒有符合的結果';
-		$strings['SaveThisReport'] = '儲存這報告';
-		$strings['ReportSaved'] = '報告已儲存!';
-		$strings['EmailReport'] = '以電郵寄出報告';
-		$strings['ReportSent'] = '報告已寄出!';
-		$strings['RunReport'] = '導出報告';
-		$strings['NoSavedReports'] = '你沒有已儲存的報告.';
-		$strings['CurrentWeek'] = '本週';
-		$strings['CurrentMonth'] = '本月';
-		$strings['AllTime'] = '全部時間';
-		$strings['FilterBy'] = '以..過濾';
-		$strings['Select'] = '選擇';
-		$strings['List'] = '以 列';
-		$strings['TotalTime'] = '以 總時間';
-		$strings['Count'] = '以 數目';
-		$strings['Usage'] = '使用情況';
-		$strings['AggregateBy'] = '合計以';
-		$strings['Range'] = '範圍';
-		$strings['Choose'] = '選擇';
-		$strings['All'] = '所有';
-		$strings['ViewAsChart'] = '以圖表觀看';
-		$strings['ReservedResources'] = '已預約的資源';
-		$strings['ReservedAccessories'] = '已預約的設備/附件';
-		$strings['ResourceUsageTimeBooked'] = '資源使用情況 - 預訂時間';
-		$strings['ResourceUsageReservationCount'] = '資源使用情況 - 預約次數';
-		$strings['Top20UsersTimeBooked'] = '二十高使用量使用者 - 預訂時間';
-		$strings['Top20UsersReservationCount'] = '二十高使用量使用者 - 預約次數';
-		$strings['ConfigurationUpdated'] = '設定檔已更新';
-		$strings['ConfigurationUiNotEnabled'] = '這個頁面不能訪問，因為$conf[\'settings\'][\'pages\'][\'enable.configuration\'] 設置為「否」或「欠缺」。';
-		$strings['ConfigurationFileNotWritable'] = '設定檔不能寫入。請檢查設定檔的權限後再嘗試。';
-		$strings['ConfigurationUpdateHelp'] = '有關配置請參閱配置部份 <a target=_blank href=%s>說明</a>';
-		$strings['GeneralConfigSettings'] = '配置';
-		$strings['UseSameLayoutForAllDays'] = '每日使用同樣的設定';
-		$strings['LayoutVariesByDay'] = '自訂每日的設定';
-		$strings['ManageReminders'] = '提醒';
-		$strings['ReminderUser'] = '用戶名';
-		$strings['ReminderMessage'] = '訊息';
-		$strings['ReminderAddress'] = '地址';
-		$strings['ReminderSendtime'] = '寄出時間';
-		$strings['ReminderRefNumber'] = '預約參考編號';
-		$strings['ReminderSendtimeDate'] = '提醒日期';
-		$strings['ReminderSendtimeTime'] = '提醒時間 (HH:MM)';
-		$strings['ReminderSendtimeAMPM'] = '早上 / 下午';
-		$strings['AddReminder'] = '新增提醒';
-		$strings['DeleteReminderWarning'] = '確定？';
-		$strings['NoReminders'] = '你有沒有即將到來的提醒';
-		$strings['Reminders'] = '提醒';
-		$strings['SendReminder'] = '發出提醒';
-		$strings['minutes'] = '分';
-		$strings['hours'] = '小時';
-		$strings['days'] = '日';
-		$strings['ReminderBeforeStart'] = '開始時間之前';
-		$strings['ReminderBeforeEnd'] = '結束時間之前';
-		$strings['Logo'] = '圖示';
-		$strings['CssFile'] = 'CSS 檔案';
-		$strings['ThemeUploadSuccess'] = '您的變更已保存。刷新頁面變更才會生效。';
-		$strings['MakeDefaultSchedule'] = '設定為預設的時間表';
-		$strings['DefaultScheduleSet'] = '這是你預設的時間表';
-		$strings['FlipSchedule'] = '翻轉的時間表排版';
-		$strings['Next'] = '下一個';
-		$strings['Success'] = '成功';
-		$strings['Participant'] = '參與者';
+        $strings['ForgotPasswordEmailSent'] = '一封包含重設密碼提示的電子郵件已經發往您提供的的電子郵寄地址';
+        $strings['ActivationEmailSent'] = '您會立即收到一封有關啟動的電子郵件.';
+        $strings['AccountActivationError'] = '對不起，我們不能啟動您的帳號.';
+        $strings['Attachments'] = '附件';
+        $strings['AttachFile'] = '附件檔';
+        $strings['Maximum'] = '最大值';
+        $strings['NoScheduleAdministratorLabel'] = '沒有時間表管理員';
+        $strings['ScheduleAdministrator'] = '時間表管理員';
+        $strings['Total'] = '總數';
+        $strings['QuantityReserved'] = '已預約數量';
+        $strings['AllAccessories'] = '所有設備/附件';
+        $strings['GetReport'] = '取得報告';
+        $strings['NoResultsFound'] = '沒有符合的結果';
+        $strings['SaveThisReport'] = '儲存這報告';
+        $strings['ReportSaved'] = '報告已儲存!';
+        $strings['EmailReport'] = '以電郵寄出報告';
+        $strings['ReportSent'] = '報告已寄出!';
+        $strings['RunReport'] = '導出報告';
+        $strings['NoSavedReports'] = '你沒有已儲存的報告.';
+        $strings['CurrentWeek'] = '本週';
+        $strings['CurrentMonth'] = '本月';
+        $strings['AllTime'] = '全部時間';
+        $strings['FilterBy'] = '以..過濾';
+        $strings['Select'] = '選擇';
+        $strings['List'] = '以 列';
+        $strings['TotalTime'] = '以 總時間';
+        $strings['Count'] = '以 數目';
+        $strings['Usage'] = '使用情況';
+        $strings['AggregateBy'] = '合計以';
+        $strings['Range'] = '範圍';
+        $strings['Choose'] = '選擇';
+        $strings['All'] = '所有';
+        $strings['ViewAsChart'] = '以圖表觀看';
+        $strings['ReservedResources'] = '已預約的資源';
+        $strings['ReservedAccessories'] = '已預約的設備/附件';
+        $strings['ResourceUsageTimeBooked'] = '資源使用情況 - 預訂時間';
+        $strings['ResourceUsageReservationCount'] = '資源使用情況 - 預約次數';
+        $strings['Top20UsersTimeBooked'] = '二十高使用量使用者 - 預訂時間';
+        $strings['Top20UsersReservationCount'] = '二十高使用量使用者 - 預約次數';
+        $strings['ConfigurationUpdated'] = '設定檔已更新';
+        $strings['ConfigurationUiNotEnabled'] = '這個頁面不能訪問，因為$conf[\'settings\'][\'pages\'][\'enable.configuration\'] 設置為「否」或「欠缺」。';
+        $strings['ConfigurationFileNotWritable'] = '設定檔不能寫入。請檢查設定檔的權限後再嘗試。';
+        $strings['ConfigurationUpdateHelp'] = '有關配置請參閱配置部份 <a target=_blank href=%s>說明</a>';
+        $strings['GeneralConfigSettings'] = '配置';
+        $strings['UseSameLayoutForAllDays'] = '每日使用同樣的設定';
+        $strings['LayoutVariesByDay'] = '自訂每日的設定';
+        $strings['ManageReminders'] = '提醒';
+        $strings['ReminderUser'] = '用戶名';
+        $strings['ReminderMessage'] = '訊息';
+        $strings['ReminderAddress'] = '地址';
+        $strings['ReminderSendtime'] = '寄出時間';
+        $strings['ReminderRefNumber'] = '預約參考編號';
+        $strings['ReminderSendtimeDate'] = '提醒日期';
+        $strings['ReminderSendtimeTime'] = '提醒時間 (HH:MM)';
+        $strings['ReminderSendtimeAMPM'] = '早上 / 下午';
+        $strings['AddReminder'] = '新增提醒';
+        $strings['DeleteReminderWarning'] = '確定？';
+        $strings['NoReminders'] = '你有沒有即將到來的提醒';
+        $strings['Reminders'] = '提醒';
+        $strings['SendReminder'] = '發出提醒';
+        $strings['minutes'] = '分';
+        $strings['hours'] = '小時';
+        $strings['days'] = '日';
+        $strings['ReminderBeforeStart'] = '開始時間之前';
+        $strings['ReminderBeforeEnd'] = '結束時間之前';
+        $strings['Logo'] = '圖示';
+        $strings['CssFile'] = 'CSS 檔案';
+        $strings['ThemeUploadSuccess'] = '您的變更已保存。刷新頁面變更才會生效。';
+        $strings['MakeDefaultSchedule'] = '設定為預設的時間表';
+        $strings['DefaultScheduleSet'] = '這是你預設的時間表';
+        $strings['FlipSchedule'] = '翻轉的時間表排版';
+        $strings['Next'] = '下一個';
+        $strings['Success'] = '成功';
+        $strings['Participant'] = '參與者';
         // End Strings
 
-		// Install
-		$strings['InstallApplication'] = '安裝 phpScheduleIt (只限 MySQL)';
-		$strings['IncorrectInstallPassword'] = '對不起！密碼不正確。';
-		$strings['SetInstallPassword'] = '在執行安裝前，您必須設置安裝密碼。';
-		$strings['InstallPasswordInstructions'] = '在 %s 請將 %s 的密碼設定為隨機的及難以猜測，然後返回到這個頁面。<BR/>您可以用 %s 的';
-		$strings['NoUpgradeNeeded'] = '有沒有升級的需要。執行安裝過程中會刪除所有現有數據，並安裝一個全新的phpScheduleIt！';
-		$strings['ProvideInstallPassword'] = '請提供安裝密碼';
-		$strings['InstallPasswordLocation'] = '安裝密碼可以在 %s 內 %s 找到';
-		$strings['VerifyInstallSettings'] = '進入下一步前，請驗證以下預設設置。或者，你可以在 %s 改變他們。';
-		$strings['DatabaseName'] = '數據庫名稱';
-		$strings['DatabaseUser'] = '數據庫用戶';
-		$strings['DatabaseHost'] = '數據庫主機';
-		$strings['DatabaseCredentials'] = '你必須提供一個有創建數據庫權限的MySQL用戶。如果你不知道，請聯繫您的數據庫管理員。在一般情況下，可使用 Root 用戶';
-		$strings['MySQLUser'] = 'MySQL 用戶';
-		$strings['InstallOptionsWarning'] = '下列選項可能不適合用於託管環境 (hosted environment) 。如果您要安裝在託管環境 (hosted environment) 中，請使用MySQL的嚮導工具來完成這些步驟。';
-		$strings['CreateDatabase'] = '創建數據庫';
-		$strings['CreateDatabaseUser'] = '創建數據庫用戶';
-		$strings['PopulateExampleData'] = '導入示例數據。創建管理員帳號：admin/password 和 用戶帳號：user/password';
-		$strings['DataWipeWarning'] = '警告：這將刪除任何現有的數據';
-		$strings['RunInstallation'] = '執行安裝';
-		$strings['UpgradeNotice'] = '你從 <b>%s</b> 版本升級到 <b>%s</b> 版本';
-		$strings['RunUpgrade'] = '進行升級';
-		$strings['Executing'] = '執行中';
-		$strings['StatementFailed'] = '失敗。詳細信息：';
-		$strings['SQLStatement'] = 'SQL 語句：';
-		$strings['ErrorCode'] = '錯誤代碼:';
-		$strings['ErrorText'] = '錯誤訊息:';
-		$strings['InstallationSuccess'] = '安裝完成';
-		$strings['RegisterAdminUser'] = '註冊您的管理員用戶。這是必需的，如果你沒有導入示例數據。請確保 $conf[\'settings\'][\'allow.self.registration\'] = \'true\' 在 %s 檔案';
-		$strings['LoginWithSampleAccounts'] = '如果有導入示例數據，您可以登錄 admin/password 為管理員用戶或者 user/password 為普通用戶';
-		$strings['InstalledVersion'] = '您現在正在運行 %s 版本的phpScheduleIt';
-		$strings['InstallUpgradeConfig'] = '建議升級您的配置文件';
-		$strings['InstallationFailure'] = '安裝過程出現問題。請予以更正，並重新安裝。';
-		$strings['ConfigureApplication'] = '配置 phpScheduleIt';
-		$strings['ConfigUpdateSuccess'] = '你的設定檔目前是最新的';
-		$strings['ConfigUpdateFailure'] = '我們不能自動更新你的設定檔。請使用下列的內容覆蓋config.php：';
-		// End Install
+        // Install
+        $strings['InstallApplication'] = '安裝 phpScheduleIt (只限 MySQL)';
+        $strings['IncorrectInstallPassword'] = '對不起！密碼不正確。';
+        $strings['SetInstallPassword'] = '在執行安裝前，您必須設置安裝密碼。';
+        $strings['InstallPasswordInstructions'] = '在 %s 請將 %s 的密碼設定為隨機的及難以猜測，然後返回到這個頁面。<BR/>您可以用 %s 的';
+        $strings['NoUpgradeNeeded'] = '有沒有升級的需要。執行安裝過程中會刪除所有現有數據，並安裝一個全新的phpScheduleIt！';
+        $strings['ProvideInstallPassword'] = '請提供安裝密碼';
+        $strings['InstallPasswordLocation'] = '安裝密碼可以在 %s 內 %s 找到';
+        $strings['VerifyInstallSettings'] = '進入下一步前，請驗證以下預設設置。或者，你可以在 %s 改變他們。';
+        $strings['DatabaseName'] = '數據庫名稱';
+        $strings['DatabaseUser'] = '數據庫用戶';
+        $strings['DatabaseHost'] = '數據庫主機';
+        $strings['DatabaseCredentials'] = '你必須提供一個有創建數據庫權限的MySQL用戶。如果你不知道，請聯繫您的數據庫管理員。在一般情況下，可使用 Root 用戶';
+        $strings['MySQLUser'] = 'MySQL 用戶';
+        $strings['InstallOptionsWarning'] = '下列選項可能不適合用於託管環境 (hosted environment) 。如果您要安裝在託管環境 (hosted environment) 中，請使用MySQL的嚮導工具來完成這些步驟。';
+        $strings['CreateDatabase'] = '創建數據庫';
+        $strings['CreateDatabaseUser'] = '創建數據庫用戶';
+        $strings['PopulateExampleData'] = '導入示例數據。創建管理員帳號：admin/password 和 用戶帳號：user/password';
+        $strings['DataWipeWarning'] = '警告：這將刪除任何現有的數據';
+        $strings['RunInstallation'] = '執行安裝';
+        $strings['UpgradeNotice'] = '你從 <b>%s</b> 版本升級到 <b>%s</b> 版本';
+        $strings['RunUpgrade'] = '進行升級';
+        $strings['Executing'] = '執行中';
+        $strings['StatementFailed'] = '失敗。詳細信息：';
+        $strings['SQLStatement'] = 'SQL 語句：';
+        $strings['ErrorCode'] = '錯誤代碼:';
+        $strings['ErrorText'] = '錯誤訊息:';
+        $strings['InstallationSuccess'] = '安裝完成';
+        $strings['RegisterAdminUser'] = '註冊您的管理員用戶。這是必需的，如果你沒有導入示例數據。請確保 $conf[\'settings\'][\'allow.self.registration\'] = \'true\' 在 %s 檔案';
+        $strings['LoginWithSampleAccounts'] = '如果有導入示例數據，您可以登錄 admin/password 為管理員用戶或者 user/password 為普通用戶';
+        $strings['InstalledVersion'] = '您現在正在運行 %s 版本的phpScheduleIt';
+        $strings['InstallUpgradeConfig'] = '建議升級您的配置文件';
+        $strings['InstallationFailure'] = '安裝過程出現問題。請予以更正，並重新安裝。';
+        $strings['ConfigureApplication'] = '配置 phpScheduleIt';
+        $strings['ConfigUpdateSuccess'] = '你的設定檔目前是最新的';
+        $strings['ConfigUpdateFailure'] = '我們不能自動更新你的設定檔。請使用下列的內容覆蓋config.php：';
+        // End Install
 
         // Errors
         $strings['LoginError'] = '用戶名和密碼不符合';
@@ -515,12 +515,12 @@ class zh_tw extends en_us
         $strings['CustomAttributeInvalid'] = '提供給 %s 的內容是有效的.';
         $strings['AttachmentLoadingError'] = '對不起，在載入檔時發現了一個問題.';
         $strings['InvalidAttachmentExtension'] = '您只能上傳這些類型的檔: %s';
-		$strings['InvalidStartSlot'] = '開始時間和日期不正確';
-		$strings['InvalidEndSlot'] = '結束時間和日期不正確';
-		$strings['MaxParticipantsError'] = '%s 只可以支援 %s 參與者';
-		$strings['ReservationCriticalError'] = '有一個嚴重的錯誤影響您的預訂。如果這種情況持續下去，您的系統管理員聯繫。';
-		$strings['InvalidStartReminderTime'] = '開始提醒時間不正確';
-		$strings['InvalidEndReminderTime'] = '結束提醒時間不正確';
+        $strings['InvalidStartSlot'] = '開始時間和日期不正確';
+        $strings['InvalidEndSlot'] = '結束時間和日期不正確';
+        $strings['MaxParticipantsError'] = '%s 只可以支援 %s 參與者';
+        $strings['ReservationCriticalError'] = '有一個嚴重的錯誤影響您的預訂。如果這種情況持續下去，您的系統管理員聯繫。';
+        $strings['InvalidStartReminderTime'] = '開始提醒時間不正確';
+        $strings['InvalidEndReminderTime'] = '結束提醒時間不正確';
         // End Errors
 
         // Page Titles
@@ -541,7 +541,7 @@ class zh_tw extends en_us
         $strings['ServerSettings'] = '伺服器設置';
         $strings['Dashboard'] = '控制台';
         $strings['Help'] = '幫助';
-		$strings['Administration'] = '管理';
+        $strings['Administration'] = '管理';
         $strings['About'] = '關於';
         $strings['Bookings'] = '預訂';
         $strings['Schedule'] = '時間表';
@@ -566,16 +566,16 @@ class zh_tw extends en_us
         $strings['ResourceReservations'] = '預約資源';
         $strings['Customization'] = '自訂';
         $strings['Attributes'] = '屬性';
-		$strings['AccountActivation'] = '帳號啟動';
-		$strings['ScheduleReservations'] = '計劃預約';
-		$strings['Reports'] = '報告';
-		$strings['GenerateReport'] = '建立一個新報告';
-		$strings['MySavedReports'] = '我已儲存的報告';
-		$strings['CommonReports'] = '共享的報告';
-		$strings['ViewDay'] = '觀看日期';
-		$strings['Group'] = '群組';
-		$strings['ManageConfiguration'] = '系統設定';
-		$strings['LookAndFeel'] = '佈景設定';
+        $strings['AccountActivation'] = '帳號啟動';
+        $strings['ScheduleReservations'] = '計劃預約';
+        $strings['Reports'] = '報告';
+        $strings['GenerateReport'] = '建立一個新報告';
+        $strings['MySavedReports'] = '我已儲存的報告';
+        $strings['CommonReports'] = '共享的報告';
+        $strings['ViewDay'] = '觀看日期';
+        $strings['Group'] = '群組';
+        $strings['ManageConfiguration'] = '系統設定';
+        $strings['LookAndFeel'] = '佈景設定';
         // End Page Titles
 
         // Day representations
@@ -594,7 +594,7 @@ class zh_tw extends en_us
         $strings['DayThursdayAbbr'] = '週四';
         $strings['DayFridayAbbr'] = '週五';
         $strings['DaySaturdayAbbr'] = '週六';
-  // End Day representations
+        // End Day representations
 
         // Email Subjects
         $strings['ReservationApprovedSubject'] = '您的帳號已經啟動';
@@ -609,9 +609,9 @@ class zh_tw extends en_us
         $strings['InviteeAddedSubject'] = '預約邀請';
         $strings['ResetPassword'] = '重置密碼申請';
         $strings['ActivateYourAccount'] = '請啟動您的帳號';
-		$strings['ReportSubject'] = '您要求的報告 (%s)';
-		$strings['ReservationStartingSoonSubject'] = '%s 的預約即將開始';
-		$strings['ReservationEndingSoonSubject'] = '%s 的預約即將結束';
+        $strings['ReportSubject'] = '您要求的報告 (%s)';
+        $strings['ReservationStartingSoonSubject'] = '%s 的預約即將開始';
+        $strings['ReservationEndingSoonSubject'] = '%s 的預約即將結束';
         // End Email Subjects
 
         $this->Strings = $strings;
@@ -632,13 +632,13 @@ class zh_tw extends en_us
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六');
+        $days['full'] = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         // The three letter abbreviation
-        $days['abbr'] = array('日', '一', '二', '三', '四', '五', '六');
+        $days['abbr'] = ['日', '一', '二', '三', '四', '五', '六'];
         // The two letter abbreviation
-        $days['two'] = array('日', '一', '二', '三', '四', '五', '六');
+        $days['two'] = ['日', '一', '二', '三', '四', '五', '六'];
         // The one letter abbreviation
-        $days['letter'] = array('S', 'M', 'T', 'W', 'T', 'F', 'S');
+        $days['letter'] = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
         $this->Days = $days;
 
@@ -658,9 +658,9 @@ class zh_tw extends en_us
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
+        $months['full'] = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
         // The three letter month name
-        $months['abbr'] = array('一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二');
+        $months['abbr'] = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
 
         $this->Months = $months;
 
@@ -672,7 +672,7 @@ class zh_tw extends en_us
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
         return $this->Letters;
     }

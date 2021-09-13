@@ -59,7 +59,7 @@ class AnnouncementEmail extends EmailMessage
     }
 
     public function From()
-	{
-		return new EmailAddress($this->sentBy->Email, new FullName($this->sentBy->FirstName, $this->sentBy->LastName));
-	}
+    {
+        return new EmailAddress($this->sentBy->Email, new FullName($this->sentBy->FirstName, $this->sentBy->LastName));
+    }
 }

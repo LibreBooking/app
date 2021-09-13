@@ -94,7 +94,7 @@ class Ldap extends Authentication implements IAuthentication
         }
 
         if ($this->options->IsLdapDebugOn()) {
-            ldap_set_option(NULL, LDAP_OPT_DEBUG_LEVEL, 7);
+            ldap_set_option(null, LDAP_OPT_DEBUG_LEVEL, 7);
         }
 
         $this->ldap = $ldapImplementation;
@@ -125,8 +125,7 @@ class Ldap extends Authentication implements IAuthentication
                 Log::Error("Could not load user details from LDAP. Check your ldap settings. User: %s", $username);
             }
             return $userLoaded;
-        }
-        else {
+        } else {
             if ($this->options->RetryAgainstDatabase()) {
                 return $this->authToDecorate->Validate($username, $password);
             }
@@ -182,9 +181,11 @@ class Ldap extends Authentication implements IAuthentication
                 $password,
                 Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
                 Configuration::Instance()->GetDefaultTimezone(),
-                $this->user->GetPhone(), $this->user->GetInstitution(),
+                $this->user->GetPhone(),
+                $this->user->GetInstitution(),
                 $this->user->GetTitle(),
-                $this->user->GetGroups())
+                $this->user->GetGroups()
+            )
         );
     }
 

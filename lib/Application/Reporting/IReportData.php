@@ -2,8 +2,8 @@
 
 interface IReportData
 {
-	/**
-	 * @return array
-	 */
-	public function Rows();
+    /**
+     * @return array
+     */
+    public function Rows();
 }

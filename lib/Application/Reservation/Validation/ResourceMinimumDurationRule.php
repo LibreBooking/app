@@ -2,37 +2,36 @@
 
 class ResourceMinimumDurationRule implements IReservationValidationRule
 {
-	/**
-	 * @see IReservationValidationRule::Validate()
-	 *
-	 * @param ReservationSeries $reservationSeries
-	 * @param null|ReservationRetryParameter[] $retryParameters
-	 * @return ReservationRuleResult
-	 * @throws Exception
-	 */
-	public function Validate($reservationSeries, $retryParameters)
-	{
-		$r = Resources::GetInstance();
+    /**
+     * @see IReservationValidationRule::Validate()
+     *
+     * @param ReservationSeries $reservationSeries
+     * @param null|ReservationRetryParameter[] $retryParameters
+     * @return ReservationRuleResult
+     * @throws Exception
+     */
+    public function Validate($reservationSeries, $retryParameters)
+    {
+        $r = Resources::GetInstance();
 
-		$resources = $reservationSeries->AllResources();
+        $resources = $reservationSeries->AllResources();
 
-		foreach ($resources as $resource)
-		{
-			if ($resource->HasMinLength())
-			{
-				$minDuration = $resource->GetMinLength()->Interval();
-				$start = $reservationSeries->CurrentInstance()->StartDate();
-				$end = $reservationSeries->CurrentInstance()->EndDate();
+        foreach ($resources as $resource) {
+            if ($resource->HasMinLength()) {
+                $minDuration = $resource->GetMinLength()->Interval();
+                $start = $reservationSeries->CurrentInstance()->StartDate();
+                $end = $reservationSeries->CurrentInstance()->EndDate();
 
-				$minEnd = $start->ApplyDifference($minDuration);
-				if ($end->LessThan($minEnd))
-				{
-					return new ReservationRuleResult(false,
-						$r->GetString("MinDurationError", $minDuration));
-				}
-			}
-		}
+                $minEnd = $start->ApplyDifference($minDuration);
+                if ($end->LessThan($minEnd)) {
+                    return new ReservationRuleResult(
+                        false,
+                        $r->GetString("MinDurationError", $minDuration)
+                    );
+                }
+            }
+        }
 
-		return new ReservationRuleResult();
-	}
+        return new ReservationRuleResult();
+    }
 }

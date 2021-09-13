@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the Net_LDAP2 interface class.
@@ -85,20 +86,20 @@ class Net_LDAP2 extends PEAR
     * @access protected
     * @var array
     */
-    protected $_config = array('host'            => 'localhost',
+    protected $_config = ['host'            => 'localhost',
                                'port'            => 389,
                                'version'         => 3,
                                'starttls'        => false,
                                'binddn'          => '',
                                'bindpw'          => '',
                                'basedn'          => '',
-                               'options'         => array(),
+                               'options'         => [],
                                'filter'          => '(objectClass=*)',
                                'scope'           => 'sub',
                                'auto_reconnect'  => false,
                                'min_backoff'     => 1,
                                'current_backoff' => 1,
-                               'max_backoff'     => 32);
+                               'max_backoff'     => 32];
 
     /**
     * List of hosts we try to establish a connection to
@@ -106,7 +107,7 @@ class Net_LDAP2 extends PEAR
     * @access protected
     * @var array
     */
-    protected $_host_list = array();
+    protected $_host_list = [];
 
     /**
     * List of hosts that are known to be down.
@@ -114,7 +115,7 @@ class Net_LDAP2 extends PEAR
     * @access protected
     * @var array
     */
-    protected $_down_host_list = array();
+    protected $_down_host_list = [];
 
     /**
     * LDAP resource link.
@@ -149,7 +150,7 @@ class Net_LDAP2 extends PEAR
     * @var array Hash with attribute names as key and boolean value
     *            to determine whether they should be utf8 encoded or not.
     */
-    protected $_schemaAttrs = array();
+    protected $_schemaAttrs = [];
 
     /**
     * Cache for rootDSE objects
@@ -164,7 +165,7 @@ class Net_LDAP2 extends PEAR
     * @access protected
     * @var array
     */
-    protected $_rootDSE_cache = array();
+    protected $_rootDSE_cache = [];
 
     /**
     * Returns the Net_LDAP2 Release version, may be called statically
@@ -192,7 +193,7 @@ class Net_LDAP2 extends PEAR
     * @access public
     * @return Net_LDAP2_Error|Net_LDAP2   Net_LDAP2_Error or Net_LDAP2 object
     */
-    public static function connect($config = array())
+    public static function connect($config = [])
     {
         $ldap_check = self::checkLDAPExtension();
         if (self::iserror($ldap_check)) {
@@ -227,7 +228,7 @@ class Net_LDAP2 extends PEAR
     * @return void
     * @see $_config
     */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct('Net_LDAP2_Error');
         $this->setConfig($config);
@@ -256,7 +257,7 @@ class Net_LDAP2 extends PEAR
                 $this->_config[$k] = $v;
             } else {
                 // map old (Net_LDAP2) parms to new ones
-                switch($k) {
+                switch ($k) {
                 case "dn":
                     $this->_config["binddn"] = $v;
                     break;
@@ -280,9 +281,9 @@ class Net_LDAP2 extends PEAR
             $this->_host_list = $this->_config['host'];
         } else {
             if (strlen($this->_config['host']) > 0) {
-                $this->_host_list = array($this->_config['host']);
+                $this->_host_list = [$this->_config['host']];
             } else {
-                $this->_host_list = array();
+                $this->_host_list = [];
                 // ^ this will cause an error in performConnect(),
                 // so the user is notified about the failure
             }
@@ -292,7 +293,7 @@ class Net_LDAP2 extends PEAR
         // Reset the down host list, which seems like a sensible thing to do
         // if the config is being reset for some reason.
         //
-        $this->_down_host_list = array();
+        $this->_down_host_list = [];
     }
 
     /**
@@ -357,9 +358,11 @@ class Net_LDAP2 extends PEAR
                 $msg = @ldap_bind($this->_link, $dn, $password);
             }
             if (false === $msg) {
-                return PEAR::raiseError("Bind failed: " .
+                return PEAR::raiseError(
+                    "Bind failed: " .
                                         @ldap_error($this->_link),
-                                        @ldap_errno($this->_link));
+                    @ldap_errno($this->_link)
+                );
             }
         }
         return true;
@@ -481,10 +484,12 @@ class Net_LDAP2 extends PEAR
                 if ($msg->getCode() == 0x02 && !$version_set) {
                     // provide a finer grained error message
                     // if protocol error arieses because of invalid version
-                    $msg = new Net_LDAP2_Error($msg->getMessage().
+                    $msg = new Net_LDAP2_Error(
+                        $msg->getMessage().
                         " (could not set LDAP protocol version to ".
                         $this->_config['version'].")",
-                        $msg->getCode());
+                        $msg->getCode()
+                    );
                 }
                 $this->_link             = false;
                 $current_error           = $msg;
@@ -570,7 +575,7 @@ class Net_LDAP2 extends PEAR
         sleep($this->_config['current_backoff']);
 
         // Retry all available connections.
-        $this->_down_host_list = array();
+        $this->_down_host_list = [];
         $msg = $this->performConnect();
 
         // Bail out if that fails.
@@ -639,7 +644,7 @@ class Net_LDAP2 extends PEAR
                 // because then we try to issue TLS afterwards.
                 if (!in_array('1.3.6.1.4.1.1466.20037', $supported_extensions)) {
                     return $this->raiseError("Server reports that it does not support TLS.");
-                 }
+                }
             }
         }
 
@@ -648,9 +653,11 @@ class Net_LDAP2 extends PEAR
             // Starting TLS failed. This may be an error, or because
             // the server does not support it but did not enable us to
             // detect that above.
-            return $this->raiseError("TLS could not be started: " .
+            return $this->raiseError(
+                "TLS could not be started: " .
                                     @ldap_error($this->_link),
-                                    @ldap_errno($this->_link));
+                @ldap_errno($this->_link)
+            );
         } else {
             return true; // TLS is started now.
         }
@@ -665,7 +672,7 @@ class Net_LDAP2 extends PEAR
     public function start_tls()
     {
         $args = func_get_args();
-        return call_user_func_array(array( $this, 'startTLS' ), $args);
+        return call_user_func_array([ $this, 'startTLS' ], $args);
     }
 
     /**
@@ -758,9 +765,11 @@ class Net_LDAP2 extends PEAR
                 } else {
                     // Errors other than the above catched are just passed
                     // back to the user so he may react upon them.
-                    return PEAR::raiseError("Could not add entry " . $entry->dn() . " " .
+                    return PEAR::raiseError(
+                        "Could not add entry " . $entry->dn() . " " .
                                             $error_name,
-                                            $error_code);
+                        $error_code
+                    );
                 }
             }
         }
@@ -782,14 +791,14 @@ class Net_LDAP2 extends PEAR
     public function delete($dn, $recursive = false)
     {
         if ($dn instanceof Net_LDAP2_Entry) {
-             $dn = $dn->dn();
+            $dn = $dn->dn();
         }
         if (false === is_string($dn)) {
             return PEAR::raiseError("Parameter is not a string nor an entry object!");
         }
         // Recursive delete searches for children and calls delete for them
         if ($recursive) {
-            $result = @ldap_list($this->_link, $dn, '(objectClass=*)', array(null), 0, 0);
+            $result = @ldap_list($this->_link, $dn, '(objectClass=*)', [null], 0, 0);
             if (@ldap_count_entries($this->_link, $result)) {
                 $subentry = @ldap_first_entry($this->_link, $result);
                 $this->delete(@ldap_get_dn($this->_link, $subentry), true);
@@ -828,7 +837,6 @@ class Net_LDAP2 extends PEAR
                     // different server.
                     $this->_link = false;
                     $this->performReconnect();
-
                 } elseif ($error_code == 66) {
                     // Subentries present, server refused to delete.
                     // Deleting subentries is the clients responsibility, but
@@ -836,13 +844,14 @@ class Net_LDAP2 extends PEAR
                     // force that here but instead notify the developer so he
                     // may take actions himself.
                     return PEAR::raiseError("Could not delete entry $dn because of subentries. Use the recursive parameter to delete them.");
-
                 } else {
                     // Errors other than the above catched are just passed
                     // back to the user so he may react upon them.
-                    return PEAR::raiseError("Could not delete entry " . $dn . " " .
+                    return PEAR::raiseError(
+                        "Could not delete entry " . $dn . " " .
                                             $error_name,
-                                            $error_code);
+                        $error_code
+                    );
                 }
             }
         }
@@ -884,7 +893,7 @@ class Net_LDAP2 extends PEAR
     * @access public
     * @return Net_LDAP2_Error|true Net_LDAP2_Error object or true
     */
-    public function modify($entry, $parms = array())
+    public function modify($entry, $parms = [])
     {
         if (is_string($entry)) {
             $entry = $this->getEntry($entry);
@@ -897,7 +906,7 @@ class Net_LDAP2 extends PEAR
         }
 
         // Perform changes mentioned separately
-        foreach (array('add', 'delete', 'replace') as $action) {
+        foreach (['add', 'delete', 'replace'] as $action) {
             if (isset($parms[$action])) {
                 $msg = $entry->$action($parms[$action]);
                 if (self::isError($msg)) {
@@ -925,7 +934,6 @@ class Net_LDAP2 extends PEAR
                             // server.
                             $this->_link = false;
                             $this->performReconnect();
-
                         } else {
 
                             // Errors other than the above catched are just passed
@@ -948,7 +956,7 @@ class Net_LDAP2 extends PEAR
                 // we have to trap the error codes issued from that if we want to support
                 // reconnection.
                 while (true) {
-                    $msg = $this->modify($entry, array($action => $value));
+                    $msg = $this->modify($entry, [$action => $value]);
 
                     if (self::isError($msg)) {
                         // We have a failure.  What type?  We may be able to reconnect
@@ -964,7 +972,6 @@ class Net_LDAP2 extends PEAR
                             // server.
                             $this->_link = false;
                             $this->performReconnect();
-
                         } else {
                             // Errors other than the above catched are just passed
                             // back to the user so he may react upon them.
@@ -1022,7 +1029,7 @@ class Net_LDAP2 extends PEAR
     * @return Net_LDAP2_Search|Net_LDAP2_Error Net_LDAP2_Search object or Net_LDAP2_Error object
     * @todo implement search controls (sorting etc)
     */
-    public function search($base = null, $filter = null, $params = array())
+    public function search($base = null, $filter = null, $params = [])
     {
         if (is_null($base)) {
             $base = $this->_config['basedn'];
@@ -1044,15 +1051,15 @@ class Net_LDAP2 extends PEAR
         }
 
         /* setting searchparameters  */
-        (isset($params['sizelimit']))  ? $sizelimit  = $params['sizelimit']  : $sizelimit = 0;
-        (isset($params['timelimit']))  ? $timelimit  = $params['timelimit']  : $timelimit = 0;
-        (isset($params['attrsonly']))  ? $attrsonly  = $params['attrsonly']  : $attrsonly = 0;
-        (isset($params['attributes'])) ? $attributes = $params['attributes'] : $attributes = array();
+        (isset($params['sizelimit'])) ? $sizelimit  = $params['sizelimit'] : $sizelimit = 0;
+        (isset($params['timelimit'])) ? $timelimit  = $params['timelimit'] : $timelimit = 0;
+        (isset($params['attrsonly'])) ? $attrsonly  = $params['attrsonly'] : $attrsonly = 0;
+        (isset($params['attributes'])) ? $attributes = $params['attributes'] : $attributes = [];
 
         // Ensure $attributes to be an array in case only one
         // attribute name was given as string
         if (!is_array($attributes)) {
-            $attributes = array($attributes);
+            $attributes = [$attributes];
         }
 
         // reorganize the $attributes array index keys
@@ -1077,22 +1084,24 @@ class Net_LDAP2 extends PEAR
         // or a definitive failure.
         while (true) {
             $link = $this->getLink();
-            $search = @call_user_func($search_function,
-                                      $link,
-                                      $base,
-                                      $filter,
-                                      $attributes,
-                                      $attrsonly,
-                                      $sizelimit,
-                                      $timelimit);
+            $search = @call_user_func(
+                $search_function,
+                $link,
+                $base,
+                $filter,
+                $attributes,
+                $attrsonly,
+                $sizelimit,
+                $timelimit
+            );
 
             if ($err = @ldap_errno($link)) {
                 if ($err == 32) {
                     // Errorcode 32 = no such object, i.e. a nullresult.
-                    return $obj = new Net_LDAP2_Search ($search, $this, $attributes);
+                    return $obj = new Net_LDAP2_Search($search, $this, $attributes);
                 } elseif ($err == 4) {
                     // Errorcode 4 = sizelimit exeeded.
-                    return $obj = new Net_LDAP2_Search ($search, $this, $attributes);
+                    return $obj = new Net_LDAP2_Search($search, $this, $attributes);
                 } elseif ($err == 87) {
                     // bad search filter
                     return $this->raiseError(Net_LDAP2::errorMessage($err) . "($filter)", $err);
@@ -1223,7 +1232,7 @@ class Net_LDAP2 extends PEAR
             } else {
                 $supported_versions = $rootDSE->getValue('supportedLDAPVersion');
                 if (is_string($supported_versions)) {
-                    $supported_versions = array($supported_versions);
+                    $supported_versions = [$supported_versions];
                 }
                 $check_ok = in_array($version, $supported_versions);
             }
@@ -1250,7 +1259,7 @@ class Net_LDAP2 extends PEAR
             return $dn;
         }
         if ($dn instanceof Net_LDAP2_Entry) {
-             $dn = $dn->dn();
+            $dn = $dn->dn();
         }
         if (false === is_string($dn)) {
             return PEAR::raiseError('Parameter $dn is not a string nor an entry object!');
@@ -1258,11 +1267,11 @@ class Net_LDAP2 extends PEAR
 
         // search LDAP for that DN by performing a baselevel search for any
         // object. We can only find the DN in question this way, or nothing.
-        $s_opts = array(
+        $s_opts = [
             'scope'      => 'base',
             'sizelimit'  => 1,
             'attributes' => '1.1' // select no attrs
-        );
+        ];
         $search = $this->search($dn, '(objectClass=*)', $s_opts);
 
         if (self::isError($search)) {
@@ -1270,7 +1279,7 @@ class Net_LDAP2 extends PEAR
         }
 
         // retun wehter the DN exists; that is, we found an entry
-        return ($search->count() == 0)? false : true;
+        return ($search->count() == 0) ? false : true;
     }
 
 
@@ -1283,13 +1292,16 @@ class Net_LDAP2 extends PEAR
     * @return Net_LDAP2_Entry|Net_LDAP2_Error    Reference to a Net_LDAP2_Entry object or Net_LDAP2_Error object
     * @todo Maybe check against the shema should be done to be sure the attribute type exists
     */
-    public function getEntry($dn, $attr = array())
+    public function getEntry($dn, $attr = [])
     {
         if (!is_array($attr)) {
-            $attr = array($attr);
+            $attr = [$attr];
         }
-        $result = $this->search($dn, '(objectClass=*)',
-                                array('scope' => 'base', 'attributes' => $attr));
+        $result = $this->search(
+            $dn,
+            '(objectClass=*)',
+            ['scope' => 'base', 'attributes' => $attr]
+        );
         if (self::isError($result)) {
             return $result;
         } elseif ($result->count() == 0) {
@@ -1410,7 +1422,7 @@ class Net_LDAP2 extends PEAR
     */
     public static function errorMessage($errorcode)
     {
-        $errorMessages = array(
+        $errorMessages = [
                               0x00 => "LDAP_SUCCESS",
                               0x01 => "LDAP_OPERATIONS_ERROR",
                               0x02 => "LDAP_PROTOCOL_ERROR",
@@ -1473,9 +1485,9 @@ class Net_LDAP2 extends PEAR
                               0x60 => "LDAP_CLIENT_LOOP",
                               0x61 => "LDAP_REFERRAL_LIMIT_EXCEEDED",
                               1000 => "Unknown Net_LDAP2 Error"
-                              );
+                              ];
 
-         return isset($errorMessages[$errorcode]) ?
+        return isset($errorMessages[$errorcode]) ?
             $errorMessages[$errorcode] :
             $errorMessages[NET_LDAP2_ERROR] . ' (' . $errorcode . ')';
     }
@@ -1523,7 +1535,7 @@ class Net_LDAP2 extends PEAR
     public function root_dse()
     {
         $args = func_get_args();
-        return call_user_func_array(array($this, 'rootDse'), $args);
+        return call_user_func_array([$this, 'rootDse'], $args);
     }
 
     /**
@@ -1542,14 +1554,14 @@ class Net_LDAP2 extends PEAR
         // See registerSchemaCache() for more info on this.
         if ($this->_schema === null) {
             if ($this->_schema_cache) {
-               $cached_schema = $this->_schema_cache->loadSchema();
-               if ($cached_schema instanceof Net_LDAP2_Error) {
-                   return $cached_schema; // route error to client
-               } else {
-                   if ($cached_schema instanceof Net_LDAP2_Schema) {
-                       $this->_schema = $cached_schema;
-                   }
-               }
+                $cached_schema = $this->_schema_cache->loadSchema();
+                if ($cached_schema instanceof Net_LDAP2_Error) {
+                    return $cached_schema; // route error to client
+                } else {
+                    if ($cached_schema instanceof Net_LDAP2_Schema) {
+                        $this->_schema = $cached_schema;
+                    }
+                }
             }
         }
 
@@ -1606,9 +1618,10 @@ class Net_LDAP2 extends PEAR
     *
     * @return true|Net_LDAP2_Error
     */
-    public function registerSchemaCache($cache) {
+    public function registerSchemaCache($cache)
+    {
         if (is_null($cache)
-        || (is_object($cache) && in_array('Net_LDAP2_SchemaCache', class_implements($cache))) ) {
+        || (is_object($cache) && in_array('Net_LDAP2_SchemaCache', class_implements($cache)))) {
             $this->_schema_cache = $cache;
             return true;
         } else {
@@ -1699,11 +1712,8 @@ class Net_LDAP2 extends PEAR
         }
 
         if (is_array($attributes) && count($attributes) > 0) {
-
             foreach ($attributes as $k => $v) {
-
                 if (!isset($this->_schemaAttrs[$k])) {
-
                     $attr = $this->_schema->get('attribute', $k);
                     if (self::isError($attr)) {
                         continue;
@@ -1718,7 +1728,6 @@ class Net_LDAP2 extends PEAR
                         $encode = false;
                     }
                     $this->_schemaAttrs[$k] = $encode;
-
                 } else {
                     $encode = $this->_schemaAttrs[$k];
                 }
@@ -1788,8 +1797,13 @@ class Net_LDAP2_Error extends PEAR_Error
      * @access public
      * @see PEAR_Error
      */
-    public function __construct($message = 'Net_LDAP2_Error', $code = NET_LDAP2_ERROR, $mode = PEAR_ERROR_RETURN,
-                         $level = E_USER_NOTICE, $debuginfo = null)
+    public function __construct(
+        $message = 'Net_LDAP2_Error',
+        $code = NET_LDAP2_ERROR,
+        $mode = PEAR_ERROR_RETURN,
+        $level = E_USER_NOTICE,
+        $debuginfo = null
+    )
     {
         if (is_int($code)) {
             parent::__construct($message . ': ' . Net_LDAP2::errorMessage($code), $code, $mode, $level, $debuginfo);

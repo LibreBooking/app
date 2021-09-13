@@ -2,8 +2,8 @@
 
 class GroupImportCsvRow
 {
-    private $values = array();
-    private $indexes = array();
+    private $values = [];
+    private $indexes = [];
 
     /**
      * @var string
@@ -142,8 +142,9 @@ class GroupImportCsvRow
         return $value;
     }
 
-    private function asArray($column) {
-        return (!array_key_exists($column, $this->indexes) || $this->indexes[$column] === false) ? array() : array_map('trim', explode(',', htmlspecialchars($this->values[$this->indexes[$column]])));
+    private function asArray($column)
+    {
+        return (!array_key_exists($column, $this->indexes) || $this->indexes[$column] === false) ? [] : array_map('trim', explode(',', htmlspecialchars($this->values[$this->indexes[$column]])));
     }
 }
 
@@ -157,7 +158,7 @@ class GroupImportCsv
     /**
      * @var int[]
      */
-    private $skippedRowNumbers = array();
+    private $skippedRowNumbers = [];
 
     /**
      * @param UploadedFile $file
@@ -172,7 +173,7 @@ class GroupImportCsv
      */
     public function GetRows()
     {
-        $rows = array();
+        $rows = [];
 
         $contents = $this->file->Contents();
 
@@ -200,8 +201,7 @@ class GroupImportCsv
 
             if ($row->IsValid()) {
                 $rows[] = $row;
-            }
-            else {
+            } else {
                 Log::Error('Skipped import of group row %s. Values %s', $i, print_r($values, true));
                 $this->skippedRowNumbers[] = $i;
             }

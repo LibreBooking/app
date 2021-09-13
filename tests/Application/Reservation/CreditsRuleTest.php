@@ -5,52 +5,52 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
 class CreditsRuleTests extends TestBase
 {
-	/**
-	 * @var FakeUserRepository
-	 */
-	public $userRepository;
+    /**
+     * @var FakeUserRepository
+     */
+    public $userRepository;
 
-	/**
-	 * @var AccessoryAvailabilityRule
-	 */
-	public $rule;
+    /**
+     * @var AccessoryAvailabilityRule
+     */
+    public $rule;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->userRepository = new FakeUserRepository();
+        $this->userRepository = new FakeUserRepository();
 
-		$this->rule = new CreditsRule($this->userRepository, $this->fakeUser);
+        $this->rule = new CreditsRule($this->userRepository, $this->fakeUser);
 
-		$this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
-	}
+        $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
+    }
 
-	public function testRuleIsValidIfUserHasEnoughCredits()
-	{
-		$reservation = new TestReservationSeries();
-		$reservation->WithCreditsRequired(10);
+    public function testRuleIsValidIfUserHasEnoughCredits()
+    {
+        $reservation = new TestReservationSeries();
+        $reservation->WithCreditsRequired(10);
 
-		$user = new FakeUser();
-		$user->WithCredits(10);
+        $user = new FakeUser();
+        $user->WithCredits(10);
 
-		$this->userRepository->_User = $user;
+        $this->userRepository->_User = $user;
 
-		$result = $this->rule->Validate($reservation, null);
+        $result = $this->rule->Validate($reservation, null);
 
-		$this->assertTrue($result->IsValid());
-	}
+        $this->assertTrue($result->IsValid());
+    }
 
-	public function testRuleIsNotValidIfUserDoesNotHaveEnoughCredits()
-	{
-		$reservation = new TestReservationSeries();
-		$reservation->WithCreditsRequired(10);
+    public function testRuleIsNotValidIfUserDoesNotHaveEnoughCredits()
+    {
+        $reservation = new TestReservationSeries();
+        $reservation->WithCreditsRequired(10);
 
-		$user = new FakeUser();
-		$user->WithCredits(9);
+        $user = new FakeUser();
+        $user->WithCredits(9);
 
-		$result = $this->rule->Validate($reservation, null);
+        $result = $this->rule->Validate($reservation, null);
 
-		$this->assertFalse($result->IsValid());
-	}
+        $this->assertFalse($result->IsValid());
+    }
 }

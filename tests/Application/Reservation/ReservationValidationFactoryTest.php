@@ -4,7 +4,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
 class ReservationValidationFactoryTests extends TestBase
 {
-
     public function testLoadsAddRulesFromPlugins()
     {
         $preResPlugin = $this->createMock('IPreReservationFactory');

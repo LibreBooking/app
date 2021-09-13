@@ -4,228 +4,228 @@ require_once(ROOT_DIR . 'Pages/Reservation/ExistingReservationPage.php');
 
 class FakeExistingReservationPage extends FakePageBase implements IExistingReservationPage
 {
-	public $_CheckInRequired = false;
-	public $_CheckOutRequired = false;
-	public $_AutoReleaseMinutes = null;
+    public $_CheckInRequired = false;
+    public $_CheckOutRequired = false;
+    public $_AutoReleaseMinutes = null;
 
-	function GetReferenceNumber()
-	{
-	}
+    public function GetReferenceNumber()
+    {
+    }
 
-	function SetAdditionalResources($additionalResourceIds)
-	{
-	}
+    public function SetAdditionalResources($additionalResourceIds)
+    {
+    }
 
-	function SetTitle($title)
-	{
-	}
+    public function SetTitle($title)
+    {
+    }
 
-	function SetDescription($description)
-	{
-	}
+    public function SetDescription($description)
+    {
+    }
 
-	function SetRepeatType($repeatType)
-	{
-	}
+    public function SetRepeatType($repeatType)
+    {
+    }
 
-	function SetRepeatInterval($repeatInterval)
-	{
-	}
+    public function SetRepeatInterval($repeatInterval)
+    {
+    }
 
-	function SetRepeatMonthlyType($repeatMonthlyType)
-	{
-	}
+    public function SetRepeatMonthlyType($repeatMonthlyType)
+    {
+    }
 
-	function SetRepeatWeekdays($repeatWeekdays)
-	{
-	}
+    public function SetRepeatWeekdays($repeatWeekdays)
+    {
+    }
 
-	function SetReferenceNumber($referenceNumber)
-	{
-	}
+    public function SetReferenceNumber($referenceNumber)
+    {
+    }
 
-	function SetReservationId($reservationId)
-	{
-	}
+    public function SetReservationId($reservationId)
+    {
+    }
 
-	function SetSeriesId($seriesId)
-	{
-	}
+    public function SetSeriesId($seriesId)
+    {
+    }
 
-	function SetIsRecurring($isRecurring)
-	{
-	}
+    public function SetIsRecurring($isRecurring)
+    {
+    }
 
-	function SetIsEditable($canBeEdited)
-	{
-	}
+    public function SetIsEditable($canBeEdited)
+    {
+    }
 
-	function SetIsApprovable($canBeApproved)
-	{
-	}
+    public function SetIsApprovable($canBeApproved)
+    {
+    }
 
-	function SetCurrentUserParticipating($amIParticipating)
-	{
-	}
+    public function SetCurrentUserParticipating($amIParticipating)
+    {
+    }
 
-	function SetCurrentUserInvited($amIInvited)
-	{
-	}
+    public function SetCurrentUserInvited($amIInvited)
+    {
+    }
 
-	public function SetStartReminder($reminderValue, $reminderInterval)
-	{
-	}
+    public function SetStartReminder($reminderValue, $reminderInterval)
+    {
+    }
 
-	public function SetEndReminder($reminderValue, $reminderInterval)
-	{
-	}
+    public function SetEndReminder($reminderValue, $reminderInterval)
+    {
+    }
 
-	public function SetCanAlterParticipation($canAlterParticipation)
-	{
-	}
+    public function SetCanAlterParticipation($canAlterParticipation)
+    {
+    }
 
-	public function SetCheckInRequired($isCheckInRequired)
-	{
-		$this->_CheckInRequired = $isCheckInRequired;
-	}
+    public function SetCheckInRequired($isCheckInRequired)
+    {
+        $this->_CheckInRequired = $isCheckInRequired;
+    }
 
-	public function SetCheckOutRequired($isCheckOutRequired)
-	{
-		$this->_CheckOutRequired = $isCheckOutRequired;
-	}
+    public function SetCheckOutRequired($isCheckOutRequired)
+    {
+        $this->_CheckOutRequired = $isCheckOutRequired;
+    }
 
-	public function SetAutoReleaseMinutes($autoReleaseMinutes)
-	{
-		$this->_AutoReleaseMinutes = $autoReleaseMinutes;
-	}
+    public function SetAutoReleaseMinutes($autoReleaseMinutes)
+    {
+        $this->_AutoReleaseMinutes = $autoReleaseMinutes;
+    }
 
-	public function PageLoad()
-	{
-	}
+    public function PageLoad()
+    {
+    }
 
-	public function Redirect($url)
-	{
-	}
+    public function Redirect($url)
+    {
+    }
 
-	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
-	{
-	}
+    public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+    {
+    }
 
-	public function IsPostBack()
-	{
-	}
+    public function IsPostBack()
+    {
+    }
 
-	public function IsValid()
-	{
-	}
+    public function IsValid()
+    {
+    }
 
-	public function GetLastPage($defaultPage = '')
-	{
-	}
+    public function GetLastPage($defaultPage = '')
+    {
+    }
 
-	public function RegisterValidator($validatorId, $validator)
-	{
-	}
+    public function RegisterValidator($validatorId, $validator)
+    {
+    }
 
-	public function EnforceCSRFCheck()
-	{
-	}
+    public function EnforceCSRFCheck()
+    {
+    }
 
-	public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
-	{
-	}
+    public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
+    {
+    }
 
-	public function BindAvailableResources($resources)
-	{
-	}
+    public function BindAvailableResources($resources)
+    {
+    }
 
-	public function BindAvailableAccessories($accessories)
-	{
-	}
+    public function BindAvailableAccessories($accessories)
+    {
+    }
 
-	public function BindResourceGroups($groups)
-	{
-	}
+    public function BindResourceGroups($groups)
+    {
+    }
 
-	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)
-	{
-	}
+    public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)
+    {
+    }
 
-	public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
-	{
-	}
+    public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
+    {
+    }
 
-	public function SetRepeatTerminationDate($repeatTerminationDate)
-	{
-	}
+    public function SetRepeatTerminationDate($repeatTerminationDate)
+    {
+    }
 
-	public function SetReservationUser(UserDto $user)
-	{
-	}
+    public function SetReservationUser(UserDto $user)
+    {
+    }
 
-	public function SetReservationResource($resource)
-	{
-	}
+    public function SetReservationResource($resource)
+    {
+    }
 
-	public function SetScheduleId($scheduleId)
-	{
-	}
+    public function SetScheduleId($scheduleId)
+    {
+    }
 
-	public function SetParticipants($participants)
-	{
-	}
+    public function SetParticipants($participants)
+    {
+    }
 
-	public function SetInvitees($invitees)
-	{
-	}
+    public function SetInvitees($invitees)
+    {
+    }
 
-	public function SetAccessories($accessories)
-	{
-	}
+    public function SetAccessories($accessories)
+    {
+    }
 
-	public function SetAttachments($attachments)
-	{
-	}
+    public function SetAttachments($attachments)
+    {
+    }
 
-	public function SetCanChangeUser($canChangeUser)
-	{
-	}
+    public function SetCanChangeUser($canChangeUser)
+    {
+    }
 
-	public function ShowAdditionalResources($canShowAdditionalResources)
-	{
-	}
+    public function ShowAdditionalResources($canShowAdditionalResources)
+    {
+    }
 
-	public function ShowUserDetails($canShowUserDetails)
-	{
-	}
+    public function ShowUserDetails($canShowUserDetails)
+    {
+    }
 
-	public function SetShowParticipation($shouldShow)
-	{
-	}
+    public function SetShowParticipation($shouldShow)
+    {
+    }
 
-	public function ShowReservationDetails($showReservationDetails)
-	{
-	}
+    public function ShowReservationDetails($showReservationDetails)
+    {
+    }
 
-	public function HideRecurrence($isHidden)
-	{
-	}
+    public function HideRecurrence($isHidden)
+    {
+    }
 
-	function SetAllowParticipantsToJoin($allowParticipation)
-	{
-	}
+    public function SetAllowParticipantsToJoin($allowParticipation)
+    {
+    }
 
-	public function SetParticipatingGuests($participatingGuests)
-	{
-	}
+    public function SetParticipatingGuests($participatingGuests)
+    {
+    }
 
-	public function SetInvitedGuests($invitedGuests)
-	{
-	}
+    public function SetInvitedGuests($invitedGuests)
+    {
+    }
 
-	public function SetRequiresApproval($requiresApproval)
-	{
-	}
+    public function SetRequiresApproval($requiresApproval)
+    {
+    }
 
     public function SetAvailability(DateRange $availability)
     {
@@ -260,8 +260,8 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
         // TODO: Implement SetCustomRepeatDates() method.
     }
 
-	public function SetMaximumResources($maximum)
-	{
-		// TODO: Implement SetMaximumResources() method.
-	}
+    public function SetMaximumResources($maximum)
+    {
+        // TODO: Implement SetMaximumResources() method.
+    }
 }

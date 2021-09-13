@@ -45,8 +45,7 @@ class CreditLogView
     public static function Populate($row)
     {
         $userName = '';
-        if (isset($row[ColumnNames::FIRST_NAME]))
-        {
+        if (isset($row[ColumnNames::FIRST_NAME])) {
             $userName = new FullName($row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME]);
         }
 
@@ -55,6 +54,7 @@ class CreditLogView
             $row[ColumnNames::CREDIT_NOTE],
             $row[ColumnNames::ORIGINAL_CREDIT_COUNT],
             $row[ColumnNames::CREDIT_COUNT],
-            $userName->__toString());
+            $userName->__toString()
+        );
     }
 }

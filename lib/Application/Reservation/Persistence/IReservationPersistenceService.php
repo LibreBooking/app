@@ -2,8 +2,8 @@
 
 interface IReservationPersistenceService
 {
-	/**
-	 * @param ReservationSeries|ExistingReservationSeries $reservation
-	 */
-	function Persist($reservation);
+    /**
+     * @param ReservationSeries|ExistingReservationSeries $reservation
+     */
+    public function Persist($reservation);
 }

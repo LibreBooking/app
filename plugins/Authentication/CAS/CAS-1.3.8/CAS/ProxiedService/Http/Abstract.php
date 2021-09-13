@@ -38,8 +38,7 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
-abstract class CAS_ProxiedService_Http_Abstract extends
-CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
+abstract class CAS_ProxiedService_Http_Abstract extends CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
 {
     /**
      * The HTTP request mechanism talking to the target service.
@@ -63,7 +62,8 @@ CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
      *
      * @return void
      */
-    public function __construct(CAS_Request_RequestInterface $requestHandler,
+    public function __construct(
+        CAS_Request_RequestInterface $requestHandler,
         CAS_CookieJar $cookieJar
     ) {
         $this->requestHandler = $requestHandler;
@@ -175,7 +175,7 @@ CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
      *
      * @var array $_responseHeaders;
      */
-    private $_responseHeaders = array();
+    private $_responseHeaders = [];
 
     /**
      * The response status code.
@@ -243,7 +243,6 @@ CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
             phpCAS::trace('Found redirect:' . $redirectUrl);
             $this->makeRequest($redirectUrl);
         } else {
-
             $this->_responseHeaders = $request->getResponseHeaders();
             $this->_responseBody = $request->getResponseBody();
             $this->_responseStatusCode = $request->getResponseStatusCode();
@@ -272,7 +271,7 @@ CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
     {
         // Check for the redirect after authentication
         foreach ($responseHeaders as $header) {
-            if ( preg_match('/^(Location:|URI:)\s*([^\s]+.*)$/', $header, $matches)
+            if (preg_match('/^(Location:|URI:)\s*([^\s]+.*)$/', $header, $matches)
             ) {
                 return trim(array_pop($matches));
             }
@@ -355,6 +354,4 @@ CAS_ProxiedService_Abstract implements CAS_ProxiedService_Http
     {
         return $this->_cookieJar->getCookies($this->getServiceUrl());
     }
-
 }
-?>

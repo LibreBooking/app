@@ -32,8 +32,11 @@ class ManageThemePresenter extends ActionPresenter
             $target = ROOT_DIR . 'Web/img/custom-logo.' . $logoFile->Extension();
             $copied = copy($logoFile->TemporaryName(), $target);
             if (!$copied) {
-                Log::Error('Could not replace logo with %s. Ensure %s is writable.',
-                    $logoFile->OriginalName(), $target);
+                Log::Error(
+                    'Could not replace logo with %s. Ensure %s is writable.',
+                    $logoFile->OriginalName(),
+                    $target
+                );
             }
         }
         if ($cssFile != null) {
@@ -41,8 +44,11 @@ class ManageThemePresenter extends ActionPresenter
             $target = ROOT_DIR . 'Web/css/custom-style.css';
             $copied = copy($cssFile->TemporaryName(), $target);
             if (!$copied) {
-                Log::Error('Could not replace css with %s. Ensure %s is writable.',
-                    $cssFile->OriginalName(), $target);
+                Log::Error(
+                    'Could not replace css with %s. Ensure %s is writable.',
+                    $cssFile->OriginalName(),
+                    $target
+                );
             }
         }
         if ($favicon != null) {
@@ -53,8 +59,11 @@ class ManageThemePresenter extends ActionPresenter
             $target = ROOT_DIR . 'Web/custom-favicon.' . $favicon->Extension();
             $copied = copy($favicon->TemporaryName(), $target);
             if (!$copied) {
-                Log::Error('Could not replace favicon with %s. Ensure %s is writable.',
-                    $favicon->OriginalName(), $target);
+                Log::Error(
+                    'Could not replace favicon with %s. Ensure %s is writable.',
+                    $favicon->OriginalName(),
+                    $target
+                );
             }
         }
     }
@@ -92,11 +101,10 @@ class ManageThemePresenter extends ActionPresenter
     protected function LoadValidators($action)
     {
         $this->page->RegisterValidator('logoFile', new FileUploadValidator($this->page->GetLogoFile()));
-        $this->page->RegisterValidator('logoFileExt', new FileTypeValidator($this->page->GetLogoFile(), array('jpg', 'png', 'gif')));
+        $this->page->RegisterValidator('logoFileExt', new FileTypeValidator($this->page->GetLogoFile(), ['jpg', 'png', 'gif']));
         $this->page->RegisterValidator('cssFile', new FileUploadValidator($this->page->GetCssFile()));
         $this->page->RegisterValidator('cssFileExt', new FileTypeValidator($this->page->GetCssFile(), 'css'));
         $this->page->RegisterValidator('faviconFile', new FileUploadValidator($this->page->GetFaviconFile()));
-        $this->page->RegisterValidator('faviconFileExt', new FileTypeValidator($this->page->GetFaviconFile(), array('ico', 'jpg', 'png', 'gif')));
-
+        $this->page->RegisterValidator('faviconFileExt', new FileTypeValidator($this->page->GetFaviconFile(), ['ico', 'jpg', 'png', 'gif']));
     }
 }

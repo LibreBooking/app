@@ -59,17 +59,17 @@ class CreditLogPage extends ActionPage implements ICreditLogPage
         $this->Display('Admin/Users/credit_log.tpl');
     }
 
-    function GetPageNumber()
+    public function GetPageNumber()
     {
         return $this->pageable->GetPageNumber();
     }
 
-    function GetPageSize()
+    public function GetPageSize()
     {
         return $this->pageable->GetPageSize();
     }
 
-    function BindPageInfo(PageInfo $pageInfo)
+    public function BindPageInfo(PageInfo $pageInfo)
     {
         $this->Set('PageInfo', $pageInfo);
     }

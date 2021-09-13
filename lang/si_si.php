@@ -19,7 +19,7 @@ class si_si extends en_gb
      */
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = [];
 
         $strings['FirstName'] = 'Ime';
         $strings['LastName'] = 'Priimek';
@@ -61,8 +61,8 @@ class si_si extends en_gb
         $strings['Announcements'] = 'Obvestila';
         $strings['NoUpcomingReservations'] = 'Nimate prihodnjih rezervacij';
         $strings['UpcomingReservations'] = 'Prihodnje rezervacije';
-		$strings['AllNoUpcomingReservations'] = 'Nimate prihodnjih rezervacij v naslednjih %s dneh';
-		$strings['AllUpcomingReservations'] = 'Vse prihodnje rezervacije';
+        $strings['AllNoUpcomingReservations'] = 'Nimate prihodnjih rezervacij v naslednjih %s dneh';
+        $strings['AllUpcomingReservations'] = 'Vse prihodnje rezervacije';
         $strings['ShowHide'] = 'Prikaži/Skrij';
         $strings['Error'] = 'Napaka';
         $strings['ReturnToPreviousPage'] = 'Nazaj na predhodno stran';
@@ -136,8 +136,8 @@ class si_si extends en_gb
         $strings['ResourceMinNoticeNone'] = 'Rezervacije so lahko narejene do trenutnega časa';
         $strings['ResourceMaxNotice'] = 'Rezervacije se ne smejo zaključiti več kot %s od trenutnega časa';
         $strings['ResourceMaxNoticeNone'] = 'Rezervacije se lahko končajo kadarkoli v prihodnosti';
-		$strings['ResourceBufferTime'] = 'Med rezervacijami mora biti najmanj %s';
-		$strings['ResourceBufferTimeNone'] = 'Med rezervacijami ni potrebno pustiti prostora';
+        $strings['ResourceBufferTime'] = 'Med rezervacijami mora biti najmanj %s';
+        $strings['ResourceBufferTimeNone'] = 'Med rezervacijami ni potrebno pustiti prostora';
         $strings['ResourceAllowMultiDay'] = 'Rezervacije so lahko narejene preko več dni';
         $strings['ResourceNotAllowMultiDay'] = 'Rezervacije ne morejo biti narejene preko več dni';
         $strings['ResourceCapacity'] = 'Ta vir ima zmogljivost za %s oseb';
@@ -158,7 +158,7 @@ class si_si extends en_gb
         $strings['ResourcePermissions'] = 'Dovoljenja vira';
         $strings['Reservations'] = 'Rezervacije';
         $strings['Groups'] = 'Skupine';
-		$strings['Users'] = 'Uporabniki';
+        $strings['Users'] = 'Uporabniki';
         $strings['ResetPassword'] = 'Ponastavi geslo';
         $strings['AllUsers'] = 'Vsi uporabniki';
         $strings['AllGroups'] = 'Vse skupine';
@@ -171,7 +171,7 @@ class si_si extends en_gb
         $strings['Attending'] = 'Prisoten';
         $strings['QuotaConfiguration'] = 'V %s za %s uporabnikov iz %s je omejeno na %s %s na %s';
         $strings['reservations'] = 'rezervacije';
-		$strings['reservation'] = 'rezervacija';
+        $strings['reservation'] = 'rezervacija';
         $strings['ChangeCalendar'] = 'Spremeni koledar';
         $strings['AddQuota'] = 'Dodaj kvoto';
         $strings['FindUser'] = 'Poišči uporabnika';
@@ -239,7 +239,7 @@ class si_si extends en_gb
         $strings['SecurityCode'] = 'Varnostna koda';
         $strings['ReservationCreatedPreference'] = 'Ko ustvarim rezervacijo ali ko je rezervacija ustvarjena v mojem imenu';
         $strings['ReservationUpdatedPreference'] = 'Ko posodobim rezervacijo ali ko je rezervacija posodobljena v mojem imenu';
-		$strings['ReservationDeletedPreference'] = 'Ko zbrišem rezervacijo ali ko je rezervacija zbrisana v mojem imenu';
+        $strings['ReservationDeletedPreference'] = 'Ko zbrišem rezervacijo ali ko je rezervacija zbrisana v mojem imenu';
         $strings['ReservationApprovalPreference'] = 'Ko je moja čakajoča rezervacija potrjana';
         $strings['PreferenceSendEmail'] = 'Pošlji e-pošto';
         $strings['PreferenceNoEmail'] = 'Ne me obveščati';
@@ -247,7 +247,7 @@ class si_si extends en_gb
         $strings['ReservationUpdated'] = 'Vaša rezervacija je bila uspešno posodobljena!';
         $strings['ReservationRemoved'] = 'Vaša rezervacija je bila zbrisana';
         $strings['ReservationRequiresApproval'] = 'Eden ali več rezerviranih virov pred uporabo potrebuje potrditev. Ta rezervacija je na čakanju, dokler ni potrjena.';
-		$strings['YourReferenceNumber'] = 'Vaša referenčna številka je %s';
+        $strings['YourReferenceNumber'] = 'Vaša referenčna številka je %s';
         $strings['UpdatingReservation'] = 'Posodabljanje rezervacije';
         $strings['ChangeUser'] = 'Spremeni uporabnika';
         $strings['MoreResources'] = 'Več virov';
@@ -275,15 +275,15 @@ class si_si extends en_gb
         $strings['BlackoutCreated'] = 'Ustvarjeni so nerazpoložljivi termini!';
         $strings['BlackoutNotCreated'] = 'Nerazpoložljivi termini ne morejo biti ustvarjeni!';
         $strings['BlackoutUpdated'] = 'Nerazpoložljivi termini so posodobljeni';
-		$strings['BlackoutNotUpdated'] = 'Nerazpoložljivi termini ne morejo biti posodobljeni';
-		$strings['BlackoutConflicts'] = 'Nekateri nerazpoložljivi termini se prekrivajo';
+        $strings['BlackoutNotUpdated'] = 'Nerazpoložljivi termini ne morejo biti posodobljeni';
+        $strings['BlackoutConflicts'] = 'Nekateri nerazpoložljivi termini se prekrivajo';
         $strings['ReservationConflicts'] = 'Nekateri rezervirani termini se prekrivajo';
         $strings['UsersInGroup'] = 'Uporabniki v tej skupini';
         $strings['Browse'] = 'Prebrskaj';
         $strings['DeleteGroupWarning'] = 'Brisanje te skupine bo odstranilo tudi vsa njen dovoljenja nad viri. Uporabniki te skupine lahko izgubijo dostop do virov.';
         $strings['WhatRolesApplyToThisGroup'] = 'Katere vloge veljajo za to skupino?';
         $strings['WhoCanManageThisGroup'] = 'Kdo lahko upravlja to skupino?';
-		$strings['WhoCanManageThisSchedule'] = 'Kdo lahko upravlja ta urnik?';
+        $strings['WhoCanManageThisSchedule'] = 'Kdo lahko upravlja ta urnik?';
         $strings['AddGroup'] = 'Dodaj skupino';
         $strings['AllQuotas'] = 'Vse kvote';
         $strings['QuotaReminder'] = 'Opozorilo: kvote se uporabijo glede na časovni pas urnika.';
@@ -309,9 +309,9 @@ class si_si extends en_gb
         $strings['UseSameLayoutAs'] = 'Uporabi enako postavitev kot';
         $strings['Format'] = 'Format';
         $strings['OptionalLabel'] = 'Opcijska oznaka';
-		$strings['LayoutInstructions'] = 'Vnesite en interval v vsako vrstico. Intervali morajo biti vpisani za vseh 24 ur dneva, začnejo in končajo pa se ob 12:00.';
+        $strings['LayoutInstructions'] = 'Vnesite en interval v vsako vrstico. Intervali morajo biti vpisani za vseh 24 ur dneva, začnejo in končajo pa se ob 12:00.';
         $strings['AddUser'] = 'Dodaj uporabnika';
-		$strings['UserPermissionInfo'] = 'Dejanski dostop do vira je lahko drugačen, saj je odvisen od vloge uporabnika, dovoljenj skupine ter zunanjih nastavitev dovoljenj';
+        $strings['UserPermissionInfo'] = 'Dejanski dostop do vira je lahko drugačen, saj je odvisen od vloge uporabnika, dovoljenj skupine ter zunanjih nastavitev dovoljenj';
         $strings['DeleteUserWarning'] = 'Brisanje tega uporabnika bo zbrisalo tudi vse njegove trenutne, bodoče in pretekle rezervacije.';
         $strings['AddAnnouncement'] = 'Dodaj obvestilo';
         $strings['Announcement'] = 'Obvestilo';
@@ -357,194 +357,194 @@ class si_si extends en_gb
         $strings['AdditionalAttributes'] = 'Dodatni atributi';
         $strings['True'] = 'Da ';
         $strings['False'] = 'Ne ';
-		$strings['ForgotPasswordEmailSent'] = 'Sporočilo z navodili za ponastavitev gesla je bilo poslano na podan e-poštni naslov';
-		$strings['ActivationEmailSent'] = 'V kratkem boste prejeli e-pošto za aktivacijo.';
-		$strings['AccountActivationError'] = 'Vašega računa ni mogoče aktivirati.';
-		$strings['Attachments'] = 'Priponke';
-		$strings['AttachFile'] = 'Pripeta datoteka';
-		$strings['Maximum'] = 'največ';
-		$strings['NoScheduleAdministratorLabel'] = 'Ni administratorja urnika';
-		$strings['ScheduleAdministrator'] = 'Administrator urnika';
-		$strings['Total'] = 'Skupaj';
-		$strings['QuantityReserved'] = 'Rezervirana količina';
-		$strings['AllAccessories'] = 'Vsi dodatki';
-		$strings['GetReport'] = 'Pridobi poročilo';
-		$strings['NoResultsFound'] = 'Ni ujemajočih se rezultatov';
-		$strings['SaveThisReport'] = 'Shrani to poročilo';
-		$strings['ReportSaved'] = 'Poročilo shranjeno!';
-		$strings['EmailReport'] = 'Pošlji poročilo po e-pošti';
-		$strings['ReportSent'] = 'Poročilo poslano!';
-		$strings['RunReport'] = 'Izvedi poročilo';
-		$strings['NoSavedReports'] = 'Nimate shranjenih poročil.';
-		$strings['CurrentWeek'] = 'Trenutni teden';
-		$strings['CurrentMonth'] = 'Trenutni mesec';
-		$strings['AllTime'] = 'Ves čas';
-		$strings['FilterBy'] = 'Filtriraj po';
-		$strings['Select'] = 'Izberi';
-		$strings['List'] = 'Seznam';
-		$strings['TotalTime'] = 'Skupen čas';
-		$strings['Count'] = 'Število';
-		$strings['Usage'] = 'Uporaba';
-		$strings['AggregateBy'] = 'Združi po';
-		$strings['Range'] = 'Obseg';
-		$strings['Choose'] = 'Izberi';
-		$strings['All'] = 'Vse';
-		$strings['ViewAsChart'] = 'Prikaži kot graf';
-		$strings['ReservedResources'] = 'Rezervirani viri';
-		$strings['ReservedAccessories'] = 'Rezervirani dodatki';
-		$strings['ResourceUsageTimeBooked'] = 'Uporaba vira - čas rezervacij';
-		$strings['ResourceUsageReservationCount'] = 'Uporaba vira - število rezervacij';
-		$strings['Top20UsersTimeBooked'] = 'Naj 20 uporabnikov - čas rezervacij';
-		$strings['Top20UsersReservationCount'] = 'Naj 20 uporabnikov - število rezervacij';
-		$strings['ConfigurationUpdated'] = 'Konfiguracijska datoteka je bila posodobljena';
-		$strings['ConfigurationUiNotEnabled'] = 'Ta stran ni dostopna, ker je $conf[\'settings\'][\'pages\'][\'enable.configuration\'] nastavljen na neresnično ali manjka.';
-		$strings['ConfigurationFileNotWritable'] = 'V konfiguracijsko datoteko se ne da pisati. Prosimo, preverite dovoljenja te datoteke in poskusite znova.';
-		$strings['ConfigurationUpdateHelp'] = 'Poglejte v razdelek Konfiguracija v <a target=_blank href=%s>datoteki s pomočjo</a> za dokumentacijo o teh nastavitvah.';
-		$strings['GeneralConfigSettings'] = 'nastavitve';
-		$strings['UseSameLayoutForAllDays'] = 'Za vse dneve uporabi enako postavitev';
-		$strings['LayoutVariesByDay'] = 'Postavitev se spreminja glede na dan';
-		$strings['ManageReminders'] = 'Opomniki';
-		$strings['ReminderUser'] = 'ID uporabnika';
-		$strings['ReminderMessage'] = 'Sporočilo';
-		$strings['ReminderAddress'] = 'Naslov';
-		$strings['ReminderSendtime'] = 'Čas za pošiljanje';
-		$strings['ReminderRefNumber'] = 'Referenčna številka rezervacije';
-		$strings['ReminderSendtimeDate'] = 'Datum opomnika';
-		$strings['ReminderSendtimeTime'] = 'Čas opomnika (HH:MM)';
-		$strings['ReminderSendtimeAMPM'] = 'AM / PM';
-		$strings['AddReminder'] = 'Dodaj opomnik';
-		$strings['DeleteReminderWarning'] = 'Ali ste prepričani?';
-		$strings['NoReminders'] = 'Mimate prihajajočih opomnikov.';
-		$strings['Reminders'] = 'Opomniki';
-		$strings['SendReminder'] = 'Pošlji opomnik';
-		$strings['minutes'] = 'minute';
-		$strings['hours'] = 'ure';
-		$strings['days'] = 'dnevi';
-		$strings['ReminderBeforeStart'] = 'pred začetnim časom';
-		$strings['ReminderBeforeEnd'] = 'pred končnnim časom';
-		$strings['Logo'] = 'Logotip';
-		$strings['CssFile'] = 'Datoteka CSS';
-		$strings['ThemeUploadSuccess'] = 'Vaše spremembe so shranjene. Da bodo spremembe vidne, morate obnoviti prikaz podatkov na zaslonu.';
-		$strings['MakeDefaultSchedule'] = 'Naj bo to moj privzet urnik';
-		$strings['DefaultScheduleSet'] = 'To je sedaj vaš privzet urnik';
-		$strings['FlipSchedule'] = 'Obrni postavitev urnika';
-		$strings['Next'] = 'Naprej';
-		$strings['Success'] = 'Uspeh';
-		$strings['Participant'] = 'Sodelujoči';
-		$strings['ResourceFilter'] = 'Filter virov';
-		$strings['ResourceGroups'] = 'Skupina virov';
-		$strings['AddNewGroup'] = 'Dodaj novo skupino';
-		$strings['Quit'] = 'Izhod';
-		$strings['AddGroup'] = 'Dodaj skupino';
-		$strings['StandardScheduleDisplay'] = 'Uporabi standardni prikaz urnika';
-		$strings['TallScheduleDisplay'] = 'Uporabi visok prikaz urnika';
-		$strings['WideScheduleDisplay'] = 'Uporabi širok prikaz urnika';
-		$strings['CondensedWeekScheduleDisplay'] = 'Uporabi prikaz urnika s skrčenimi tedni';
-		$strings['ResourceGroupHelp1'] = 'Za ponovno organizacijo povleci in spusti skupino virov.';
-		$strings['ResourceGroupHelp2'] = 'Desni klik na ime skupine virov prikaže dodatne akcije.';
-		$strings['ResourceGroupHelp3'] = 'Za dodajanje virov v skupine, jih povlecite in spustite.';
-		$strings['ResourceGroupWarning'] = 'Če uporabljate skupine virov, mora biti vsak vir dodeljen najmanj eni skupini. Nedodeljenih virov ni možno rezervirati.';
-		$strings['ResourceType'] = 'Tip vira';
-		$strings['AppliesTo'] = 'Velja za';
-		$strings['UniquePerInstance'] = 'Edini na primerek';
-		$strings['AddResourceType'] = 'Dodaj tip vira';
-		$strings['NoResourceTypeLabel'] = '(tip vira ni nastavljen)';
-		$strings['ClearFilter'] = 'Počisti filter';
-		$strings['MinimumCapacity'] = 'Najmanjša kapaciteta';
-		$strings['Color'] = 'Barva';
-		$strings['Available'] = 'Na voljo';
-		$strings['Unavailable'] = 'Ni na voljo';
-		$strings['Hidden'] = 'Skrito';
-		$strings['ResourceStatus'] = 'Status vira';
-		$strings['CurrentStatus'] = 'Trenutni status';
-		$strings['AllReservationResources'] = 'Vsi viri za rezervacijo';
-		$strings['File'] = 'Datoteka';
-		$strings['BulkResourceUpdate'] = 'Paketno posodabljanje virov';
-		$strings['Unchanged'] = 'Nespremenjeno';
-		$strings['Common'] = 'Skupno';
-		$strings['AdvancedFilter'] = 'Napredni filter';
-		$strings['AllParticipants'] = 'Vsi sodelujoči';
-		$strings['ResourceAvailability'] = 'Razpoložljivost vira';
-		$strings['UnavailableAllDay'] = 'Cel dan ni na voljo';
-		$strings['AvailableUntil'] = 'Na voljo do';
-		$strings['AvailableBeginningAt'] = 'Na voljo (začetek) od';
-		$strings['AllowParticipantsToJoin'] = 'Dovoli sodelujočim, da se pridružijo';
-		$strings['JoinThisReservation'] = 'Pridruži se tej rezervaciji';
-		// End Strings
+        $strings['ForgotPasswordEmailSent'] = 'Sporočilo z navodili za ponastavitev gesla je bilo poslano na podan e-poštni naslov';
+        $strings['ActivationEmailSent'] = 'V kratkem boste prejeli e-pošto za aktivacijo.';
+        $strings['AccountActivationError'] = 'Vašega računa ni mogoče aktivirati.';
+        $strings['Attachments'] = 'Priponke';
+        $strings['AttachFile'] = 'Pripeta datoteka';
+        $strings['Maximum'] = 'največ';
+        $strings['NoScheduleAdministratorLabel'] = 'Ni administratorja urnika';
+        $strings['ScheduleAdministrator'] = 'Administrator urnika';
+        $strings['Total'] = 'Skupaj';
+        $strings['QuantityReserved'] = 'Rezervirana količina';
+        $strings['AllAccessories'] = 'Vsi dodatki';
+        $strings['GetReport'] = 'Pridobi poročilo';
+        $strings['NoResultsFound'] = 'Ni ujemajočih se rezultatov';
+        $strings['SaveThisReport'] = 'Shrani to poročilo';
+        $strings['ReportSaved'] = 'Poročilo shranjeno!';
+        $strings['EmailReport'] = 'Pošlji poročilo po e-pošti';
+        $strings['ReportSent'] = 'Poročilo poslano!';
+        $strings['RunReport'] = 'Izvedi poročilo';
+        $strings['NoSavedReports'] = 'Nimate shranjenih poročil.';
+        $strings['CurrentWeek'] = 'Trenutni teden';
+        $strings['CurrentMonth'] = 'Trenutni mesec';
+        $strings['AllTime'] = 'Ves čas';
+        $strings['FilterBy'] = 'Filtriraj po';
+        $strings['Select'] = 'Izberi';
+        $strings['List'] = 'Seznam';
+        $strings['TotalTime'] = 'Skupen čas';
+        $strings['Count'] = 'Število';
+        $strings['Usage'] = 'Uporaba';
+        $strings['AggregateBy'] = 'Združi po';
+        $strings['Range'] = 'Obseg';
+        $strings['Choose'] = 'Izberi';
+        $strings['All'] = 'Vse';
+        $strings['ViewAsChart'] = 'Prikaži kot graf';
+        $strings['ReservedResources'] = 'Rezervirani viri';
+        $strings['ReservedAccessories'] = 'Rezervirani dodatki';
+        $strings['ResourceUsageTimeBooked'] = 'Uporaba vira - čas rezervacij';
+        $strings['ResourceUsageReservationCount'] = 'Uporaba vira - število rezervacij';
+        $strings['Top20UsersTimeBooked'] = 'Naj 20 uporabnikov - čas rezervacij';
+        $strings['Top20UsersReservationCount'] = 'Naj 20 uporabnikov - število rezervacij';
+        $strings['ConfigurationUpdated'] = 'Konfiguracijska datoteka je bila posodobljena';
+        $strings['ConfigurationUiNotEnabled'] = 'Ta stran ni dostopna, ker je $conf[\'settings\'][\'pages\'][\'enable.configuration\'] nastavljen na neresnično ali manjka.';
+        $strings['ConfigurationFileNotWritable'] = 'V konfiguracijsko datoteko se ne da pisati. Prosimo, preverite dovoljenja te datoteke in poskusite znova.';
+        $strings['ConfigurationUpdateHelp'] = 'Poglejte v razdelek Konfiguracija v <a target=_blank href=%s>datoteki s pomočjo</a> za dokumentacijo o teh nastavitvah.';
+        $strings['GeneralConfigSettings'] = 'nastavitve';
+        $strings['UseSameLayoutForAllDays'] = 'Za vse dneve uporabi enako postavitev';
+        $strings['LayoutVariesByDay'] = 'Postavitev se spreminja glede na dan';
+        $strings['ManageReminders'] = 'Opomniki';
+        $strings['ReminderUser'] = 'ID uporabnika';
+        $strings['ReminderMessage'] = 'Sporočilo';
+        $strings['ReminderAddress'] = 'Naslov';
+        $strings['ReminderSendtime'] = 'Čas za pošiljanje';
+        $strings['ReminderRefNumber'] = 'Referenčna številka rezervacije';
+        $strings['ReminderSendtimeDate'] = 'Datum opomnika';
+        $strings['ReminderSendtimeTime'] = 'Čas opomnika (HH:MM)';
+        $strings['ReminderSendtimeAMPM'] = 'AM / PM';
+        $strings['AddReminder'] = 'Dodaj opomnik';
+        $strings['DeleteReminderWarning'] = 'Ali ste prepričani?';
+        $strings['NoReminders'] = 'Mimate prihajajočih opomnikov.';
+        $strings['Reminders'] = 'Opomniki';
+        $strings['SendReminder'] = 'Pošlji opomnik';
+        $strings['minutes'] = 'minute';
+        $strings['hours'] = 'ure';
+        $strings['days'] = 'dnevi';
+        $strings['ReminderBeforeStart'] = 'pred začetnim časom';
+        $strings['ReminderBeforeEnd'] = 'pred končnnim časom';
+        $strings['Logo'] = 'Logotip';
+        $strings['CssFile'] = 'Datoteka CSS';
+        $strings['ThemeUploadSuccess'] = 'Vaše spremembe so shranjene. Da bodo spremembe vidne, morate obnoviti prikaz podatkov na zaslonu.';
+        $strings['MakeDefaultSchedule'] = 'Naj bo to moj privzet urnik';
+        $strings['DefaultScheduleSet'] = 'To je sedaj vaš privzet urnik';
+        $strings['FlipSchedule'] = 'Obrni postavitev urnika';
+        $strings['Next'] = 'Naprej';
+        $strings['Success'] = 'Uspeh';
+        $strings['Participant'] = 'Sodelujoči';
+        $strings['ResourceFilter'] = 'Filter virov';
+        $strings['ResourceGroups'] = 'Skupina virov';
+        $strings['AddNewGroup'] = 'Dodaj novo skupino';
+        $strings['Quit'] = 'Izhod';
+        $strings['AddGroup'] = 'Dodaj skupino';
+        $strings['StandardScheduleDisplay'] = 'Uporabi standardni prikaz urnika';
+        $strings['TallScheduleDisplay'] = 'Uporabi visok prikaz urnika';
+        $strings['WideScheduleDisplay'] = 'Uporabi širok prikaz urnika';
+        $strings['CondensedWeekScheduleDisplay'] = 'Uporabi prikaz urnika s skrčenimi tedni';
+        $strings['ResourceGroupHelp1'] = 'Za ponovno organizacijo povleci in spusti skupino virov.';
+        $strings['ResourceGroupHelp2'] = 'Desni klik na ime skupine virov prikaže dodatne akcije.';
+        $strings['ResourceGroupHelp3'] = 'Za dodajanje virov v skupine, jih povlecite in spustite.';
+        $strings['ResourceGroupWarning'] = 'Če uporabljate skupine virov, mora biti vsak vir dodeljen najmanj eni skupini. Nedodeljenih virov ni možno rezervirati.';
+        $strings['ResourceType'] = 'Tip vira';
+        $strings['AppliesTo'] = 'Velja za';
+        $strings['UniquePerInstance'] = 'Edini na primerek';
+        $strings['AddResourceType'] = 'Dodaj tip vira';
+        $strings['NoResourceTypeLabel'] = '(tip vira ni nastavljen)';
+        $strings['ClearFilter'] = 'Počisti filter';
+        $strings['MinimumCapacity'] = 'Najmanjša kapaciteta';
+        $strings['Color'] = 'Barva';
+        $strings['Available'] = 'Na voljo';
+        $strings['Unavailable'] = 'Ni na voljo';
+        $strings['Hidden'] = 'Skrito';
+        $strings['ResourceStatus'] = 'Status vira';
+        $strings['CurrentStatus'] = 'Trenutni status';
+        $strings['AllReservationResources'] = 'Vsi viri za rezervacijo';
+        $strings['File'] = 'Datoteka';
+        $strings['BulkResourceUpdate'] = 'Paketno posodabljanje virov';
+        $strings['Unchanged'] = 'Nespremenjeno';
+        $strings['Common'] = 'Skupno';
+        $strings['AdvancedFilter'] = 'Napredni filter';
+        $strings['AllParticipants'] = 'Vsi sodelujoči';
+        $strings['ResourceAvailability'] = 'Razpoložljivost vira';
+        $strings['UnavailableAllDay'] = 'Cel dan ni na voljo';
+        $strings['AvailableUntil'] = 'Na voljo do';
+        $strings['AvailableBeginningAt'] = 'Na voljo (začetek) od';
+        $strings['AllowParticipantsToJoin'] = 'Dovoli sodelujočim, da se pridružijo';
+        $strings['JoinThisReservation'] = 'Pridruži se tej rezervaciji';
+        // End Strings
 
-		// Install
-		$strings['InstallApplication'] = 'Namesti program Booked Scheduler (samo MySQL)';
-		$strings['IncorrectInstallPassword'] = 'Oprostite, geslo ni pravilno.';
-		$strings['SetInstallPassword'] = 'Preden zaženete namestitev, morate nastaviti namestitveno geslo.';
-		$strings['InstallPasswordInstructions'] = 'V %s nastavite prosim %s na geslo, ki je naključno in ga je težko uganiti, nato pa se vrnite na to strran.<br/>Lahko uporabite %s';
-		$strings['NoUpgradeNeeded'] = 'Nadgradnja ni potrebna. Ko boste pognali namestitveni proces, se bodo zbrisali vsi obstoječi podatki in namestila se bo nova kopija programa Booked Scheduler!';
-		$strings['ProvideInstallPassword'] = 'Prosimo, vpišite vaše namestitveno geslo.';
-		$strings['InstallPasswordLocation'] = 'To lahko najdete na %s v %s.';
-		$strings['VerifyInstallSettings'] = 'Preden nadaljujete, preverite naslednje privzete nastavitve. Lahko jih spremenite v %s.';
-		$strings['DatabaseName'] = 'Ime podatkovne baze';
-		$strings['DatabaseUser'] = 'Uporabniško ime za podatkovno bazo';
-		$strings['DatabaseHost'] = 'Gostiteljski sistem podatkovne baze';
-		$strings['DatabaseCredentials'] = 'Podati morate prijavne podatke za uporabnika MySQL, ki ima dovoljenja za ustvarjanje novih podatkovnih baz. Če jih ne poznate, kontaktirajte administratorja vaše podatkovne baze. Pogosto se uporablja ime root.';
-		$strings['MySQLUser'] = 'Uporabnik MySQL';
-		$strings['InstallOptionsWarning'] = 'Naslednje opcije verjetno ne bodo delovale v gostujočem okolju. Če nameščate v gostujoče okolje, uporabite orodje čarovnik za MySQL, da dokončate te postopke.';
-		$strings['CreateDatabase'] = 'Ustvari podatkovno bazo';
-		$strings['CreateDatabaseUser'] = 'Ustvari uporabnika podatkovne baze';
-		$strings['PopulateExampleData'] = 'Uvozi vzorčne podatke. Ustvari se tudi admin račun: admin/password ter uporabniški račun: user/password';
-		$strings['DataWipeWarning'] = 'Opozorilo: ta akcija bo zbrisala vse obstoječe podatke';
-		$strings['RunInstallation'] = 'Zaženi namestitev';
-		$strings['UpgradeNotice'] = 'Nadgrajujete program z različice <b>%s</b> na različico <b>%s</b>';
-		$strings['RunUpgrade'] = 'Zaženi nadgradnjo';
-		$strings['Executing'] = 'Se izvaja';
-		$strings['StatementFailed'] = 'Odpoved. Podrobnosti:';
-		$strings['SQLStatement'] = 'Stavek SQL:';
-		$strings['ErrorCode'] = 'Koda napake:';
-		$strings['ErrorText'] = 'Opis napake:';
-		$strings['InstallationSuccess'] = 'Namestitev je bila uspešno zaključena!';
-		$strings['RegisterAdminUser'] = 'Registrirajte vašega administratorskega uporabnika (admin). To se zahteva, če niste uvozili vzorčnih podatkov. Poskrbite, da bo $conf[\'settings\'][\'allow.self.registration\'] = \'true\' v vaši datoteki %s.';
-		$strings['LoginWithSampleAccounts'] = 'Če ste uvozili vzorčne podatke, se lahko prijavite kot administrator (admin/password) ali kot navaden uporabnik (user/password).';
-		$strings['InstalledVersion'] = 'Trenutno teče različica %s programa Booked Scheduler';
-		$strings['InstallUpgradeConfig'] = 'Priporočamo, da nadgradite vašo konfiguracijsko datoteko';
-		$strings['InstallationFailure'] = 'Pri namestitvi je prišlo do napak.  Prosimo, odpravite jih in ponovno poskusite z namestitvijo.';
-		$strings['ConfigureApplication'] = 'Konfiguracija programa Booked Scheduler';
-		$strings['ConfigUpdateSuccess'] = 'Vaša konfiguracijska datoteka je sedaj posodobljena!';
-		$strings['ConfigUpdateFailure'] = 'Vaša konfiguracijska datoteka ne more biti samodejno posodobljena. Prosimo, prepišite vsebino datoteke config.php z naslednjo vsebino:';
-		$strings['SelectUser'] = 'Izberi uporabnika';
-		// End Install
+        // Install
+        $strings['InstallApplication'] = 'Namesti program Booked Scheduler (samo MySQL)';
+        $strings['IncorrectInstallPassword'] = 'Oprostite, geslo ni pravilno.';
+        $strings['SetInstallPassword'] = 'Preden zaženete namestitev, morate nastaviti namestitveno geslo.';
+        $strings['InstallPasswordInstructions'] = 'V %s nastavite prosim %s na geslo, ki je naključno in ga je težko uganiti, nato pa se vrnite na to strran.<br/>Lahko uporabite %s';
+        $strings['NoUpgradeNeeded'] = 'Nadgradnja ni potrebna. Ko boste pognali namestitveni proces, se bodo zbrisali vsi obstoječi podatki in namestila se bo nova kopija programa Booked Scheduler!';
+        $strings['ProvideInstallPassword'] = 'Prosimo, vpišite vaše namestitveno geslo.';
+        $strings['InstallPasswordLocation'] = 'To lahko najdete na %s v %s.';
+        $strings['VerifyInstallSettings'] = 'Preden nadaljujete, preverite naslednje privzete nastavitve. Lahko jih spremenite v %s.';
+        $strings['DatabaseName'] = 'Ime podatkovne baze';
+        $strings['DatabaseUser'] = 'Uporabniško ime za podatkovno bazo';
+        $strings['DatabaseHost'] = 'Gostiteljski sistem podatkovne baze';
+        $strings['DatabaseCredentials'] = 'Podati morate prijavne podatke za uporabnika MySQL, ki ima dovoljenja za ustvarjanje novih podatkovnih baz. Če jih ne poznate, kontaktirajte administratorja vaše podatkovne baze. Pogosto se uporablja ime root.';
+        $strings['MySQLUser'] = 'Uporabnik MySQL';
+        $strings['InstallOptionsWarning'] = 'Naslednje opcije verjetno ne bodo delovale v gostujočem okolju. Če nameščate v gostujoče okolje, uporabite orodje čarovnik za MySQL, da dokončate te postopke.';
+        $strings['CreateDatabase'] = 'Ustvari podatkovno bazo';
+        $strings['CreateDatabaseUser'] = 'Ustvari uporabnika podatkovne baze';
+        $strings['PopulateExampleData'] = 'Uvozi vzorčne podatke. Ustvari se tudi admin račun: admin/password ter uporabniški račun: user/password';
+        $strings['DataWipeWarning'] = 'Opozorilo: ta akcija bo zbrisala vse obstoječe podatke';
+        $strings['RunInstallation'] = 'Zaženi namestitev';
+        $strings['UpgradeNotice'] = 'Nadgrajujete program z različice <b>%s</b> na različico <b>%s</b>';
+        $strings['RunUpgrade'] = 'Zaženi nadgradnjo';
+        $strings['Executing'] = 'Se izvaja';
+        $strings['StatementFailed'] = 'Odpoved. Podrobnosti:';
+        $strings['SQLStatement'] = 'Stavek SQL:';
+        $strings['ErrorCode'] = 'Koda napake:';
+        $strings['ErrorText'] = 'Opis napake:';
+        $strings['InstallationSuccess'] = 'Namestitev je bila uspešno zaključena!';
+        $strings['RegisterAdminUser'] = 'Registrirajte vašega administratorskega uporabnika (admin). To se zahteva, če niste uvozili vzorčnih podatkov. Poskrbite, da bo $conf[\'settings\'][\'allow.self.registration\'] = \'true\' v vaši datoteki %s.';
+        $strings['LoginWithSampleAccounts'] = 'Če ste uvozili vzorčne podatke, se lahko prijavite kot administrator (admin/password) ali kot navaden uporabnik (user/password).';
+        $strings['InstalledVersion'] = 'Trenutno teče različica %s programa Booked Scheduler';
+        $strings['InstallUpgradeConfig'] = 'Priporočamo, da nadgradite vašo konfiguracijsko datoteko';
+        $strings['InstallationFailure'] = 'Pri namestitvi je prišlo do napak.  Prosimo, odpravite jih in ponovno poskusite z namestitvijo.';
+        $strings['ConfigureApplication'] = 'Konfiguracija programa Booked Scheduler';
+        $strings['ConfigUpdateSuccess'] = 'Vaša konfiguracijska datoteka je sedaj posodobljena!';
+        $strings['ConfigUpdateFailure'] = 'Vaša konfiguracijska datoteka ne more biti samodejno posodobljena. Prosimo, prepišite vsebino datoteke config.php z naslednjo vsebino:';
+        $strings['SelectUser'] = 'Izberi uporabnika';
+        // End Install
 
         // Errors
-		$strings['LoginError'] = 'Uporabniško ime in geslo se ne ujemata';
-		$strings['ReservationFailed'] = 'Vaša rezervacija ni uspešno narejena';
-		$strings['MinNoticeError'] = 'Ta rezervacija zahteva vnaprejšnjo najavo.  Najbolj zgoden termin rezervacije je %s.';
-		$strings['MaxNoticeError'] = 'Te rezervacije ne morete narediti toliko v prihodnosti.  Najkasnejši termin za rezervacijo je %s.';
-		$strings['MinDurationError'] = 'Ta rezervacija mora trajati najmanj %s.';
-		$strings['MaxDurationError'] = 'Ta rezervacija ne more trajati dlje kot %s.';
-		$strings['ConflictingAccessoryDates'] = 'Na voljo ni dovolj naslednjih dodatkov:';
-		$strings['NoResourcePermission'] = 'Nimate dovoljenja za dostop do enega ali več zahtevanih virov.';
-		$strings['ConflictingReservationDates'] = 'Obstajajo konfliktne rezervacije za naslednje datume:';
-		$strings['StartDateBeforeEndDateRule'] = 'Začetni datum in čas rezervacije mora biti pred končnim datumom in časom.';
-		$strings['StartIsInPast'] = 'Začetni in končni datum rezervacije ne more biti v preteklosti.';
-		$strings['EmailDisabled'] = 'Administrator je onemogočil obveščanje po elektronski pošti.';
-		$strings['ValidLayoutRequired'] = 'Termini morajo biti postavljeni za vseh 24 ur v dnevu z začetkom in koncem ob 12:00.';
-		$strings['CustomAttributeErrors'] = 'Problemi z dodatnimi atributi, ki ste jih podali:';
-		$strings['CustomAttributeRequired'] = '%s je zahtevano polje.';
-		$strings['CustomAttributeInvalid'] = 'Vrednost za %s ni pravilna.';
-		$strings['AttachmentLoadingError'] = 'Oprostite, pri nalaganju zahtevane datoteke je prišlo do težav.';
-		$strings['InvalidAttachmentExtension'] = 'Naložite lahko le datoteke tipa: %s';
-		$strings['InvalidStartSlot'] = 'Zahtevani začetni datum in čas nista veljavna.';
-		$strings['InvalidEndSlot'] = 'Zahtevani končni datum in čas nista veljavna.';
-		$strings['MaxParticipantsError'] = '%s lahko podpira le %s udeležencev.';
-		$strings['ReservationCriticalError'] = 'Pri shranjevanju vaše rezervacije je prišlo do kritične napake. Če se bo to nadaljevalo, kontaktirajte vašega administratorja sistema.';
-		$strings['InvalidStartReminderTime'] = 'Čas začetnega opomnika ni veljaven.';
-		$strings['InvalidEndReminderTime'] = 'Čas končnega opomnika ni veljaven.';
-		$strings['QuotaExceeded'] = 'Presežena meja kvote.';
-		$strings['MultiDayRule'] = '%s ne dovoljuje rezervacij preko več dni.';
-		$strings['InvalidReservationData'] = 'Pri vaši zahtevi za rezervacijo je prišlo do težav.';
-		$strings['PasswordError'] = 'Geslo mora vsebovati najmanj %s črk in najmanj %s številk.';
-		$strings['PasswordErrorRequirements'] = 'Geslo mora vsebovati kombinacijo najmanj %s velikih in malih črk in %s številk.';
-		$strings['NoReservationAccess'] = 'Za spremembo te rezervacije nimate dovoljenja.';
-		$strings['PasswordControlledExternallyError'] = 'Vaše geslo kontrolira zunanji sistem in ga zato tu ne morete posodobiti.';
-		$strings['NoResources'] = 'Niste dodali nobenih virov.';
-		$strings['ParticipationNotAllowed'] = 'Za pridružitev tej rezervaciji nimate dovoljenja.';
+        $strings['LoginError'] = 'Uporabniško ime in geslo se ne ujemata';
+        $strings['ReservationFailed'] = 'Vaša rezervacija ni uspešno narejena';
+        $strings['MinNoticeError'] = 'Ta rezervacija zahteva vnaprejšnjo najavo.  Najbolj zgoden termin rezervacije je %s.';
+        $strings['MaxNoticeError'] = 'Te rezervacije ne morete narediti toliko v prihodnosti.  Najkasnejši termin za rezervacijo je %s.';
+        $strings['MinDurationError'] = 'Ta rezervacija mora trajati najmanj %s.';
+        $strings['MaxDurationError'] = 'Ta rezervacija ne more trajati dlje kot %s.';
+        $strings['ConflictingAccessoryDates'] = 'Na voljo ni dovolj naslednjih dodatkov:';
+        $strings['NoResourcePermission'] = 'Nimate dovoljenja za dostop do enega ali več zahtevanih virov.';
+        $strings['ConflictingReservationDates'] = 'Obstajajo konfliktne rezervacije za naslednje datume:';
+        $strings['StartDateBeforeEndDateRule'] = 'Začetni datum in čas rezervacije mora biti pred končnim datumom in časom.';
+        $strings['StartIsInPast'] = 'Začetni in končni datum rezervacije ne more biti v preteklosti.';
+        $strings['EmailDisabled'] = 'Administrator je onemogočil obveščanje po elektronski pošti.';
+        $strings['ValidLayoutRequired'] = 'Termini morajo biti postavljeni za vseh 24 ur v dnevu z začetkom in koncem ob 12:00.';
+        $strings['CustomAttributeErrors'] = 'Problemi z dodatnimi atributi, ki ste jih podali:';
+        $strings['CustomAttributeRequired'] = '%s je zahtevano polje.';
+        $strings['CustomAttributeInvalid'] = 'Vrednost za %s ni pravilna.';
+        $strings['AttachmentLoadingError'] = 'Oprostite, pri nalaganju zahtevane datoteke je prišlo do težav.';
+        $strings['InvalidAttachmentExtension'] = 'Naložite lahko le datoteke tipa: %s';
+        $strings['InvalidStartSlot'] = 'Zahtevani začetni datum in čas nista veljavna.';
+        $strings['InvalidEndSlot'] = 'Zahtevani končni datum in čas nista veljavna.';
+        $strings['MaxParticipantsError'] = '%s lahko podpira le %s udeležencev.';
+        $strings['ReservationCriticalError'] = 'Pri shranjevanju vaše rezervacije je prišlo do kritične napake. Če se bo to nadaljevalo, kontaktirajte vašega administratorja sistema.';
+        $strings['InvalidStartReminderTime'] = 'Čas začetnega opomnika ni veljaven.';
+        $strings['InvalidEndReminderTime'] = 'Čas končnega opomnika ni veljaven.';
+        $strings['QuotaExceeded'] = 'Presežena meja kvote.';
+        $strings['MultiDayRule'] = '%s ne dovoljuje rezervacij preko več dni.';
+        $strings['InvalidReservationData'] = 'Pri vaši zahtevi za rezervacijo je prišlo do težav.';
+        $strings['PasswordError'] = 'Geslo mora vsebovati najmanj %s črk in najmanj %s številk.';
+        $strings['PasswordErrorRequirements'] = 'Geslo mora vsebovati kombinacijo najmanj %s velikih in malih črk in %s številk.';
+        $strings['NoReservationAccess'] = 'Za spremembo te rezervacije nimate dovoljenja.';
+        $strings['PasswordControlledExternallyError'] = 'Vaše geslo kontrolira zunanji sistem in ga zato tu ne morete posodobiti.';
+        $strings['NoResources'] = 'Niste dodali nobenih virov.';
+        $strings['ParticipationNotAllowed'] = 'Za pridružitev tej rezervaciji nimate dovoljenja.';
         // End Errors
 
         // Page Titles
@@ -565,8 +565,8 @@ class si_si extends en_gb
         $strings['ServerSettings'] = 'Nastavitve strežnika';
         $strings['Dashboard'] = 'Nadzorna plošča';
         $strings['Help'] = 'Pomoč';
-		$strings['Administration'] = 'Administracija';
-		$strings['About'] = 'O programu';
+        $strings['Administration'] = 'Administracija';
+        $strings['About'] = 'O programu';
         $strings['Bookings'] = 'Rezervacije';
         $strings['Schedule'] = 'Urnik';
         $strings['Reservations'] = 'Rezervacije';
@@ -590,19 +590,19 @@ class si_si extends en_gb
         $strings['ResourceReservations'] = 'Rezervacije virov';
         $strings['Customization'] = 'Personalizacija';
         $strings['Attributes'] = 'Atributi';
-		$strings['AccountActivation'] = 'Aktivacija računa';
-		$strings['ScheduleReservations'] = 'Rezervacije urnika';
-		$strings['Reports'] = 'Poročila';
-		$strings['GenerateReport'] = 'Ustvari novo poročilo';
-		$strings['MySavedReports'] = 'Moja shranjena poročila';
-		$strings['CommonReports'] = 'Skupna poročila';
-		$strings['ViewDay'] = 'Prikaži dan';
-		$strings['Group'] = 'Skupina';
-		$strings['ManageConfiguration'] = 'Konfiguracija aplikacije';
-		$strings['LookAndFeel'] = 'Izgled';
-		$strings['ManageResourceGroups'] = 'Skupine virov';
-		$strings['ManageResourceTypes'] = 'Tipi virov';
-		$strings['ManageResourceStatus'] = 'Statusi virov';
+        $strings['AccountActivation'] = 'Aktivacija računa';
+        $strings['ScheduleReservations'] = 'Rezervacije urnika';
+        $strings['Reports'] = 'Poročila';
+        $strings['GenerateReport'] = 'Ustvari novo poročilo';
+        $strings['MySavedReports'] = 'Moja shranjena poročila';
+        $strings['CommonReports'] = 'Skupna poročila';
+        $strings['ViewDay'] = 'Prikaži dan';
+        $strings['Group'] = 'Skupina';
+        $strings['ManageConfiguration'] = 'Konfiguracija aplikacije';
+        $strings['LookAndFeel'] = 'Izgled';
+        $strings['ManageResourceGroups'] = 'Skupine virov';
+        $strings['ManageResourceTypes'] = 'Tipi virov';
+        $strings['ManageResourceStatus'] = 'Statusi virov';
         // End Page Titles
 
         // Day representations
@@ -621,27 +621,27 @@ class si_si extends en_gb
         $strings['DayThursdayAbbr'] = 'čet';
         $strings['DayFridayAbbr'] = 'pet';
         $strings['DaySaturdayAbbr'] = 'sob';
-		// End Day representations
+        // End Day representations
 
- 		// Email Subjects
-		$strings['ReservationApprovedSubject'] = 'Vaša rezervacija je bila potrjena';
-		$strings['ReservationCreatedSubject'] = 'Vaša rezervacija je bila ustvarjena';
-		$strings['ReservationUpdatedSubject'] = 'Vaša rezervacija je bila posodobljena';
-		$strings['ReservationDeletedSubject'] = 'Vaša rezervacija je bila zbrisana';
-		$strings['ReservationCreatedAdminSubject'] = 'Opozorilo: narejena rezervacija';
-		$strings['ReservationUpdatedAdminSubject'] = 'Opozorilo: posodobljena rezervacija';
-		$strings['ReservationDeleteAdminSubject'] = 'Opozorilo: zbrisana rezervacija';
-		$strings['ReservationApprovalAdminSubject'] = 'Opozorilo: rezervacija zahteva vašo odobritev';
-		$strings['ParticipantAddedSubject'] = 'Opozorilo o sodelovanju pri rezervaciji';
-		$strings['ParticipantDeletedSubject'] = 'Zbrisana rezervacija';
-		$strings['InviteeAddedSubject'] = 'Povabilo k rezervaciji';
-		$strings['ResetPassword'] = 'Zahteva za ponastavitev gesla';
-		$strings['ActivateYourAccount'] = 'Prosimo, aktivirajte vaš račun';
-		$strings['ReportSubject'] = 'Vaše zahtevano poročilo (%s)';
-		$strings['ReservationStartingSoonSubject'] = 'Rezervacija za %s bo kmalu nastopila';
-		$strings['ReservationEndingSoonSubject'] = 'Rezervacija za %s se bo kmalu zaključila';
-		$strings['UserAdded'] = 'Dodan je bil nov uporabnik';
-		// End Email Subjects
+        // Email Subjects
+        $strings['ReservationApprovedSubject'] = 'Vaša rezervacija je bila potrjena';
+        $strings['ReservationCreatedSubject'] = 'Vaša rezervacija je bila ustvarjena';
+        $strings['ReservationUpdatedSubject'] = 'Vaša rezervacija je bila posodobljena';
+        $strings['ReservationDeletedSubject'] = 'Vaša rezervacija je bila zbrisana';
+        $strings['ReservationCreatedAdminSubject'] = 'Opozorilo: narejena rezervacija';
+        $strings['ReservationUpdatedAdminSubject'] = 'Opozorilo: posodobljena rezervacija';
+        $strings['ReservationDeleteAdminSubject'] = 'Opozorilo: zbrisana rezervacija';
+        $strings['ReservationApprovalAdminSubject'] = 'Opozorilo: rezervacija zahteva vašo odobritev';
+        $strings['ParticipantAddedSubject'] = 'Opozorilo o sodelovanju pri rezervaciji';
+        $strings['ParticipantDeletedSubject'] = 'Zbrisana rezervacija';
+        $strings['InviteeAddedSubject'] = 'Povabilo k rezervaciji';
+        $strings['ResetPassword'] = 'Zahteva za ponastavitev gesla';
+        $strings['ActivateYourAccount'] = 'Prosimo, aktivirajte vaš račun';
+        $strings['ReportSubject'] = 'Vaše zahtevano poročilo (%s)';
+        $strings['ReservationStartingSoonSubject'] = 'Rezervacija za %s bo kmalu nastopila';
+        $strings['ReservationEndingSoonSubject'] = 'Rezervacija za %s se bo kmalu zaključila';
+        $strings['UserAdded'] = 'Dodan je bil nov uporabnik';
+        // End Email Subjects
 
         $this->Strings = $strings;
 
@@ -653,7 +653,7 @@ class si_si extends en_gb
      */
     protected function _LoadDays()
     {
-        $days = array();
+        $days = [];
 
         /***
         DAY NAMES
@@ -661,13 +661,13 @@ class si_si extends en_gb
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('nedelja', 'ponedeljek', 'torek', 'sreda', 'četrtek', 'petek', 'sobota');
+        $days['full'] = ['nedelja', 'ponedeljek', 'torek', 'sreda', 'četrtek', 'petek', 'sobota'];
         // The three letter abbreviation
-        $days['abbr'] = array('ned', 'pon', 'tor', 'sre', 'čet', 'pet', 'sob');
+        $days['abbr'] = ['ned', 'pon', 'tor', 'sre', 'čet', 'pet', 'sob'];
         // The two letter abbreviation
-        $days['two'] = array('ne', 'po', 'to', 'sr', 'če', 'pe', 'so');
+        $days['two'] = ['ne', 'po', 'to', 'sr', 'če', 'pe', 'so'];
         // The one letter abbreviation
-        $days['letter'] = array('N', 'P', 'T', 'S', 'Č', 'P', 'S');
+        $days['letter'] = ['N', 'P', 'T', 'S', 'Č', 'P', 'S'];
 
         $this->Days = $days;
 
@@ -679,7 +679,7 @@ class si_si extends en_gb
      */
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = [];
 
         /***
         MONTH NAMES
@@ -687,9 +687,9 @@ class si_si extends en_gb
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('januar', 'februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december');
+        $months['full'] = ['januar', 'februar', 'marec', 'april', 'maj', 'junij', 'julij', 'avgust', 'september', 'oktober', 'november', 'december'];
         // The three letter month name
-        $months['abbr'] = array('jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec');
+        $months['abbr'] = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
 
         $this->Months = $months;
 
@@ -701,7 +701,7 @@ class si_si extends en_gb
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
         return $this->Letters;
     }

@@ -29,10 +29,13 @@ class ReservationEmailPage extends Page implements IReservationEmailPage
 
         $userSession = ServiceLocator::GetServer()->GetUserSession();
         $this->presenter = new ReservationEmailPresenter(
-            $this, $userSession,
-            new ReservationRepository(), new UserRepository(),
+            $this,
+            $userSession,
+            new ReservationRepository(),
+            new UserRepository(),
             new AttributeRepository(),
-            PluginManager::Instance()->LoadPermission());
+            PluginManager::Instance()->LoadPermission()
+        );
     }
 
     public function PageLoad()
@@ -50,6 +53,6 @@ class ReservationEmailPage extends Page implements IReservationEmailPage
     public function GetEmailAddresses()
     {
         $email = $this->GetForm('email');
-        return preg_split('/, ?/',$email);
+        return preg_split('/, ?/', $email);
     }
 }

@@ -28,14 +28,12 @@ class CreditLogPresenter
         $currentUser = $this->userRepository->LoadById($userSession->UserId);
         $searchUser = $this->userRepository->LoadById($userId);
 
-        if (!empty($userId) && $currentUser->IsAdminFor($searchUser))
-        {
+        if (!empty($userId) && $currentUser->IsAdminFor($searchUser)) {
             $credits = $this->creditRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), $userId);
             $this->page->BindCredits($credits->Results());
             $this->page->BindPageInfo($credits->PageInfo());
             $this->page->BindUserName($searchUser->FullName());
-        }
-        else {
+        } else {
             $this->page->ShowError();
         }
     }

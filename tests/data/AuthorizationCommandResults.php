@@ -2,7 +2,7 @@
 
 class AuthorizationCommandResults
 {
-    private $rows = array();
+    private $rows = [];
 
     public $UserId = 1;
     public $Password = 'password';
@@ -29,11 +29,11 @@ class AuthorizationCommandResults
 
     public function AddRow($userid, $password, $salt, $oldpassword)
     {
-        $this->rows[] = array(
+        $this->rows[] = [
             ColumnNames::USER_ID => $userid,
             ColumnNames::PASSWORD => $password,
             ColumnNames::SALT => $salt,
-            ColumnNames::OLD_PASSWORD => $oldpassword);
+            ColumnNames::OLD_PASSWORD => $oldpassword];
     }
 
     public function Rows()

@@ -409,5 +409,5 @@ AddTimezone('UTC');
 
 function AddTimezone($timezoneName)
 {
-	$GLOBALS['APP_TIMEZONES'][] = $timezoneName;
+    $GLOBALS['APP_TIMEZONES'][] = $timezoneName;
 }

@@ -56,7 +56,7 @@ class Announcement
      */
     public function GroupIds()
     {
-        return empty($this->GroupIds) ? array() : $this->GroupIds;
+        return empty($this->GroupIds) ? [] : $this->GroupIds;
     }
 
     /**
@@ -64,7 +64,7 @@ class Announcement
      */
     public function ResourceIds()
     {
-        return empty($this->ResourceIds) ? array() : $this->ResourceIds;
+        return empty($this->ResourceIds) ? [] : $this->ResourceIds;
     }
 
     /**
@@ -100,8 +100,8 @@ class Announcement
             Date::FromDatabase($row[ColumnNames::ANNOUNCEMENT_START]),
             Date::FromDatabase($row[ColumnNames::ANNOUNCEMENT_END]),
             $row[ColumnNames::ANNOUNCEMENT_PRIORITY],
-            empty($groupIds) ? array() : explode(',', $groupIds),
-            empty($resourceIds) ? array() : explode(',', $resourceIds),
+            empty($groupIds) ? [] : explode(',', $groupIds),
+            empty($resourceIds) ? [] : explode(',', $resourceIds),
             $row[ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE]
         );
     }

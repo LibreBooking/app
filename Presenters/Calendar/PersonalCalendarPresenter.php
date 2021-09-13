@@ -15,9 +15,11 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
         ICalendarSubscriptionService $subscriptionService,
         IUserRepository $userRepository,
         IResourceService $resourceService,
-        IScheduleRepository $scheduleRepository)
+        IScheduleRepository $scheduleRepository
+    )
     {
-        parent::__construct($page,
+        parent::__construct(
+            $page,
             $calendarFactory,
             $repository,
             $scheduleRepository,
@@ -25,7 +27,8 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
             $resourceService,
             $subscriptionService,
             new NullPrivacyFilter(),
-            new SlotLabelFactory());
+            new SlotLabelFactory()
+        );
 
         $this->AddAction(CalendarActions::ActionEnableSubscription, 'EnableSubscription');
         $this->AddAction(CalendarActions::ActionDisableSubscription, 'DisableSubscription');
@@ -60,8 +63,15 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
 
     protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId, $selectedUserId, $selectedParticipantId)
     {
-        $reservations = $this->reservationRepository->GetReservations($this->GetStartDate(), $this->GetEndDate()->AddDays(1), $userSession->UserId,
-            ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId, true);
+        $reservations = $this->reservationRepository->GetReservations(
+            $this->GetStartDate(),
+            $this->GetEndDate()->AddDays(1),
+            $userSession->UserId,
+            ReservationUserLevel::ALL,
+            $selectedScheduleId,
+            $selectedResourceId,
+            true
+        );
 
         $this->page->BindEvents(CalendarReservation::FromViewList($reservations, $userSession->Timezone, $userSession));
     }

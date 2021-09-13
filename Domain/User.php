@@ -103,22 +103,22 @@ class User
     /**
      * @var array|UserGroup[]
      */
-    protected $groups = array();
+    protected $groups = [];
 
     /**
      * @var UserGroup[]
      */
-    private $addedGroups = array();
+    private $addedGroups = [];
 
     /**
      * @var UserGroup[]
      */
-    private $removedGroups = array();
+    private $removedGroups = [];
 
     /**
      * @var array|UserGroup[]
      */
-    protected $groupsICanAdminister = array();
+    protected $groupsICanAdminister = [];
 
     /**
      * @return array|UserGroup[]
@@ -270,20 +270,20 @@ class User
      * @var bool
      */
     private $permissionsChanged = false;
-    private $removedPermissions = array();
-    private $addedPermissions = array();
-    private $removedViewPermissions = array();
-    private $addedViewPermissions = array();
+    private $removedPermissions = [];
+    private $addedPermissions = [];
+    private $removedViewPermissions = [];
+    private $addedViewPermissions = [];
 
     /**
      * @var int[]
      */
-    protected $allowedResourceIds = array();
+    protected $allowedResourceIds = [];
 
     /**
      * @var int[]
      */
-    protected $viewableResourceIds = array();
+    protected $viewableResourceIds = [];
 
     /**
      * @var string
@@ -297,7 +297,7 @@ class User
      */
     public $passwordSalt;
 
-    private $attributes = array();
+    private $attributes = [];
     private $attributesChanged = false;
 
     private $isGroupAdmin = false;
@@ -308,7 +308,7 @@ class User
     /**
      * @param int[] $allowedResourceIds
      */
-    public function WithAllowedPermissions($allowedResourceIds = array())
+    public function WithAllowedPermissions($allowedResourceIds = [])
     {
         $this->permissionsChanged = false;
         $this->allowedResourceIds = $allowedResourceIds;
@@ -317,7 +317,7 @@ class User
     /**
      * @param int[] $viewableResourceIds
      */
-    public function WithViewablePermission($viewableResourceIds = array())
+    public function WithViewablePermission($viewableResourceIds = [])
     {
         $this->permissionsChanged = false;
         $this->viewableResourceIds = $viewableResourceIds;
@@ -331,7 +331,7 @@ class User
     /**
      * @param UserGroup[] $groups
      */
-    public function WithGroups($groups = array())
+    public function WithGroups($groups = [])
     {
         foreach ($groups as $group) {
             if ($group->IsGroupAdmin) {
@@ -354,7 +354,7 @@ class User
     /**
      * @param UserGroup[] $ownedGroups
      */
-    public function WithOwnedGroups($ownedGroups = array())
+    public function WithOwnedGroups($ownedGroups = [])
     {
         $this->groupsICanAdminister = $ownedGroups;
     }
@@ -362,7 +362,7 @@ class User
     /**
      * @param int[] $allowedResourceIds
      */
-    public function ChangeAllowedPermissions($allowedResourceIds = array())
+    public function ChangeAllowedPermissions($allowedResourceIds = [])
     {
         $removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
         $added = array_diff($allowedResourceIds, $this->allowedResourceIds);
@@ -379,14 +379,13 @@ class User
     /**
      * @param int[] $viewableResourceIds
      */
-    public function ChangeViewPermissions($viewableResourceIds = array())
+    public function ChangeViewPermissions($viewableResourceIds = [])
     {
         $diff = new ArrayDiff($this->viewableResourceIds, $viewableResourceIds);
         $removed = $diff->GetRemovedFromArray1();
         $added = $diff->GetAddedToArray1();
 
-        if ($diff->AreDifferent())
-        {
+        if ($diff->AreDifferent()) {
             $this->permissionsChanged = true;
             $this->removedViewPermissions = $removed;
             $this->addedViewPermissions = $added;
@@ -464,8 +463,7 @@ class User
     {
         if ($turnedOn) {
             $this->emailPreferences->AddPreference($event);
-        }
-        else {
+        } else {
             $this->emailPreferences->RemovePreference($event);
         }
     }
@@ -529,8 +527,17 @@ class User
      * @static
      * @return User
      */
-    public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password,
-                                  $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
+    public static function Create(
+        $firstName,
+        $lastName,
+        $emailAddress,
+        $userName,
+        $language,
+        $timezone,
+        $password,
+        $passwordSalt,
+        $homepageId = Pages::DEFAULT_HOMEPAGE_ID
+    )
     {
         $user = new User();
         $user->firstName = $firstName;
@@ -550,11 +557,29 @@ class User
      * @static
      * @return User
      */
-    public static function CreatePending($firstName, $lastName, $emailAddress, $userName, $language, $timezone,
-                                         $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
+    public static function CreatePending(
+        $firstName,
+        $lastName,
+        $emailAddress,
+        $userName,
+        $language,
+        $timezone,
+        $password,
+        $passwordSalt,
+        $homepageId = Pages::DEFAULT_HOMEPAGE_ID
+    )
     {
-        $user = self::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password,
-            $passwordSalt, $homepageId);
+        $user = self::Create(
+            $firstName,
+            $lastName,
+            $emailAddress,
+            $userName,
+            $language,
+            $timezone,
+            $password,
+            $passwordSalt,
+            $homepageId
+        );
         $user->statusId = AccountStatus::AWAITING_ACTIVATION;
         return $user;
     }
@@ -664,7 +689,7 @@ class User
             return false;
         }
 
-        $adminIdsForUser = array();
+        $adminIdsForUser = [];
         foreach ($user->Groups() as $userGroup) {
             if (!empty($userGroup->AdminGroupId)) {
                 $adminIdsForUser[$userGroup->AdminGroupId] = true;
@@ -770,7 +795,7 @@ class User
      * @static
      * @return User
      */
-    public static function Null()
+    public static function null()
     {
         return new NullUser();
     }
@@ -798,22 +823,22 @@ class User
     /**
      * @var array|int[]
      */
-    private $adminAttributesIds = array();
+    private $adminAttributesIds = [];
 
     /**
      * @var array|AttributeValue[]
      */
-    private $attributeValues = array();
+    private $attributeValues = [];
 
     /**
      * @var array|AttributeValue[]
      */
-    private $_addedAttributeValues = array();
+    private $_addedAttributeValues = [];
 
     /**
      * @var array|AttributeValue[]
      */
-    private $_removedAttributeValues = array();
+    private $_removedAttributeValues = [];
 
     /**
      * @var float
@@ -835,15 +860,14 @@ class User
             $this->_addedAttributeValues[] = $attribute;
         }
 
-		if ($removeAttrOnDiff)
-		{
-			/** @var $attribute AttributeValue */
-			foreach ($removed as $attribute) {
-				if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
-					$this->_removedAttributeValues[] = $attribute;
-				}
-			}
-		}
+        if ($removeAttrOnDiff) {
+            /** @var $attribute AttributeValue */
+            foreach ($removed as $attribute) {
+                if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
+                    $this->_removedAttributeValues[] = $attribute;
+                }
+            }
+        }
 
         foreach ($attributes as $attribute) {
             $this->AddAttributeValue($attribute);
@@ -923,7 +947,7 @@ class User
     public function IsGroupAdminFor($groupId)
     {
         if (!is_array($groupId)) {
-            $groupId = array($groupId);
+            $groupId = [$groupId];
         }
 
         foreach ($this->groupsICanAdminister as $group) {
@@ -1047,16 +1071,16 @@ class GuestUser extends User
 
 class UserAttribute
 {
-    const Phone = 'phone';
-    const Organization = 'organization';
-    const Position = 'position';
+    public const Phone = 'phone';
+    public const Organization = 'organization';
+    public const Position = 'position';
 
     /**
      * @var array|string[]
      */
-    private $attributeValues = array();
+    private $attributeValues = [];
 
-    public function __construct($attributeValues = array())
+    public function __construct($attributeValues = [])
     {
         $this->attributeValues = $attributeValues;
     }

@@ -2,38 +2,38 @@
 
 class AttributeReportColumn
 {
-	/**
-	 * @var string
-	 */
-	public $Id;
+    /**
+     * @var string
+     */
+    public $Id;
 
-	/**
-	 * @var string
-	 */
-	public $Label;
+    /**
+     * @var string
+     */
+    public $Label;
 
-	public function __construct($id, $label)
-	{
-		$this->Id = $id;
-		$this->Label = $label;
-	}
+    public function __construct($id, $label)
+    {
+        $this->Id = $id;
+        $this->Label = $label;
+    }
 }
 
 interface IReportColumns
 {
-	/**
-	 * @param $columnName string
-	 * @return bool
-	 */
-	public function Exists($columnName);
+    /**
+     * @param $columnName string
+     * @return bool
+     */
+    public function Exists($columnName);
 
-	/**
-	 * @return string[]
-	 */
-	public function GetAll();
+    /**
+     * @return string[]
+     */
+    public function GetAll();
 
-	/**
-	 * @return AttributeReportColumn[]
-	 */
-	public function GetCustomAttributes();
+    /**
+     * @return AttributeReportColumn[]
+     */
+    public function GetCustomAttributes();
 }

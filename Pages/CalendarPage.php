@@ -17,7 +17,8 @@ class CalendarPage extends CommonCalendarPage implements ICommonCalendarPage
         $subscriptionService = new CalendarSubscriptionService($userRepository, $resourceRepository, $scheduleRepository);
         $privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 
-        $this->presenter = new CalendarPresenter($this,
+        $this->presenter = new CalendarPresenter(
+            $this,
             new CalendarFactory(),
             new ReservationViewRepository(),
             $scheduleRepository,
@@ -25,7 +26,8 @@ class CalendarPage extends CommonCalendarPage implements ICommonCalendarPage
             $resourceService,
             $subscriptionService,
             $privacyFilter,
-            new SlotLabelFactory());
+            new SlotLabelFactory()
+        );
     }
 
     public function ProcessPageLoad()

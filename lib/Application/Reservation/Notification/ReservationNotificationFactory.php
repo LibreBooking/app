@@ -5,7 +5,7 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
     /**
      * @var array|string[]
      */
-    private $creationStrategies = array();
+    private $creationStrategies = [];
 
     public function __construct()
     {
@@ -19,8 +19,7 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
 
     public function Create($reservationAction, $userSession)
     {
-        if (array_key_exists($reservationAction, $this->creationStrategies))
-        {
+        if (array_key_exists($reservationAction, $this->creationStrategies)) {
             $createMethod = $this->creationStrategies[$reservationAction];
             return $this->$createMethod($userSession);
         }
@@ -70,7 +69,7 @@ class NullReservationNotificationService implements IReservationNotificationServ
     /**
      * @param ReservationSeries $reservationSeries
      */
-    function Notify($reservationSeries)
+    public function Notify($reservationSeries)
     {
         // no-op
     }

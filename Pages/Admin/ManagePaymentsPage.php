@@ -249,7 +249,7 @@ class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
 
     public function GetRefundAmount()
     {
-       return floatval($this->GetForm(FormKeys::REFUND_AMOUNT));
+        return floatval($this->GetForm(FormKeys::REFUND_AMOUNT));
     }
 
     public function BindTransactionLogView(TransactionLogView $transactionLogView)

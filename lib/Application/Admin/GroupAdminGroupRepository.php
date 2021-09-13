@@ -25,53 +25,46 @@ class GroupAdminGroupRepository extends GroupRepository
     {
         $user = $this->userRepository->LoadById($this->userSession->UserId);
 
-		$groupIds = array();
-		$groups = $user->GetAdminGroups();
-		foreach ($groups as $group)
-		{
-			$groupIds[] = $group->GroupId;
-		}
-		$and = new SqlFilterIn(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ID), $groupIds);
-		if ($filter == null)
-		{
-			$filter = $and;
-		}
-		else
-		{
-			$filter->_And($and);
-		}
-		return parent::GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter);
+        $groupIds = [];
+        $groups = $user->GetAdminGroups();
+        foreach ($groups as $group) {
+            $groupIds[] = $group->GroupId;
+        }
+        $and = new SqlFilterIn(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ID), $groupIds);
+        if ($filter == null) {
+            $filter = $and;
+        } else {
+            $filter->_And($and);
+        }
+        return parent::GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter);
     }
 
-	public function LoadById($groupId)
-	{
-		$user = $this->userRepository->LoadById($this->userSession->UserId);
+    public function LoadById($groupId)
+    {
+        $user = $this->userRepository->LoadById($this->userSession->UserId);
 
-		if ($user->IsGroupAdminFor($groupId))
-		{
-			return parent::LoadById($groupId);
-		}
+        if ($user->IsGroupAdminFor($groupId)) {
+            return parent::LoadById($groupId);
+        }
 
-		return Group::Null();
-	}
+        return Group::Null();
+    }
 
-	public function Add(Group $group)
-	{
-		$id = parent::Add($group);
-		$recalledGroup = parent::LoadById($id);
+    public function Add(Group $group)
+    {
+        $id = parent::Add($group);
+        $recalledGroup = parent::LoadById($id);
 
-		$groups = $this->userRepository->LoadGroups($this->userSession->UserId);
-		foreach ($groups as $userGroup)
-		{
-			if ($userGroup->IsGroupAdmin)
-			{
-				$recalledGroup->ChangeAdmin($userGroup->GroupId);
-				break;
-			}
-		}
+        $groups = $this->userRepository->LoadGroups($this->userSession->UserId);
+        foreach ($groups as $userGroup) {
+            if ($userGroup->IsGroupAdmin) {
+                $recalledGroup->ChangeAdmin($userGroup->GroupId);
+                break;
+            }
+        }
 
-		parent::Update($recalledGroup);
+        parent::Update($recalledGroup);
 
-		return $id;
-	}
+        return $id;
+    }
 }

@@ -37,7 +37,6 @@ class AdSamlWrapper implements ISaml
         $options = $this->options->AdSamlOptions();
 
         $this->saml = new adSaml($options);
-
     }
 
     public function Authenticate()

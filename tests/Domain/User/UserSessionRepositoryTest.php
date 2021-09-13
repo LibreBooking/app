@@ -4,108 +4,108 @@ require_once(ROOT_DIR . 'Domain/Access/UserSessionRepository.php');
 
 class UserSessionRepositoryTests extends TestBase
 {
-	/**
-	 * @var UserSessionRepository
-	 */
-	private $repo;
+    /**
+     * @var UserSessionRepository
+     */
+    private $repo;
 
-	public function setUp(): void
-	{
-		parent::setup();
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->repo = new UserSessionRepository();
-	}
+        $this->repo = new UserSessionRepository();
+    }
 
-	public function testLoadsByUserId()
-	{
-		$userId = 123;
-		$token = 'my special token';
+    public function testLoadsByUserId()
+    {
+        $userId = 123;
+        $token = 'my special token';
 
-		$expectedSession = new WebServiceUserSession($userId);
-		$expectedSession->SessionToken = $token;
+        $expectedSession = new WebServiceUserSession($userId);
+        $expectedSession->SessionToken = $token;
 
-		$serializedSession = serialize($expectedSession);
+        $serializedSession = serialize($expectedSession);
 
-		$rows = array(ColumnNames::USER_ID => $userId, ColumnNames::SESSION_TOKEN => $token, ColumnNames::USER_SESSION => $serializedSession);
+        $rows = [ColumnNames::USER_ID => $userId, ColumnNames::SESSION_TOKEN => $token, ColumnNames::USER_SESSION => $serializedSession];
 
-		$this->db->SetRows(array($rows));
+        $this->db->SetRows([$rows]);
 
-		$command = new GetUserSessionByUserIdCommand($userId);
+        $command = new GetUserSessionByUserIdCommand($userId);
 
-		$actualSession = $this->repo->LoadByUserId($userId);
+        $actualSession = $this->repo->LoadByUserId($userId);
 
-		$this->assertEquals($command, $this->db->_LastCommand);
-		$this->assertEquals($expectedSession, $actualSession);
-	}
+        $this->assertEquals($command, $this->db->_LastCommand);
+        $this->assertEquals($expectedSession, $actualSession);
+    }
 
-	public function testAddsSession()
-	{
-		$userId = 123;
-		$token = 'my special token';
+    public function testAddsSession()
+    {
+        $userId = 123;
+        $token = 'my special token';
 
-		$expectedSession = new WebServiceUserSession($userId);
-		$expectedSession->SessionToken = $token;
-		$expectedSession->UserId = $userId;
+        $expectedSession = new WebServiceUserSession($userId);
+        $expectedSession->SessionToken = $token;
+        $expectedSession->UserId = $userId;
 
-		$serializedSession = serialize($expectedSession);
+        $serializedSession = serialize($expectedSession);
 
-		$this->repo->Add($expectedSession);
+        $this->repo->Add($expectedSession);
 
-		$command = new AddUserSessionCommand($userId, $token, Date::Now(), $serializedSession);
-		$this->assertEquals($command, $this->db->_LastCommand);
-	}
+        $command = new AddUserSessionCommand($userId, $token, Date::Now(), $serializedSession);
+        $this->assertEquals($command, $this->db->_LastCommand);
+    }
 
-	public function testUpdatesSession()
-	{
-		$userId = 123;
-		$token = 'my special token';
+    public function testUpdatesSession()
+    {
+        $userId = 123;
+        $token = 'my special token';
 
-		$expectedSession = new WebServiceUserSession($userId);
-		$expectedSession->SessionToken = $token;
-		$expectedSession->UserId = $userId;
+        $expectedSession = new WebServiceUserSession($userId);
+        $expectedSession->SessionToken = $token;
+        $expectedSession->UserId = $userId;
 
-		$serializedSession = serialize($expectedSession);
+        $serializedSession = serialize($expectedSession);
 
-		$this->repo->Update($expectedSession);
+        $this->repo->Update($expectedSession);
 
-		$command = new UpdateUserSessionCommand($userId, $token, Date::Now(), $serializedSession);
-		$this->assertEquals($command, $this->db->_LastCommand);
-	}
+        $command = new UpdateUserSessionCommand($userId, $token, Date::Now(), $serializedSession);
+        $this->assertEquals($command, $this->db->_LastCommand);
+    }
 
-	public function testLoadsBySessionToken()
-	{
-		$userId = 123;
-		$token = 'my special token';
+    public function testLoadsBySessionToken()
+    {
+        $userId = 123;
+        $token = 'my special token';
 
-		$expectedSession = new WebServiceUserSession($userId);
-		$expectedSession->SessionToken = $token;
+        $expectedSession = new WebServiceUserSession($userId);
+        $expectedSession->SessionToken = $token;
 
-		$serializedSession = serialize($expectedSession);
+        $serializedSession = serialize($expectedSession);
 
-		$rows = array(ColumnNames::USER_ID => $userId, ColumnNames::SESSION_TOKEN => $token, ColumnNames::USER_SESSION => $serializedSession);
+        $rows = [ColumnNames::USER_ID => $userId, ColumnNames::SESSION_TOKEN => $token, ColumnNames::USER_SESSION => $serializedSession];
 
-		$this->db->SetRows(array($rows));
+        $this->db->SetRows([$rows]);
 
-		$command = new GetUserSessionBySessionTokenCommand($token);
+        $command = new GetUserSessionBySessionTokenCommand($token);
 
-		$actualSession = $this->repo->LoadBySessionToken($token);
+        $actualSession = $this->repo->LoadBySessionToken($token);
 
-		$this->assertEquals($command, $this->db->_LastCommand);
-		$this->assertEquals($expectedSession, $actualSession);
-	}
+        $this->assertEquals($command, $this->db->_LastCommand);
+        $this->assertEquals($expectedSession, $actualSession);
+    }
 
-	public function testDeletesBySessionToken()
-	{
-		$userId = 123;
-		$token = 'my special token';
+    public function testDeletesBySessionToken()
+    {
+        $userId = 123;
+        $token = 'my special token';
 
-		$expectedSession = new WebServiceUserSession($userId);
-		$expectedSession->SessionToken = $token;
-		$expectedSession->UserId = $userId;
+        $expectedSession = new WebServiceUserSession($userId);
+        $expectedSession->SessionToken = $token;
+        $expectedSession->UserId = $userId;
 
-		$this->repo->Delete($expectedSession);
+        $this->repo->Delete($expectedSession);
 
-		$command = new DeleteUserSessionCommand($token);
-		$this->assertEquals($command, $this->db->_LastCommand);
-	}
+        $command = new DeleteUserSessionCommand($token);
+        $this->assertEquals($command, $this->db->_LastCommand);
+    }
 }

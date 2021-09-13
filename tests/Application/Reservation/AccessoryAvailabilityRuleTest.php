@@ -73,12 +73,12 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $this->reservationRepository->expects($this->at(0))
             ->method('GetAccessoriesWithin')
             ->with($this->equalTo($dr1))
-            ->will($this->returnValue(array($accessoryReservation, $accessoryReservationForOtherResource)));
+            ->will($this->returnValue([$accessoryReservation, $accessoryReservationForOtherResource]));
 
         $this->reservationRepository->expects($this->at(1))
             ->method('GetAccessoriesWithin')
             ->with($this->equalTo($dr2))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -110,7 +110,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $this->reservationRepository->expects($this->at(0))
             ->method('GetAccessoriesWithin')
             ->with($this->equalTo($dr1))
-            ->will($this->returnValue(array($lowerQuantity1, $lowerQuantity2, $notOnReservation)));
+            ->will($this->returnValue([$lowerQuantity1, $lowerQuantity2, $notOnReservation]));
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -136,7 +136,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
         $this->reservationRepository->expects($this->once(0))
             ->method('GetAccessoriesWithin')
             ->with($this->anything())
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -193,7 +193,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
         $this->reservationRepository->expects($this->any())
             ->method('GetAccessoriesWithin')
-            ->will($this->returnValue(array($accessoryReservation, $a1, $a2)));
+            ->will($this->returnValue([$accessoryReservation, $a1, $a2]));
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -225,7 +225,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
         $this->reservationRepository->expects($this->any())
             ->method('GetAccessoriesWithin')
-            ->will($this->returnValue(array($ar1, $ar2, $ar3, $ar4)));
+            ->will($this->returnValue([$ar1, $ar2, $ar3, $ar4]));
 
         $result = $this->rule->Validate($reservation, null);
 

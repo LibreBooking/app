@@ -2,5 +2,5 @@
 
 interface IRegistrationNotificationStrategy
 {
-	public function NotifyAccountCreated(User $user, $password);
+    public function NotifyAccountCreated(User $user, $password);
 }

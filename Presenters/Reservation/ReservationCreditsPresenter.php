@@ -27,11 +27,13 @@ class ReservationCreditsPresenter
      */
     private $paymentRepository;
 
-    public function __construct(IReservationCreditsPage $page,
-                                IReservationRepository $reservationRepository,
-                                IScheduleRepository $scheduleRepository,
-                                IResourceRepository $resourceRepository,
-                                IPaymentRepository $paymentRepository)
+    public function __construct(
+        IReservationCreditsPage $page,
+        IReservationRepository $reservationRepository,
+        IScheduleRepository $scheduleRepository,
+        IResourceRepository $resourceRepository,
+        IPaymentRepository $paymentRepository
+    )
     {
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;
@@ -82,8 +84,7 @@ class ReservationCreditsPresenter
             }
 
             return $reservationSeries;
-        }
-        else {
+        } else {
             $referenceNumber = $this->page->GetReferenceNumber();
             $existingSeries = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
 
@@ -101,14 +102,15 @@ class ReservationCreditsPresenter
                 $resource,
                 null,
                 null,
-                $userSession);
+                $userSession
+            );
 
             $existingSeries->UpdateDuration($this->GetReservationDuration($userSession));
             $roFactory = new RepeatOptionsFactory();
 
             $existingSeries->Repeats($roFactory->CreateFromComposite($this->page, $userSession->Timezone));
 
-            $additionalResources = array();
+            $additionalResources = [];
             foreach ($resourceIds as $additionalResourceId) {
                 if ($additionalResourceId != $resourceId) {
                     $additionalResources[] = $this->resourceRepository->LoadById($additionalResourceId);

@@ -43,7 +43,6 @@
  */
 class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
 {
-
     /**
      * Get the using server string
      *
@@ -114,4 +113,3 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
         return 'El servicio `<b>%s</b>\' no est?? disponible (<b>%s</b>).';
     }
 }
-?>

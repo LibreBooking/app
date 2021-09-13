@@ -23,37 +23,34 @@ class GroupAdminUserRepository extends UserRepository
 
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null, $accountStatus = AccountStatus::ALL)
     {
-		if (empty($accountStatus))
-		{
-			$accountStatus = AccountStatus::ALL;
-		}
+        if (empty($accountStatus)) {
+            $accountStatus = AccountStatus::ALL;
+        }
 
         $user = parent::LoadById($this->userSession->UserId);
 
-        $groupIds = array();
+        $groupIds = [];
 
-        foreach ($user->GetAdminGroups() as $group)
-        {
+        foreach ($user->GetAdminGroups() as $group) {
             $groupIds[] = $group->GroupId;
         }
 
         return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $filter, $accountStatus);
     }
 
-	/**
-	 * @param int $userId
-	 * @return User|void
-	 */
-	public function LoadById($userId)
-	{
-		$user = parent::LoadById($userId);
-		$me = parent::LoadById($this->userSession->UserId);
+    /**
+     * @param int $userId
+     * @return User|void
+     */
+    public function LoadById($userId)
+    {
+        $user = parent::LoadById($userId);
+        $me = parent::LoadById($this->userSession->UserId);
 
-		if ($userId == $this->userSession->UserId || $me->IsAdminFor($user))
-		{
-			return $user;
-		}
+        if ($userId == $this->userSession->UserId || $me->IsAdminFor($user)) {
+            return $user;
+        }
 
-		return User::Null();
-	}
+        return User::Null();
+    }
 }

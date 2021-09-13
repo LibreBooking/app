@@ -4,36 +4,36 @@ require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/IActiveDirectory
 
 class FakeActiveDirectoryWrapper implements IActiveDirectory
 {
-	public $_ExpectedConnect = true;
-	public $_ConnectCalled = true;
+    public $_ExpectedConnect = true;
+    public $_ConnectCalled = true;
 
-	public $_ExpectedAuthenticate = true;
-	public $_AuthenticateCalled = false;
-	public $_LastUsername;
-	public $_LastPassword;
+    public $_ExpectedAuthenticate = true;
+    public $_AuthenticateCalled = false;
+    public $_LastUsername;
+    public $_LastPassword;
 
-	public $_GetLdapUserCalled = false;
-	public $_ExpectedLdapUser;
+    public $_GetLdapUserCalled = false;
+    public $_ExpectedLdapUser;
 
-	public function Connect()
-	{
-		$this->_ConnectCalled = true;
-		return $this->_ExpectedConnect;
-	}
+    public function Connect()
+    {
+        $this->_ConnectCalled = true;
+        return $this->_ExpectedConnect;
+    }
 
-	public function Authenticate($username, $password)
-	{
-		$this->_AuthenticateCalled = true;
-		$this->_LastUsername = $username;
-		$this->_LastPassword = $password;
+    public function Authenticate($username, $password)
+    {
+        $this->_AuthenticateCalled = true;
+        $this->_LastUsername = $username;
+        $this->_LastPassword = $password;
 
-		return $this->_ExpectedAuthenticate;
-	}
+        return $this->_ExpectedAuthenticate;
+    }
 
-	public function GetLdapUser($username)
-	{
-		$this->_GetLdapUserCalled = true;
+    public function GetLdapUser($username)
+    {
+        $this->_GetLdapUserCalled = true;
 
-		return $this->_ExpectedLdapUser;
-	}
+        return $this->_ExpectedLdapUser;
+    }
 }

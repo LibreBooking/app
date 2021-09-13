@@ -5,79 +5,79 @@ require_once(ROOT_DIR . 'WebServices/AccessoriesWebService.php');
 
 class AccessoriesWebServiceTests extends TestBase
 {
-	/**
-	 * @var AccessoriesWebService
-	 */
-	private $service;
+    /**
+     * @var AccessoriesWebService
+     */
+    private $service;
 
-	/**
-	 * @var FakeRestServer
-	 */
-	private $server;
+    /**
+     * @var FakeRestServer
+     */
+    private $server;
 
-	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
-	/**
-	 * @var IAccessoryRepository
-	 */
-	private $accessoryRepository;
+    /**
+     * @var IAccessoryRepository
+     */
+    private $accessoryRepository;
 
-	public function setUp(): void
-	{
-		$this->server = new FakeRestServer();
-		$this->resourceRepository = $this->createMock('IResourceRepository');
-		$this->accessoryRepository = $this->createMock('IAccessoryRepository');
+    public function setUp(): void
+    {
+        $this->server = new FakeRestServer();
+        $this->resourceRepository = $this->createMock('IResourceRepository');
+        $this->accessoryRepository = $this->createMock('IAccessoryRepository');
 
-		$this->service = new AccessoriesWebService($this->server, $this->resourceRepository, $this->accessoryRepository);
-		parent::setup();
-	}
+        $this->service = new AccessoriesWebService($this->server, $this->resourceRepository, $this->accessoryRepository);
+        parent::setup();
+    }
 
-	public function testGetsAllAccessories()
-	{
-		$accessories = array(new AccessoryDto(1, 'name', 23, 1));
+    public function testGetsAllAccessories()
+    {
+        $accessories = [new AccessoryDto(1, 'name', 23, 1)];
 
-		$this->resourceRepository->expects($this->once())
-				->method('GetAccessoryList')
-				->will($this->returnValue($accessories));
+        $this->resourceRepository->expects($this->once())
+                ->method('GetAccessoryList')
+                ->will($this->returnValue($accessories));
 
-		$this->service->GetAll();
+        $this->service->GetAll();
 
-		$this->assertEquals(new AccessoriesResponse($this->server, $accessories), $this->server->_LastResponse);
-		$this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
-	}
+        $this->assertEquals(new AccessoriesResponse($this->server, $accessories), $this->server->_LastResponse);
+        $this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
+    }
 
-	public function testGetsAccessoryById()
-	{
-		$accessoryId = 1233;
+    public function testGetsAccessoryById()
+    {
+        $accessoryId = 1233;
 
-		$accessory = new Accessory($accessoryId, 'name', 123);
+        $accessory = new Accessory($accessoryId, 'name', 123);
 
-		$this->accessoryRepository->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($accessoryId))
-				->will($this->returnValue($accessory));
+        $this->accessoryRepository->expects($this->once())
+                ->method('LoadById')
+                ->with($this->equalTo($accessoryId))
+                ->will($this->returnValue($accessory));
 
-		$this->service->GetAccessory($accessoryId);
+        $this->service->GetAccessory($accessoryId);
 
-		$this->assertEquals(new AccessoryResponse($this->server, $accessory), $this->server->_LastResponse);
-		$this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
-	}
+        $this->assertEquals(new AccessoryResponse($this->server, $accessory), $this->server->_LastResponse);
+        $this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
+    }
 
-	public function testWhenAccessoryNotFound()
-	{
-		$accessoryId = 1233;
+    public function testWhenAccessoryNotFound()
+    {
+        $accessoryId = 1233;
 
-		$this->accessoryRepository->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($accessoryId))
-				->will($this->returnValue(null));
+        $this->accessoryRepository->expects($this->once())
+                ->method('LoadById')
+                ->with($this->equalTo($accessoryId))
+                ->will($this->returnValue(null));
 
-		$this->service->GetAccessory($accessoryId);
+        $this->service->GetAccessory($accessoryId);
 
-		$this->assertEquals(RestResponse::NotFound(), $this->server->_LastResponse);
-		$this->assertEquals(RestResponse::NOT_FOUND_CODE, $this->server->_LastResponseCode);
-	}
+        $this->assertEquals(RestResponse::NotFound(), $this->server->_LastResponse);
+        $this->assertEquals(RestResponse::NOT_FOUND_CODE, $this->server->_LastResponseCode);
+    }
 }

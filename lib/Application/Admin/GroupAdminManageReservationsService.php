@@ -10,20 +10,22 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
      */
     private $userRepository;
 
-	/**
-	 * @param IReservationViewRepository $reservationViewRepository
-	 * @param IUserRepository $userRepository
-	 * @param IReservationAuthorization $authorization
-	 * @param IReservationHandler|null $reservationHandler
-	 * @param IUpdateReservationPersistenceService|null $persistenceService
-	 */
-	public function __construct(IReservationViewRepository $reservationViewRepository,
-								IUserRepository $userRepository,
-								IReservationAuthorization $authorization,
-								$reservationHandler = null,
-								$persistenceService = null)
+    /**
+     * @param IReservationViewRepository $reservationViewRepository
+     * @param IUserRepository $userRepository
+     * @param IReservationAuthorization $authorization
+     * @param IReservationHandler|null $reservationHandler
+     * @param IUpdateReservationPersistenceService|null $persistenceService
+     */
+    public function __construct(
+        IReservationViewRepository $reservationViewRepository,
+        IUserRepository $userRepository,
+        IReservationAuthorization $authorization,
+        $reservationHandler = null,
+        $persistenceService = null
+    )
     {
-		parent::__construct($reservationViewRepository, $authorization, $reservationHandler, $persistenceService);
+        parent::__construct($reservationViewRepository, $authorization, $reservationHandler, $persistenceService);
 
         $this->userRepository = $userRepository;
     }
@@ -42,20 +44,18 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
         $user = $this->userRepository->LoadById($userSession->UserId);
 
         $adminGroups = $user->GetAdminGroups();
-        $groupIds = array();
-        foreach ($adminGroups as $group)
-        {
+        $groupIds = [];
+        foreach ($adminGroups as $group) {
             $groupIds[] = $group->GroupId;
         }
 
         $command = new GetFullGroupReservationListCommand($groupIds);
 
-        if ($filter != null)
-        {
+        if ($filter != null) {
             $command = new FilterCommand($command, $filter->GetFilter());
         }
 
-        $builder = array('ReservationItemView', 'Populate');
+        $builder = ['ReservationItemView', 'Populate'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
 }

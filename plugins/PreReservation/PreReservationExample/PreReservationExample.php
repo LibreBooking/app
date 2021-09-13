@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . '/PreReservationExampleValidation.php');
 
 class PreReservationExample implements IPreReservationFactory
 {
-	/**
+    /**
      * @var PreReservationFactory
      */
     private $factoryToDecorate;
@@ -13,11 +13,12 @@ class PreReservationExample implements IPreReservationFactory
     {
         $this->factoryToDecorate = $factoryToDecorate;
 
-		require_once(dirname(__FILE__) . '/PreReservationExample.config.php');
+        require_once(dirname(__FILE__) . '/PreReservationExample.config.php');
 
-		Configuration::Instance()->Register(
-					dirname(__FILE__) . '/PreReservationExample.config.php',
-					'PreReservationExample');
+        Configuration::Instance()->Register(
+            dirname(__FILE__) . '/PreReservationExample.config.php',
+            'PreReservationExample'
+        );
     }
 
     public function CreatePreAddService(UserSession $userSession)
@@ -46,21 +47,21 @@ class PreReservationExample implements IPreReservationFactory
         return $this->factoryToDecorate->CreatePreApprovalService($userSession);
     }
 
-	/**
-	 * @param UserSession $userSession
-	 * @return IReservationValidationService
-	 */
-	public function CreatePreCheckinService(UserSession $userSession)
-	{
-		return $this->factoryToDecorate->CreatePreCheckinService($userSession);
-	}
+    /**
+     * @param UserSession $userSession
+     * @return IReservationValidationService
+     */
+    public function CreatePreCheckinService(UserSession $userSession)
+    {
+        return $this->factoryToDecorate->CreatePreCheckinService($userSession);
+    }
 
-	/**
-	 * @param UserSession $userSession
-	 * @return IReservationValidationService
-	 */
-	public function CreatePreCheckoutService(UserSession $userSession)
-	{
-		return $this->factoryToDecorate->CreatePreCheckoutService($userSession);
-	}
+    /**
+     * @param UserSession $userSession
+     * @return IReservationValidationService
+     */
+    public function CreatePreCheckoutService(UserSession $userSession)
+    {
+        return $this->factoryToDecorate->CreatePreCheckoutService($userSession);
+    }
 }

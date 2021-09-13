@@ -38,7 +38,8 @@ class ReservationEmailPresenter
         IReservationRepository $reservationRepository,
         IUserRepository $userRepository,
         IAttributeRepository $attributeRepository,
-        IPermissionService $permissionService)
+        IPermissionService $permissionService
+    )
     {
         $this->page = $page;
         $this->userSession = $userSession;
@@ -55,14 +56,12 @@ class ReservationEmailPresenter
         $existingSeries->UpdateBookedBy($this->userSession);
         $owner = $this->userRepository->LoadById($existingSeries->UserId());
 
-        if (!$this->HasPermissionToSend($existingSeries))
-        {
+        if (!$this->HasPermissionToSend($existingSeries)) {
             Log::Debug('Attempting to email reservation but user does not have permission. Reference Number %s, UserId %s', $existingSeries->CurrentInstance()->ReferenceNumber(), $this->userSession->UserId);
             return;
         }
 
-        foreach ($this->page->GetEmailAddresses() as $emailAddress)
-        {
+        foreach ($this->page->GetEmailAddresses() as $emailAddress) {
             Log::Debug('Emailing reservation details. Reference Number %s, UserId %s, To %s', $existingSeries->CurrentInstance()->ReferenceNumber(), $this->userSession->UserId, $emailAddress);
 
             $email = new ReservationShareEmail($owner, $emailAddress, $existingSeries, $this->attributeRepository, $this->userRepository);
@@ -72,15 +71,12 @@ class ReservationEmailPresenter
 
     private function HasPermissionToSend(ExistingReservationSeries $existingSeries)
     {
-        if ($existingSeries->UserId() == $this->userSession->UserId || $this->userSession->IsAdmin)
-        {
+        if ($existingSeries->UserId() == $this->userSession->UserId || $this->userSession->IsAdmin) {
             return true;
         }
 
-        foreach ($existingSeries->AllResources() as $resource)
-        {
-            if (!$this->permissionService->CanViewResource($resource, $this->userSession))
-            {
+        foreach ($existingSeries->AllResources() as $resource) {
+            if (!$this->permissionService->CanViewResource($resource, $this->userSession)) {
                 return false;
             }
         }

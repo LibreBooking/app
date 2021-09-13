@@ -112,11 +112,13 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
         $resourceService = ResourceService::Create();
         $user = ServiceLocator::GetServer()->GetUserSession();
 
-        $this->presenter = new SearchAvailabilityPresenter($this,
+        $this->presenter = new SearchAvailabilityPresenter(
+            $this,
             $user,
             $resourceService,
             new ReservationService(new ReservationViewRepository(), new ReservationListingFactory()),
-            new ScheduleService(new ScheduleRepository(), $resourceService, new DailyLayoutFactory()));
+            new ScheduleService(new ScheduleRepository(), $resourceService, new DailyLayoutFactory())
+        );
 
         $this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
         $this->Set('Tomorrow', Date::Now()->AddDays(1)->ToTimezone($user->Timezone));
@@ -183,9 +185,8 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
     public function GetResources()
     {
         $resources = $this->GetForm(FormKeys::RESOURCE_ID);
-        if (empty($resources))
-        {
-            return array();
+        if (empty($resources)) {
+            return [];
         }
 
         return $resources;
@@ -198,7 +199,7 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
 
     public function GetMaxParticipants()
     {
-       return $this->GetForm(FormKeys::MAX_PARTICIPANTS);
+        return $this->GetForm(FormKeys::MAX_PARTICIPANTS);
     }
 
     public function GetResourceAttributeValues()
@@ -213,7 +214,7 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
 
     public function SetResourceAttributes($attributes)
     {
-       $this->Set('ResourceAttributes', $attributes);
+        $this->Set('ResourceAttributes', $attributes);
     }
 
     public function SetResourceTypeAttributes($attributes)
@@ -233,47 +234,40 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
 
     public function GetRepeatWeekdays()
     {
-        $days = array();
+        $days = [];
 
         $sun = $this->GetForm(FormKeys::REPEAT_SUNDAY);
-        if (!empty($sun))
-        {
+        if (!empty($sun)) {
             $days[] = 0;
         }
 
         $mon = $this->GetForm(FormKeys::REPEAT_MONDAY);
-        if (!empty($mon))
-        {
+        if (!empty($mon)) {
             $days[] = 1;
         }
 
         $tue = $this->GetForm(FormKeys::REPEAT_TUESDAY);
-        if (!empty($tue))
-        {
+        if (!empty($tue)) {
             $days[] = 2;
         }
 
         $wed = $this->GetForm(FormKeys::REPEAT_WEDNESDAY);
-        if (!empty($wed))
-        {
+        if (!empty($wed)) {
             $days[] = 3;
         }
 
         $thu = $this->GetForm(FormKeys::REPEAT_THURSDAY);
-        if (!empty($thu))
-        {
+        if (!empty($thu)) {
             $days[] = 4;
         }
 
         $fri = $this->GetForm(FormKeys::REPEAT_FRIDAY);
-        if (!empty($fri))
-        {
+        if (!empty($fri)) {
             $days[] = 5;
         }
 
         $sat = $this->GetForm(FormKeys::REPEAT_SATURDAY);
-        if (!empty($sat))
-        {
+        if (!empty($sat)) {
             $days[] = 6;
         }
 
@@ -293,7 +287,7 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
     public function GetRepeatCustomDates()
     {
         $dates = $this->GetForm(FormKeys::REPEAT_CUSTOM_DATES);
-        if(!is_array($dates) || empty($dates)) {
+        if (!is_array($dates) || empty($dates)) {
             return [];
         }
 
@@ -312,6 +306,6 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
 
     public function SearchingSpecificTime()
     {
-       return $this->GetCheckbox(FormKeys::SPECIFIC_TIME);
+        return $this->GetCheckbox(FormKeys::SPECIFIC_TIME);
     }
 }

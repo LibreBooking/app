@@ -4,21 +4,19 @@ require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ActiveDirectoryO
 
 class FakeActiveDirectoryOptions extends ActiveDirectoryOptions
 {
-    public $_Options = array();
-    public $_Hosts = array();
+    public $_Options = [];
+    public $_Hosts = [];
     public $_RetryAgainstDatabase = false;
     public $_SyncGroups = false;
     public $_CleanUsername = true;
 
     public function __construct()
     {
-
     }
 
     public function AdLdapOptions()
     {
         return $this->_Options;
-
     }
 
     public function Controllers()

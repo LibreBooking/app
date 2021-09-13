@@ -14,8 +14,8 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
 
     public function GetRows()
     {
-        return array(
-            array(
+        return [
+            [
                 ColumnNames::ANNOUNCEMENT_ID => 1,
                 ColumnNames::ANNOUNCEMENT_TEXT => 'announcement 1',
                 ColumnNames::ANNOUNCEMENT_START => null,
@@ -24,8 +24,8 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
                 ColumnNames::GROUP_IDS => null,
                 ColumnNames::RESOURCE_IDS => null,
                 ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => 1,
-            ),
-            array(
+            ],
+            [
                 ColumnNames::ANNOUNCEMENT_ID => 1,
                 ColumnNames::ANNOUNCEMENT_TEXT => 'announcement 2',
                 ColumnNames::ANNOUNCEMENT_START => null,
@@ -34,8 +34,8 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
                 ColumnNames::GROUP_IDS => null,
                 ColumnNames::RESOURCE_IDS => null,
                 ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => 1,
-            ),
-            array(
+            ],
+            [
                 ColumnNames::ANNOUNCEMENT_ID => 1,
                 ColumnNames::ANNOUNCEMENT_TEXT => 'announcement 3',
                 ColumnNames::ANNOUNCEMENT_START => null,
@@ -44,8 +44,8 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
                 ColumnNames::GROUP_IDS => null,
                 ColumnNames::RESOURCE_IDS => null,
                 ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => 1,
-            ),
-        );
+            ],
+        ];
     }
 
     public function GetFuture($displayPage = -1)
@@ -56,7 +56,7 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
 
     public function GetExpectedRows()
     {
-        $expectedAnnouncements = array();
+        $expectedAnnouncements = [];
         $rows = $this->GetRows();
         foreach ($rows as $item) {
             $expectedAnnouncements[] = $item[ColumnNames::ANNOUNCEMENT_TEXT];

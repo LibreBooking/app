@@ -229,11 +229,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
      */
     protected $_presenter;
 
-    private $_styles = array(
+    private $_styles = [
         ScheduleStyle::Wide => 'Schedule/schedule-days-horizontal.tpl',
         ScheduleStyle::Tall => 'Schedule/schedule-flipped.tpl',
         ScheduleStyle::CondensedWeek => 'Schedule/schedule-week-condensed.tpl',
-    );
+    ];
 
     /**
      * @var bool
@@ -262,7 +262,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
             $schedulePermissionService,
             new AttributeService(new AttributeRepository()),
             $userRepository,
-            new AccessoryRepository());
+            new AccessoryRepository()
+        );
         $pageBuilder = new SchedulePageBuilder();
         $reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
         $dailyLayoutFactory = new DailyLayoutFactory();
@@ -299,16 +300,13 @@ class SchedulePage extends ActionPage implements ISchedulePage
         if ($this->IsMobile && !$this->IsTablet) {
             if ($this->ScheduleStyle == ScheduleStyle::Tall) {
                 $this->Display('Schedule/schedule-flipped.tpl');
-            }
-            else {
+            } else {
                 $this->Display('Schedule/schedule-mobile.tpl');
             }
-        }
-        else {
+        } else {
             if (array_key_exists($this->ScheduleStyle, $this->_styles)) {
                 $this->Display($this->_styles[$this->ScheduleStyle]);
-            }
-            else {
+            } else {
                 $this->Display('Schedule/schedule.tpl');
             }
         }
@@ -325,8 +323,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         if ($dataRequest === "reservations") {
             $this->_presenter->LoadReservations();
-        }
-        else {
+        } else {
             $this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());
         }
     }
@@ -396,9 +393,9 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         $dates = $this->server->GetQuerystring(QueryStringKeys::START_DATES);
         if (empty($dates)) {
-            return array();
+            return [];
         }
-        $parseDates = array();
+        $parseDates = [];
         foreach (explode(',', $dates) as $date) {
             $parseDates[] = Date::Parse($date, ServiceLocator::GetServer()->GetUserSession()->Timezone);
         }
@@ -413,9 +410,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function ShowInaccessibleResources()
     {
         return Configuration::Instance()
-            ->GetSectionKey(ConfigSection::SCHEDULE,
+            ->GetSectionKey(
+                ConfigSection::SCHEDULE,
                 ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES,
-                new BooleanConverter());
+                new BooleanConverter()
+            );
     }
 
     public function ShowFullWeekToggle($showShowFullWeekToggle)
@@ -477,11 +476,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         $resourceIds = $this->GetQuerystring(FormKeys::RESOURCE_ID);
         if (empty($resourceIds)) {
-            return array();
+            return [];
         }
 
         if (!is_array($resourceIds)) {
-            return array(intval($resourceIds));
+            return [intval($resourceIds)];
         }
 
         return array_filter($resourceIds, 'intval');
@@ -537,7 +536,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
     public function SetFilter($resourceFilter)
     {
-
         $ownerId = $this->GetOwnerId();
         $participantId = $this->GetParticipantId();
         $ownerText = $this->GetOwnerText();
@@ -662,4 +660,3 @@ class SchedulePage extends ActionPage implements ISchedulePage
         return $this->GetQuerystring(FormKeys::PARTICIPANT_TEXT);
     }
 }
-

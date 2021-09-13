@@ -2,5 +2,5 @@
 
 interface IConvert
 {
-	public function Convert($value);
+    public function Convert($value);
 }

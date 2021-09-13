@@ -40,11 +40,8 @@
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
 
-class CAS_GracefullTerminationException
-extends RuntimeException
-implements CAS_Exception
+class CAS_GracefullTerminationException extends RuntimeException implements CAS_Exception
 {
-
     /**
      * Test if exceptions should be thrown or if we should just exit.
      * In production usage we want to just exit cleanly when prompting the user
@@ -57,7 +54,7 @@ implements CAS_Exception
      *
      * @return self
      */
-    public function __construct ($message = 'Terminate Gracefully', $code = 0)
+    public function __construct($message = 'Terminate Gracefully', $code = 0)
     {
         // Exit cleanly to avoid filling up the logs with uncaught exceptions.
         if (self::$_exitWhenThrown) {
@@ -81,6 +78,4 @@ implements CAS_Exception
     {
         self::$_exitWhenThrown = false;
     }
-
 }
-?>

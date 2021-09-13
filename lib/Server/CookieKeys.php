@@ -2,9 +2,10 @@
 
 class CookieKeys
 {
-	private function __construct()
-	{}
+    private function __construct()
+    {
+    }
 
-	const LANGUAGE = 'language';
-	const PERSIST_LOGIN = 'persist_login';
+    public const LANGUAGE = 'language';
+    public const PERSIST_LOGIN = 'persist_login';
 }

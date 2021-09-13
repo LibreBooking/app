@@ -39,14 +39,12 @@ class ParticipationNotification implements IParticipationNotification
 
     public function Notify(ExistingReservationSeries $series, $participantId, $invitationAction)
     {
-        if ($this->disabled)
-        {
+        if ($this->disabled) {
             return;
         }
 
         $owner = $this->userRepository->LoadById($series->UserId());
-        if ($owner->WantsEventEmail(new ParticipationChangedEvent()))
-        {
+        if ($owner->WantsEventEmail(new ParticipationChangedEvent())) {
             $participant = $this->userRepository->LoadById($participantId);
             ServiceLocator::GetEmailService()->Send(new ReservationParticipationActivityEmail($series, $invitationAction, $owner, $participant->FullName()));
         }
@@ -54,14 +52,12 @@ class ParticipationNotification implements IParticipationNotification
 
     public function NotifyGuest(ExistingReservationSeries $series, $guestEmail, $invitationAction)
     {
-        if ($this->disabled)
-        {
+        if ($this->disabled) {
             return;
         }
 
         $owner = $this->userRepository->LoadById($series->UserId());
-        if ($owner->WantsEventEmail(new ParticipationChangedEvent()))
-        {
+        if ($owner->WantsEventEmail(new ParticipationChangedEvent())) {
             ServiceLocator::GetEmailService()->Send(new ReservationParticipationActivityEmail($series, $invitationAction, $owner, $guestEmail));
         }
     }

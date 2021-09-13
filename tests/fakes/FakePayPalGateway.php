@@ -43,5 +43,4 @@ class FakePayPalGateway extends PayPalGateway
         $this->_LastRefundAmount = $amount;
         return $this->_Refund;
     }
-
 }

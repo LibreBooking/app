@@ -39,8 +39,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
         ReservationView $reservationView,
         UserSession $userSession,
         ITermsOfServiceRepository $termsOfServiceRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationView = $reservationView;
         $this->reservationBinder = $reservationBinder;
@@ -51,7 +50,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
             $dateBinder,
             $resourceBinder,
             $userSession,
-            $termsOfServiceRepository);
+            $termsOfServiceRepository
+        );
     }
 
     public function Initialize()

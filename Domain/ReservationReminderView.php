@@ -33,12 +33,10 @@ class ReservationReminderView
         if ($minutes % 1440 == 0) {
             $this->value = $minutes / 1440;
             $this->interval = ReservationReminderInterval::Days;
-        }
-        elseif ($minutes % 60 == 0) {
+        } elseif ($minutes % 60 == 0) {
             $this->value = $minutes / 60;
             $this->interval = ReservationReminderInterval::Hours;
-        }
-        else {
+        } else {
             $this->value = $minutes;
             $this->interval = ReservationReminderInterval::Minutes;
         }

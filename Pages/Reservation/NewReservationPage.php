@@ -36,8 +36,8 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
     {
         parent::__construct('CreateReservation');
 
-        $this->SetParticipants(array());
-        $this->SetInvitees(array());
+        $this->SetParticipants([]);
+        $this->SetInvitees([]);
     }
 
     protected function GetPresenter()
@@ -46,7 +46,8 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
         return new ReservationPresenter(
             $this,
             $this->LoadInitializerFactory(),
-            new NewReservationPreconditionService());
+            new NewReservationPreconditionService()
+        );
     }
 
     protected function GetTemplateName()

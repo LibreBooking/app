@@ -64,7 +64,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
     public function __construct(IAuthentication $authentication, $ldapImplementation = null, $ldapOptions = null)
     {
         if (!function_exists('ldap_connect')) {
-          echo 'No LDAP support for PHP.  See: http://www.php.net/ldap';
+            echo 'No LDAP support for PHP.  See: http://www.php.net/ldap';
         }
 
         $this->authToDecorate = $authentication;
@@ -102,8 +102,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
                 Log::Error('Could not load user details from ActiveDirectory LDAP. Check your basedn setting. User: %s', $username);
             }
             return $userLoaded;
-        }
-        else {
+        } else {
             if ($this->options->RetryAgainstDatabase()) {
                 return $this->authToDecorate->Validate($username, $password);
             }
@@ -119,8 +118,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
         if ($this->LdapUserExists()) {
             Log::Debug('Running ActiveDirectory user synchronization for username: %s, Attributes: %s', $username, $this->user->__toString());
             $this->Synchronize($username);
-        }
-        else {
+        } else {
             Log::Debug('Skipping ActiveDirectory user synchronization, user not loaded');
         }
 
@@ -160,7 +158,8 @@ class ActiveDirectory extends Authentication implements IAuthentication
                 $this->user->GetPhone(),
                 $this->user->GetInstitution(),
                 $this->user->GetTitle(),
-                $this->user->GetGroups())
+                $this->user->GetGroups()
+            )
         );
     }
 
@@ -218,5 +217,4 @@ class ActiveDirectory extends Authentication implements IAuthentication
     {
         return true;
     }
-
 }

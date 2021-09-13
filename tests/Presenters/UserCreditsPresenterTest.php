@@ -34,10 +34,12 @@ class UserCreditsPresenterTests extends TestBase
         $this->paymentRepository = new FakePaymentRepository();
         $this->creditRepository = new FakeCreditRepository();
 
-        $this->presenter = new UserCreditsPresenter($this->page,
+        $this->presenter = new UserCreditsPresenter(
+            $this->page,
             $this->userRepository,
             $this->paymentRepository,
-            $this->creditRepository);
+            $this->creditRepository
+        );
     }
 
     public function testPageLoad()
@@ -57,7 +59,7 @@ class UserCreditsPresenterTests extends TestBase
         $this->page->_CurrentPage = 10;
         $this->page->_PageSize = 50;
 
-        $this->creditRepository->_UserCredits = new PageableData(array(new CreditLogView(Date::Now(), 'note', 10, 15)));
+        $this->creditRepository->_UserCredits = new PageableData([new CreditLogView(Date::Now(), 'note', 10, 15)]);
 
         $this->presenter->GetCreditLog($this->fakeUser);
 
@@ -72,7 +74,7 @@ class UserCreditsPresenterTests extends TestBase
         $this->page->_CurrentPage = 10;
         $this->page->_PageSize = 50;
 
-        $this->paymentRepository->_TransactionLogs = new PageableData(array(
+        $this->paymentRepository->_TransactionLogs = new PageableData([
             new TransactionLogView(
                 Date::Now(),
                 'status',
@@ -85,8 +87,9 @@ class UserCreditsPresenterTests extends TestBase
                 'refundref',
                 'gatewaydate',
                 'PayPal',
-                10)
-        ));
+                10
+            )
+        ]);
 
         $this->presenter->GetTransactionLog($this->fakeUser);
 

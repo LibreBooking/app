@@ -2,8 +2,8 @@
 
 class LowerCaseConverter implements IConvert
 {
-	public function Convert($value)
-	{
-		return strtolower($value);
-	}
+    public function Convert($value)
+    {
+        return strtolower($value);
+    }
 }

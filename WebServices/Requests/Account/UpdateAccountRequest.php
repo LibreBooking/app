@@ -1,6 +1,6 @@
 <?php
 
-require_once (ROOT_DIR . 'WebServices/Requests/Account/AccountRequestBase.php');
+require_once(ROOT_DIR . 'WebServices/Requests/Account/AccountRequestBase.php');
 
 class UpdateAccountRequest extends AccountRequestBase
 {
@@ -16,7 +16,7 @@ class UpdateAccountRequest extends AccountRequestBase
         $request->organization = 'organization';
         $request->phone = 'phone';
         $request->position = 'position';
-        $request->customAttributes = array(AttributeValueRequest::Example());
+        $request->customAttributes = [AttributeValueRequest::Example()];
 
         return $request;
     }

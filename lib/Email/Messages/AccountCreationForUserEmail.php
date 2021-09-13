@@ -30,7 +30,7 @@ class AccountCreationForUserEmail extends EmailMessage
     /**
      * @return array|EmailAddress[]|EmailAddress
      */
-    function To()
+    public function To()
     {
         return new EmailAddress($this->user->EmailAddress(), $this->user->FullName());
     }
@@ -38,15 +38,15 @@ class AccountCreationForUserEmail extends EmailMessage
     /**
      * @return string
      */
-    function Subject()
+    public function Subject()
     {
-        return $this->Translate('GuestAccountCreatedSubject', array(Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)));
+        return $this->Translate('GuestAccountCreatedSubject', [Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)]);
     }
 
     /**
      * @return string
      */
-    function Body()
+    public function Body()
     {
         $this->Set('FullName', $this->user->FullName());
         $this->Set('EmailAddress', $this->user->EmailAddress());
@@ -56,7 +56,7 @@ class AccountCreationForUserEmail extends EmailMessage
         $this->Set('Password', $this->password);
         $this->Set('AppTitle', Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE));
         $this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
-		$this->Set('CreatedBy', '');
+        $this->Set('CreatedBy', '');
         if ($this->userSession != null && $this->userSession->UserId != $this->user->Id()) {
             $this->Set('CreatedBy', new FullName($this->userSession->FirstName, $this->userSession->LastName));
         }

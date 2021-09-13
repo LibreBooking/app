@@ -23,7 +23,7 @@ class GroupItemResponse extends RestResponse
         $this->name = $group->Name();
         $this->isDefault = (bool)$group->IsDefault();
 
-        $this->AddService($server, WebServices::GetGroup, array(WebServiceParams::GroupId => $group->Id()));
+        $this->AddService($server, WebServices::GetGroup, [WebServiceParams::GroupId => $group->Id()]);
     }
 
     public static function Example()
@@ -41,4 +41,3 @@ class ExampleGroupItemResponse extends GroupItemResponse
         $this->isDefault = true;
     }
 }
-

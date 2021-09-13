@@ -36,7 +36,7 @@ class ScheduleLayoutTests extends TestBase
         $postDst = new Date('2011-03-14', $cst);
         $endDst = new Date('2011-11-06', $cst);
 
-        foreach (array($preDst, $onDst, $postDst, $endDst) as $date) {
+        foreach ([$preDst, $onDst, $postDst, $endDst] as $date) {
             //echo '-----TEST-----';
             $slots = $layout->GetLayout($date);
             //echo '-----TEST-----';
@@ -84,7 +84,7 @@ class ScheduleLayoutTests extends TestBase
         $this->assertEquals($slot2, $slots[1]);
         $this->assertEquals($slot3, $slots[2]);
         $this->assertEquals($lastSlot, $slots[3]);
-//		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[0]->Begin());
+        //		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[0]->Begin());
 //		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[0]->End());
 //
 //		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[1]->Begin(), $slots[1]->Begin()->ToString());
@@ -182,7 +182,6 @@ class ScheduleLayoutTests extends TestBase
 
         $this->assertEquals(new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1), $slots[0]);
         $this->assertEquals(new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, $label4), $slots[4]);
-
     }
 
     public function testCanParseDailyFromStrings()
@@ -190,8 +189,8 @@ class ScheduleLayoutTests extends TestBase
         $timezone = 'America/Chicago';
         $days = DayOfWeek::Days();
 
-        $reservableSlots = array();
-        $blockedSlots = array();
+        $reservableSlots = [];
+        $blockedSlots = [];
 
         foreach ($days as $day) {
             $reservableSlots[$day] = "00:00 - 01:00 Label $day A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n";
@@ -213,8 +212,10 @@ class ScheduleLayoutTests extends TestBase
             $end4 = Time::Parse("15:00", $timezone);
 
             $this->assertEquals(new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, "Label $day A"), $slots[0]);
-            $this->assertEquals(new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, "Blocked $day A"),
-                $slots[4]);
+            $this->assertEquals(
+                new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, "Blocked $day A"),
+                $slots[4]
+            );
         }
     }
 
@@ -229,12 +230,20 @@ class ScheduleLayoutTests extends TestBase
         $actual1 = $layout->GetPeriod(Date::Parse('2012-01-01 15:30:00', $timezone));
         $actual2 = $layout->GetPeriod(Date::Parse('2012-01-01 02:00:00', $timezone));
 
-        $this->assertEquals(new NonSchedulePeriod(Date::Parse('2012-01-01 15:00',
-            $timezone), Date::Parse('2012-01-01 20:00', $timezone)),
-            $actual1);
-        $this->assertEquals(new SchedulePeriod(Date::Parse('2012-01-01 02:00',
-            $timezone), Date::Parse('2012-01-01 03:30', $timezone)),
-            $actual2);
+        $this->assertEquals(
+            new NonSchedulePeriod(Date::Parse(
+            '2012-01-01 15:00',
+            $timezone
+        ), Date::Parse('2012-01-01 20:00', $timezone)),
+            $actual1
+        );
+        $this->assertEquals(
+            new SchedulePeriod(Date::Parse(
+            '2012-01-01 02:00',
+            $timezone
+        ), Date::Parse('2012-01-01 03:30', $timezone)),
+            $actual2
+        );
     }
 
     public function testTokyoDefect()
@@ -341,8 +350,10 @@ class ScheduleLayoutTests extends TestBase
 
         $this->assertEquals(1, count($mondayPeriods));
         $utcDate = $monday->ToUtc();
-        $period1 = new NonSchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($midnight,
-            true), 'Monday Period');
+        $period1 = new NonSchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime(
+            $midnight,
+            true
+        ), 'Monday Period');
         $this->assertEquals($period1, $mondayPeriods[0], 'Expected ' . $period1 . ' Actual ' . $mondayPeriods[0]);
 
         $sundayDailyPeriods = $layout->GetSlots(DayOfWeek::SUNDAY);
@@ -351,8 +362,10 @@ class ScheduleLayoutTests extends TestBase
         $this->assertEquals(5, count($sundayDailyPeriods));
         $this->assertEquals(new LayoutPeriod($midnight, $time1, PeriodTypes::RESERVABLE, null), $sundayDailyPeriods[0]);
         $this->assertEquals(1, count($mondayDailyPeriods));
-        $this->assertEquals(new LayoutPeriod($midnight, $midnight, PeriodTypes::NONRESERVABLE, 'Monday Period'),
-            $mondayDailyPeriods[0]);
+        $this->assertEquals(
+            new LayoutPeriod($midnight, $midnight, PeriodTypes::NONRESERVABLE, 'Monday Period'),
+            $mondayDailyPeriods[0]
+        );
     }
 
     public function testFullDayPeriod()
@@ -379,24 +392,60 @@ class ScheduleLayoutTests extends TestBase
         $scheduleLayoutFactory = new ScheduleLayoutFactory($targetTimezone);
         $layout = $scheduleLayoutFactory->CreateLayout();
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::SUNDAY);
-        $layout->AppendBlockedPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("01:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
-        $layout->AppendBlockedPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("08:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
-        $layout->AppendPeriod(Time::Parse("08:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::TUESDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::THURSDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::FRIDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::SATURDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::SUNDAY
+        );
+        $layout->AppendBlockedPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("01:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
+        $layout->AppendBlockedPeriod(
+            Time::Parse("01:00", $layoutTz),
+            Time::Parse("08:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("08:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::TUESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::THURSDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::FRIDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::SATURDAY
+        );
 
         $sunPeriod = $layout->GetPeriod(Date::Parse('2012-12-30 22:00', $targetTimezone));
         $monPeriod = $layout->GetPeriod(Date::Parse('2012-12-30 23:00', $targetTimezone));
@@ -420,41 +469,101 @@ class ScheduleLayoutTests extends TestBase
         $scheduleLayoutFactory = new ScheduleLayoutFactory($targetTimezone);
         $layout = $scheduleLayoutFactory->CreateLayout();
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::SUNDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::SUNDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("01:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
-        $layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("01:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("01:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("23:00", $layoutTz), null,
-            DayOfWeek::TUESDAY);
-        $layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::TUESDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("23:00", $layoutTz),
+            null,
+            DayOfWeek::TUESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("23:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::TUESDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:30", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("00:30", $layoutTz), Time::Parse("01:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("02:30", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("02:30", $layoutTz), Time::Parse("22:30", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("22:30", $layoutTz), Time::Parse("23:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:30", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:30", $layoutTz),
+            Time::Parse("01:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("01:00", $layoutTz),
+            Time::Parse("02:30", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("02:30", $layoutTz),
+            Time::Parse("22:30", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("22:30", $layoutTz),
+            Time::Parse("23:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("23:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("22:00", $layoutTz), null,
-            DayOfWeek::THURSDAY);
-        $layout->AppendPeriod(Time::Parse("22:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::THURSDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("22:00", $layoutTz),
+            null,
+            DayOfWeek::THURSDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("22:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::THURSDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::FRIDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::SATURDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::FRIDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::SATURDAY
+        );
 
         $sun = Date::Parse('2013-01-06 23:30', $targetTimezone);
         $mon = Date::Parse('2013-01-07 00:00', $targetTimezone);
@@ -535,41 +644,101 @@ class ScheduleLayoutTests extends TestBase
         $scheduleLayoutFactory = new ScheduleLayoutFactory($targetTimezone);
         $layout = $scheduleLayoutFactory->CreateLayout();
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::SUNDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::SUNDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("01:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
-        $layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::MONDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("01:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("01:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::MONDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("23:00", $layoutTz), null,
-            DayOfWeek::TUESDAY);
-        $layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::TUESDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("23:00", $layoutTz),
+            null,
+            DayOfWeek::TUESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("23:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::TUESDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:30", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("00:30", $layoutTz), Time::Parse("01:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("02:30", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("02:30", $layoutTz), Time::Parse("22:30", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("22:30", $layoutTz), Time::Parse("23:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
-        $layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::WEDNESDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:30", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:30", $layoutTz),
+            Time::Parse("01:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("01:00", $layoutTz),
+            Time::Parse("02:30", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("02:30", $layoutTz),
+            Time::Parse("22:30", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("22:30", $layoutTz),
+            Time::Parse("23:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("23:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::WEDNESDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("22:00", $layoutTz), null,
-            DayOfWeek::THURSDAY);
-        $layout->AppendPeriod(Time::Parse("22:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::THURSDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("22:00", $layoutTz),
+            null,
+            DayOfWeek::THURSDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("22:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::THURSDAY
+        );
 
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::FRIDAY);
-        $layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
-            DayOfWeek::SATURDAY);
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::FRIDAY
+        );
+        $layout->AppendPeriod(
+            Time::Parse("00:00", $layoutTz),
+            Time::Parse("00:00", $layoutTz),
+            null,
+            DayOfWeek::SATURDAY
+        );
 
         $sun = Date::Parse('2013-01-06 23:30', $targetTimezone);
         $mon = Date::Parse('2013-01-07 00:00', $targetTimezone);
@@ -756,7 +925,7 @@ class ScheduleLayoutTests extends TestBase
     {
         $totalAvailableSlots = 16;
         $layout = $this->GetLayoutBetween(9, 17);
-        $layout->ChangePeakTimes(new PeakTimes(true, null, null, false, array(1, 3), true, 0, 0, 0, 0));
+        $layout->ChangePeakTimes(new PeakTimes(true, null, null, false, [1, 3], true, 0, 0, 0, 0));
 
         $start = Date::Parse('2016-04-11 8:00', 'UTC');
         $end = Date::Parse('2016-04-11 18:00', 'UTC');
@@ -770,7 +939,7 @@ class ScheduleLayoutTests extends TestBase
     public function testCanGetPeakForSpecificHours()
     {
         $layout = $this->GetLayoutBetween(9, 17);
-        $layout->ChangePeakTimes(new PeakTimes(false, '00:00', '10:00', false, array(1, 3), true, 0, 0, 0, 0));
+        $layout->ChangePeakTimes(new PeakTimes(false, '00:00', '10:00', false, [1, 3], true, 0, 0, 0, 0));
 
         $start = Date::Parse('2016-04-11 8:00', 'UTC');
         $end = Date::Parse('2016-04-11 18:00', 'UTC');
@@ -784,7 +953,7 @@ class ScheduleLayoutTests extends TestBase
     public function testCanGetPeakForSpecificDays()
     {
         $layout = $this->GetLayoutBetween(9, 17);
-        $layout->ChangePeakTimes(new PeakTimes(false, '00:00', '10:00', false, array(1, 3), true, 0, 0, 0, 0));
+        $layout->ChangePeakTimes(new PeakTimes(false, '00:00', '10:00', false, [1, 3], true, 0, 0, 0, 0));
 
         $start = Date::Parse('2016-04-12 8:00', 'UTC');
         $end = Date::Parse('2016-04-12 18:00', 'UTC');
@@ -798,7 +967,7 @@ class ScheduleLayoutTests extends TestBase
     public function testCanGetPeakWhenLimitedDates()
     {
         $layout = $this->GetLayoutBetween(9, 17);
-        $layout->ChangePeakTimes(new PeakTimes(true, '', '', true, array(), false, 13, 1, 13, 4));
+        $layout->ChangePeakTimes(new PeakTimes(true, '', '', true, [], false, 13, 1, 13, 4));
 
         $start = Date::Parse('2016-04-13 8:00', 'UTC');
         $end = Date::Parse('2016-04-13 18:00', 'UTC');
@@ -844,30 +1013,30 @@ class ScheduleLayoutTests extends TestBase
         $date1 = Date::Now();
         $date2 = Date::Now()->AddDays(2);
 
-        $repository->_AddCustomLayout($date1, array(
+        $repository->_AddCustomLayout($date1, [
             new SchedulePeriod($date1->SetTimeString('08:00'), $date1->SetTimeString('14:00')),
             new SchedulePeriod($date1->SetTimeString('14:00'), $date1->SetTimeString('18:00')),
-        ));
+        ]);
 
-        $repository->_AddCustomLayout($date2, array(
+        $repository->_AddCustomLayout($date2, [
             new SchedulePeriod($date2->SetTimeString('08:00'), $date2->SetTimeString('14:00')),
             new SchedulePeriod($date2->SetTimeString('18:00'), $date2->SetTimeString('22:00')),
-        ));
+        ]);
 
-        $expectedLayout1 = array(
+        $expectedLayout1 = [
             new NonSchedulePeriod($date1->SetTimeString('00:00'), $date1->SetTimeString('08:00')),
             new SchedulePeriod($date1->SetTimeString('08:00'), $date1->SetTimeString('14:00')),
             new SchedulePeriod($date1->SetTimeString('14:00'), $date1->SetTimeString('18:00')),
             new NonSchedulePeriod($date1->SetTimeString('18:00'), $date1->AddDays(1)->SetTimeString('00:00')),
-        );
+        ];
 
-        $expectedLayout2 = array(
+        $expectedLayout2 = [
             new NonSchedulePeriod($date2->SetTimeString('00:00'), $date2->SetTimeString('08:00')),
             new SchedulePeriod($date2->SetTimeString('08:00'), $date2->SetTimeString('14:00')),
             new NonSchedulePeriod($date2->SetTimeString('14:00'), $date2->SetTimeString('18:00')),
             new SchedulePeriod($date2->SetTimeString('18:00'), $date2->SetTimeString('22:00')),
             new NonSchedulePeriod($date2->SetTimeString('22:00'), $date2->AddDays(1)->SetTimeString('00:00')),
-        );
+        ];
 
         $date1Layout = $layout->GetLayout($date1);
         $date2Layout = $layout->GetLayout($date2);

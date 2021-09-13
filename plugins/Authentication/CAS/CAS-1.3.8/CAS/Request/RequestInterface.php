@@ -39,7 +39,6 @@
  */
 interface CAS_Request_RequestInterface
 {
-
     /*********************************************************
      * Configure the Request
     *********************************************************/
@@ -52,7 +51,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function setUrl ($url);
+    public function setUrl($url);
 
     /**
      * Add a cookie to the request.
@@ -63,7 +62,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function addCookie ($name, $value);
+    public function addCookie($name, $value);
 
     /**
      * Add an array of cookies to the request.
@@ -75,7 +74,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function addCookies (array $cookies);
+    public function addCookies(array $cookies);
 
     /**
      * Add a header string to the request.
@@ -85,7 +84,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function addHeader ($header);
+    public function addHeader($header);
 
     /**
      * Add an array of header strings to the request.
@@ -95,7 +94,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function addHeaders (array $headers);
+    public function addHeaders(array $headers);
 
     /**
      * Make the request a POST request rather than the default GET request.
@@ -103,7 +102,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function makePost ();
+    public function makePost();
 
     /**
      * Add a POST body to the request
@@ -113,7 +112,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function setPostBody ($body);
+    public function setPostBody($body);
 
 
     /**
@@ -125,7 +124,7 @@ interface CAS_Request_RequestInterface
      * @return void
      * @throws CAS_OutOfSequenceException If called after the Request has been sent.
      */
-    public function setSslCaCert ($caCertPath, $validate_cn = true);
+    public function setSslCaCert($caCertPath, $validate_cn = true);
 
 
 
@@ -139,7 +138,7 @@ interface CAS_Request_RequestInterface
      * @return bool TRUE on success, FALSE on failure.
      * @throws CAS_OutOfSequenceException If called multiple times.
      */
-    public function send ();
+    public function send();
 
     /*********************************************************
      * 3. Access the response
@@ -151,7 +150,7 @@ interface CAS_Request_RequestInterface
      * @return array An array of header strings.
      * @throws CAS_OutOfSequenceException If called before the Request has been sent.
      */
-    public function getResponseHeaders ();
+    public function getResponseHeaders();
 
     /**
      * Answer HTTP status code of the response
@@ -159,7 +158,7 @@ interface CAS_Request_RequestInterface
      * @return int
      * @throws CAS_OutOfSequenceException If called before the Request has been sent.
      */
-    public function getResponseStatusCode ();
+    public function getResponseStatusCode();
 
     /**
      * Answer the body of response.
@@ -167,7 +166,7 @@ interface CAS_Request_RequestInterface
      * @return string
      * @throws CAS_OutOfSequenceException If called before the Request has been sent.
      */
-    public function getResponseBody ();
+    public function getResponseBody();
 
     /**
      * Answer a message describing any errors if the request failed.
@@ -175,5 +174,5 @@ interface CAS_Request_RequestInterface
      * @return string
      * @throws CAS_OutOfSequenceException If called before the Request has been sent.
      */
-    public function getErrorMessage ();
+    public function getErrorMessage();
 }

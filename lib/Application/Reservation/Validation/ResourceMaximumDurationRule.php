@@ -2,36 +2,33 @@
 
 class ResourceMaximumDurationRule implements IReservationValidationRule
 {
-	/**
-	 * @see IReservationValidationRule::Validate()
-	 *
-	 * @param ReservationSeries $reservationSeries
-	 * @param $retryParameters
-	 * @return ReservationRuleResult
-	 * @throws Exception
-	 */
-	public function Validate($reservationSeries, $retryParameters)
-	{
-		$r = Resources::GetInstance();
+    /**
+     * @see IReservationValidationRule::Validate()
+     *
+     * @param ReservationSeries $reservationSeries
+     * @param $retryParameters
+     * @return ReservationRuleResult
+     * @throws Exception
+     */
+    public function Validate($reservationSeries, $retryParameters)
+    {
+        $r = Resources::GetInstance();
 
-		$resources = $reservationSeries->AllResources();
+        $resources = $reservationSeries->AllResources();
 
-		foreach ($resources as $resource)
-		{
-			if ($resource->HasMaxLength())
-			{
-				$maxDuration = $resource->GetMaxLength()->Interval();
-				$start = $reservationSeries->CurrentInstance()->StartDate();
-				$end = $reservationSeries->CurrentInstance()->EndDate();
+        foreach ($resources as $resource) {
+            if ($resource->HasMaxLength()) {
+                $maxDuration = $resource->GetMaxLength()->Interval();
+                $start = $reservationSeries->CurrentInstance()->StartDate();
+                $end = $reservationSeries->CurrentInstance()->EndDate();
 
-				$maxEnd = $start->ApplyDifference($maxDuration);
-				if ($end->GreaterThan($maxEnd))
-				{
-					return new ReservationRuleResult(false, $r->GetString("MaxDurationError", $maxDuration));
-				}
-			}
-		}
+                $maxEnd = $start->ApplyDifference($maxDuration);
+                if ($end->GreaterThan($maxEnd)) {
+                    return new ReservationRuleResult(false, $r->GetString("MaxDurationError", $maxDuration));
+                }
+            }
+        }
 
-		return new ReservationRuleResult();
-	}
+        return new ReservationRuleResult();
+    }
 }

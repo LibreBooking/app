@@ -29,8 +29,7 @@ class TermsOfServiceValidator extends ValidatorBase implements IValidator
 
         $terms = $this->termsOfServiceRepository->Load();
 
-        if ($terms != null && $terms->AppliesToRegistration())
-        {
+        if ($terms != null && $terms->AppliesToRegistration()) {
             $this->isValid = $this->hasAcknowledged;
         }
     }

@@ -2,19 +2,19 @@
 
 class WebServiceQueryStringKeys
 {
-	const USER_ID = 'userId';
-	const DATE_TIME = 'dateTime';
-	const START_DATE_TIME = 'startDateTime';
-	const END_DATE_TIME = 'endDateTime';
-	const RESOURCE_ID = 'resourceId';
-	const SCHEDULE_ID = 'scheduleId';
-	const UPDATE_SCOPE = 'updateScope';
-	const USERNAME = 'username';
-	const EMAIL = 'email';
-	const FIRST_NAME = 'firstName';
-	const LAST_NAME = 'lastName';
-	const PHONE = 'phone';
-	const ORGANIZATION = 'organization';
-	const POSITION = 'position';
-	const ATTRIBUTE_PREFIX = 'att';
+    public const USER_ID = 'userId';
+    public const DATE_TIME = 'dateTime';
+    public const START_DATE_TIME = 'startDateTime';
+    public const END_DATE_TIME = 'endDateTime';
+    public const RESOURCE_ID = 'resourceId';
+    public const SCHEDULE_ID = 'scheduleId';
+    public const UPDATE_SCOPE = 'updateScope';
+    public const USERNAME = 'username';
+    public const EMAIL = 'email';
+    public const FIRST_NAME = 'firstName';
+    public const LAST_NAME = 'lastName';
+    public const PHONE = 'phone';
+    public const ORGANIZATION = 'organization';
+    public const POSITION = 'position';
+    public const ATTRIBUTE_PREFIX = 'att';
 }

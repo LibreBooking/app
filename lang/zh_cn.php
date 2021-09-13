@@ -41,9 +41,9 @@ class zh_cn extends en_us
         $dates['res_popup'] = 'Y/m/d g:i A';
         $dates['dashboard'] = 'l, Y/m/d g:i A';
         $dates['period_time'] = 'g:i A';
-		$dates['general_date_js'] = 'yy/mm/dd';
-		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M/d';
+        $dates['general_date_js'] = 'yy/mm/dd';
+        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_dates'] = 'M/d';
 
         $this->Dates = $dates;
 
@@ -165,7 +165,7 @@ class zh_cn extends en_us
         $strings['ResourceRequiresApproval'] = '预约必须得到批准';
         $strings['ResourceRequiresApprovalNone'] = '预约不需要审批';
         $strings['ResourcePermissionAutoGranted'] = '自动授予权限';
-		$strings['ResourcePermissionNotAutoGranted'] = '没有自动获得许可';
+        $strings['ResourcePermissionNotAutoGranted'] = '没有自动获得许可';
         $strings['ResourceMinNotice'] = '必须在开始时间前至少 %s 完成预约';
         $strings['ResourceMinNoticeNone'] = '到当前时间均可以预约';
         $strings['ResourceMaxNotice'] = '预约不能在当前时间 %s 后前结束';
@@ -307,10 +307,10 @@ class zh_cn extends en_us
         $strings['ReservationConflicts'] = '存在有冲突的预约时间';
         $strings['UsersInGroup'] = '这个群组里的成员';
         $strings['Browse'] = '浏览';
-		$strings['DeleteGroupWarning'] = '删除这个群组会移除所有关联的资源许可，组内成员都将拥有相关资源的权限.';
+        $strings['DeleteGroupWarning'] = '删除这个群组会移除所有关联的资源许可，组内成员都将拥有相关资源的权限.';
         $strings['WhatRolesApplyToThisGroup'] = '哪些角色适用于本群组?';
         $strings['WhoCanManageThisGroup'] = '谁能管理这个群组?';
-		$strings['WhoCanManageThisSchedule'] = '谁能管理这时间表?';
+        $strings['WhoCanManageThisSchedule'] = '谁能管理这时间表?';
         $strings['AddGroup'] = '添加群组';
         $strings['AllQuotas'] = '全部配额';
         $strings['QuotaReminder'] = '请记住：配额是强制性地基于已计划的时间分区的.';
@@ -384,45 +384,45 @@ class zh_cn extends en_us
         $strings['AdditionalAttributes'] = '附加属性';
         $strings['True'] = '是';
         $strings['False'] = '否';
-		$strings['ForgotPasswordEmailSent'] = '一封包含重设密码提示的电子邮件已经发往您提供的的电子邮件地址';
-		$strings['ActivationEmailSent'] = '您会立即收到一封有关启动的电子邮件.';
-		$strings['AccountActivationError'] = '对不起，我们不能启动您的账号.';
-		$strings['Attachments'] = '附件';
-		$strings['AttachFile'] = '附件文件';
-		$strings['Maximum'] = '最大值';
-  		$strings['NoScheduleAdministratorLabel'] = '没有时间表管理员';
-		$strings['ScheduleAdministrator'] = '时间表管理员';
-		$strings['Total'] = '总数';
-		$strings['QuantityReserved'] = '已预约数量';
-		$strings['AllAccessories'] = '所有设备/附件';
-		$strings['GetReport'] = '取得报告';
-		$strings['NoResultsFound'] = '没有符合的结果';
-		$strings['SaveThisReport'] = '储存这报告';
-		$strings['ReportSaved'] = '报告已储存!';
-		$strings['EmailReport'] = '以电邮寄出报告';
-		$strings['ReportSent'] = '报告已寄出!';
-		$strings['RunReport'] = '导出报告';
-		$strings['NoSavedReports'] = '你没有已储存的报告.';
-		$strings['CurrentWeek'] = '本周';
-		$strings['CurrentMonth'] = '本月';
-		$strings['AllTime'] = '全部时间';
-		$strings['FilterBy'] = '以..过滤';
-		$strings['Select'] = '选择';
-		$strings['List'] = '以 列';
-		$strings['TotalTime'] = '以 总时间';
-		$strings['Count'] = '以 数目';
-		$strings['Usage'] = '使用情况';
-		$strings['AggregateBy'] = '合计以';
-		$strings['Range'] = '范围';
-		$strings['Choose'] = '选择';
-		$strings['All'] = '所有';
-		$strings['ViewAsChart'] = '以图表观看';
-		$strings['ReservedResources'] = '已预约的资源';
-		$strings['ReservedAccessories'] = '已预约的设备/附件';
-		$strings['ResourceUsageTimeBooked'] = '资源使用情况 - 预订时间';
-		$strings['ResourceUsageReservationCount'] = '资源使用情况 - 预约次数';
-		$strings['Top20UsersTimeBooked'] = '二十高使用量使用者 - 预订时间';
-		$strings['Top20UsersReservationCount'] = '二十高使用量使用者 - 预约次数';
+        $strings['ForgotPasswordEmailSent'] = '一封包含重设密码提示的电子邮件已经发往您提供的的电子邮件地址';
+        $strings['ActivationEmailSent'] = '您会立即收到一封有关启动的电子邮件.';
+        $strings['AccountActivationError'] = '对不起，我们不能启动您的账号.';
+        $strings['Attachments'] = '附件';
+        $strings['AttachFile'] = '附件文件';
+        $strings['Maximum'] = '最大值';
+        $strings['NoScheduleAdministratorLabel'] = '没有时间表管理员';
+        $strings['ScheduleAdministrator'] = '时间表管理员';
+        $strings['Total'] = '总数';
+        $strings['QuantityReserved'] = '已预约数量';
+        $strings['AllAccessories'] = '所有设备/附件';
+        $strings['GetReport'] = '取得报告';
+        $strings['NoResultsFound'] = '没有符合的结果';
+        $strings['SaveThisReport'] = '储存这报告';
+        $strings['ReportSaved'] = '报告已储存!';
+        $strings['EmailReport'] = '以电邮寄出报告';
+        $strings['ReportSent'] = '报告已寄出!';
+        $strings['RunReport'] = '导出报告';
+        $strings['NoSavedReports'] = '你没有已储存的报告.';
+        $strings['CurrentWeek'] = '本周';
+        $strings['CurrentMonth'] = '本月';
+        $strings['AllTime'] = '全部时间';
+        $strings['FilterBy'] = '以..过滤';
+        $strings['Select'] = '选择';
+        $strings['List'] = '以 列';
+        $strings['TotalTime'] = '以 总时间';
+        $strings['Count'] = '以 数目';
+        $strings['Usage'] = '使用情况';
+        $strings['AggregateBy'] = '合计以';
+        $strings['Range'] = '范围';
+        $strings['Choose'] = '选择';
+        $strings['All'] = '所有';
+        $strings['ViewAsChart'] = '以图表观看';
+        $strings['ReservedResources'] = '已预约的资源';
+        $strings['ReservedAccessories'] = '已预约的设备/附件';
+        $strings['ResourceUsageTimeBooked'] = '资源使用情况 - 预订时间';
+        $strings['ResourceUsageReservationCount'] = '资源使用情况 - 预约次数';
+        $strings['Top20UsersTimeBooked'] = '二十高使用量使用者 - 预订时间';
+        $strings['Top20UsersReservationCount'] = '二十高使用量使用者 - 预约次数';
         // End Strings
 
         // Errors
@@ -464,7 +464,7 @@ class zh_cn extends en_us
         $strings['ServerSettings'] = '服务器设置';
         $strings['Dashboard'] = '控制台';
         $strings['Help'] = '帮助';
-		$strings['Administration'] = '管理';
+        $strings['Administration'] = '管理';
         $strings['About'] = '关于';
         $strings['Bookings'] = '预订';
         $strings['Schedule'] = '时间表';
@@ -489,14 +489,14 @@ class zh_cn extends en_us
         $strings['ResourceReservations'] = '预约资源';
         $strings['Customization'] = '自定义';
         $strings['Attributes'] = '属性';
-		$strings['AccountActivation'] = '账号激活';
-		$strings['ScheduleReservations'] = '计划预约';
-		$strings['Reports'] = '报告';
-		$strings['GenerateReport'] = '建立一个新报告';
-		$strings['MySavedReports'] = '我已储存的报告';
-		$strings['CommonReports'] = '共享的报告';
-		$strings['ViewDay'] = '观看日期';
-		$strings['Group'] = '群组';
+        $strings['AccountActivation'] = '账号激活';
+        $strings['ScheduleReservations'] = '计划预约';
+        $strings['Reports'] = '报告';
+        $strings['GenerateReport'] = '建立一个新报告';
+        $strings['MySavedReports'] = '我已储存的报告';
+        $strings['CommonReports'] = '共享的报告';
+        $strings['ViewDay'] = '观看日期';
+        $strings['Group'] = '群组';
         // End Page Titles
 
         // Day representations
@@ -514,7 +514,7 @@ class zh_cn extends en_us
         $strings['DayThursdayAbbr'] = '周四';
         $strings['DayFridayAbbr'] = '周五';
         $strings['DaySaturdayAbbr'] = '周六';
-  // End Day representations
+        // End Day representations
 
         // Email Subjects
         $strings['ReservationApprovedSubject'] = '您的账号已经启动';
@@ -549,13 +549,13 @@ class zh_cn extends en_us
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六');
+        $days['full'] = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         // The three letter abbreviation
-        $days['abbr'] = array('日', '一', '二', '三', '四', '五', '六');
+        $days['abbr'] = ['日', '一', '二', '三', '四', '五', '六'];
         // The two letter abbreviation
-        $days['two'] = array('日', '一', '二', '三', '四', '五', '六');
+        $days['two'] = ['日', '一', '二', '三', '四', '五', '六'];
         // The one letter abbreviation
-        $days['letter'] = array('S', 'M', 'T', 'W', 'T', 'F', 'S');
+        $days['letter'] = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
         $this->Days = $days;
 
@@ -575,9 +575,9 @@ class zh_cn extends en_us
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
+        $months['full'] = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
         // The three letter month name
-        $months['abbr'] = array('一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二');
+        $months['abbr'] = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
 
         $this->Months = $months;
 
@@ -589,7 +589,7 @@ class zh_cn extends en_us
      */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        $this->Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
         return $this->Letters;
     }

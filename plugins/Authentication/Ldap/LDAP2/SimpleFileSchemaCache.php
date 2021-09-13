@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
 * File containing the example simple file based Schema Caching class.
@@ -29,10 +30,10 @@ class Net_LDAP2_SimpleFileSchemaCache implements Net_LDAP2_SchemaCache
     * @see Net_LDAP2_SimpleFileSchemaCache()
     * @var array
     */
-    protected $config = array(
+    protected $config = [
         'path'    => '/tmp/Net_LDAP_Schema.cache',
         'max_age' => 1200
-    );
+    ];
 
     /**
     * Initialize the simple cache
@@ -45,16 +46,16 @@ class Net_LDAP2_SimpleFileSchemaCache implements Net_LDAP2_SchemaCache
     */
     public function __construct($cfg)
     {
-    	foreach ($cfg as $key => $value) {
-			if (array_key_exists($key, $this->config)) {
-				if (gettype($this->config[$key]) != gettype($value)) {
-					$this->getCore()->dropFatalError(__CLASS__.": Could not set config! Key $key does not match type ".gettype($this->config[$key])."!");
-				}
-				$this->config[$key] = $value;
-			} else {
-				$this->getCore()->dropFatalError(__CLASS__.": Could not set config! Key $key is not defined!");
-			}
-		}
+        foreach ($cfg as $key => $value) {
+            if (array_key_exists($key, $this->config)) {
+                if (gettype($this->config[$key]) != gettype($value)) {
+                    $this->getCore()->dropFatalError(__CLASS__.": Could not set config! Key $key does not match type ".gettype($this->config[$key])."!");
+                }
+                $this->config[$key] = $value;
+            } else {
+                $this->getCore()->dropFatalError(__CLASS__.": Could not set config! Key $key is not defined!");
+            }
+        }
     }
 
     /**
@@ -67,14 +68,14 @@ class Net_LDAP2_SimpleFileSchemaCache implements Net_LDAP2_SchemaCache
     */
     public function loadSchema()
     {
-         $return = false; // Net_LDAP2 will load schema from LDAP
-         if (file_exists($this->config['path'])) {
-             $cache_maxage = filemtime($this->config['path']) + $this->config['max_age'];
-             if (time() <= $cache_maxage || $this->config['max_age'] == 0) {
-                 $return = unserialize(file_get_contents($this->config['path']));
-             }
-         }
-         return $return;
+        $return = false; // Net_LDAP2 will load schema from LDAP
+        if (file_exists($this->config['path'])) {
+            $cache_maxage = filemtime($this->config['path']) + $this->config['max_age'];
+            if (time() <= $cache_maxage || $this->config['max_age'] == 0) {
+                $return = unserialize(file_get_contents($this->config['path']));
+            }
+        }
+        return $return;
     }
 
     /**
@@ -90,7 +91,8 @@ class Net_LDAP2_SimpleFileSchemaCache implements Net_LDAP2_SchemaCache
     * @param mixed $schema The object that should be cached
     * @return true|Net_LDAP2_Error|false
     */
-    public function storeSchema($schema) {
+    public function storeSchema($schema)
+    {
         file_put_contents($this->config['path'], serialize($schema));
         return true;
     }

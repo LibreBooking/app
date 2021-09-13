@@ -42,12 +42,13 @@ class ParticipationPresenterTests extends TestBase
         $this->reservationViewRepo = $this->createMock('IReservationViewRepository');
         $this->scheduleRepository = $this->createMock('IScheduleRepository');
         $this->participationNotification = new FakeParticipationNotification();
-        $rules = array(new ReservationStartTimeRule($this->scheduleRepository), new ResourceMinimumNoticeRuleAdd($this->fakeUser), new ResourceMaximumNoticeRule($this->fakeUser));
+        $rules = [new ReservationStartTimeRule($this->scheduleRepository), new ResourceMinimumNoticeRuleAdd($this->fakeUser), new ResourceMaximumNoticeRule($this->fakeUser)];
         $this->presenter = new ParticipationPresenter(
             $this->page,
             $this->reservationRepo,
             $this->reservationViewRepo,
-            $this->participationNotification);
+            $this->participationNotification
+        );
     }
 
     public function teardown(): void
@@ -71,7 +72,7 @@ class ParticipationPresenterTests extends TestBase
         $referenceNumber = 'abc123';
         $builder = new ExistingReservationSeriesBuilder();
         $instance = new TestReservation();
-        $instance->WithParticipants(array(1));
+        $instance->WithParticipants([1]);
         $instance->WithInvitee($currentUserId);
 
         $resource = new FakeBookableResource(1);
@@ -126,7 +127,7 @@ class ParticipationPresenterTests extends TestBase
         $referenceNumber = 'abc123';
         $builder = new ExistingReservationSeriesBuilder();
         $instance = new TestReservation();
-        $instance->WithParticipants(array(1));
+        $instance->WithParticipants([1]);
         $instance->WithInvitee($currentUserId);
 
         $resource = new FakeBookableResource(1);
@@ -183,7 +184,7 @@ class ParticipationPresenterTests extends TestBase
         $referenceNumber = 'abc123';
         $builder = new ExistingReservationSeriesBuilder();
         $instance = new TestReservation();
-        $instance->WithParticipants(array(1));
+        $instance->WithParticipants([1]);
         $instance->WithInvitee($currentUserId);
 
         $resource = new FakeBookableResource(1);
@@ -321,7 +322,7 @@ class ParticipationPresenterTests extends TestBase
         $referenceNumber = 'abc123';
         $series = $this->createMock('ExistingReservationSeries');
         $series->expects($this->any())->method('GetAllowParticipation')->will($this->returnValue(true));
-        $series->expects($this->any())->method('AllResources')->will($this->returnValue(array()));
+        $series->expects($this->any())->method('AllResources')->will($this->returnValue([]));
 
         $this->page->expects($this->once())
             ->method('GetResponseType')

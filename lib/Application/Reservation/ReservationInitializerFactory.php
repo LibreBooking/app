@@ -29,11 +29,10 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 
     public function __construct(
         IScheduleRepository $scheduleRepository,
-		IUserRepository $userRepository,
-		IResourceService $resourceService,
+        IUserRepository $userRepository,
+        IResourceService $resourceService,
         IReservationAuthorization $reservationAuthorization
-    )
-    {
+    ) {
         $this->reservationAuthorization = $reservationAuthorization;
         $this->userRepository = $userRepository;
 
@@ -44,24 +43,31 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 
     public function GetNewInitializer(INewReservationPage $page)
     {
-        return new NewReservationInitializer($page,
+        return new NewReservationInitializer(
+            $page,
             $this->userBinder,
             $this->dateBinder,
             $this->resourceBinder,
             ServiceLocator::GetServer()->GetUserSession(),
             new ScheduleRepository(),
             new ResourceRepository(),
-            new TermsOfServiceRepository());
+            new TermsOfServiceRepository()
+        );
     }
 
     public function GetExistingInitializer(IExistingReservationPage $page, ReservationView $reservationView)
     {
-        return new ExistingReservationInitializer($page,
+        return new ExistingReservationInitializer(
+            $page,
             $this->userBinder,
             $this->dateBinder,
             $this->resourceBinder,
-            new ReservationDetailsBinder($this->reservationAuthorization, $page, $reservationView,
-                new PrivacyFilter($this->reservationAuthorization)),
+            new ReservationDetailsBinder(
+                $this->reservationAuthorization,
+                $page,
+                $reservationView,
+                new PrivacyFilter($this->reservationAuthorization)
+            ),
             $reservationView,
             ServiceLocator::GetServer()->GetUserSession(),
             new TermsOfServiceRepository()

@@ -4,7 +4,6 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUserAvailabilityPrese
 
 class ReservationUserAvailabilityPresenterTests extends TestBase
 {
-
     /**
      * @var ReservationUserAvailabilityPresenter
      */
@@ -45,26 +44,28 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->userRepository = new FakeUserRepository();
         $this->resourceRepository = new FakeResourceRepository();
 
-        $this->presenter = new ReservationUserAvailabilityPresenter($this->page,
+        $this->presenter = new ReservationUserAvailabilityPresenter(
+            $this->page,
             $this->reservationRepository,
             $this->scheduleRepository,
             $this->userRepository,
-            $this->resourceRepository);
+            $this->resourceRepository
+        );
     }
 
     public function testBindsResourceAndUserLayout()
     {
         $tz = $this->fakeUser->Timezone;
 
-        $expectedPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
-        $expectedInvitees = array(new UserDto(1, 'user1', 'invitee', '1@1.com'));
-        $expectedParticipants = array(new UserDto(2, 'user2', 'participant', '2@2.com'));
-        $expectedResources = array(new FakeBookableResource(1, 'resource1'));
+        $expectedPeriods = [new SchedulePeriod(Date::Now(), Date::Now())];
+        $expectedInvitees = [new UserDto(1, 'user1', 'invitee', '1@1.com')];
+        $expectedParticipants = [new UserDto(2, 'user2', 'participant', '2@2.com')];
+        $expectedResources = [new FakeBookableResource(1, 'resource1')];
         $expectedUser = new UserDto('3', 'user3', 'user', '3@3.com');
 
-        $this->page->_ResourceIds = array(1);
-        $this->page->_InviteeIds = array(1);
-        $this->page->_ParticipantIds = array(2);
+        $this->page->_ResourceIds = [1];
+        $this->page->_InviteeIds = [1];
+        $this->page->_ParticipantIds = [2];
         $this->page->_ScheduleId = 1;
 
         $startDate = Date::Now()->ToTimezone($tz);
@@ -113,11 +114,11 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $adjustedUserReservation->ResourceName = 'user3 user';
         $adjustedUserReservation->ResourceId = -3;
 
-        $this->reservationRepository->_ReservationsIteration[0] = array($resourceReservation);
-        $this->reservationRepository->_ReservationsIteration[1] = array($userReservation);
-        $this->reservationRepository->_ReservationsIteration[2] = array($participantReservation);
-        $this->reservationRepository->_ReservationsIteration[3] = array($inviteeReservation);
-        $this->reservationRepository->_Blackouts = array($resourceBlackout);
+        $this->reservationRepository->_ReservationsIteration[0] = [$resourceReservation];
+        $this->reservationRepository->_ReservationsIteration[1] = [$userReservation];
+        $this->reservationRepository->_ReservationsIteration[2] = [$participantReservation];
+        $this->reservationRepository->_ReservationsIteration[3] = [$inviteeReservation];
+        $this->reservationRepository->_Blackouts = [$resourceBlackout];
 
         $listingDates = new DateRange($startDate->SetTimeString($this->page->_StartTime), $endDate->SetTimeString($this->page->_EndTime));
 

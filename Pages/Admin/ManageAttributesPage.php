@@ -5,247 +5,243 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageAttributesPresenter.php');
 
 interface IManageAttributesPage extends IActionPage
 {
-	/**
-	 * @abstract
-	 * return string
-	 */
-	public function GetLabel();
+    /**
+     * @abstract
+     * return string
+     */
+    public function GetLabel();
 
-	/**
-	 * @abstract
-	 * return int|CustomAttributeTypes
-	 */
-	public function GetType();
+    /**
+     * @abstract
+     * return int|CustomAttributeTypes
+     */
+    public function GetType();
 
-	/**
-	 * return int|CustomAttributeCategory
-	 */
-	public function GetCategory();
+    /**
+     * return int|CustomAttributeCategory
+     */
+    public function GetCategory();
 
-	/**
-	 * return string
-	 */
-	public function GetValidationExpression();
+    /**
+     * return string
+     */
+    public function GetValidationExpression();
 
-	/**
-	 * return bool
-	 */
-	public function GetIsRequired();
+    /**
+     * return bool
+     */
+    public function GetIsRequired();
 
-	/**
-	 * @return int[]
-	 */
-	public function GetEntityIds();
+    /**
+     * @return int[]
+     */
+    public function GetEntityIds();
 
-	/**
-	 * return string
-	 */
-	public function GetPossibleValues();
+    /**
+     * return string
+     */
+    public function GetPossibleValues();
 
-	/**
-	 * return int|CustomAttributeCategory
-	 */
-	public function GetRequestedCategory();
+    /**
+     * return int|CustomAttributeCategory
+     */
+    public function GetRequestedCategory();
 
-	/**
-	 * @return int
-	 */
-	public function GetSortOrder();
+    /**
+     * @return int
+     */
+    public function GetSortOrder();
 
-	/**
-	 * return bool
-	 */
-	public function GetIsAdminOnly();
+    /**
+     * return bool
+     */
+    public function GetIsAdminOnly();
 
-	/**
-	 * @param $attributes CustomAttribute[]|array
-	 */
-	public function BindAttributes($attributes);
+    /**
+     * @param $attributes CustomAttribute[]|array
+     */
+    public function BindAttributes($attributes);
 
-	/**
-	 * @param $categoryId int|CustomAttributeCategory
-	 */
-	public function SetCategory($categoryId);
+    /**
+     * @param $categoryId int|CustomAttributeCategory
+     */
+    public function SetCategory($categoryId);
 
-	/**
-	 * @return int
-	 */
-	public function GetAttributeId();
+    /**
+     * @return int
+     */
+    public function GetAttributeId();
 
-	/**
-	 * @return int|null
-	 */
-	public function GetSecondaryEntityIds();
+    /**
+     * @return int|null
+     */
+    public function GetSecondaryEntityIds();
 
-	/**
-	 * @return CustomAttributeCategory|int|null
-	 */
-	public function GetSecondaryCategory();
+    /**
+     * @return CustomAttributeCategory|int|null
+     */
+    public function GetSecondaryCategory();
 
-	/**
-	 * @return bool
-	 */
-	public function GetLimitAttributeScope();
+    /**
+     * @return bool
+     */
+    public function GetLimitAttributeScope();
 
-	/**
-	 * @return bool
-	 */
-	public function GetIsPrivate();
+    /**
+     * @return bool
+     */
+    public function GetIsPrivate();
 }
 
 class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 {
-	/**
-	 * @var ManageAttributesPresenter
-	 */
-	private $presenter;
+    /**
+     * @var ManageAttributesPresenter
+     */
+    private $presenter;
 
-	public function __construct()
-	{
-		parent::__construct('CustomAttributes', 1);
-		$this->presenter = new ManageAttributesPresenter($this, new AttributeRepository());
-	}
+    public function __construct()
+    {
+        parent::__construct('CustomAttributes', 1);
+        $this->presenter = new ManageAttributesPresenter($this, new AttributeRepository());
+    }
 
-	public function PageLoad()
-	{
-		$typeLookup = array(
-				CustomAttributeTypes::SINGLE_LINE_TEXTBOX => 'SingleLineTextbox',
-				CustomAttributeTypes::MULTI_LINE_TEXTBOX => 'MultiLineTextbox',
-				CustomAttributeTypes::CHECKBOX => 'Checkbox',
-				CustomAttributeTypes::SELECT_LIST => 'SelectList',
-				CustomAttributeTypes::DATETIME => 'DateTime',
-		);
+    public function PageLoad()
+    {
+        $typeLookup = [
+                CustomAttributeTypes::SINGLE_LINE_TEXTBOX => 'SingleLineTextbox',
+                CustomAttributeTypes::MULTI_LINE_TEXTBOX => 'MultiLineTextbox',
+                CustomAttributeTypes::CHECKBOX => 'Checkbox',
+                CustomAttributeTypes::SELECT_LIST => 'SelectList',
+                CustomAttributeTypes::DATETIME => 'DateTime',
+        ];
 
-		$this->Set('Types', $typeLookup);
+        $this->Set('Types', $typeLookup);
 
-		parent::PageLoad();
-	}
+        parent::PageLoad();
+    }
 
-	public function ProcessPageLoad()
-	{
-		$this->presenter->PageLoad();
-		$this->Display('Admin/Attributes/manage_attributes.tpl');
-	}
+    public function ProcessPageLoad()
+    {
+        $this->presenter->PageLoad();
+        $this->Display('Admin/Attributes/manage_attributes.tpl');
+    }
 
-	public function ProcessAction()
-	{
-		$this->presenter->ProcessAction();
-	}
+    public function ProcessAction()
+    {
+        $this->presenter->ProcessAction();
+    }
 
-	public function GetLabel()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_LABEL);
-	}
+    public function GetLabel()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_LABEL);
+    }
 
-	public function GetType()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_TYPE);
-	}
+    public function GetType()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_TYPE);
+    }
 
-	public function GetCategory()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_CATEGORY);
-	}
+    public function GetCategory()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_CATEGORY);
+    }
 
-	public function GetValidationExpression()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_VALIDATION_EXPRESSION);
-	}
+    public function GetValidationExpression()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_VALIDATION_EXPRESSION);
+    }
 
-	public function GetIsRequired()
-	{
-		$required = $this->GetForm(FormKeys::ATTRIBUTE_IS_REQUIRED);
-		return !empty($required);
-	}
+    public function GetIsRequired()
+    {
+        $required = $this->GetForm(FormKeys::ATTRIBUTE_IS_REQUIRED);
+        return !empty($required);
+    }
 
-	public function GetEntityIds()
-	{
-		$ids = $this->GetForm(FormKeys::ATTRIBUTE_ENTITY);
-		if (is_null($ids))
-		{
-			return array();
-		}
+    public function GetEntityIds()
+    {
+        $ids = $this->GetForm(FormKeys::ATTRIBUTE_ENTITY);
+        if (is_null($ids)) {
+            return [];
+        }
 
-		if (!is_array($ids))
-		{
-			return array($ids);
-		}
+        if (!is_array($ids)) {
+            return [$ids];
+        }
 
-		return $ids;
-	}
+        return $ids;
+    }
 
-	public function GetPossibleValues()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_POSSIBLE_VALUES);
-	}
+    public function GetPossibleValues()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_POSSIBLE_VALUES);
+    }
 
-	public function GetSortOrder()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_SORT_ORDER);
-	}
+    public function GetSortOrder()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_SORT_ORDER);
+    }
 
-	public function GetRequestedCategory()
-	{
-		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_CATEGORY);
-	}
+    public function GetRequestedCategory()
+    {
+        return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_CATEGORY);
+    }
 
-	public function GetIsAdminOnly()
-	{
-		$adminOnly = $this->GetForm(FormKeys::ATTRIBUTE_IS_ADMIN_ONLY);
-		return !empty($adminOnly);
-	}
+    public function GetIsAdminOnly()
+    {
+        $adminOnly = $this->GetForm(FormKeys::ATTRIBUTE_IS_ADMIN_ONLY);
+        return !empty($adminOnly);
+    }
 
-	public function BindAttributes($attributes)
-	{
-		$this->Set('Attributes', $attributes);
-		$this->Display('Admin/Attributes/attribute-list.tpl');
-	}
+    public function BindAttributes($attributes)
+    {
+        $this->Set('Attributes', $attributes);
+        $this->Display('Admin/Attributes/attribute-list.tpl');
+    }
 
-	public function SetCategory($categoryId)
-	{
-		$this->Set('Category', $categoryId);
-	}
+    public function SetCategory($categoryId)
+    {
+        $this->Set('Category', $categoryId);
+    }
 
-	public function GetAttributeId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
-	}
+    public function GetAttributeId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
+    }
 
-	public function GetSecondaryEntityIds()
-	{
-		$ids = $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_ENTITY_IDS);
-		if (is_null($ids))
-		{
-			return array();
-		}
+    public function GetSecondaryEntityIds()
+    {
+        $ids = $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_ENTITY_IDS);
+        if (is_null($ids)) {
+            return [];
+        }
 
-		if (!is_array($ids))
-		{
-			return array($ids);
-		}
+        if (!is_array($ids)) {
+            return [$ids];
+        }
 
-		return $ids;
-	}
+        return $ids;
+    }
 
-	public function GetSecondaryCategory()
-	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_CATEGORY);
-	}
+    public function GetSecondaryCategory()
+    {
+        return $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_CATEGORY);
+    }
 
-	public function GetLimitAttributeScope()
-	{
-		$limit = $this->GetForm(FormKeys::ATTRIBUTE_LIMIT_SCOPE);
-		return !empty($limit);
-	}
+    public function GetLimitAttributeScope()
+    {
+        $limit = $this->GetForm(FormKeys::ATTRIBUTE_LIMIT_SCOPE);
+        return !empty($limit);
+    }
 
-	public function GetIsPrivate()
-	{
-		$isPrivate = $this->GetForm(FormKeys::ATTRIBUTE_IS_PRIVATE);
-		return !empty($isPrivate);
-	}
+    public function GetIsPrivate()
+    {
+        $isPrivate = $this->GetForm(FormKeys::ATTRIBUTE_IS_PRIVATE);
+        return !empty($isPrivate);
+    }
 
-	public function ProcessDataRequest($dataRequest)
-	{
-		$this->presenter->HandleDataRequest($dataRequest);
-	}
+    public function ProcessDataRequest($dataRequest)
+    {
+        $this->presenter->HandleDataRequest($dataRequest);
+    }
 }
