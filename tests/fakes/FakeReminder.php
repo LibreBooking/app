@@ -4,7 +4,7 @@ require_once(ROOT_DIR . '/lib/Reminder.class.php');
 
 class FakeReminder extends Reminder
 {
-    public function FakeReminder()
+    public function __construct()
     {
         $day = date('d');
         $mon = date('m');

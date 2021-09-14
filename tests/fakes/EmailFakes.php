@@ -11,7 +11,7 @@ class FakeMailer extends PHPMailer
     public $sendWasCalled = false;
     public $isHtml = true;
 
-    public function FakeMailer()
+    public function __construct()
     {
     }
 
