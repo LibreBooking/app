@@ -236,7 +236,7 @@ class ee_ee extends en_gb
         $strings['ReservationApprovalPreference'] = 'Kui broneeringud on kinnitatud ';
         $strings['PreferenceSendEmail'] = 'Saada mulle email';
         $strings['PreferenceNoEmail'] = 'Ära saada teavitust';
-        $strings['ReservationCreated'] = 'Sinu broneering on edukalt loodud! Kinnitate, et olete tutvunud <a href=\\"http://rannahall.ee/rannahallist/hinnakiri\\">Rannahalli hinnakirjaga ja broneeringu tühistamise tingimustega</a>. Palun teatada broneeringu tühistamisest võimalikult varakult (tel 55663493)! Kohtumiseni Rannahallis!';
+        $strings['ReservationCreated'] = 'Sinu broneering on edukalt loodud!';
         $strings['ReservationUpdated'] = 'Sinu broneering on uuendatud!';
         $strings['ReservationRemoved'] = 'Sinu broneering on kustutatud';
         $strings['ReservationRequiresApproval'] = 'Väljaku broneerimine vajab kinnitust. Broneering on ootel, kuni see kinnitatakse.';
