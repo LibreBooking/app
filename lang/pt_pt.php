@@ -355,6 +355,7 @@ class pt_pt extends en_gb
         $strings['FindUser'] = 'Encontrar utilizador';
         $strings['FirstName'] = 'Nome';
         $strings['FirstNameRequired'] = 'O nome é obrigatório.';
+		$strings['FirstTimeUser?'] = 'É a sua primeira visita?';
         $strings['FlipSchedule'] = 'Virar a disposição da agenda';
         $strings['ForgotMyPassword'] = 'Esqueci-me da minha senha';
         $strings['ForgotPassword'] = 'Esqueceu-se da sua Senha';
@@ -546,7 +547,7 @@ class pt_pt extends en_gb
         $strings['OpenInvitations'] = 'Abrir Convites';
         $strings['Optional'] = 'opcional';
         $strings['OptionalLabel'] = 'Título opcional';
-        $strings['Organization'] = 'Morada';
+        $strings['Organization'] = 'Organização';
         $strings['OriginalEndDate'] = 'Fim original';
         $strings['Page'] = 'Página';
         $strings['Participant'] = 'Participante';
