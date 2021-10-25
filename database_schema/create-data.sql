@@ -4,7 +4,7 @@ insert into `roles` values (2, 'Application Admin', 2);
 insert into `reservation_types` values (1, 'Reservation'), (2, 'Blackout');
 insert into `reservation_statuses` values (1, 'Created'), (2, 'Deleted'), (3, 'Pending');
 
-insert into `layouts` values (1, 'America/New_York', 0);
+insert into `layouts` values (1, 'America/New_York');
 
 insert into `time_blocks` (`availability_code`, `layout_id`, `start_time`, `end_time`) values
 (2, 1, '00:00', '08:00'),
