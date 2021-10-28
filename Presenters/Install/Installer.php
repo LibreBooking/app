@@ -239,7 +239,7 @@ class Installer
             return $versionNumber;
         }
 
-        return 2.0;
+        return 2.8; //returns the current db version being installed
     }
 
     public function ClearCachedTemplates()
