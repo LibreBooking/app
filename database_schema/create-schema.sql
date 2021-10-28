@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `layouts`;
 CREATE TABLE `layouts` (
  `layout_id` mediumint(8) unsigned NOT NULL auto_increment,
  `timezone` varchar(50) NOT NULL,
+ `layout_type` TINYINT UNSIGNED NOT NULL DEFAULT 0,
  PRIMARY KEY (`layout_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
