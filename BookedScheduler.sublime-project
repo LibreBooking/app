@@ -6,32 +6,10 @@
             [
                 ".git",
                 ".phpdoc",
-                "tpl_c",
-                "vendor"
+                "tpl_c"
             ],
             "name": "BookedScheduler",
             "path": "."
         }
-    ],
-    "settings":
-    {
-        "LSP":
-        {
-            // https://github.com/phpactor/phpactor#installation
-            "phpactor":
-            {
-                "enabled": false
-            },
-            // https://gitlab.com/Serenata/Serenata/-/blob/master/README.md
-            "serenata":
-            {
-                "enabled": true
-            },
-            // https://github.com/felixfbecker/php-language-server#installation
-            "phpls":
-            {
-                "enabled": false
-            }
-        }
-    }
+    ]
 }

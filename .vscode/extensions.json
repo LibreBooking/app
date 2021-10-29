@@ -1,7 +1,7 @@
 {
     "recommendations": [
         "imperez.smarty",
-        "felixfbecker.php-intellisense",
+        "bmewburn.vscode-intelephense-client",
         "felixfbecker.php-debug",
         "tombonnike.vscode-status-bar-format-toggle",
         "howardzuo.vscode-favorites",
