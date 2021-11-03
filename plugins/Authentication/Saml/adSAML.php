@@ -111,6 +111,7 @@ class adSAML
             $this->userAttributes = $this->authSimple->getAttributes();
             $returnValue = true;
         }
+        SimpleSAML_Session::getSessionFromRequest()->cleanup(); // Reverts to our PHP session
         return $returnValue;
     }
 
