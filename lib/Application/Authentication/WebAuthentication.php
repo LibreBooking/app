@@ -25,6 +25,12 @@ interface IWebAuthentication extends IAuthenticationPromptOptions
     public function Logout(UserSession $user);
 
     /**
+     * @param UserSession $user
+     * @return void
+     */
+    public function postLogout(UserSession $user);
+
+    /**
      * @param string $cookieValue authentication cookie value
      * @param ILoginContext $loginContext
      * @return bool If the login was successful
@@ -117,6 +123,19 @@ class WebAuthentication implements IWebAuthentication
         $this->DeleteLoginCookie($userSession->UserId);
         ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
     }
+
+    /**
+	 * @param UserSession $userSession
+	 * @return void
+	 */
+	public function postLogout(UserSession $userSession)
+	{
+		$this->authentication->postLogout($userSession);
+		Log::Debug('Logout userId: %s', $userSession->UserId);
+
+		$this->DeleteLoginCookie($userSession->UserId);
+		ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
+	}
 
     public function CookieLogin($cookieValue, $loginContext)
     {

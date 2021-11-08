@@ -39,4 +39,3 @@ $conf['settings']['simplesamlphp.organization'] = 'department';
 $conf['settings']['simplesamlphp.position'] = 'title';
 $conf['settings']['simplesamlphp.groups'] = 'groups';
 $conf['settings']['simplesamlphp.sync.groups'] = 'false';
-$conf['settings']['simplesamlphp.return.to'] = '';

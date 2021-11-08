@@ -111,7 +111,7 @@ class adSAML
             $this->userAttributes = $this->authSimple->getAttributes();
             $returnValue = true;
         }
-        SimpleSAML_Session::getSessionFromRequest()->cleanup(); // Reverts to our PHP session
+		$this->Cleanup();
         return $returnValue;
     }
 
@@ -126,8 +126,19 @@ class adSAML
         return $this->userAttributes;
     }
 
-    public function Logout($returnTo = '')
-    {
-        $this->authSimple->logout($returnTo);
-    }
+    /**
+	 * Logout of SimpleSAML
+	 * Redirect to post-logout since SS logout function
+	 * does not return
+	 */
+	public function Logout()
+	{
+		$scriptUrl = Configuration::Instance()->GetScriptUrl();
+		$this->authSimple->logout(rtrim($scriptUrl, '/') . '/post-logout.php');
+	}
+
+	public function Cleanup()
+	{
+		SimpleSAML_Session::getSessionFromRequest()->cleanup(); // Reverts to our PHP session
+	}
 }
