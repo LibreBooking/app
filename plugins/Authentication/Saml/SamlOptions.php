@@ -43,14 +43,6 @@ class SamlOptions
     }
 
     /**
-     * @return string
-     */
-    public function ReturnTo()
-    {
-        return $this->GetConfig(SamlConfig::RETURN_TO);
-    }
-
-    /**
      * @return bool
      */
     public function SyncGroups()

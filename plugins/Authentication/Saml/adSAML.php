@@ -47,7 +47,7 @@ class adSAML
     /**
      * Instance of the helper class for Simple Saml Applications
      *
-     * @var SimpleSAML_Auth_Simple object
+     * @var SimpleSAML\Auth\Simple object
      */
     private $authSimple;
 
@@ -62,7 +62,7 @@ class adSAML
     /**
      * Default Constructor
      *
-     * Instantiate an instance of the SimpleSAML_Auth_Simple class
+     * Instantiate an instance of the SimpleSAML\Auth\Simple class
      * and call requireAuth() to validate a user
      *
      * @param array $options Array of options to pass to the constructor
@@ -75,7 +75,7 @@ class adSAML
         $this->samlLib = $options["ssphp_lib"];
         $this->samlConfig = $options["ssphp_config"];
         require_once($this->samlLib . '/lib/_autoload.php');
-        SimpleSAML_Configuration::init($this->samlConfig);
+        SimpleSAML\Configuration::init($this->samlConfig);
 
         // You can specifically overide any of the default configuration options setup above
         if (count($options) > 0) {
@@ -87,7 +87,7 @@ class adSAML
             }
         }
 
-        $this->authSimple = new SimpleSAML_Auth_Simple($this->ssphpSP);
+        $this->authSimple = new SimpleSAML\Auth\Simple($this->ssphpSP);
     }
 
     /**
@@ -111,7 +111,7 @@ class adSAML
             $this->userAttributes = $this->authSimple->getAttributes();
             $returnValue = true;
         }
-        SimpleSAML_Session::getSessionFromRequest()->cleanup(); // Reverts to our PHP session
+		$this->Cleanup();
         return $returnValue;
     }
 
@@ -126,8 +126,19 @@ class adSAML
         return $this->userAttributes;
     }
 
-    public function Logout($returnTo = '')
-    {
-        $this->authSimple->logout($returnTo);
-    }
+    /**
+	 * Logout of SimpleSAML
+	 * Redirect to post-logout since SS logout function
+	 * does not return
+	 */
+	public function Logout()
+	{
+		$scriptUrl = Configuration::Instance()->GetScriptUrl();
+		$this->authSimple->logout(rtrim($scriptUrl, '/') . '/post-logout.php');
+	}
+
+	public function Cleanup()
+	{
+		SimpleSAML\Session::getSessionFromRequest()->cleanup(); // Reverts to our PHP session
+	}
 }
