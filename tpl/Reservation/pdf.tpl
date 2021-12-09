@@ -146,7 +146,7 @@ $('.btnPDF').click(function (e) {
 		],
 		{foreach from=$AvailableResources item=resource}
 			{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-				[{ content: '{$resource->Name}'},
+				[{ content: '{$resource->Name|escape:'javascript'}'},
 				 { content: '{if $resource->GetRequiresApproval()}X{/if}', styles: { fontStyle: 'bold', halign: 'center'}},
 				 { content: '{if $resource->IsCheckInEnabled()}X{/if}', styles: { fontStyle: 'bold', halign: 'center'}},
 				 { content: '{if $resource->IsAutoReleased()}{$resource->GetAutoReleaseMinutes()}{else} - {/if}', styles: { halign: 'center'}},
