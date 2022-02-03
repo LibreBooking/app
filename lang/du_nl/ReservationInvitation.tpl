@@ -49,5 +49,5 @@
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Bekijk deze reservering</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Voeg toe aan agenda</a> |
-	<a href="{$ScriptUrl}">Login in Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Login in LibreBooking</a>
 

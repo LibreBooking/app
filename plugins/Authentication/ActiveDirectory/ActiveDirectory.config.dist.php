@@ -8,9 +8,9 @@ $conf['settings']['basedn'] =  'ou=uidauthent,o=domain.com';   // The base dn fo
 $conf['settings']['version'] = '3';		// LDAP protocol version
 $conf['settings']['use.ssl'] = 'false'; // 'true' if 636 was used.
 $conf['settings']['account.suffix'] = '';	// The full account suffix for your domain. Example: @uidauthent.domain.com.
-$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against Booked Scheduler database
+$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against LibreBooking database
 $conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,telephonenumber=telephonenumber,physicaldeliveryofficename=physicaldeliveryofficename,title=title';	// mapping of required attributes to attribute names in your directory
 $conf['settings']['required.groups'] = '';	// Required groups (empty if not necessary) User only needs to belong to at least one listed (eg. Group1,Group2)
-$conf['settings']['sync.groups'] = 'false';	// Whether or not groups should be synced into Booked. When true then be sure that the attribute.mapping config value contains a correct map for groups
+$conf['settings']['sync.groups'] = 'false';	// Whether or not groups should be synced into LibreBooking. When true then be sure that the attribute.mapping config value contains a correct map for groups
 $conf['settings']['use.sso'] = 'false';	// Whether or not to use single sign on
 $conf['settings']['prevent.clean.username'] = 'false';	// If the username is an email address or contains the domain, clean it

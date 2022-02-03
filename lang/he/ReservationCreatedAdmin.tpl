@@ -39,6 +39,6 @@
 	{/if}
 
 	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">לצפות בהזמנה זו</a> | <a href="{$ScriptUrl}">כניסה ל-Booked Scheduler</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">לצפות בהזמנה זו</a> | <a href="{$ScriptUrl}">כניסה ל-LibreBooking</a>
 
 

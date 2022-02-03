@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/WordPress/namespace.php');
 
 /**
- * Provides WordPress authentication/synchronization for Booked Scheduler
+ * Provides WordPress authentication/synchronization for LibreBooking
  * @see IAuthorization
  */
 class WordPress extends Authentication implements IAuthentication

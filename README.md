@@ -1,6 +1,6 @@
-# Welcome to Booked Scheduler
+# Welcome to LibreBooking
 
-This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) BookedScheduler alive, see [History](./doc/HISTORY.md)
+This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBooking alive, see [History](./doc/HISTORY.md)
 
 ## Prerequisites
 

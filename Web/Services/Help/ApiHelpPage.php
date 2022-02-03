@@ -9,7 +9,7 @@ class ApiHelpPage
 	    <html>
 	        <head>
 	            <meta charset="utf-8"/>
-	            <title>Booked Scheduler API Documentation</title>
+	            <title>LibreBooking API Documentation</title>
 	              <link rel="shortcut icon" href="../favicon.ico"/>
                   <link rel="icon" href="../favicon.ico"/>
 	            <style type="text/css">
@@ -61,7 +61,7 @@ class ApiHelpPage
 	            </style>
 	        </head>
 	        <body>
-	            <h1>Booked Scheduler API Documentation</h1>
+	            <h1>LibreBooking API Documentation</h1>
 EOT;
 
         $security = sprintf(

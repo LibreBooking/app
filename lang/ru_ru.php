@@ -599,11 +599,11 @@ class ru_ru extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Установка Booked Scheduler (только MySQL)';
+        $strings['InstallApplication'] = 'Установка LibreBooking (только MySQL)';
         $strings['IncorrectInstallPassword'] = 'К сожалению, введен неверный пароль.';
         $strings['SetInstallPassword'] = 'Вы должны задать пароль установки прежде чем, установка будет продолжена';
         $strings['InstallPasswordInstructions'] = 'В %s задайте %s пароль, который является случайным и трудно угадываемый, а затем вернитесь на эту страницу.<br/>Вы можете использовать %s';
-        $strings['NoUpgradeNeeded'] = 'Нет необходимости обновления. Запуск процесса установки удалит все существующие данные и установить новую копию Booked Scheduler!';
+        $strings['NoUpgradeNeeded'] = 'Нет необходимости обновления. Запуск процесса установки удалит все существующие данные и установить новую копию LibreBooking!';
         $strings['ProvideInstallPassword'] = 'Введите пароль для установки.';
         $strings['InstallPasswordLocation'] = 'Это можно найти на %s в %s.';
         $strings['VerifyInstallSettings'] = 'Проверьте следующие параметры по умолчанию, прежде чем продолжить. Или вы можете изменить их в %s.';
@@ -628,10 +628,10 @@ class ru_ru extends en_gb
         $strings['InstallationSuccess'] = 'Установка успешно завершена!';
         $strings['RegisterAdminUser'] = 'Зарегистрируйте Вашего пользователя с правами администратора. Это необходимо, если вы не импортировали данные из образца . Проверьте, что $conf[\'settings\'][\'allow.self.registration\'] = \'true\' в вашем  %s файле.';
         $strings['LoginWithSampleAccounts'] = 'Если вы импортировали данные примера, вы можете войти с admin/password для администратора или user/password для простого пользователя.';
-        $strings['InstalledVersion'] = 'Сейчас у вас запущена версия %s Booked Scheduler';
+        $strings['InstalledVersion'] = 'Сейчас у вас запущена версия %s LibreBooking';
         $strings['InstallUpgradeConfig'] = 'Рекомендуется обновить конфигурационный файл';
         $strings['InstallationFailure'] = 'Были проблемы с установкой. Пожалуйста, исправьте их и повторите установку.';
-        $strings['ConfigureApplication'] = 'Настроить Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Настроить LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Ваш конфигурационный файл теперь обновлен!';
         $strings['ConfigUpdateFailure'] = 'Мы не могли автоматически обновлять свой конфигурационный файл. Пожалуйста, перезаписать содержимое config.php со следующими требованиями:';
         $strings['SelectUser'] = 'Выбор пользователя';

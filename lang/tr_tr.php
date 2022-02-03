@@ -584,11 +584,11 @@ class tr_tr extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Install Booked Scheduler (MySQL only)';
+        $strings['InstallApplication'] = 'Install LibreBooking (MySQL only)';
         $strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect.';
         $strings['SetInstallPassword'] = 'You must set an install password before the installation can be run.';
         $strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';
-        $strings['NoUpgradeNeeded'] = 'Booked is up to date. There is no upgrade needed.';
+        $strings['NoUpgradeNeeded'] = 'LibreBooking is up to date. There is no upgrade needed.';
         $strings['ProvideInstallPassword'] = 'Please provide your installation password.';
         $strings['InstallPasswordLocation'] = 'This can be found at %s in %s.';
         $strings['VerifyInstallSettings'] = 'Verify the following default settings before continuing. Or you can change them in %s.';
@@ -613,10 +613,10 @@ class tr_tr extends en_gb
         $strings['InstallationSuccess'] = 'Installation completed successfully!';
         $strings['RegisterAdminUser'] = 'Register your admin user. This is required if you did not import the sample data. Ensure that $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in your %s file.';
         $strings['LoginWithSampleAccounts'] = 'If you imported the sample data, you can log in with admin/password for admin user or user/password for basic user.';
-        $strings['InstalledVersion'] = 'You are now running version %s of Booked Scheduler';
+        $strings['InstalledVersion'] = 'You are now running version %s of LibreBooking';
         $strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
         $strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-        $strings['ConfigureApplication'] = 'Configure Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Configure LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
         $strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
         $strings['ScriptUrlWarning'] = 'Your <em>script.url</em> setting may not be correct. It is currently <strong>%s</strong>, we think it should be <strong>%s</strong>';

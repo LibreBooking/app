@@ -7,7 +7,7 @@
             <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
         </layout>
         <!-- this has to be an absolute path -->
-        <param name="file" value="/var/log/booked-application.log" />
+        <param name="file" value="/var/log/librebooking-app.log" />
         <param name="append" value="true" />
     </appender>
 
@@ -16,7 +16,7 @@
             <param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
         </layout>
         <!-- this has to be an absolute path -->
-        <param name="file" value="/var/log/booked-sql.log" />
+        <param name="file" value="/var/log/librebooking-sql.log" />
         <param name="append" value="true" />
     </appender>
 

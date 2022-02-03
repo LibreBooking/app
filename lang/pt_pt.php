@@ -219,7 +219,7 @@ class pt_pt extends en_gb
         $strings['ConfigurationFileNotWritable'] = 'Não possível gravar o ficheiro de configuração. Por favor verifique as permissões deste ficheiro e tente novamente.';
         $strings['ConfigurationUpdateHelp'] = 'Consulte a secção de Configuração no <a target=_blank href=%s>Ficheiro de Ajuda</a> para documentação sobre estas configurações.';
         $strings['ConfigurationUpdated'] = 'O ficheiro de configuração foi atualizado';
-        $strings['ConfigureApplication'] = 'Configure o Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Configure o LibreBooking';
         $strings['ConflictingAccessoryDates'] = 'Não são suficientes os seguintes acessórios:';
         $strings['ConflictingReservationDates'] = 'Há reservas em conflito nas seguintes datas:';
         $strings['Contact'] = 'Contato';
@@ -400,14 +400,14 @@ class pt_pt extends en_gb
         $strings['IncludingCompletedReservations'] = 'Incluindo reservas concluídas';
         $strings['IncorrectInstallPassword'] = 'A senha introduzida estava incorreta';
         $strings['Install'] = 'Instalação';
-        $strings['InstallApplication'] = 'Instalar o Booked Scheduler';
+        $strings['InstallApplication'] = 'Instalar o LibreBooking';
         $strings['InstallOptionsWarning'] = 'As opções seguintes provavelmente não funcionarão num ambiente hospedado. Se estiver a instalar num ambiente hospedado, utilizeas ferramentas do assistente MySQL para concluir estas etapas.';
         $strings['InstallPasswordInstructions'] = 'Em %1$s por favor defina %2$s para uma senha aleatória e difícil de adivinhar, depois regresse a esta página.<br/>Pode utilizar %3$s';
         $strings['InstallPasswordLocation'] = 'Esta pode ser encontrada em %1$s em %2$s.';
         $strings['InstallUpgradeConfig'] = 'É recomendável atualizar o seu ficheiro de configuração';
         $strings['InstallationFailure'] = 'Ocorreram problemas com a instalação. Por favor corrija-os e tente novamente a instalação.';
         $strings['InstallationSuccess'] = 'Instalação concluída com sucesso!';
-        $strings['InstalledVersion'] = 'Esta agora a correr a versão %s do Booked Scheduler';
+        $strings['InstalledVersion'] = 'Esta agora a correr a versão %s do LibreBooking';
         $strings['InsufficientPermissionsError'] = 'Não tem permissão para aceder a este recurso';
         $strings['InvalidAttachmentExtension'] = 'Só pode fazer upload de arquivos do tipo: %s';
         $strings['InvalidEmailDomain'] = 'O endereço de email não é de um domínio permitido';
@@ -529,7 +529,7 @@ class pt_pt extends en_gb
         $strings['NoScheduleAdministratorLabel'] = 'Sem administrador de agenda';
         $strings['NoTitleLabel'] = '(nenhum título)';
         $strings['NoUpcomingReservations'] = 'Não tem futuras reservas';
-        $strings['NoUpgradeNeeded'] = 'O Booked está atualizado. Não há nenhuma atualização necessária.';
+        $strings['NoUpgradeNeeded'] = 'O LibreBooking está atualizado. Não há nenhuma atualização necessária.';
         $strings['None'] = 'Nenhum';
         $strings['NotAttending'] = 'Não comparecer';
         $strings['NotCountingCompletedReservations'] = 'Não incluindo reservas concluídas';

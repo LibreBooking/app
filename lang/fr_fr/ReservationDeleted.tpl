@@ -40,6 +40,6 @@ Description: {$Description|nl2br}<br/>
     {/foreach}
 {/if}
 
-<a href="{$ScriptUrl}">Connexion à Booked Scheduler</a>
+<a href="{$ScriptUrl}">Connexion à LibreBooking</a>
 
 

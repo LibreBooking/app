@@ -43,6 +43,6 @@
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">לצפות בהזמנה זו</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">להוסיף ללוח אישי בדואר אלקרוני</a> |
-	<a href="{$ScriptUrl}">להתחבר ל-Booked Scheduler</a>
+	<a href="{$ScriptUrl}">להתחבר ל-LibreBooking</a>
 
 

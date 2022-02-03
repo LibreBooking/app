@@ -453,7 +453,7 @@ class hr_hr extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Instaliraj Booked Scheduler (MySQL samo)';
+        $strings['InstallApplication'] = 'Instaliraj LibreBooking (MySQL samo)';
         $strings['IncorrectInstallPassword'] = 'ďż˝ao nam je, lozinka je netocna!.';
         $strings['SetInstallPassword'] = 'Morate postaviti lozinku prije instaliranja.';
         $strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';
@@ -482,10 +482,10 @@ class hr_hr extends en_gb
         $strings['InstallationSuccess'] = 'Instalacija uspjeďż˝no zavrďż˝ena!';
         $strings['RegisterAdminUser'] = 'Register your admin user. This is required if you did not import the sample data. Ensure that $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in your %s file.';
         $strings['LoginWithSampleAccounts'] = 'If you imported the sample data, you can log in with admin/password for admin user or user/password for basic user.';
-        $strings['InstalledVersion'] = 'Radite u %s verziji Booked Scheduler';
+        $strings['InstalledVersion'] = 'Radite u %s verziji LibreBooking';
         $strings['InstallUpgradeConfig'] = 'Preporucujemo da nadogradite vaďż˝u konfiguracijsku datoteku.';
         $strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-        $strings['ConfigureApplication'] = 'Konfiguriraj Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Konfiguriraj LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Vaďż˝a konfiguracijska datoteka je aďż˝urna!';
         $strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
         $strings['SelectUser'] = 'Odaberi korisnika';

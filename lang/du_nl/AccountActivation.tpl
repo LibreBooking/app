@@ -1,3 +1,3 @@
 {$FirstName},<br/>
-Bedankt voor het registreren bij Booked Scheduler. <a href="{$ActivationUrl}">Activeer je account</a>.
+Bedankt voor het registreren bij LibreBooking. <a href="{$ActivationUrl}">Activeer je account</a>.
 

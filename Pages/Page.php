@@ -49,8 +49,8 @@ abstract class Page implements IPage
         $this->smarty->assign('HtmlTextDirection', $resources->TextDirection);
         $appTitle = Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE);
         $pageTile = $resources->GetString($titleKey);
-        $this->smarty->assign('Title', (empty($appTitle) ? 'Booked' : $appTitle) . (empty($pageTile) ? '' : ' - ' . $pageTile));
-        $this->smarty->assign('AppTitle', (empty($appTitle) ? 'Booked Scheduler' : $appTitle));
+        $this->smarty->assign('Title', (empty($appTitle) ? 'LibreBooking' : $appTitle) . (empty($pageTile) ? '' : ' - ' . $pageTile));
+        $this->smarty->assign('AppTitle', (empty($appTitle) ? 'LibreBooking' : $appTitle));
         $companyName = Configuration::Instance()->GetKey(ConfigKeys::COMPANY_NAME);
         $companyUrl = Configuration::Instance()->GetKey(ConfigKeys::COMPANY_URL);
         $this->smarty->assign('CompanyName', (empty($companyName) ? '' : $companyName));
@@ -84,7 +84,7 @@ abstract class Page implements IPage
         $this->smarty->assign('PaymentsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter()));
         $this->smarty->assign('EmailEnabled', Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()));
 
-        $this->smarty->assign('LogoUrl', 'booked.png');
+        $this->smarty->assign('LogoUrl', 'librebooking.png');
         if (file_exists($this->path . 'img/custom-logo.png')) {
             $this->smarty->assign('LogoUrl', 'custom-logo.png');
         }

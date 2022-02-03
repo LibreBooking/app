@@ -775,7 +775,7 @@ class ja_jp extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Booked Schedulerをインストール ( MySQLのみ )';
+        $strings['InstallApplication'] = 'LibreBookingをインストール ( MySQLのみ )';
         $strings['IncorrectInstallPassword'] = '申し訳ありませんが、パスワードが違っています。';
         $strings['SetInstallPassword'] = 'インストールを実行する前に、インストールパスワードを設定しておかなくてはなりません。';
         $strings['InstallPasswordInstructions'] = '%s 内の %s にランダムで推測できないようなパスワードを設定して、再度このページに戻って来てください。<br/> %s を使ってもいいでしょう。';

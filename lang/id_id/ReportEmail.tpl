@@ -1,4 +1,4 @@
-Laporan Anda dari Booked Scheduler terlampir.<br/>
+Laporan Anda dari LibreBooking terlampir.<br/>
 
-<a href="{$ScriptUrl}">Masuk Booked Scheduler</a>
+<a href="{$ScriptUrl}">Masuk LibreBooking</a>
 

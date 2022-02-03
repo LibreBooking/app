@@ -10,4 +10,4 @@ Erreserbaren xehetasunak:
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Ikusi erreserba hau</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Gehitu egutegi bati</a> |
-<a href="{$ScriptUrl}">Saioa hasi Booked Scheduler-en</a>
+<a href="{$ScriptUrl}">Saioa hasi LibreBooking-en</a>

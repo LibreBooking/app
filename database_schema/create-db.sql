@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS `booked`;
+DROP DATABASE IF EXISTS `librebooking`;
 
-CREATE DATABASE `booked`;
+CREATE DATABASE `librebooking`;
 
-USE `booked`;
+USE `librebooking`;

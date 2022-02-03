@@ -49,5 +49,5 @@
 
 <br/>
 <br/>
-<a href="{$ScriptUrl}">Booked Scheduler へログイン</a>
+<a href="{$ScriptUrl}">LibreBooking へログイン</a>
 

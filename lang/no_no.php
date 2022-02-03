@@ -463,11 +463,11 @@ class no_no extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Installer Booked Scheduler (kun MySQL)';
+        $strings['InstallApplication'] = 'Installer LibreBooking (kun MySQL)';
         $strings['IncorrectInstallPassword'] = 'Beklager, feil passord.';
         $strings['SetInstallPassword'] = 'Du må opprette et innstallasjonspassord før du kan fortsette.';
         $strings['InstallPasswordInstructions'] = 'I %s vennligst sett %s til et passord som er tilfeldig og vanskelig å gjette, returner deretter til denne siden.<br/>Du kan bruke %s';
-        $strings['NoUpgradeNeeded'] = 'Ingen oppdatering nødvendig. Ved å kjøre en ny innstallasjon vil alle eksisterende data bli slettet og en ny kopi av Booked Scheduler vil bli innstallert!';
+        $strings['NoUpgradeNeeded'] = 'Ingen oppdatering nødvendig. Ved å kjøre en ny innstallasjon vil alle eksisterende data bli slettet og en ny kopi av LibreBooking vil bli innstallert!';
         $strings['ProvideInstallPassword'] = 'Vennligst angi ditt innstallasjonspassord.';
         $strings['InstallPasswordLocation'] = 'Dette finner du på %s i %s.';
         $strings['VerifyInstallSettings'] = 'Godkjenn følgende standardinnstillinger før du fortsetter. Eller du kan forandre dem i %s.';
@@ -492,10 +492,10 @@ class no_no extends en_gb
         $strings['InstallationSuccess'] = 'Installasjonen er gjennomført!';
         $strings['RegisterAdminUser'] = 'Registrer til administratorbruker. Dette er påkrevet om du ikke importerte eksempeldata. Forsikre deg om at $conf[\'settings\'][\'allow.self.registration\'] = \'true\' er i %s filen.';
         $strings['LoginWithSampleAccounts'] = 'Hvis du importerte eksempeldata, kan du nå logge deg inn med admin/password for adminbruker eller user/password for basisbruker.';
-        $strings['InstalledVersion'] = 'Du kjører nå versjon %s av Booked Scheduler';
+        $strings['InstalledVersion'] = 'Du kjører nå versjon %s av LibreBooking';
         $strings['InstallUpgradeConfig'] = 'Det er anbefalt å oppgradere konfigurasjonsfilen';
         $strings['InstallationFailure'] = 'Det oppsto et problem med innstallasjonen.  Vennligst korriger og prøv igjen.';
-        $strings['ConfigureApplication'] = 'Konfigurer Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Konfigurer LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Konfigurasjonsfilen er nå oppdatert!';
         $strings['ConfigUpdateFailure'] = 'Kunne ikke automatisk oppdatere konfigurasjonsfilen. Vennligst erstatt innholdet i filen config.php med følgende:';
         $strings['SelectUser'] = 'Velg bruker';

@@ -49,4 +49,4 @@
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Agregar a un calendario</a> |
-	<a href="{$ScriptUrl}">Iniciar sesión en Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Iniciar sesión en LibreBooking</a>

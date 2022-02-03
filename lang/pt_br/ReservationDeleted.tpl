@@ -24,4 +24,4 @@
 		{formatdate date=$date}<br/>
 	{/foreach}
 
-	<a href="{$ScriptUrl}">Acessar o Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Acessar o LibreBooking</a>

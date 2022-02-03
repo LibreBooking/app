@@ -616,11 +616,11 @@ class cz extends en_us
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Instalace Booked Scheduleru (pouze pro MySQL)';
+        $strings['InstallApplication'] = 'Instalace LibreBooking (pouze pro MySQL)';
         $strings['IncorrectInstallPassword'] = 'Nesprávné heslo.';
         $strings['SetInstallPassword'] = 'Před pokračováním musíte zadat instalační heslo.';
         $strings['InstallPasswordInstructions'] = 'V souboru %s nastavte řádek %s na náhodné a obtížně uhodnutelné heslo, poté se vraťte na tuto stránku.<br/>Můžete použít %s';
-        $strings['NoUpgradeNeeded'] = 'Žádná aktualizace není potřeba. Opětovné spuštění instalačního procesu smaže veškerá stávající data a znovu nainstaluje Booked Scheduler!';
+        $strings['NoUpgradeNeeded'] = 'Žádná aktualizace není potřeba. Opětovné spuštění instalačního procesu smaže veškerá stávající data a znovu nainstaluje LibreBooking!';
         $strings['ProvideInstallPassword'] = 'Zadejte prosím instalační heslo.';
         $strings['InstallPasswordLocation'] = 'To je zadáno v souboru %s v řádku %s.';
         $strings['VerifyInstallSettings'] = 'Před pokračovnáním ověřte následující výchozí nastavení. Nebo jej změňte v %s.';
@@ -645,10 +645,10 @@ class cz extends en_us
         $strings['InstallationSuccess'] = 'Instalace byla úspěšně dokončena!';
         $strings['RegisterAdminUser'] = 'Zaregistrujte si administrátorského uživatele, pokud jste neimportovali vzorová data. Ověřte že $conf[\'settings\'][\'allow.self.registration\'] = \'true\' v souboru %s.';
         $strings['LoginWithSampleAccounts'] = 'Pokud jste importovali vzorová data, přihlašte se s administrátorským pověřením admin/password nebo uživatelským pověřením user/password.';
-        $strings['InstalledVersion'] = 'Nainstalovaná verze Booked Scheduleru je %s';
+        $strings['InstalledVersion'] = 'Nainstalovaná verze LibreBooking je %s';
         $strings['InstallUpgradeConfig'] = 'Doporučujeme aktualizovat váš konfigurační soubor';
         $strings['InstallationFailure'] = 'Vyskytly se problémy během instalace. Prosím opravte je a zkuste instalaci spustit znovu.';
-        $strings['ConfigureApplication'] = 'Nastavit Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Nastavit LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Váš konfigurační soubor je aktuální!';
         $strings['ConfigUpdateFailure'] = 'Nepodařilo se automaticky aktualizovat konfigurační soubor. Prosím přepište obsah souboru config.php následujícím:';
         $strings['ScriptUrlWarning'] = 'Vaše nastavení <em>script.url</em> pravděpodobně není spávné. V současnosti je nastaveno na <strong>%s</strong>, ale nejspíše by mělo být <strong>%s</strong>';

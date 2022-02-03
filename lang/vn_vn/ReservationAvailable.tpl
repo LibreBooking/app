@@ -3,4 +3,4 @@
 <br/>
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Book now</a> |
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}">Log in to LibreBooking</a>

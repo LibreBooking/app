@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- doc: https://www.phing.info/guide/hlhtml/#d5e653 -->
 <!-- php and mysql command have to be in your PATH -->
-<project name="bookedscheduler" default="package">
-    <property name="packagename" value="bookedscheduler" />
+<project name="librebooking" default="package">
+    <property name="packagename" value="librebooking" />
     <property name="build.dir" value="build" />
     <property name="stagingdir" value="${build.dir}/staging" />
     <property name="zipdirectory" value="${build.dir}/zip" />
@@ -12,7 +12,7 @@
     <property name="mysql.password" value="test" />
     <property name="mysql.server" value="127.0.0.1" />
 
-    <property name="mysql.database" value="bookedscheduler" />
+    <property name="mysql.database" value="librebooking" />
     <property name="sql.file.create.db" value="database_schema/create-db.sql" />
     <property name="sql.file.create.schema" value="database_schema/create-schema.sql" />
     <!-- <property name="sql.file.create.user" value="database_schema/create-user.sql"/> -->

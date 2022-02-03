@@ -470,11 +470,11 @@ class pt_br extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Instalar Booked Scheduler (apenas para MySQL)';
+        $strings['InstallApplication'] = 'Instalar LibreBooking (apenas para MySQL)';
         $strings['IncorrectInstallPassword'] = 'Desculpe, esta senha está incorreta.';
         $strings['SetInstallPassword'] = 'Você deve escolher uma senha de instalação antes de iniciar a instalação.';
         $strings['InstallPasswordInstructions'] = 'Em %s por favor marque %s para uma senha que seja aleatória e difícil de adivinhar, então retorne para esta página.<br/>Você pode usar %s';
-        $strings['NoUpgradeNeeded'] = 'Não existe necessidade de atualização. Executar o processo de instalação irá deletar todos os dados existentes e instalar uma nova cópia do Booked Scheduler!';
+        $strings['NoUpgradeNeeded'] = 'Não existe necessidade de atualização. Executar o processo de instalação irá deletar todos os dados existentes e instalar uma nova cópia do LibreBooking!';
         $strings['ProvideInstallPassword'] = 'Por favor forneça sua senha de instalação.';
         $strings['InstallPasswordLocation'] = 'Istro pode ser achado na %s em %s.';
         $strings['VerifyInstallSettings'] = 'Verifique as seguintes configurações padrão antes de continuar. Ou você pode alterar em %s.';
@@ -499,10 +499,10 @@ class pt_br extends en_gb
         $strings['InstallationSuccess'] = 'Instalação completa com sucesso!';
         $strings['RegisterAdminUser'] = 'Registre seu usuário admin. Isto é requerido se você não importar uma amostra de dado. Garanta que $conf[\'settings\'][\'allow.self.registration\'] = \'true\' no seu %s arquivo.';
         $strings['LoginWithSampleAccounts'] = 'Se você importar uma amostra de dado, você pode entrar com admin/senha para usuário admin ou user/senha para usuário básico.';
-        $strings['InstalledVersion'] = 'Você está executando a versão %s do Booked Scheduler';
+        $strings['InstalledVersion'] = 'Você está executando a versão %s do LibreBooking';
         $strings['InstallUpgradeConfig'] = 'É recomendado que você atualize seu arquivo de configuração';
         $strings['InstallationFailure'] = 'Existem problemas com a instalação. Por favor corrijá-os e tente novamente.';
-        $strings['ConfigureApplication'] = 'Configurar Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Configurar LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Seu arquivo de configuração está atualizado!';
         $strings['ConfigUpdateFailure'] = 'Não foi possível atualizar automaticamente o arquivo de configuração. Por favor sobrescreva o conteúdo do config.php com o seguinte:';
         $strings['SelectUser'] = 'Selecione usuário';

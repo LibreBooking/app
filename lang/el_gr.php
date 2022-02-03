@@ -794,11 +794,11 @@ class el_gr extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Εγκατάσταση του Booked Scheduler (μόνο MySQL)';
+        $strings['InstallApplication'] = 'Εγκατάσταση του LibreBooking (μόνο MySQL)';
         $strings['IncorrectInstallPassword'] = 'Συγγνώμη, το συνθηματικό ήταν λάθος.';
         $strings['SetInstallPassword'] = 'Πρέπει να ορίσετε ένα συνθηματικό εγκατάστασης προτού εκτελεστεί η εγκατάσταση.';
         $strings['InstallPasswordInstructions'] = 'Στο %s ορίστε το %s σε ένα συνθηματικό που είναι τυχαίο και δύσκολο να μαντεφθεί, μετά επιστρέψτε σε αυτή τη σελίδα.<br/>Μπορείτε να χρησιμοποιήσετε %s';
-        $strings['NoUpgradeNeeded'] = 'Το Booked είναι ενημερωμένο. Δεν χρειάζεται αναβάθμιση.';
+        $strings['NoUpgradeNeeded'] = 'Το LibreBooking είναι ενημερωμένο. Δεν χρειάζεται αναβάθμιση.';
         $strings['ProvideInstallPassword'] = 'Παρακαλούμε εισάγετε το συνθηματικό εγκατάστασης.';
         $strings['InstallPasswordLocation'] = 'Αυτό μπορεί να βρεθεί στο %s σε %s.';
         $strings['VerifyInstallSettings'] = 'Επαληθεύστε τις ακόλουθες ρυθμίσεις προτού συνεχίσετε. Μπορείτε να τις αλλάξετε στο %s.';
@@ -823,10 +823,10 @@ class el_gr extends en_gb
         $strings['InstallationSuccess'] = 'Η εγκατάσταση ολοκληρώθηκε με επιτυχία!';
         $strings['RegisterAdminUser'] = 'Κάντε εγγραφή για τον διαχειριστή. Αυτό απαιτείται αν δεν κάνατε εισαγωγή των δοκιμαστικών δεδομένων. Βεβαιωθείτε ότι το είναι $conf[\'settings\'][\'allow.self.registration\'] = \'true\' στο αρχείο %s.';
         $strings['LoginWithSampleAccounts'] = 'Αν κάνατε εισαγωγή των δοκιμαστικών δεδομένων, κάνετε είσοδο με τα στοιχεία χρήστη admin/password για το διαχειριστή ή user/password για τον απλό χρήστη.';
-        $strings['InstalledVersion'] = 'Εκτελείτε τώρα την έκδοση %s του Booked Scheduler';
+        $strings['InstalledVersion'] = 'Εκτελείτε τώρα την έκδοση %s του LibreBooking';
         $strings['InstallUpgradeConfig'] = 'Προτείνεται να αναβαθμίσετε το αρχείο ρυθμίσεών σας';
         $strings['InstallationFailure'] = 'Υπάρχουν προβλήματα με την εγκατάσταση. Παρακαλούμε διορθώστε τα και ξαναδοκιμάστε την εγκατάσταση.';
-        $strings['ConfigureApplication'] = 'Παραμετροποίηση του Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Παραμετροποίηση του LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Το αρχείο ρυθμίσεών σας είναι τώρα ενημερωμένο!';
         $strings['ConfigUpdateFailure'] = 'Δεν ήταν δυνατή η αυτόματη ενημέρωση του αρχείου ρυθμίσεών σας. Παρακαλούμε εισάγετε τα παρακάτω σε όλο το περιεχόμενο του αρχείου config.php:';
         $strings['ScriptUrlWarning'] = 'Η ρύθμιση <em>script.url</em> ενδέχεται να μην είναι σωστή. Αυτή τη στιγμή είναι <strong>%s</strong>, ενώ θεωρούμε ότι πρέπει να είναι <strong>%s</strong>';

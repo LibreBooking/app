@@ -1,3 +1,3 @@
-Priloženo je vaše poročilo iz programa Booked Scheduler.<br/><br/>
+Priloženo je vaše poročilo iz programa LibreBooking.<br/><br/>
 
-<a href="{$ScriptUrl}">Prijava v program Booked Scheduler</a>
+<a href="{$ScriptUrl}">Prijava v program LibreBooking</a>

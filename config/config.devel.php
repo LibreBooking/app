@@ -7,11 +7,11 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 /**
  * Application configuration
  */
-$conf['settings']['app.title'] = 'Booked Scheduler';            // application title
+$conf['settings']['app.title'] = 'LibreBooking';            // application title
 $conf['settings']['default.timezone'] = 'Etc/UTC';              // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';          // if users can register themselves
 $conf['settings']['admin.email'] = 'admin@example.com';         // email address of admin user
-$conf['settings']['admin.email.name'] = 'Booked Administrator'; // name to be used in From: field when sending automatic emails
+$conf['settings']['admin.email.name'] = 'LB Administrator'; // name to be used in From: field when sending automatic emails
 $conf['settings']['company.name'] = '';                         // name of company, if applicable
 $conf['settings']['company.url'] = '';                          // URL of company, if applicable
 $conf['settings']['default.page.size'] = '50';                  // number of records per page
@@ -53,7 +53,7 @@ $conf['settings']['privacy']['view.schedules'] = 'true';                // if un
 $conf['settings']['privacy']['view.reservations'] = 'false';                // if unauthenticated users can view reservations
 $conf['settings']['privacy']['hide.user.details'] = 'false';                // if personal user details should be displayed to non-administrators
 $conf['settings']['privacy']['hide.reservation.details'] = 'false';         // if reservation details should be displayed to non-administrators. options are true, false, current, future, past
-$conf['settings']['privacy']['allow.guest.reservations'] = 'false';         // if reservations can be made by users without a Booked account, if true this overrides schedule and resource visibility
+$conf['settings']['privacy']['allow.guest.reservations'] = 'false';         // if reservations can be made by users without a LibreBooking account, if true this overrides schedule and resource visibility
 /**
  * Reservation specific configuration
  */
@@ -94,10 +94,10 @@ $conf['settings']['uploads']['reservation.attachment.extensions'] = 'txt,jpg,gif
  * Database configuration
  */
 $conf['settings']['database']['type'] = 'mysql';
-$conf['settings']['database']['user'] = 'test';        // database user with permission to the booked database
+$conf['settings']['database']['user'] = 'test';        // database user with permission to the LibreBooking database
 $conf['settings']['database']['password'] = 'test';
 $conf['settings']['database']['hostspec'] = '127.0.0.1';      // ip, dns or named pipe
-$conf['settings']['database']['name'] = 'bookedscheduler';
+$conf['settings']['database']['name'] = 'librebooking';
 /**
  * Mail server configuration
  */
@@ -174,7 +174,7 @@ $conf['settings']['security']['security.content-security-policy'] = ""; // Requi
 /**
  * Google Analytics settings
  */
-$conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Analytics tracking code will be added to every page in Booked
+$conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Analytics tracking code will be added to every page in LibreBooking
 
 $conf['settings']['authentication']['allow.facebook.login'] = 'false';
 $conf['settings']['authentication']['allow.google.login'] = 'false';

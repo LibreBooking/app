@@ -1,9 +1,9 @@
 <?php
 
 /**
- * File in Authentication plugin package for ver 2.1.4 Booked Scheduler
+ * File in Authentication plugin package for ver 2.1.4 LibreBooking
  * to implement Single Sign On Capability.  Based on code from the
- * Booked Scheduler Authentication Ldap plugin as well as a SAML
+ * LibreBooking Authentication Ldap plugin as well as a SAML
  * Authentication plugin for Moodle 1.9+.
  * See http://moodle.org/mod/data/view.php?d=13&rid=2574
  * This plugin uses the SimpleSAMLPHP version 1.8.2 libraries.

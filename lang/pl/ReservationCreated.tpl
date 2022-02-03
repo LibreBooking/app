@@ -45,5 +45,5 @@
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Podgląd rezerwacji</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Dodaj do Outlook'a</a> |
-	<a href="{$ScriptUrl}">Zaloguj się do Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Zaloguj się do LibreBooking</a>
 

@@ -536,11 +536,11 @@ class eu_es extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Booked Scheduler instalatu (MySQL baino ez)';
+        $strings['InstallApplication'] = 'LibreBooking instalatu (MySQL baino ez)';
         $strings['IncorrectInstallPassword'] = 'Barkatu, pasahitza ez da zuzena.';
         $strings['SetInstallPassword'] = 'Instalazioa hasi baino lehen instalazio pasahitz bat ezarri behar duzu.';
         $strings['InstallPasswordInstructions'] = 'Mesedez ezarri %s -n %s ausaz sortuta eta asmatzeko zaila den pasahitz bat, orduan orrialde honetara itzuli.<br/>Puedes usar %s';
-        $strings['NoUpgradeNeeded'] = 'Ez da beharrezkoa eguneratzea. Instalazio prozesua abiatuz gero dauden datu guztiak ezabatuko dira eta Booked Scheduler-en kopia berri bat instalatuko da!';
+        $strings['NoUpgradeNeeded'] = 'Ez da beharrezkoa eguneratzea. Instalazio prozesua abiatuz gero dauden datu guztiak ezabatuko dira eta LibreBooking-en kopia berri bat instalatuko da!';
         $strings['ProvideInstallPassword'] = 'Mesedez, idatzi instalazio pasahitza.';
         $strings['InstallPasswordLocation'] = '%s -n egon daiteke,  %s -n.';
         $strings['VerifyInstallSettings'] = 'Egiaztatu lehenetsitako ezarpen hauek jarraitu baino lehen. Edo alda itzazu hemen: %s.';
@@ -565,10 +565,10 @@ class eu_es extends en_gb
         $strings['InstallationSuccess'] = 'Instalazioa arrakastaz burutu da!';
         $strings['RegisterAdminUser'] = 'Erregistratu zure kudeatzaile erabiltzailea. Hau beharrezkoa da ez bazenituen eredu daturik inportatu. Ziurtatu $conf[\'settings\'][\'allow.self.registration\'] = \'true\' ezarrita dagoela %s fitxategian.';
         $strings['LoginWithSampleAccounts'] = 'Eredu datuak inportatu bazenituen, saioa hasi ahal duzu admin/password erabilita kudeatzaile erabiltzaile gisa edo user/password erabiltzaile arrunt gisa.';
-        $strings['InstalledVersion'] = 'Une honetan Booked Scheduler-en %s bertsioa erabiltzen ari zara';
+        $strings['InstalledVersion'] = 'Une honetan LibreBooking-en %s bertsioa erabiltzen ari zara';
         $strings['InstallUpgradeConfig'] = 'Gomendagarria da konfigurazio fitxategia eguneratzea';
         $strings['InstallationFailure'] = 'Arazoak egon dira instalazioarekin. Mesedez, zuzendu itzazu eta saiatu berriro.';
-        $strings['ConfigureApplication'] = 'Booked Scheduler konfiguratu';
+        $strings['ConfigureApplication'] = 'LibreBooking konfiguratu';
         $strings['ConfigUpdateSuccess'] = 'Konfigurazio fitxategia eguneratu da!';
         $strings['ConfigUpdateFailure'] = 'Ezin izan da automatikoki eguneratu konfigurazio fitxategia. Mesedez gainidatzei config.php fitxategiaren edukia honekin:';
         $strings['SelectUser'] = 'Aukeratu erabiltzailea';

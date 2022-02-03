@@ -26,7 +26,7 @@ abstract class EmailMessage implements IEmailMessage
 
         $this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
         $this->Set('Charset', $resources->Charset);
-        $this->Set('AppTitle', (empty($appTitle) ? 'Booked' : $appTitle));
+        $this->Set('AppTitle', (empty($appTitle) ? 'LibreBooking' : $appTitle));
     }
 
     protected function Set($var, $value)

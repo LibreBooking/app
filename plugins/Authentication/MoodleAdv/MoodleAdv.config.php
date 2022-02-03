@@ -7,7 +7,7 @@ $conf['settings']['moodleadv.dbuser'] = 'username';
 $conf['settings']['moodleadv.dbpass'] = 'password';
 $conf['settings']['moodleadv.prefix'] = 'mdl_';
 
-// Method for selecting authorization to booked roles|field|all
+// Method for selecting authorization to LibreBooking roles|field|all
 $conf['settings']['moodleadv.authmethod'] = 'field';
 
 // Booking allowed by roles

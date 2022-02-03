@@ -1,4 +1,4 @@
-# Contributors of BookedScheduler
+# Contributors of LibreBooking
 - [Nick Korbel, Twinkle Toes Software, LLC](https://www.twinkletoessoftware.com/services/) Original Developer of Booked Scheduler
 - [Alois Schloegl](#)
 - [Paul Menchini](#)

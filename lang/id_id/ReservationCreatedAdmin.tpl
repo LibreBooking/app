@@ -44,5 +44,5 @@
 	{/if}
 
 	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Lihat reservasi ini</a> | <a href="{$ScriptUrl}">Masuk Booked Scheduler</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Lihat reservasi ini</a> | <a href="{$ScriptUrl}">Masuk LibreBooking</a>
 

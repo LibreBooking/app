@@ -1,5 +1,5 @@
-Votre rapport de Booked Scheduler est en piece-jointe.<br/>
+Votre rapport de LibreBooking est en piece-jointe.<br/>
 
-<a href="{$ScriptUrl}">Connexion à Booked Scheduler</a>
+<a href="{$ScriptUrl}">Connexion à LibreBooking</a>
 
 

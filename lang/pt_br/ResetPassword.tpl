@@ -1,8 +1,8 @@
-Esta � sua senha tempor�ria no Booked Scheduler: {$TemporaryPassword}
+Esta � sua senha tempor�ria no LibreBooking: {$TemporaryPassword}
 
 <br/>
 
 Sua senha antiga n�o funcionar� mais.
 
-<a href="{$ScriptUrl}">Fa�a login no Booked Scheduler</a> e altere sua senha o mais r�pido poss�vel.
+<a href="{$ScriptUrl}">Fa�a login no LibreBooking</a> e altere sua senha o mais r�pido poss�vel.
 

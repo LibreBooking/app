@@ -41,6 +41,6 @@
     {/foreach}
 {/if}
 
-<a href="{$ScriptUrl}">להתחבר ל-Booked Scheduler</a>
+<a href="{$ScriptUrl}">להתחבר ל-LibreBooking</a>
 
 

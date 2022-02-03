@@ -8,7 +8,7 @@
                 ".phpdoc",
                 "tpl_c"
             ],
-            "name": "BookedScheduler",
+            "name": "LibreBooking",
             "path": "."
         }
     ]

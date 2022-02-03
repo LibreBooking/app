@@ -1,5 +1,5 @@
 <p>{$FullName},</p>
-<p>&egrave; stato creato un account per lei su Booked Scheduler con le seguenti informazioni:</p>
+<p>&egrave; stato creato un account per lei su LibreBooking con le seguenti informazioni:</p>
 <p>
     <strong>Email:</strong> {$EmailAddress}<br />
     <strong>Nome:</strong> {$FullName}<br />
@@ -14,4 +14,4 @@
     {/if}
 </p>
 <p>&nbsp;</p>
-<p><a href="{$ScriptUrl}">Login su Booked Scheduler</a></p>
+<p><a href="{$ScriptUrl}">Login su LibreBooking</a></p>

@@ -1,8 +1,8 @@
-# Booked Scheduler API Documentation
+# LibreBooking API Documentation
 
-A dynamically generated API documentation Page can be found by opening `<booked-url>/Web/Services/index.php` (API has to be enabled in config)
+A dynamically generated API documentation Page can be found by opening `<librebooking-url>/Web/Services/index.php` (API has to be enabled in config)
 
-__Pass the following headers for all secure service calls: `X-Booked-SessionToken` and `X-Booked-UserId`__
+__Pass the following headers for all secure service calls: `X-LibreBooking-SessionToken` and `X-LibreBooking-UserId`__
 
 - [Accessories](#Accessories)
 - [Accounts](#Accounts)
@@ -491,7 +491,7 @@ __Request:__
 
 __Description:__  
 
-Authenticates an existing Booked Scheduler user
+Authenticates an existing LibreBooking user
 
 __Route:__ `/Web/Services/index.php/Authentication/Authenticate`
 

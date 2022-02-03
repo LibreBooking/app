@@ -1,5 +1,5 @@
 {
-    "description": "Booked Scheduler",
+    "description": "LibreBooking",
     "autoload": {},
     "require-dev": {
         "kint-php/kint": "^3.3",

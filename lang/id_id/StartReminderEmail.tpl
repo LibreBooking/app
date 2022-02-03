@@ -10,5 +10,5 @@ Rincian Reservasi:
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Lihat reservasi ini</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Tambah ke kalender</a> |
-<a href="{$ScriptUrl}">Masuk Booked Scheduler</a>
+<a href="{$ScriptUrl}">Masuk LibreBooking</a>
 

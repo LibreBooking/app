@@ -37,7 +37,7 @@ interface IConfigurationFile
     public function GetKey($name, $converter = null);
 
     /**
-     * @return string the full url to the root of this Booked Scheduler instance WITHOUT the trailing /
+     * @return string the full url to the root of this LibreBooking instance WITHOUT the trailing /
      */
     public function GetScriptUrl();
 
@@ -78,7 +78,7 @@ class Configuration implements IConfiguration
     private static $_instance = null;
 
     public const SETTINGS = 'settings';
-    public const DEFAULT_CONFIG_ID = 'booked';
+    public const DEFAULT_CONFIG_ID = 'librebooking';
     public const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
     public const VERSION = '2.8.5.4';

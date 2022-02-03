@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
 
 /**
- * Provides LDAP authentication/synchronization for Booked Scheduler
+ * Provides LDAP authentication/synchronization for LibreBooking
  * @see IAuthorization
  */
 class Ldap extends Authentication implements IAuthentication

@@ -1,3 +1,3 @@
-Se adjunta un informe de Booked Scheduler-eko txosten bat erantsita.<br/><br/>
+Se adjunta un informe de LibreBooking-eko txosten bat erantsita.<br/><br/>
 
-<a href="{$ScriptUrl}">Saioa hasi Booked Scheduler-en</a>
+<a href="{$ScriptUrl}">Saioa hasi LibreBooking-en</a>

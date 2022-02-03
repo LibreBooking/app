@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'WebServices/AccountWebService.php');
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
 if (!Configuration::Instance()->GetSectionKey(ConfigSection::API, ConfigKeys::API_ENABLED, new BooleanConverter())) {
-    die("Booked Scheduler API has been configured as disabled.<br/><br/>Set \$conf['settings']['api']['enabled'] = 'true' to enable.");
+    die("LibreBooking API has been configured as disabled.<br/><br/>Set \$conf['settings']['api']['enabled'] = 'true' to enable.");
 }
 
 \Slim\Slim::registerAutoloader();

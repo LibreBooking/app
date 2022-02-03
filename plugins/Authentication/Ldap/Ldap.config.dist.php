@@ -12,7 +12,7 @@ $conf['settings']['basedn'] = '';	// LDAP base name (eg. dc=example,dc=com)
 $conf['settings']['filter'] = '';	// Default search filter
 $conf['settings']['scope'] = '';	// Search scope (eg. uid)
 $conf['settings']['required.group'] = '';	// Required group (empty if not necessary) (eg. cn=MyGroup,cn=Groups,dc=example,dc=com)
-$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against Booked Scheduler database
+$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against LibreBooking database
 $conf['settings']['ldap.debug.enabled'] = 'false';	// if LDAP2 should use debug logging
 $conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,telephonenumber=telephonenumber,physicaldeliveryofficename=physicaldeliveryofficename,title=title';	// mapping of required attributes to attribute names in your directory
 $conf['settings']['user.id.attribute'] = 'uid';	// the attribute name for user identification

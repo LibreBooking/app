@@ -45,4 +45,4 @@
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Разгледай тази резервация</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Добави в Outlook</a> |
-	<a href="{$ScriptUrl}">Влизане в Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Влизане в LibreBooking</a>

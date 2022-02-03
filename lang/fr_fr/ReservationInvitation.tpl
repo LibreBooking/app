@@ -28,6 +28,6 @@
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Voir cette réservation</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Ajouter à Outlook</a> |
-	<a href="{$ScriptUrl}">Connexion à Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Connexion à LibreBooking</a>
 
 

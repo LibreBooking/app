@@ -1,4 +1,4 @@
-Booked Scheduler から送信されたレポートが添付されています。<br/><br/>
+LibreBooking から送信されたレポートが添付されています。<br/><br/>
 
-<a href="{$ScriptUrl}">Booked Schedulerへログイン</a>
+<a href="{$ScriptUrl}">LibreBookingへログイン</a>
 

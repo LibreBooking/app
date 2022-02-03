@@ -22,7 +22,7 @@ class Drupal extends Authentication implements IAuthentication
     private $_registration;
 
     /**
-     * Needed to register user if they are logging in to Drupal but do not have a Booked Scheduler account yet
+     * Needed to register user if they are logging in to Drupal but do not have a LibreBooking account yet
      */
     private function GetRegistration()
     {
@@ -76,7 +76,7 @@ class Drupal extends Authentication implements IAuthentication
             return false;
         }
 
-        Log::Debug('DRUPAL: User was found. user=%s, Drupal username=%s, Drupal email=%s, Booked admin email=%s', $username, $account->name, $account->mail, Configuration::Instance()->GetAdminEmail());
+        Log::Debug('DRUPAL: User was found. user=%s, Drupal username=%s, Drupal email=%s, LibreBooking admin email=%s', $username, $account->name, $account->mail, Configuration::Instance()->GetAdminEmail());
         return true;
     }
 

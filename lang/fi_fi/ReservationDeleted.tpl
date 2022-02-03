@@ -26,6 +26,6 @@ Kuvaus: {$Description|nl2br}<br/>
     <br/>
 {/foreach}
 
-<a href="{$ScriptUrl}">Kirjaudu sovellukseen Booked Scheduler</a>
+<a href="{$ScriptUrl}">Kirjaudu sovellukseen LibreBooking</a>
 
 

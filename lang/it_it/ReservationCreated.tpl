@@ -115,5 +115,5 @@
 	      <a href="{$ScriptUrl}/{$ICalUrl}">Aggiungere prenotazione al calendario</a>	|
 	      <a href="{$GoogleCalendarUrl}" target="_blank" rel="nofollow">Aggiungere al calendario di Google</a>	|
     {/if}
-    <a href="{$ScriptUrl}">Login su Booked Scheduler</a>
+    <a href="{$ScriptUrl}">Login su LibreBooking</a>
 </p>

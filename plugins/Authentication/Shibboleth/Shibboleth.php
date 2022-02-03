@@ -7,7 +7,7 @@ require_once ROOT_DIR . 'lib/Application/Authentication/namespace.php';
 require_once ROOT_DIR . 'plugins/Authentication/Shibboleth/namespace.php';
 
 /**
- * Shibboleth implementation of Booked Scheduler's authentication interface.
+ * Shibboleth implementation of LibreBooking's authentication interface.
  * Supports auto-account provisioning on first-time login.
  *
  * @see IAuthorization

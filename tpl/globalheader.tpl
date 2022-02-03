@@ -328,7 +328,7 @@
                                 {if $ShowNewVersion}
                                     <li class="divider new-version"></li>
                                     <li id="navNewVersion" class="new-version">
-                                        <a href="https://www.bookedscheduler.com/whatsnew">{translate key=WhatsNew}</a>
+                                        <a href="https://github.com/effgarces/BookedScheduler/releases">{translate key=WhatsNew}</a>
                                     </li>
                                 {/if}
                             </ul>
@@ -338,9 +338,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Help"} <b
                                     class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li id="navHelp"><a href="https://www.bookedscheduler.com/help/usage">{translate key=Help}</a></li>
+                            <li id="navHelp"><a href="https://github.com/effgarces/BookedScheduler/wiki">{translate key=Help}</a></li>
                             {if $CanViewAdmin}
-                                <li id="navHelpAdmin"><a href="https://www.bookedscheduler.com/help/administration">{translate key=Administration}</a></li>
+                                <li id="navHelpAdmin"><a href="https://github.com/effgarces/BookedScheduler/wiki/Administration">{translate key=Administration}</a></li>
                             {/if}
                             <li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
                         </ul>

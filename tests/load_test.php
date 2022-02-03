@@ -5,7 +5,7 @@ define('ROOT_DIR', dirname(__FILE__) . '/../');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 
-echo "<h1>Booked Scheduler Data Load</h1>";
+echo "<h1>LibreBooking Data Load</h1>";
 
 $stopWatch = new StopWatch();
 $stopWatch->Start();

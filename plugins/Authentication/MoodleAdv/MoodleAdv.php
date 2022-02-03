@@ -16,7 +16,7 @@ class MoodleAdv extends Authentication implements IAuthentication
     private $_registration;
 
     /**
-     * Needed to register user if they are logging in to Moodle but do not have a Booked Scheduler account yet
+     * Needed to register user if they are logging in to Moodle but do not have a LibreBooking account yet
      */
     private function GetRegistration()
     {

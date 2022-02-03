@@ -30,5 +30,5 @@
 	{/if}
 
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Verifique esta reserva</a> | <a href="{$ScriptUrl}">Acessar o Booked Scheduler</a>
+	<a href="{$ScriptUrl}{$ReservationUrl}">Verifique esta reserva</a> | <a href="{$ScriptUrl}">Acessar o LibreBooking</a>
 

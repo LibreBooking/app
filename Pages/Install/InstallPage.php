@@ -179,7 +179,7 @@ class InstallPage extends Page implements IInstallPage
     /**
      * Set values for displayed template - install.tpl
      * @param string $dbname database name
-     * @param string $dbuser mysql user for your database e.g Booked Scheduler
+     * @param string $dbuser mysql user for your database e.g LibreBooking
      * @param string $dbhost server address/name where mySql lives
      */
     public function SetDatabaseConfig($dbname, $dbuser, $dbhost)

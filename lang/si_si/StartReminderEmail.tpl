@@ -11,4 +11,4 @@ Podrobnosti rezervacije:
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Ogled rezervacije</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Dodaj v Koledar (Outlook)</a> |
-<a href="{$ScriptUrl}">Prijava v program Booked Scheduler</a>
+<a href="{$ScriptUrl}">Prijava v program LibreBooking</a>

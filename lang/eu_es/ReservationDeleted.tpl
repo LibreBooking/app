@@ -49,4 +49,4 @@ Deskripzioa: {$Description|nl2br}<br/>
 
 <br/>
 <br/>
-<a href="{$ScriptUrl}">Saioa hasi Booked Scheduler-en</a>
+<a href="{$ScriptUrl}">Saioa hasi LibreBooking-en</a>

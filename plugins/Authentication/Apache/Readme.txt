@@ -1,5 +1,5 @@
 =======================
-Setting up the Apache Authentication plugin for Booked Scheduler
+Setting up the Apache Authentication plugin for LibreBooking
 =======================
 
 The authentication is done by the Apache server. The username is obtained

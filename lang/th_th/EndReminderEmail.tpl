@@ -10,4 +10,4 @@ Reservation Details:
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}">Log in to LibreBooking</a>

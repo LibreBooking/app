@@ -448,11 +448,11 @@ class du_nl extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Installeer Booked Scheduler (MySQL only)';
+        $strings['InstallApplication'] = 'Installeer LibreBooking (MySQL only)';
         $strings['IncorrectInstallPassword'] = 'Sorry, dat wachtwoord is onjuist.';
         $strings['SetInstallPassword'] = 'Je moet een wachtwoord instellen voordat de installatie kan worden uitgevoerd.';
         $strings['InstallPasswordInstructions'] = 'In %s wijzig %s naar een moeilijk wachtwoord dat moeilijk te raden is en ga dan terug naar deze pagina.<br/>Je kan %s gebruiken';
-        $strings['NoUpgradeNeeded'] = 'Er is geen upgrade nodig. De installatie zal alle bestaande data verwijderen en zal een nieuwe kopie gemaakt worden van Booked Scheduler!';
+        $strings['NoUpgradeNeeded'] = 'Er is geen upgrade nodig. De installatie zal alle bestaande data verwijderen en zal een nieuwe kopie gemaakt worden van LibreBooking!';
         $strings['ProvideInstallPassword'] = 'Geef het wachtwoord van tijdens de installatie op.';
         $strings['InstallPasswordLocation'] = 'Dit kan worden gevonden bij %s in %s.';
         $strings['VerifyInstallSettings'] = 'Controleer de volgende standaardinstellingen voordat je verder gaat. Of je kan ze veranderen in %s.';
@@ -477,10 +477,10 @@ class du_nl extends en_gb
         $strings['InstallationSuccess'] = 'Installatie succesvol afgerond!';
         $strings['RegisterAdminUser'] = 'Registreer je administrator account. Dit is noodzakelijk als je de voorbeeld data niet geimporteerd hebt. Zorg ervoor dat $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in je %s bestand.';
         $strings['LoginWithSampleAccounts'] = 'Als je de voorbeeld data geimporteerd hebt, kan je inloggen met admin/password voor de administrator account of user/password voor de standaard gebruiker.';
-        $strings['InstalledVersion'] = 'Je zit nu op versie %s van Booked Scheduler';
+        $strings['InstalledVersion'] = 'Je zit nu op versie %s van LibreBooking';
         $strings['InstallUpgradeConfig'] = 'Het is aanbevolen om je config bestand to upgraden';
         $strings['InstallationFailure'] = 'Er waren problemen met de installatie. Graag deze corrigeren en probeer de installatie opnieuw.';
-        $strings['ConfigureApplication'] = 'Configureer Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Configureer LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Je configuratie bestand is nu bijgewerkt!';
         $strings['ConfigUpdateFailure'] = 'We konden het configuratie bestand niet automatisch updaten. Overschrijf de inhoud van config.php met het volgende:';
         $strings['SelectUser'] = 'Select User';

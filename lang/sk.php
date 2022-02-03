@@ -493,7 +493,7 @@ class sk extends en_gb
         $strings['InstalledVersion'] = 'You are now running version %s of phpScheduleIt';
         $strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
         $strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-        $strings['ConfigureApplication'] = 'Configure Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Configure LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
         $strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
         $strings['SelectUser'] = 'Vybrať užívateľa';

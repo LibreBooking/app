@@ -41,5 +41,5 @@
 <p>&nbsp;</p>
 <p>
     <a href="{$ScriptUrl}/{$ReservationUrl}">Dettagli di questa prenotazione</a> |
-    <a href="{$ScriptUrl}">Login su Booked Scheduler</a>
+    <a href="{$ScriptUrl}">Login su LibreBooking</a>
 </p>

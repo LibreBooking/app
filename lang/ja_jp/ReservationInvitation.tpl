@@ -49,5 +49,5 @@
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">予約の表示</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">カレンダーへ追加</a> |
-	<a href="{$ScriptUrl}">Booked Scheduler へログイン</a>
+	<a href="{$ScriptUrl}">LibreBooking へログイン</a>
 

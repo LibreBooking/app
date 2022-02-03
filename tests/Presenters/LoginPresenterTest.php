@@ -41,7 +41,7 @@ class LoginPresenterTests extends TestBase
         $this->captchaService = $this->createMock('ICaptchaService');
         $this->announcementRepository = new FakeAnnouncementRepository();
 
-        $this->page->_EmailAddress = 'nkorbel@bookedscheduler.com';
+        $this->page->_EmailAddress = 'nobody@localhost';
         $this->page->_Password = 'somepassword';
         $this->page->_PersistLogin = true;
 

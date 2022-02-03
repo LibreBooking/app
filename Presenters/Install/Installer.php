@@ -35,16 +35,16 @@ class Installer
         $database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
 
         $create_database = new MySqlScript(ROOT_DIR . 'database_schema/create-db.sql');
-        $create_database->Replace('booked', $database_name);
+        $create_database->Replace('librebooking', $database_name);
 
         $create_user = new MySqlScript(ROOT_DIR . 'database_schema/create-user.sql');
-        $create_user->Replace('booked', $database_name);
+        $create_user->Replace('librebooking', $database_name);
         $create_user->Replace('schedule_user', $database_user);
         $create_user->Replace('localhost', $hostname);
         $create_user->Replace('password', $database_password);
 
         $populate_sample_data = new MySqlScript(ROOT_DIR . 'database_schema/sample-data-utf8.sql');
-        $populate_sample_data->Replace('booked', $database_name);
+        $populate_sample_data->Replace('librebooking', $database_name);
 
         $create_schema = new MySqlScript(ROOT_DIR . 'database_schema/create-schema.sql');
         $populate_data = new MySqlScript(ROOT_DIR . 'database_schema/create-data.sql');
@@ -64,7 +64,7 @@ class Installer
         $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
 
         /**
-         * Populate sample data given in /Booked Scheduler/database_schema/sample-data-utf8.sql
+         * Populate sample data given in /LibreBooking/database_schema/sample-data-utf8.sql
          */
         if ($should_create_sample_data) {
             $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_sample_data);

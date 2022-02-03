@@ -47,5 +47,5 @@ Beschreibung: {$Description|nl2br}<br/>
     {/foreach}
 {/if}
 <br/>
-<a href="{$ScriptUrl}">Anmelden bei Booked Scheduler</a>
+<a href="{$ScriptUrl}">Anmelden bei LibreBooking</a>
 

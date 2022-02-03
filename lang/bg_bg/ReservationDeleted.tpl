@@ -38,4 +38,4 @@
 		{/foreach}
 	{/if}
 
-	<a href="{$ScriptUrl}">Влизане в Booked Scheduler</a>
+	<a href="{$ScriptUrl}">Влизане в LibreBooking</a>

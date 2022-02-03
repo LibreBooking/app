@@ -1,4 +1,4 @@
-<p>You have created a new Booked account with the following information:<br/>
+<p>You have created a new LibreBooking account with the following information:<br/>
 Email: {$EmailAddress}<br/>
 Password: {$Password}<br/>
 

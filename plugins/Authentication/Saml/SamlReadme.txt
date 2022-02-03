@@ -1,5 +1,5 @@
 =======================
-Setting up the Saml Authentication plugin for Booked Scheduler version 2.4
+Setting up the Saml Authentication plugin for LibreBooking version 2.4
 =======================
 Changes:
 2012/05/17 - Created by Gail Preuninger
@@ -10,7 +10,7 @@ Need to have SAML 2.0 Identity Provider that can access authentication
 data store and communicate with SAML 2.0 Service Provider
 see http://simplesamlphp.org/
 
-Install SAML 2.0 Service Provider on the same server where Booked Scheduler
+Install SAML 2.0 Service Provider on the same server where LibreBooking
 is installed.  Obtain this software from:
 http://code.google.com/p/simplesamlphp/downloads/list
 
@@ -28,7 +28,7 @@ Installation Instructions
    Copy Saml.config.dist.php to Saml.config.php and change the settings to
    in Saml.config.php to reflect your SimpleSAMLphp environment
 
-2) In the Booked Scheduler ROOT_DIRECTORY/config/config.php file,
+2) In the LibreBooking ROOT_DIRECTORY/config/config.php file,
   set $conf['settings']['plugins']['Authentication'] = 'Saml'.
   Note: make sure that you do not enable self-registration.
         Authentication is only through SAML Single Sign On.

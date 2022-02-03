@@ -473,11 +473,11 @@ class si_si extends en_gb
         // End Strings
 
         // Install
-        $strings['InstallApplication'] = 'Namesti program Booked Scheduler (samo MySQL)';
+        $strings['InstallApplication'] = 'Namesti program LibreBooking (samo MySQL)';
         $strings['IncorrectInstallPassword'] = 'Oprostite, geslo ni pravilno.';
         $strings['SetInstallPassword'] = 'Preden zaženete namestitev, morate nastaviti namestitveno geslo.';
         $strings['InstallPasswordInstructions'] = 'V %s nastavite prosim %s na geslo, ki je naključno in ga je težko uganiti, nato pa se vrnite na to strran.<br/>Lahko uporabite %s';
-        $strings['NoUpgradeNeeded'] = 'Nadgradnja ni potrebna. Ko boste pognali namestitveni proces, se bodo zbrisali vsi obstoječi podatki in namestila se bo nova kopija programa Booked Scheduler!';
+        $strings['NoUpgradeNeeded'] = 'Nadgradnja ni potrebna. Ko boste pognali namestitveni proces, se bodo zbrisali vsi obstoječi podatki in namestila se bo nova kopija programa LibreBooking!';
         $strings['ProvideInstallPassword'] = 'Prosimo, vpišite vaše namestitveno geslo.';
         $strings['InstallPasswordLocation'] = 'To lahko najdete na %s v %s.';
         $strings['VerifyInstallSettings'] = 'Preden nadaljujete, preverite naslednje privzete nastavitve. Lahko jih spremenite v %s.';
@@ -502,10 +502,10 @@ class si_si extends en_gb
         $strings['InstallationSuccess'] = 'Namestitev je bila uspešno zaključena!';
         $strings['RegisterAdminUser'] = 'Registrirajte vašega administratorskega uporabnika (admin). To se zahteva, če niste uvozili vzorčnih podatkov. Poskrbite, da bo $conf[\'settings\'][\'allow.self.registration\'] = \'true\' v vaši datoteki %s.';
         $strings['LoginWithSampleAccounts'] = 'Če ste uvozili vzorčne podatke, se lahko prijavite kot administrator (admin/password) ali kot navaden uporabnik (user/password).';
-        $strings['InstalledVersion'] = 'Trenutno teče različica %s programa Booked Scheduler';
+        $strings['InstalledVersion'] = 'Trenutno teče različica %s programa LibreBooking';
         $strings['InstallUpgradeConfig'] = 'Priporočamo, da nadgradite vašo konfiguracijsko datoteko';
         $strings['InstallationFailure'] = 'Pri namestitvi je prišlo do napak.  Prosimo, odpravite jih in ponovno poskusite z namestitvijo.';
-        $strings['ConfigureApplication'] = 'Konfiguracija programa Booked Scheduler';
+        $strings['ConfigureApplication'] = 'Konfiguracija programa LibreBooking';
         $strings['ConfigUpdateSuccess'] = 'Vaša konfiguracijska datoteka je sedaj posodobljena!';
         $strings['ConfigUpdateFailure'] = 'Vaša konfiguracijska datoteka ne more biti samodejno posodobljena. Prosimo, prepišite vsebino datoteke config.php z naslednjo vsebino:';
         $strings['SelectUser'] = 'Izberi uporabnika';
