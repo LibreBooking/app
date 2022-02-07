@@ -16,6 +16,9 @@ This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBoo
 
 [developer documentation](./doc/README.md)
 
+## Help
+Please consult the wiki for more help <https://github.com/effgarces/BookedScheduler/wiki>
+
 ## REPO
 <https://github.com/effgarces/BookedScheduler>
 
