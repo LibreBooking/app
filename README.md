@@ -24,6 +24,15 @@ We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedschedu
 
 ## Release Notes
 
+#### 2.8.5.5
+
+**This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
+Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](https://github.com/effgarces/BookedScheduler)  
+Fork this repo, contribute and help keep it alive
+
+Small update to fix a security issue
+
+
 #### 2.8.5.4
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
