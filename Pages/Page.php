@@ -168,7 +168,7 @@ abstract class Page implements IPage
 
     public function GetLastPage($defaultPage = '')
     {
-        $referer = getenv("HTTP_REFERER");
+        $referer = filter_var(getenv("HTTP_REFERER"), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (empty($referer)) {
             return empty($defaultPage) ? Pages::LOGIN : $defaultPage;
         }
