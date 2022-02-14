@@ -1,6 +1,6 @@
 <?php
 
-class Attribute
+class LBAttribute
 {
     /**
      * @var CustomAttribute

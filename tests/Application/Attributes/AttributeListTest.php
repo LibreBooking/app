@@ -42,7 +42,7 @@ class AttributeListTests extends TestBase
 
         $values = $list->GetAttributes($entityId);
 
-        $this->assertEquals([new Attribute($attribute1, 'att1'), new Attribute($attribute2, null), new Attribute($attribute3, 'att3')], $values);
+        $this->assertEquals([new LBAttribute($attribute1, 'att1'), new LBAttribute($attribute2, null), new LBATtribute($attribute3, 'att3')], $values);
     }
 
     public function testWhenAttributeAppliesToSubsetOfEntities()
@@ -60,6 +60,6 @@ class AttributeListTests extends TestBase
 
         $values = $list->GetAttributes($entityId);
 
-        $this->assertEquals([new Attribute($attribute1, 'att1')], $values);
+        $this->assertEquals([new LBAttribute($attribute1, 'att1')], $values);
     }
 }

@@ -100,14 +100,14 @@ class AttributeList implements IEntityAttributeList
 
         if ($this->AttributeExistsAndIsNotEntity($attributeId, $entityId)) {
             Log::Debug('Adding custom attribute value for entityId=%s, attributeId=%s', $entityId, $attributeId);
-            $this->values[$entityId][$attributeId] = new Attribute($this->definitions[$attributeId], $attributeEntityValue->Value);
+            $this->values[$entityId][$attributeId] = new LBAttribute($this->definitions[$attributeId], $attributeEntityValue->Value);
         } elseif ($this->EntityAttributeExists($attributeId, $entityId)) {
             Log::Debug(
                 'Adding entity specific custom attribute value for entityId=%s, attributeId=%s',
                 $entityId,
                 $attributeId
             );
-            $this->values[$entityId][$attributeId] = new Attribute($this->entityDefinitions[$entityId][$attributeId], $attributeEntityValue->Value);
+            $this->values[$entityId][$attributeId] = new LBAttribute($this->entityDefinitions[$entityId][$attributeId], $attributeEntityValue->Value);
         }
     }
 
@@ -128,7 +128,7 @@ class AttributeList implements IEntityAttributeList
                     $this->values[$entityId]
                 )
                 ) {
-                    $attributes[] = new Attribute($definition);
+                    $attributes[] = new LBAttribute($definition);
                 } else {
                     $attributes[] = $this->values[$entityId][$definition->Id()];
                 }

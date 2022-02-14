@@ -119,7 +119,7 @@ class UsersWebService
         foreach ($attributes as $attribute) {
             $attributeValue = $this->server->GetQueryString(WebServiceQueryStringKeys::ATTRIBUTE_PREFIX . $attribute->Id());
             if (!empty($attributeValue)) {
-                $attributeFilters[] = new Attribute($attribute, $attributeValue);
+                $attributeFilters[] = new LBAttribute($attribute, $attributeValue);
             }
         }
 

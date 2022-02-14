@@ -144,7 +144,7 @@ abstract class ReservationEmailMessage extends EmailMessage
         $attributeValues = [];
         foreach ($attributes as $attribute) {
             if (($attribute->HasSecondaryEntities()) && in_array($this->reservationSeries->ResourceId(), $attribute->SecondaryEntityIds())) {
-                $attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+                $attributeValues[] = new LBAttribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
             }
         }
 

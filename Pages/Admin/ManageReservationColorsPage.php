@@ -67,7 +67,7 @@ class ManageReservationColorsPresenter extends ActionPresenter
 
         $attrs = [];
         foreach ($attributes as $a) {
-            $attrs[] = new Attribute($a);
+            $attrs[] = new LBAttribute($a);
         }
         $this->page->SetAttributes($attrs);
 

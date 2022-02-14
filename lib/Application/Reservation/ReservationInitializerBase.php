@@ -422,7 +422,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
      */
     public function AddAttribute($attribute, $value)
     {
-        $this->customAttributes[] = new Attribute($attribute, $value);
+        $this->customAttributes[] = new LBAttribute($attribute, $value);
     }
 
     public function RedirectToError($errorMessageId)

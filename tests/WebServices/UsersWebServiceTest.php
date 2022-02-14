@@ -61,7 +61,7 @@ class UsersWebServiceTests extends TestBase
         $this->server->SetQueryString(WebServiceQueryStringKeys::POSITION, $position);
         $this->server->SetQueryString('att1', $att1);
 
-        $expectedFilter = new UserFilter($username, null, null, null, null, null, $position, [new Attribute($attributes[0], $att1)]);
+        $expectedFilter = new UserFilter($username, null, null, null, null, null, $position, [new LBAttribute($attributes[0], $att1)]);
 
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')

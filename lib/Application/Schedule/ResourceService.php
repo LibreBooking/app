@@ -230,7 +230,7 @@ class ResourceService implements IResourceService
         $attributes = [];
         $customAttributes = $this->_attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
         foreach ($customAttributes as $ca) {
-            $attributes[] = new Attribute($ca);
+            $attributes[] = new LBAttribute($ca);
         }
 
         return $attributes;
@@ -244,7 +244,7 @@ class ResourceService implements IResourceService
         $attributes = [];
         $customAttributes = $this->_attributeService->GetByCategory(CustomAttributeCategory::RESOURCE_TYPE);
         foreach ($customAttributes as $ca) {
-            $attributes[] = new Attribute($ca);
+            $attributes[] = new LBAttribute($ca);
         }
 
         return $attributes;

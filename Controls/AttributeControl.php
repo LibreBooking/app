@@ -22,7 +22,7 @@ class AttributeControl extends Control
 
         if (is_a($attribute, 'CustomAttribute')) {
             $attributeVal = $this->Get('value');
-            $attribute = new Attribute($attribute, $attributeVal);
+            $attribute = new LBAttribute($attribute, $attributeVal);
             $this->Set('attribute', $attribute);
         }
 

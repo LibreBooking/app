@@ -88,7 +88,7 @@ class ManageReservationsPresenterTests extends TestBase
         /** @var TestCustomAttribute[] $customAttributes */
         $customAttributes = [new TestCustomAttribute(1, 'something')];
         /** @var Attribute[] $attributes */
-        $attributes = [new Attribute($customAttributes[0], 'value')];
+        $attributes = [new LBAttribute($customAttributes[0], 'value')];
 
         $this->resourceRepository->expects($this->once())
             ->method('GetStatusReasons')

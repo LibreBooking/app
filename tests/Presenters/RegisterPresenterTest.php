@@ -262,7 +262,7 @@ class RegisterPresenterTests extends TestBase
     public function testLoadsCustomAttributes()
     {
         $attributes = [new FakeCustomAttribute(1), new FakeCustomAttribute(2)];
-        $expectedAttributes = [new Attribute($attributes[0]), new Attribute($attributes[1])];
+        $expectedAttributes = [new LBAttribute($attributes[0]), new LBAttribute($attributes[1])];
 
         $this->ExpectAttributeServiceCalled($expectedAttributes);
 
