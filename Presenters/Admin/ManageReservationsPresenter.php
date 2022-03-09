@@ -172,7 +172,7 @@ class ManageReservationsPresenter extends ActionPresenter
             if (is_array($filters) && array_key_exists($attribute->Id(), $filters)) {
                 $attributeValue = $filters[$attribute->Id()];
             }
-            $attributeFilters[] = new Attribute($attribute, $attributeValue);
+            $attributeFilters[] = new LBAttribute($attribute, $attributeValue);
         }
 
         $this->page->SetStartDate($startDate);
