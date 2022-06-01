@@ -17,6 +17,41 @@ class pl extends en_gb
     /**
      * @return array
      */
+    protected function _LoadDates()
+    {
+        $dates = [];
+
+        $dates['general_date'] = 'j.m.Y';
+        $dates['general_datetime'] = 'j.m.Y H:i:s';
+        $dates['short_datetime'] = 'j.m.Y H:i';
+        $dates['schedule_daily'] = 'l, j.m.Y';
+        $dates['reservation_email'] = 'j.m.Y \v H:i';
+        $dates['res_popup'] = 'j.m. H:i';
+        $dates['res_popup_time'] = 'H:i';
+        $dates['short_reservation_date'] = 'j.m.Y H:i';
+        $dates['dashboard'] = 'j.m. H:i';
+        $dates['period_time'] = 'H:i';
+        $dates['timepicker'] = 'H:i';
+        $dates['mobile_reservation_date'] = 'j.m. H:i';
+        $dates['general_date_js'] = 'd.m.yy';
+        $dates['general_time_js'] = 'h:mm tt';
+        $dates['timepicker_js'] = 'H:i';
+        $dates['momentjs_datetime'] = 'D.M.YY hh:mm';
+        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_dates'] = 'j.m.';
+        $dates['embedded_date'] = 'j.m.';
+        $dates['embedded_time'] = 'H:i';
+        $dates['embedded_datetime'] = 'j.m. H:i';
+        $dates['report_date'] = '%d.%m.';
+
+        $this->Dates = $dates;
+
+        return $this->Dates;
+    }
+
+    /**
+     * @return array
+     */
     protected function _LoadStrings()
     {
         $strings = parent::_LoadStrings();
