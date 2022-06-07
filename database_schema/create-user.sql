@@ -1,5 +1,5 @@
-DROP USER 'lb_user'@'localhost';
-DROP USER 'lb_user'@'127.0.0.1';
+DROP USER IF EXISTS 'lb_user'@'localhost';
+DROP USER IF EXISTS 'lb_user'@'127.0.0.1';
 
 CREATE USER 'lb_user'@'localhost' identified by 'password';
 CREATE USER 'lb_user'@'127.0.0.1' identified by 'password';
