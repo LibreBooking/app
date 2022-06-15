@@ -60,6 +60,7 @@ class ConfigKeys
     public const RESERVATION_TITLE_REQUIRED = 'title.required';
     public const RESERVATION_DESCRIPTION_REQUIRED = 'description.required';
     public const RESERVATION_CHECKIN_ADMIN_ONLY = 'checkin.admin.only';
+    public const RESERVATION_CHECKOUT_ADMIN_ONLY = 'checkout.admin.only';
 
     public const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     public const IMAGE_UPLOAD_URL = 'image.upload.url';

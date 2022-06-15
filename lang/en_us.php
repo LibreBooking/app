@@ -542,8 +542,8 @@ class en_us extends Language
         $strings['RequiresApproval'] = 'Requires Approval';
         $strings['CheckingIn'] = 'Checking In';
         $strings['CheckingOut'] = 'Checking Out';
-        $strings['CheckIn'] = 'Check In';
-        $strings['CheckOut'] = 'Check Out';
+        $strings['CheckIn'] = 'Loan';
+        $strings['CheckOut'] = 'Return';
         $strings['ReleasedIn'] = 'Released in';
         $strings['CheckedInSuccess'] = 'You are checked in';
         $strings['CheckedOutSuccess'] = 'You are checked out';
