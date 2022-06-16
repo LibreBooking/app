@@ -84,6 +84,9 @@ abstract class Page implements IPage
         $this->smarty->assign('PaymentsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter()));
         $this->smarty->assign('EmailEnabled', Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()));
 
+	$this->smarty->assign('checkinAdminOnly', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter()));
+	$this->smarty->assign('checkoutAdminOnly', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKOUT_ADMIN_ONLY, new BooleanConverter()));
+
         $this->smarty->assign('LogoUrl', 'librebooking.png');
         if (file_exists($this->path . 'img/custom-logo.png')) {
             $this->smarty->assign('LogoUrl', 'custom-logo.png');
