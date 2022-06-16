@@ -219,12 +219,9 @@ class ReservationView
     public function IsCheckinAvailable()
     {
         $checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
-        $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
-	Log::Debug('Checking if available for checkin');
-	if (!($checkinAdminOnly) || $currentUser->IsAdmin) {
-            if ($this->CheckinDate->ToString() == '' && Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate)) {
-                return $this->IsCheckinEnabled();
-            }
+
+        if ($this->CheckinDate->ToString() == '' && Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate)) {
+            return $this->IsCheckinEnabled();
         }
 
         return false;
@@ -232,8 +229,6 @@ class ReservationView
 
     public function IsCheckoutAvailable()
     {
-	//$checkoutAdminOnly = Configuration::Instance()->GetSecionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKOUT_ADMIN_ONLY, new BooleanConverter());
-
         if ($this->StartDate->LessThan(Date::Now()) &&
             $this->CheckoutDate->ToString() == '' &&
             $this->CheckinDate->ToString() != '') {
