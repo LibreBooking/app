@@ -70,7 +70,7 @@ $conf['settings']['reservation']['default.end.reminder'] = '';              // t
 $conf['settings']['reservation']['title.required'] = 'false';
 $conf['settings']['reservation']['description.required'] = 'false';
 $conf['settings']['reservation']['checkin.admin.only'] = 'true';
-
+$conf['settings']['reservation']['checkout.admin.only'] = 'true';
 /**
  * Email notification configuration
  */
