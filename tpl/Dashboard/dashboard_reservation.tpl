@@ -1,5 +1,5 @@
-{assign var=checkin value=$reservation->IsCheckinEnabled() && $reservation->RequiresCheckin()}
-{assign var=checkout value=$reservation->IsCheckinEnabled() && $reservation->RequiresCheckout()}
+{assign var=checkin value=$reservation->IsCheckinEnabled() && $reservation->RequiresCheckin() && $allowCheckin}
+{assign var=checkout value=$reservation->IsCheckinEnabled() && $reservation->RequiresCheckout() && allowCheckout}
 {assign var=class value=""}
 {if $reservation->RequiresApproval}{assign var=class value="pending"}{/if}
 <div class="reservation row {$class}" id="{$reservation->ReferenceNumber}">

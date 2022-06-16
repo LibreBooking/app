@@ -17,28 +17,28 @@
                     {translate key="Today"} ({$TodaysReservations|default:array()|count})
                 </div>
                 {foreach from=$TodaysReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
                 {/foreach}
 
                 <div class="timespan">
                     {translate key="Tomorrow"} ({$TomorrowsReservations|default:array()|count})
                 </div>
                 {foreach from=$TomorrowsReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
                 {/foreach}
 
                 <div class="timespan">
                     {translate key="LaterThisWeek"} ({$ThisWeeksReservations|default:array()|count})
                 </div>
                 {foreach from=$ThisWeeksReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
                 {/foreach}
 
                 <div class="timespan">
                     {translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
                 </div>
                 {foreach from=$NextWeeksReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
                 {/foreach}
             </div>
         {else}

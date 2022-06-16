@@ -71,9 +71,18 @@ class UpcomingReservationsPresenter
             }
         }
 
+        $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
+        $checkoutAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKOUT_ADMIN_ONLY, new BooleanConverter());
+
+        $allowCheckin = $user->IsAdmin || !$checkinAdminOnly;
+        $allowCheckout = $user->IsAdmin || !$checkoutAdminOnly;
+
         $this->control->SetTotal(count($consolidated));
         $this->control->SetTimezone($timezone);
         $this->control->SetUserId($user->UserId);
+
+        $this->control->SetAllowCheckin($allowCheckin);
+        $this->control->SetAllowCheckout($allowCheckout);
 
         $this->control->BindToday($todays);
         $this->control->BindTomorrow($tomorrows);
