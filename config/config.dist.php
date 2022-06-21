@@ -69,6 +69,8 @@ $conf['settings']['reservation']['default.start.reminder'] = '';			// the defaul
 $conf['settings']['reservation']['default.end.reminder'] = '';				// the default end reservation reminder. format is ## interval. for example, 10 minutes, 2 hours, 6 days.
 $conf['settings']['reservation']['title.required'] = 'false';
 $conf['settings']['reservation']['description.required'] = 'false';
+$conf['settings']['reservation']['checkin.admin.only'] = 'false';			// restrict check-in to administrators only
+$conf['settings']['reservation']['checkout.admin.only'] = 'false';			// restrict check-out to administrators only
 /**
  * Email notification configuration
  */
