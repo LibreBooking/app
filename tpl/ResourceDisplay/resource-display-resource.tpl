@@ -188,7 +188,7 @@
 
             <div class="row margin-top-25">
                 <div class="col-xs-12 text-center">
-                    <input type="submit" class="action-reserve col-xs-12" value="Reserve"/>
+                    <input type="submit" class="action-reserve col-xs-12" value="{translate key=Reserve}"/>
                     <a href="#" class="action-cancel" id="reserveCancel">{translate key=Cancel}</a>
                 </div>
             </div>
