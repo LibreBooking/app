@@ -59,6 +59,17 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
     {
         $this->Set('NextWeeksReservations', $reservations);
     }
+
+    public function SetAllowCheckin($allowCheckin)
+    {
+        $this->Set('allowCheckin',$allowCheckin);
+    }
+
+    public function SetAllowCheckout($allowCheckout)
+    {
+        $this->Set('allowCheckout',$allowCheckout);
+    }
+
 }
 
 interface IUpcomingReservationsControl
@@ -66,6 +77,9 @@ interface IUpcomingReservationsControl
     public function SetTimezone($timezone);
     public function SetTotal($total);
     public function SetUserId($userId);
+
+    public function SetAllowCheckin($allowCheckin);
+    public function SetAllowCheckout($allowCheckout);
 
     public function BindToday($reservations);
     public function BindTomorrow($reservations);

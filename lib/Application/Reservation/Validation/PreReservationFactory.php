@@ -119,7 +119,7 @@ class PreReservationFactory implements IPreReservationFactory
     {
         $rules = [];
         $rules[] = new AdminExcludedRule(new AnonymousResourceExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession), $userSession, $this->userRepository);
-        $rules[] = new ReservationCanBeCheckedInRule();
+        $rules[] = new ReservationCanBeCheckedInRule($userSession);
 
         return new ReservationValidationRuleProcessor($rules);
     }
@@ -132,7 +132,7 @@ class PreReservationFactory implements IPreReservationFactory
     {
         $rules = [];
         $rules[] = new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository);
-        $rules[] = new ReservationCanBeCheckedOutRule();
+        $rules[] = new ReservationCanBeCheckedOutRule($userSession);
 
         return new ReservationValidationRuleProcessor($rules);
     }

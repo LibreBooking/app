@@ -7,21 +7,32 @@ class ReservationCanBeCheckedInRule implements IReservationValidationRule
      * @param null|ReservationRetryParameter[] $retryParameters
      * @return ReservationRuleResult
      */
+
+    public function __construct(UserSession $userSession)
+    {
+        $this->userSession = $userSession;
+    }
+
     public function Validate($reservationSeries, $retryParameters)
     {
         $isOk = true;
         $atLeastOneReservationRequiresCheckIn = false;
         $checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
+	$checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
 
         $reservation = $reservationSeries->CurrentInstance();
         $tooEarly = Date::Now()->LessThan($reservation->StartDate()->AddMinutes(-$checkinMinutes));
         $tooLate = Date::Now()->GreaterThanOrEqual($reservation->EndDate());
+        $isAdministrator = $this->userSession->IsAdmin;
+
+	if ($checkinAdminOnly && !$isAdministrator) {
+            $isOk = false;
+        }
 
         foreach ($reservationSeries->AllResources() as $resource) {
             if ($resource->IsCheckInEnabled()) {
                 $atLeastOneReservationRequiresCheckIn = true;
             }
-
             $pastCheckinTime = $this->PastCheckinTime($resource, $reservationSeries);
             if ($pastCheckinTime || $tooEarly || $tooLate) {
                 Log::Debug('Reservation %s cannot be checked in to. Past checkin time: %s, Too early: %s, Past end: %s', $reservation->ReferenceNumber(), $pastCheckinTime, $tooEarly, $tooLate);

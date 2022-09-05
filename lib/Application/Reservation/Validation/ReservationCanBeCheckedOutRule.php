@@ -7,11 +7,23 @@ class ReservationCanBeCheckedOutRule implements IReservationValidationRule
      * @param null|ReservationRetryParameter[] $retryParameters
      * @return ReservationRuleResult
      */
+
+    public function __construct(UserSession $userSession)
+    {
+        $this->userSession = $userSession;
+    }
+
     public function Validate($reservationSeries, $retryParameters)
     {
         $isOk = true;
         $atLeastOneReservationRequiresCheckIn = false;
+        $checkoutAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKOUT_ADMIN_ONLY, new BooleanConverter());
         $tooEarly = Date::Now()->LessThan($reservationSeries->CurrentInstance()->StartDate());
+        $isAdministrator = $this->userSession->IsAdmin;
+
+        if ($checkoutAdminOnly && !$isAdministrator) {
+            $isOk = false;
+        }
 
         foreach ($reservationSeries->AllResources() as $resource) {
             if ($resource->IsCheckInEnabled()) {
