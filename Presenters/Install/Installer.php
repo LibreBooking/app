@@ -39,7 +39,7 @@ class Installer
 
         $create_user = new MySqlScript(ROOT_DIR . 'database_schema/create-user.sql');
         $create_user->Replace('librebooking', $database_name);
-        $create_user->Replace('schedule_user', $database_user);
+        $create_user->Replace('lb_user', $database_user);
         $create_user->Replace('localhost', $hostname);
         $create_user->Replace('password', $database_password);
 
