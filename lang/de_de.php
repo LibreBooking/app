@@ -708,6 +708,10 @@ class de_de extends en_gb
         $strings['OnlyViewedCalendar'] = 'Dieser Terminplan kann nur aus der Kalenderansicht betrachtet werden';
         $strings['Grid'] = 'Raster';
         $strings['List'] = 'Liste';
+        $strings['NoReservationsFound'] = 'Keine Reservierung gefunden';
+        $strings['EmailReservation'] = 'E-Mail-Reservierung';
+        $strings['AdHocMeeting'] = 'Ad hoc-Meeting';
+        $strings['NextReservation'] = 'Nächste Reservierung';
         $strings['ReservationParticipationActivityPreference'] = 'Wenn jemand meiner Reservierung beitritt oder sie verlässt';
         $strings['ReservationSeriesEndingPreference'] = 'Wenn die Serie meiner wiederkehrenden Reservierungen endet';
         // End Strings
