@@ -713,7 +713,7 @@ class pt_br extends en_gb
         $strings['ResourceMinNoticeNoneDelete'] ='As reservas podem ser excluídas até a hora atual';
         $strings['ResourceMinNoticeDelete'] = 'As reservas devem ser excluídas pelo menos 2 dias antes da hora de início';
         $strings['RequiresCheckInNotification'] = 'Requer check in/out';
-        $strings['AutoReleaseNotification'] = 'Liberado automaticamente se não for verificado em 30 minutos';
+        $strings['AutoReleaseNotification'] = 'Liberado automaticamente se não for verificado em %s minutos';
         $strings['ChooseOrDropFile'] = 'Escolha um arquivo ou arraste-o aqui';
         //End Access
 
