@@ -9,10 +9,10 @@
             <li>Current Time: {$currentTime}</li>
             <li>Image Upload Physical Directory: {$imageUploadDirectory} ({translate key=Permissions}
                 : {$imageUploadDirPermissions}) <a
-                        href="{$smarty.server.SCRIPT_URL}?{QueryStringKeys::ACTION}=changePermissions">Try to apply
+                        href="{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changePermissions">Try to apply
                     correct permissions</a></li>
-            <li>Template Cache Directory: {$tempalteCacheDirectory} <a
-                        href="{$smarty.server.SCRIPT_URL}?{QueryStringKeys::ACTION}=flush">Try to flush cached files</a>
+            <li>Template Cache Directory: {$templateCacheDirectory} <a
+                        href="{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=flush">Try to flush cached files</a>
             </li>
         </ul>
 

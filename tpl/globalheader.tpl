@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="{$HtmlLang}" dir="{$HtmlTextDirection}">
 <head>
-    <title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
+    <title>{if isset($TitleKey) && $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
     <meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex"/>
-    {if $ShouldLogout}
+    {if isset($ShouldLogout) && $ShouldLogout}
         <meta http-equiv="REFRESH"
 			  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}" />
     {/if}
     <link rel="shortcut icon" href="{$Path}{$FaviconUrl}"/>
     <link rel="icon" href="{$Path}{$FaviconUrl}"/>
     <!-- JavaScript -->
-    {if $UseLocalJquery}
+    {if isset($UseLocalJquery) && $UseLocalJquery}
         {jsfile src="js/jquery-3.3.1.min.js"}
         {jsfile src="js/jquery-migrate-3.0.1.min.js"}
         {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
@@ -34,17 +34,17 @@
     <!-- End JavaScript -->
 
     <!-- CSS -->
-    {if $UseLocalJquery}
+    {if isset($UseLocalJquery) && $UseLocalJquery}
         {cssfile src="scripts/css/smoothness/jquery-ui.1.12.1.custom.min.css"}
         {cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"}
         {cssfile src="scripts/bootstrap/css/bootstrap.css" rel="stylesheet"}
-        {if $Qtip}
+        {if isset($Qtip) && $Qtip}
             {cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
         {/if}
-        {if $Validator}
+        {if isset($Validator) && $Validator}
             {cssfile src="css/bootstrapValidator.min.css" rel="stylesheet"}
         {/if}
-        {if $InlineEdit}
+        {if isset($InlineEdit) && $InlineEdit}
             {cssfile src="scripts/js/x-editable/css/bootstrap-editable.css" rel="stylesheet"}
             {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet"}
         {/if}
@@ -59,30 +59,30 @@
               type="text/css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css"
               type="text/css"/>
-        {if $Validator}
+        {if isset($Validator) && $Validator}
             <link rel="stylesheet"
                   href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"
                   type="text/css"/>
         {/if}
-        {if $InlineEdit}
+        {if isset($InlineEdit) && $InlineEdit}
             <link rel="stylesheet"
                   href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"
                   type="text/css"/>
             {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet"}
         {/if}
     {/if}
-    {if $Select2}
+    {if isset($Select2) && $Select2}
         {cssfile src="scripts/css/select2/select2-4.0.5.min.css"}
         {*{cssfile src="scripts/css/select2/select2-bootstrap.min.css"}*}
     {/if}
-    {if $Timepicker}
+    {if isset($Timepicker) && $Timepicker}
         {cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
     {/if}
-    {if $Fullcalendar}
+    {if isset($Fullcalendar) && $Fullcalendar}
         {cssfile src="scripts/css/fullcalendar.min.css"}
         <link rel='stylesheet' type='text/css' href='{$Path}scripts/css/fullcalendar.print.css' media='print'/>
     {/if}
-    {if $Owl}
+    {if isset($Owl) && $Owl}
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.theme.default.css"}
     {/if}
@@ -90,20 +90,20 @@
     {jsfile src="js/jquery-ui-timepicker-addon.js"}
     {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
     {cssfile src="booked.css"}
-    {if $cssFiles neq ''}
+    {if isset($cssFiles) && $cssFiles neq ''}
         {assign var='CssFileList' value=','|explode:$cssFiles}
         {foreach from=$CssFileList item=cssFile}
             {cssfile src=$cssFile}
         {/foreach}
     {/if}
-    {if $CssUrl neq ''}
+    {if isset($CssUrl) && $CssUrl neq ''}
         {cssfile src=$CssUrl}
     {/if}
-    {if $CssExtensionFile neq ''}
+    {if isset($CssExtensionFile) && $CssExtensionFile neq ''}
         {cssfile src=$CssExtensionFile}
     {/if}
 
-    {if $printCssFiles neq ''}
+    {if isset($printCssFiles) && $printCssFiles neq ''}
         {assign var='PrintCssFileList' value=','|explode:$printCssFiles}
         {foreach from=$PrintCssFileList item=cssFile}
             <link rel='stylesheet' type='text/css' href='{$Path}{$cssFile}' media='print'/>
@@ -111,10 +111,10 @@
     {/if}
     <!-- End CSS -->
 </head>
-<body {if $HideNavBar == true}style="padding-top:0;"{/if}>
+<body {if isset($HideNavBar) && $HideNavBar == true}style="padding-top:0;"{/if}>
 
-{if $HideNavBar == false}
-    <nav class="navbar navbar-default {if $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}"
+{if !isset($HideNavBar) || $HideNavBar == false}
+    <nav class="navbar navbar-default {if isset($IsDesktop) && $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}"
          role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -129,7 +129,7 @@
             </div>
             <div class="collapse navbar-collapse" id="booked-navigation">
                 <ul class="nav navbar-nav">
-                    {if $LoggedIn}
+                    {if isset($LoggedIn) && $LoggedIn}
                         <li id="navDashboard"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
                         <li class="dropdown" id="navMyAccountDropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="MyAccount"} <b
@@ -141,12 +141,12 @@
                                 <li id="navNotification">
                                     <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
                                 </li>
-                                {if $ShowParticipation}
+                                {if isset($ShowParticipation) && $ShowParticipation}
                                     <li id="navInvitations">
                                         <a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
                                     </li>
                                 {/if}
-                                {if $CreditsEnabled}
+                                {if isset($CreditsEnabled) && $CreditsEnabled}
                                     <li id="navUserCredits">
                                         <a href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>
                                     </li>
@@ -171,7 +171,7 @@
                                 </li>
                             </ul>
                         </li>
-                        {if $CanViewAdmin}
+                        {if isset($CanViewAdmin) && $CanViewAdmin}
                             <li class="dropdown" id="navApplicationManagementDropdown">
                                 <a href="#" class="dropdown-toggle"
                                    data-toggle="dropdown">{translate key="ApplicationManagement"}
@@ -208,7 +208,7 @@
                                                 href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
                                     </li>
                                     <li class="divider"></li>
-                                    {if $PaymentsEnabled}
+                                    {if isset($PaymentsEnabled) && $PaymentsEnabled}
                                         <li id="navManagePayments"><a
                                                     href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
                                         </li>
@@ -220,13 +220,13 @@
                                 </ul>
                             </li>
                         {/if}
-                        {if $CanViewResponsibilities}
+                        {if isset($CanViewResponsibilities) && $CanViewResponsibilities}
                             <li class="dropdown" id="navResponsibilitiesDropdown">
                                 <a href="#" class="dropdown-toggle"
                                    data-toggle="dropdown">{translate key="Responsibilities"} <b
                                             class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    {if $CanViewGroupAdmin}
+                                    {if isset($CanViewGroupAdmin) && $CanViewGroupAdmin}
                                         <li id="navResponsibilitiesGAUsers"><a
                                                     href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a>
                                         </li>
@@ -237,7 +237,7 @@
                                                     href="{$Path}admin/manage_admin_groups.php">{translate key="ManageGroups"}</a>
                                         </li>
                                     {/if}
-                                    {if $CanViewResourceAdmin || $CanViewScheduleAdmin}
+                                    {if (isset($CanViewResourceAdmin) && $CanViewResourceAdmin) || (isset($CanViewScheduleAdmin) && $CanViewScheduleAdmin)}
                                         <li id="navResponsibilitiesRAResources"><a
                                                     href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a>
                                         </li>
@@ -245,12 +245,12 @@
                                                     href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
                                         </li>
                                     {/if}
-                                    {if $CanViewResourceAdmin}
+                                    {if isset($CanViewResourceAdmin) && $CanViewResourceAdmin}
                                         <li id="navResponsibilitiesRAReservations">
                                             <a href="{$Path}admin/manage_resource_reservations.php">{translate key="ResourceReservations"}</a>
                                         </li>
                                     {/if}
-                                    {if $CanViewScheduleAdmin}
+                                    {if isset($CanViewScheduleAdmin) && $CanViewScheduleAdmin}
                                         <li id="navResponsibilitiesSASchedules">
                                             <a href="{$Path}admin/manage_admin_schedules.php">{translate key="ManageSchedules"}</a>
                                         </li>
@@ -264,7 +264,7 @@
                                 </ul>
                             </li>
                         {/if}
-                        {if $CanViewReports}
+                        {if isset($CanViewReports) && $CanViewReports}
                             <li class="dropdown" id="navReportsDropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Reports"} <b
                                             class="caret"></b></a>
@@ -285,7 +285,7 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    {if $ShowScheduleLink}
+                    {if isset($ShowScheduleLink) && $ShowScheduleLink}
                         <li class="dropdown" id="navScheduleDropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b
                                         class="caret"></b></a>
@@ -297,16 +297,16 @@
                             </ul>
                         </li>
                     {/if}
-                    {if $CanViewAdmin}
+                    {if isset($CanViewAdmin) && $CanViewAdmin}
                         <li class="dropdown" id="navHelpDropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="no-show">Configuration</span>
                                 <span class="fa fa-cog"></span>
                                 <b class="caret"></b>
-                                {if $ShowNewVersion}<span class="badge badge-new-version new-version" id="newVersionBadge">{translate key=NewVersion}</span>{/if}
+                                {if isset($ShowNewVersion) && $ShowNewVersion}<span class="badge badge-new-version new-version" id="newVersionBadge">{translate key=NewVersion}</span>{/if}
                             </a>
                             <ul class="dropdown-menu">
-                                {if $EnableConfigurationPage}
+                                {if isset($EnableConfigurationPage) && $EnableConfigurationPage}
                                     <li id="navManageConfiguration"><a
                                                 href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
                                     </li>
@@ -325,7 +325,7 @@
                                 <li id="navDataCleanup"><a
                                             href="{$Path}admin/data_cleanup.php">{translate key="DataCleanup"}</a>
                                 </li>
-                                {if $ShowNewVersion}
+                                {if isset($ShowNewVersion) && $ShowNewVersion}
                                     <li class="divider new-version"></li>
                                     <li id="navNewVersion" class="new-version">
                                         <a href="https://github.com/effgarces/BookedScheduler/releases">{translate key=WhatsNew}</a>
@@ -339,13 +339,13 @@
                                     class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li id="navHelp"><a href="https://github.com/effgarces/BookedScheduler/wiki">{translate key=Help}</a></li>
-                            {if $CanViewAdmin}
+                            {if isset($CanViewAdmin) && $CanViewAdmin}
                                 <li id="navHelpAdmin"><a href="https://github.com/effgarces/BookedScheduler/wiki/Administration">{translate key=Administration}</a></li>
                             {/if}
                             <li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
                         </ul>
                     </li>
-                    {if $LoggedIn}
+                    {if isset($LoggedIn) && $LoggedIn}
                         <li id="navSignOut"><a href="{$Path}logout.php">{translate key="SignOut"}</a></li>
                     {else}
                         <li id="navLogIn"><a href="{$Path}index.php">{translate key="LogIn"}</a></li>
@@ -356,4 +356,4 @@
     </nav>
 {/if}
 
-<div id="main" class="container-fluid" {if $HideNavBar}style="padding-bottom:0;"{/if}>
+<div id="main" class="container-fluid" {if isset($HideNavBar) && $HideNavBar}style="padding-bottom:0;"{/if}>
