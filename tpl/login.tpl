@@ -82,7 +82,7 @@
                 {if $ShowRegisterLink}
                     <div class="col-xs-12 col-sm-6 register">
                     <span class="bold">{translate key="FirstTimeUser?"}
-                    <a href="{$RegisterUrl}" {$RegisterUrlNew}
+                    <a href="{$RegisterUrl}" {if isset($RegisterUrlNew)}{$RegisterUrlNew}{/if}
                        title="{translate key=Register}">{translate key=Register}</a>
                     </span>
                     </div>
@@ -114,7 +114,7 @@
 			<div id="login-footer" class="col-xs-12">
 				{if $ShowForgotPasswordPrompt}
 					<div id="forgot-password" class="col-xs-12 col-sm-6">
-						<a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="btn btn-link pull-left-sm"><span><i
+						<a href="{$ForgotPasswordUrl}" {if isset($ForgotPasswordUrlNew)}{$ForgotPasswordUrlNew}{/if} class="btn btn-link pull-left-sm"><span><i
 										class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
 					</div>
 				{/if}

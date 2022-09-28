@@ -369,7 +369,7 @@
     {foreach from=$SpecificDates item=d}
         <input type="hidden" {formname key=SPECIFIC_DATES multi=true} value="{formatdate date=$d key=system}"/>
     {/foreach}
-    <input type="hidden" {formname key=MIN_CAPACITY} value="{$MinCapacityFilter}"/>
+    <input type="hidden" {formname key=MIN_CAPACITY} value="{if isset($MinCapacityFilter)}{$MinCapacityFilter}{/if}"/>
     <input type="hidden" {formname key=RESOURCE_TYPE_ID} value="{$ResourceTypeIdFilter}"/>
     {foreach from=$ResourceAttributes item=attribute}
         <input type="hidden" name="RESOURCE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}"/>
@@ -415,7 +415,7 @@
         selectedResources: [{','|implode:$ResourceIds}],
         specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
         updateReservationUrl: "{$Path}ajax/reservation_move.php",
-        lockTableHead: "{$LockTableHead}",
+        lockTableHead: "{if isset($LockTableHead)}{$LockTableHead}{/if}",
         disableSelectable: "{$IsMobile}",
         reservationLoadUrl: "{$Path}{Pages::SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations",
         scheduleStyle: "{$ScheduleStyle}",

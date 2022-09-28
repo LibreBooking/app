@@ -14,7 +14,7 @@
 			<i class="fa fa-warning fa-2x"></i> {translate key=PasswordControlledExternallyError}
 		</div>
 	{else}
-		{if $ResetPasswordSuccess}
+		{if isset($ResetPasswordSuccess) && $ResetPasswordSuccess}
 			<div class="success alert alert-success col-xs-12 col-sm-8 col-sm-offset-2">
 				<span class="glyphicon glyphicon-ok-sign"></span> {translate key=PasswordChangedSuccessfully}
 			</div>
