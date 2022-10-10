@@ -10,7 +10,7 @@
     <div id="calendar"></div>
 
     <div id="dayDialog" class="default-box-shadow">
-        {if !$HideCreate}<a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>{/if}
+        {if !isset($HideCreate)  || !$HideCreate}<a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>{/if}
         <a href="#" id="dayDialogView">{html_image src="search.png"}{translate key=ViewDay}</a>
         <a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
     </div>
@@ -60,7 +60,7 @@
                 dayText: '{{translate key=Day}|escape:'javascript'}',
                 monthText: '{{translate key=Month}|escape:'javascript'}',
                 weekText: '{{translate key=Week}|escape:'javascript'}',
-                dayClickUrl: '{$pageUrl}?ct={CalendarTypes::Day}&sid={$ScheduleId|escape:'javascript'}&rid={$ResourceId|escape:'javascript'}&gid={$GroupId|escape:'javascript'}',
+                dayClickUrl: '{$pageUrl}?ct={CalendarTypes::Day}&sid={$ScheduleId|escape:'javascript'}&rid={$ResourceId|escape:'javascript'}&gid={if isset($GroupId)}{$GroupId|escape:'javascript'}{/if}',
                 dayClickUrlTemplate: '{$pageUrl}?ct={CalendarTypes::Day}&sid=[sid]&rid=[rid]&gid=[gid]',
                 dayNames: {js_array array=$DayNames},
                 dayNamesShort: {js_array array=$DayNamesShort},
@@ -77,7 +77,7 @@
                     dr: 'events',
                     sid: '{$ScheduleId|escape:'javascript'}',
                     rid: '{$ResourceId|escape:'javascript'}',
-                    gid: '{$GroupId|escape:'javascript'}'
+                    gid: '{if isset($GroupId)}{$GroupId|escape:'javascript'}{/if}'
                 },
                 getSubscriptionUrl: '{$pageUrl}?dr=subscription',
                 subscriptionEnableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionEnableSubscription}',

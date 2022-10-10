@@ -1,6 +1,6 @@
 <div class="form-group {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}">
-	<label class="customAttribute {if $readonly}readonly{elseif $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
-	{if $readonly}
+	<label class="customAttribute {if isset($readonly) && $readonly}readonly{elseif $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
+	{if isset($readonly) && $readonly}
 		<span class="attributeValue {$class}">{$attribute->Value()}</span>
 	{else}
 		<input type="text" id="{$attributeId}" name="{$attributeName}" value="{$attribute->Value()}"

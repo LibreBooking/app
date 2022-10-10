@@ -1,7 +1,7 @@
 <div class="row form-inline">
     <div id="filter">
 
-        {if $GroupName}
+        {if isset($GroupName) && $GroupName}
         <span class="groupName">{$GroupName}</span>
         {else}
         <div>

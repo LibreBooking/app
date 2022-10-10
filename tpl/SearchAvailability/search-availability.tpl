@@ -109,7 +109,7 @@
                 <label for="maxCapacity" class="hidden">{translate key=MinimumCapacity}</label>
                 <input type='number' id='maxCapacity' min='0' size='5' maxlength='5'
                        class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
-                       value="{$MaxParticipantsFilter}" placeholder="{translate key=MinimumCapacity}"/>
+                       value="{$MaxParticipantsFilter|default:''}" placeholder="{translate key=MinimumCapacity}"/>
 
             </div>
             <div class="form-group col-xs-6">

@@ -1,4 +1,4 @@
-{if $pageUrl == null}
+{if !isset($pageUrl) || $pageUrl == null}
 {assign var=pageUrl value={Pages::CALENDAR}}
 {/if}
 {assign var=pageIdSuffix value="calendar"}
