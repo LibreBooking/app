@@ -28,7 +28,7 @@
 {/function}
 
 {function name=displayReservable}
-    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable slot">&nbsp;
+    <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{if isset($SlotRef)}{$SlotRef}{/if}" class="reservable slot">&nbsp;
     </td>
 {/function}
 
