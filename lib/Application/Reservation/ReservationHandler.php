@@ -64,7 +64,6 @@ class ReservationHandler implements IReservationHandler
      */
     public static function Create($reservationAction, $persistenceService, UserSession $session)
     {
-        sleep(rand(3, 6));
         if (!isset($persistenceService)) {
             $persistenceFactory = new ReservationPersistenceFactory();
             $persistenceService = $persistenceFactory->Create($reservationAction);
