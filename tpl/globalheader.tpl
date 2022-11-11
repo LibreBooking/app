@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="{$HtmlLang}" dir="{$HtmlTextDirection}">
 <head>
-    <title>{if isset($TitleKey) && $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
     <meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex"/>
@@ -27,8 +26,12 @@
                 src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
                 integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
                 crossorigin="anonymous"></script>
-        <script type="text/javascript"
-                src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!-- <script type="text/javascript"
+                src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+                crossorigin="anonymous"></script>
+
     {/if}
 
     <!-- End JavaScript -->
@@ -55,8 +58,13 @@
               type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
               type="text/css"/>
-        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
-              type="text/css"/>
+        <!-- <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+              type="text/css"/> -->
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+              integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css"
               type="text/css"/>
         {if isset($Validator) && $Validator}
@@ -110,173 +118,167 @@
         {/foreach}
     {/if}
     <!-- End CSS -->
+    <title>{if isset($TitleKey) && $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 </head>
 <body {if isset($HideNavBar) && $HideNavBar == true}style="padding-top:0;"{/if}>
 
 {if !isset($HideNavBar) || $HideNavBar == false}
-    <nav class="navbar navbar-default {if isset($IsDesktop) && $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}"
-         role="navigation">
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm {if isset($IsDesktop) && $IsDesktop}fixed-top{else}mb-4{/if}">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#booked-navigation">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand"
-                   href="{$HomeUrl}">{html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}</a>
-            </div>
+            <a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}</a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#booked-navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="booked-navigation">
-                <ul class="nav navbar-nav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     {if isset($LoggedIn) && $LoggedIn}
-                        <li id="navDashboard"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
-                        <li class="dropdown" id="navMyAccountDropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="MyAccount"} <b
+                        <li class="nav-item" id="navDashboard"><a class="nav-link" href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
+                        <li class="nav-item dropdown" id="navMyAccountDropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">{translate key="MyAccount"} <b
                                         class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li id="navProfile"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
-                                <li id="navPassword"><a
+                                <li id="navProfile"><a class="dropdown-item" href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
+                                <li id="navPassword"><a class="dropdown-item"
                                             href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>
                                 <li id="navNotification">
-                                    <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
+                                    <a class="dropdown-item" href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
                                 </li>
                                 {if isset($ShowParticipation) && $ShowParticipation}
                                     <li id="navInvitations">
-                                        <a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
+                                        <a class="dropdown-item" href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
                                     </li>
                                 {/if}
                                 {if isset($CreditsEnabled) && $CreditsEnabled}
                                     <li id="navUserCredits">
-                                        <a href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>
+                                        <a class="dropdown-item" href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>
                                     </li>
                                 {/if}
                             </ul>
                         </li>
-                        <li class="dropdown" id="navScheduleDropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b
+                        <li class="nav-item dropdown" id="navScheduleDropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">{translate key="Schedule"} <b
                                         class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li id="navBookings"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a>
+                                <li id="navBookings"><a class="dropdown-item" href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a>
                                 </li>
-                                <li id="navMyCalendar"><a
+                                <li id="navMyCalendar"><a class="dropdown-item"
                                             href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
-                                <li id="navResourceCalendar"><a
+                                <li id="navResourceCalendar"><a class="dropdown-item"
                                             href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
                                 <!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-                                <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>
+                                <li id="navFindATime"><a class="dropdown-item" href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>
                                 </li>
-                                <li id="navFindATime"><a
+                                <li id="navFindATime"><a class="dropdown-item"
                                             href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a>
                                 </li>
                             </ul>
                         </li>
                         {if isset($CanViewAdmin) && $CanViewAdmin}
-                            <li class="dropdown" id="navApplicationManagementDropdown">
-                                <a href="#" class="dropdown-toggle"
-                                   data-toggle="dropdown">{translate key="ApplicationManagement"}
+                            <li class="nav-item dropdown" id="navApplicationManagementDropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button"
+                                   data-bs-toggle="dropdown">{translate key="ApplicationManagement"}
                                     <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li id="navManageReservations"><a
+                                    <li id="navManageReservations"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
                                     </li>
-                                    <li id="navManageBlackouts"><a
+                                    <li id="navManageBlackouts"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
                                     </li>
-                                    <li id="navManageQuotas"><a
+                                    <li id="navManageQuotas"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
                                     </li>
-                                    <li class="divider"></li>
-                                    <li id="navManageSchedules"><a
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li id="navManageSchedules"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>
-                                    <li id="navManageResources"><a
+                                    <li id="navManageResources"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
                                     </li>
-                                    <li id="navManageAccessories"><a
+                                    <li id="navManageAccessories"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
                                     </li>
 
-                                    <li class="divider"></li>
-                                    <li id="navManageUsers"><a
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li id="navManageUsers"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
                                     </li>
-                                    <li id="navManageGroups"><a
+                                    <li id="navManageGroups"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
                                     </li>
 
-                                    <li id="navManageAnnouncements"><a
+                                    <li id="navManageAnnouncements"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
                                     </li>
                                     <li class="divider"></li>
                                     {if isset($PaymentsEnabled) && $PaymentsEnabled}
-                                        <li id="navManagePayments"><a
+                                        <li id="navManagePayments"><a class="dropdown-item"
                                                     href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
                                         </li>
                                     {/if}
                                     {*<li class="dropdown-header">{translate key=Customization}</li>*}
-                                    <li id="navManageAttributes"><a
+                                    <li id="navManageAttributes"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
                                     </li>
                                 </ul>
                             </li>
                         {/if}
                         {if isset($CanViewResponsibilities) && $CanViewResponsibilities}
-                            <li class="dropdown" id="navResponsibilitiesDropdown">
-                                <a href="#" class="dropdown-toggle"
-                                   data-toggle="dropdown">{translate key="Responsibilities"} <b
+                            <li class="nav-item dropdown" id="navResponsibilitiesDropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button"
+                                   data-bs-toggle="dropdown">{translate key="Responsibilities"} <b
                                             class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     {if isset($CanViewGroupAdmin) && $CanViewGroupAdmin}
-                                        <li id="navResponsibilitiesGAUsers"><a
+                                        <li id="navResponsibilitiesGAUsers"><a class="dropdown-item"
                                                     href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a>
                                         </li>
-                                        <li id="navResponsibilitiesGAReservations"><a
+                                        <li id="navResponsibilitiesGAReservations"><a class="dropdown-item"
                                                     href="{$Path}admin/manage_group_reservations.php">{translate key="GroupReservations"}</a>
                                         </li>
-                                        <li id="navResponsibilitiesGAGroups"><a
+                                        <li id="navResponsibilitiesGAGroups"><a class="dropdown-item"
                                                     href="{$Path}admin/manage_admin_groups.php">{translate key="ManageGroups"}</a>
                                         </li>
                                     {/if}
                                     {if (isset($CanViewResourceAdmin) && $CanViewResourceAdmin) || (isset($CanViewScheduleAdmin) && $CanViewScheduleAdmin)}
-                                        <li id="navResponsibilitiesRAResources"><a
+                                        <li id="navResponsibilitiesRAResources"><a class="dropdown-item"
                                                     href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a>
                                         </li>
-                                        <li id="navResponsibilitiesRABlackouts"><a
+                                        <li id="navResponsibilitiesRABlackouts"><a class="dropdown-item"
                                                     href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
                                         </li>
                                     {/if}
                                     {if isset($CanViewResourceAdmin) && $CanViewResourceAdmin}
                                         <li id="navResponsibilitiesRAReservations">
-                                            <a href="{$Path}admin/manage_resource_reservations.php">{translate key="ResourceReservations"}</a>
+                                            <a class="dropdown-item" href="{$Path}admin/manage_resource_reservations.php">{translate key="ResourceReservations"}</a>
                                         </li>
                                     {/if}
                                     {if isset($CanViewScheduleAdmin) && $CanViewScheduleAdmin}
                                         <li id="navResponsibilitiesSASchedules">
-                                            <a href="{$Path}admin/manage_admin_schedules.php">{translate key="ManageSchedules"}</a>
+                                            <a class="dropdown-item" href="{$Path}admin/manage_admin_schedules.php">{translate key="ManageSchedules"}</a>
                                         </li>
                                         <li id="navResponsibilitiesSAReservations">
-                                            <a href="{$Path}admin/manage_schedule_reservations.php">{translate key="ScheduleReservations"}</a>
+                                            <a class="dropdown-item" href="{$Path}admin/manage_schedule_reservations.php">{translate key="ScheduleReservations"}</a>
                                         </li>
                                     {/if}
                                     <li id="navResponsibilitiesAnnouncements">
-                                        <a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
+                                        <a class="dropdown-item" href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
                                     </li>
                                 </ul>
                             </li>
                         {/if}
                         {if isset($CanViewReports) && $CanViewReports}
-                            <li class="dropdown" id="navReportsDropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Reports"} <b
+                            <li class="nav-item dropdown" id="navReportsDropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">{translate key="Reports"} <b
                                             class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li id="navGenerateReport">
-                                        <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
+                                        <a class="dropdown-item" href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
                                     </li>
                                     <li id="navSavedReports">
-                                        <a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
+                                        <a class="dropdown-item" href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
                                     </li>
                                     <li id="navCommonReports">
-                                        <a href="{$Path}reports/{Pages::REPORTS_COMMON}">{translate key=CommonReports}</a>
+                                        <a class="dropdown-item" href="{$Path}reports/{Pages::REPORTS_COMMON}">{translate key=CommonReports}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -284,22 +286,22 @@
                     {/if}
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="navbar-nav navbar-right">
                     {if isset($ShowScheduleLink) && $ShowScheduleLink}
-                        <li class="dropdown" id="navScheduleDropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b
+                        <li class="nav-item dropdown" id="navScheduleDropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">{translate key="Schedule"} <b
                                         class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a>
+                                <li id="navViewSchedule"><a class="dropdown-item" href="view-schedule.php">{translate key='ViewSchedule'}</a>
                                 </li>
-                                <li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a>
+                                <li id="navViewCalendar"><a class="dropdown-item" href="view-calendar.php">{translate key='ViewCalendar'}</a>
                                 </li>
                             </ul>
                         </li>
                     {/if}
                     {if isset($CanViewAdmin) && $CanViewAdmin}
-                        <li class="dropdown" id="navHelpDropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <li class="nav-item dropdown" id="navHelpDropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
                                 <span class="no-show">Configuration</span>
                                 <span class="fa fa-cog"></span>
                                 <b class="caret"></b>
@@ -307,48 +309,48 @@
                             </a>
                             <ul class="dropdown-menu">
                                 {if isset($EnableConfigurationPage) && $EnableConfigurationPage}
-                                    <li id="navManageConfiguration"><a
+                                    <li id="navManageConfiguration"><a class="dropdown-item"
                                                 href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
                                     </li>
                                 {/if}
-                                <li id="navEmailTemplates"><a
+                                <li id="navEmailTemplates"><a class="dropdown-item"
                                             href="{$Path}admin/manage_email_templates.php">{translate key="ManageEmailTemplates"}</a>
                                 </li>
-                                <li id="navLookAndFeel"><a
+                                <li id="navLookAndFeel"><a class="dropdown-item"
                                             href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a>
                                 </li>
-                                <li id="navImport"><a href="{$Path}admin/import.php">{translate key="Import"}</a>
+                                <li id="navImport"><a class="dropdown-item" href="{$Path}admin/import.php">{translate key="Import"}</a>
                                 </li>
-                                <li id="navServerSettings"><a
+                                <li id="navServerSettings"><a class="dropdown-item"
                                             href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
                                 </li>
-                                <li id="navDataCleanup"><a
+                                <li id="navDataCleanup"><a class="dropdown-item"
                                             href="{$Path}admin/data_cleanup.php">{translate key="DataCleanup"}</a>
                                 </li>
                                 {if isset($ShowNewVersion) && $ShowNewVersion}
-                                    <li class="divider new-version"></li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li id="navNewVersion" class="new-version">
-                                        <a href="https://github.com/effgarces/BookedScheduler/releases">{translate key=WhatsNew}</a>
+                                        <a class="dropdown-item" href="https://github.com/effgarces/BookedScheduler/releases">{translate key=WhatsNew}</a>
                                     </li>
                                 {/if}
                             </ul>
                         </li>
                     {/if}
-                    <li class="dropdown" id="navHelpDropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Help"} <b
+                    <li class="nav-item dropdown" id="navHelpDropdown">
+                        <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">{translate key="Help"} <b
                                     class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li id="navHelp"><a href="https://github.com/effgarces/BookedScheduler/wiki">{translate key=Help}</a></li>
+                            <li id="navHelp"><a class="dropdown-item" href="https://github.com/effgarces/BookedScheduler/wiki">{translate key=Help}</a></li>
                             {if isset($CanViewAdmin) && $CanViewAdmin}
-                                <li id="navHelpAdmin"><a href="https://github.com/effgarces/BookedScheduler/wiki/Administration">{translate key=Administration}</a></li>
+                                <li id="navHelpAdmin"><a class="dropdown-item" href="https://github.com/effgarces/BookedScheduler/wiki/Administration">{translate key=Administration}</a></li>
                             {/if}
-                            <li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
+                            <li id="navAbout"><a class="dropdown-item" href="{$Path}help.php?ht=about">{translate key=About}</a></li>
                         </ul>
                     </li>
                     {if isset($LoggedIn) && $LoggedIn}
-                        <li id="navSignOut"><a href="{$Path}logout.php">{translate key="SignOut"}</a></li>
+                        <li class="nav-item" id="navSignOut"><a class="nav-link" href="{$Path}logout.php">{translate key="SignOut"}</a></li>
                     {else}
-                        <li id="navLogIn"><a href="{$Path}index.php">{translate key="LogIn"}</a></li>
+                        <li class="nav-item" id="navLogIn"><a class="nav-link" href="{$Path}index.php">{translate key="LogIn"}</a></li>
                     {/if}
                 </ul>
             </div>
