@@ -56,7 +56,7 @@
                     <div class="col-xs-12 col-sm-5">
                         <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
                         <div class="resourceName" style="background-color:{$i->GetColor()};color:{$i->GetTextColor()};">
-                            <a href="{if isset($path) $Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}"
+                            <a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}"
                                resource-id="{$i->ResourceId()}"
                                class="resourceNameSelector" style="color:{$i->GetTextColor()}">{$i->ResourceName()}</a>
                         </div>
