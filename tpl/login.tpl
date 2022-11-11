@@ -1,12 +1,6 @@
 {include file='globalheader.tpl'}
 
 <div id="page-login">
-	{if $ShowLoginError}
-		<div id="loginError" class="alert alert-danger">
-			{translate key='LoginError'}
-		</div>
-	{/if}
-
     {if $EnableCaptcha}
         {validation_group class="alert alert-danger"}
         {validator id="captcha" key="CaptchaMustMatch"}
@@ -21,17 +15,24 @@
         </div>
     {/if}
 
-	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
+	<div class="offset-md-3 col-md-6 col-xs-12">
+		{if $ShowLoginError}
+			<!-- This alert must goes here for a nice width (same as login form) -->
+			<div id="loginError" class="alert alert-danger alert-dismissible fade show" role="alert">
+				{translate key='LoginError'}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{/if}
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
-			<div id="login-box" class="col-xs-12 default-box">
-				<div class="col-xs-12 login-icon">
+			<div id="login-box" class="col-xs-12 p-5 shadow-sm border rounded">
+				<div class="col-xs-12 center mb-3">
 					{html_image src="$LogoUrl?{$Version}" alt="$Title"}
 				</div>
 				{if $ShowUsernamePrompt}
 					<div class="col-xs-12">
-						<div class="input-group margin-bottom-25">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="bi bi-person"></i></span>
 							<input type="text" required="" class="form-control"
 								   id="email" {formname key=EMAIL}
 								   placeholder="{translate key=UsernameOrEmail}"/>
@@ -41,10 +42,8 @@
 
 				{if $ShowPasswordPrompt}
 					<div class="col-xs-12">
-						<div class="input-group margin-bottom-25">
-							<span class="input-group-addon">
-							<i class="glyphicon glyphicon-lock"></i>
-							</span>
+						<div class="input-group mb-3">
+							<span class="input-group-text"><i class="bi bi-key"></i></span>
 							<input type="password" required="" id="password" {formname key=PASSWORD}
 								   class="form-control"
 								   value="" placeholder="{translate key=Password}"/>
@@ -63,8 +62,8 @@
                 {/if}
 
 				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
-				<div class="col-xs-12">
-					<button type="submit" class="btn btn-large btn-primary  btn-block" name="{Actions::LOGIN}"
+				<div class="col-xs-12 center">
+					<button type="submit" class="btn btn-sm btn-primary  btn-block" name="{Actions::LOGIN}"
 							value="submit">{translate key='LogIn'}</button>
 					<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 				</div>
@@ -114,13 +113,13 @@
 			<div id="login-footer" class="col-xs-12">
 				{if $ShowForgotPasswordPrompt}
 					<div id="forgot-password" class="col-xs-12 col-sm-6">
-						<a href="{$ForgotPasswordUrl}" {if isset($ForgotPasswordUrlNew)}{$ForgotPasswordUrlNew}{/if} class="btn btn-link pull-left-sm"><span><i
+						<a href="{$ForgotPasswordUrl}" {if isset($ForgotPasswordUrlNew)}{$ForgotPasswordUrlNew}{/if} class="btn btn-link float-start"><span><i
 										class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
 					</div>
 				{/if}
-				<div id="change-language" class="col-xs-12 col-sm-6">
-					<button type="button" class="btn btn-link pull-right-sm" data-toggle="collapse"
-							data-target="#change-language-options"><span><i class="glyphicon glyphicon-globe"></i></span>
+				<div class="col-xs-12 col-sm-6 float-end">
+					<button type="button" class="btn btn-link float-end" data-bs-toggle="collapse"
+							data-bs-target="#change-language-options"><span><i class="glyphicon glyphicon-globe"></i></span>
 						{translate key=ChangeLanguage}
 					</button>
 					<div id="change-language-options" class="collapse">
