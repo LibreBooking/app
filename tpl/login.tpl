@@ -80,7 +80,7 @@
                 {if $ShowRegisterLink}
                   <div class="d-grid gap-2 col-4 mx-auto mb-3">
                     <span class="bold">{translate key="FirstTimeUser?"}
-                    <a href="{$RegisterUrl}" {if isset($RegisterUrlNew)}{$RegisterUrlNew}{/if}
+                    <a class="btn btn-link" href="{$RegisterUrl}" {if isset($RegisterUrlNew)}{$RegisterUrlNew}{/if}
                        title="{translate key=Register}">{translate key=Register}</a>
                     </span>
                   </div>
@@ -117,7 +117,7 @@
 				{/if}
 				<div class="col-xs-12 col-sm-6">
 					<button type="button" class="btn btn-link float-end" data-bs-toggle="collapse"
-							data-bs-target="#change-language-options"><span><i class="bi bi-globe"></i></span>
+							data-bs-target="#change-language-options"><span><i class="bi bi-globe-europe-africa"></i></span>
 						{translate key=ChangeLanguage}
 					</button>
 					<div id="change-language-options" class="collapse">

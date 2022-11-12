@@ -117,7 +117,7 @@
                     <label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
 
                     <div class="input-group">
-                        <span class="input-group-text"><a href="#" id="detectTimezone"
+                        <span class="input-group-text"><a href="#" id="detectTimezone" class="btn-link"
                                                            title="{translate key=Detect}"><i class="bi bi-clock"></i></a>&nbsp;</span>
                         <select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
                             {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
