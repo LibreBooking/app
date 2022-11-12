@@ -2,11 +2,7 @@
 
 <div id="page-register">
 
-    <div class="error hidden" id="registrationError">
-        {translate key=UnknownError}
-    </div>
-
-    <div id="registration-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div id="registration-box" class="offset-md-3 col-md-6 col-xs-12 px-5 mt-4 shadow-sm border rounded">
 
         <form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
               action="{$smarty.server.SCRIPT_NAME}" role="form"
@@ -19,7 +15,7 @@
               data-bv-onsuccess="enableButton"
               data-bv-live="enabled">
 
-            <h1>{translate key=RegisterANewAccount}</h1>
+            <h1 class="mt-2 mb-3 text-center">{translate key=RegisterANewAccount}</h1>
 
             <div class="validationSummary alert alert-danger no-show" id="validationErrors">
                 <ul>
@@ -41,7 +37,7 @@
                 </ul>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6" id="username">
                     <div class="form-group">
                         <label class="reg" for="login">{translate key="Username"}</label>
@@ -63,7 +59,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6" id="password">
                     <div class="form-group">
                         <label class="reg" for="password">{translate key="Password"}</label>
@@ -89,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6" id="first-name">
                     <div class="form-group">
                         <label class="reg" for="fname">{translate key="FirstName"}</label>
@@ -107,7 +103,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6" id="default-page">
                     <div class="form-group">
                         <label class="reg" for="homepage">{translate key="DefaultPage"}</label>
@@ -121,8 +117,8 @@
                     <label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
 
                     <div class="input-group">
-                        <span class="input-group-addon"><a href="#" id="detectTimezone"
-                                                           title="{translate key=Detect}"><i class="fa fa-clock-o"></i></a></span>
+                        <span class="input-group-text"><a href="#" id="detectTimezone"
+                                                           title="{translate key=Detect}"><i class="bi bi-clock"></i></a>&nbsp;</span>
                         <select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
                             {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
                         </select>
@@ -130,7 +126,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6" id="phone">
                     <div class="form-group">
                         <label class="reg" for="phone">{translate key="Phone"}</label>
@@ -154,7 +150,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6" id="position">
                     <div class="form-group">
                         <label class="reg" for="txtPosition">{translate key="Position"}</label>
@@ -176,7 +172,7 @@
             {if $Attributes|default:array()|count > 1}
                 {for $i=1 to $Attributes|default:array()|count-1}
                     {if $i%2==1}
-                        <div class="row">
+                        <div class="row mb-2">
                     {/if}
                     <div class="col-xs-12 col-sm-6">
                         {control type="AttributeControl" attribute=$Attributes[$i]}
@@ -214,8 +210,10 @@
             {/if}
 
             <div>
+              <div class="d-grid gap-2 col-3 mx-auto">
                 <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
-                        class="btn btn-primary col-xs-12" id="btnUpdate">{translate key='Register'}</button>
+                        class="btn btn-primary col-xs-12 mt-3 mb-3" id="btnUpdate">{translate key='Register'}</button>
+              </div>
             </div>
         </form>
     </div>
