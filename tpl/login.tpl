@@ -1,12 +1,6 @@
 {include file='globalheader.tpl'}
 
 <div id="page-login">
-    {if $EnableCaptcha}
-        {validation_group class="alert alert-danger"}
-        {validator id="captcha" key="CaptchaMustMatch"}
-        {/validation_group}
-    {/if}
-
     {if $Announcements|default:array()|count > 0}
         <div id="announcements" class="col-sm-8 col-sm-offset-2 col-xs-12">
         {foreach from=$Announcements item=each}
@@ -17,12 +11,17 @@
 
 	<div class="offset-md-3 col-md-6 col-xs-12">
 		{if $ShowLoginError}
-			<!-- This alert must goes here for a nice width (same as login form) -->
+			<!-- These alerts must goes here for a nice width (same as login form) -->
 			<div id="loginError" class="alert alert-danger alert-dismissible fade show" role="alert">
 				{translate key='LoginError'}
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		{/if}
+    {if $EnableCaptcha}
+        {validation_group class="alert alert-danger"}
+        {validator id="captcha" key="CaptchaMustMatch"}
+        {/validation_group}
+    {/if}
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
 			<div id="login-box" class="col-xs-12 p-5 shadow-sm border rounded">
@@ -32,7 +31,7 @@
 				{if $ShowUsernamePrompt}
 					<div class="col-xs-12">
 						<div class="input-group mb-3">
-							<span class="input-group-text"><i class="bi bi-person"></i></span>
+							<span class="input-group-text"><i class="bi bi-person-fill"></i></span>
 							<input type="text" required="" class="form-control"
 								   id="email" {formname key=EMAIL}
 								   placeholder="{translate key=UsernameOrEmail}"/>
@@ -43,7 +42,7 @@
 				{if $ShowPasswordPrompt}
 					<div class="col-xs-12">
 						<div class="input-group mb-3">
-							<span class="input-group-text"><i class="bi bi-key"></i></span>
+							<span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
 							<input type="password" required="" id="password" {formname key=PASSWORD}
 								   class="form-control"
 								   value="" placeholder="{translate key=Password}"/>
@@ -53,7 +52,7 @@
 
                 {if $EnableCaptcha}
                     <div class="col-xs-12">
-                        <div class="margin-bottom-25">
+                        <div class="mb-4">
                         {control type="CaptchaControl"}
                         </div>
                     </div>
@@ -63,7 +62,7 @@
 
 				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
 				<div class="col-xs-12 center">
-					<button type="submit" class="btn btn-sm btn-primary  btn-block" name="{Actions::LOGIN}"
+					<button type="submit" class="btn btn-sm btn-primary btn-block" name="{Actions::LOGIN}"
 							value="submit">{translate key='LogIn'}</button>
 					<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 				</div>
@@ -79,20 +78,20 @@
 				{/if}
 
                 {if $ShowRegisterLink}
-                    <div class="col-xs-12 col-sm-6 register">
+                  <div class="d-grid gap-2 col-4 mx-auto mb-3">
                     <span class="bold">{translate key="FirstTimeUser?"}
                     <a href="{$RegisterUrl}" {if isset($RegisterUrlNew)}{$RegisterUrlNew}{/if}
                        title="{translate key=Register}">{translate key=Register}</a>
                     </span>
-                    </div>
+                  </div>
                 {/if}
 
 				<div class="clearfix"></div>
 
 				{if $AllowGoogleLogin && $AllowFacebookLogin}
-					{assign var=socialClass value="col-sm-12 col-md-6"}
+					{assign var=socialClass value="col-sm-12 col-md-6 text-start"}
 				{else}
-					{assign var=socialClass value="col-sm-12"}
+					{assign var=socialClass value="col-sm-12 text-start"}
 				{/if}
 
 				{if $AllowGoogleLogin}
@@ -110,16 +109,15 @@
 					</div>
 				{/if}
 			</div>
-			<div id="login-footer" class="col-xs-12">
+			<div id="login-footer" class="btn-toolbar justify-content-between">
 				{if $ShowForgotPasswordPrompt}
 					<div id="forgot-password" class="col-xs-12 col-sm-6">
-						<a href="{$ForgotPasswordUrl}" {if isset($ForgotPasswordUrlNew)}{$ForgotPasswordUrlNew}{/if} class="btn btn-link float-start"><span><i
-										class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
+						<a href="{$ForgotPasswordUrl}" {if isset($ForgotPasswordUrlNew)}{$ForgotPasswordUrlNew}{/if} class="btn btn-link float-start"><span><i class="bi bi-question-circle-fill"></i></span> {translate key='ForgotMyPassword'}</a>
 					</div>
 				{/if}
-				<div class="col-xs-12 col-sm-6 float-end">
+				<div class="col-xs-12 col-sm-6">
 					<button type="button" class="btn btn-link float-end" data-bs-toggle="collapse"
-							data-bs-target="#change-language-options"><span><i class="glyphicon glyphicon-globe"></i></span>
+							data-bs-target="#change-language-options"><span><i class="bi bi-globe"></i></span>
 						{translate key=ChangeLanguage}
 					</button>
 					<div id="change-language-options" class="collapse">
