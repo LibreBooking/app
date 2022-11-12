@@ -2,12 +2,7 @@
 
 <div class="page-profile">
 
-    <div class="hidden col-xs-12 col-sm-8 col-sm-offset-2 alert alert-success" role="alert" id="profileUpdatedMessage">
-        <span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourProfileWasUpdated}
-    </div>
-
-
-    <div id="profile-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div id="profile-box" class="offset-md-3 col-md-6 col-xs-12 px-5 mt-4 shadow-sm border rounded">
 
 
         <form method="post" ajaxAction="{ProfileActions::Update}" id="form-profile"
@@ -22,9 +17,9 @@
               data-bv-onsuccess="enableButton"
               data-bv-live="enabled">
 
-            <h1>{translate key=EditProfile}</h1>
+            <h1 class="text-center mt-2 mb-3">{translate key=EditProfile}</h1>
 
-            <div class="validationSummary alert alert-danger no-show" id="validationErrors">
+            <div class="validationSummary alert alert-danger no-show alert-dismissible fade show" role="alert" id="validationErrors">
                 <ul>
                     {async_validator id="fname" key="FirstNameRequired"}
                     {async_validator id="lname" key="LastNameRequired"}
@@ -37,9 +32,15 @@
                     {async_validator id="organizationRequired" key="OrganizationRequired"}
                     {async_validator id="additionalattributes" key=""}
                 </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <div class="row">
+            <div class="d-none col-xs-12 col-sm-8 col-sm-offset-2 alert alert-success alert-dismissible fade show" role="alert" id="profileUpdatedMessage">
+                <i class="bi bi-check-circle-fill"></i>&nbsp; {translate key=YourProfileWasUpdated}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                         <label class="reg" for="username">{translate key="Username"}</label>
@@ -49,7 +50,7 @@
                             data-bv-notempty-message="{translate key=UserNameRequired}"}
                         {else}
                             <span>{$Username}</span>
-                            <input type="hidden" {formname key=USERNAME} value="{$Username}"/>
+                            <input type="d-none" {formname key=USERNAME} value="{$Username}"/>
                         {/if}
                     </div>
                 </div>
@@ -65,13 +66,13 @@
                             data-bv-emailaddress-message="{translate key=ValidEmailRequired}" }
                         {else}
                             <span>{$Email}</span>
-                            <input type="hidden" {formname key=EMAIL} value="{$Email}"/>
+                            <input type="d-none" {formname key=EMAIL} value="{$Email}"/>
                         {/if}
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                         <label class="reg" for="fname">{translate key="FirstName"}</label>
@@ -81,7 +82,7 @@
                             data-bv-notempty-message="{translate key=FirstNameRequired}"}
                         {else}
                             <span>{$FirstName}</span>
-                            <input type="hidden" {formname key=FIRST_NAME} value="{$FirstName}"/>
+                            <input type="d-none" {formname key=FIRST_NAME} value="{$FirstName}"/>
                         {/if}
                     </div>
                 </div>
@@ -93,13 +94,13 @@
                             data-bv-notempty-message="{translate key=LastNameRequired}"}
                         {else}
                             <span>{$LastName}</span>
-                            <input type="hidden" {formname key=LAST_NAME} value="{$LastName}"/>
+                            <input type="d-none" {formname key=LAST_NAME} value="{$LastName}"/>
                         {/if}
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                         <label class="reg" for="homepage">{translate key="DefaultPage"}</label>
@@ -119,7 +120,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                         <label class="reg" for="phone">{translate key="Phone"}</label>
@@ -131,7 +132,7 @@
                             />
                         {else}
                             <span>{$Phone}</span>
-                            <input type="hidden" {formname key=PHONE} value="{$Phone}"/>
+                            <input type="d-none" {formname key=PHONE} value="{$Phone}"/>
                         {/if}
                     </div>
                 </div>
@@ -147,13 +148,13 @@
                                         data-bv-notempty-message="{translate key=OrganizationRequired}"{/if}/>
                         {else}
                             <span>{$Organization}</span>
-                            <input type="hidden" {formname key=ORGANIZATION} value="{$Organization}"/>
+                            <input type="d-none" {formname key=ORGANIZATION} value="{$Organization}"/>
                         {/if}
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
                         <label class="reg" for="txtPosition">{translate key="Position"}</label>
@@ -164,7 +165,7 @@
                                 data-bv-notempty-message="{translate key=PositionRequired}"{/if}/>
                         {else}
                             <span>{$Position}</span>
-                            <input type="hidden" {formname key=POSITION} value="{$Position}"/>
+                            <input type="d-none" {formname key=POSITION} value="{$Position}"/>
                         {/if}
                     </div>
                 </div>
@@ -180,7 +181,7 @@
             {if $Attributes|default:array()|count > 1}
                 {for $i=1 to $Attributes|default:array()|count-1}
                     {if $i%2==1}
-                        <div class="row">
+                        <div class="row mb-2">
                     {/if}
                     <div class="col-xs-12 col-sm-6">
                         {control type="AttributeControl" attribute=$Attributes[$i]}
@@ -191,8 +192,8 @@
                 {/for}
             {/if}
 
-            <div>
-                <button type="submit" class="update btn btn-primary col-xs-12" name="{Actions::SAVE}" id="btnUpdate">
+            <div class="d-grid gap-2 col-3 mx-auto">
+                <button type="submit" class="update btn btn-primary col-xs-12 mt-3 mb-4" name="{Actions::SAVE}" id="btnUpdate">
                     {translate key='Update'}
                 </button>
             </div>
@@ -225,7 +226,7 @@
                     var validators = data.bv.getOptions(data.field).validators;
 
                     if (validators.notEmpty) {
-                        $icon.addClass('glyphicon glyphicon-asterisk').show();
+                        $icon.addClass('bi bi-asterisk').show();
                     }
                 })
                 .off('success.form.bv')
