@@ -3,7 +3,7 @@
 		<div class="pull-left">{translate key="Announcements"} <span class="badge">{$Announcements|default:array()|count}</span></div>
 		<div class="pull-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="Announcements"}">
-				<i class="glyphicon"></i>
+				<i class="bi bi-chevron-expand"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
 		</div>

@@ -3,7 +3,7 @@
         <div class="pull-left">{translate key="ResourceAvailability"}</div>
         <div class="pull-right">
             <a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
-                <i class="glyphicon"></i>
+                <i class="bi bi-chevron-expand"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
         </div>
@@ -16,7 +16,7 @@
             {if is_array($availability) && $availability|default:array()|count > 0}
             <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
-                <div class="availabilityItem">
+                <div class="availabilityItem btn-toolbar justify-content-between">
                     <div class="col-xs-12 col-sm-5">
                         <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
                         <div class="resourceName" style="background-color:{$i->GetColor()};color:{$i->GetTextColor()};">

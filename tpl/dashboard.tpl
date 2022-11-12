@@ -1,6 +1,6 @@
 {include file='globalheader.tpl' Qtip=true Owl=true}
 
-<div id="page-dashboard">
+<div id="page-dashboard" class="px-3 pt-2">
 	<div id="dashboardList">
 		{foreach from=$items item=dashboardItem}
 			<div>{$dashboardItem->PageLoad()}</div>
