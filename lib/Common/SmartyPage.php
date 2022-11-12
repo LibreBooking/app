@@ -324,7 +324,9 @@ class SmartyPage extends Smarty
             return empty($actualContent) ? '' :
                     "<div class=\"$class\">
 					<div class=\"pull-left\"><i class=\"fa fa-warning fa-2x\"></i></div>
-					<div class=\"error-list\"><ul class=\"list-unstyled\">$actualContent</ul></div>
+					<div class=\"error-list\"><ul class=\"list-unstyled\">$actualContent</ul>
+          <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
+          </div>
 				</div>";
         }
         return '';
