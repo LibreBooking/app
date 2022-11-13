@@ -56,8 +56,11 @@ class ReservationCreditsPresenter
 
         $cost = '';
         if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter())) {
-            $creditCost = $this->paymentRepository->GetCreditCost();
-            $cost = $creditCost->GetFormattedTotal($creditsRequired);
+            $creditCost = $this->paymentRepository->GetCreditCosts();
+            // Only give an estimation of costs if there is only one cost configured
+            if (count($creditCost) == 1) {
+                $cost = $creditCost[0]->GetFormattedTotal($creditsRequired);
+            }
         }
         $this->page->SetCreditRequired($creditsRequired, $cost);
     }

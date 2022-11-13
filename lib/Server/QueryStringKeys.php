@@ -43,6 +43,7 @@ class QueryStringKeys
     public const PARTICIPANT_ID = 'pid';
     public const PERIOD_ID = 'pid';
     public const PREVIOUS_ID = 'pid';
+    public const COUNT = 'count';
     public const QUANTITY = 'quantity';
     public const QUOTA_ID = 'qid';
     public const READ_ONLY = 'ro';

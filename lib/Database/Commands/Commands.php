@@ -250,6 +250,17 @@ class AddCustomLayoutPeriodCommand extends SqlCommand
     }
 }
 
+class AddPaymentConfigurationCommand extends SqlCommand
+{
+    public function __construct($creditCount, $creditCost, $creditCurrency)
+    {
+        parent::__construct(Queries::ADD_PAYMENT_CONFIGURATION);
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $creditCount));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COST, $creditCost));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_CURRENCY, $creditCurrency));
+    }
+}
+
 class AddPaymentGatewaySettingCommand extends SqlCommand
 {
     public function __construct($gatewayType, $settingName, $settingValue)
@@ -963,6 +974,15 @@ class DeleteOrphanLayoutsCommand extends SqlCommand
     public function __construct()
     {
         parent::__construct(Queries::DELETE_ORPHAN_LAYOUTS);
+    }
+}
+
+class DeletePaymentConfigurationCommand extends SqlCommand
+{
+    public function __construct($creditCount)
+    {
+        parent::__construct(Queries::DELETE_PAYMENT_CONFIGURATION);
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $creditCount));
     }
 }
 
@@ -2557,16 +2577,6 @@ class UpdateLoginDataCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLoginTime));
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
-    }
-}
-
-class UpdatePaymentConfigurationCommand extends SqlCommand
-{
-    public function __construct($creditCost, $creditCurrency)
-    {
-        parent::__construct(Queries::UPDATE_PAYMENT_CONFIGURATION);
-        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COST, $creditCost));
-        $this->AddParameter(new Parameter(ParameterNames::CREDIT_CURRENCY, $creditCurrency));
     }
 }
 

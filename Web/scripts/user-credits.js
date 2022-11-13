@@ -7,9 +7,11 @@ function UserCredits(opts) {
     };
 
     UserCredits.prototype.init = function () {
-        $('#quantity').on('change', function (e) {
-            ajaxGet(opts.calcQuantityUrl + $('#quantity').val(), null, function (data) {
-                $('#totalCost').text(data);
+        $('#quantity, #count').change(function (e) {
+            ajaxGet(opts.calcQuantityUrl + $('#quantity').val() + "&count=" + $('#count').val(), null, function (data) {
+                var values = data.split("|");
+                $('#cost').text(values[0]);
+                $('#totalCost').text(values[1]);
             });
         });
 

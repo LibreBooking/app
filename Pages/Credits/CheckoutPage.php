@@ -5,6 +5,8 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
 interface ICheckoutPage extends IActionPage
 {
+    public function GetCreditCount();
+
     public function GetCreditQuantity();
 
     /**
@@ -92,6 +94,11 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
         $this->Display('Credits/checkout.tpl');
     }
 
+    public function GetCreditCount()
+    {
+        return $this->GetForm(FormKeys::CREDIT_COUNT);
+    }
+
     public function GetCreditQuantity()
     {
         return $this->GetForm(FormKeys::CREDIT_QUANTITY);
@@ -114,6 +121,7 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
     {
         $this->Set('Total', $cost->FormatCurrency($total));
         $this->Set('CreditCost', $cost->FormatCurrency());
+        $this->Set('CreditCount', $cost->Count());
         $this->Set('CreditQuantity', $creditQuantity);
         $this->Set('Currency', $cost->Currency());
         $this->Set('TotalUnformatted', $cost->GetTotal($creditQuantity));

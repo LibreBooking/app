@@ -79,6 +79,8 @@ class Queries
         'INSERT INTO `quotas` (`quota_limit`, `unit`, `duration`, `resource_id`, `group_id`, `schedule_id`, `enforced_time_start`, `enforced_time_end`, `enforced_days`, `scope`)
 			VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid, @startTime, @endTime, @enforcedDays, @scope)';
 
+    public const ADD_PAYMENT_CONFIGURATION = 'INSERT INTO `payment_configuration` (`credit_cost`, `credit_currency`, `credit_count`) VALUES (@credit_cost, @credit_currency, @credit_count)';
+
     public const ADD_PAYMENT_GATEWAY_SETTING = 'INSERT INTO `payment_gateway_settings` (`gateway_type`, `setting_name`, `setting_value`)
                                       VALUES (@gateway_type, @setting_name, @setting_value)';
 
@@ -247,6 +249,8 @@ class Queries
     public const DELETE_GROUP_ROLE = 'DELETE FROM `group_roles` WHERE `group_id` = @groupid AND `role_id` = @roleid';
 
     public const DELETE_ORPHAN_LAYOUTS = 'DELETE `l`.* FROM `layouts` `l` LEFT JOIN `schedules` `s` ON `l`.`layout_id` = `s`.`layout_id` WHERE `s`.`layout_id` IS NULL';
+
+    public const DELETE_PAYMENT_CONFIGURATION = 'DELETE FROM `payment_configuration` WHERE `credit_count` = @credit_count';
 
     public const DELETE_PAYMENT_GATEWAY_SETTINGS = 'DELETE FROM `payment_gateway_settings` WHERE `gateway_type` = @gateway_type';
 
@@ -1030,8 +1034,6 @@ class Queries
 		WHERE `group_id` = @groupid';
 
     public const UPDATE_LOGINDATA = 'UPDATE `users` SET `lastlogin` = @lastlogin, `language` = @language WHERE `user_id` = @userid';
-
-    public const UPDATE_PAYMENT_CONFIGURATION = 'UPDATE `payment_configuration` SET `credit_cost` = @credit_cost, `credit_currency` = @credit_currency';
 
     public const UPDATE_FUTURE_RESERVATION_INSTANCES =
         'UPDATE `reservation_instances`

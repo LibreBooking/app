@@ -60,6 +60,7 @@ class FormKeys
     public const CONFLICT_ACTION = 'conflictAction';
     public const CONTACT_INFO = 'contactInfo';
     public const CREDITS = 'CREDITS';
+    public const CREDIT_COUNT = 'CREDIT_COUNT';
     public const CREDIT_COST = 'CREDIT_COST';
     public const CREDIT_CURRENCY = 'CREDIT_CURRENCY';
     public const CSS_FILE = 'CSS_FILE';

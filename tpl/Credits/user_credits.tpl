@@ -43,7 +43,13 @@
                     <div class="col-xs-4">
                         <form role="form" name="purchaseCreditsForm" id="purchaseCreditsForm" method="post"
                               action="checkout.php">
-                            <div>{translate key=EachCreditCosts} <span class="cost">{$CreditCost}</span></div>
+                            <div>{translate key=CreditsEachCost1} 
+                            <select id="count" {formname key=CREDIT_COUNT} class="form-control inline-block" style="width:auto">
+                                {foreach from=$CreditCosts item=credit}
+                                    <option value="{$credit->Count()}">{$credit->Count()}</option>
+                                {/foreach}
+                            </select>
+                            {translate key=CreditsEachCost2} <span id="cost" class="cost">{$CreditCost}</span></div>
                             <div>{translate key=Quantity}
                                 <input id="quantity" {formname key=CREDIT_QUANTITY} type="number"
                                        class="form-control inline-block" min="1"
