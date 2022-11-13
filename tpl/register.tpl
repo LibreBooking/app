@@ -2,6 +2,10 @@
 
 <div id="page-register">
 
+  <div class="error d-none" id="registrationError">
+      {translate key=UnknownError}
+  </div>
+
     <div id="registration-box" class="offset-md-3 col-md-6 col-xs-12 px-5 mt-4 shadow-sm border rounded">
 
         <form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
@@ -255,7 +259,7 @@
                 var validators = data.bv.getOptions(data.field).validators;
 
                 if (validators.notEmpty) {
-                    $icon.addClass('glyphicon glyphicon-asterisk').show();
+                    $icon.addClass('bi bi-asterisk').show();
                 }
             })
                 .off('success.form.bv')
