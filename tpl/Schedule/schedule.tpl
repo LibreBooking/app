@@ -58,7 +58,7 @@
     {include file='globalheader.tpl' Qtip=true Select2=true Owl=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
-<div id="page-schedule">
+<div id="page-schedule" class="ms-2 mt-4">
     {assign var=startTime value=microtime(true)}
 
     {if isset($ShowResourceWarning) && $ShowResourceWarning}
@@ -88,8 +88,9 @@
     {/if}
 
     {if $IsAccessible}
-        <div id="defaultSetMessage" class="alert alert-success hidden">
+        <div id="defaultSetMessage" class="alert alert-success alert-dismissible fade show d-none" role="alert">
             {translate key=DefaultScheduleSet}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {block name="schedule_control"}
             <div class="row">
@@ -133,7 +134,7 @@
 						 </select>
 					{/if}
                     <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                        <i class="bi bi-calendar-week-fill"></i>
                         <span class="no-show">{translate key=ShowHideNavigation}</span>
                     </a>
                     <div id="individualDates">
@@ -241,9 +242,9 @@
             <div class="row">
                 <div id="reservations-left" class="col-md-2 col-sm-12 default-box">
                     <div class="reservations-left-header">{translate key=Filter}
-                        <a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i
-                                    class="glyphicon glyphicon-remove"></i>
-                            <span class="no-show">Hide Reservation Filter</span>
+                        <a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter">
+                          <i class="bi bi-x-circle-fill"></i>&nbsp;
+                          <span class="no-show">Hide Reservation Filter</span>
                         </a>
                     </div>
 
@@ -269,7 +270,7 @@
                                         <input type='search' id='ownerFilter'
                                                class="form-control input-sm search" {formname key=OWNER_TEXT} value="{if isset($OwnerText)}{$OwnerText}{/if}" />
                                         <input {formname key=USER_ID} id="ownerId" type="hidden" value="{$OwnerId}"/>
-                                        <span class="searchclear searchclear-label glyphicon glyphicon-remove-circle" ref="ownerFilter,ownerId"></span>
+                                        <span class="searchclear searchclear-label" ref="ownerFilter,ownerId"></span>
                                     </div>
                                     {if $AllowParticipation}
                                         <div class="form-group col-xs-12">
@@ -277,7 +278,7 @@
                                             <input type='search' id='participantFilter'
                                                    class="form-control input-sm search" {formname key=PARTICIPANT_TEXT} value="{if isset($ParticipantText)}{$ParticipantText}{/if}" />
                                             <input {formname key=PARTICIPANT_ID} id="participantId" type="hidden" value="{$ParticipantId}"/>
-                                            <span class="searchclear searchclear-label glyphicon glyphicon-remove-circle" ref="participantFilter,participantId"></span>
+                                            <span class="searchclear searchclear-label" ref="participantFilter,participantId"></span>
                                         </div>
                                     {/if}
                                 {/if}
@@ -329,9 +330,9 @@
                 <div id="reservations" class="col-md-10 col-sm-12">
                     <div>
                         <a href="#" id="restore-sidebar" title="Show Reservation Filter"
-                           class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
-                                    class="glyphicon glyphicon-filter"></i> <i
-                                    class="glyphicon glyphicon-chevron-right"></i></a>
+                           class="d-none toggle-sidebar">{translate key=ResourceFilter}
+                                    <i class="bi bi-funnel-fill"></i>
+                                    <i class="bi bi-chevron-right"></i></a>
                     </div>
                     {block name="reservations"}
                         {include file="Schedule/schedule-reservations-grid.tpl" }
