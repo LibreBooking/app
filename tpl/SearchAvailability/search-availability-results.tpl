@@ -18,7 +18,8 @@
 {/foreach}
 
 {if $Openings|default:array()|count == 0}
-    <div class="alert alert-warning">
-        <i class="fa fa-frown-o"></i> {translate key=NoAvailableMatchingTimes}
+    <div class="alert alert-warning alert-dismissible fade show">
+      <i class="fa fa-frown-o"></i> {translate key=NoAvailableMatchingTimes}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {/if}

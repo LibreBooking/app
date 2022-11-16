@@ -1,46 +1,38 @@
 {include file='globalheader.tpl' Select2=true Owl=true Timepicker=true}
 
-<div class="page-search-availability">
+<div class="page-search-availability mt-3">
 
     <form role="form" name="searchForm" id="searchForm" method="post"
           action="{$smarty.server.SCRIPT_NAME}?action=search">
-        <div class="form-group col-xs-12 col-sm-2">
-            <div class="checkbox">
-                <input type="checkbox" id="anyResource" checked="checked"/>
-                <label for="anyResource">{translate key=AnyResource}</label>
-            </div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-10">
-            <label for="resourceGroups" class="no-show">{translate key=Resources}</label>
-            <select id="resourceGroups" class="form-control" multiple="multiple" {formname key=RESOURCE_ID multi=true}
-                    disabled="disabled">
-                {foreach from=$Resources item=resource}
-                    <option value="{$resource->GetId()}">{$resource->GetName()}</option>
-                {/foreach}
-            </select>
-        </div>
 
-        <div class="clearfix"></div>
-
-        {*<div class="col-xs-12">*}
-        <div class="form-group col-xs-6 col-sm-2">
-            <div class="input-group">
-                <label for="hours" class="no-show">{translate key=Hours}</label>
-                <input type="number" min="0" step="1" value="0" class="form-control hours-minutes"
-                       id="hours" {formname key=HOURS}" autofocus="autofocus" />
-                <span class="input-group-addon hours-minutes">{translate key=Hours}</span>
+          <div class="container form-group row gx-3 gy-2">
+            <div class="col-6 col-sm-3">
+                  <input class="form-check-input" type="checkbox" id="anyResource" checked class="form-control" />
+                  <label class="form-check-label" for="anyResource">{translate key=AnyResource}</label>
             </div>
-        </div>
-        <div class="form-group col-xs-6 col-sm-2">
-            <div class="input-group">
-                <label for="minutes" class="no-show">{translate key=Minutes}</label>
-                <input type="number" min="0" step="5" value="30" class="form-control hours-minutes"
+            <div class="col-6 col-sm-3">
+              <label for="resourceGroups" class="no-show">{translate key=Resources}</label>
+              <select id="resourceGroups" class="form-control" multiple="multiple" {formname key=RESOURCE_ID multi=true}
+                      disabled="disabled">
+                  {foreach from=$Resources item=resource}
+                      <option value="{$resource->GetId()}">{$resource->GetName()}</option>
+                  {/foreach}
+              </select>
+            </div>
+          </div>
+
+        <div class="form-group col-6 col-sm-3">
+            <div class="input-group mt-3">
+                <input type="number" min="0" step="1" value="0" class="form-control inline-block"
+                       id="hours" {formname key=HOURS}" />
+                <span class="input-group-text me-3">{translate key=Hours}</span>
+                <input type="number" min="0" step="5" value="30" class="form-control inline-block"
                        id="minutes" {formname key=MINUTES}"/>
-                <span class="input-group-addon hours-minutes">{translate key=Minutes}</span>
+                <span class="input-group-text">{translate key=Minutes}</span>
             </div>
         </div>
-        <div class="col-sm-1 hidden-xs">&nbsp;</div>
-        <div class="form-group col-xs-12 col-sm-7">
+
+        <div class="form-group col-xs-12 col-sm-7 mb-3 mt-3">
             <input {formname key=BEGIN_TIME} type="text" id="startTime"
                                              class="form-control dateinput inline-block timepicker"
                                              value="{format_date format='h:00 A' date=now}"
@@ -55,33 +47,33 @@
                 <label for="specificTime">{translate key=SpecificTime}</label>
             </div>
         </div>
-        {*</div>*}
 
-        <div class="form-group col-xs-12 col-sm-5">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default active">
-                    <input type="radio" id="today" checked="checked"
-                           value="today" {formname key=AVAILABILITY_RANGE} />
-                    <span class="hidden-xs">{translate key=Today}</span>
-                    <span> {format_date date=$Today key=calendar_dates}</span>
+        <div class="col-6 col-sm-5">
+            <div class="btn-group btn-group-sm form-group" role="group" data-bs-toggle="buttons">
+                <input type="radio" id="today" class="btn-check" checked
+                       value="today" {formname key=AVAILABILITY_RANGE} />
+                <label class="btn btn-outline-success" for="today">
+                  <div class="d-none d-sm-block">{translate key=Today}</div>
+                  <div class="d-block"> {format_date date=$Today key=calendar_dates}</div>
                 </label>
-                <label class="btn btn-default">
-                    <input type="radio" id="tomorrow" value="tomorrow" {formname key=AVAILABILITY_RANGE} />
-                    <span class="hidden-xs">{translate key=Tomorrow}</span>
-                    <span> {format_date date=$Tomorrow key=calendar_dates}</span>
+                <input type="radio" id="tomorrow" class="btn-check"
+                       value="tomorrow" {formname key=AVAILABILITY_RANGE} />
+                <label class="btn btn-outline-success" for="tomorrow">
+                  <div class="d-none d-sm-block">{translate key=Tomorrow}</div>
+                  <div class="d-block"> {format_date date=$Tomorrow key=calendar_dates}</div>
                 </label>
-                <label class="btn btn-default">
-                    <input type="radio" id="thisweek" value="thisweek" {formname key=AVAILABILITY_RANGE} />
-                    <span class="hidden-xs">{translate key=ThisWeek}</span>
-                    <span class="visible-xs">{translate key=Week}</span>
+                <input type="radio" id="thisweek" class="btn-check" value="thisweek" {formname key=AVAILABILITY_RANGE} />
+                <label class="btn btn-outline-success" for="thisweek">
+                  <div class="d-none d-sm-block">{translate key=ThisWeek}</div>
+                  <div class="d-block">{translate key=Week}</div>
                 </label>
-                <label class="btn btn-default">
-                    <input type="radio" id="daterange" value="daterange" {formname key=AVAILABILITY_RANGE} />
-                    <i class="fa fa-calendar"></i><span class="hidden-xs"> {translate key=DateRange}</span>
+                <input type="radio" id="daterange" class="btn-check" value="daterange" {formname key=AVAILABILITY_RANGE} />
+                <label class="btn btn-outline-success" for="daterange">
+                  <i class="fa fa-calendar"></i><div class="d-none d-sm-block"> {translate key=DateRange}</div>
                 </label>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-sm-7">
+        <div class="form-group col-xs-12 col-sm-7 mb-3 mt-1">
             <label for="beginDate" class="no-show">{translate key=BeginDate}</label>
             <input type="text" id="beginDate" class="form-control inline dateinput"
                    placeholder="{translate key=BeginDate}" disabled="disabled"/>
@@ -99,7 +91,9 @@
         </div>
 
         <div class="form-group col-xs-12">
-            <a href="#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
+            <a class="btn-link" data-bs-toggle="collapse" href="#advancedSearchOptions"
+               aria-expanded="false" aria-controls="collapseExample">{translate key=MoreOptions}
+            </a>
         </div>
 
         <div class="clearfix"></div>
@@ -141,7 +135,7 @@
         </div>
 
         <div class="form-group col-xs-12">
-            <button type="submit" class="btn btn-success col-xs-12"
+            <button type="submit" class="btn btn-outline-success col-xs-12 mt-3 mb-2"
                     value="submit" {formname key=SUBMIT}>{translate key=FindATime}</button>
             {indicator}
         </div>
