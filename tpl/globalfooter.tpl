@@ -4,7 +4,11 @@
 		<div class="container-fluid">
 			<div class="row center">
 				<div class="col">
-					<a class="nav-link" href="{$CompanyUrl}">{$CompanyName}</a><a class="nav-link" href="https://github.com/effgarces/BookedScheduler">{$AppTitle} - GPLv3 v{$Version}</a>
+					{if isset($LoggedIn) && $LoggedIn}
+						<a class="btn-link" href="{$CompanyUrl}">{$CompanyName}</a> - <a class="btn-link" href="https://github.com/effgarces/BookedScheduler">{$AppTitle} - GPLv3 v{$Version}</a>
+					{else}
+						<a class="btn-link" href="{$CompanyUrl}">{$CompanyName}</a><br><a class="btn-link" href="https://github.com/effgarces/BookedScheduler">{$AppTitle} - GPLv3 v{$Version}</a>
+					{/if}
 				</div>
 	  	</div>
 		</div>
