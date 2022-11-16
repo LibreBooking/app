@@ -17,10 +17,10 @@ This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBoo
 [developer documentation](./doc/README.md)
 
 ## Help
-Please consult the wiki for more help <https://github.com/effgarces/BookedScheduler/wiki>
+Please consult the wiki for more help <https://github.com/LibreBooking/app/wiki>
 
 ## REPO
-<https://github.com/effgarces/BookedScheduler>
+<https://github.com/LibreBooking/app>
 
 ## Chat
 We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedscheduler>
@@ -30,7 +30,7 @@ We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedschedu
 #### 2.8.5.5
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
-Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](https://github.com/effgarces/BookedScheduler)  
+Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](https://github.com/LibreBooking/app)  
 Fork this repo, contribute and help keep it alive
 
 Small update to fix a security issue
@@ -39,15 +39,15 @@ Small update to fix a security issue
 #### 2.8.5.4
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
-Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](https://github.com/effgarces/BookedScheduler)  
+Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](https://github.com/LibreBooking/app)  
 Fork this repo, contribute and help keep it alive
 
-Way too many changes, bugfixes and improvements to list them all here, so please take a look at: https://github.com/effgarces/BookedScheduler/commits/master
+Way too many changes, bugfixes and improvements to list them all here, so please take a look at: https://github.com/LibreBooking/app/commits/master
 
 #### 2.8.5.3
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
-Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](https://github.com/effgarces/BookedScheduler)  
+Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](https://github.com/LibreBooking/app)  
 Fork this repo, contribute and help keep it alive
 
 - Added translation: Greek
@@ -57,13 +57,13 @@ Fork this repo, contribute and help keep it alive
 #### 2.8.5.2
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
-Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](<https://github.com/effgarces/BookedScheduler>)  
+Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](<https://github.com/LibreBooking/app>)  
 Fork this repo, contribute and help keep it alive - Bugfixes
 
 #### 2.8.5.1
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
-Based on the original open source version of Booked, now available at: [https://github.com/effgarces/BookedScheduler](<https://github.com/effgarces/BookedScheduler>)<br>
+Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](<https://github.com/LibreBooking/app>)<br>
 
 Fork this repo, contribute and help keep it alive - Added intial support for generating pdf's on the reservation page
 
