@@ -3,7 +3,7 @@
         <div class="pull-left">{translate key="ResourceAvailability"}</div>
         <div class="pull-right">
             <a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
-                <i class="bi bi-chevron-expand"></i>
+                <i class="bi"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
         </div>
