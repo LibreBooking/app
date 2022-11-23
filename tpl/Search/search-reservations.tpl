@@ -6,21 +6,19 @@
           action="{$smarty.server.SCRIPT_NAME}?action=search">
 
       <div class="row g-3 mb-2">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
+          <div class="input-group">
             <label for="userFilter" class="no-show">{translate key=User}</label>
             <input id="userFilter" type="search" class="form-control" value="{$UserNameFilter}"
                    placeholder="{translate key=User}"/>
-            <!--<span class="searchclear glyphicon glyphicon-remove-circle" ref="userFilter,userId"></span> -->
+            <span class="searchclear bi bi-x-circle" ref="userFilter,userId"></span>
             <input id="userId" type="hidden" {formname key=USER_ID} value="{$UserIdFilter}"/>
-        </div>
-
-        <div class="col-sm-1">
-          <a class="searchclear btn btn-outline-secondary btn-sm" ref="userFilter,userId"><i class="bi bi-x-circle"></i>&nbsp;{translate key=ClearFilter}</a>
+          </div>
         </div>
 
         <div class="col-sm-4">
             <label for="resources" class="no-show">{translate key=Resources}</label>
-            <select id="resources" class="form-control" multiple="multiple" {formname key=RESOURCE_ID multi=true}>
+            <select id="resources" class="form-select" multiple="multiple" {formname key=RESOURCE_ID multi=true}>
                 {foreach from=$Resources item=resource}
                     <option value="{$resource->GetId()}">{$resource->GetName()}</option>
                 {/foreach}
@@ -29,7 +27,7 @@
 
         <div class="col-sm-4">
             <label for="schedules" class="no-show">{translate key=Schedules}</label>
-            <select id="schedules" class="form-control" multiple="multiple" {formname key=SCHEDULE_ID multi=true}>
+            <select id="schedules" class="form-select" multiple {formname key=SCHEDULE_ID multi=true}>
                 {foreach from=$Schedules item=schedule}
                     <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
                 {/foreach}
@@ -39,25 +37,30 @@
 
       <div class="row g-3 mb-2">
         <div class="form-group col-sm-4">
+          <div class="input-group">
             <label for="title" class="no-show">{translate key=Title}</label>
             <input type="search" id="title" class="form-control" {formname key=RESERVATION_TITLE}
                    placeholder="{translate key=Title}"/>
-            <span class="searchclear glyphicon glyphicon-remove-circle" ref="title"></span>
+            <span class="searchclear bi bi-x-circle" ref="title"></span>
+          </div>
         </div>
 
         <div class="form-group col-sm-4">
+          <div class="input-group">
             <label for="description" class="no-show">{translate key=Description}</label>
             <input type="search" id="description" class="form-control" {formname key=DESCRIPTION}
                    placeholder="{translate key=Description}"/>
-            <span class="searchclear glyphicon glyphicon-remove-circle" ref="description"></span>
+            <span class="searchclear bi bi-x-circle" ref="description"></span>
+          </div>
         </div>
 
         <div class="form-group col-sm-4">
+          <div class="input-group">
             <label for="referenceNumber" class="no-show">{translate key=ReferenceNumber}</label>
             <input type="search" id="referenceNumber" class="form-control" {formname key=REFERENCE_NUMBER}
                    placeholder="{translate key=ReferenceNumber}"/>
-            <!-- <span class="searchclear glyphicon glyphicon-remove-circle" ref="referenceNumber"></span> -->
-            <span class="searchclear glyphicon glyphicon-remove-circle" ref="referenceNumber"></span>
+            <span class="searchclear bi bi-x-circle" ref="referenceNumber"></span>
+          </div>
         </div>
       </div>
       <div class="row g-3 mb-2">

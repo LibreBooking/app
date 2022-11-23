@@ -558,12 +558,13 @@ input.mid-number {
 .social-login {
   text-align: center;
 }
+
 span.searchclear,
 span.searchclear-label {
   position: absolute;
-  right: 20px;
+  right: 10px;
   top: 0;
-  bottom: 0;
+  bottom: 5px;
   height: 14px;
   margin: auto;
   font-size: 14px;
@@ -571,7 +572,7 @@ span.searchclear-label {
   color: #ccc;
 }
 span.searchclear-label {
-  top: 22px;
+  top: 12px;
 }
 img.logo {
   max-height: 50px;
