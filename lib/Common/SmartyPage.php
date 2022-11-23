@@ -560,8 +560,9 @@ class SmartyPage extends Smarty
         $size = $pageInfo->PageSize;
         $currentPage = $pageInfo->CurrentPage;
 
+        $sb->Append('<nav aria-label="Reservations Pagination">'); /* Nav for Bootstrap 5 */
         $sb->Append('<ul class="pagination">');
-        $sb->Append('<li>');
+        $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
             ['page' => max(
             1,
@@ -575,14 +576,14 @@ class SmartyPage extends Smarty
             $isCurrent = ($i == $currentPage);
 
             if ($isCurrent) {
-                $sb->Append('<li class="active">');
+                $sb->Append('<li class="page-item active">');
             } else {
-                $sb->Append('<li>');
+                $sb->Append('<li class="page-item">');
             }
             $sb->Append($this->CreatePageLink(['page' => $i, 'size' => $size], $smarty));
             $sb->Append('</li>');
         }
-        $sb->Append('<li>');
+        $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
             ['page' => min(
             $pageInfo->TotalPages,
@@ -592,6 +593,7 @@ class SmartyPage extends Smarty
         ));
         $sb->Append('</li>');
         $sb->Append('</ul>');
+        $sb->Append('</nav>');/* End nav pagination Bootstrap 5 */
 
         return $sb->ToString();
     }
@@ -607,7 +609,7 @@ class SmartyPage extends Smarty
         $newUrl = $this->ReplaceQueryString($url, QueryStringKeys::PAGE, $page);
         $newUrl = $this->ReplaceQueryString($newUrl, QueryStringKeys::PAGE_SIZE, $pageSize);
 
-        $class = $iscurrent ? "page current" : "page";
+        $class = $iscurrent ? "page-link active" : "page-link";
 
         return sprintf('<a class="%s" href="%s" data-page="%s" data-page-size="%s">%s</a>', $class, $newUrl, $page, $pageSize, $text);
     }
