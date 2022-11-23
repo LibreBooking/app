@@ -2,19 +2,19 @@
 
 <div id="page-manage-reservation-colors" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="offset-md-3 col-md-6 col-xs-12 px-5 mt-4 shadow-sm border rounded">
         <h1>{translate key=ReservationColors}</h1>
 
         <form class="form-inline" role="form">
             <div class="form-group">
                 <label for="attributeOption">{translate key=Attribute}</label>
-                <select class="form-control" id="attributeOption">
+                <select class="form-select" id="attributeOption">
                     {foreach from=$Attributes item=attribute}
                         <option value="{$attribute->Id()}">{$attribute->Label()}</option>
                     {/foreach}
                 </select>
 
-                <button type="button" class="btn btn-success" id="addRuleButton">
+                <button type="button" class="btn btn-success btn-sm mt-2" id="addRuleButton">
                     <i class="fa fa-plus"></i> {translate key='AddRule'}
                 </button>
             </div>
@@ -54,16 +54,23 @@
             <form id="addForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action=add" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="addDialogLabel">{translate key=AddReservationColorRule}</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         {translate key=ReservationCustomRuleAdd}
 
-                        <div id='attributeFillIn' class='inline-block'></div>
+                        <!-- <div id='attributeFillIn' class='inline-block'></div> -->
                         <div id="color" class="inline-block">
-                            <label for="reservationColor" class="no-show">Reservation Color</label>
+                          {foreach from=$Attributes item=attribute}
+                              <div id="attribute{$attribute->Id()}"
+                                    class="hidden">{control type="AttributeControl" attribute=$attribute searchmode=true}</div>
+                          {/foreach}
+                            <!-- <label for="reservationColor" class="no-show">Reservation Color</label>
                             <input type="color" {formname key="RESERVATION_COLOR"} class="form-control required"
+                                   id="reservationColor" maxlength="6"/> -->
+                            <label for="reservationColor" class="form-label no-show">Reservation Color</label>
+                            <input type="color" {formname key="RESERVATION_COLOR"} class="form-control form-control-color required mt-2"
                                    id="reservationColor" maxlength="6"/>
                         </div>
                     </div>
@@ -83,12 +90,12 @@
             <form id="deleteForm" action="{$smarty.server.SCRIPT_NAME}?action=delete" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-warning">
-                            {translate key=DeleteWarning}
+                            <i class="bi bi-exclamation-triangle"></i>&nbsp;&nbsp;{translate key=DeleteWarning}
                         </div>
                         <input type="hidden" id="deleteRuleId" {formname key=RESERVATION_COLOR_RULE_ID} />
                     </div>
@@ -101,11 +108,6 @@
             </form>
         </div>
     </div>
-
-    {foreach from=$Attributes item=attribute}
-        <div id="attribute{$attribute->Id()}"
-             class="hidden">{control type="AttributeControl" attribute=$attribute searchmode=true}</div>
-    {/foreach}
 
     {csrf_token}
 
