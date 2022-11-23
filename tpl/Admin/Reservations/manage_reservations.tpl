@@ -309,8 +309,8 @@
 			<form id="deleteInstanceForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteInstanceDialogLabel">{translate key=Delete}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="delResResponse"></div>
@@ -339,8 +339,8 @@
 			<form id="deleteSeriesForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -350,8 +350,8 @@
 						<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-outline-secondary cancel"
+								data-bs-dismiss="modal">{translate key='Cancel'}</button>
 
 						<button type="button" class="btn btn-danger saveSeries btnUpdateThisInstance" id="btnUpdateThisInstance">
 							{translate key='ThisInstance'}
@@ -375,8 +375,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -402,16 +402,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="inlineErrorLabel">{translate key=Error}</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
 					<div id="reservationAccessError" class="hidden error"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default cancel"
-							data-dismiss="modal">{translate key='OK'}</button>
+					<button type="button" class="btn btn-outline-secondary cancel"
+							data-bs-dismiss="modal">{translate key='OK'}</button>
 				</div>
 			</div>
 		</div>
@@ -424,8 +424,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="importReservationsModalLabel">{translate key=Import}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div id="importUserResults" class="validationSummary alert alert-danger no-show">
@@ -470,8 +470,8 @@
             <form id="termsOfServiceForm" method="post" ajaxAction="termsOfService" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div>
