@@ -597,7 +597,10 @@ class es extends en_gb
         $strings['Reject'] = 'Rechazar';
         $strings['CheckingAvailability'] = 'Comprobando disponibilidad';
         $strings['CreditPurchaseNotEnabled'] = 'No tiene habilitada la opción de comprar créditos';
-        $strings['CreditsCost'] = 'Cada crédito cuesta';
+        $strings['CreditsEachCost1'] = 'Cada';
+        $strings['CreditsEachCost2'] = 'crédito(s) cuesta(n)';
+        $strings['CreditsCount'] = 'Número de créditos';
+        $strings['CreditsCost'] = 'Coste';
         $strings['Currency'] = 'Moneda';
         $strings['PayPalClientId'] = 'ID de cliente';
         $strings['PayPalSecret'] = 'Password';
