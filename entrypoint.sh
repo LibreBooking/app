@@ -2,7 +2,7 @@
 
 if ! [ -f config/config.php ]; then \
   if [ "$LB_ENV" = "production" ]; then cp config/config.dist.php config/config.php; fi; \
-  if [ "$LB_ENV" = "dev" ]; then cp config/config.devel.php config/config.devel.php; fi; \
+  if [ "$LB_ENV" = "dev" ]; then cp config/config.devel.php config/config.php; fi; \
   echo '$conf["settings"]["database"]["user"] = ' "'$DB_USER';" >>config/config.php; \
   echo '$conf["settings"]["database"]["password"] = ' "'$DB_PASSWORD';" >>config/config.php; \
   echo '$conf["settings"]["database"]["hostspec"] = ' "'$DB_HOST';" >>config/config.php; \
