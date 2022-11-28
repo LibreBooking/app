@@ -7,7 +7,7 @@
         "kint-php/kint": "^4.1"
     },
     "require" : {
-        "php" : ">=8.0",
+        "php" : ">=7.4",
         "smarty/smarty": "^4.2"
     },
     "scripts": {
