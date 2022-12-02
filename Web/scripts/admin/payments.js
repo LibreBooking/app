@@ -1,6 +1,7 @@
 function Payments(opts) {
     var elements = {
         updateCreditsForm: $('#updateCreditsForm'),
+        deleteCreditsForms: $('.deleteCreditsForm'),
         updateGatewayForm: $('#updateGatewayForm'),
         transactionLog: $('#transaction-log-content'),
         transactionLogIndicator: $('#transactionLogIndicator'),
@@ -46,8 +47,14 @@ function Payments(opts) {
         loadTransactionLog(0, 0);
 
         ConfigureAsyncForm(elements.updateCreditsForm, defaultSubmitCallback, function () {
-            showMessage('updatedCreditsMessage');
+            showMessage('updatedCreditsMessage').animate({height: 0}, {complete: function() { location.reload() }}); // TODO: cleaner table reload
         }, function () {
+        });
+        elements.deleteCreditsForms.each(function () {
+          ConfigureAsyncForm($(this), defaultSubmitCallback, function () {
+              showMessage('updatedCreditsMessage').animate({height: 0}, {complete: function() { location.reload() }}); // TODO: cleaner table reload
+          }, function () {
+          });
         });
         ConfigureAsyncForm(elements.updateGatewayForm, defaultSubmitCallback, function () {
             showMessage('updatedGatewayMessage');
@@ -91,6 +98,6 @@ function Payments(opts) {
     };
 
     var showMessage = function (id) {
-        $('#' + id).show().delay(2000).fadeOut(200);
+        return $('#' + id).show().delay(2000).fadeOut(200);
     }
 }

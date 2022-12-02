@@ -16,13 +16,13 @@
 					<div class="col-xs-12 col-sm-4">
 						<h4>{translate key=PurchaseSummary}</h4>
 						<div class="col-xs-8">
-                            {translate key=EachCreditCosts}
+                            {translate key=CreditsEachCost1} {$CreditCount} {translate key=CreditsEachCost2}
 						</div>
 						<div class="col-xs-4 align-right">
                             {$CreditCost}
 						</div>
 						<div class="col-xs-8">
-                            {translate key=Credits}
+                            {translate key=Quantity}
 						</div>
 						<div class="col-xs-4 align-right">
                             {$CreditQuantity}</div>
@@ -65,7 +65,7 @@
 			<div class="no-show" id="success">
 				<div class="alert alert-success">
 					<div>{translate key=Success}</div>
-					<div><em>{$CreditQuantity}</em> {translate key=CreditsPurchased}</div>
+					<div><em>{$CreditQuantity * $CreditCount}</em> {translate key=CreditsPurchased}</div>
 					<div><a href="{$ScriptUrl}/{Pages::CREDITS}">{translate key=ViewYourCredits}</a></div>
 				</div>
 			</div>
