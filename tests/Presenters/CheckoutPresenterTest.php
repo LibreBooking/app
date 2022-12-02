@@ -127,6 +127,7 @@ class CheckoutPresenterTests extends TestBase
 
 class FakeCheckoutPage extends CheckoutPage
 {
+    public $_CreditCount;
     public $_CreditQuantity;
     public $_Total;
     public $_PayPalEnabled;
@@ -141,6 +142,11 @@ class FakeCheckoutPage extends CheckoutPage
     public $_PayerId;
     public $_StripeToken;
     public $_StripePaymentResult;
+
+    public function GetCreditCount()
+    {
+        return $this->_CreditCount;
+    }
 
     public function GetCreditQuantity()
     {

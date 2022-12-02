@@ -17,20 +17,20 @@ class PaymentRepositoryTests extends TestBase
 
     public function testGetsCreditCost()
     {
-        $expectedRows = [[ColumnNames::CREDIT_COST => 32.99, ColumnNames::CREDIT_CURRENCY => 'USD']];
+        $expectedRows = [[ColumnNames::CREDIT_COUNT => 1, ColumnNames::CREDIT_COST => 32.99, ColumnNames::CREDIT_CURRENCY => 'USD']];
         $this->db->SetRows($expectedRows);
 
-        $cost = $this->repository->GetCreditCost();
+        $cost = $this->repository->GetCreditCosts();
 
-        $this->assertEquals(new CreditCost(32.99, 'USD'), $cost);
+        $this->assertEquals(new CreditCost(1, 32.99, 'USD'), $cost[0]);
         $this->assertEquals(new GetPaymentConfigurationCommand(), $this->db->_LastCommand);
     }
 
     public function testUpdatesCreditCost()
     {
-        $this->repository->UpdateCreditCost(new CreditCost(32.99, 'USD'));
+        $this->repository->UpdateCreditCost(new CreditCost(1, 32.99, 'USD'));
 
-        $this->assertEquals(new UpdatePaymentConfigurationCommand(32.99, 'USD'), $this->db->_LastCommand);
+        $this->assertEquals(new AddPaymentConfigurationCommand(1, 32.99, 'USD'), $this->db->_LastCommand);
     }
 
     public function testUpdatesPayPal()

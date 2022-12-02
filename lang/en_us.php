@@ -630,7 +630,10 @@ class en_us extends Language
         $strings['Reject'] = 'Reject';
         $strings['CheckingAvailability'] = 'Checking availability';
         $strings['CreditPurchaseNotEnabled'] = 'You have not enabled the ability to purchase credits';
-        $strings['CreditsCost'] = 'Each credit costs';
+        $strings['CreditsEachCost1'] = 'Each';
+        $strings['CreditsEachCost2'] = 'credit(s) cost';
+        $strings['CreditsCount'] = 'Number of credits';
+        $strings['CreditsCost'] = 'Cost';
         $strings['Currency'] = 'Currency';
         $strings['PayPalClientId'] = 'Client ID';
         $strings['PayPalSecret'] = 'Secret';

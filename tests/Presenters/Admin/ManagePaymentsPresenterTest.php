@@ -170,6 +170,7 @@ class ManagePaymentsPresenterTests extends TestBase
 
 class FakeManagePaymentsPage extends ManagePaymentsPage
 {
+    public $_CreditCount;
     public $_CreditCost;
     public $_CreditCurrency;
     public $_PayPalEnabled;
@@ -203,8 +204,9 @@ class FakeManagePaymentsPage extends ManagePaymentsPage
         return $this->_CreditCurrency;
     }
 
-    public function SetCreditCost($cost, $currency)
+    public function SetCreditCost($count, $cost, $currency)
     {
+        $this->_CreditCount = $count;
         $this->_CreditCost = $cost;
         $this->_CreditCurrency = $currency;
     }

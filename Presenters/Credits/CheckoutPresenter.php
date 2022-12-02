@@ -44,9 +44,22 @@ class CheckoutPresenter extends ActionPresenter
 
     public function PageLoad(UserSession $userSession)
     {
+        $creditCount = floatval($this->page->GetCreditCount());
         $creditQuantity = floatval($this->page->GetCreditQuantity());
 
-        $cost = $this->paymentRepository->GetCreditCost();
+        $costs = $this->paymentRepository->GetCreditCosts();
+        // Find the cost that matches the credit count
+        foreach ($costs as $c) {
+            if ($c->Count() == $creditCount) {
+                $cost = $c;
+                break;
+            }
+        }
+        if (!isset($cost)) {
+            Log::Error('Could not find cost for credit count %s', $creditCount);
+            return;
+        }
+
         $paypal = $this->paymentRepository->GetPayPalGateway();
         $stripe = $this->paymentRepository->GetStripeGateway();
 
@@ -58,8 +71,8 @@ class CheckoutPresenter extends ActionPresenter
             $this->page->SetTotals($total, $cost, $creditQuantity);
             $this->page->SetPayPalSettings($paypal->IsEnabled(), $paypal->ClientId(), $paypal->Environment());
             $this->page->SetStripeSettings($stripe->IsEnabled(), $stripe->PublishableKey());
-
-            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, new CreditCartSession($creditQuantity, $cost->Cost(), $cost->Currency(), $userSession->UserId));
+            
+            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, new CreditCartSession($creditQuantity * $creditCount, $cost->Cost() / $creditCount, $cost->Currency(), $userSession->UserId));
         }
     }
 

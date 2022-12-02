@@ -11,14 +11,19 @@ require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 interface IPaymentRepository
 {
     /**
-     * @param CreditCost $cost
+     * @param CreditCost $credit
      */
-    public function UpdateCreditCost(CreditCost $cost);
+    public function UpdateCreditCost($credit);
 
     /**
-     * @return CreditCost
+     * @param int $creditCount
      */
-    public function GetCreditCost();
+    public function DeleteCreditCost($creditCount);
+
+    /**
+     * @return CreditCost[]
+     */
+    public function GetCreditCosts();
 
     /**
      * @param PayPalGateway $gateway
@@ -60,20 +65,32 @@ interface IPaymentRepository
 
 class PaymentRepository implements IPaymentRepository
 {
-    public function UpdateCreditCost(CreditCost $cost)
+
+    public function UpdateCreditCost($credit)
     {
-        ServiceLocator::GetDatabase()->Execute(new UpdatePaymentConfigurationCommand($cost->Cost(), $cost->Currency()));
+        $this->DeleteCreditCost($credit->Count()); // In case it already exists: overwrite
+        ServiceLocator::GetDatabase()->Execute(new AddPaymentConfigurationCommand($credit->Count(), $credit->Cost(), $credit->Currency()));
     }
 
-    public function GetCreditCost()
+    public function DeleteCreditCost($creditCount)
+    {
+        ServiceLocator::GetDatabase()->Execute(new DeletePaymentConfigurationCommand($creditCount));
+    }
+
+    public function GetCreditCosts()
     {
         $reader = ServiceLocator::GetDatabase()->Query(new GetPaymentConfigurationCommand());
-        if ($row = $reader->GetRow()) {
-            return new CreditCost($row[ColumnNames::CREDIT_COST], $row[ColumnNames::CREDIT_CURRENCY]);
+        $res = array();
+        for ($i=0;$i<$reader->NumRows();$i++) {
+          $row = $reader->GetRow();
+          $res[] = new CreditCost($row[ColumnNames::CREDIT_COUNT], $row[ColumnNames::CREDIT_COST], $row[ColumnNames::CREDIT_CURRENCY]);
         }
-
         $reader->Free();
-        return new CreditCost();
+
+        if (empty($res)) {
+          $res[] = new CreditCost();
+        }
+        return $res;
     }
 
     public function UpdatePayPalGateway(PayPalGateway $gateway)

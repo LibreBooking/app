@@ -42,14 +42,18 @@
 
             <div class="tab-pane" id="cost" role="tabpanel">
                 <div>
+                    {* Form to add or update credit payment configurations *}
                     <form role="form" name="updateCreditsForm" id="updateCreditsForm" method="post"
-                          ajaxAction="updateCreditCost"
-                          action="{$smarty.server.SCRIPT_NAME}">
+                          ajaxAction="updateCreditCost" action="{$smarty.server.SCRIPT_NAME}">
                         <div class="form-group">
-                            <label for="creditCost" class="inline-block">{translate key=CreditsCost}</label>
+                            <label for="creditCount" class="inline-block">{translate key=CreditsEachCost1}</label>
+                            <input type="number" min="0" max="1000000000" id="creditCount" step="1"
+                                  class="form-control inline-block" style="width:auto;" {formname key=CREDIT_COUNT}
+                                  value="1"/>
+                            <label for="creditCost" class="inline-block">{translate key=CreditsEachCost2}</label>
                             <input type="number" min="0" max="1000000000" id="creditCost" step="any"
                                    class="form-control inline-block" style="width:auto;" {formname key=CREDIT_COST}
-                                   value="{$CreditCost}"/>
+                                   value="30.00"/>
                             <label for="creditCurrency" class="inline-block no-show">{translate key=Currency}</label>
                             <select id="creditCurrency" {formname key=CREDIT_CURRENCY} class="form-control inline-block"
                                     style="width:auto;">
@@ -61,6 +65,40 @@
                             {indicator id="updateCreditsIndicator"}
                         </div>
                     </form>
+                    {* Table to show and delete credit offers *}
+                    <table class="table" id="creditsTable">
+                      <thead>
+                      <tr>
+                        <th>{translate key=CreditsCount}</th>
+                        <th>{translate key=CreditsCost}</th>
+                        <th>{translate key=Currency}</th>
+                        <th class="action">{translate key=Actions}</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {foreach from=$CreditCosts item=credit}
+                        {cycle values='row0,row1' assign=rowCss}
+                        <tr class="{$rowCss}" data-credit-id="{$credit->Count()}">
+                        <td>{$credit->Count()}</td>
+                        <td>{$credit->Cost()}</td>
+                        <td>{$credit->Currency()}</td>
+                        <td class="action">
+                        {if $credit->Count() != 1}
+                          <form role="form" name="{($credit->Count())}" id="{$credit->Count()}"
+                                class="deleteCreditsForm" method="post"
+                                ajaxAction="deleteCreditCost" action="{$smarty.server.SCRIPT_NAME}">
+                                <input type="hidden" {formname key=CREDIT_COUNT} value="{$credit->Count()}"/>
+                                <button type="submit" style="border: 0; padding: 0">
+                                  <span class="no-show">{translate key=Delete}</span>
+                                  <span class="fa fa-trash icon remove"></span>
+                                </button>
+                                {indicator id="deleteCreditsIndicator"}
+                          </form>
+                        {/if}
+                        </tr>
+                      {/foreach}
+                      </tbody>
+                    </table>
                 </div>
             </div>
 

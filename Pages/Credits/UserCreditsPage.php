@@ -12,6 +12,11 @@ interface IUserCreditsPage extends IPage, IActionPage
     public function SetCurrentCredits($credits);
 
     /**
+     * @param CreditCost[] $cost
+     */
+    public function SetCreditCosts($costs);
+
+    /**
      * @param CreditCost $cost
      */
     public function SetCreditCost(CreditCost $cost);
@@ -20,6 +25,11 @@ interface IUserCreditsPage extends IPage, IActionPage
      * @return float
      */
     public function GetQuantity();
+
+    /**
+     * @return int
+     */
+    public function GetCount();
 
     /**
      * @param string $formattedTotal
@@ -89,6 +99,11 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
         $this->Set('CurrentCredits', $credits);
     }
 
+    public function SetCreditCosts($costs)
+    {
+        $this->Set('CreditCosts', $costs);
+    }
+
     public function SetCreditCost(CreditCost $cost)
     {
         $this->Set('CreditCost', $cost->FormatCurrency());
@@ -98,6 +113,11 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
     public function GetQuantity()
     {
         return $this->GetQuerystring(QueryStringKeys::QUANTITY);
+    }
+
+    public function GetCount()
+    {
+        return $this->GetQuerystring(QueryStringKeys::COUNT);
     }
 
     public function SetTotalCost($formattedTotal)
