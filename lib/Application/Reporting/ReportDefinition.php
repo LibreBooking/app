@@ -51,8 +51,8 @@ class ReportDefinition implements IReportDefinition
         $dateFormat = Resources::GetInstance()->GeneralDateFormat();
         $orderedColumns = [
             ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
-            ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
             ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Total()),
+            ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
             ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Date()),
             ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
             ColumnNames::DURATION_ALIAS => new ReportTimeColumn('Duration', ChartColumnDefinition::Null(), false),
@@ -65,6 +65,10 @@ class ReportDefinition implements IReportDefinition
             ColumnNames::OWNER_LAST_NAME => new ReportStringColumn('LastName', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
             ColumnNames::EMAIL => new ReportStringColumn('Email', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
             ColumnNames::ORGANIZATION => new ReportStringColumn('Organization', ChartColumnDefinition::Null()),
+            ColumnNames::POSITION => new ReportStringColumn('Position', ChartColumnDefinition::Null()),
+            ColumnNames::PHONE_NUMBER => new ReportStringColumn('Phone', ChartColumnDefinition::Null()),
+            ColumnNames::TIMEZONE_NAME => new ReportStringColumn('Timezone', ChartColumnDefinition::Null()),
+            ColumnNames::LANGUAGE_CODE => new ReportStringColumn('Language', ChartColumnDefinition::Null()),
             ColumnNames::USER_GROUP_LIST => new ReportStringColumn('Groups', ChartColumnDefinition::Null()),
             ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
             ColumnNames::PARTICIPANT_LIST => new ReportStringColumn('Participants', ChartColumnDefinition::Null()),

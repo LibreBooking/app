@@ -43,9 +43,10 @@ class ReportCommandBuilder
 
     public const SCHEDULE_LIST_FRAGMENT = '`schedules`.`schedule_id`, `schedules`.`name` as `schedule_name`';
 
-    public const ACCESSORY_LIST_FRAGMENT = '`accessories`.`accessory_name`, `accessories`.`accessory_id`, `ar`.`quantity`';
+    public const ACCESSORY_LIST_FRAGMENT = '`resources`.`name` as `resource_name`, `accessories`.`accessory_name`, `accessories`.`accessory_id`, COALESCE(`ar`.`quantity`, 0) as `quantity`';
 
-    public const USER_LIST_FRAGMENT = '`owner`.`fname` as `owner_fname`, `owner`.`lname` as `owner_lname`, `owner`.`email` as `email`, CONCAT(`owner`.`fname`, \' \', `owner`.`lname`) as `owner_name`, `owner`.`user_id` as `owner_id`, `owner`.`organization` as `organization`';
+    public const USER_LIST_FRAGMENT = '`owner`.`fname` as `owner_fname`, `owner`.`lname` as `owner_lname`, `owner`.`email` as `email`, CONCAT(`owner`.`fname`, \' \', `owner`.`lname`) as `owner_name`, `owner`.`user_id` as `owner_id`, 
+        `owner`.`organization` as `organization`, `owner`.`position` as `position`, `owner`.`phone` as `phone`, `owner`.`timezone` as `timezone`, `owner`.`language` as `language`';
 
     public const GROUP_LIST_FRAGMENT = '`groups`.`name` as `group_name`, `groups`.`group_id`';
 
@@ -54,10 +55,10 @@ class ReportCommandBuilder
 				INNER JOIN `schedules` ON `resources`.`schedule_id` = `schedules`.`schedule_id`';
 
     public const PARTICIPANT_JOIN_FRAGMENT = 'INNER JOIN `users` `participants` ON `participants`.`user_id` = @participant_id
-			INNER JOIN `reservation_users` `pu` ON `pu`.`user_id` = `participants`.`user_id` AND `pu`.`reservation_user_level` = 2 AND `pu`.`reservation_instance_id` = `ri`.`reservation_instance_id` ';
+			  INNER JOIN `reservation_users` `pu` ON `pu`.`user_id` = `participants`.`user_id` AND `pu`.`reservation_user_level` = 2 AND `pu`.`reservation_instance_id` = `ri`.`reservation_instance_id` ';
 
-    public const ACCESSORY_JOIN_FRAGMENT = 'INNER JOIN `reservation_accessories` `ar` ON `rs`.`series_id` = `ar`.`series_id`
-				INNER JOIN `accessories` ON `ar`.`accessory_id` = `accessories`.`accessory_id`';
+    public const ACCESSORY_JOIN_FRAGMENT = 'LEFT JOIN `reservation_accessories` `ar` ON `rs`.`series_id` = `ar`.`series_id`
+        LEFT JOIN `accessories` ON `ar`.`accessory_id` = `accessories`.`accessory_id`';
 
     public const GROUP_JOIN_FRAGMENT = 'INNER JOIN `user_groups` `ug` ON `ug`.`user_id` = `owner`.`user_id`
 				INNER JOIN `groups` ON `groups`.`group_id` = `ug`.`group_id`';
