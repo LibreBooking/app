@@ -51,8 +51,8 @@ class ReportDefinition implements IReportDefinition
         $dateFormat = Resources::GetInstance()->GeneralDateFormat();
         $orderedColumns = [
             ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
-            ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
             ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Total()),
+            ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
             ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Date()),
             ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
             ColumnNames::DURATION_ALIAS => new ReportTimeColumn('Duration', ChartColumnDefinition::Null(), false),
