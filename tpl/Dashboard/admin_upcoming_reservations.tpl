@@ -3,7 +3,7 @@
         <div class="pull-left">{translate key="AllUpcomingReservations"} <span class="badge">{$Total}</span></div>
         <div class="pull-right">
             <a href="#" title="{translate key=ShowHide} {translate key="AllUpcomingReservations"}">
-                <i class="glyphicon"></i>
+                <i class="bi"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
         </div>

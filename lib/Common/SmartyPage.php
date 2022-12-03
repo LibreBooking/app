@@ -324,7 +324,9 @@ class SmartyPage extends Smarty
             return empty($actualContent) ? '' :
                     "<div class=\"$class\">
 					<div class=\"pull-left\"><i class=\"fa fa-warning fa-2x\"></i></div>
-					<div class=\"error-list\"><ul class=\"list-unstyled\">$actualContent</ul></div>
+					<div class=\"error-list\"><ul class=\"list-unstyled\">$actualContent</ul>
+          <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
+          </div>
 				</div>";
         }
         return '';
@@ -558,8 +560,9 @@ class SmartyPage extends Smarty
         $size = $pageInfo->PageSize;
         $currentPage = $pageInfo->CurrentPage;
 
+        $sb->Append('<nav aria-label="Reservations Pagination">'); /* Nav for Bootstrap 5 */
         $sb->Append('<ul class="pagination">');
-        $sb->Append('<li>');
+        $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
             ['page' => max(
             1,
@@ -573,14 +576,14 @@ class SmartyPage extends Smarty
             $isCurrent = ($i == $currentPage);
 
             if ($isCurrent) {
-                $sb->Append('<li class="active">');
+                $sb->Append('<li class="page-item active">');
             } else {
-                $sb->Append('<li>');
+                $sb->Append('<li class="page-item">');
             }
             $sb->Append($this->CreatePageLink(['page' => $i, 'size' => $size], $smarty));
             $sb->Append('</li>');
         }
-        $sb->Append('<li>');
+        $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
             ['page' => min(
             $pageInfo->TotalPages,
@@ -590,6 +593,7 @@ class SmartyPage extends Smarty
         ));
         $sb->Append('</li>');
         $sb->Append('</ul>');
+        $sb->Append('</nav>');/* End nav pagination Bootstrap 5 */
 
         return $sb->ToString();
     }
@@ -605,7 +609,7 @@ class SmartyPage extends Smarty
         $newUrl = $this->ReplaceQueryString($url, QueryStringKeys::PAGE, $page);
         $newUrl = $this->ReplaceQueryString($newUrl, QueryStringKeys::PAGE_SIZE, $pageSize);
 
-        $class = $iscurrent ? "page current" : "page";
+        $class = $iscurrent ? "page-link active" : "page-link";
 
         return sprintf('<a class="%s" href="%s" data-page="%s" data-page-size="%s">%s</a>', $class, $newUrl, $page, $pageSize, $text);
     }
@@ -752,7 +756,7 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Cancel';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-default cancel ' . $class . '" data-dismiss="modal" ' . $this->GetButtonAttributes($params) . '>' .
+        echo '<button type="button" class="btn btn-outline-secondary cancel ' . $class . '" data-bs-dismiss="modal" ' . $this->GetButtonAttributes($params) . '>' .
                 Resources::GetInstance()->GetString($key) . '</button>';
     }
 
@@ -763,7 +767,7 @@ class SmartyPage extends Smarty
         $type = isset($params['submit']) ? 'submit' : 'button';
         $save = $type == 'submit' ? '' : ' save ';
 
-        echo '<button type="' . $type . '" class="btn btn-success' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+        echo '<button type="' . $type . '" class="btn btn-success' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-check2-circle"></i> ' . Resources::GetInstance()
                                                                                                                                                                                                       ->GetString($key) . '</button>';
     }
 
@@ -777,7 +781,7 @@ class SmartyPage extends Smarty
             $type = 'submit';
         }
 
-        echo '<button type="' . $type . '" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+        echo '<button type="' . $type . '" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-check2-circle"></i> ' . Resources::GetInstance()
                                                                                                                                                                                                     ->GetString($key) . '</button>';
     }
 
@@ -790,7 +794,7 @@ class SmartyPage extends Smarty
         if ($submit) {
             $type = 'submit';
         }
-        echo '<button type="' . $type . '" class="btn btn-danger save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-trash"></span> ' . Resources::GetInstance()
+        echo '<button type="' . $type . '" class="btn btn-danger save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-trash3-fill"></i> ' . Resources::GetInstance()
                                                                                                                                                                                         ->GetString($key) . '</button>';
     }
 
@@ -798,7 +802,7 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Reset';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="reset" class="btn btn-default ' . $class . '" ' . $this->GetButtonAttributes($params) . '>' . Resources::GetInstance()
+        echo '<button type="reset" class="btn btn-outline-secondary ' . $class . '" ' . $this->GetButtonAttributes($params) . '>' . Resources::GetInstance()
                                                                                                                                     ->GetString($key) . '</button>';
     }
 
@@ -806,7 +810,7 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Filter';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="glyphicon glyphicon-search"></span> ' . Resources::GetInstance()
+        echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <i class="bi bi-search"></i> ' . Resources::GetInstance()
                                                                                                                                                                                       ->GetString($key) . '</button>';
     }
 
@@ -814,14 +818,14 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'OK';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+        echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-check2-circle"></i> ' . Resources::GetInstance()
                                                                                                                                                                                         ->GetString($key) . '</button>';
     }
 
     public function ShowHideIcon($params, $smarty)
     {
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<a href="#"><span class="icon black show-hide glyphicon ' . $class . '"></span><span class="no-show">Show/Hide</span></a>';
+        echo '<a href="#"><i class="show-hide bi ' . $class . '"></i><span class="no-show">Show/Hide</span></a>';
     }
 
     public function SortColumn($params, $smarty)

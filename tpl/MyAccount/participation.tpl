@@ -7,9 +7,9 @@
 
 	<div id="jsonResult" class="error no-show"></div>
 
-	<div id="participation-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+	<div id="participation-box" class="offset-md-3 col-md-6 col-xs-12 px-5 mt-4 shadow-sm border rounded">
 
-		<h1>{translate key=OpenInvitations} <span class="label label-default">{$Reservations|default:array()|count}</span></h1>
+		<h1>{translate key=OpenInvitations}: <span class="label label-default">{$Reservations|default:array()|count}</span></h1>
 
 		<ul class="list-unstyled participation">
 			{foreach from=$Reservations item=reservation name=invitations}

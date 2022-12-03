@@ -270,8 +270,8 @@ function Schedule(opts, resourceGroups) {
                         const endsAfter = res.EndDate > tableMax;
                         let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
                         let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
-                        const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event" 
+                        const div = $(`<div
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event"
                                     style="${color}"
                                     data-resid="${res.ReferenceNumber}">
                                     <span>${startTime}-${endTime}</span>
@@ -371,8 +371,8 @@ function Schedule(opts, resourceGroups) {
 
                     let divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
                     const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
-                    const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
+                    const div = $(`<div
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} event"
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     data-resourceid="${res.ResourceId}"
@@ -407,8 +407,8 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             const style = `left:${bufferStartEnd.left}px; top:${bufferTop}px; width:${bufferStartEnd.width}px; height:${bufferHeight}px;`;
-                            const bufferDiv = $(`<div 
-					                                    class="${past} buffer" 
+                            const bufferDiv = $(`<div
+					                                    class="${past} buffer"
 					                                    style="${style}"
 					                                    data-resid="${res.ReferenceNumber}"
 					                                    data-resourceid="${res.ResourceId}"
@@ -602,18 +602,18 @@ function Schedule(opts, resourceGroups) {
 
         function hide() {
             shown = false;
-            $('#reservations-left').addClass('hidden');
+            $('#reservations-left').addClass('d-none');
             $('#reservations').removeClass('col-md-10').addClass('col-md-12');
-            $('#restore-sidebar').removeClass('hidden');
+            $('#restore-sidebar').removeClass('d-none');
 
             localStorage.setItem('hide-sidebar-status', true);
         }
 
         function show() {
             shown = true;
-            $('#reservations-left').removeClass('hidden');
+            $('#reservations-left').removeClass('d-none');
             $('#reservations').addClass('col-md-10').removeClass('col-md-12');
-            $('#restore-sidebar').addClass('hidden');
+            $('#restore-sidebar').addClass('d-none');
 
             localStorage.removeItem('hide-sidebar-status');
         }
@@ -816,7 +816,7 @@ function Schedule(opts, resourceGroups) {
                 ajaxPost($('#moveReservationForm'), options.updateReservationUrl, null, function (updateResult) {
                     droppedCell.removeClass('dropped');
                     droppedCell.html('');
-					
+
 					if (updateResult.success) {
                         renderEvents(true);
                     } else {

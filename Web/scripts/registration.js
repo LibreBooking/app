@@ -39,7 +39,7 @@ function Registration()
 		else
 		{
 			onValidationFailed();
-			$('#registrationError').removeClass('hidden');
+			$('#registrationError').removeClass('d-none');
 		}
 	}
 

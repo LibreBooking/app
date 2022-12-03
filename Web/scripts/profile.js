@@ -23,13 +23,13 @@ function Profile() {
 	{
 		elements.form.find('button').removeAttr('disabled');
 		hideModal();
-		$('#validationErrors').removeClass('hidden');
+		$('#validationErrors').removeClass('d-none');
 	}
 
 	function successHandler(response)
 	{
 		hideModal();
-		$('#profileUpdatedMessage').removeClass('hidden');
+		$('#profileUpdatedMessage').removeClass('d-none');
 	}
 
 	function onBeforeSubmit(formData, jqForm, opts)
@@ -41,7 +41,7 @@ function Profile() {
 			return false;
 		}
 
-		$('#profileUpdatedMessage').addClass('hidden');
+		$('#profileUpdatedMessage').addClass('d-none');
 
 		$.blockUI({ message: $('#wait-box') });
 

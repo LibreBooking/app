@@ -1,35 +1,35 @@
 {include file='globalheader.tpl' Qtip=true InlineEdit=true}
 
-<div id="page-manage-reservations" class="admin-page">
+<div id="page-manage-reservations" class="admin-page mt-3">
 	<div>
 		<div class="dropdown admin-header-more pull-right">
-			<button class="btn btn-default" type="button" id="moreReservationActions" data-toggle="dropdown">
-				<span class="glyphicon glyphicon-option-horizontal"></span>
+			<button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="moreReservationActions" data-bs-toggle="dropdown" aria-expanded="false">
+				<i class="bi bi-three-dots"></i>
 				<span class="caret"></span>
                 <span class="no-show">Expand</span>
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreReservationActions">
 				{if $CanViewAdmin}
 					<li role="presentation">
-						<a role="menuitem" href="#" id="import-reservations" class="add-link">{translate key=Import}
-							<span class="glyphicon glyphicon-import"></span>
+						<a role="menuitem" href="#" id="import-reservations" class="dropdown-item">{translate key=Import}
+							<i class="bi bi-box-arrow-in-down"></i>
 						</a>
 					</li>
 				{/if}
 				<li role="presentation">
-					<a role="menuitem" href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="add-link" target="_blank">{translate key=Export}
-						<span class="glyphicon glyphicon-export"></span>
+					<a role="menuitem" href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="dropdown-item" target="_blank">{translate key=Export}
+						<i class="bi bi-box-arrow-up"></i>
 					</a>
 				</li>
                 {if $CanViewAdmin}
-                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-divider"></li>
                     <li role="presentation">
-                        <a role="menuitem" href="#" id="addTermsOfService" class="add-link">{translate key=TermsOfService}
-                            <span class="glyphicon glyphicon-book"></span>
+                        <a role="menuitem" href="#" id="addTermsOfService" class="dropdown-item">{translate key=TermsOfService}
+                            <i class="bi bi-journals"></i>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" href="manage_reservation_colors.php" id="addTermsOfService" class="add-link">{translate key=ReservationColors}
+                        <a role="menuitem" href="manage_reservation_colors.php" id="addTermsOfService" class="dropdown-item">{translate key=ReservationColors}
                             <span class="fa fa-paint-brush"></span>
                         </a>
                     </li>
@@ -39,101 +39,123 @@
 		<h1>{translate key=ManageReservations}</h1>
 	</div>
 
-	<div class="panel panel-default filterTable" id="filter-reservations-panel">
-		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}</div>
-		<div class="panel-body">
+	<div class="card filterTable mb-4" id="filter-reservations-panel">
+		<div class="card-header"><i class="bi bi-funnel-fill"></i> {translate key="Filter"} {showhide_icon}</div>
+		<div class="card-body">
 			{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
 			<form id="filterForm" role="form">
-				<div class="form-group filter-dates {$groupClass}">
-                    <label for="startDate" class="no-show">{translate key=StartDate}</label>
-					<input id="startDate" type="text" class="form-control dateinput inline"
-						   value="{formatdate date=$StartDate}"/>
-					<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
-					-
-                    <label for="endDate" class="no-show">{translate key=StartDate}</label>
-                    <input id="endDate" type="text" class="form-control dateinput inline"
-						   value="{formatdate date=$EndDate}"/>
-					<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
-                </div>
-				<div class="form-group filter-user {$groupClass}">
-                    <label for="userFilter" class="no-show">{translate key=User}</label>
-                    <input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}"
-						   placeholder="{translate key=User}"/>
-					<input id="userId" type="hidden" value="{$UserIdFilter}"/>
-                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="userFilter,userId"></span>
-                </div>
-				<div class="form-group filter-schedule {$groupClass}">
-                    <label for="scheduleId" class="no-show">{translate key=Schedule}</label>
-                    <select id="scheduleId" class="form-control">
-						<option value="">{translate key=AllSchedules}</option>
-						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
-					</select>
-				</div>
-				<div class="form-group filter-resource {$groupClass}">
-                    <label for="resourceId" class="no-show">{translate key=Resource}</label>
-                    <select id="resourceId" class="form-control">
-						<option value="">{translate key=AllResources}</option>
-						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
-					</select>
-				</div>
-				<div class="form-group filter-status {$groupClass}">
-                    <label for="statusId" class="no-show">{translate key=Status}</label>
-                    <select id="statusId" class="form-control">
-						<option value="">{translate key=AllReservations}</option>
-						<option value="{ReservationStatus::Pending}"
-								{if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
-					</select>
-				</div>
-				<div class="form-group filter-referenceNumber {$groupClass}">
-                    <label for="referenceNumber" class="no-show">{translate key=ReferenceNumber}</label>
-                    <input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
-						   placeholder="{translate key=ReferenceNumber}"/>
-                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="referenceNumber"></span>
-                </div>
-                <div class="form-group filter-title {$groupClass}">
-                    <label for="reservationTitle" class="no-show">{translate key=Title}</label>
-                    <input id="reservationTitle" type="text" class="form-control" value="{$ReservationTitle}"
-						   placeholder="{translate key=Title}"/>
-                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="reservationTitle"></span>
-                </div>
-                <div class="form-group filter-title {$groupClass}">
-                    <label for="reservationDescription" class="no-show">{translate key=ReservationDescription}</label>
-                    <input id="reservationDescription" type="text" class="form-control" value="{$ReservationDescription}"
-						   placeholder="{translate key=Description}"/>
-                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="reservationDescription"></span>
-                </div>
-				<div class="form-group filter-resourceStatus {$groupClass}">
-                    <label for="resourceStatusIdFilter" class="no-show">{translate key=ResourceStatus}</label>
-                    <select id="resourceStatusIdFilter" class="form-control">
-						<option value="">{translate key=AllResourceStatuses}</option>
-						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-						<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-					</select>
-				</div>
-				<div class="form-group filter-resourceStatusReason {$groupClass}">
-                    <label for="resourceReasonIdFilter" class="no-show">{translate key=Reason}</label>
-                    <select id="resourceReasonIdFilter" class="form-control"></select>
-				</div>
-                <div class="form-group filter-checkin {$groupClass}">
-                    <div class="checkbox">
-                        <input type="checkbox" id="missedCheckin" {if $MissedCheckin}checked="checked"{/if} />
-                        <label for="missedCheckin">{translate key=MissedCheckin}</label>
-                    </div>
-                </div>
-                <div class="form-group filter-checkout {$groupClass}">
-                    <div class="checkbox">
-                        <input type="checkbox" id="missedCheckout" {if $MissedCheckout}checked="checked"{/if} />
-                        <label for="missedCheckout">{translate key=MissedCheckout}</label>
-                    </div>
-                </div>
-				<div class="clearfix"></div>
+
+					<div class="row g-3 mb-2">
+						<div class="col-sm-3 form-group filter-dates">
+          		<label for="startDate" class="no-show">{translate key=StartDate}</label>
+							<input id="startDate" type="text" class="form-control dateinput inline"
+						   	 value="{formatdate date=$StartDate}"/>
+							<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
+							-
+          		<label for="endDate" class="no-show">{translate key=StartDate}</label>
+          		<input id="endDate" type="text" class="form-control dateinput inline"
+						   	 value="{formatdate date=$EndDate}"/>
+							<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
+						</div>
+						<div class="col-sm-3 form-group filter-user">
+							<div class="input-group">
+			          <label for="userFilter" class="no-show">{translate key=User}</label>
+			          <input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}"
+									   		placeholder="{translate key=User}"/>
+								<input id="userId" type="hidden" value="{$UserIdFilter}"/>
+			          <span class="searchclear bi bi-x-circle" ref="userFilter,userId"></span>
+							</div>
+      			</div>
+						<div class="col-sm-3 form-group filter-schedule">
+              <label for="scheduleId" class="no-show">{translate key=Schedule}</label>
+              	<select id="scheduleId" class="form-select">
+									<option value="">{translate key=AllSchedules}</option>
+									{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
+								</select>
+						</div>
+						<div class="col-sm-3 form-group filter-resource">
+              <label for="resourceId" class="no-show">{translate key=Resource}</label>
+              	<select id="resourceId" class="form-select">
+									<option value="">{translate key=AllResources}</option>
+									{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
+							</select>
+						</div>
+					</div><!-- end row -->
+					<div class="row g-3 mb-2">
+						<div class="col-sm-3 form-group filter-status">
+              <label for="statusId" class="no-show">{translate key=Status}</label>
+              <select id="statusId" class="form-select">
+								<option value="">{translate key=AllReservations}</option>
+								<option value="{ReservationStatus::Pending}"
+									{if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
+							</select>
+						</div>
+						<div class="col-sm-3 form-group filter-referenceNumber">
+							<div class="input-group">
+	              <label for="referenceNumber" class="no-show">{translate key=ReferenceNumber}</label>
+	              <input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
+							   			placeholder="{translate key=ReferenceNumber}"/>
+              	<span class="searchclear bi bi-x-circle" ref="referenceNumber"></span>
+						</div>
+            </div>
+            <div class="col-sm-3 form-group filter-title">
+							<div class="input-group">
+	              <label for="reservationTitle" class="no-show">{translate key=Title}</label>
+	              <input id="reservationTitle" type="text" class="form-control" value="{$ReservationTitle}"
+							   			placeholder="{translate key=Title}"/>
+	              <span class="searchclear bi bi-x-circle" ref="reservationTitle"></span>
+							</div>
+            </div>
+            <div class="col-sm-3 form-group filter-title">
+							<div class="input-group">
+	              <label for="reservationDescription" class="no-show">{translate key=ReservationDescription}</label>
+	              <input id="reservationDescription" type="text" class="form-control" value="{$ReservationDescription}"
+							   			placeholder="{translate key=Description}"/>
+	              <span class="searchclear bi bi-x-circle" ref="reservationDescription"></span>
+							</div>
+            </div>
+					</div><!-- end row -->
+					<div class="row g-3 mb-2">
+						<div class="col-sm-3 form-group filter-resourceStatus">
+              <label for="resourceStatusIdFilter" class="no-show">{translate key=ResourceStatus}</label>
+              <select id="resourceStatusIdFilter" class="form-control">
+								<option value="">{translate key=AllResourceStatuses}</option>
+								<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+								<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+								<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+							</select>
+						</div>
+						<div class="col-sm-3 form-group filter-resourceStatusReason">
+              <label for="resourceReasonIdFilter" class="no-show">{translate key=Reason}</label>
+              <select id="resourceReasonIdFilter" class="form-control"></select>
+						</div>
+            <div class="col-sm-3 form-group filter-checkin">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="missedCheckin" {if $MissedCheckin}checked="checked"{/if} />
+                <label class="form-check-label" for="missedCheckin">{translate key=MissedCheckin}</label>
+              </div>
+            </div>
+            <div class="col-sm-3 form-group filter-checkout">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="missedCheckout" {if $MissedCheckout}checked="checked"{/if} />
+                <label class="form-check-label" for="missedCheckout">{translate key=MissedCheckout}</label>
+              </div>
+            </div>
+					</div><!-- end row -->
+
+					<div class="row g-3">
+						<div class="col-sm-3">
 				{foreach from=$AttributeFilters item=attribute}
 					{control type="AttributeControl" attribute=$attribute searchmode=true class="customAttribute filter-customAttribute{$attribute->Id()} {$groupClass}"}
 				{/foreach}
+						</div>
+						<div class="col-sm-3"></div>
+						<div class="col-sm-3"></div>
+						<div class="col-sm-3"></div>
+					</div>
 			</form>
 		</div>
-		<div class="panel-footer">
+		<div class="card-footer">
 			{filter_button id="filter" class="btn-sm"}
 			{reset_button id="clearFilter" class="btn-sm"}
 		</div>
@@ -287,8 +309,8 @@
 			<form id="deleteInstanceForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteInstanceDialogLabel">{translate key=Delete}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="delResResponse"></div>
@@ -317,8 +339,8 @@
 			<form id="deleteSeriesForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -328,8 +350,8 @@
 						<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-outline-secondary cancel"
+								data-bs-dismiss="modal">{translate key='Cancel'}</button>
 
 						<button type="button" class="btn btn-danger saveSeries btnUpdateThisInstance" id="btnUpdateThisInstance">
 							{translate key='ThisInstance'}
@@ -353,8 +375,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -380,16 +402,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="inlineErrorLabel">{translate key=Error}</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
 					<div id="reservationAccessError" class="hidden error"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default cancel"
-							data-dismiss="modal">{translate key='OK'}</button>
+					<button type="button" class="btn btn-outline-secondary cancel"
+							data-bs-dismiss="modal">{translate key='OK'}</button>
 				</div>
 			</div>
 		</div>
@@ -402,8 +424,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="importReservationsModalLabel">{translate key=Import}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div id="importUserResults" class="validationSummary alert alert-danger no-show">
@@ -448,8 +470,8 @@
             <form id="termsOfServiceForm" method="post" ajaxAction="termsOfService" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div>

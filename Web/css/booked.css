@@ -3,7 +3,7 @@
   ---------------------------------------------------
     A set of useful LESS mixins
     More info at: http://lesselements.com
-  ---------------------------------------------------*/
+  ---------------------------------------------------*//*
 @media (max-width: 1000px) {
   .navbar-header {
     float: none;
@@ -40,7 +40,7 @@
   .collapse.in {
     display: block !important;
   }
-}
+}*/
 /* Main Primary color */
 /* Main Secondary color (1) */
 /* Main Secondary color (2) */
@@ -62,6 +62,7 @@
 }
 .btn-link {
   color: #669999;
+  text-decoration: none;
 }
 .btn-link:hover {
   color: #428181;
@@ -79,7 +80,7 @@ body {
   margin-top: -70px;
 }
 a,
-a:visited {
+/*a:visited */{
   color: #669999;
 }
 a:hover {
@@ -557,12 +558,13 @@ input.mid-number {
 .social-login {
   text-align: center;
 }
+
 span.searchclear,
 span.searchclear-label {
   position: absolute;
-  right: 20px;
+  right: 10px;
   top: 0;
-  bottom: 0;
+  bottom: 5px;
   height: 14px;
   margin: auto;
   font-size: 14px;
@@ -570,7 +572,7 @@ span.searchclear-label {
   color: #ccc;
 }
 span.searchclear-label {
-  top: 22px;
+  top: 12px;
 }
 img.logo {
   max-height: 50px;
