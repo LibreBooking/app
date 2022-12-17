@@ -164,6 +164,8 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'sort_column', [$this, 'SortColumn']);
         $this->registerPlugin('function', 'formatcurrency', [$this, 'FormatCurrency']);
         $this->registerPlugin('function', 'linebreak', [$this, 'LineBreak']);
+        $this->registerPlugin('modifier', 'urlencode', [$this, 'UrlEncode']);
+        $this->registerPlugin('modifier', 'explode', [$this, 'Explode']);
 
         /**
          * PageValidators
@@ -882,5 +884,15 @@ class SmartyPage extends Smarty
     public function LineBreak($params, $smarty)
     {
         return "\n";
+    }
+
+    public function UrlEncode($url)
+    {
+        return urlencode($url);
+    }
+
+    public function Explode($separator, $string)
+    {
+        return explode($separator, $string);
     }
 }
