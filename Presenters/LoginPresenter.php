@@ -171,7 +171,7 @@ class LoginPresenter
     {
         $url = Configuration::Instance()->GetKey(ConfigKeys::LOGOUT_URL);
         if (empty($url)) {
-            $url = htmlspecialchars_decode($this->_page->GetResumeUrl());
+            $url = htmlspecialchars_decode($this->_page->GetResumeUrl() ?? '');
             $url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
         }
         $this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
