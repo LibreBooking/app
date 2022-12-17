@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.2.1RC1-apache
 
 ARG DB_HOST=mysql
 ARG DB_USER=librebooking
