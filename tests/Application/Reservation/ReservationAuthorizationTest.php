@@ -166,7 +166,7 @@ class ReservationAuthorizationTests extends TestBase
         $reservationView->OwnerId = $ownerId;
         $reservationView->EndDate = $endsInFuture;
         $reservationView->StartDate = Date::Now()->AddDays(-1);
-        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
+        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, false, null, ResourceStatus::AVAILABLE);
         $reservationView->Resources = [$resource1];
 
         $this->authorizationService->_CanReserveFor = false;
@@ -187,7 +187,7 @@ class ReservationAuthorizationTests extends TestBase
         $reservationView->StartDate = Date::Now()->AddDays(-1);
         $reservationView->EndDate = $endsInFuture;
         $reservationView->StatusId = ReservationStatus::Pending;
-        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
+        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, false, null, ResourceStatus::AVAILABLE);
         $reservationView->Resources = [$resource1];
 
         $this->authorizationService->_CanApproveFor = false;
@@ -264,7 +264,7 @@ class ReservationAuthorizationTests extends TestBase
         $reservationView = new ReservationView();
         $ownerId = 92929;
         $reservationView->OwnerId = $ownerId;
-        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, ResourceStatus::AVAILABLE, false, null);
+        $resource1 = new ReservationResourceView(1, '', 1, 1, 1, false, null, ResourceStatus::AVAILABLE);
         $reservationView->Resources = [$resource1];
 
         $this->authorizationService->_CanReserveFor = false;

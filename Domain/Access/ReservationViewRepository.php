@@ -284,9 +284,9 @@ class ReservationViewRepository implements IReservationViewRepository
                 $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
                 $row[ColumnNames::SCHEDULE_ID],
                 $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
-                $row[ColumnNames::RESOURCE_STATUS_ID],
                 $row[ColumnNames::ENABLE_CHECK_IN],
-                $row[ColumnNames::AUTO_RELEASE_MINUTES]
+                $row[ColumnNames::AUTO_RELEASE_MINUTES],
+                $row[ColumnNames::RESOURCE_STATUS_ID]
             );
             $rrv->SetColor(ColumnNames::RESERVATION_COLOR);
 

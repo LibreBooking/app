@@ -718,8 +718,8 @@ class ReservationComponentTests extends TestBase
         $this->reservationView->EndDate = Date::Now()->AddMinutes(45);
 
         $this->reservationView->Resources = [
-                new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
-                new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+                new ReservationResourceView(1, 'r1', null, null, null, false, null, ResourceStatus::AVAILABLE),
+                new ReservationResourceView(2, 'r2', null, null, null, true, 20, ResourceStatus::AVAILABLE),
         ];
         $this->reservationView->CheckinDate = new NullDate();
 
@@ -751,8 +751,8 @@ class ReservationComponentTests extends TestBase
         $this->reservationView->EndDate = Date::Now()->AddMinutes(45);
 
         $this->reservationView->Resources = [
-                new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
-                new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+                new ReservationResourceView(1, 'r1', null, null, null, false, null, ResourceStatus::AVAILABLE),
+                new ReservationResourceView(2, 'r2', null, null, null, true, 20, ResourceStatus::AVAILABLE),
         ];
         $this->reservationView->CheckinDate = Date::Now();
 
@@ -778,8 +778,8 @@ class ReservationComponentTests extends TestBase
         $this->reservationView->EndDate = Date::Now()->AddMinutes(45);
 
         $this->reservationView->Resources = [
-                new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
-                new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
+                new ReservationResourceView(1, 'r1', null, null, null, false, null, ResourceStatus::AVAILABLE),
+                new ReservationResourceView(2, 'r2', null, null, null, false, null, ResourceStatus::AVAILABLE),
         ];
         $this->reservationView->CheckinDate = new NullDate();
 
@@ -833,7 +833,7 @@ class ReservationComponentTests extends TestBase
 
         $this->reservationView->Resources = [
                 new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
-                new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
+                new ReservationResourceView(2, 'r2', null, null, null, false, null, ResourceStatus::AVAILABLE),
         ];
 
         $this->reservationView->CheckinDate = Date::Now();
@@ -865,8 +865,8 @@ class ReservationComponentTests extends TestBase
         $this->reservationView->EndDate = Date::Now()->AddMinutes(45);
 
         $this->reservationView->Resources = [
-                new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
-                new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
+                new ReservationResourceView(1, 'r1', null, null, null, false, null, ResourceStatus::AVAILABLE),
+                new ReservationResourceView(2, 'r2', null, null, null, false, null, ResourceStatus::AVAILABLE),
         ];
         $this->reservationView->CheckinDate = Date::Now();
 
@@ -974,7 +974,7 @@ class ReservationComponentTests extends TestBase
         $this->reservationView->EndDate = Date::Now()->AddMinutes(45);
 
         $this->reservationView->Resources = [
-                new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+                new ReservationResourceView(1, 'r1', null, null, null, true, 20, ResourceStatus::AVAILABLE),
                 new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 10),
         ];
         $this->reservationView->CheckinDate = new NullDate();
@@ -1005,7 +1005,7 @@ class ReservationComponentTests extends TestBase
         $this->reservationView->EndDate = Date::Now()->AddMinutes(45);
 
         $this->reservationView->Resources = [
-                new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+                new ReservationResourceView(1, 'r1', null, null, null, true, 20, ResourceStatus::AVAILABLE),
                 new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 10),
         ];
         $this->reservationView->CheckinDate = Date::Now();

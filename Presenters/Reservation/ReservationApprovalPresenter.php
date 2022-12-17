@@ -98,9 +98,9 @@ class ReservationViewAdapter extends ReservationView
                 $resource->GetAdminGroupId(),
                 $resource->GetScheduleId(),
                 $resource->GetScheduleAdminGroupId(),
-                $resource->GetStatusId(),
                 $resource->IsCheckInEnabled(),
-                $resource->GetAutoReleaseMinutes()
+                $resource->GetAutoReleaseMinutes(),
+                $resource->GetStatusId()
             );
         }
 
