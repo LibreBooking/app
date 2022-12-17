@@ -169,6 +169,9 @@ class SmartyPage extends Smarty
         $this->registerPlugin('modifier', 'explode', [$this, 'Explode']);
         $this->registerPlugin('modifier', 'html_entity_decode', [$this, 'HtmlEntityDecode']);
         $this->registerPlugin('modifier', 'implode', [$this, 'Implode']);
+        $this->registerPlugin('modifier', 'join', [$this, 'Join']);
+        $this->registerPlugin('modifier', 'intval', [$this, 'Intval']);
+        $this->registerPlugin('modifier', 'strtolower', [$this, 'Strtolower']);
 
         /**
          * PageValidators
@@ -907,5 +910,20 @@ class SmartyPage extends Smarty
     public function HtmlEntityDecode($string)
     {
         return html_entity_decode($string);
+    }
+
+    public function Join($sep, $array)
+    {
+        return join($sep, $array);
+    }
+
+    public function Intval($string)
+    {
+        return intval($string);
+    }
+
+    public function Strtolower($string)
+    {
+        return strtolower($string);
     }
 }

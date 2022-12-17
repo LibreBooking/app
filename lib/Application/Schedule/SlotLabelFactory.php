@@ -91,13 +91,13 @@ class SlotLabelFactory
             $timezone = $this->user->Timezone;
         }
         $label = $format;
-        $label = str_replace('{name}', $name, $label);
-        $label = str_replace('{title}', $reservation->Title, $label);
-        $label = str_replace('{description}', $reservation->Description, $label);
+        $label = str_replace('{name}', $name ?? '', $label);
+        $label = str_replace('{title}', $reservation->Title ?? '', $label);
+        $label = str_replace('{description}', $reservation->Description ?? '', $label);
         $label = str_replace('{email}', $reservation->OwnerEmailAddress, $label);
-        $label = str_replace('{organization}', $reservation->OwnerOrganization, $label);
-        $label = str_replace('{phone}', $reservation->OwnerPhone, $label);
-        $label = str_replace('{position}', $reservation->OwnerPosition, $label);
+        $label = str_replace('{organization}', $reservation->OwnerOrganization ?? '', $label);
+        $label = str_replace('{phone}', $reservation->OwnerPhone ?? '', $label);
+        $label = str_replace('{position}', $reservation->OwnerPosition ?? '', $label);
         $label = str_replace('{startdate}', $reservation->StartDate->ToTimezone($timezone)->Format($dateFormat), $label);
         $label = str_replace('{enddate}', $reservation->EndDate->ToTimezone($timezone)->Format($dateFormat), $label);
         $label = str_replace('{resourcename}', implode(', ', $reservation->ResourceNames), $label);

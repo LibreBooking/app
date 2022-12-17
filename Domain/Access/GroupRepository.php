@@ -296,7 +296,7 @@ class GroupItemView
     {
         $adminName = isset($row[ColumnNames::GROUP_ADMIN_GROUP_NAME]) ? $row[ColumnNames::GROUP_ADMIN_GROUP_NAME] : null;
         $isDefault = intval($row[ColumnNames::GROUP_ISDEFAULT]);
-        $roles = explode(',', $row[ColumnNames::GROUP_ROLE_LIST]);
+        $roles = explode(',', $row[ColumnNames::GROUP_ROLE_LIST] ?? '');
         return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $adminName, $isDefault, $roles);
     }
 

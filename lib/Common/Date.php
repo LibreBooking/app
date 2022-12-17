@@ -32,9 +32,9 @@ class Date
      */
     public function __construct($timestring = null, $timezone = null)
     {
-        $this->InitializeTimezone($timezone);
+        $this->InitializeTimezone($timezone ?? '');
 
-        $this->date = new DateTime($timestring, new DateTimeZone($this->timezone));
+        $this->date = new DateTime($timestring ?? '', new DateTimeZone($this->timezone));
         $this->timestring = $this->date->format(self::SHORT_FORMAT);
         $this->timestamp = $this->date->format('U');
         $this->InitializeParts();
