@@ -18,14 +18,14 @@ class ReservationCanBeCheckedInRule implements IReservationValidationRule
         $isOk = true;
         $atLeastOneReservationRequiresCheckIn = false;
         $checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
-	$checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
+        $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
 
         $reservation = $reservationSeries->CurrentInstance();
         $tooEarly = Date::Now()->LessThan($reservation->StartDate()->AddMinutes(-$checkinMinutes));
         $tooLate = Date::Now()->GreaterThanOrEqual($reservation->EndDate());
         $isAdministrator = $this->userSession->IsAdmin;
 
-	if ($checkinAdminOnly && !$isAdministrator) {
+        if ($checkinAdminOnly && !$isAdministrator) {
             $isOk = false;
         }
 

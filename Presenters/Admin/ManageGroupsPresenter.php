@@ -62,8 +62,7 @@ class ManageGroupsPresenter extends ActionPresenter
         IResourceRepository $resourceRepository,
         IScheduleRepository $scheduleRepository,
         IUserRepository $userRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

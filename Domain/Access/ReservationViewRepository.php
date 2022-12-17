@@ -162,8 +162,7 @@ class ReservationViewRepository implements IReservationViewRepository
         $resourceIds = self::ALL_RESOURCES,
         $consolidateByReferenceNumber = false,
         $participantIds = self::ALL_USERS
-    )
-    {
+    ) {
         if (empty($userIds)) {
             $userIds = self::ALL_USERS;
         }

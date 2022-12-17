@@ -298,8 +298,7 @@ class CustomAttribute
         $sortOrder,
         $entityIds = [],
         $adminOnly = false
-    )
-    {
+    ) {
         $this->id = $id;
         $this->label = $label;
         $this->type = $type;
@@ -337,8 +336,7 @@ class CustomAttribute
         $sortOrder,
         $entityIds = [],
         $adminOnly = false
-    )
-    {
+    ) {
         return new CustomAttribute(
             null,
             $label,

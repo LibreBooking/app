@@ -560,8 +560,7 @@ class ResourceRepository implements IResourceRepository
         $pageSize = null,
         $filter = null,
         $accountStatus = AccountStatus::ACTIVE
-    )
-    {
+    ) {
         $command = new GetResourceUserPermissionCommand($resourceId, $accountStatus);
 
         if ($filter != null) {
@@ -590,8 +589,7 @@ class ResourceRepository implements IResourceRepository
         $pageSize = null,
         $filter = null,
         $accountStatus = AccountStatus::ACTIVE
-    )
-    {
+    ) {
         $command = new GetResourceUserGroupPermissionCommand($resourceId, $accountStatus);
 
         if ($filter != null) {

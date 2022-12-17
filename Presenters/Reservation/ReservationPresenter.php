@@ -43,8 +43,7 @@ class ReservationPresenter extends ReservationPresenterBase
         INewReservationPage $page,
         IReservationInitializerFactory $initializationFactory,
         INewReservationPreconditionService $preconditionService
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->_page = $page;
@@ -88,8 +87,7 @@ class EditReservationPresenter extends ReservationPresenterBase
         IReservationInitializerFactory $initializationFactory,
         EditReservationPreconditionService $preconditionService,
         IReservationViewRepository $reservationViewRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

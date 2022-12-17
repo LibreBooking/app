@@ -199,8 +199,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
         $periodType,
         $label = null,
         $dayOfWeek = null
-    )
-    {
+    ) {
         if ($this->StartTimeCanBeAdded($startTime, $dayOfWeek)) {
             $this->layoutTimezone = $startTime->Timezone();
             $layoutPeriod = new LayoutPeriod($startTime, $endTime, $periodType, $label);

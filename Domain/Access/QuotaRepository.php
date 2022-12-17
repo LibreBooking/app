@@ -179,8 +179,7 @@ class QuotaItemView
         $enforcedEndTime,
         $enforcedDays,
         $scope
-    )
-    {
+    ) {
         $this->Id = $quotaId;
         $this->Limit = $limit;
         $this->Unit = $unit;

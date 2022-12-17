@@ -71,8 +71,7 @@ class AccountController implements IAccountController
         IAccountRequestValidator $requestValidator,
         PasswordEncryption $passwordEncryption,
         IAttributeService $attributeService
-    )
-    {
+    ) {
         $this->registration = $registration;
         $this->requestValidator = $requestValidator;
         $this->userRepository = $userRepository;

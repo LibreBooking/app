@@ -45,8 +45,7 @@ class ManageQuotasPresenter extends ActionPresenter
         IGroupViewRepository $groupRepository,
         IScheduleRepository $scheduleRepository,
         IQuotaViewRepository $quotaRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

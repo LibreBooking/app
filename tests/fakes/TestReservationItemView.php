@@ -45,8 +45,7 @@ class TestBlackoutItemView extends BlackoutItemView
         Date $endDate,
         $resourceId,
         $seriesId = 1
-    )
-    {
+    ) {
         parent::__construct($instanceId, $startDate, $endDate, $resourceId, null, null, null, null, null, null, null, $seriesId, null, null);
     }
 

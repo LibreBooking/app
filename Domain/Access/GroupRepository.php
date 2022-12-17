@@ -101,8 +101,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
         $sortField = null,
         $sortDirection = null,
         $filter = null
-    )
-    {
+    ) {
         $command = new GetAllGroupsCommand();
 
         if ($filter != null) {
@@ -127,8 +126,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
         $pageSize = null,
         $filter = null,
         $accountStatus = AccountStatus::ACTIVE
-    )
-    {
+    ) {
         $command = new GetAllGroupUsersCommand($groupIds, $accountStatus);
 
         if ($filter != null) {

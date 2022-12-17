@@ -60,8 +60,7 @@ class BufferSlot implements IReservationSlot
         Date $displayDate,
         $periodSpan,
         ReservationItemView $reservation
-    )
-    {
+    ) {
         $this->_reservation = $reservation;
         $this->_begin = $begin->BeginDate();
         $this->_displayDate = $displayDate;

@@ -35,8 +35,7 @@ class ManageResourceTypesPresenter extends ActionPresenter
         UserSession $user,
         IResourceRepository $resourceRepository,
         IAttributeService $attributeService
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;
@@ -140,13 +139,13 @@ class ManageResourceTypesPresenter extends ActionPresenter
             $this->page->RegisterValidator(
                 'attributeValidator',
                 new AttributeValidatorInline(
-                                               $this->attributeService,
-                                               CustomAttributeCategory::RESOURCE_TYPE,
-                                               $attributes,
-                                               $this->page->GetId(),
-                                               true,
-                                               true
-                                           )
+                    $this->attributeService,
+                    CustomAttributeCategory::RESOURCE_TYPE,
+                    $attributes,
+                    $this->page->GetId(),
+                    true,
+                    true
+                )
             );
         }
     }

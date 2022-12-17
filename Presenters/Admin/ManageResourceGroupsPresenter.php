@@ -31,8 +31,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
         IManageResourceGroupsPage $page,
         UserSession $user,
         IResourceRepository $resourceRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

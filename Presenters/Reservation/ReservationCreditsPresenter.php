@@ -33,8 +33,7 @@ class ReservationCreditsPresenter
         IScheduleRepository $scheduleRepository,
         IResourceRepository $resourceRepository,
         IPaymentRepository $paymentRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;
         $this->scheduleRepository = $scheduleRepository;

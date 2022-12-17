@@ -27,8 +27,7 @@ class UsersWebService
         IRestServer $server,
         IUserRepositoryFactory $repositoryFactory,
         IAttributeService $attributeService
-    )
-    {
+    ) {
         $this->server = $server;
         $this->repositoryFactory = $repositoryFactory;
         $this->attributeService = $attributeService;

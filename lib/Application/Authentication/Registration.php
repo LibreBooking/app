@@ -37,8 +37,7 @@ class Registration implements IRegistration
         $notificationStrategy = null,
         $permissionAssignmentStrategy = null,
         $groupRepository = null
-    )
-    {
+    ) {
         $this->passwordEncryption = $passwordEncryption;
         $this->userRepository = $userRepository;
         $this->notificationStrategy = $notificationStrategy;
@@ -79,8 +78,7 @@ class Registration implements IRegistration
         $attributeValues = [],
         $groups = null,
         $acceptTerms = false
-    )
-    {
+    ) {
         $homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
         $encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
         $timezone = empty($timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $timezone;

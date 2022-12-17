@@ -16,8 +16,7 @@ class AdminCheckOutOnlyValidation implements IReservationValidationService
     public function __construct(
         IReservationValidationService $serviceToDecorate,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->serviceToDecorate = $serviceToDecorate;
         $this->userSession = $userSession;
     }

@@ -143,17 +143,16 @@ class LoginPresenter
         }
     }
 
-	public function postLogout()
-	{
-		$url = Configuration::Instance()->GetKey(ConfigKeys::LOGOUT_URL);
-		if (empty($url))
-		{
-			$url = htmlspecialchars_decode($this->_page->GetResumeUrl());
-			$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
-		}
-		$this->authentication->postLogout(ServiceLocator::GetServer()->GetUserSession());
-		$this->_page->Redirect($url);
-	}
+    public function postLogout()
+    {
+        $url = Configuration::Instance()->GetKey(ConfigKeys::LOGOUT_URL);
+        if (empty($url)) {
+            $url = htmlspecialchars_decode($this->_page->GetResumeUrl());
+            $url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
+        }
+        $this->authentication->postLogout(ServiceLocator::GetServer()->GetUserSession());
+        $this->_page->Redirect($url);
+    }
 
     public function ChangeLanguage()
     {

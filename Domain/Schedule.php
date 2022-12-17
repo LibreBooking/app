@@ -79,8 +79,7 @@ class Schedule implements ISchedule
         $daysVisible,
         $timezone = null,
         $layoutId = null
-    )
-    {
+    ) {
         $this->_id = $id;
         $this->_name = $name;
         $this->_isDefault = $isDefault;

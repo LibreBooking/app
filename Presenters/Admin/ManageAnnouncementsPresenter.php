@@ -55,8 +55,7 @@ class ManageAnnouncementsPresenter extends ActionPresenter
         IResourceRepository $resourceRepository,
         IPermissionService $permissionService,
         IUserViewRepository $userViewRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

@@ -678,8 +678,7 @@ class UserRepositoryTests extends TestBase
         $scheduleId = 123,
         $preferences = null,
         $creditCount = null
-    )
-    {
+    ) {
         $row =
                 [
                         ColumnNames::USER_ID => $userId,

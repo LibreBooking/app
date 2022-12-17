@@ -28,8 +28,7 @@ class GuestReservationPresenter extends ReservationPresenter
         IWebAuthentication $authentication,
         IReservationInitializerFactory $initializationFactory,
         INewReservationPreconditionService $preconditionService
-    )
-    {
+    ) {
         $this->page = $page;
         $this->registration = $registration;
         $this->authentication = $authentication;

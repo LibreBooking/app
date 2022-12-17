@@ -40,8 +40,7 @@ class ReservationApprovalPresenter implements IReservationApprovalPresenter
         IReservationHandler $handler,
         IReservationAuthorization $authorizationService,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->page = $page;
         $this->persistenceService = $persistenceService;
         $this->handler = $handler;

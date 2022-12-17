@@ -31,8 +31,7 @@ class FakeGroupViewRepository implements IGroupViewRepository
         $sortField = null,
         $sortDirection = null,
         $filter = null
-    )
-    {
+    ) {
         return new PageableData($this->_groupList);
     }
 
@@ -50,8 +49,7 @@ class FakeGroupViewRepository implements IGroupViewRepository
         $pageSize = null,
         $filter = null,
         $accountStatus = AccountStatus::ALL
-    )
-    {
+    ) {
         // TODO: Implement GetUsersInGroup() method.
     }
 

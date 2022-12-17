@@ -125,17 +125,17 @@ class WebAuthentication implements IWebAuthentication
     }
 
     /**
-	 * @param UserSession $userSession
-	 * @return void
-	 */
-	public function postLogout(UserSession $userSession)
-	{
-		$this->authentication->postLogout($userSession);
-		Log::Debug('Logout userId: %s', $userSession->UserId);
+     * @param UserSession $userSession
+     * @return void
+     */
+    public function postLogout(UserSession $userSession)
+    {
+        $this->authentication->postLogout($userSession);
+        Log::Debug('Logout userId: %s', $userSession->UserId);
 
-		$this->DeleteLoginCookie($userSession->UserId);
-		ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
-	}
+        $this->DeleteLoginCookie($userSession->UserId);
+        ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
+    }
 
     public function CookieLogin($cookieValue, $loginContext)
     {

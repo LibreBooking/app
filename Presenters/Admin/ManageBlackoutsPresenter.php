@@ -41,8 +41,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
         IManageBlackoutsService $manageBlackoutsService,
         IScheduleRepository $scheduleRepository,
         IResourceRepository $resourceRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

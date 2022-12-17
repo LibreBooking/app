@@ -598,8 +598,7 @@ class ReservationViewRepositoryTests extends TestBase
         $statusId = ResourceStatus::AVAILABLE,
         $checkinEnabled = false,
         $autoReleaseMinutes = null
-    )
-    {
+    ) {
         return [
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
             ColumnNames::RESOURCE_ID => $resourceId,
@@ -641,8 +640,7 @@ class ReservationViewRepositoryTests extends TestBase
         $previousEndDate = null,
         $requireCheckin = false,
         $autoReleaseMinutes = null
-    )
-    {
+    ) {
         return [
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESOURCE_NAME => $resourceName,
@@ -686,8 +684,7 @@ class ReservationViewRepositoryTests extends TestBase
         $accessoryName,
         $accessoryId,
         $quantityReserved
-    )
-    {
+    ) {
         return [
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
@@ -713,8 +710,7 @@ class ReservationViewRepositoryTests extends TestBase
         $seriesId = 999,
         $repeatType = RepeatType::None,
         $repeatOptions = ''
-    )
-    {
+    ) {
         return [
             ColumnNames::BLACKOUT_INSTANCE_ID => $instanceId,
             ColumnNames::BLACKOUT_START => $start->ToDatabase(),

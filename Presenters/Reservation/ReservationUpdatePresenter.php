@@ -54,8 +54,7 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
         IResourceRepository $resourceRepository,
         IScheduleRepository $scheduleRepository,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->page = $page;
         $this->persistenceService = $persistenceService;
         $this->handler = $handler;

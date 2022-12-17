@@ -55,9 +55,9 @@ class AdSamlWrapper implements ISaml
         $this->saml->Logout();
     }
 
-	public function Cleanup()
-	{
+    public function Cleanup()
+    {
         $this->Connect();
         $this->saml->Cleanup();
-	}
+    }
 }

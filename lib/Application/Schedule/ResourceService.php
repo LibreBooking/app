@@ -93,8 +93,7 @@ class ResourceService implements IResourceService
         IAttributeService $attributeService,
         IUserRepository $userRepository,
         IAccessoryRepository $accessoryRepository
-    )
-    {
+    ) {
         $this->_resourceRepository = $resourceRepository;
         $this->_permissionService = $permissionService;
         $this->_attributeService = $attributeService;

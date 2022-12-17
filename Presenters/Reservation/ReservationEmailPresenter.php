@@ -39,8 +39,7 @@ class ReservationEmailPresenter
         IUserRepository $userRepository,
         IAttributeRepository $attributeRepository,
         IPermissionService $permissionService
-    )
-    {
+    ) {
         $this->page = $page;
         $this->userSession = $userSession;
         $this->reservationRepository = $reservationRepository;

@@ -33,8 +33,7 @@ class UnavailableResourcesPresenter
         UserSession $userSession,
         IResourceRepository $resourceRepository,
         IReservationRepository $reservationRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationConflictIdentifier = $reservationConflictIdentifier;
         $this->userSession = $userSession;

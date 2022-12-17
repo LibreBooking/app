@@ -39,8 +39,7 @@ class ReservationAttributesPresenter
         IAuthorizationService $authorizationService,
         IPrivacyFilter $privacyFilter,
         IReservationViewRepository $reservationViewRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->attributeService = $attributeService;
         $this->authorizationService = $authorizationService;

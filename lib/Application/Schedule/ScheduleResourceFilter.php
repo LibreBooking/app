@@ -39,8 +39,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
         $resourceAttributes = null,
         $resourceTypeAttributes = null,
         $resourceIds = null
-    )
-    {
+    ) {
         $this->ScheduleId = $scheduleId;
         $this->ResourceTypeId = $resourceTypeId;
         $this->MinCapacity = empty($minCapacity) ? null : $minCapacity;

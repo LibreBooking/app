@@ -376,12 +376,12 @@ abstract class ReservationPage extends Page implements IReservationPage
             new ScheduleRepository(),
             $userRepository,
             new ResourceService(
-                    new ResourceRepository(),
-                    $this->permissionServiceFactory->GetPermissionService(),
-                    new AttributeService(new AttributeRepository()),
-                    $userRepository,
-                    new AccessoryRepository()
-                ),
+                new ResourceRepository(),
+                $this->permissionServiceFactory->GetPermissionService(),
+                new AttributeService(new AttributeRepository()),
+                $userRepository,
+                new AccessoryRepository()
+            ),
             new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService())
         );
     }

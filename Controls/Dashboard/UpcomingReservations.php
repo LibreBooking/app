@@ -62,14 +62,13 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
 
     public function SetAllowCheckin($allowCheckin)
     {
-        $this->Set('allowCheckin',$allowCheckin);
+        $this->Set('allowCheckin', $allowCheckin);
     }
 
     public function SetAllowCheckout($allowCheckout)
     {
-        $this->Set('allowCheckout',$allowCheckout);
+        $this->Set('allowCheckout', $allowCheckout);
     }
-
 }
 
 interface IUpcomingReservationsControl

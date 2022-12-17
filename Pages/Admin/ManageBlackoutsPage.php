@@ -309,8 +309,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
         $conflictingReservations,
         $conflictingBlackouts,
         $timezone
-    )
-    {
+    ) {
         $this->Set('Successful', $wasAddedSuccessfully);
         $this->Set('SuccessKey', 'BlackoutCreated');
         $this->Set('FailKey', 'BlackoutNotCreated');
@@ -327,8 +326,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
         $conflictingReservations,
         $conflictingBlackouts,
         $timezone
-    )
-    {
+    ) {
         $this->Set('Successful', $wasAddedSuccessfully);
         $this->Set('SuccessKey', 'BlackoutUpdated');
         $this->Set('FailKey', 'BlackoutNotUpdated');

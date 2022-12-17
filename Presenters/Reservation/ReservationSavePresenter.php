@@ -53,8 +53,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
         IResourceRepository $resourceRepository,
         IScheduleRepository $scheduleRepository,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->page = $page;
         $this->persistenceService = $persistenceService;
         $this->handler = $handler;

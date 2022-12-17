@@ -29,8 +29,7 @@ class ReservationCheckinPresenter
         IUpdateReservationPersistenceService $persistenceService,
         IReservationHandler $handler,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->page = $page;
         $this->persistenceService = $persistenceService;
         $this->handler = $handler;

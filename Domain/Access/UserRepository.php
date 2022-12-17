@@ -309,8 +309,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         $sortDirection = null,
         $filter = null,
         $accountStatus = AccountStatus::ALL
-    )
-    {
+    ) {
         $command = new GetAllUsersByStatusCommand($accountStatus);
 
         if ($filter != null) {
@@ -852,8 +851,7 @@ class UserDto
         $languageCode = null,
         $preferences = null,
         $currentCreditCount = null
-    )
-    {
+    ) {
         $this->UserId = $userId;
         $this->FirstName = $firstName;
         $this->LastName = $lastName;

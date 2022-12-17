@@ -279,8 +279,7 @@ class ReservationSeries
         $reservationDate,
         $repeatOptions,
         UserSession $bookedBy
-    )
-    {
+    ) {
         $series = new ReservationSeries();
         $series->_userId = $userId;
         $series->_resource = $resource;

@@ -36,8 +36,7 @@ class ReservationMovePresenter
         IReservationHandler $handler,
         IResourceRepository $resourceRepository,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->page = $page;
         $this->persistenceService = $persistenceService;
         $this->handler = $handler;

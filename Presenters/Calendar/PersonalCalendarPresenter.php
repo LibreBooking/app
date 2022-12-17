@@ -16,8 +16,7 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
         IUserRepository $userRepository,
         IResourceService $resourceService,
         IScheduleRepository $scheduleRepository
-    )
-    {
+    ) {
         parent::__construct(
             $page,
             $calendarFactory,

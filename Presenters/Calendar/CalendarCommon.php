@@ -325,8 +325,7 @@ abstract class CommonCalendarPresenter extends ActionPresenter
         ICalendarSubscriptionService $subscriptionService,
         IPrivacyFilter $privacyFilter,
         SlotLabelFactory $factory
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;

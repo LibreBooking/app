@@ -335,20 +335,20 @@ class ScheduleRepositoryTests extends TestBase
 
         $this->assertEquals(
             new UpdateScheduleCommand(
-            $id,
-            $name,
-            $isDefault,
-            $weekdayStart,
-            $daysVisible,
-            $subscriptionEnabled,
-            $publicId,
-            $adminGroupId,
-            $begin,
-            $end,
-            $style,
-            $maxConcurrent,
-            $maxResources
-        ),
+                $id,
+                $name,
+                $isDefault,
+                $weekdayStart,
+                $daysVisible,
+                $subscriptionEnabled,
+                $publicId,
+                $adminGroupId,
+                $begin,
+                $end,
+                $style,
+                $maxConcurrent,
+                $maxResources
+            ),
             $this->db->_LastCommand
         );
     }

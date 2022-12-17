@@ -116,66 +116,66 @@ class FakeResourceAccess extends ResourceRepository
     }
 
     public function GetRows()
-{
-    $this->With(
-        1,
-        'resource 1',
-        null,
-        null,
-        'notes 1',
-        null,
-        null,
-        0,
-        0,
-        0,
-        null,
-        null,
-        null,
-        null,
-        10,
-        null,
-        null,
-        1,
-        '1232',
-        1154,
-        1,
-        10,
-        ResourceStatus::AVAILABLE,
-        null,
-        60 * 30,
-        '000000',
-        true,
-        20
-    );
+    {
+        $this->With(
+            1,
+            'resource 1',
+            null,
+            null,
+            'notes 1',
+            null,
+            null,
+            0,
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            10,
+            null,
+            null,
+            1,
+            '1232',
+            1154,
+            1,
+            10,
+            ResourceStatus::AVAILABLE,
+            null,
+            60 * 30,
+            '000000',
+            true,
+            20
+        );
 
-    $this->With(
-        2,
-        'resource 2',
-        'here 2',
-        '2',
-        'notes 1',
-        10,
-        100,
-        1,
-        1,
-        1,
-        10,
-        30,
-        400,
-        null,
-        11,
-        'something.gif',
-        1,
-        0,
-        null,
-        9292,
-        null,
-        null,
-        ResourceStatus::UNAVAILABLE,
-        98,
-        null
-    );
+        $this->With(
+            2,
+            'resource 2',
+            'here 2',
+            '2',
+            'notes 1',
+            10,
+            100,
+            1,
+            1,
+            1,
+            10,
+            30,
+            400,
+            null,
+            11,
+            'something.gif',
+            1,
+            0,
+            null,
+            9292,
+            null,
+            null,
+            ResourceStatus::UNAVAILABLE,
+            98,
+            null
+        );
 
-    return $this->rows;
-}
+        return $this->rows;
+    }
 }

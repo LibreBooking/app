@@ -1,4 +1,5 @@
 <?php
+
 require_once ROOT_DIR . 'vendor/autoload.php';
 require ROOT_DIR . 'lib/external/Unirest/Unirest.php';
 
@@ -139,8 +140,7 @@ class PaymentTransactionLogger implements IPaymentTransactionLogger
         $gatewayDateCreated,
         $gatewayName,
         $gatewayResponse
-    )
-    {
+    ) {
         ServiceLocator::GetDatabase()->Execute(new AddPaymentTransactionLogCommand(
             $userId,
             $status,
@@ -169,8 +169,7 @@ class PaymentTransactionLogger implements IPaymentTransactionLogger
         $dateCreated,
         $gatewayDateCreated,
         $refundResponse
-    )
-    {
+    ) {
         ServiceLocator::GetDatabase()->Execute(new AddRefundTransactionLogCommand(
             $paymentTransactionLogId,
             $status,

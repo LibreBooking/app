@@ -1803,8 +1803,7 @@ class Net_LDAP2_Error extends PEAR_Error
         $mode = PEAR_ERROR_RETURN,
         $level = E_USER_NOTICE,
         $debuginfo = null
-    )
-    {
+    ) {
         if (is_int($code)) {
             parent::__construct($message . ': ' . Net_LDAP2::errorMessage($code), $code, $mode, $level, $debuginfo);
         } else {

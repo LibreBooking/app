@@ -23,8 +23,7 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
         IReservationAuthorization $authorization,
         $reservationHandler = null,
         $persistenceService = null
-    )
-    {
+    ) {
         parent::__construct($reservationViewRepository, $authorization, $reservationHandler, $persistenceService);
 
         $this->userRepository = $userRepository;

@@ -25,8 +25,7 @@ class GroupsWebService
         IRestServer $server,
         IGroupRepository $groupRepository,
         IGroupViewRepository $groupViewRepository
-    )
-    {
+    ) {
         $this->server = $server;
         $this->groupRepository = $groupRepository;
         $this->groupViewRepository = $groupViewRepository;

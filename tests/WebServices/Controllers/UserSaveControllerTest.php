@@ -65,9 +65,9 @@ class UserSaveControllerTests extends TestBase
                                      $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
                                      $this->equalTo([UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position]),
                                      $this->equalTo([new AttributeValue(
-                                            $request->customAttributes[0]->attributeId,
-                                            $request->customAttributes[0]->attributeValue
-                                        )])
+                                         $request->customAttributes[0]->attributeId,
+                                         $request->customAttributes[0]->attributeValue
+                                     )])
                                  )
                                  ->will($this->returnValue($createdUser));
 
@@ -123,9 +123,9 @@ class UserSaveControllerTests extends TestBase
                                      $this->equalTo($request->timezone),
                                      $this->equalTo([UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position]),
                                      $this->equalTo([new AttributeValue(
-                                            $request->customAttributes[0]->attributeId,
-                                            $request->customAttributes[0]->attributeValue
-                                        )])
+                                         $request->customAttributes[0]->attributeId,
+                                         $request->customAttributes[0]->attributeValue
+                                     )])
                                  )
                                  ->will($this->returnValue($user));
 

@@ -45,8 +45,7 @@ abstract class ReservationEmailMessage extends EmailMessage
         $language,
         IAttributeRepository $attributeRepository,
         IUserRepository $userRepository
-    )
-    {
+    ) {
         if (empty($language)) {
             $language = $reservationOwner->Language();
         }

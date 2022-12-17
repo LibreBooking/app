@@ -17,8 +17,7 @@ class InviteeAddedEmail extends ReservationEmailMessage
         ReservationSeries $reservationSeries,
         IAttributeRepository $attributeRepository,
         IUserRepository $userRepository
-    )
-    {
+    ) {
         parent::__construct($reservationOwner, $reservationSeries, $invitee->Language(), $attributeRepository, $userRepository);
 
         $this->reservationOwner = $reservationOwner;
@@ -103,8 +102,7 @@ class InviteeRemovedEmail extends ReservationDeletedEmail
         ReservationSeries $reservationSeries,
         IAttributeRepository $attributeRepository,
         IUserRepository $userRepository
-    )
-    {
+    ) {
         parent::__construct($reservationOwner, $reservationSeries, $invitee->Language(), $attributeRepository, $userRepository);
 
         $this->reservationOwner = $reservationOwner;

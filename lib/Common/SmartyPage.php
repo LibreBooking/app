@@ -562,9 +562,9 @@ class SmartyPage extends Smarty
         $sb->Append('<li>');
         $sb->Append($this->CreatePageLink(
             ['page' => max(
-            1,
-            $currentPage - 1
-        ), 'size' => $size, 'text' => '&laquo;'],
+                1,
+                $currentPage - 1
+            ), 'size' => $size, 'text' => '&laquo;'],
             $smarty
         ));
         $sb->Append('</li>');
@@ -583,9 +583,9 @@ class SmartyPage extends Smarty
         $sb->Append('<li>');
         $sb->Append($this->CreatePageLink(
             ['page' => min(
-            $pageInfo->TotalPages,
-            $currentPage + 1
-        ), 'size' => $size, 'text' => '&raquo;'],
+                $pageInfo->TotalPages,
+                $currentPage + 1
+            ), 'size' => $size, 'text' => '&raquo;'],
             $smarty
         ));
         $sb->Append('</li>');

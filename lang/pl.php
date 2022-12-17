@@ -280,7 +280,7 @@ class pl extends en_gb
         $strings['ReservationCreated'] = 'Twoja rezerwacja została pomyślnie utworzona!';
         $strings['ReservationUpdated'] = 'Twoja rezerwacja została pomyślnie zaktualizowana!';
         $strings['ReservationRemoved'] = 'Twoja rezerwacja została pomyślnie usunięta';
-        $strings['ReservationRequiresApproval'] = 'Rezerwacja jednego lub więcej zasobów wymaga zatwierdzenia. Zostanie ona oznaczona jako oczekująca.';       
+        $strings['ReservationRequiresApproval'] = 'Rezerwacja jednego lub więcej zasobów wymaga zatwierdzenia. Zostanie ona oznaczona jako oczekująca.';
         $strings['YourReferenceNumber'] = 'Numer twojej rezerwacji to %s';
         $strings['ChangeUser'] = 'Zmiana użytkownika';
         $strings['MoreResources'] = 'Więcej zasobów';
@@ -998,7 +998,7 @@ class pl extends en_gb
         $strings['GuestAccountCreatedSubject'] = 'Szczegóły konta %s';
         $strings['AccountCreatedSubject'] = 'Szczegóły konta %s';
         $strings['InviteUserSubject'] = '%s zaprosił cię do dołączenia do %s';
-        
+
         $strings['ReservationApprovedSubjectWithResource'] = 'Rezerwacja %s została zatwierdzona';
         $strings['ReservationCreatedSubjectWithResource'] = 'Rezerwacja %s została utworzona';
         $strings['ReservationUpdatedSubjectWithResource'] = 'Rezerwacja %s została zmieniona';

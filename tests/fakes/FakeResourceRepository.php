@@ -171,8 +171,7 @@ class FakeResourceRepository implements IResourceRepository
         $pageSize = null,
         $filter = null,
         $accountStatus = AccountStatus::ACTIVE
-    )
-    {
+    ) {
         // TODO: Implement GetUsersWithPermission() method.
     }
 

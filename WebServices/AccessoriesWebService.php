@@ -26,8 +26,7 @@ class AccessoriesWebService
         IRestServer $server,
         IResourceRepository $resourceRepository,
         IAccessoryRepository $accessoryRepository
-    )
-    {
+    ) {
         $this->server = $server;
         $this->resourceRepository = $resourceRepository;
         $this->accessoryRepository = $accessoryRepository;

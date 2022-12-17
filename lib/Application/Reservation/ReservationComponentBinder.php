@@ -251,8 +251,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
         IExistingReservationPage $page,
         ReservationView $reservationView,
         IPrivacyFilter $privacyFilter
-    )
-    {
+    ) {
         $this->reservationAuthorization = $reservationAuthorization;
         $this->page = $page;
         $this->reservationView = $reservationView;

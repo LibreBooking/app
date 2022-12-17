@@ -39,8 +39,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
         IResourceService $resourceService,
         IReservationService $reservationService,
         IScheduleService $scheduleService
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

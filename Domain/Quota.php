@@ -99,8 +99,7 @@ class Quota implements IQuota
         $enforcedEndTime = null,
         $enforcedDays = [],
         $scope = null
-    )
-    {
+    ) {
         $this->quotaId = $quotaId;
         $this->duration = $duration;
         $this->limit = $limit;

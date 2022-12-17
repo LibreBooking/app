@@ -26,8 +26,7 @@ class GuestParticipationPresenter
         IReservationRepository $reservationRepository,
         IUserRepository $userRepository,
         IParticipationNotification $participationNotification
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;
         $this->userRepository = $userRepository;
