@@ -20,9 +20,9 @@ class ReservationResourceView implements IResource
         $adminGroupId,
         $scheduleId,
         $scheduleAdminGroupId,
-        $statusId = ResourceStatus::AVAILABLE,
         $enableCheckin,
-        $autoReleaseMinutes
+        $autoReleaseMinutes,
+        $statusId = ResourceStatus::AVAILABLE
     )
     {
         $this->id = $resourceId;
