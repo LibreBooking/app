@@ -104,7 +104,7 @@ class LoginPage extends Page implements ILoginPage
 
         $this->presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
         $resumeUrl = $this->server->GetQuerystring(QueryStringKeys::REDIRECT);
-        $resumeUrl = str_replace('&amp;&amp;', '&amp;', $resumeUrl);
+        if($resumeUrl !== NULL) $resumeUrl = str_replace('&amp;&amp;', '&amp;', $resumeUrl);
         $this->Set('ResumeUrl', $resumeUrl);
         $this->Set('ShowLoginError', false);
         $this->Set('Languages', Resources::GetInstance()->AvailableLanguages);

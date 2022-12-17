@@ -38,13 +38,13 @@ class MySqlCommandAdapter
             if (is_array($curParam->Value)) {
                 $escapedValues = [];
                 foreach ($curParam->Value as $value) {
-                    $escapedValues[] = mysqli_real_escape_string($this->_db, $value);
+                    $escapedValues[] = mysqli_real_escape_string($this->_db, $value ?? '');
                 }
                 $values = implode("','", $escapedValues);
                 $inClause = "'$values'";
                 $query = str_replace($curParam->Name, $inClause, $query);
             } else {
-                $escapedValue = mysqli_real_escape_string($this->_db, $curParam->Value);
+                $escapedValue = mysqli_real_escape_string($this->_db, $curParam->Value ?? '');
                 $query = str_replace($curParam->Name, $curParam->QuotedValue($escapedValue), $query);
             }
         }

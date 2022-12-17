@@ -7,7 +7,7 @@
         "kint-php/kint": "^4.2.3"
     },
     "require" : {
-        "php" : ">=7.4",
+        "php": ">=7.4",
         "smarty/smarty": "^4.3",
         "stripe/stripe-php": "^10.2"
     },

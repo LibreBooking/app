@@ -48,8 +48,9 @@ class SmartyPage extends Smarty
         $this->compile_dir = $base . 'tpl_c';
         $this->config_dir = $base . 'configs';
         $this->cache_dir = $base . 'cache';
-        $this->plugins_dir = $base . 'vendor/smarty/plugins';
-        $this->error_reporting = E_ALL & ~E_NOTICE;
+        $this->plugins_dir = $base . 'vendor/smarty/smarty/libs/plugins';
+        //$this->error_reporting = E_ALL & ~E_NOTICE;
+        $this->muteUndefinedOrNullWarnings();
 
         $cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
 
@@ -166,6 +167,7 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'linebreak', [$this, 'LineBreak']);
         $this->registerPlugin('modifier', 'urlencode', [$this, 'UrlEncode']);
         $this->registerPlugin('modifier', 'explode', [$this, 'Explode']);
+        $this->registerPlugin('modifier', 'html_entity_decode', [$this, 'HtmlEntityDecode']);
 
         /**
          * PageValidators
@@ -894,5 +896,10 @@ class SmartyPage extends Smarty
     public function Explode($separator, $string)
     {
         return explode($separator, $string);
+    }
+
+    public function HtmlEntityDecode($string)
+    {
+        return html_entity_decode($string);
     }
 }
