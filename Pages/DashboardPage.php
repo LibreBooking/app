@@ -7,6 +7,11 @@ class DashboardPage extends SecurePage implements IDashboardPage
 {
     private $items = [];
 
+    /**
+     * @var DashboardPresenter
+     */
+    private $_presenter;
+
     public function __construct()
     {
         parent::__construct('MyDashboard');
