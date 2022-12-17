@@ -53,6 +53,11 @@ class ScheduleReservationList implements IScheduleReservationList
     private $_midnight;
 
     /**
+     * @var LayoutIndexCache
+     */
+    private $layoutIndexCache;
+
+    /**
      * @var string
      */
     private $_destinationTimezone;

@@ -2,21 +2,6 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reporting/ChartColumnDefinition.php');
 
-class ReportAttributeCell extends ReportCell
-{
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    public function Value()
-    {
-        return $this->value;
-    }
-}
-
 class ReportCell
 {
     /**
@@ -72,6 +57,21 @@ class ReportCell
     public function __toString()
     {
         return $this->Value();
+    }
+}
+
+class ReportAttributeCell extends ReportCell
+{
+    private $value;
+
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    public function Value()
+    {
+        return $this->value;
     }
 }
 
