@@ -1,6 +1,8 @@
 <?php
 
-require_once(ROOT_DIR . 'lib/external/Smarty/Smarty.class.php');
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+  require_once ROOT_DIR . 'vendor/autoload.php';
+}
 
 class FakeSmarty extends Smarty
 {

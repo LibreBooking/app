@@ -1,6 +1,8 @@
 <?php
 
-require_once ROOT_DIR . 'vendor/autoload.php';
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+  require_once ROOT_DIR . 'vendor/autoload.php';
+}
 require ROOT_DIR . 'lib/external/Unirest/Unirest.php';
 
 class PaymentGateways
