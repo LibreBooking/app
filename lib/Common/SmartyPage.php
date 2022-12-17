@@ -168,6 +168,7 @@ class SmartyPage extends Smarty
         $this->registerPlugin('modifier', 'urlencode', [$this, 'UrlEncode']);
         $this->registerPlugin('modifier', 'explode', [$this, 'Explode']);
         $this->registerPlugin('modifier', 'html_entity_decode', [$this, 'HtmlEntityDecode']);
+        $this->registerPlugin('modifier', 'implode', [$this, 'Implode']);
 
         /**
          * PageValidators
@@ -896,6 +897,11 @@ class SmartyPage extends Smarty
     public function Explode($separator, $string)
     {
         return explode($separator, $string);
+    }
+
+    public function Implode($separator, $array)
+    {
+        return implode($separator, $array);
     }
 
     public function HtmlEntityDecode($string)
