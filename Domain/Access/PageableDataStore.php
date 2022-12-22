@@ -55,6 +55,11 @@ class PageableData
 {
     private $results = [];
 
+    /**
+     * @var PageInfo
+     */
+    private $pageInfo = [];
+
     public function __construct($results = [], $total = 0, $pageNumber = 1, $pageSize = 1)
     {
         $this->results = $results;

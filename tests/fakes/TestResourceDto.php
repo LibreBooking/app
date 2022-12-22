@@ -21,8 +21,7 @@ class TestResourceDto extends ResourceDto
         $autoReleaseMinutes = null,
         $color = null,
         $maxConcurrentReservations = null
-    )
-    {
+    ) {
         parent::__construct(
             $id,
             $name,

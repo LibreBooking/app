@@ -140,8 +140,7 @@ class FakeUserRepository implements IUserRepository
         $sortDirection = null,
         $filter = null,
         $accountStatus = AccountStatus::ALL
-    )
-    {
+    ) {
         return $this->_UserList;
     }
 

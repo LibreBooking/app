@@ -54,8 +54,7 @@ class GenerateReportPresenter extends ActionPresenter
         IScheduleRepository $scheduleRepo,
         IGroupViewRepository $groupRepo,
         IUserRepository $userRepository
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->user = $user;

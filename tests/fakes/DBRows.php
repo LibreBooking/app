@@ -43,8 +43,7 @@ class ReminderNoticeRow
         $timezone = 'UTC',
         $reminder_minutes = 100,
         $language = 'en_us'
-    )
-    {
+    ) {
         if (empty($startDate)) {
             $startDate = Date::Now()->ToDatabase();
         }

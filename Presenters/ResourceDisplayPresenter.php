@@ -81,8 +81,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         IAttributeService $attributeService,
         IReservationRepository $reservationRepository,
         ITermsOfServiceRepository $termsOfServiceRepository
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->resourceRepository = $resourceRepository;

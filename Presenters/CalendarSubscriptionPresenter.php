@@ -37,8 +37,7 @@ class CalendarSubscriptionPresenter
         ICalendarExportValidator $validator,
         ICalendarSubscriptionService $subscriptionService,
         IPrivacyFilter $filter
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->validator = $validator;

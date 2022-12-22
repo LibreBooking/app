@@ -52,17 +52,17 @@ class ExternalAuthLoginPresenter
         Log::Debug('Social login successful. Email=%s', $profile->email);
         $this->registration->Synchronize(
             new AuthenticatedUser(
-            $profile->email,
-            $profile->email,
-            $profile->first_name,
-            $profile->last_name,
-            Password::GenerateRandom(),
-            Resources::GetInstance()->CurrentLanguage,
-            Configuration::Instance()->GetDefaultTimezone(),
-            null,
-            null,
-            null
-        ),
+                $profile->email,
+                $profile->email,
+                $profile->first_name,
+                $profile->last_name,
+                Password::GenerateRandom(),
+                Resources::GetInstance()->CurrentLanguage,
+                Configuration::Instance()->GetDefaultTimezone(),
+                null,
+                null,
+                null
+            ),
             false,
             false
         );

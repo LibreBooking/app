@@ -40,7 +40,7 @@
 						<div>{translate key='ScheduleAdministrator'}
 							<span class="propertyValue scheduleAdmin"
 								  data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
-								  data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
+								  data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{($GroupLookup[$schedule->GetAdminGroupId()]) ? $GroupLookup[$schedule->GetAdminGroupId()]->Name : 'None'}</span>
                             {if $AdminGroups|default:array()|count > 0}
 								<a class="update changeScheduleAdmin" href="#">
 									<span class="no-show">{translate key='ScheduleAdministrator'}</span>

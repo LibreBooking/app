@@ -6,18 +6,18 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class LogoutPage extends LoginPage
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	public function PageLoad()
-	{
-		$this->presenter->postLogout();
-	}
+    public function PageLoad()
+    {
+        $this->presenter->postLogout();
+    }
 
-	public function GetResumeUrl()
-	{
-		return $this->GetQuerystring(QueryStringKeys::REDIRECT);
-	}
+    public function GetResumeUrl()
+    {
+        return $this->GetQuerystring(QueryStringKeys::REDIRECT);
+    }
 }

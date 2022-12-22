@@ -142,8 +142,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         IAttributeService $attributeService,
         IGroupRepository $groupRepository,
         IGroupViewRepository $groupViewRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;
@@ -426,13 +425,13 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $this->page->RegisterValidator(
                 'updateAttributeValidator',
                 new AttributeValidator(
-                                               $this->attributeService,
-                                               CustomAttributeCategory::USER,
-                                               $this->GetAttributeValues(),
-                                               $this->page->GetUserId(),
-                                               true,
-                                               true
-                                           )
+                    $this->attributeService,
+                    CustomAttributeCategory::USER,
+                    $this->GetAttributeValues(),
+                    $this->page->GetUserId(),
+                    true,
+                    true
+                )
             );
         }
 
@@ -449,13 +448,13 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $this->page->RegisterValidator(
                 'addAttributeValidator',
                 new AttributeValidator(
-                                               $this->attributeService,
-                                               CustomAttributeCategory::USER,
-                                               $this->GetAttributeValues(),
-                                               null,
-                                               true,
-                                               true
-                                           )
+                    $this->attributeService,
+                    CustomAttributeCategory::USER,
+                    $this->GetAttributeValues(),
+                    null,
+                    true,
+                    true
+                )
             );
         }
 
@@ -463,13 +462,13 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $this->page->RegisterValidator(
                 'attributeValidator',
                 new AttributeValidatorInline(
-                                               $this->attributeService,
-                                               CustomAttributeCategory::USER,
-                                               $this->GetInlineAttributeValue(),
-                                               $this->page->GetUserId(),
-                                               true,
-                                               true
-                                           )
+                    $this->attributeService,
+                    CustomAttributeCategory::USER,
+                    $this->GetInlineAttributeValue(),
+                    $this->page->GetUserId(),
+                    true,
+                    true
+                )
             );
         }
 

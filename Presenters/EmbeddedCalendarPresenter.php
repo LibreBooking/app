@@ -28,8 +28,7 @@ class EmbeddedCalendarPresenter
         IReservationViewRepository $reservationViewRepository,
         IResourceRepository $resourceRepository,
         IScheduleRepository $scheduleRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->resourceRepository = $resourceRepository;

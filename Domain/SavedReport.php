@@ -63,8 +63,7 @@ class SavedReport implements ISavedReport
         Report_GroupBy $groupBy,
         Report_Range $range,
         Report_Filter $filter
-    )
-    {
+    ) {
         $this->reportName = $reportName;
         $this->userId = $userId;
         $this->usage = $usage;

@@ -28,8 +28,7 @@ class ResourceAvailabilityControlPresenter
         IResourceService $resourceService,
         IReservationViewRepository $reservationViewRepository,
         IScheduleRepository $scheduleRepository
-    )
-    {
+    ) {
         $this->control = $control;
         $this->resourceService = $resourceService;
         $this->reservationViewRepository = $reservationViewRepository;

@@ -3,9 +3,14 @@
 abstract class Control
 {
     /**
-     * @$var SmartyPage|Smarty
+     * @var SmartyPage|Smarty
      */
     protected $smarty = null;
+
+    /**
+     * @var string
+     */
+    protected $id = null;
 
     /**
      * @var Smarty_Data

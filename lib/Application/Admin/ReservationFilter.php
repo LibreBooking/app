@@ -104,8 +104,7 @@ class ReservationFilter
         $description = null,
         $missedCheckin = false,
         $missedCheckout = false
-    )
-    {
+    ) {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->referenceNumber = $referenceNumber;
@@ -197,8 +196,8 @@ class ReservationFilter
         if ($this->missedCheckin) {
             $filter->_And(
                 $requiresCheckIn->_And(
-                new SqlFilterEquals(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKIN_DATE), null)
-            )->_Or(new SqlFilterGreaterThanColumn(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKIN_DATE), new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START)))
+                    new SqlFilterEquals(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKIN_DATE), null)
+                )->_Or(new SqlFilterGreaterThanColumn(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKIN_DATE), new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START)))
             );
         }
         if ($this->missedCheckout) {

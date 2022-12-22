@@ -1,9 +1,9 @@
 <?php
 
-if (!defined('SMARTY_DIR')) {
-    define('SMARTY_DIR', ROOT_DIR . 'lib/external/Smarty/');
+
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+  require_once ROOT_DIR . 'vendor/autoload.php';
 }
-require_once(ROOT_DIR . 'lib/external/Smarty/Smarty.class.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Converters/namespace.php');
@@ -48,8 +48,9 @@ class SmartyPage extends Smarty
         $this->compile_dir = $base . 'tpl_c';
         $this->config_dir = $base . 'configs';
         $this->cache_dir = $base . 'cache';
-        $this->plugins_dir = $base . 'lib/external/Smarty/plugins';
-        $this->error_reporting = E_ALL & ~E_NOTICE;
+        $this->plugins_dir = $base . 'vendor/smarty/smarty/libs/plugins';
+        //$this->error_reporting = E_ALL & ~E_NOTICE;
+        $this->muteUndefinedOrNullWarnings();
 
         $cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
 
@@ -164,6 +165,13 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'sort_column', [$this, 'SortColumn']);
         $this->registerPlugin('function', 'formatcurrency', [$this, 'FormatCurrency']);
         $this->registerPlugin('function', 'linebreak', [$this, 'LineBreak']);
+        $this->registerPlugin('modifier', 'urlencode', [$this, 'UrlEncode']);
+        $this->registerPlugin('modifier', 'explode', [$this, 'Explode']);
+        $this->registerPlugin('modifier', 'html_entity_decode', [$this, 'HtmlEntityDecode']);
+        $this->registerPlugin('modifier', 'implode', [$this, 'Implode']);
+        $this->registerPlugin('modifier', 'join', [$this, 'Join']);
+        $this->registerPlugin('modifier', 'intval', [$this, 'Intval']);
+        $this->registerPlugin('modifier', 'strtolower', [$this, 'Strtolower']);
 
         /**
          * PageValidators
@@ -562,9 +570,9 @@ class SmartyPage extends Smarty
         $sb->Append('<li>');
         $sb->Append($this->CreatePageLink(
             ['page' => max(
-            1,
-            $currentPage - 1
-        ), 'size' => $size, 'text' => '&laquo;'],
+                1,
+                $currentPage - 1
+            ), 'size' => $size, 'text' => '&laquo;'],
             $smarty
         ));
         $sb->Append('</li>');
@@ -583,9 +591,9 @@ class SmartyPage extends Smarty
         $sb->Append('<li>');
         $sb->Append($this->CreatePageLink(
             ['page' => min(
-            $pageInfo->TotalPages,
-            $currentPage + 1
-        ), 'size' => $size, 'text' => '&raquo;'],
+                $pageInfo->TotalPages,
+                $currentPage + 1
+            ), 'size' => $size, 'text' => '&raquo;'],
             $smarty
         ));
         $sb->Append('</li>');
@@ -882,5 +890,40 @@ class SmartyPage extends Smarty
     public function LineBreak($params, $smarty)
     {
         return "\n";
+    }
+
+    public function UrlEncode($url)
+    {
+        return urlencode($url);
+    }
+
+    public function Explode($separator, $string)
+    {
+        return explode($separator, $string);
+    }
+
+    public function Implode($separator, $array)
+    {
+        return implode($separator, $array);
+    }
+
+    public function HtmlEntityDecode($string)
+    {
+        return html_entity_decode($string);
+    }
+
+    public function Join($sep, $array)
+    {
+        return join($sep, $array);
+    }
+
+    public function Intval($string)
+    {
+        return intval($string);
+    }
+
+    public function Strtolower($string)
+    {
+        return strtolower($string);
     }
 }

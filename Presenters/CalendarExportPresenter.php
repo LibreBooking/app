@@ -31,8 +31,7 @@ class CalendarExportPresenter
         IReservationViewRepository $reservationViewRepository,
         ICalendarExportValidator $validator,
         IPrivacyFilter $privacyFilter
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->validator = $validator;

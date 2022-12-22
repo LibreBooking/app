@@ -34,8 +34,7 @@ class ProfilePresenter extends ActionPresenter
         IProfilePage $page,
         IUserRepository $userRepository,
         IAttributeService $attributeService
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

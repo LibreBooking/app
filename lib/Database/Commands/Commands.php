@@ -83,8 +83,7 @@ class AddAttributeCommand extends SqlCommand
         $secondaryCategory,
         $secondaryEntityIds,
         $isPrivate
-    )
-    {
+    ) {
         parent::__construct(Queries::ADD_ATTRIBUTE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_TYPE, (int)$type));
@@ -302,8 +301,7 @@ class AddPaymentTransactionLogCommand extends SqlCommand
         $gatewayDateCreated,
         $gatewayName,
         $gatewayResponse
-    )
-    {
+    ) {
         parent::__construct(Queries::ADD_PAYMENT_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_STATUS, $status));
@@ -396,8 +394,7 @@ class AddRefundTransactionLogCommand extends SqlCommand
         $dateCreated,
         $gatewayDateCreated,
         $refundResponse
-    )
-    {
+    ) {
         parent::__construct(Queries::ADD_REFUND_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $paymentTransactionLogId));
         $this->AddParameter(new Parameter(ParameterNames::REFUND_STATUS, $status));
@@ -519,8 +516,7 @@ class AddReservationCommand extends SqlCommand
         $referenceNumber,
         $seriesId,
         $credits
-    )
-    {
+    ) {
         parent::__construct(Queries::ADD_RESERVATION);
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));
@@ -593,8 +589,7 @@ class AddResourceCommand extends SqlCommand
         $max_participants = null,
         $min_notice_time_add = null,
         $max_notice_time = null
-    )
-    {
+    ) {
         parent::__construct(Queries::ADD_RESOURCE);
 
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $name));
@@ -2215,8 +2210,7 @@ class RegisterUserCommand extends SqlCommand
         $publicId,
         $scheduleId,
         $termsAcceptedDate
-    )
-    {
+    ) {
         parent::__construct(Queries::REGISTER_USER);
 
         $termsAcceptedDate = $termsAcceptedDate == null ? new NullDate() : $termsAcceptedDate;
@@ -2527,8 +2521,7 @@ class UpdateAttributeCommand extends SqlCommand
         $secondaryCategory,
         $secondaryEntityIds,
         $isPrivate
-    )
-    {
+    ) {
         parent::__construct(Queries::UPDATE_ATTRIBUTE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
@@ -2603,8 +2596,7 @@ class UpdateReservationCommand extends SqlCommand
         Date $checkoutDate,
         Date $previousEndDate,
         $credits
-    )
-    {
+    ) {
         parent::__construct(Queries::UPDATE_RESERVATION_INSTANCE);
 
         $this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
@@ -2683,8 +2675,7 @@ class UpdateResourceCommand extends SqlCommand
         TimeInterval $minNoticeTimeUpdate,
         TimeInterval $minNoticeTimeDelete,
         $serializedProperties
-    )
-    {
+    ) {
         parent::__construct(Queries::UPDATE_RESOURCE);
 
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $id));
@@ -2821,8 +2812,7 @@ class UpdateUserCommand extends SqlCommand
         $language,
         $scheduleId,
         $currentCreditCount
-    )
-    {
+    ) {
         parent::__construct(Queries::UPDATE_USER);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $statusId));

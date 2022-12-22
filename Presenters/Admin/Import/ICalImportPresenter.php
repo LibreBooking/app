@@ -54,8 +54,7 @@ class ICalImportPresenter extends ActionPresenter
         IReservationRepository $reservationRepository,
         IRegistration $registration,
         IScheduleRepository $scheduleRepository
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->userRepository = $userRepository;

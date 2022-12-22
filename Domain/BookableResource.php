@@ -1723,7 +1723,7 @@ class ResourceProperties
     public static function Deserialize($propertiesAsJson)
     {
         $obj = new ResourceProperties();
-        $decoded = json_decode($propertiesAsJson);
+        $decoded = json_decode($propertiesAsJson ?? '{}');
         if (isset($decoded->MaxConcurrentReservations)) {
             $obj->MaxConcurrentReservations = $decoded->MaxConcurrentReservations;
         }

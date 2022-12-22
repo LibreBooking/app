@@ -57,8 +57,7 @@ class RegistrationPresenter extends ActionPresenter
         $captchaService = null,
         $attributeService = null,
         $termsOfServiceRepository = null
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

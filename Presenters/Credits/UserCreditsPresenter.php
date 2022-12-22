@@ -30,8 +30,7 @@ class UserCreditsPresenter extends ActionPresenter
         IUserRepository $userRepository,
         IPaymentRepository $paymentRepository,
         ICreditRepository $creditRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

@@ -83,8 +83,7 @@ class ReservationResponse extends RestResponse
         ReservationView $reservation,
         IPrivacyFilter $privacyFilter,
         $attributes = []
-    )
-    {
+    ) {
         $this->owner = ReservationUserResponse::Masked();
 
         $canViewUser = $privacyFilter->CanViewUser($server->GetSession(), $reservation);

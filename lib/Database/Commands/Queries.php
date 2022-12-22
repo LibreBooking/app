@@ -1234,13 +1234,13 @@ class QueryBuilder
     {
         return str_replace(
             '[AND_TOKEN]',
-            $andValue,
+            $andValue ?? '',
             str_replace(
                 '[JOIN_TOKEN]',
-                $joinValue,
+                $joinValue ?? '',
                 str_replace(
                     '[SELECT_TOKEN]',
-                    $selectValue,
+                    $selectValue ?? '',
                     Queries::GET_RESERVATION_LIST_TEMPLATE
                 )
             )

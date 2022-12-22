@@ -60,8 +60,7 @@ class BlackoutSlot implements IReservationSlot
         Date $displayDate,
         $periodSpan,
         BlackoutItemView $blackout
-    )
-    {
+    ) {
         $this->blackout = $blackout;
         $this->begin = $begin->BeginDate();
         $this->displayDate = $displayDate;

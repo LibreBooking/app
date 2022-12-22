@@ -38,6 +38,10 @@ class WebExceptionHandler extends ExceptionHandler
 
     public function HandleException($exception)
     {
+        error_log('Error: ' . $exception);
+        ob_start();
+        debug_print_backtrace();
+        error_log(ob_get_clean());
         call_user_func($this->callback);
     }
 }

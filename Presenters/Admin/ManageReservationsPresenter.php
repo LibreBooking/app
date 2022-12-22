@@ -65,8 +65,7 @@ class ManageReservationsPresenter extends ActionPresenter
         IAttributeService $attributeService,
         IUserRepository $userRepository,
         ITermsOfServiceRepository $termsOfServiceRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

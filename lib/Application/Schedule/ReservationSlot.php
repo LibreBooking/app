@@ -62,8 +62,7 @@ class ReservationSlot implements IReservationSlot
         Date $displayDate,
         $periodSpan,
         IReservedItemView $reservation
-    )
-    {
+    ) {
         $this->_reservation = $reservation;
         $this->_begin = $begin->BeginDate();
         $this->_displayDate = $displayDate;

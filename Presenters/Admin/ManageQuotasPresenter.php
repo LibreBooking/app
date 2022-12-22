@@ -28,7 +28,12 @@ class ManageQuotasPresenter extends ActionPresenter
     private $groupRepository;
 
     /**
-     * @var \IQuotaViewRepository
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
+
+    /**
+     * @var IQuotaViewRepository
      */
     private $quotaRepository;
 
@@ -45,8 +50,7 @@ class ManageQuotasPresenter extends ActionPresenter
         IGroupViewRepository $groupRepository,
         IScheduleRepository $scheduleRepository,
         IQuotaViewRepository $quotaRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

@@ -79,8 +79,7 @@ class Schedule implements ISchedule
         $daysVisible,
         $timezone = null,
         $layoutId = null
-    )
-    {
+    ) {
         $this->_id = $id;
         $this->_name = $name;
         $this->_isDefault = $isDefault;
@@ -320,7 +319,7 @@ class Schedule implements ISchedule
         $schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
         $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
         $schedule->SetDefaultStyle($row[ColumnNames::SCHEDULE_DEFAULT_STYLE]);
-        $schedule->SetLayoutType($row[ColumnNames::LAYOUT_TYPE]);
+        if (in_array(ColumnNames::LAYOUT_TYPE, $row)) $schedule->SetLayoutType($row[ColumnNames::LAYOUT_TYPE]);
         $schedule->SetTotalConcurrentReservations($row[ColumnNames::TOTAL_CONCURRENT_RESERVATIONS]);
         $schedule->SetMaxResourcesPerReservation($row[ColumnNames::MAX_RESOURCES_PER_RESERVATION]);
         return $schedule;

@@ -326,6 +326,8 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 class ConfigFileOption
 {
+    public $Name;
+    public $Location;
     public function __construct($name, $location)
     {
         $this->Name = $name;
@@ -343,9 +345,9 @@ class ConfigSetting
 
     public function __construct($key, $section, $value)
     {
-        $key = trim($key);
-        $section = trim($section);
-        $value = trim($value);
+        $key = trim($key ?? '');
+        $section = trim($section ?? '');
+        $value = trim($value ?? '');
 
         $this->Name = $this->encode($key) . '|' . $this->encode($section);
         $this->Key = $key;

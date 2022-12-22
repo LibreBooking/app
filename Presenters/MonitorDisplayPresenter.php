@@ -36,8 +36,7 @@ class MonitorDisplayPresenter extends ActionPresenter
         IReservationService $reservationService,
         IScheduleService $scheduleService,
         ILayoutFactory $layoutFactory
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->resourceService = $resourceService;

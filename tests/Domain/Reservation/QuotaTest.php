@@ -984,8 +984,7 @@ class QuotaTests extends TestBase
         $resourceId1 = null,
         $resourceId2 = null,
         $scheduleId = null
-    )
-    {
+    ) {
         $userId = 12;
         $resource1 = empty($resourceId1) ? 13 : $resourceId1;
         $resource2 = empty($resourceId2) ? 14 : $resourceId2;

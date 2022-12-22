@@ -114,8 +114,7 @@ class ManageUsersService implements IManageUsersService
         IGroupRepository $groupRepository,
         IUserViewRepository $userViewRepository,
         PasswordEncryption $passwordEncryption
-    )
-    {
+    ) {
         $this->registration = $registration;
         $this->userRepository = $userRepository;
         $this->groupRepository = $groupRepository;
@@ -134,8 +133,7 @@ class ManageUsersService implements IManageUsersService
         $homePageId,
         $extraAttributes,
         $customAttributes
-    )
-    {
+    ) {
         $user = $this->registration->Register(
             $username,
             $email,

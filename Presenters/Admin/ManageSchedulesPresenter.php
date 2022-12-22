@@ -417,8 +417,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         IManageSchedulesPage $page,
         ManageScheduleService $manageSchedulesService,
         IGroupViewRepository $groupViewRepository
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->manageSchedulesService = $manageSchedulesService;

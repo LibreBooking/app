@@ -1211,9 +1211,9 @@ class ResourceFilterValues
         if (!empty($this->ResourceNameFilter)) {
             $filter->_And(new SqlFilterLike(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_NAME
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_NAME
+                ),
                 $this->ResourceNameFilter
             ));
         }
@@ -1226,36 +1226,36 @@ class ResourceFilterValues
         if (!empty($this->ResourceTypeFilter)) {
             $filter->_And(new SqlFilterEquals(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_TYPE_ID
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_TYPE_ID
+                ),
                 $this->ResourceTypeFilter
             ));
         }
         if ($this->ResourceStatusFilterId != '') {
             $filter->_And(new SqlFilterEquals(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_STATUS_ID
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_STATUS_ID
+                ),
                 $this->ResourceStatusFilterId
             ));
         }
         if ($this->ResourceStatusReasonFilterId != '') {
             $filter->_And(new SqlFilterEquals(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_STATUS_REASON_ID
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_STATUS_REASON_ID
+                ),
                 $this->ResourceStatusReasonFilterId
             ));
         }
         if (!empty($this->CapacityFilter)) {
             $filter->_And(new SqlFilterGreaterThan(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_MAX_PARTICIPANTS
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_MAX_PARTICIPANTS
+                ),
                 $this->CapacityFilter,
                 true
             ));
@@ -1263,27 +1263,27 @@ class ResourceFilterValues
         if ($this->RequiresApprovalFilter != '') {
             $filter->_And(new SqlFilterEquals(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_REQUIRES_APPROVAL
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_REQUIRES_APPROVAL
+                ),
                 $this->RequiresApprovalFilter
             ));
         }
         if ($this->AutoPermissionFilter != '') {
             $filter->_And(new SqlFilterEquals(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_AUTOASSIGN
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_AUTOASSIGN
+                ),
                 $this->AutoPermissionFilter
             ));
         }
         if ($this->AllowMultiDayFilter != '') {
             $filter->_And(new SqlFilterEquals(
                 new SqlFilterColumn(
-                TableNames::RESOURCES_ALIAS,
-                ColumnNames::RESOURCE_ALLOW_MULTIDAY
-            ),
+                    TableNames::RESOURCES_ALIAS,
+                    ColumnNames::RESOURCE_ALLOW_MULTIDAY
+                ),
                 $this->AllowMultiDayFilter
             ));
         }

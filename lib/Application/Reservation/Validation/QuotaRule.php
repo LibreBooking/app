@@ -33,8 +33,7 @@ class QuotaRule implements IReservationValidationRule
         IUserRepository $userRepository,
         IScheduleRepository $scheduleRepository,
         IQuotaViewRepository $quotaViewRepository
-    )
-    {
+    ) {
         $this->quotaRepository = $quotaRepository;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->userRepository = $userRepository;

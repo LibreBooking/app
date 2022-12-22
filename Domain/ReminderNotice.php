@@ -118,8 +118,7 @@ class ReminderNotice
         $timezone,
         $reminder_minutes,
         $language
-    )
-    {
+    ) {
         $this->seriesId = $seriesId;
         $this->reservationId = $reservationId;
         $this->referenceNumber = $referenceNumber;

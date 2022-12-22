@@ -123,8 +123,7 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
         IUserRepository $userRepository,
         IResourceRepository $resourceRepository,
         IScheduleRepository $scheduleRepository
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->resourceRepository = $resourceRepository;
         $this->scheduleRepository = $scheduleRepository;

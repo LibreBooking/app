@@ -9,148 +9,143 @@ require_once(ROOT_DIR . 'plugins/Authentication/Mellon/namespace.php');
  */
 class Mellon extends Authentication implements IAuthentication
 {
-        private $options;
+    private $options;
 
-        private $authToDecorate;
-        private $_registration;
+    private $authToDecorate;
+    private $_registration;
 
-        private function GetRegistration()
-        {
-                if ($this->_registration == null)
-                {
-                        $this->_registration = new Registration();
-                }
-
-                return $this->_registration;
+    private function GetRegistration()
+    {
+        if ($this->_registration == null) {
+            $this->_registration = new Registration();
         }
 
-        public function __construct(Authentication $authentication)
-        {
-                $this->options = new MellonOptions();
+        return $this->_registration;
+    }
 
-                $this->authToDecorate = $authentication;
-        }
+    public function __construct(Authentication $authentication)
+    {
+        $this->options = new MellonOptions();
 
-        public function Validate($username, $password)
-        {
-                $username = $_SERVER['REMOTE_USER'];
-                return true;
-        }
+        $this->authToDecorate = $authentication;
+    }
 
-        public function Login($username, $loginContext)
-        {
-                $username = $_SERVER['REMOTE_USER'];
+    public function Validate($username, $password)
+    {
+        $username = $_SERVER['REMOTE_USER'];
+        return true;
+    }
 
-                Log::Debug('Attempting Mellon login for username: %s', $username);
+    public function Login($username, $loginContext)
+    {
+        $username = $_SERVER['REMOTE_USER'];
 
-                $this->Synchronize($username, $loginContext);
+        Log::Debug('Attempting Mellon login for username: %s', $username);
 
-                return $this->authToDecorate->Login($username, $loginContext);
-        }
+        $this->Synchronize($username, $loginContext);
 
-        public function Logout(UserSession $user)
-        {
-                $this->authToDecorate->Logout($user);
-        }
+        return $this->authToDecorate->Login($username, $loginContext);
+    }
 
-        public function Synchronize($username, $loginContext)
-        {
-                $registration = $this->GetRegistration();
-                $registration->Synchronize(
-                        new AuthenticatedUser(
-                                $username,
-                                $username . '@' . $this->options->EmailDomain(),
-                                $_SERVER[$this->options->KeyGivenName()],
-                                $_SERVER[$this->options->KeySurname()],
-                                BookedStringHelper::Random(12),
-                                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-                                Configuration::Instance()->GetDefaultTimezone(),
-                                null,
-                                null,
-                                null,
-                                $this->GetGroups($loginContext)
+    public function Logout(UserSession $user)
+    {
+        $this->authToDecorate->Logout($user);
+    }
+
+    public function Synchronize($username, $loginContext)
+    {
+        $registration = $this->GetRegistration();
+        $registration->Synchronize(
+            new AuthenticatedUser(
+                            $username,
+                            $username . '@' . $this->options->EmailDomain(),
+                            $_SERVER[$this->options->KeyGivenName()],
+                            $_SERVER[$this->options->KeySurname()],
+                            BookedStringHelper::Random(12),
+                            Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+                            Configuration::Instance()->GetDefaultTimezone(),
+                            null,
+                            null,
+                            null,
+                            $this->GetGroups($loginContext)
                         )
-                );
+        );
+    }
+
+    public function GetGroups($attributes)
+    {
+        $groups = [];
+
+        $groupMappings = $this->options->GroupMappings();
+        $mellonGroups = explode(';', $_SERVER[$this->options->KeyGroups()]);
+        foreach ($mellonGroups as $mellonGroup) {
+            if (!array_key_exists($mellonGroup, $groupMappings)) {
+                continue;
+            }
+
+            array_push($groups, $groupMappings[$mellonGroup]);
         }
 
-        public function GetGroups($attributes)
-        {
-                $groups = array();
+        return $groups;
+    }
 
-                $groupMappings = $this->options->GroupMappings();
-                $mellonGroups = explode(';', $_SERVER[$this->options->KeyGroups()]);
-                foreach ($mellonGroups as $mellonGroup)
-                {
-                        if (!array_key_exists($mellonGroup, $groupMappings))
-                        {
-                                continue;
-                        }
+    public function AreCredentialsKnown()
+    {
+        return (bool)$_SERVER['REMOTE_USER'];
+    }
 
-                        array_push($groups, $groupMappings[$mellonGroup]);
-                }
+    public function ShowUsernamePrompt()
+    {
+        return false;
+    }
 
-                return $groups;
-        }
+    public function ShowPasswordPrompt()
+    {
+        return false;
+    }
 
-        public function AreCredentialsKnown()
-        {
-                return (bool)$_SERVER['REMOTE_USER'];
-        }
+    public function ShowPersistLoginPrompt()
+    {
+        return false;
+    }
 
-        public function ShowUsernamePrompt()
-        {
-                return false;
-        }
+    public function ShowForgotPasswordPrompt()
+    {
+        return false;
+    }
 
-        public function ShowPasswordPrompt()
-        {
-                return false;
-        }
+    public function AllowUsernameChange()
+    {
+        return false;
+    }
 
-        public function ShowPersistLoginPrompt()
-        {
-                return false;
-        }
+    public function AllowEmailAddressChange()
+    {
+        return false;
+    }
 
-        public function ShowForgotPasswordPrompt()
-        {
-                return false;
-        }
+    public function AllowPasswordChange()
+    {
+        return false;
+    }
 
-        public function AllowUsernameChange()
-        {
-                return false;
-        }
+    public function AllowNameChange()
+    {
+        return false;
+    }
 
-        public function AllowEmailAddressChange()
-        {
-                return false;
-        }
+    public function AllowPhoneChange()
+    {
+        return false;
+    }
 
-        public function AllowPasswordChange()
-        {
-                return false;
-        }
+    public function AllowOrganizationChange()
+    {
+        return false;
+    }
 
-        public function AllowNameChange()
-        {
-                return false;
-        }
-
-        public function AllowPhoneChange()
-        {
-                return false;
-        }
-
-        public function AllowOrganizationChange()
-        {
-                return false;
-        }
-
-        public function AllowPositionChange()
-        {
-                return false;
-        }
+    public function AllowPositionChange()
+    {
+        return false;
+    }
 }
-
-?>

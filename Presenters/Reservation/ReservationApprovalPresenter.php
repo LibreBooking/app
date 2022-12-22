@@ -40,8 +40,7 @@ class ReservationApprovalPresenter implements IReservationApprovalPresenter
         IReservationHandler $handler,
         IReservationAuthorization $authorizationService,
         UserSession $userSession
-    )
-    {
+    ) {
         $this->page = $page;
         $this->persistenceService = $persistenceService;
         $this->handler = $handler;
@@ -99,9 +98,9 @@ class ReservationViewAdapter extends ReservationView
                 $resource->GetAdminGroupId(),
                 $resource->GetScheduleId(),
                 $resource->GetScheduleAdminGroupId(),
-                $resource->GetStatusId(),
                 $resource->IsCheckInEnabled(),
-                $resource->GetAutoReleaseMinutes()
+                $resource->GetAutoReleaseMinutes(),
+                $resource->GetStatusId()
             );
         }
 

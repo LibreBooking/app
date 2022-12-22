@@ -25,8 +25,7 @@ class ScheduleAdminManageReservationsService extends ManageReservationsService i
         IReservationAuthorization $authorization,
         $reservationHandler = null,
         $persistenceService = null
-    )
-    {
+    ) {
         parent::__construct($reservationViewRepository, $authorization, $reservationHandler, $persistenceService);
 
         $this->reservationViewRepository = $reservationViewRepository;

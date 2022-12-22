@@ -45,9 +45,9 @@ class ScheduleAvailabilityRule implements IReservationValidationRule
         return new ReservationRuleResult(
             $isValid,
             $resources->GetString(
-            'ScheduleAvailabilityError',
-            [$beginAvailability->ToTimezone($tz)->Format($format), $endAvailability->ToTimezone($tz)->Format($format)]
-        )
+                'ScheduleAvailabilityError',
+                [$beginAvailability->ToTimezone($tz)->Format($format), $endAvailability->ToTimezone($tz)->Format($format)]
+            )
         );
     }
 

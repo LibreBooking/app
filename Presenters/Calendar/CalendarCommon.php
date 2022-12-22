@@ -325,8 +325,7 @@ abstract class CommonCalendarPresenter extends ActionPresenter
         ICalendarSubscriptionService $subscriptionService,
         IPrivacyFilter $privacyFilter,
         SlotLabelFactory $factory
-    )
-    {
+    ) {
         parent::__construct($page);
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;
@@ -532,7 +531,7 @@ class UserCalendarFilter
      */
     public static function Deserialize($string)
     {
-        $parts = explode('|', $string);
+        $parts = explode('|', $string ?? '');
         $resourceId = isset($parts[0]) ? $parts[0] : null;
         $scheduleId = isset($parts[1]) ? $parts[1] : null;
         $groupId = isset($parts[2]) ? $parts[2] : null;

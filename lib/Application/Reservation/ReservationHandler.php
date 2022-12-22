@@ -47,8 +47,7 @@ class ReservationHandler implements IReservationHandler
         IReservationValidationService $validationService,
         IReservationNotificationService $notificationService,
         IReservationRetryOptions $retryOptions
-    )
-    {
+    ) {
         $this->persistenceService = $persistenceService;
         $this->validationService = $validationService;
         $this->notificationService = $notificationService;

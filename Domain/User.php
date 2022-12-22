@@ -537,8 +537,7 @@ class User
         $password,
         $passwordSalt,
         $homepageId = Pages::DEFAULT_HOMEPAGE_ID
-    )
-    {
+    ) {
         $user = new User();
         $user->firstName = $firstName;
         $user->lastName = $lastName;
@@ -567,8 +566,7 @@ class User
         $password,
         $passwordSalt,
         $homepageId = Pages::DEFAULT_HOMEPAGE_ID
-    )
-    {
+    ) {
         $user = self::Create(
             $firstName,
             $lastName,

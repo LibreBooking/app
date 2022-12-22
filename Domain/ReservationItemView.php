@@ -1147,8 +1147,7 @@ class BlackoutItemView extends ReservationItemView
         $seriesId,
         $repeatOptions,
         $repeatType
-    )
-    {
+    ) {
         $this->InstanceId = $instanceId;
         $this->StartDate = $startDate;
         $this->EndDate = $endDate;

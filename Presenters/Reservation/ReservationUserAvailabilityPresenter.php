@@ -35,8 +35,7 @@ class ReservationUserAvailabilityPresenter
         IScheduleRepository $scheduleRepository,
         IUserRepository $userRepository,
         IResourceRepository $resourceRepository
-    )
-    {
+    ) {
         $this->page = $page;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->scheduleRepository = $scheduleRepository;

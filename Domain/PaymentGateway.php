@@ -1,6 +1,8 @@
 <?php
 
-require ROOT_DIR . 'lib/external/Stripe/init.php';
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+  require_once ROOT_DIR . 'vendor/autoload.php';
+}
 require ROOT_DIR . 'lib/external/Unirest/Unirest.php';
 
 class PaymentGateways
@@ -140,8 +142,7 @@ class PaymentTransactionLogger implements IPaymentTransactionLogger
         $gatewayDateCreated,
         $gatewayName,
         $gatewayResponse
-    )
-    {
+    ) {
         ServiceLocator::GetDatabase()->Execute(new AddPaymentTransactionLogCommand(
             $userId,
             $status,
@@ -170,8 +171,7 @@ class PaymentTransactionLogger implements IPaymentTransactionLogger
         $dateCreated,
         $gatewayDateCreated,
         $refundResponse
-    )
-    {
+    ) {
         ServiceLocator::GetDatabase()->Execute(new AddRefundTransactionLogCommand(
             $paymentTransactionLogId,
             $status,

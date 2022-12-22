@@ -127,7 +127,7 @@ class ReportDefinition implements IReportDefinition
             $resourceTypeAttributes = CustomAttributes::Parse($row[ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST]);
         }
         if (array_key_exists(ColumnNames::PARTICIPANT_LIST, $row)) {
-            $row[ColumnNames::PARTICIPANT_LIST] = str_replace('!sep!', ', ', $row[ColumnNames::PARTICIPANT_LIST]);
+            $row[ColumnNames::PARTICIPANT_LIST] = str_replace('!sep!', ', ', $row[ColumnNames::PARTICIPANT_LIST] ?? '');
         }
 
         $formattedRow = [];

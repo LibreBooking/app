@@ -7,6 +7,7 @@ class iCalendarReservationView
     public $DateStart;
     public $Description;
     public $Organizer;
+    public $OrganizerEmail;
     public $RecurRule;
     public $ReferenceNumber;
     public $Summary;

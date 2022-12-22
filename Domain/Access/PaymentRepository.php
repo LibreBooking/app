@@ -65,7 +65,6 @@ interface IPaymentRepository
 
 class PaymentRepository implements IPaymentRepository
 {
-
     public function UpdateCreditCost($credit)
     {
         $this->DeleteCreditCost($credit->Count()); // In case it already exists: overwrite
@@ -80,15 +79,15 @@ class PaymentRepository implements IPaymentRepository
     public function GetCreditCosts()
     {
         $reader = ServiceLocator::GetDatabase()->Query(new GetPaymentConfigurationCommand());
-        $res = array();
+        $res = [];
         for ($i=0;$i<$reader->NumRows();$i++) {
-          $row = $reader->GetRow();
-          $res[] = new CreditCost($row[ColumnNames::CREDIT_COUNT], $row[ColumnNames::CREDIT_COST], $row[ColumnNames::CREDIT_CURRENCY]);
+            $row = $reader->GetRow();
+            $res[] = new CreditCost($row[ColumnNames::CREDIT_COUNT], $row[ColumnNames::CREDIT_COST], $row[ColumnNames::CREDIT_CURRENCY]);
         }
         $reader->Free();
 
         if (empty($res)) {
-          $res[] = new CreditCost();
+            $res[] = new CreditCost();
         }
         return $res;
     }

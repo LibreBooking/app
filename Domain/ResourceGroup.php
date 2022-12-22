@@ -264,8 +264,7 @@ class ResourceGroupAssignment implements IBookableResource
         $resourceTypeId,
         $color,
         $maxConcurrentReservations
-    )
-    {
+    ) {
         $this->group_id = $group_id;
         $this->resource_name = $resource_name;
         $this->id = "{$this->type}-{$group_id}-{$resource_id}";

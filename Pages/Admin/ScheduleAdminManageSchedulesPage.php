@@ -16,10 +16,10 @@ class ScheduleAdminManageSchedulesPage extends ManageSchedulesPage
         $this->_presenter = new ManageSchedulesPresenter(
             $this,
             new ScheduleAdminManageScheduleService(
-                                                             new ScheduleAdminScheduleRepository($userRepository, $user),
-                                                             new ScheduleRepository(),
-                                                             new ResourceAdminResourceRepository($userRepository, $user)
-                                                         ),
+                new ScheduleAdminScheduleRepository($userRepository, $user),
+                new ScheduleRepository(),
+                new ResourceAdminResourceRepository($userRepository, $user)
+            ),
             new GroupRepository()
         );
     }

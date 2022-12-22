@@ -805,13 +805,13 @@ class de_de extends en_gb
         $strings['ReservationNotAvailable'] = 'Reservierung nicht verfügbar';
         $strings['TitleRequiredRule'] = 'Titel der Reservierung muss eingetragen werden';
         $strings['DescriptionRequiredRule'] = 'Beschreibung der Reservierung muss eingetragen werden';
-		$strings['ScheduleResourcesPerReservation'] = 'Maximale Anzahl von Ressourcen pro Reservierung';
-		$strings['ScheduleMaximumConcurrent'] = 'Maximale Anzahl von gleichzeitig reservierten Ressourcen';
-		$strings['ScheduleMaximumConcurrentNote'] = 'Wenn diese Option gesetzt ist, ist die Gesamtzahl der Ressourcen, die gleichzeitig für diesen Zeitplan reserviert werden können, begrenzt.';
-		$strings['ScheduleConcurrentMaximumNone'] = 'Es gibt keine Begrenzung für die Anzahl der gleichzeitig reservierten Ressourcen';
-		$strings['ScheduleResourcesPerReservationNone'] = 'Es gibt keine Begrenzung für die Anzahl der Ressourcen pro Reservierung';
-		$strings['AllowConcurrentReservations'] = 'Gleichzeitige Reservierungen zulassen';
-		$strings['ResourceConcurrentReservationsNone'] = 'Keine gleichzeitigen Reservierungen zulassen';
+        $strings['ScheduleResourcesPerReservation'] = 'Maximale Anzahl von Ressourcen pro Reservierung';
+        $strings['ScheduleMaximumConcurrent'] = 'Maximale Anzahl von gleichzeitig reservierten Ressourcen';
+        $strings['ScheduleMaximumConcurrentNote'] = 'Wenn diese Option gesetzt ist, ist die Gesamtzahl der Ressourcen, die gleichzeitig für diesen Zeitplan reserviert werden können, begrenzt.';
+        $strings['ScheduleConcurrentMaximumNone'] = 'Es gibt keine Begrenzung für die Anzahl der gleichzeitig reservierten Ressourcen';
+        $strings['ScheduleResourcesPerReservationNone'] = 'Es gibt keine Begrenzung für die Anzahl der Ressourcen pro Reservierung';
+        $strings['AllowConcurrentReservations'] = 'Gleichzeitige Reservierungen zulassen';
+        $strings['ResourceConcurrentReservationsNone'] = 'Keine gleichzeitigen Reservierungen zulassen';
         // End Errors
 
         // Page Titles

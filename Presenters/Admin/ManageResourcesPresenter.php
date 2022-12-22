@@ -95,8 +95,7 @@ class ManageResourcesPresenter extends ActionPresenter
         IAttributeService $attributeService,
         IUserPreferenceRepository $userPreferenceRepository,
         IReservationViewRepository $reservationViewRepository
-    )
-    {
+    ) {
         parent::__construct($page);
 
         $this->page = $page;

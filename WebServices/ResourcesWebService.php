@@ -41,8 +41,7 @@ class ResourcesWebService
         IResourceRepository $resourceRepository,
         IAttributeService $attributeService,
         IReservationViewRepository $reservationRepository
-    )
-    {
+    ) {
         $this->server = $server;
         $this->resourceRepository = $resourceRepository;
         $this->attributeService = $attributeService;

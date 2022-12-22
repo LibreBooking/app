@@ -493,8 +493,7 @@ class ManageReservationsPresenterTests extends TestBase
         $resourceStatusId = null,
         $resourceStatusReasonId = null,
         $attributes = null
-    )
-    {
+    ) {
         return new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId, $statusId, $resourceStatusId, $resourceStatusReasonId, $attributes);
     }
 

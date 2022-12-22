@@ -157,8 +157,9 @@ class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
         $this->presenter->PageLoad();
         $this->Display('Admin/Payments/manage_payments.tpl');
     }
-    
-    public function GetCreditCount() {
+
+    public function GetCreditCount()
+    {
         return $this->GetForm(FormKeys::CREDIT_COUNT);
     }
 

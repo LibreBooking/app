@@ -251,11 +251,11 @@ class ReservationViewRepositoryTests extends TestBase
                 $adminGroupId1,
                 $scheduleId,
                 $scheduleAdminGroupId,
-                ResourceStatus::AVAILABLE,
                 $resourceCheckIn1,
-                $resourceAutoRelease1
+                $resourceAutoRelease1,
+                ResourceStatus::AVAILABLE
             ),
-            new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, false, null),
+            new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, false, null, ResourceStatus::AVAILABLE),
         ];
         foreach ($expectedView->Resources as $r) {
             $r->SetColor('color');
@@ -289,7 +289,7 @@ class ReservationViewRepositoryTests extends TestBase
     public function testIsCheckinEnabled()
     {
         $view = new ReservationView();
-        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null)];
+        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, true, 10, 1), new ReservationResourceView(1, 1, 1, 1, 1, false, null, 1)];
 
         $this->assertTrue($view->IsCheckinEnabled());
     }
@@ -300,7 +300,7 @@ class ReservationViewRepositoryTests extends TestBase
 
         $view = new ReservationView();
         $view->StartDate = Date::Now()->AddMinutes(4);
-        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null)];
+        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, true, 10, 1, ), new ReservationResourceView(1, 1, 1, 1, 1, false, null, 1)];
 
         $this->assertTrue($view->IsCheckinAvailable());
     }
@@ -310,7 +310,7 @@ class ReservationViewRepositoryTests extends TestBase
         $view = new ReservationView();
         $view->StartDate = Date::Now()->AddMinutes(-20);
         $view->CheckinDate = Date::Now();
-        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null)];
+        $view->Resources = [new ReservationResourceView(1, 1, 1, 1, 1, true, 10, 1), new ReservationResourceView(1, 1, 1, 1, 1, false, null, 1)];
 
         $this->assertTrue($view->IsCheckoutAvailable());
     }
@@ -598,8 +598,7 @@ class ReservationViewRepositoryTests extends TestBase
         $statusId = ResourceStatus::AVAILABLE,
         $checkinEnabled = false,
         $autoReleaseMinutes = null
-    )
-    {
+    ) {
         return [
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
             ColumnNames::RESOURCE_ID => $resourceId,
@@ -641,8 +640,7 @@ class ReservationViewRepositoryTests extends TestBase
         $previousEndDate = null,
         $requireCheckin = false,
         $autoReleaseMinutes = null
-    )
-    {
+    ) {
         return [
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESOURCE_NAME => $resourceName,
@@ -686,8 +684,7 @@ class ReservationViewRepositoryTests extends TestBase
         $accessoryName,
         $accessoryId,
         $quantityReserved
-    )
-    {
+    ) {
         return [
             ColumnNames::REFERENCE_NUMBER => $referenceNumber,
             ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
@@ -713,8 +710,7 @@ class ReservationViewRepositoryTests extends TestBase
         $seriesId = 999,
         $repeatType = RepeatType::None,
         $repeatOptions = ''
-    )
-    {
+    ) {
         return [
             ColumnNames::BLACKOUT_INSTANCE_ID => $instanceId,
             ColumnNames::BLACKOUT_START => $start->ToDatabase(),

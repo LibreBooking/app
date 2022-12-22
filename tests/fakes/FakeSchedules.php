@@ -127,8 +127,7 @@ class FakeScheduleRepository implements IScheduleRepository
         $availableEnd = null,
         $totalConcurrentReservations = 0,
         $maxResourcesPerReservation = 0
-    )
-    {
+    ) {
         return [
                 ColumnNames::SCHEDULE_ID => $id,
                 ColumnNames::SCHEDULE_NAME => $name,

@@ -375,8 +375,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
         ScheduleResourceFilter $filter,
         $resourceCustomAttributes,
         $resourceTypeCustomAttributes
-    )
-    {
+    ) {
         if ($filter->ResourceAttributes != null) {
             foreach ($filter->ResourceAttributes as $attributeFilter) {
                 $this->SetAttributeValue($attributeFilter, $resourceCustomAttributes);

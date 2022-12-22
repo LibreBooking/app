@@ -307,8 +307,7 @@ class ReservationPopupPresenter
         IReservationAuthorization $reservationAuthorization,
         IAttributeService $attributeService,
         IUserRepository $userRepository
-    )
-    {
+    ) {
         $this->_page = $page;
         $this->_reservationRepository = $reservationRepository;
         $this->_reservationAuthorization = $reservationAuthorization;

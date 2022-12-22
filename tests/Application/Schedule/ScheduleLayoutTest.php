@@ -232,16 +232,16 @@ class ScheduleLayoutTests extends TestBase
 
         $this->assertEquals(
             new NonSchedulePeriod(Date::Parse(
-            '2012-01-01 15:00',
-            $timezone
-        ), Date::Parse('2012-01-01 20:00', $timezone)),
+                '2012-01-01 15:00',
+                $timezone
+            ), Date::Parse('2012-01-01 20:00', $timezone)),
             $actual1
         );
         $this->assertEquals(
             new SchedulePeriod(Date::Parse(
-            '2012-01-01 02:00',
-            $timezone
-        ), Date::Parse('2012-01-01 03:30', $timezone)),
+                '2012-01-01 02:00',
+                $timezone
+            ), Date::Parse('2012-01-01 03:30', $timezone)),
             $actual2
         );
     }

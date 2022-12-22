@@ -32,6 +32,16 @@ interface IResourceAvailabilityControl
 class AvailableDashboardItem
 {
     /**
+     * @var ResourceDto $resource
+     */
+    private $resource;
+
+    /**
+     * @var ReservationItemView|null $nextItem
+     */
+    private $next;
+
+    /**
      * @param ResourceDto $resource
      * @param ReservationItemView|null $nextItem
      */

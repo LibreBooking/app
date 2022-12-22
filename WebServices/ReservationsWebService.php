@@ -32,8 +32,7 @@ class ReservationsWebService
         IReservationViewRepository $reservationViewRepository,
         IPrivacyFilter $privacyFilter,
         IAttributeService $attributeService
-    )
-    {
+    ) {
         $this->server = $server;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->attributeService = $attributeService;
