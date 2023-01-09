@@ -518,7 +518,7 @@ class Queries
     public const GET_ATTRIBUTE_MULTIPLE_VALUES = 'SELECT *
 		FROM `custom_attribute_values` WHERE `entity_id` IN (@entity_ids) AND `attribute_category` = @attribute_category';
 
-    public const GET_ATTRIBUTE_VALUES = 'SELECT `cav`.*, `ca`.`display_label`
+    public const GET_ATTRIBUTE_VALUES = 'SELECT `cav`.*, `ca`.`display_label`, `ca`.`admin_only`
 		FROM `custom_attribute_values` `cav`
 		INNER JOIN `custom_attributes` `ca` ON `ca`.`custom_attribute_id` = `cav`.`custom_attribute_id`
 		WHERE `cav`.`attribute_category` = @attribute_category AND `cav`.`entity_id` = @entity_id';

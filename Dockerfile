@@ -23,7 +23,7 @@ ENV ADMIN_EMAIL=$ADMIN_EMAIL
 RUN mkdir /var/www/librebooking/
 COPY . /var/www/librebooking/
 COPY entrypoint.sh /
-RUN sed -i "s#DocumentRoot /var/www/html#DocumentRoot /var/www/librebooking/Web#" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s#DocumentRoot /var/www/html#DocumentRoot /var/www/librebooking#" /etc/apache2/sites-enabled/000-default.conf
 RUN a2enmod rewrite
 RUN docker-php-ext-install mysqli
 
