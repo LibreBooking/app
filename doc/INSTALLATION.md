@@ -6,8 +6,9 @@ Note: for users without web hosting service or existing environment, packages li
 
 ## Application Deployment to Server
 
-Unzip the archived distribution to your webserver's document root. 
-Or If you don't have direct access to your document root or use hosting service, then transfer the extracted directory to your web server's document root using FTP or [WinSCP](https://winscp.net/). 
+Unzip the archived distribution and execute `composer install` (after installing [composer](https://getcomposer.org/doc/00-intro.md)) in the extraction directory to download dependencies to the `vendor` folder.
+Move the contents of the directory to your webserver's document root. 
+If you don't have direct access to your document root or use hosting service, then transfer the directory to your web server's document root using FTP or [WinSCP](https://winscp.net/). 
 
 Copy `/config/config.dist.php` to `/config/config.php` and adjust the settings for your environment.
 
@@ -89,7 +90,9 @@ You are done. Try to load the application at (eg. http://yourhostname/librebooki
 
 ## Registering the Administrator Account
 
- After the database has been set up you will need to register the account for your application administrator. Navigate to register.php register an account with email address set in $conf['settings']['admin.email']. # Upgrading
+After the database has been set up you will need to register the account for your application administrator. Navigate to register.php register an account with email address set in $conf['settings']['admin.email'].
+
+# Upgrading
 
 ## Upgrading from a previous version of LibreBooking (or Booked 2.x and phpScheduleIt 2.x)
 
