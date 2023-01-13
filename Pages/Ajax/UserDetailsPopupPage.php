@@ -30,6 +30,10 @@ interface IUserDetailsPopupPage
 
 class UserDetailsPopupPage extends Page implements IUserDetailsPopupPage
 {
+    /**
+     * @param UserDetailsPopupPresenter $presenter
+     */
+    private $presenter;
     public function __construct()
     {
         parent::__construct('', 1);
