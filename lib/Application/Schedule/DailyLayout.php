@@ -169,7 +169,7 @@ class DailyLayout implements IDailyLayout
                 $tempPeriod = $currentPeriod;
                 while ($tempPeriod != null && $tempPeriod->BeginDate()->LessThan($nextPeriodTime)) {
                     $span++;
-                    $tempPeriod = $periods[++$i - 1];
+                    $tempPeriod = $periods[++$i];
                 }
                 if ($span > 0) {
                     $i--;
