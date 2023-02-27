@@ -204,3 +204,9 @@ $conf['settings']['tablet.view']['auto.suggest.emails'] = 'false';
 $conf['settings']['registration']['require.phone'] = 'false';
 $conf['settings']['registration']['require.position'] = 'false';
 $conf['settings']['registration']['require.organization'] = 'false';
+/**
+ * Error logging
+ */
+$conf['settings']['logging']['folder'] = '/var/www/app/log'; //Absolute path to folder were the los will be written
+$conf['settings']['logging']['level'] = 'debug'; //Set to none disable logs, error to only log errors or debug to log all messages to the app.log file 
+$conf['settings']['logging']['sql'] = 'false'; //Set to true no enable the creation of and sql.log file

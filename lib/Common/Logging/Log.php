@@ -1,7 +1,12 @@
 <?php
 
-define('LOG4PHP_ROOT', ROOT_DIR . 'lib/external/log4php/Logger.php');
-require_once(LOG4PHP_ROOT);
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
+  require_once ROOT_DIR . 'vendor/autoload.php';
+}
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 
 class Log
 {
@@ -22,14 +27,19 @@ class Log
 
     private function __construct()
     {
-        $this->logger = new NullLog4php();
-        $this->sqlLogger = new NullLog4php();
+        $this->logger = new Logger('app');
+        $this->sqlLogger = new Logger('sql');
 
-        if (file_exists($f = ROOT_DIR . 'config/log4php.config.xml')) {
-            Logger::configure($f);
-            $this->logger = Logger::getLogger('default');
-            $this->sqlLogger = Logger::getLogger('sql');
+        $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
+
+        if ($log_level != 'none') {
+            $log_folder = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_FOLDER);
+            $log_sql = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_SQL, new BooleanConverter());
+            $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::DEBUG));
         }
+            if ($log_sql) {
+                $this->sqlLogger->pushHandler(new StreamHandler($log_folder.'/sql.log', Logger::DEBUG));
+            }
     }
 
     /**
@@ -50,7 +60,8 @@ class Log
      */
     public static function Debug($message, $args = [])
     {
-        if (!self::GetInstance()->logger->isDebugEnabled()) {
+        $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
+        if ($log_level == 'none' || $log_level == 'error') {
             return;
         }
 
@@ -68,7 +79,7 @@ class Log
 
             $log = '[User=' . ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
 
-            self::GetInstance()->logger->debug($log);
+            self::GetInstance()->logger->info($log);
         } catch (Exception $ex) {
             echo $ex;
         }
@@ -80,7 +91,8 @@ class Log
      */
     public static function Error($message, $args = [])
     {
-        if (!self::GetInstance()->logger->isEnabledFor(LoggerLevel::getLevelError())) {
+        $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
+        if ($log_level == 'none' || $log_level == 'debug') {
             return;
         }
 
@@ -112,43 +124,20 @@ class Log
     public static function Sql($message, $args = [])
     {
         try {
-            if (!self::GetInstance()->sqlLogger->isDebugEnabled()) {
+            if (!Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_SQL, new BooleanConverter())) {
                 return;
             }
             $args = func_get_args();
             $log = vsprintf(array_shift($args), array_values($args));
             $log = '[User=' . ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
-            self::GetInstance()->sqlLogger->debug($log);
+            self::GetInstance()->sqlLogger->error($log);
         } catch (Exception $ex) {
         }
     }
-
-    /**
-     * @return bool
-     */
     public static function DebugEnabled()
     {
-        return self::GetInstance()->logger->isDebugEnabled();
+        $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
+        return $log_level != 'none';
     }
 }
 
-class NullLog4php
-{
-    public function error($log)
-    {
-    }
-
-    public function debug($log)
-    {
-    }
-
-    public function isDebugEnabled()
-    {
-        return false;
-    }
-
-    public function isEnabledFor($anything)
-    {
-        return false;
-    }
-}

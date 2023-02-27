@@ -153,6 +153,11 @@ class ConfigKeys
     public const REGISTRATION_REQUIRE_PHONE = 'require.phone';
     public const REGISTRATION_REQUIRE_ORGANIZATION = 'require.organization';
     public const REGISTRATION_REQUIRE_POSITION = 'require.position';
+    
+    public const LOGGING_FOLDER = 'folder';
+    public const LOGGING_LEVEL = 'level';
+    public const LOGGING_SQL = 'sql';
+
 }
 
 class ConfigSection
@@ -181,4 +186,5 @@ class ConfigSection
     public const SLACK = 'slack';
     public const TABLET_VIEW = 'tablet.view';
     public const REGISTRATION = 'registration';
+    public const LOGGING = 'logging';
 }
