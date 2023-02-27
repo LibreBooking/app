@@ -10,7 +10,7 @@
         "php": ">=7.4",
         "smarty/smarty": "^4.3",
         "stripe/stripe-php": "^10.2",
-        "monolog/monolog": "^3.3"
+        "monolog/monolog": "^2.9"
     },
     "scripts": {
         "install-tools":"phive install --trust-gpg-keys",
