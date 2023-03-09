@@ -1,5 +1,9 @@
 <?php
 
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) { 
+    require_once ROOT_DIR . 'vendor/autoload.php';
+}
+
 require_once(ROOT_DIR . 'Controls/Control.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
@@ -15,24 +19,24 @@ class CaptchaControl extends Control
         ) {
             $this->showRecaptcha();
         } else {
-            $this->showSecurimage();
+            $this->showCaptcha();
         }
     }
 
     private function showRecaptcha()
     {
         Log::Debug('CaptchaControl using Recaptcha');
-        require_once(ROOT_DIR . 'lib/external/recaptcha/recaptchalib.php');
 
         $publicKey = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_PUBLIC_KEY);
 
-        $response = '<script src=\'https://www.google.com/recaptcha/api.js\'></script>';
-        $response .='<div class="g-recaptcha" data-sitekey="' . $publicKey . '"></div>';
+        $response = '<script src="https://www.google.com/recaptcha/api.js?render=' . $publicKey . '"></script>';
+        $response .= '<input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">';
+        $response .= '<script> grecaptcha.ready(function () { grecaptcha.execute(\''. $publicKey .'\', { action: \'submit\' }).then(function (token) { var captcha = document.getElementById(\'g-recaptcha-response\'); captcha.value = token;})}); </script>';
 
         echo $response;
     }
 
-    private function showSecurimage()
+    private function showCaptcha()
     {
         Log::Debug('CaptchaControl using Securimage');
         $url = CaptchaService::Create()->GetImageUrl();
