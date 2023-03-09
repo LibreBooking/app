@@ -57,3 +57,5 @@ Thank you to the following projects and libraries
 - [Select2](#)
 - [Owl](#)
 - [Font Awesome](#)
+- [Gregwar/captcha](#)
+- [Monolog](#)
