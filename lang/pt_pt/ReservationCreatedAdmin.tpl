@@ -7,8 +7,8 @@
         {$CreatedBy}
 		<br/>
     {/if}
-	<strong>Start:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
-	<strong>Início:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
+	<strong>Início:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
+	<strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}<br/>
 	<strong>Título:</strong> {$Title}<br/>
 	<strong>Descrição:</strong> {$Description|nl2br}
     {if $Attributes|default:array()|count > 0}
