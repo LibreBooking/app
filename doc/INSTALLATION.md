@@ -2,7 +2,17 @@
 
 Note: for users without web hosting service or existing environment, packages like [XAMMP](http://www.apachefriends.org/en/index.html) or [WampServer](http://www.wampserver.com/en/) can help you get set up quickly.
 
-## Fresh Installation
+# Fresh Installation
+
+## Server Configuration
+In an Apache or simlar server environment, the following modules (or their equivalents) should be enabled for proper operation of the LibreBooking application:
+* headers
+* rewrite
+
+These modules are often not enabled by default and can be enabled in an **Apache2** environment as follows:<br>
+```$ sudo a2enmod headers```<br>
+```$ sudo a2enmod rewrite```<br>
+```$ sudo service apache2 restart```
 
 ## Application Deployment to Server
 
