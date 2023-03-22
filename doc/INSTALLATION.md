@@ -5,11 +5,14 @@ Note: for users without web hosting service or existing environment, packages li
 # Fresh Installation
 
 ## Server Configuration
-In an **Apache** or similar server environment, the following modules (or their equivalents) should be enabled for proper operation of the LibreBooking application:
+In an **Apache** or similar server environment, some required modules for LibreBooking may not be enabled by default. The following modules (or their equivalents) are often not enabled as part of a standard installation but should be enabled for proper operation of the LibreBooking application:
 * headers
 * rewrite
 
-These modules are often not enabled by default and can be enabled in an **Apache2** environment as follows:<br>
+The enabled modules in an **Apache2** environment can be verified as follows:<br>
+```$ apachectl -M```<br>
+
+If required modules are not present in the enabled list, modules can be enabled in an **Apache2** environment as follows:<br>
 ```$ sudo a2enmod headers```<br>
 ```$ sudo a2enmod rewrite```<br>
 ```$ sudo service apache2 restart```
