@@ -5,7 +5,7 @@ Note: for users without web hosting service or existing environment, packages li
 # Fresh Installation
 
 ## Server Configuration
-In an Apache or simlar server environment, the following modules (or their equivalents) should be enabled for proper operation of the LibreBooking application:
+In an **Apache** or similar server environment, the following modules (or their equivalents) should be enabled for proper operation of the LibreBooking application:
 * headers
 * rewrite
 
