@@ -128,9 +128,10 @@ class ResourcesWebService
      * @response ResourcesAvailabilityResponse
      * @return void
      */
-    public function GetAvailability($resourceId = null)
+    public function GetAvailability()
     {
         $dateQueryString = $this->server->GetQueryString(WebServiceQueryStringKeys::DATE_TIME);
+        $resourceId = $this->server->GetQueryString(WebServiceQueryStringKeys::RESOURCE_ID);
 
         if (!empty($dateQueryString)) {
             $requestedTime = WebServiceDate::GetDate($dateQueryString, $this->server->GetSession());
@@ -144,7 +145,7 @@ class ResourcesWebService
             $resources[] = $this->resourceRepository->LoadById($resourceId);
         }
 
-        $lastDateSearched = $requestedTime->AddDays(30);
+        $lastDateSearched = $requestedTime->AddDays(7);
         $reservations = $this->GetReservations($this->reservationRepository->GetReservations($requestedTime, $lastDateSearched, null, null, null, $resourceId));
 
         $resourceAvailability = [];
