@@ -117,7 +117,7 @@ $('.btnPDF').click(function (e) {
 				{/if}
 				],
 			{/if}
-			{if count($RepeatWeekdays) gt 0}
+			{if (is_array($RepeatWeekdays) && count($RepeatWeekdays) gt 0)}
 				[{ content: daysText, styles: { fontStyle: 'bold'}},
 				{ colSpan: 3, content: '{foreach from=$RepeatWeekdays item=day name=weekdaysLoop}{if $smarty.foreach.weekdaysLoop.last}{translate key=$DayNames[$day]}{else}{translate key=$DayNames[$day]},{/if} {/foreach}'},
 				],
