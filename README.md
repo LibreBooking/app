@@ -31,6 +31,12 @@ We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedschedu
 
 ## Release Notes
 
+#### 2.8.6
+
+Librebooking now has PHP8 support
+Many bugs, updates and even new features were added but the list is a bit long so for further details please check the commit history <https://github.com/LibreBooking/app/commits/develop>
+
+
 #### 2.8.5.5
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
