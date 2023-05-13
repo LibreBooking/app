@@ -15,7 +15,7 @@ Fin: {formatdate date=$EndDate key=reservation_email}<br/>
     Ressource: {$ResourceName}
     <br/>
 {/if}
-Titre: {$Title}<br/>
+Libellé: {$Title}<br/>
 Description: {$Description|nl2br}<br/>
 {$DeleteReason|nl2br}<br/>
 
