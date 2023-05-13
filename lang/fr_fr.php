@@ -113,7 +113,7 @@ class fr_fr extends en_gb
         $strings['NoDescriptionLabel'] = '(pas de description)';
         $strings['Notes'] = 'Notes';
         $strings['NoNotesLabel'] = '(pas de notes)';
-        $strings['NoTitleLabel'] = '(pas de titre)';
+        $strings['NoTitleLabel'] = '(pas de libellé)';
         $strings['UsageConfiguration'] = 'Règles d\'Utilisation';
         $strings['ChangeConfiguration'] = 'Modifier';
         $strings['ResourceMinLength'] = 'Les réservations doivent durer au minimum %s';
@@ -329,7 +329,7 @@ class fr_fr extends en_gb
         $strings['CustomAttributes'] = 'Attributs Personnalisés';
         $strings['AddAttribute'] = 'Ajouter un Attribut';
         $strings['EditAttribute'] = 'Mise à Jour d\'un Attribut';
-        $strings['DisplayLabel'] = 'Titre affiché';
+        $strings['DisplayLabel'] = 'Libellé affiché';
         $strings['Type'] = 'Type';
         $strings['Required'] = 'Obligatoire';
         $strings['ValidationExpression'] = 'Expression de Validation ';
@@ -343,7 +343,7 @@ class fr_fr extends en_gb
         $strings['CategoryReservation'] = 'Réservation';
         $strings['CategoryGroup'] = 'Groupe';
         $strings['SortOrder'] = 'Tri';
-        $strings['Title'] = 'Titre';
+        $strings['Title'] = 'Libellé';
         $strings['AdditionalAttributes'] = 'Attribut supplémentaire';
         $strings['True'] = 'Vrai';
         $strings['False'] = 'Faux';
@@ -500,9 +500,9 @@ class fr_fr extends en_gb
         $strings['ResourceColor'] = 'Couleur de la Ressource';
         $strings['DateTime'] = 'Date Heure';
         $strings['AutoReleaseNotification'] = 'Libéré automatiquement dans %s minutes sans confirmation';
-        $strings['RequiresCheckInNotification'] = 'Requiert un check in/out';
-        $strings['NoCheckInRequiredNotification'] = 'Ne requiert pas de check in/out';
-        $strings['RequiresApproval'] = 'Requiert Accord';
+        $strings['RequiresCheckInNotification'] = 'Nécessite un check in/out';
+        $strings['NoCheckInRequiredNotification'] = 'Ne nécessite pas de check in/out';
+        $strings['RequiresApproval'] = 'Nécessite un ccord';
         $strings['CheckingIn'] = 'Check In';
         $strings['CheckingOut'] = 'Check Out';
         $strings['CheckIn'] = 'Check In';
@@ -521,8 +521,8 @@ class fr_fr extends en_gb
         $strings['ResourceDisplayPrompt'] = 'Ressource à afficher';
         $strings['Credits'] = 'Crédits';
         $strings['AvailableCredits'] = 'Credits Disponibles';
-        $strings['CreditUsagePerSlot'] = 'Requiert %s crédits per créneau (hors affluence)';
-        $strings['PeakCreditUsagePerSlot'] = 'Requiert %s crédits par créneau (affluence)';
+        $strings['CreditUsagePerSlot'] = 'Nécessite %s crédits per créneau (hors affluence)';
+        $strings['PeakCreditUsagePerSlot'] = 'Nécessite %s crédits par créneau (affluence)';
         $strings['CreditsRule'] = 'Vous n\'avez pas suffisamment de crédits. Crédits requis: %s. Credits comptabilisés: %s';
         $strings['PeakTimes'] = 'Heures d\'affluence';
         $strings['AllYear'] = 'Toute l\'année';
@@ -846,7 +846,7 @@ class fr_fr extends en_gb
         $strings['ScheduleAvailabilityError'] = 'Ce planning est disponible entre %s et %s';
         $strings['ReservationNotFoundError'] = 'Réservation non trouvée';
         $strings['ReservationNotAvailable'] = 'Réservation non disponible';
-        $strings['TitleRequiredRule'] = 'Le titre de la réservation est requis';
+        $strings['TitleRequiredRule'] = 'Le libellé de la réservation est requis';
         $strings['DescriptionRequiredRule'] = 'La description de la réservation est requise';
         $strings['WhatCanThisGroupManage'] = 'Que peut gérer ce groupe?';
         $strings['ReservationParticipationActivityPreference'] = 'quand quelqu\'un rejoint ou quitte ma réservation';
@@ -965,7 +965,7 @@ class fr_fr extends en_gb
         $strings['ReservationCreatedAdminSubjectWithResource'] = 'Notification: Réservation créée pour %s';
         $strings['ReservationUpdatedAdminSubjectWithResource'] = 'Notification: Réservation mise à jour pour %s';
         $strings['ReservationDeleteAdminSubjectWithResource'] = 'Notification: Réservation supprimée pour %s';
-        $strings['ReservationApprovalAdminSubjectWithResource'] = 'Notification: Réservation pour %s requiert votre accord';
+        $strings['ReservationApprovalAdminSubjectWithResource'] = 'Notification: Réservation pour %s nécessite votre accord';
         $strings['ParticipantAddedSubjectWithResource'] = '%s vous a ajouté à la réservation pour %s';
         $strings['ParticipantUpdatedSubjectWithResource'] = '%s a mis à jour la réservation pour %s';
         $strings['ParticipantDeletedSubjectWithResource'] = '%s a supprimé la réservation pour %s';
