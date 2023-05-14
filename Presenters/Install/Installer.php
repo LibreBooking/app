@@ -33,6 +33,7 @@ class Installer
         $database_name = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
         $database_user = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
         $database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
+        $timezone = $config->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
 
         $create_database = new MySqlScript(ROOT_DIR . 'database_schema/create-db.sql');
         $create_database->Replace('librebooking', $database_name);
@@ -48,6 +49,7 @@ class Installer
 
         $create_schema = new MySqlScript(ROOT_DIR . 'database_schema/create-schema.sql');
         $populate_data = new MySqlScript(ROOT_DIR . 'database_schema/create-data.sql');
+        $populate_data->Replace('America/New_York', $timezone);
 
         if ($should_create_db) {
             $results[] = $this->ExecuteScript($hostname, 'mysql', $this->user, $this->password, $create_database);
