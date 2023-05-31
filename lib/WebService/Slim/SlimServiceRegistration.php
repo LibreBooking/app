@@ -103,6 +103,11 @@ class SlimAdminServiceRegistration extends SlimSecureServiceRegistration
 
 class SlimServiceMetadata
 {
+    public $description;
+    public $return;
+    public $request;
+    public $name;
+
     public function __construct($callback)
     {
         if (is_object($callback[0])) {
@@ -117,7 +122,7 @@ class SlimServiceMetadata
         $this->name = isset($doc['name']) ? $doc['name'] : null;
         $this->description = isset($doc['description']) ? $doc['description'] : null;
         $this->return = $doc['response'];
-        $this->request = $doc['request'];
+        $this->request = isset($doc['request']) ? $doc['request'] : null;
     }
 
     /**
