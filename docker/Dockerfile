@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.1-apache
 
 WORKDIR "/var/www/html"
 
@@ -15,3 +15,4 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 RUN a2enmod rewrite
+RUN a2enmod headers
