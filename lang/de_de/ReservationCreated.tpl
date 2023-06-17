@@ -59,5 +59,5 @@
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Reservierung ansehen</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Zum Kalender hinzufügen</a> |
-	<a href="{$ScriptUrl}">Anmelden bei LibreBooking</a>
+	<a href="{$ScriptUrl}">Anmelden bei {$AppTitle}</a>
 
