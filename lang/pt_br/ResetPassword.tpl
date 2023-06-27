@@ -1,8 +1,11 @@
-Esta � sua senha tempor�ria no LibreBooking: {$TemporaryPassword}
+﻿<p>
+    Aqui está sua senha temporária em {$AppTitle}: {$TemporaryPassword}
+</p>
 
-<br/>
+<p>
+    Sua senha antiga não funcionará mais.
+</p>
 
-Sua senha antiga n�o funcionar� mais.
-
-<a href="{$ScriptUrl}">Fa�a login no LibreBooking</a> e altere sua senha o mais r�pido poss�vel.
-
+<p>
+    Por favor, <a href="{$ScriptUrl}">Acessar {$AppTitle}</a> e altere sua senha o mais rápido possível.
+</p>

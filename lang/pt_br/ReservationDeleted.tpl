@@ -1,27 +1,65 @@
-	Detalhes da Reserva:
-	<br/>
-	<br/>
+﻿<p>
+    <strong>Detalhes da Reserva:</strong>
+</p>
 
-	Inicio: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
+<p>
+    <strong>Início:</strong> {formatdate date=$StartDate key=reservation_email}
+    <br />
+    <strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}
+    <br />
+    <strong>Título:</strong> {$Title}
+    <br />
+    <strong>Descrição:</strong> {$Description|nl2br}
+    {if $Attributes|default:array()|count > 0}
+        <br />
+        {foreach from=$Attributes item=attribute}
+        <div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+        {/foreach}
+    {/if}
+</p>
 
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
+<p>
+    {if $ResourceNames|default:array()|count > 1}
+        <strong>Recursos ({$ResourceNames|default:array()|count}):</strong>
+        {foreach from=$ResourceNames item=resourceName}
+            <br />
+            {$resourceName}
+        {/foreach}
+    {else}
+        <strong>Recurso:</strong> {$ResourceName}
+    {/if}
+</p>
 
-	T�tulo: {$Title}<br/>
-	Descri��o: {$Description|nl2br}<br/>
-{$DeleteReason|nl2br}<br/>
+{if $ResourceImage}
+    <div class="resource-image">
+        <img alt="{$ResourceName|escape}" src="{$ScriptUrl}/{$ResourceImage}" />
+    </div>
+{/if}
 
-	{if count($RepeatDates) gt 0}
-		<br/>
-		As seguintes datas foram removidas:
-		<br/>
-	{/if}
+{if count($RepeatRanges) gt 0}
+    <p>
+        A reserva ocorre nas seguintes datas ({$RepeatRanges|default:array()|count})
+        {foreach from=$RepeatRanges item=date name=dates}
+            <br />
+            {formatdate date=$date->GetBegin()}
+            {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+        {/foreach}
+    </p>
+{/if}
 
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
 
-	<a href="{$ScriptUrl}">Acessar o LibreBooking</a>
+{if !empty($CreatedBy)}
+    <p>
+        <strong>Removido por:</strong> {$CreatedBy}
+        <br />
+        <strong>Razão da remoção:</strong> {$DeleteReason|nl2br}
+    </p>
+{/if}
+
+<p>
+    <strong>Número de Referência:</strong> {$ReferenceNumber}
+</p>
+
+<p>
+    <a href="{$ScriptUrl}">Acessar {$AppTitle}</a>
+</p>
