@@ -1,34 +1,118 @@
-	Detalhes da Reserva:
-	<br/>
-	<br/>
+﻿<p>
+    <strong>Detalhes da Reserva:</strong>
+</p>
 
-	Usu�rio: {$UserName}<br/>
-	Inicio: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
-
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
-
-	T�tulo: {$Title}<br/>
-	Descri��o: {$Description}<br/>
-
-	{if count($RepeatDates) gt 0}
+<p>
+	<strong>Usuário:</strong> {$UserName}
+    <br/>
+    {if !empty($CreatedBy)}
+		<strong>Criada por:</strong> {$CreatedBy}
 		<br/>
-		A reserva ocorrer� nas seguintes datas:
-		<br/>
-	{/if}
+    {/if}
+	<strong>Início:</strong> {formatdate date=$StartDate key=reservation_email}
+    <br/>
+	<strong>Fim:</strong> {formatdate date=$EndDate key=reservation_email}
+    <br/>
+	<strong>Título:</strong> {$Title}
+    <br/>
+	<strong>Descrição:</strong> {$Description|nl2br}
+    {if $Attributes|default:array()|count > 0}
+        <br/>
+        {foreach from=$Attributes item=attribute}
+        <div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+        {/foreach}
+    {/if}
+</p>
 
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
+<p>
+    {if $ResourceNames|default:array()|count > 1}
+        <strong>Recursos ({$ResourceNames|default:array()|count}):</strong>
+        {foreach from=$ResourceNames item=resourceName}
+            <br/>
+            {$resourceName}
+        {/foreach}
+    {else}
+        <strong>Recurso:</strong> {$ResourceName}
+    {/if}
+</p>
 
-	{if $RequiresApproval}
-		<br/>
-		Um ou mais recursos necessitam de aprova��o antes do seu uso. Essa reserva ficar� pendente at� que a mesma seja aprovada.
-	{/if}
+{if $ResourceImage}
+	<div class="resource-image">
+        <img alt="{$ResourceName}" src="{$ScriptUrl}/{$ResourceImage}"/>
+    </div>
+{/if}
 
-	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Verifique esta reserva</a> | <a href="{$ScriptUrl}">Acessar o LibreBooking</a>
 
+{if $RequiresApproval}
+    <p>
+        Pelo menos um dos recursos reservados requer aprovação antes do uso.
+        Esta solicitação de ficará pendente até que seja aprovada ou rejeitada.
+    </p>
+{/if}
+
+{if $CheckInEnabled}
+	<p>
+        Pelo menos um dos recursos reservados exige check-in e check-out da reserva.
+        {if $AutoReleaseMinutes != null}
+			Essa reserva será cancelada caso o usuário não faça o check-in dentro de {$AutoReleaseMinutes} minutos após o horário de início programado.
+        {/if}
+	</p>
+{/if}
+
+{if count($RepeatRanges) gt 0}
+    <p>
+        A reserva ocorre nas seguintes datas ({$RepeatRanges|default:array()|count})
+        {foreach from=$RepeatRanges item=date name=dates}
+            <br />
+            {formatdate date=$date->GetBegin()}
+            {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+        {/foreach}
+    </p>
+{/if}
+
+{if ($Participants|default:array()|count > 0) or ($ParticipatingGuests|default:array()|count > 0)}
+    <p>
+        <strong>Participantes ({$Participants|default:array()|count + $ParticipatingGuests|default:array()|count}):</strong>
+        {foreach from=$Participants item=user}
+            <br />
+            {$user->FullName()}
+        {/foreach}
+        {foreach from=$ParticipatingGuests item=email}
+            <br />
+            {$email}
+        {/foreach}
+    </p>
+{/if}
+
+{if ($Invitees|default:array()|count > 0) or ($InvitedGuests|default:array()|count > 0)}
+    <p>
+        <strong>Convidados ({$Invitees|default:array()|count + $InvitedGuests|default:array()|count}):</strong>
+        {foreach from=$Invitees item=user}
+            <br />
+            {$user->FullName()}
+        {/foreach}
+        {foreach from=$InvitedGuests item=email}
+            <br />
+            {$email}
+        {/foreach}
+    </p>
+{/if}
+
+{if $Accessories|default:array()|count > 0}
+    <p>
+        <strong>Acessórios ({$Accessories|default:array()|count}):</strong>
+        {foreach from=$Accessories item=accessory}
+            <br />
+            ({$accessory->QuantityReserved}) {$accessory->Name}
+        {/foreach}
+    </p>
+{/if}
+
+<p>
+    <strong>Número de Referência:</strong> {$ReferenceNumber}
+</p>
+
+<p>
+    <a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
+    <a href="{$ScriptUrl}">Acessar {$AppTitle}</a>
+</p>
