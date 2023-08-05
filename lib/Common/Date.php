@@ -835,7 +835,7 @@ class DateDiff
 
     public function Minutes()
     {
-        $minutes = intval(($this->seconds / 60) % 60);
+        $minutes = intval($this->seconds / 60) % 60;
         return $minutes;
     }
 
