@@ -377,9 +377,9 @@ class DateTests extends TestBase
         //			echo $d->ToString();
         //			echo "\n";
         //		}
-//
+        //
         //		echo "\n";
-//
+        //
         //		foreach ($actual as $d)
         //		{
         //			echo $d->ToString();
@@ -549,9 +549,9 @@ class DateTests extends TestBase
         $this->assertTrue($d1->DateEquals($d2));
 
         //		$d1 = new Date('2014-09-14 02:00:00', 'America/Chicago');
-//		$d2 = new Date('2014-09-14 22:00:00', 'Europe/Berlin');
-//
-//		$this->assertFalse($d1->DateEquals($d2));
+        //		$d2 = new Date('2014-09-14 22:00:00', 'Europe/Berlin');
+        //
+        //		$this->assertFalse($d1->DateEquals($d2));
     }
 
     public function testCountsWeekdaysAndWeekends()
@@ -641,5 +641,47 @@ class DateTests extends TestBase
         $this->assertTrue($expected[1]->Equals($actual[1]), "Dates[1] are not equal");
         $this->assertTrue($expected[2]->Equals($actual[2]), "Dates[2] are not equal");
         $this->assertTrue($expected[3]->Equals($actual[3]), "Dates[3] are not equal");
+    }
+
+    public function testAddMonth()
+    {
+        $hour = 11;
+        $minute = 40;
+        $second = 22;
+        $month = 3;
+        $day = 21;
+        $year = 2007;
+
+        $now = new Date("$year-$month-$day $hour:$minute:$second");
+        $expectedTS = mktime($hour, $minute, $second, $month + 1, $day, $year);
+        $nextMonth = $now->AddMonths(1);
+
+        $this->assertEquals($expectedTS, $nextMonth->Timestamp());
+
+        $expectedTS = mktime($hour, $minute, $second, $month - 1, $day, $year);
+        $nextMonth = $now->AddMonths(-1);
+
+        $this->assertEquals($expectedTS, $nextMonth->Timestamp());
+    }
+
+    public function testAddYear()
+    {
+        $hour = 11;
+        $minute = 40;
+        $second = 22;
+        $month = 3;
+        $day = 21;
+        $year = 2007;
+
+        $now = new Date("$year-$month-$day $hour:$minute:$second");
+        $expectedTS = mktime($hour, $minute, $second, $month, $day, $year + 1);
+        $nextMonth = $now->AddYears(1);
+
+        $this->assertEquals($expectedTS, $nextMonth->Timestamp());
+
+        $expectedTS = mktime($hour, $minute, $second, $month, $day, $year - 1);
+        $nextMonth = $now->AddYears(-1);
+
+        $this->assertEquals($expectedTS, $nextMonth->Timestamp());
     }
 }

@@ -439,6 +439,10 @@ class Date
         return !$this->IsWeekday();
     }
 
+    private function getOperator(int $number): string
+    {
+        return $number < 0 ? " -" : " +";
+    }
     /**
      * @param int $days
      * @return Date
@@ -446,7 +450,7 @@ class Date
     public function AddDays($days)
     {
         // can also use DateTime->modify()
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $days . " days", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($days) . $days . " days", $this->timezone);
     }
 
     /**
@@ -455,7 +459,7 @@ class Date
      */
     public function AddMonths($months)
     {
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $months . " months", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($months) . $months . " months", $this->timezone);
     }
 
     /**
@@ -464,7 +468,7 @@ class Date
      */
     public function AddYears($years)
     {
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $years . " years", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($years) . $years . " years", $this->timezone);
     }
 
     /**
