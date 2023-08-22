@@ -1,11 +1,11 @@
 <p>{$To},</p>
 
-<p>A new user has registered with the following information:<br/>
+<p>ผู้ใช้ใหม่ได้ลงทะเบียนด้วยข้อมูลต่อไปนี้:<br/>
 Email: {$EmailAddress}<br/>
-Name: {$FullName}<br/>
-Phone: {$Phone}<br/>
-Organization: {$Organization}<br/>
-Position: {$Position}</p>
+ชื่อ: {$FullName}<br/>
+โทรศัพท์: {$Phone}<br/>
+หน่วยงาน: {$Organization}<br/>
+ตำแหน่ง: {$Position}</p>
 {if !empty($CreatedBy)}
-	Created by: {$CreatedBy}
+	สร้างโดย: {$CreatedBy}
 {/if}
