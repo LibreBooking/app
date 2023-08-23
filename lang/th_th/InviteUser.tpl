@@ -1,1 +1,1 @@
-{$FullName} has invited you to register for an account with {$AppTitle}. Please <a href="{$RegisterUrl}">register your account</a>.
+{$FullName} ได้เชิญคุณให้ลงทะเบียนสำหรับบัญชีกับ {$AppTitle} โปรด<a href="{$RegisterUrl}">ลงทะเบียนบัญชีของคุณ</a>
