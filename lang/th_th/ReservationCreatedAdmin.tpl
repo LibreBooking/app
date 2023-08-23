@@ -1,23 +1,23 @@
-Reservation Details:
+รายละเอียดการจอง:
 <br/>
 <br/>
 
-User: {$UserName}<br/>
+ผู้ใช้: {$UserName}<br/>
 {if !empty($CreatedBy)}
-	Created by: {$CreatedBy}
+	สร้างโดย: {$CreatedBy}
 	<br/>
 {/if}
-Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-Ending: {formatdate date=$EndDate key=reservation_email}<br/>
+เริ่มต้น: {formatdate date=$StartDate key=reservation_email}<br/>
+สิ้นสุด: {formatdate date=$EndDate key=reservation_email}<br/>
 {if $ResourceNames|default:array()|count > 1}
-	Resources:
+	ทรัพยากร:
 	<br/>
 	{foreach from=$ResourceNames item=resourceName}
 		{$resourceName}
 		<br/>
 	{/foreach}
 {else}
-	Resource: {$ResourceName}
+	ทรัพยากร: {$ResourceName}
 	<br/>
 {/if}
 
@@ -25,12 +25,12 @@ Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 	<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
 
-Title: {$Title}<br/>
-Description: {$Description|nl2br}
+ชื่อ: {$Title}<br/>
+รายละเอียด: {$Description|nl2br}
 
 {if count($RepeatRanges) gt 0}
     <br/>
-    The reservation occurs on the following dates:
+    การจองจะเกิดขึ้นในวันที่ดังต่อไปนี้:
     <br/>
 {/if}
 
@@ -42,7 +42,7 @@ Description: {$Description|nl2br}
 
 {if $Accessories|default:array()|count > 0}
 	<br/>
-	Accessories:
+	อุปกรร์เสริม:
 	<br/>
 	{foreach from=$Accessories item=accessory}
 		({$accessory->QuantityReserved}) {$accessory->Name}
@@ -59,20 +59,20 @@ Description: {$Description|nl2br}
 
 {if $RequiresApproval}
 	<br/>
-	At least one of the resources reserved requires approval before usage. Please ensure that this reservation request is approved or rejected.
+	ทรัพยากรที่สงวนไว้อย่างน้อยหนึ่งรายการต้องได้รับอนุมัติก่อนการใช้งาน โปรดตรวจสอบให้แน่ใจว่าคำขอจองนี้ได้รับการอนุมัติหรือปฏิเสธ
 {/if}
 
 {if $CheckInEnabled}
 	<br/>
-	At least one of the resources reserved requires that the user check in and out of the reservation.
+	ทรัพยากรที่สงวนไว้อย่างน้อยหนึ่งรายการกำหนดให้ผู้ใช้เช็คอินและออกจากการจอง
 	{if $AutoReleaseMinutes != null}
-		This reservation will be cancelled unless the user checks in within {$AutoReleaseMinutes} minutes after the scheduled start time.
+		การจองนี้จะถูกยกเลิกเว้นแต่ผู้ใช้จะเช็คอินภายใน {$AutoReleaseMinutes} นาทีหลังจากเวลาเริ่มต้นที่กำหนดไว้
 	{/if}
 {/if}
 
 <br/>
-Reference Number: {$ReferenceNumber}
+หมายเลขอ้างอิง: {$ReferenceNumber}
 
 <br/>
 <br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to LibreBooking</a>
+<a href="{$ScriptUrl}/{$ReservationUrl}">ดูการจองนี้</a> | <a href="{$ScriptUrl}">เข้าสู่ระบบ LibreBooking</a>
