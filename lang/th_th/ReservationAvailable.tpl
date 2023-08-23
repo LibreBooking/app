@@ -1,6 +1,6 @@
 {$FirstName},<br/>
-{$ResourceName} is currently available between {formatdate date=$StartDate key=res_popup} and {formatdate date=$EndDate key=res_popup}
+ขณะนี้ {$ResourceName} มีให้บริการระหว่างวันที่ {formatdate date=$StartDate key=res_popup} ถึง {formatdate date=$EndDate key=res_popup}
 <br/>
 <br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">Book now</a> |
-<a href="{$ScriptUrl}">Log in to LibreBooking</a>
+<a href="{$ScriptUrl}/{$ReservationUrl}">จองทันที</a> |
+<a href="{$ScriptUrl}">เข้าสู่ระบบ LibreBooking</a>
