@@ -20,7 +20,7 @@
 	<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
 
-Title: {$Title}<br/>
+ชื่อ: {$Title}<br/>
 รายละเอียด: {$Description|nl2br}
 
 {if count($RepeatRanges) gt 0}
