@@ -1,9 +1,9 @@
-Here is your temporary LibreBooking password: {$TemporaryPassword}
+นี่คือรหัสผ่าน LibreBooking ชั่วคราวของคุณ: {$TemporaryPassword}
 
 <br/>
 
-Your old password will no longer work.
+รหัสผ่านเก่าของคุณจะใช้งานไม่ได้อีกต่อไป
 <br/>
 <br/>
 
-Please <a href="{$ScriptUrl}">Log in to LibreBooking</a> and change your password as soon as possible.
+โปรด<a href="{$ScriptUrl}">เข้าสู่ระบบ LibreBooking</a> และเปลี่ยนรหัสผ่านโดยเร็วที่สุด
