@@ -4,7 +4,7 @@
 <br/>
 เริ่มต้น: {formatdate date=$StartDate key=reservation_email}<br/>
 สิ้นสุด: {formatdate date=$EndDate key=reservation_email}<br/>
-แหล่งข้อมูล: {$ResourceName}<br/>
+ทรัพยากร: {$ResourceName}<br/>
 ชื่อเรื่อง: {$Title}<br/>
 คำอธิบาย: {$Description|nl2br}
      {if $IsAutoRelease}
