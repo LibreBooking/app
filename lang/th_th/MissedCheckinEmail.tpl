@@ -1,17 +1,17 @@
-You missed your check in.<br/>
-Reservation Details:
-	<br/>
-	<br/>
-	Start: {formatdate date=$StartDate key=reservation_email}<br/>
-	End: {formatdate date=$EndDate key=reservation_email}<br/>
-	Resource: {$ResourceName}<br/>
-	Title: {$Title}<br/>
-	Description: {$Description|nl2br}
-    {if $IsAutoRelease}
-        <br/>
-        If you do not check in, this reservation will be automatically cancelled at {formatdate date=$AutoReleaseTime key=reservation_email}
-    {/if}
+คุณพลาดการเช็คอิน<br/>
+รายละเอียดการจอง:
 <br/>
 <br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-<a href="{$ScriptUrl}">Log in to LibreBooking</a>
+เริ่มต้น: {formatdate date=$StartDate key=reservation_email}<br/>
+สิ้นสุด: {formatdate date=$EndDate key=reservation_email}<br/>
+แหล่งข้อมูล: {$ResourceName}<br/>
+ชื่อเรื่อง: {$Title}<br/>
+คำอธิบาย: {$Description|nl2br}
+     {if $IsAutoRelease}
+         <br/>
+         หากคุณไม่เช็คอิน การจองนี้จะถูกยกเลิกโดยอัตโนมัติเมื่อ {formatdate date=$AutoReleaseTime key=reservation_email}
+     {/if}
+<br/>
+<br/>
+<a href="{$ScriptUrl}/{$ReservationUrl}">ดูการจองนี้</a> |
+<a href="{$ScriptUrl}">เข้าสู่ระบบ LibreBooking</a>
