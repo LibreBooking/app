@@ -1,19 +1,19 @@
-Reservation Details:
+รายละเอียดการจอง:
 <br/>
 <br/>
 
-User: {$UserName}<br/>
-Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-Ending: {formatdate date=$EndDate key=reservation_email}<br/>
+ชื่อผู้ใช้: {$UserName}<br/>
+เริ่มต้น: {formatdate date=$StartDate key=reservation_email}<br/>
+สิ้นสุด: {formatdate date=$EndDate key=reservation_email}<br/>
 {if $ResourceNames|default:array()|count > 1}
-    Resources:
+    ทรัพยากร:
     <br/>
     {foreach from=$ResourceNames item=resourceName}
         {$resourceName}
         <br/>
     {/foreach}
 {else}
-    Resource: {$ResourceName}
+    ทรัพยากร: {$ResourceName}
     <br/>
 {/if}
 
@@ -21,14 +21,14 @@ Ending: {formatdate date=$EndDate key=reservation_email}<br/>
     <div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
 
-Title: {$Title}<br/>
-Description: {$Description|nl2br}
+ชื่อ: {$Title}<br/>
+รายละเอียด: {$Description|nl2br}
 {$DeleteReason|nl2br}<br/>
 
 
 {if count($RepeatRanges) gt 0}
     <br/>
-    The following dates have been removed:
+    วันที่ต่อไปนี้ถูกลบออกแล้ว:
     <br/>
 {/if}
 
@@ -40,7 +40,7 @@ Description: {$Description|nl2br}
 
 {if $Accessories|default:array()|count > 0}
     <br/>
-    Accessories:
+    อุปกรร์เสริม:
     <br/>
     {foreach from=$Accessories item=accessory}
         ({$accessory->QuantityReserved}) {$accessory->Name}
@@ -50,4 +50,4 @@ Description: {$Description|nl2br}
 
 <br/>
 <br/>
-<a href="{$ScriptUrl}">Log in to LibreBooking</a>
+<a href="{$ScriptUrl}">เข้าสู่ระบบ LibreBooking</a>

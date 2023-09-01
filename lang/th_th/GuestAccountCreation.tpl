@@ -1,5 +1,5 @@
-<p>You have created a new LibreBooking account with the following information:<br/>
-Email: {$EmailAddress}<br/>
-Password: {$Password}<br/>
+<p>คุณได้สร้างบัญชี LibreBooking ใหม่พร้อมข้อมูลต่อไปนี้:<br/>
+อีเมล: {$EmailAddress}<br/>
+รหัสผ่าน: {$Password}<br/>
 
-<a href="{$ScriptUrl}">Log in to view your reservations and manage your account</a>
+<a href="{$ScriptUrl}">เข้าสู่ระบบเพื่อดูการจองและจัดการบัญชีของคุณ</a>
