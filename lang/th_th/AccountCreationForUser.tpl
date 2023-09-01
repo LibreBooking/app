@@ -1,14 +1,14 @@
 <p>{$FullName},</p>
 
-<p>An account for {$AppTitle} has been created for you with the following details:<br/>
+<p>บัญชีสำหรับ {$AppTitle} ถูกสร้างขึ้นสำหรับคุณโดยมีรายละเอียดดังต่อไปนี้:<br/>
 Email: {$EmailAddress}<br/>
-Name: {$FullName}<br/>
-Phone: {$Phone}<br/>
-Organization: {$Organization}<br/>
-Position: {$Position}<br/>
-Password: {$Password}</p>
+ชื่อ: {$FullName}<br/>
+โทรศัพท์: {$Phone}<br/>
+หน่วยงาน: {$Organization}<br/>
+ตำแหน่ง: {$Position}<br/>
+รหัสผ่าน: {$Password}</p>
 {if !empty($CreatedBy)}
-	Created by: {$CreatedBy}
+	สร้างโดย: {$CreatedBy}
 {/if}
 
-<a href="{$ScriptUrl}">Log In to {$AppTitle}</a>
+<a href="{$ScriptUrl}">เข้าสู่ระบบเพื่อ {$AppTitle}</a>
