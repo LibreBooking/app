@@ -43,13 +43,14 @@ interface IResourceDisplayPage extends IPage, IActionPage
     /**
      * @param IDailyLayout $dailyLayout
      * @param Date $today
+     * @param Date $reservationDate
      * @param ReservationListItem|null $current
      * @param ReservationListItem|null $next
      * @param ReservationListItem[] $upcoming
      * @param bool $requiresCheckin
      * @param string $checkinReferenceNumber
      */
-    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
+    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, Date $reservationDate, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
 
     /**
      * @param bool $availableNow
@@ -225,16 +226,22 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
     }
 
+    public function GetStartDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START_DATE);
+    }
+    
     public function BindResource(BookableResource $resource)
     {
         $this->Set('ResourceName', $resource->GetName());
         $this->Set('ResourceId', $resource->GetId());
     }
 
-    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber)
+    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, Date $reservationDate, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber)
     {
         $this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('period_time'));
         $this->Set('Today', $today);
+        $this->Set('ReservationDate', $reservationDate);
         $this->Set('Now', Date::Now());
         $this->Set('DailyLayout', $dailyLayout);
         $this->Set('SlotLabelFactory', new SlotLabelFactory(new NullUserSession()));
@@ -260,6 +267,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     public function DisplayResourceShell()
     {
         $this->Set('PublicResourceId', $this->GetPublicResourceId());
+        $this->Set('StartDate', $this->GetStartDate());
         $this->Display('ResourceDisplay/resource-display-shell.tpl');
     }
 
@@ -271,6 +279,11 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     public function GetBeginTime()
     {
         return $this->GetForm(FormKeys::BEGIN_PERIOD);
+    }
+
+    public function GetBeginDate()
+    {
+        return $this->GetForm(FormKeys::BEGIN_DATE);
     }
 
     public function GetEndTime()

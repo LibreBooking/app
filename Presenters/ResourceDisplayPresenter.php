@@ -145,7 +145,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         }
     }
 
-    public function DisplayResource($resourcePublicId)
+    public function DisplayResource($resourcePublicId, $daysFromNow = 0)
     {
         $resource = $this->resourceRepository->LoadByPublicId($resourcePublicId);
 
@@ -153,20 +153,30 @@ class ResourceDisplayPresenter extends ActionPresenter
             $this->page->DisplayNotEnabled();
             return;
         }
+
+        // StartDate is a delta from now -> transform to date
+        if (empty($daysFromNow)) {
+            $daysFromNow = 0;
+        }
+
         $scheduleId = $resource->GetScheduleId();
 
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $timezone = $schedule->GetTimezone();
 
         $now = Date::Now()->ToTimezone($timezone);
+        // TODO: check on allowed public range
+        $reservationDate = $now->AddDays($daysFromNow);
 
         $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
         $slots = $layout->GetLayout($now, true);
-        if ($slots[count($slots) - 1]->EndDate()->LessThanOrEqual($now)) {
-            $now = $now->AddDays(1)->GetDate();
-        }
+        // default if we cannot reserve for today anymore
+        // if ($daysFromNow == 0 and $slots[count($slots) - 1]->EndDate()->LessThanOrEqual($now)) {
+            // $now = $now->AddDays(1)->GetDate();
+        // }
 
-        $reservationSearchRange = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
+        $reservationSearchRange = new DateRange($reservationDate->GetDate()->ToUtc(), $reservationDate->AddDays(1)->GetDate()->ToUtc());
+        // $reservationSearchRange = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
         $reservations = $this->reservationService->GetReservations($reservationSearchRange, null, $timezone, $resource->GetResourceId());
 
         $attributes = $this->attributeService->GetReservationAttributes(
@@ -189,7 +199,7 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $dailyLayout = $this->dailyLayoutFactory->Create($reservations, $layout);
 
-        $reservationList = $reservations->OnDateForResource($now, $resource->GetId());
+        $reservationList = $reservations->OnDateForResource($reservationDate, $resource->GetId());
 
         /** @var ReservationListItem $next */
         $next = null;
@@ -223,7 +233,7 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $this->SetTermsOfService();
         $this->page->SetIsAvailableNow($current == null);
-        $this->page->DisplayAvailability($dailyLayout, $now, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
+        $this->page->DisplayAvailability($dailyLayout, $now, $reservationDate->GetDate(), $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
     }
 
     public function Reserve()
@@ -232,9 +242,10 @@ class ResourceDisplayPresenter extends ActionPresenter
         $resourceId = $this->page->GetResourceId();
         $email = $this->page->GetEmail();
 
-        $now = Date::Now()->ToTimezone($timezone)->Format('Y-m-d ');
-
-        $date = DateRange::Create($now . $this->page->GetBeginTime(), $now . $this->page->GetEndTime(), $timezone);
+        // TODO: check on allowed public range
+        $reservationDate = Date::Parse($this->page->GetBeginDate(), $timezone)->Format('Y-m-d ');
+        
+        $date = DateRange::Create($reservationDate . $this->page->GetBeginTime(), $reservationDate . $this->page->GetEndTime(), $timezone);
 
         $userSession = $this->guestUserService->CreateOrLoad($email);
         $resource = $this->resourceRepository->LoadById($resourceId);
@@ -272,8 +283,9 @@ class ResourceDisplayPresenter extends ActionPresenter
     {
         if ($dataRequest == 'display') {
             $resourceId = $this->page->GetPublicResourceId();
+            $startDate = $this->page->GetStartDate();
 
-            $this->DisplayResource($resourceId);
+            $this->DisplayResource($resourceId, $startDate);
         }
     }
 

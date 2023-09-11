@@ -10,6 +10,7 @@
 <div id="resource-display" class="resource-display">
     <div class="col-xs-7 left-panel">
         <div class="resource-display-name">{$ResourceName}</div>
+        <div class="date" style="text-align:left">{formatdate date=$ReservationDate key=schedule_daily timezone=$Timezone}</div>
 
         <div class="resource-display-current">
             {if $AvailableNow}
@@ -77,14 +78,14 @@
                         <table class="reservations">
                             <thead>
                             <tr>
-                                {foreach from=$DailyLayout->GetPeriods($Today, true) item=period}
-                                    <td class="reslabel" colspan="{$period->Span()}">{$period->Label($Today)}</td>
+                                {foreach from=$DailyLayout->GetPeriods($ReservationDate, true) item=period}
+                                    <td class="reslabel" colspan="{$period->Span()}">{$period->Label($ReservationDate)}</td>
                                 {/foreach}
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                {assign var=slots value=$DailyLayout->GetLayout($Today, $ResourceId)}
+                                {assign var=slots value=$DailyLayout->GetLayout($ReservationDate, $ResourceId)}
                                 {foreach from=$slots item=slot}
                                     {assign var="referenceNumber" value=""}
                                     {if $slot->IsReserved()}
@@ -130,7 +131,7 @@
                         <select title="Begin" class="form-control" aria-describedby="starttime-addon"
                                 id="beginPeriod" {formname key=BEGIN_PERIOD}>
                             {foreach from=$slots item=slot}
-                                {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
+                                {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
                                     <option value="{$slot->Begin()}">{$slot->Begin()->Format($TimeFormat)}</option>
                                 {/if}
                             {/foreach}
@@ -144,7 +145,7 @@
                         <select title="End" class="form-control input-lg" aria-describedby="endtime-addon"
                                 id="endPeriod" {formname key=END_PERIOD}>
                             {foreach from=$slots item=slot}
-                                {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
+                                {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
                                     <option value="{$slot->End()}">{$slot->End()->Format($TimeFormat)}</option>
                                 {/if}
                             {/foreach}
@@ -196,6 +197,7 @@
             <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
             <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
             <input type="hidden" {formname key=TIMEZONE} value="{$Timezone}"/>
+            <input type="hidden" {formname key=BEGIN_DATE} value="{$ReservationDate}"/>
         </form>
     </div>
 

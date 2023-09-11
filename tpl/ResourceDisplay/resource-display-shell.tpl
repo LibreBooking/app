@@ -18,7 +18,7 @@
 		var resourceDisplay = new ResourceDisplay();
 		resourceDisplay.initDisplay(
                 {
-                    url: '{$smarty.server.SCRIPT_NAME}?dr=resource&rid={$PublicResourceId}&dr=display',
+                    url: '{$smarty.server.SCRIPT_NAME}?dr=resource&rid={$PublicResourceId}&dr=display&sd={$StartDate}',
                     userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}&as=1",
                     allowAutocomplete: {if $AllowAutocomplete}true{else}false{/if}
                 }
