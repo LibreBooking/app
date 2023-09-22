@@ -277,7 +277,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         $this->Set('InitialDate', $this->GetStartDate()->Format('Y-m-d H:i:s'));
         $futureDays = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_PUBLIC_FUTURE_DAYS, new IntConverter());
         if ($futureDays == 0) {
-            $futureDays = 7;
+            $futureDays = 1;
         }
         $this->Set('MaxFutureDate', Date::Now()->AddDays($futureDays-1));
         $this->Display('ResourceDisplay/resource-display-shell.tpl');

@@ -243,29 +243,32 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $maxFutureDays = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_PUBLIC_FUTURE_DAYS, new IntConverter());
         if ($maxFutureDays == 0) {
-            $maxFutureDays = 7;
+            $maxFutureDays = 1;
         }
         $maxDate = Date::Now()->ToTimezone($timezone)->AddDays($maxFutureDays+1)->GetDate();
-        if ($date->GetBegin()->GreaterThan($maxDate)) {
-            // TODO: throw error
-            return;
-        }
-
-        $userSession = $this->guestUserService->CreateOrLoad($email);
-        $resource = $this->resourceRepository->LoadById($resourceId);
 
         $resultCollector = new ReservationResultCollector();
-        $series = ReservationSeries::Create($userSession->UserId, $resource, Resources::GetInstance()->GetString('AdHocMeeting'), Resources::GetInstance()->GetString('AdHocMeeting'), $date, new RepeatNone(), $userSession);
+        
+        if ($date->GetBegin()->GreaterThan($maxDate)) {
+            $resultCollector->SetSaveSuccessfulMessage(false);
+            $resultCollector->SetErrors(["Unauthorized"]);
+            $success = false;
+        }else{
 
-        $series->AcceptTerms($this->page->GetTermsOfServiceAcknowledgement());
+            $userSession = $this->guestUserService->CreateOrLoad($email);
+            $resource = $this->resourceRepository->LoadById($resourceId);
 
-        $attributes = $this->page->GetAttributes();
-        foreach ($attributes as $attribute) {
-            $series->AddAttributeValue(new AttributeValue($attribute->Id, $attribute->Value));
+            $series = ReservationSeries::Create($userSession->UserId, $resource, Resources::GetInstance()->GetString('AdHocMeeting'), Resources::GetInstance()->GetString('AdHocMeeting'), $date, new RepeatNone(), $userSession);
+
+            $series->AcceptTerms($this->page->GetTermsOfServiceAcknowledgement());
+
+            $attributes = $this->page->GetAttributes();
+            foreach ($attributes as $attribute) {
+                $series->AddAttributeValue(new AttributeValue($attribute->Id, $attribute->Value));
+            }
+
+            $success = $this->GetHandler($userSession)->Handle($series, $resultCollector);
         }
-
-        $success = $this->GetHandler($userSession)->Handle($series, $resultCollector);
-
         $this->page->SetReservationSaveResults($success, $resultCollector);
     }
 
