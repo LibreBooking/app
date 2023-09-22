@@ -228,7 +228,14 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
 
     public function GetStartDate()
     {
-        return $this->GetQuerystring(QueryStringKeys::START_DATE);
+        $userTimezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+        $parsedDate = $this->GetQuerystring(QueryStringKeys::START_DATE);
+        if (!empty($parsedDate)) {
+            $startDate = Date::Parse($parsedDate, $userTimezone);
+        }else{
+            $startDate = Date::Now()->ToTimezone($userTimezone);
+        }
+        return $startDate;
     }
     
     public function BindResource(BookableResource $resource)
@@ -267,7 +274,12 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     public function DisplayResourceShell()
     {
         $this->Set('PublicResourceId', $this->GetPublicResourceId());
-        $this->Set('StartDate', $this->GetStartDate());
+        $this->Set('InitialDate', $this->GetStartDate()->Format('Y-m-d H:i:s'));
+        $futureDays = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_PUBLIC_FUTURE_DAYS, new IntConverter());
+        if ($futureDays == 0) {
+            $futureDays = 7;
+        }
+        $this->Set('MaxFutureDate', Date::Now()->AddDays($futureDays-1));
         $this->Display('ResourceDisplay/resource-display-shell.tpl');
     }
 

@@ -10,7 +10,6 @@
 <div id="resource-display" class="resource-display">
     <div class="col-xs-7 left-panel">
         <div class="resource-display-name">{$ResourceName}</div>
-        <div class="date" style="text-align:left">{formatdate date=$ReservationDate key=schedule_daily timezone=$Timezone}</div>
 
         <div class="resource-display-current">
             {if $AvailableNow}
@@ -45,8 +44,7 @@
         </div>
     </div>
     <div class="col-xs-5 right-panel">
-        <div class="time">{formatdate date=$Now key=period_time timezone=$Timezone}</div>
-        <div class="date">{formatdate date=$Now key=schedule_daily timezone=$Timezone}</div>
+        <div class="date">{formatdate date=$ReservationDate key=schedule_daily timezone=$Timezone}</div>
         <div class="upcoming-reservations">
             <div class="resource-display-heading">{translate key=UpcomingReservations}</div>
             {if $UpcomingReservations|default:array()|count > 0}

@@ -145,7 +145,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         }
     }
 
-    public function DisplayResource($resourcePublicId, $daysFromNow = 0)
+    public function DisplayResource($resourcePublicId, $startDate)
     {
         $resource = $this->resourceRepository->LoadByPublicId($resourcePublicId);
 
@@ -154,29 +154,25 @@ class ResourceDisplayPresenter extends ActionPresenter
             return;
         }
 
-        // StartDate is a delta from now -> transform to date
-        if (empty($daysFromNow)) {
-            $daysFromNow = 0;
-        }
-
         $scheduleId = $resource->GetScheduleId();
 
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $timezone = $schedule->GetTimezone();
 
         $now = Date::Now()->ToTimezone($timezone);
-        // TODO: check on allowed public range
-        $reservationDate = $now->AddDays($daysFromNow);
 
         $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
         $slots = $layout->GetLayout($now, true);
-        // default if we cannot reserve for today anymore
-        // if ($daysFromNow == 0 and $slots[count($slots) - 1]->EndDate()->LessThanOrEqual($now)) {
-            // $now = $now->AddDays(1)->GetDate();
-        // }
+        if(!empty($startDate)){
+            $reservationDate = $startDate;
+        }else{
+            $reservationDate = $now;
+            if ($slots[count($slots) - 1]->EndDate()->LessThanOrEqual($now)) {
+                $now = $now->AddDays(1)->GetDate();
+            }
+        }
 
         $reservationSearchRange = new DateRange($reservationDate->GetDate()->ToUtc(), $reservationDate->AddDays(1)->GetDate()->ToUtc());
-        // $reservationSearchRange = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
         $reservations = $this->reservationService->GetReservations($reservationSearchRange, null, $timezone, $resource->GetResourceId());
 
         $attributes = $this->attributeService->GetReservationAttributes(
@@ -242,10 +238,18 @@ class ResourceDisplayPresenter extends ActionPresenter
         $resourceId = $this->page->GetResourceId();
         $email = $this->page->GetEmail();
 
-        // TODO: check on allowed public range
         $reservationDate = Date::Parse($this->page->GetBeginDate(), $timezone)->Format('Y-m-d ');
-        
         $date = DateRange::Create($reservationDate . $this->page->GetBeginTime(), $reservationDate . $this->page->GetEndTime(), $timezone);
+
+        $maxFutureDays = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_PUBLIC_FUTURE_DAYS, new IntConverter());
+        if ($maxFutureDays == 0) {
+            $maxFutureDays = 7;
+        }
+        $maxDate = Date::Now()->ToTimezone($timezone)->AddDays($maxFutureDays+1)->GetDate();
+        if ($date->GetBegin()->GreaterThan($maxDate)) {
+            // TODO: throw error
+            return;
+        }
 
         $userSession = $this->guestUserService->CreateOrLoad($email);
         $resource = $this->resourceRepository->LoadById($resourceId);
@@ -284,7 +288,6 @@ class ResourceDisplayPresenter extends ActionPresenter
         if ($dataRequest == 'display') {
             $resourceId = $this->page->GetPublicResourceId();
             $startDate = $this->page->GetStartDate();
-
             $this->DisplayResource($resourceId, $startDate);
         }
     }
