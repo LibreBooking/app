@@ -368,9 +368,9 @@ class Net_LDAP2_Entry extends PEAR
             do {
                 if (empty($attr)) {
                     $ber  = null;
-                    $attr = @ldap_first_attribute($this->_link, $this->_entry, $ber);
+                    $attr = @ldap_first_attribute($this->_link, $this->_entry);
                 } else {
-                    $attr = @ldap_next_attribute($this->_link, $this->_entry, $ber);
+                    $attr = @ldap_next_attribute($this->_link, $this->_entry);
                 }
                 if ($attr) {
                     $func = 'ldap_get_values'; // standard function to fetch value
