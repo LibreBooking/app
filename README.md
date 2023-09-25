@@ -15,7 +15,7 @@ This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBoo
 
 ## Prerequisites
 
-- PHP 7.0 or greater
+- PHP 8.1 or greater
 - MySQL 5.5 or greater
 - Web server (Apache, IIS)
 
@@ -41,6 +41,9 @@ We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedschedu
 09/03/2023 - The ReCaptcha integration has been updated to v3, you will need to generate new keys for your website if you are using it on your website.
 
 ## Release Notes
+
+#### 2.8.6.1
+Mainly Bug fixes, special mention for the ldap plugin, more details at <https://github.com/LibreBooking/app/commits/develop>
 
 #### 2.8.6
 
