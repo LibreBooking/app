@@ -2926,3 +2926,13 @@ ul.jqtree-tree .jqtree-toggler {
 #page-resource-display-resource #validationErrors {
   text-align: left;
 }
+#page-resource-display-resource .date-picker {
+  position: absolute;
+  top: 72px;
+  z-index: 999;
+  left: 48px;
+}
+#page-resource-display-resource .date-picker .date{
+  text-align: left;
+}
+

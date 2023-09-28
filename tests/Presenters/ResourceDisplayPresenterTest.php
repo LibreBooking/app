@@ -475,7 +475,7 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
         return $this->_PublicResourceId;
     }
 
-    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber)
+    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, Date $reservationDate, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber)
     {
         $this->_DailyLayout = $dailyLayout;
         $this->_CurrentReservation = $current;

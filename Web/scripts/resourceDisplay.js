@@ -11,7 +11,9 @@ function ResourceDisplay(opts) {
         activateResourceDisplayForm: $('#activateResourceDisplayForm'),
         placeholder: $('#placeholder'),
         reservationPopup: $('#reservation-box-wrapper'),
-        reservationForm: $('#formReserve')
+        reservationForm: $('#formReserve'),
+        rawStartDate: $('#availabilityStartDate'),
+        startDate: $('#formattedBeginDate')
     };
 
     var _refreshEnabled = true;
@@ -56,6 +58,10 @@ function ResourceDisplay(opts) {
     ResourceDisplay.prototype.initDisplay = function (opts) {
 
         var url = opts.url;
+
+        if(_.isEmpty(elements.startDate.val())){
+            elements.rawStartDate.datepicker("setDate", new Date(opts.initialDate));
+        }
 
         refreshResource();
 
@@ -128,11 +134,15 @@ function ResourceDisplay(opts) {
             };
 
             var afterCheckin = function () {
-                refreshResource();
-                hideWait();
+                refreshResource(hideWait);
             };
 
             ajaxPost($('#formCheckin'), null, beforeCheckin, afterCheckin);
+        });
+
+        elements.startDate.on('change', function () {
+            showWait();
+            refreshResource(hideWait);
         });
 
         var beginIndex = 0;
@@ -162,10 +172,18 @@ function ResourceDisplay(opts) {
             _refreshEnabled = true;
         }
 
-        function refreshResource() {
-            if (!_refreshEnabled) {
-                return;
+        function refreshResource(next) {
+            if(!next){
+                next = function(){};
             }
+            if (!_refreshEnabled) {
+                return next();
+            }
+            var startDate = elements.startDate.val();
+            if(!_.isEmpty(startDate)){
+                url = opts.url + "&sd=" + startDate
+            }
+            
             ajaxGet(url, null, function (data) {
                 if (!_refreshEnabled) {
                     return;
@@ -208,6 +226,7 @@ function ResourceDisplay(opts) {
                         $('#emailAddress').val(ui.item.data.Email);
                     });
                 }
+                next()
             });
 
             function beforeCheckin() {
@@ -215,8 +234,7 @@ function ResourceDisplay(opts) {
             }
 
             function afterCheckin(data) {
-                refreshResource();
-                hideWait();
+                refreshResource(hideWait);
             }
         }
     };
