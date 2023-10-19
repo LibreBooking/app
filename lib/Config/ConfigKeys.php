@@ -80,6 +80,7 @@ class ConfigKeys
     public const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
     public const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
     public const PRIVACY_ALLOW_GUEST_BOOKING = 'allow.guest.reservations';
+    public const PRIVACY_PUBLIC_FUTURE_DAYS = 'public.future.days';
 
     public const NOTIFY_CREATE_RESOURCE_ADMINS = 'resource.admin.add';
     public const NOTIFY_CREATE_APPLICATION_ADMINS = 'application.admin.add';
