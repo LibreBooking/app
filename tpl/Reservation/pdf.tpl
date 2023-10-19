@@ -228,7 +228,7 @@ $('.btnPDF').click(function (e) {
 
 	var bodyAttributes = [[{ content: '{translate key="AdditionalAttributes"}', styles: { fontStyle: 'bold'}}, { content: ''}]];
 
-	if (Object.keys(allAttributes).length != 0) {
+	if (allAttributes && Object.keys(allAttributes).length != 0) {
 		for (var obj in allAttributes) {
 			if (allAttributes[obj][0] == "4") {
 				if (allAttributes[obj][2] == "1") {
