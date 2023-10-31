@@ -156,7 +156,7 @@ class es extends en_gb
         $strings['AllUsers'] = 'Todos los usuarios';
         $strings['AllGroups'] = 'Todos los grupos';
         $strings['AllSchedules'] = 'Todas las planificaciones';
-        $strings['UsernameOrEmail'] = 'Usuario DMSAS';
+        $strings['UsernameOrEmail'] = 'Usuario o email';
         $strings['Members'] = 'Miembros';
         $strings['QuickSlotCreation'] = 'Crear un intervalo de tiempo cada %s minutos entre %s y %s';
         $strings['ApplyUpdatesTo'] = 'Aplicar actualizaciones a';
