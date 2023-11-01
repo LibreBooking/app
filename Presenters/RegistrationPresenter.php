@@ -207,7 +207,7 @@ class RegistrationPresenter extends ActionPresenter
 
         $this->page->SetHomepages($homepageValues, $homepageOutput);
 
-        $homepageId = 1;
+        $homepageId = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE, new IntConverter());
         if ($this->page->IsPostBack()) {
             $homepageId = $this->page->GetHomepage();
         }
