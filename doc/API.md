@@ -2,8 +2,7 @@
 
 A dynamically generated API documentation Page can be found by opening `<librebooking-url>/Web/Services/index.php` (API has to be enabled in config)
 
-__Pass the following headers for all secure service calls: `X-LibreBooking-SessionToken` and `X-LibreBooking-UserId`__
-
+- [Getting Started With The API](#Getting-Started-With-The-API)
 - [Accessories](#Accessories)
 - [Accounts](#Accounts)
 - [Attributes](#Attributes)
@@ -13,6 +12,29 @@ __Pass the following headers for all secure service calls: `X-LibreBooking-Sessi
 - [Resources](#Resources)
 - [Schedules](#Schedules)
 - [Users](#Users)
+
+
+## Getting Started With the API
+
+### Authenticating to LibreBooking
+
+For all of the secure service calls it is required to be
+[Authenticated](#Authenticate). The basic steps are:
+
+1. Make a request to the [Authenticate](#Authenticate) POST API endpoint. The
+   POST data must be sent as JSON
+1. The result from the [Authenticate](#Authenticate) POST API call, if
+   successful, will contain the two values: `sessionToken` and `userId`
+1. When making secure service calls the following headers must be set:
+    1.  `X-LibreBooking-SessionToken` set to the value of `sessionToken`
+        returned by the [Authenticate](#Authenticate) API call.
+    1.  `X-LibreBooking-UserId` set to the value of `userId` returned by the
+        [Authenticate](#Authenticate) API call.
+
+### POST Requests
+
+When making POST API requests it is required to send the POST data as JSON
+
 
 ## Accessories
 
