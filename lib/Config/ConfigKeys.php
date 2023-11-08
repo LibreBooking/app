@@ -159,6 +159,10 @@ class ConfigKeys
     public const LOGGING_LEVEL = 'level';
     public const LOGGING_SQL = 'sql';
 
+    public const CLIENT_ID = 'client.id';
+    public const CLIENT_SECRET = 'client.secret';
+    public const REDIRECT_URI = 'redirect.uri';
+
 }
 
 class ConfigSection
