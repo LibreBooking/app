@@ -2,12 +2,8 @@
 //Defining the root directory
 define('ROOT_DIR', '../');
 
-// //Loading config constants fom config file & load the google API
+//Loading config constants fom config file & load the google API
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
-
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
 
 // Creating  new Google Client, creates the URL and inserts the Client_ID,
 // and all the other informations needed to get the user information*/ 

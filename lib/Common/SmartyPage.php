@@ -52,11 +52,11 @@ class SmartyPage extends Smarty
         //$this->error_reporting = E_ALL & ~E_NOTICE;
         $this->muteUndefinedOrNullWarnings();
 
-        //$cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
+        $cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
 
         $this->caching = false;
-        //$this->compile_check = !$cacheTemplates;
-        //$this->force_compile = !$cacheTemplates;
+        $this->compile_check = !$cacheTemplates;
+        $this->force_compile = !$cacheTemplates;
 
         if (is_null($resources)) {
             $resources = Resources::GetInstance();
