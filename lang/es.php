@@ -720,7 +720,7 @@ class es extends en_gb
         $strings['MissedCheckout'] = 'Salida Perdida';
         $strings['Utilization'] = 'Uso';
         $strings['SpecificTime'] = 'Hora específica';
-        $strings['ReservationSeriesEndingPreference'] = 'Cuando mi serie de reservaciones recurrentes está por terminar';
+        $strings['ReservationSeriesEndingPreference'] = 'Cuando mi serie de reservas recurrentes está por terminar';
         $strings['NotAttending'] = 'No Asistir';
         $strings['ViewAvailability'] = 'Ver Disponibilidad';
         $strings['ReservationDetails'] = 'Detalles de la Reserva';
