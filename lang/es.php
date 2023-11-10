@@ -735,8 +735,8 @@ class es extends en_gb
         $strings['ScheduleConcurrentMaximumNone'] = 'No hay límite en la cantidad de recursos reservados simultáneamente';
         $strings['ScheduleMaximumConcurrent'] = 'Número máximo de recursos reservados simultáneamente';
         $strings['ScheduleMaximumConcurrentNote'] = 'Cuando se establezca, el número total de recursos que se pueden reservar simultáneamente para este horario estará limitado.';
-        $strings['ScheduleResourcesPerReservationMaximum'] = 'Each reservation is limited to a maximum of <b>%s</b> resources';
-        $strings['ScheduleResourcesPerReservationNone'] = 'Cada reserva está limitada a un máximo de <b>%s</b> recursos';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Cada reserva está limitada a un máximo de <b>%s</b> recursos';
+        $strings['ScheduleResourcesPerReservationNone'] = 'No hay límite en el número de recursos por reserva';
         $strings['ScheduleResourcesPerReservation'] = 'Número máximo de recursos por reserva';
         $strings['ResourceConcurrentReservations'] = 'Permitir %s reservas simultáneas';
         $strings['ResourceConcurrentReservationsNone'] = 'No permitir reservas simultáneas';
@@ -751,9 +751,9 @@ class es extends en_gb
         $strings['UpdateGroupsOnImport'] = 'Actualizar grupo existente si el nombre coincide';
         $strings['GroupsImportInstructions'] = '<ul><li>El archivo debe estar en formato CSV.</li><li>El nombre es obligatorio.</li><li>Las listas de miembros deben ser listas de correos electrónicos separados por comas.</li><li>Las listas de miembros vacías al actualizar grupos dejarán a los miembros sin cambios.</li><li>Las listas de permisos deben ser listas de nombres de recursos separados por comas.</li><li>Las listas de permisos vacías al actualizar grupos no modificarán los permisos existentes.</li><li>Utiliza la plantilla proporcionada como ejemplo.</li></ul>';
         $strings['PhoneRequired'] = 'El número de teléfono es obligatorio';
-        $strings['OrganizationRequired'] = 'Prganización es obligatoria';
-        $strings['PositionRequired'] = 'Posición es obligatoria';
-        $strings['GroupMembership'] = 'Menbresía de grupo';
+        $strings['OrganizationRequired'] = 'Organización es obligatoria';
+        $strings['PositionRequired'] = 'Cargo es obligatorio';
+        $strings['GroupMembership'] = 'Membresía de grupo';
         $strings['AvailableGroups'] = 'Grupos disponibles';
         $strings['CheckingAvailabilityError'] = 'No es posible obtener la disponibilidad de recursos - demasiados recursos';
         // End Strings
