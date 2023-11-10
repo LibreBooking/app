@@ -27,7 +27,7 @@ class ExternalAuthLoginPresenter
     public function PageLoad()
     {
         if ($this->page->GetType() == 'google') {
-            $this->ProcessSocialSingleSignOn('googleprofile.php');
+            $this->ProcessGoogleSingleSignOn();
         }
         if ($this->page->GetType() == 'fb') {
             $this->ProcessSocialSingleSignOn('fbprofile.php');
@@ -68,6 +68,42 @@ class ExternalAuthLoginPresenter
         );
 
         $this->authentication->Login($profile->email, new WebLoginContext(new LoginData()));
+        LoginRedirector::Redirect($this->page);
+    }
+
+    private function ProcessGoogleSingleSignOn()
+    {
+        
+        $email      = $_SESSION['email'];
+        $firstName  = $_SESSION['givenName'];
+        $lastName   = $_SESSION['familyName'];
+
+        $code = $_GET['code'];
+        Log::Debug('Logging in with google. Code=%s', $code);
+
+        $requiredDomainValidator = new RequiredEmailDomainValidator($email);
+        $requiredDomainValidator->Validate();
+        if (!$requiredDomainValidator->IsValid()) {
+            Log::Debug('Social login with invalid domain. %s', $email);
+            $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
+            return;
+        }
+
+        Log::Debug('Social login successful. Email=%s', $email);
+        $this->registration->Synchronize(new AuthenticatedUser($email,
+            $email,
+            $firstName,
+            $lastName,
+            Password::GenerateRandom(),
+            Resources::GetInstance()->CurrentLanguage,
+            Configuration::Instance()->GetDefaultTimezone(),
+            null,
+            null,
+            null),
+            false,
+            false);
+
+        $this->authentication->Login($email, new WebLoginContext(new LoginData()));
         LoginRedirector::Redirect($this->page);
     }
 }

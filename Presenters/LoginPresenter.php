@@ -122,6 +122,8 @@ class LoginPresenter
         $this->_page->SetPasswordResetUrl($this->authentication->GetPasswordResetUrl());
         $this->_page->SetAnnouncements($this->announcementRepository->GetFuture(Pages::ID_LOGIN));
         $this->_page->SetSelectedLanguage(Resources::GetInstance()->CurrentLanguage);
+
+        //$this->_page->SetGoogleUrl($this->LoadGoogleClient());
     }
 
     public function Login()
@@ -220,4 +222,22 @@ class LoginPresenter
             $this->_page->RegisterValidator('captcha', new CaptchaValidator($this->_page->GetCaptcha(), $this->captchaService));
         }
     }
+
+    // public function LoadGoogleClient(){
+    //     if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
+    //         $client = new Google\Client();
+    //         $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::CLIENT_ID));
+    //         $client->setClientSecret(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::CLIENT_SECRET));
+    //         $client->setRedirectUri(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::REDIRECT_URI));
+    //         $client->addScope("email");
+    //         $client->addScope("profile");
+
+    //         $GoogleUrl = $client->createAuthUrl();
+
+    //         session_start();
+    //         $_SESSION['client'] = $client;
+
+    //         return $GoogleUrl;
+    //     }
+    // }
 }

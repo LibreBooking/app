@@ -92,6 +92,11 @@ interface ILoginPage extends IPage, ILoginBasePage
      * @param Announcement[] $announcements
      */
     public function SetAnnouncements($announcements);
+
+    /**
+     *  
+     */
+    //public function SetGoogleUrl($URL);
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -280,4 +285,11 @@ class LoginPage extends Page implements ILoginPage
     {
         $this->Set('Announcements', $announcements);
     }
+
+    // public function SetGoogleUrl($googleUrl){
+    //     if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
+    //         $this->Set('GoogleUrl',$googleUrl);
+    //         $this->Set('testeSession',$_SESSION['client']);
+    //     }
+    // }
 }

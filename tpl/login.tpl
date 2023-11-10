@@ -98,8 +98,8 @@
 
 				{if $AllowGoogleLogin}
 					<div class="{$socialClass} social-login" id="socialLoginGoogle">
-						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state={$GoogleState}&redirect_uri=https://www.social.twinkletoessoftware.com/googleresume.php&response_type=code&client_id=531675809673-3sfvrchh6svd9bfl7m55dao8n4s6cqpc.apps.googleusercontent.com">
-							<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
+						<a href="{*$GoogleUrl*}google-auth.php">
+								<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
 						</a>
 					</div>
 				{/if}
