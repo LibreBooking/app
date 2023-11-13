@@ -95,22 +95,30 @@
 				{else}
 					{assign var=socialClass value="col-sm-12"}
 				{/if}
-
-				{if $AllowGoogleLogin}
-					<div class="{$socialClass} social-login" id="socialLoginGoogle">
-						<a href="{*$GoogleUrl*}google-auth.php">
-								<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
-						</a>
-					</div>
-				{/if}
-				{if $AllowFacebookLogin}
-					<div class="{$socialClass} social-login" id="socialLoginFacebook">
-						<a href="https://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
-							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
-						</a>
-					</div>
-				{/if}
+				<section style="display: flex; ">
+					{if $AllowGoogleLogin}
+						<div class="{$socialClass} social-login" id="socialLoginGoogle">
+							<a href="{$GoogleUrl}">
+									<img src="img/external/btn_google_signin_dark_normal_web.png" alt="TESTE"/>
+							</a>
+						</div>
+					{/if}
+					{if $AllowOfficeLogin}
+						<div class="{$socialClass} social-login" id="socialLoginOffice" class="container">
+							<a href="">
+								<img style="max-height:42px;" src="img/external/Office-logo.png" alt="Office"/>
+							</a>
+						</div>
+					{/if}
+					{if $AllowFacebookLogin}
+						<div class="{$socialClass} social-login" id="socialLoginFacebook">
+							<a href="https://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
+								<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
+							</a>
+						</div>
+					{/if}
 			</div>
+			</section>
 			<div id="login-footer" class="col-xs-12">
 				{if $ShowForgotPasswordPrompt}
 					<div id="forgot-password" class="col-xs-12 col-sm-6">

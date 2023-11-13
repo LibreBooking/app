@@ -123,7 +123,7 @@ class LoginPresenter
         $this->_page->SetAnnouncements($this->announcementRepository->GetFuture(Pages::ID_LOGIN));
         $this->_page->SetSelectedLanguage(Resources::GetInstance()->CurrentLanguage);
 
-        //$this->_page->SetGoogleUrl($this->LoadGoogleClient());
+        $this->_page->SetGoogleUrl($this->LoadGoogleClient());
     }
 
     public function Login()
@@ -223,21 +223,20 @@ class LoginPresenter
         }
     }
 
-    // public function LoadGoogleClient(){
-    //     if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
-    //         $client = new Google\Client();
-    //         $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::CLIENT_ID));
-    //         $client->setClientSecret(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::CLIENT_SECRET));
-    //         $client->setRedirectUri(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::REDIRECT_URI));
-    //         $client->addScope("email");
-    //         $client->addScope("profile");
-
-    //         $GoogleUrl = $client->createAuthUrl();
-
-    //         session_start();
-    //         $_SESSION['client'] = $client;
-
-    //         return $GoogleUrl;
-    //     }
-    // }
+    /**
+     * Checks in the config files if google authentication is active creating a new client if true and setting it's config keys.
+     * Returns the created google Url for the authentication  
+     */
+    public function LoadGoogleClient(){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
+            $client = new Google\Client();
+            $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_ID));
+            $client->setClientSecret(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_SECRET));
+            $client->setRedirectUri(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_REDIRECT_URI));
+            $client->addScope("email");
+            $client->addScope("profile");
+            $GoogleUrl = $client->createAuthUrl();
+            return $GoogleUrl;
+        }
+    }
 }

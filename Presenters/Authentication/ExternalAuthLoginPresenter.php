@@ -73,37 +73,55 @@ class ExternalAuthLoginPresenter
 
     private function ProcessGoogleSingleSignOn()
     {
+
+        $client = new Google\Client();
+        $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_ID));
+        $client->setClientSecret(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_SECRET));
+        $client->setRedirectUri(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_REDIRECT_URI));
+        $client->addScope("email");
+        $client->addScope("profile");
+
+        if (isset($_GET['code'])) {
+            //Token validations for the client
+            $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+            //set the acess token that it received
+            $client->setAccessToken($token['access_token']);
         
-        $email      = $_SESSION['email'];
-        $firstName  = $_SESSION['givenName'];
-        $lastName   = $_SESSION['familyName'];
+            //Using the Google API to get the user information 
+            $google_oauth = new Google\Service\Oauth2($client);
+            $google_account_info = $google_oauth->userinfo->get();
+            
+            //Save the informations needed to authenticate the login
+            $email =  $google_account_info->email;
+            $firstName = $google_account_info->given_name;
+            $lastName = $google_account_info->family_name;
+        
+            $code = $_GET['code'];
 
-        $code = $_GET['code'];
-        Log::Debug('Logging in with google. Code=%s', $code);
+            $requiredDomainValidator = new RequiredEmailDomainValidator($email);
+            $requiredDomainValidator->Validate();
+            if (!$requiredDomainValidator->IsValid()) {
+                Log::Debug('Social login with invalid domain. %s', $email);
+                $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
+                return;
+            }
 
-        $requiredDomainValidator = new RequiredEmailDomainValidator($email);
-        $requiredDomainValidator->Validate();
-        if (!$requiredDomainValidator->IsValid()) {
-            Log::Debug('Social login with invalid domain. %s', $email);
-            $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
-            return;
+            Log::Debug('Social login successful. Email=%s', $email);
+            $this->registration->Synchronize(new AuthenticatedUser($email,
+                $email,
+                $firstName,
+                $lastName,
+                Password::GenerateRandom(),
+                Resources::GetInstance()->CurrentLanguage,
+                Configuration::Instance()->GetDefaultTimezone(),
+                null,
+                null,
+                null),
+                false,
+                false);
+
+            $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+            LoginRedirector::Redirect($this->page);
         }
-
-        Log::Debug('Social login successful. Email=%s', $email);
-        $this->registration->Synchronize(new AuthenticatedUser($email,
-            $email,
-            $firstName,
-            $lastName,
-            Password::GenerateRandom(),
-            Resources::GetInstance()->CurrentLanguage,
-            Configuration::Instance()->GetDefaultTimezone(),
-            null,
-            null,
-            null),
-            false,
-            false);
-
-        $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-        LoginRedirector::Redirect($this->page);
     }
 }

@@ -96,7 +96,7 @@ interface ILoginPage extends IPage, ILoginBasePage
     /**
      *  
      */
-    //public function SetGoogleUrl($URL);
+    public function SetGoogleUrl($URL);
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -116,6 +116,7 @@ class LoginPage extends Page implements ILoginPage
 
         $this->Set('AllowFacebookLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter()));
         $this->Set('AllowGoogleLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter()));
+        $this->Set('AllowOfficeLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_OFFICE, new BooleanConverter()));
         $scriptUrl = Configuration::Instance()->GetScriptUrl();
         $parts = explode('://', $scriptUrl);
         $this->Set('Protocol', $parts[0]);
@@ -286,10 +287,13 @@ class LoginPage extends Page implements ILoginPage
         $this->Set('Announcements', $announcements);
     }
 
-    // public function SetGoogleUrl($googleUrl){
-    //     if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
-    //         $this->Set('GoogleUrl',$googleUrl);
-    //         $this->Set('testeSession',$_SESSION['client']);
-    //     }
-    // }
+    /**
+     * Sends the created google url in the presenter to the smarty page 
+     */
+    public function SetGoogleUrl($googleUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
+            session_start();
+            $this->Set('GoogleUrl',$googleUrl);
+        }
+    }
 }
