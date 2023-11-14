@@ -103,10 +103,10 @@
 							</a>
 						</div>
 					{/if}
-					{if $AllowOfficeLogin}
+					{if $AllowMicrosoftLogin}
 						<div class="{$socialClass} social-login" id="socialLoginOffice" class="container">
-							<a href="">
-								<img style="max-height:42px;" src="img/external/Office-logo.png" alt="Office"/>
+							<a href="{$MicrosoftUrl}">
+								<img style="max-height:42px;" src="img/external/microsoft-logo.jpeg" alt="Office"/>
 							</a>
 						</div>
 					{/if}

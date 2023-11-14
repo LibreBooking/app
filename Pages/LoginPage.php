@@ -97,6 +97,11 @@ interface ILoginPage extends IPage, ILoginBasePage
      *  
      */
     public function SetGoogleUrl($URL);
+
+    /**
+     *  
+     */
+    public function SetMicrosoftUrl($URL);
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -116,7 +121,7 @@ class LoginPage extends Page implements ILoginPage
 
         $this->Set('AllowFacebookLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter()));
         $this->Set('AllowGoogleLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter()));
-        $this->Set('AllowOfficeLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_OFFICE, new BooleanConverter()));
+        $this->Set('AllowMicrosoftLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT, new BooleanConverter()));
         $scriptUrl = Configuration::Instance()->GetScriptUrl();
         $parts = explode('://', $scriptUrl);
         $this->Set('Protocol', $parts[0]);
@@ -292,8 +297,16 @@ class LoginPage extends Page implements ILoginPage
      */
     public function SetGoogleUrl($googleUrl){
         if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
-            session_start();
             $this->Set('GoogleUrl',$googleUrl);
+        }
+    }
+
+    /**
+     * Sends the created microsoft url in the presenter to the smarty page 
+     */
+    public function SetMicrosoftUrl($microsoftUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT) == 'true'){
+            $this->Set('MicrosoftUrl',$microsoftUrl);
         }
     }
 }

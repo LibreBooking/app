@@ -124,6 +124,7 @@ class LoginPresenter
         $this->_page->SetSelectedLanguage(Resources::GetInstance()->CurrentLanguage);
 
         $this->_page->SetGoogleUrl($this->LoadGoogleClient());
+        $this->_page->SetMicrosoftUrl($this->LoadMicrosoftClient());
     }
 
     public function Login()
@@ -225,7 +226,7 @@ class LoginPresenter
 
     /**
      * Checks in the config files if google authentication is active creating a new client if true and setting it's config keys.
-     * Returns the created google Url for the authentication  
+     * Returns the created google url for the authentication  
      */
     public function LoadGoogleClient(){
         if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
@@ -237,6 +238,22 @@ class LoginPresenter
             $client->addScope("profile");
             $GoogleUrl = $client->createAuthUrl();
             return $GoogleUrl;
+        }
+    }
+
+    /**
+     * Checks in the config files if microsoft authentication is active creating the url if true with the respective keys
+     * Returns the created microsoft url for the authentication  
+     */
+    public function LoadMicrosoftClient(){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT) == 'true'){
+            $MicrosoftUrl = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?'
+                            .'client_id=' . urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_CLIENT_ID))
+                            .'&redirect_uri=' . urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_REDIRECT_URI))
+                            .'&scope=user.read'
+                            .'&response_type=code'
+                            .'&prompt=consent';
+            return $MicrosoftUrl;
         }
     }
 }
