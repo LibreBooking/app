@@ -32,6 +32,9 @@ class ExternalAuthLoginPresenter
         if ($this->page->GetType() == 'fb') {
             $this->ProcessSocialSingleSignOn('fbprofile.php');
         }
+        if ($this->page->GetType() == 'microsoft') {
+            $this->ProcessMicrosoftSingleSignOn();
+        }
     }
 
     private function ProcessSocialSingleSignOn($page)
@@ -73,7 +76,6 @@ class ExternalAuthLoginPresenter
 
     private function ProcessGoogleSingleSignOn()
     {
-
         $client = new Google\Client();
         $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_ID));
         $client->setClientSecret(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_SECRET));
@@ -96,8 +98,6 @@ class ExternalAuthLoginPresenter
             $firstName = $google_account_info->given_name;
             $lastName = $google_account_info->family_name;
         
-            $code = $_GET['code'];
-
             $requiredDomainValidator = new RequiredEmailDomainValidator($email);
             $requiredDomainValidator->Validate();
             if (!$requiredDomainValidator->IsValid()) {
@@ -107,7 +107,8 @@ class ExternalAuthLoginPresenter
             }
 
             Log::Debug('Social login successful. Email=%s', $email);
-            $this->registration->Synchronize(new AuthenticatedUser($email,
+            $this->registration->Synchronize(new AuthenticatedUser(
+                $email,
                 $email,
                 $firstName,
                 $lastName,
@@ -123,5 +124,85 @@ class ExternalAuthLoginPresenter
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
         }
+    }
+
+    private function ProcessMicrosoftSingleSignOn()
+    {        
+        if (isset($_GET['code'])) {
+            $code = filter_input(INPUT_GET, 'code');
+
+            $tokenEndpoint = 'https://login.microsoftonline.com/common/oauth2/v2.0/token';
+
+            $postData = [
+                'client_id' => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_CLIENT_ID),
+                'client_secret' => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_CLIENT_SECRET),
+                'redirect_uri' => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_REDIRECT_URI),
+                'code' => $code, // The authorization code obtained earlier
+                'grant_type' => 'authorization_code',
+                'scope' => 'user.read',
+            ];
+
+            $client = new \GuzzleHttp\Client();
+
+            $response = $client->post($tokenEndpoint, [
+                'form_params' => $postData,
+            ]);
+            
+            // Decode the JSON response
+            $tokenData = json_decode($response->getBody(), true);
+
+            // Extract the access token from the response
+            $accessToken = $tokenData['access_token'];
+            
+            //Get user information
+            $graphApiEndpoint = 'https://graph.microsoft.com/v1.0/me';
+
+            try{
+                // Make a GET request to the Microsoft Graph API endpoint
+                $response = $client->request('GET', $graphApiEndpoint, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $accessToken,
+                    ],
+                ]);
+            
+                // Decode the JSON response
+                $userData = json_decode($response->getBody(), true);
+            
+                // Handle the user data as needed
+                $email =  $userData['mail'];
+                $firstName = $userData['givenName'];;
+                $lastName = $userData['surname'];
+
+            }catch (\Exception $e) {
+                echo 'Error fetching user data from Microsoft Graph: ' . $e->getMessage();
+                return;
+            }
+            
+            //Process $userData as needed (e.g., create a user, log in, etc.)
+            $requiredDomainValidator = new RequiredEmailDomainValidator($email);
+            $requiredDomainValidator->Validate();
+            if (!$requiredDomainValidator->IsValid()) {
+                Log::Debug('Social login with invalid domain. %s', $email);
+                $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
+                return;
+            }
+            Log::Debug('Social login successful. Email=%s', $email);
+            $this->registration->Synchronize(new AuthenticatedUser(
+                $email,
+                $email,
+                $firstName,
+                $lastName,
+                Password::GenerateRandom(),
+                Resources::GetInstance()->CurrentLanguage,
+                Configuration::Instance()->GetDefaultTimezone(),
+                null,
+                null,
+                null),
+                false,
+                false);
+            $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+            LoginRedirector::Redirect($this->page);
+        }
+        
     }
 }
