@@ -13,7 +13,8 @@
         "monolog/monolog": "^2.9",
         "google/recaptcha": "1.2.4",
         "gregwar/captcha": "1.*",
-        "google/apiclient": "^2.0"
+        "google/apiclient": "^2.0",
+        "microsoft/microsoft-graph": "^2.0"
     },
     "scripts": {
         "install-tools": "phive install --trust-gpg-keys",
@@ -25,5 +26,10 @@
             "@lint"
         ],
         "sniffer:php8": "phpcs -p ./ --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --report-full=./php8-report.log --ignore=./vendor/*,./tools/*,./.git/*,./tpl_c/*,./build/*,./.phpdoc/*,./var/*,./Web/scripts/*,./Web/css/* --runtime-set testVersion 8.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

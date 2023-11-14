@@ -140,6 +140,7 @@ class ConfigKeys
 
     public const AUTHENTICATION_ALLOW_FACEBOOK = 'allow.facebook.login';
     public const AUTHENTICATION_ALLOW_GOOGLE = 'allow.google.login';
+    public const AUTHENTICATION_ALLOW_MICROSOFT = 'allow.microsoft.login';
     public const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
     public const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
     public const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
@@ -159,9 +160,13 @@ class ConfigKeys
     public const LOGGING_LEVEL = 'level';
     public const LOGGING_SQL = 'sql';
 
-    public const CLIENT_ID = 'client.id';
-    public const CLIENT_SECRET = 'client.secret';
-    public const REDIRECT_URI = 'redirect.uri';
+    public const GOOGLE_CLIENT_ID = 'google.client.id';
+    public const GOOGLE_CLIENT_SECRET = 'google.client.secret';
+    public const GOOGLE_REDIRECT_URI = 'google.redirect.uri';
+
+    public const MICROSOFT_CLIENT_ID = 'microsoft.client.id';
+    public const MICROSOFT_CLIENT_SECRET = 'microsoft.client.secret';
+    public const MICROSOFT_REDIRECT_URI = 'microsoft.redirect.uri';
 
 }
 

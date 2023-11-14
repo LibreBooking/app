@@ -213,6 +213,12 @@ $conf['settings']['logging']['sql'] = 'false'; //Set to true no enable the creat
 /**
 * Google login configuration
 */
-$conf['settings']['authentication']['redirect.uri'] = 'http://dev.librebooking.com/Web/external-auth.php'; 
+$conf['settings']['authentication']['redirect.uri'] = ''; 
 $conf['settings']['authentication']['client.id'] = ''; 
-$conf['settings']['authentication']['client.secret'] = ''; 
+$conf['settings']['authentication']['client.secret'] = '/Web/google-auth.php';
+/**
+ * Microsoft login configuration
+ */
+$conf['settings']['authentication']['office.client.id'] = '';
+$conf['settings']['authentication']['office.client.secret'] = '';
+$conf['settings']['authentication']['office.redirect.uri'] = '/Web/microsoft-auth.php';
