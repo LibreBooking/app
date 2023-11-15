@@ -236,7 +236,9 @@ class LoginPresenter
             $client->setRedirectUri(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_REDIRECT_URI));
             $client->addScope("email");
             $client->addScope("profile");
+            $client->setPrompt("select_account");
             $GoogleUrl = $client->createAuthUrl();
+            
             return $GoogleUrl;
         }
     }
@@ -252,7 +254,8 @@ class LoginPresenter
                             .'&redirect_uri=' . urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_REDIRECT_URI))
                             .'&scope=user.read'
                             .'&response_type=code'
-                            .'&prompt=consent';
+                            .'&prompt=select_account';
+
             return $MicrosoftUrl;
         }
     }

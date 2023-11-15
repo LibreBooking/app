@@ -101,28 +101,33 @@ class ExternalAuthLoginPresenter
             $requiredDomainValidator = new RequiredEmailDomainValidator($email);
             $requiredDomainValidator->Validate();
             if (!$requiredDomainValidator->IsValid()) {
-                Log::Debug('Social login with invalid domain. %s', $email);
                 $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
                 return;
             }
 
-            Log::Debug('Social login successful. Email=%s', $email);
-            $this->registration->Synchronize(new AuthenticatedUser(
-                $email,
-                $email,
-                $firstName,
-                $lastName,
-                Password::GenerateRandom(),
-                Resources::GetInstance()->CurrentLanguage,
-                Configuration::Instance()->GetDefaultTimezone(),
-                null,
-                null,
-                null),
-                false,
-                false);
+            if($this->registration->UserExists($email,$email)){
+                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+                LoginRedirector::Redirect($this->page);
+            }
 
-            $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-            LoginRedirector::Redirect($this->page);
+            else{
+                $this->registration->Synchronize(new AuthenticatedUser(
+                    $email,
+                    $email,
+                    $firstName,
+                    $lastName,
+                    Password::GenerateRandom(),
+                    Resources::GetInstance()->CurrentLanguage,
+                    Configuration::Instance()->GetDefaultTimezone(),
+                    null,
+                    null,
+                    null),
+                    false,
+                    false);
+
+                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+                LoginRedirector::Redirect($this->page);
+            }
         }
     }
 
@@ -182,26 +187,30 @@ class ExternalAuthLoginPresenter
             $requiredDomainValidator = new RequiredEmailDomainValidator($email);
             $requiredDomainValidator->Validate();
             if (!$requiredDomainValidator->IsValid()) {
-                Log::Debug('Social login with invalid domain. %s', $email);
                 $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
                 return;
             }
-            Log::Debug('Social login successful. Email=%s', $email);
-            $this->registration->Synchronize(new AuthenticatedUser(
-                $email,
-                $email,
-                $firstName,
-                $lastName,
-                Password::GenerateRandom(),
-                Resources::GetInstance()->CurrentLanguage,
-                Configuration::Instance()->GetDefaultTimezone(),
-                null,
-                null,
-                null),
-                false,
-                false);
-            $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-            LoginRedirector::Redirect($this->page);
+            if($this->registration->UserExists($email,$email)){
+                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+                LoginRedirector::Redirect($this->page);
+            }
+            else{
+                $this->registration->Synchronize(new AuthenticatedUser(
+                    $email,
+                    $email,
+                    $firstName,
+                    $lastName,
+                    Password::GenerateRandom(),
+                    Resources::GetInstance()->CurrentLanguage,
+                    Configuration::Instance()->GetDefaultTimezone(),
+                    null,
+                    null,
+                    null),
+                    false,
+                    false);
+                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+                LoginRedirector::Redirect($this->page);
+            }
         }
         
     }
