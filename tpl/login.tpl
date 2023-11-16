@@ -112,7 +112,8 @@
 					{/if}
 					{if $AllowFacebookLogin}
 						<div class="{$socialClass} social-login" id="socialLoginFacebook">
-							<a href="https://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
+							<a href="{$FacebookUrl}">
+							{*$FacebookUrl|@var_dump*}
 								<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 							</a>
 						</div>

@@ -123,8 +123,9 @@ class LoginPresenter
         $this->_page->SetAnnouncements($this->announcementRepository->GetFuture(Pages::ID_LOGIN));
         $this->_page->SetSelectedLanguage(Resources::GetInstance()->CurrentLanguage);
 
-        $this->_page->SetGoogleUrl($this->LoadGoogleClient());
-        $this->_page->SetMicrosoftUrl($this->LoadMicrosoftClient());
+        $this->_page->SetGoogleUrl($this->GetGoogleUrl());
+        $this->_page->SetMicrosoftUrl($this->GetMicrosoftUrl());
+        $this->_page->SetFacebookUrl($this->GetFacebookUrl());
     }
 
     public function Login()
@@ -228,7 +229,7 @@ class LoginPresenter
      * Checks in the config files if google authentication is active creating a new client if true and setting it's config keys.
      * Returns the created google url for the authentication  
      */
-    public function LoadGoogleClient(){
+    public function GetGoogleUrl(){
         if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
             $client = new Google\Client();
             $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_ID));
@@ -247,7 +248,7 @@ class LoginPresenter
      * Checks in the config files if microsoft authentication is active creating the url if true with the respective keys
      * Returns the created microsoft url for the authentication  
      */
-    public function LoadMicrosoftClient(){
+    public function GetMicrosoftUrl(){
         if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT) == 'true'){
             $MicrosoftUrl = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?'
                             .'client_id=' . urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_CLIENT_ID))
@@ -257,6 +258,31 @@ class LoginPresenter
                             .'&prompt=select_account';
 
             return $MicrosoftUrl;
+        }
+    }
+
+    /**
+     * Checks in the config files if facebook authentication is active creating the url if true with the respective keys
+     * Returns the created facebook url for the authentication  
+     */
+    public function GetFacebookUrl(){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK) == 'true'){
+            $facebook_Client = new Facebook\Facebook([
+                            'app_id'                => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_CLIENT_ID),
+                            'app_secret'            => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_CLIENT_SECRET),
+                            'default_graph_version' => 'v2.5'
+            ]);
+
+            $helper = $facebook_Client->getRedirectLoginHelper();
+
+            $permissions = ['email', 'public_profile']; // Add other permissions as needed
+
+            $FacebookUrl = $helper->getLoginUrl(        //??should it use getReAuthenticationUrl??
+                Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_REDIRECT_URI),
+                $permissions
+            );
+
+            return $FacebookUrl;
         }
     }
 }

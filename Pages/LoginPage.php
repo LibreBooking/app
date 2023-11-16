@@ -102,6 +102,11 @@ interface ILoginPage extends IPage, ILoginBasePage
      *  
      */
     public function SetMicrosoftUrl($URL);
+
+    /**
+     *  
+     */
+    public function SetFacebookUrl($URL);
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -307,6 +312,15 @@ class LoginPage extends Page implements ILoginPage
     public function SetMicrosoftUrl($microsoftUrl){
         if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT) == 'true'){
             $this->Set('MicrosoftUrl',$microsoftUrl);
+        }
+    }
+
+    /**
+     * Sends the created facebook url in the presenter to the smarty page 
+     */
+    public function SetFacebookUrl($FacebookUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK) == 'true'){
+            $this->Set('FacebookUrl',$FacebookUrl);
         }
     }
 }
