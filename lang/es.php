@@ -540,8 +540,6 @@ class es extends en_gb
         $strings['FindATime'] = 'Buscar un horario';
         $strings['AnyResource'] = 'Cualquier recurso';
         $strings['ThisWeek'] = 'Esta semana';
-
-
         $strings['Hours'] = 'Horas';
         $strings['Minutes'] = 'Minutos';
         $strings['ImportICS'] = 'Importar desde ICS';
@@ -560,8 +558,6 @@ class es extends en_gb
         $strings['Back'] = 'Atrás';
         $strings['Forward'] = 'Adelante';
         $strings['DateRange'] = 'Rango de fechas';
-
-
         $strings['Copy'] = 'Copiar';
         $strings['Detect'] = 'Detectar';
         $strings['Autofill'] = 'Auto rellenar';
@@ -668,7 +664,7 @@ class es extends en_gb
         $strings['UponReservation'] = 'Tras la Reserva';
         $strings['UponRegistration'] = 'Tras el Registro';
         $strings['ViewTerms'] = 'Ver los Términos del Servicio';
-        $strings['IAccept'] = 'Accepto';
+        $strings['IAccept'] = 'Acepto';
         $strings['TheTermsOfService'] = 'los Términos del Servicio';
         $strings['DisplayPage'] = 'Mostrar Página';
         $strings['AvailableAllYear'] = 'Todo el Año';
@@ -710,7 +706,7 @@ class es extends en_gb
         $strings['ReloadOriginalContents'] = 'Recargar Contenido Original';
         $strings['UpdateEmailTemplateSuccess'] = 'Plantilla de correo electrónico actualizada';
         $strings['UpdateEmailTemplateFailure'] = 'No se pudo actualizar la plantilla del correo electrónico. Asegúrese que el directorio tiene permiso de escritura.';
-        $strings['BulkResourceDelete'] = 'Bulk Resource Delete';
+        $strings['BulkResourceDelete'] = 'Eliminación masiva de recursos';
         $strings['NewVersion'] = '¡Nueva versión!';
         $strings['WhatsNew'] = '¿Qué hay nuevo?';
         $strings['OnlyViewedCalendar'] = 'Este calendario sólo se puede ver desde la vista de calendario';
@@ -720,17 +716,46 @@ class es extends en_gb
         $strings['EmailReservation'] = 'Dirección de correo electrónico de la reserva';
         $strings['AdHocMeeting'] = 'Ad hoc Meeting';
         $strings['NextReservation'] = 'Próxima Reserva';
-        $strings['MissedCheckin'] = 'Missed Checkin';
-        $strings['MissedCheckout'] = 'Missed Checkout';
+        $strings['MissedCheckin'] = 'Registro perdido';
+        $strings['MissedCheckout'] = 'Salida Perdida';
         $strings['Utilization'] = 'Uso';
-        $strings['SpecificTime'] = 'Specific Time';
-        $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
-        $strings['NotAttending'] = 'Not Attending';
+        $strings['SpecificTime'] = 'Hora específica';
+        $strings['ReservationSeriesEndingPreference'] = 'Cuando mi serie de reservas recurrentes está por terminar';
+        $strings['NotAttending'] = 'No Asistir';
         $strings['ViewAvailability'] = 'Ver Disponibilidad';
         $strings['ReservationDetails'] = 'Detalles de la Reserva';
         $strings['StartTime'] = 'Hora de Comienzo';
         $strings['EndTime'] = 'Hora de Fin';
-        $strings['ReservationSeriesEndingPreference'] = 'Cuando mi reserva recurrente está por terminar';
+        $strings['New'] = 'Nuevo';
+        $strings['Updated'] = 'Actualizado';
+        $strings['Custom'] = 'Personalizado';
+        $strings['AddDate'] = 'Agregar Fecha';
+        $strings['RepeatOn'] = 'Repetir en';
+        $strings['ScheduleConcurrentMaximum'] = 'Un total de <b>%s</b> recursos pueden reservarse simultáneamente';
+        $strings['ScheduleConcurrentMaximumNone'] = 'No hay límite en la cantidad de recursos reservados simultáneamente';
+        $strings['ScheduleMaximumConcurrent'] = 'Número máximo de recursos reservados simultáneamente';
+        $strings['ScheduleMaximumConcurrentNote'] = 'Cuando se establezca, el número total de recursos que se pueden reservar simultáneamente para este horario estará limitado.';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Cada reserva está limitada a un máximo de <b>%s</b> recursos';
+        $strings['ScheduleResourcesPerReservationNone'] = 'No hay límite en el número de recursos por reserva';
+        $strings['ScheduleResourcesPerReservation'] = 'Número máximo de recursos por reserva';
+        $strings['ResourceConcurrentReservations'] = 'Permitir %s reservas simultáneas';
+        $strings['ResourceConcurrentReservationsNone'] = 'No permitir reservas simultáneas';
+        $strings['AllowConcurrentReservations'] = 'Permitir reservas simultáneas';
+        $strings['ResourceDisplayInstructions'] = 'No se ha seleccionado ningún recurso. Puede encontrar la URL para mostrar un recurso en la Gestión de la Aplicación, Recursos. El recurso debe ser de acceso público';
+        $strings['Owner'] = 'Propietario';
+        $strings['MaximumConcurrentReservations'] = 'Máximo de Reservas Simultáneas';
+        $strings['NotifyUsers'] = 'Notificar a los Usuarios';
+        $strings['Message'] = 'Mensaje';
+        $strings['AllUsersWhoHaveAReservationInTheNext'] = 'Cualquier persona con una reserva en el próximo';
+        $strings['ChangeResourceStatus'] = 'Cambiar el Estado del Recurso';
+        $strings['UpdateGroupsOnImport'] = 'Actualizar grupo existente si el nombre coincide';
+        $strings['GroupsImportInstructions'] = '<ul><li>El archivo debe estar en formato CSV.</li><li>El nombre es obligatorio.</li><li>Las listas de miembros deben ser listas de correos electrónicos separados por comas.</li><li>Las listas de miembros vacías al actualizar grupos dejarán a los miembros sin cambios.</li><li>Las listas de permisos deben ser listas de nombres de recursos separados por comas.</li><li>Las listas de permisos vacías al actualizar grupos no modificarán los permisos existentes.</li><li>Utiliza la plantilla proporcionada como ejemplo.</li></ul>';
+        $strings['PhoneRequired'] = 'El número de teléfono es obligatorio';
+        $strings['OrganizationRequired'] = 'Organización es obligatoria';
+        $strings['PositionRequired'] = 'Cargo es obligatorio';
+        $strings['GroupMembership'] = 'Membresía de grupo';
+        $strings['AvailableGroups'] = 'Grupos disponibles';
+        $strings['CheckingAvailabilityError'] = 'No es posible obtener la disponibilidad de recursos - demasiados recursos';
         // End Strings
 
         // Install
@@ -772,7 +797,6 @@ class es extends en_gb
         $strings['ScriptUrlWarning'] = 'Su fichero de configuración <em>script.url</em> puede no ser correcto. Actualmente es <strong>%s</strong>, pensamos que debería ser <strong>%s</strong>';
         // End Install
 
-
         // Errors
         $strings['LoginError'] = 'No se ha encontrado una correspondencia para tu Nombre de Usuario (Identificador) y contraseña';
         $strings['ReservationFailed'] = 'Tu reserva no se ha podido realizar';
@@ -785,6 +809,7 @@ class es extends en_gb
         $strings['ConflictingAccessoryDates'] = 'No hay suficientes de los siguientes accesorios:';
         $strings['NoResourcePermission'] = 'No tienes permisos para acceder uno o más de los recursos requeridos';
         $strings['ConflictingReservationDates'] = 'Hay conflictos en las reservas de las siguientes fechas:';
+        $strings['InstancesOverlapRule'] = 'Algunas instancias de la serie de reservas se solapan:';
         $strings['StartDateBeforeEndDateRule'] = 'La fecha de inicio debe ser anterior a la fecha final';
         $strings['StartIsInPast'] = 'La fecha inicial no puede ser pasada';
         $strings['EmailDisabled'] = 'El administrador ha desactivado las notificaciones por correo';
@@ -826,6 +851,8 @@ class es extends en_gb
         $strings['WhatCanThisGroupManage'] = '¿Qué puede gestionar este grupo?';
         $strings['ReservationParticipationActivityPreference'] = 'Cuando alguien se une o deja mi reserva';
         $strings['RegisteredAccountRequired'] = 'Sólo los usuarios registrados pueden realizar reservas';
+        $strings['InvalidNumberOfResourcesError'] = 'El número máximo de recursos que se pueden reservar en una sola reserva es %s';
+        $strings['ScheduleTotalReservationsError'] = 'Este calendario solo permite reservar %s recursos simultáneamente. Esta reserva violaría ese límite en las siguientes fechas:';
         // End Errors
 
         // Page Titles
@@ -883,8 +910,6 @@ class es extends en_gb
         $strings['ManageResourceTypes'] = 'Tipos de recursos';
         $strings['ManageResourceStatus'] = 'Estados de recursos';
         $strings['ReservationColors'] = 'Colores de las reservas';
-
-
         $strings['SearchReservations'] = 'Buscar Reservas';
         $strings['ManagePayments'] = 'Pagos';
         $strings['ViewCalendar'] = 'Ver Calendario';
@@ -950,6 +975,8 @@ class es extends en_gb
         $strings['ReservationParticipantAccept'] = '%s ha Aceptado su Invitación a la Reserva para %s el %s';
         $strings['ReservationParticipantDecline'] = '%s ha Rechazado su Invitación a la Reserva para %s el %s';
         $strings['ReservationParticipantJoin'] = '%s se ha Unido a su Reserva para %s el %s';
+        $strings['ReservationAvailableSubject'] = '%s está disponible el %s';
+        $strings['ResourceStatusChangedSubject'] = 'La disponibilidad de %s ha cambiado';
         // End Email Subjects
 
 
