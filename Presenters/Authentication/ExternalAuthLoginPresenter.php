@@ -37,43 +37,9 @@ class ExternalAuthLoginPresenter
         }
     }
 
-    private function ProcessSocialSingleSignOn($page)
-    {
-        $code = $_GET['code'];
-        Log::Debug('Logging in with social. Code=%s', $code);
-        $result = file_get_contents("http://www.social.twinkletoessoftware.com/$page?code=$code");
-        $profile = json_decode($result);
-
-        $requiredDomainValidator = new RequiredEmailDomainValidator($profile->email);
-        $requiredDomainValidator->Validate();
-        if (!$requiredDomainValidator->IsValid()) {
-            Log::Debug('Social login with invalid domain. %s', $profile->email);
-            $this->page->ShowError([Resources::GetInstance()->GetString('InvalidEmailDomain')]);
-            return;
-        }
-
-        Log::Debug('Social login successful. Email=%s', $profile->email);
-        $this->registration->Synchronize(
-            new AuthenticatedUser(
-                $profile->email,
-                $profile->email,
-                $profile->first_name,
-                $profile->last_name,
-                Password::GenerateRandom(),
-                Resources::GetInstance()->CurrentLanguage,
-                Configuration::Instance()->GetDefaultTimezone(),
-                null,
-                null,
-                null
-            ),
-            false,
-            false
-        );
-
-        $this->authentication->Login($profile->email, new WebLoginContext(new LoginData()));
-        LoginRedirector::Redirect($this->page);
-    }
-
+    /**
+     * Exchanges the code given by google in _GET for a token and with said token retrieves client data
+     */
     private function ProcessGoogleSingleSignOn()
     {
         $client = new Google\Client();
@@ -103,6 +69,9 @@ class ExternalAuthLoginPresenter
         }
     }
 
+    /**
+     * Exchanges the code given by microsoft in _GET for a token and with said token retrieves client data
+     */
     private function ProcessMicrosoftSingleSignOn()
     {        
         if (isset($_GET['code'])) {
@@ -155,6 +124,10 @@ class ExternalAuthLoginPresenter
         
     }
 
+    /**
+     * Gets token created in facebook-auth.php and exchanges it for the client data
+     * Unlike the other two (microsoft and google) the token must be obtained directly in the redirect uri, therefore can't be sent here for exchange(?)
+     */
     private function ProcessFacebookSingleSignOn(){
         
         $facebook_Client = new Facebook\Facebook([
@@ -164,7 +137,7 @@ class ExternalAuthLoginPresenter
         ]);
         
         if (isset($_SESSION['facebook_access_token'])) {
-            $facebook_Client->setDefaultAccessToken($_SESSION['facebook_access_token']);
+            $facebook_Client->setDefaultAccessToken(unserialize($_SESSION['facebook_access_token']));
         } 
 
         $profile_request = $facebook_Client ->get('/me?fields=name,first_name,last_name,email');
@@ -179,8 +152,10 @@ class ExternalAuthLoginPresenter
         
     }
 
+    /**
+     * Processes user given data, creates a user in database if it doesn't exist and logs it in
+     */
     private function processUserData($username,$email,$firstName,$lastName){
-        //Process $userData as needed (e.g., create a user, log in, etc.)
         $requiredDomainValidator = new RequiredEmailDomainValidator($email);
         $requiredDomainValidator->Validate();
         if (!$requiredDomainValidator->IsValid()) {
@@ -193,7 +168,7 @@ class ExternalAuthLoginPresenter
         }
         else{
             $this->registration->Synchronize(new AuthenticatedUser(
-                $email,
+                $username,
                 $email,
                 $firstName, 
                 $lastName,

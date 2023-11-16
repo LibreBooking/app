@@ -99,27 +99,26 @@
 					{if $AllowGoogleLogin}
 						<div class="{$socialClass} social-login" id="socialLoginGoogle">
 							<a href="{$GoogleUrl}">
-									<img src="img/external/btn_google_signin_dark_normal_web.png" alt="TESTE"/>
+									<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
 							</a>
 						</div>
 					{/if}
 					{if $AllowMicrosoftLogin}
 						<div class="{$socialClass} social-login" id="socialLoginOffice" class="container">
 							<a href="{$MicrosoftUrl}">
-								<img style="max-height:42px;" src="img/external/microsoft-logo.jpeg" alt="Office"/>
+								<img style="max-height:42px;" src="img/external/microsoft-logo.jpeg" alt="Sign in with Microsoft"/>
 							</a>
 						</div>
 					{/if}
 					{if $AllowFacebookLogin}
 						<div class="{$socialClass} social-login" id="socialLoginFacebook">
 							<a href="{$FacebookUrl}">
-							{*$FacebookUrl|@var_dump*}
 								<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 							</a>
 						</div>
 					{/if}
+				</section>
 			</div>
-			</section>
 			<div id="login-footer" class="col-xs-12">
 				{if $ShowForgotPasswordPrompt}
 					<div id="forgot-password" class="col-xs-12 col-sm-6">
