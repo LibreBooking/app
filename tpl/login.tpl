@@ -113,7 +113,7 @@
 					{if $AllowFacebookLogin}
 						<div class="{$socialClass} social-login" id="socialLoginFacebook">
 							<a href="{$FacebookUrl}">
-								<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
+								<img style="max-height:42px" src="img/external/facebook-logo.png" alt="Sign in with Facebook"/>
 							</a>
 						</div>
 					{/if}
