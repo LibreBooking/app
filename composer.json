@@ -14,7 +14,8 @@
         "google/recaptcha": "1.2.4",
         "gregwar/captcha": "1.*",
         "google/apiclient": "^2.0",
-        "microsoft/microsoft-graph": "^2.0"
+        "microsoft/microsoft-graph": "^2.0",
+        "facebook/graph-sdk": "~5.0"
     },
     "scripts": {
         "install-tools": "phive install --trust-gpg-keys",

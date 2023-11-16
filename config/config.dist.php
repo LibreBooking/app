@@ -210,6 +210,9 @@ $conf['settings']['registration']['require.organization'] = 'false';
 $conf['settings']['logging']['folder'] = '/var/log/librebooking/log'; //Absolute path to folder were the log will be written, writing permissions to the folder are required
 $conf['settings']['logging']['level'] = 'debug'; //Set to none disable logs, error to only log errors or debug to log all messages to the app.log file 
 $conf['settings']['logging']['sql'] = 'false'; //Set to true no enable the creation of and sql.log file
+
+//IN THE REDIRECT URI'S (OF THE AUTHENTICATION YOU ARE USING) YOU NEED TO ADD THE PATH FROM THE WEBSITE DOMAIN TO THE WEB/GOOGLE-AUTH.PHP
+//EG: http://localhost/Web/facebook-auth.php
 /**
 * Google login configuration
 */
@@ -222,3 +225,9 @@ $conf['settings']['authentication']['client.secret'] = '/Web/google-auth.php';
 $conf['settings']['authentication']['office.client.id'] = '';
 $conf['settings']['authentication']['office.client.secret'] = '';
 $conf['settings']['authentication']['office.redirect.uri'] = '/Web/microsoft-auth.php';
+/**
+ * Fcebook login configuration
+ */
+$conf['settings']['authentication']['facebook.client.id'] = '';
+$conf['settings']['authentication']['facebook.client.secret'] = '';
+$conf['settings']['authentication']['facebook.redirect.uri'] = '/Web/facebook-auth.php';

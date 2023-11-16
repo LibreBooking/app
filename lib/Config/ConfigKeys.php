@@ -168,6 +168,10 @@ class ConfigKeys
     public const MICROSOFT_CLIENT_SECRET = 'microsoft.client.secret';
     public const MICROSOFT_REDIRECT_URI = 'microsoft.redirect.uri';
 
+    public const FACEBOOK_CLIENT_ID = 'facebook.client.id';
+    public const FACEBOOK_CLIENT_SECRET = 'facebook.client.secret';
+    public const FACEBOOK_REDIRECT_URI = 'facebook.redirect.uri';
+
 }
 
 class ConfigSection
