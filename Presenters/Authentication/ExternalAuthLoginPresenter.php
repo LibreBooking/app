@@ -30,7 +30,7 @@ class ExternalAuthLoginPresenter
             $this->ProcessGoogleSingleSignOn();
         }
         if ($this->page->GetType() == 'fb') {
-            $this->ProcessSocialSingleSignOn('fbprofile.php');
+            $this->ProcessFacebookSingleSignOn();
         }
         if ($this->page->GetType() == 'microsoft') {
             $this->ProcessMicrosoftSingleSignOn();
@@ -94,40 +94,12 @@ class ExternalAuthLoginPresenter
             $google_account_info = $google_oauth->userinfo->get();
             
             //Save the informations needed to authenticate the login
-            $email =  $google_account_info->email;
+            $email     =  $google_account_info->email;
             $firstName = $google_account_info->given_name;
-            $lastName = $google_account_info->family_name;
+            $lastName  = $google_account_info->family_name;
         
-            $requiredDomainValidator = new RequiredEmailDomainValidator($email);
-            $requiredDomainValidator->Validate();
-            if (!$requiredDomainValidator->IsValid()) {
-                $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
-                return;
-            }
-
-            if($this->registration->UserExists($email,$email)){
-                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-                LoginRedirector::Redirect($this->page);
-            }
-
-            else{
-                $this->registration->Synchronize(new AuthenticatedUser(
-                    $email,
-                    $email,
-                    $firstName,
-                    $lastName,
-                    Password::GenerateRandom(),
-                    Resources::GetInstance()->CurrentLanguage,
-                    Configuration::Instance()->GetDefaultTimezone(),
-                    null,
-                    null,
-                    null),
-                    false,
-                    false);
-
-                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-                LoginRedirector::Redirect($this->page);
-            }
+            //Process $userData as needed (e.g., create a user, log in, etc.)
+            $this->processUserData($email,$email,$firstName,$lastName);
         }
     }
 
@@ -162,56 +134,79 @@ class ExternalAuthLoginPresenter
             //Get user information
             $graphApiEndpoint = 'https://graph.microsoft.com/v1.0/me';
 
-            try{
-                // Make a GET request to the Microsoft Graph API endpoint
-                $response = $client->request('GET', $graphApiEndpoint, [
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $accessToken,
-                    ],
-                ]);
-            
-                // Decode the JSON response
-                $userData = json_decode($response->getBody(), true);
-            
-                // Handle the user data as needed
-                $email =  $userData['mail'];
-                $firstName = $userData['givenName'];;
-                $lastName = $userData['surname'];
-
-            }catch (\Exception $e) {
-                echo 'Error fetching user data from Microsoft Graph: ' . $e->getMessage();
-                return;
-            }
+            // Make a GET request to the Microsoft Graph API endpoint
+            $response = $client->request('GET', $graphApiEndpoint, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $accessToken,
+                ],
+            ]);
+        
+            // Decode the JSON response
+            $userData = json_decode($response->getBody(), true);
+        
+            // Handle the user data as needed
+            $email     = $userData['mail'];
+            $firstName = $userData['givenName'];;
+            $lastName  = $userData['surname'];
             
             //Process $userData as needed (e.g., create a user, log in, etc.)
-            $requiredDomainValidator = new RequiredEmailDomainValidator($email);
-            $requiredDomainValidator->Validate();
-            if (!$requiredDomainValidator->IsValid()) {
-                $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
-                return;
-            }
-            if($this->registration->UserExists($email,$email)){
-                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-                LoginRedirector::Redirect($this->page);
-            }
-            else{
-                $this->registration->Synchronize(new AuthenticatedUser(
-                    $email,
-                    $email,
-                    $firstName,
-                    $lastName,
-                    Password::GenerateRandom(),
-                    Resources::GetInstance()->CurrentLanguage,
-                    Configuration::Instance()->GetDefaultTimezone(),
-                    null,
-                    null,
-                    null),
-                    false,
-                    false);
-                $this->authentication->Login($email, new WebLoginContext(new LoginData()));
-                LoginRedirector::Redirect($this->page);
-            }
+            $this->processUserData($email,$email,$firstName,$lastName);
         }
         
+    }
+
+    private function ProcessFacebookSingleSignOn(){
+        
+        $facebook_Client = new Facebook\Facebook([
+            'app_id'                => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_CLIENT_ID),
+            'app_secret'            => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_CLIENT_SECRET),
+            'default_graph_version' => 'v2.5'
+        ]);
+        
+        if (isset($_SESSION['facebook_access_token'])) {
+            $facebook_Client->setDefaultAccessToken($_SESSION['facebook_access_token']);
+        } 
+
+        $profile_request = $facebook_Client ->get('/me?fields=name,first_name,last_name,email');
+        $profile = $profile_request ->getGraphUser();
+
+        $email     = $profile->getField('email');
+        $firstName = $profile->getField('first_name');
+        $lastName  = $profile->getField('last_name');
+
+        //Process $userData as needed (e.g., create a user, log in, etc.)
+        $this->processUserData($email,$email,$firstName,$lastName);
+        
+    }
+
+    private function processUserData($username,$email,$firstName,$lastName){
+        //Process $userData as needed (e.g., create a user, log in, etc.)
+        $requiredDomainValidator = new RequiredEmailDomainValidator($email);
+        $requiredDomainValidator->Validate();
+        if (!$requiredDomainValidator->IsValid()) {
+            $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
+            return;
+        }
+        if($this->registration->UserExists($email,$email)){
+            $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+            LoginRedirector::Redirect($this->page);
+        }
+        else{
+            $this->registration->Synchronize(new AuthenticatedUser(
+                $email,
+                $email,
+                $firstName, 
+                $lastName,
+                Password::GenerateRandom(),
+                Resources::GetInstance()->CurrentLanguage,
+                Configuration::Instance()->GetDefaultTimezone(),
+                null,
+                null,
+                null),
+                false,
+                false);
+            $this->authentication->Login($email, new WebLoginContext(new LoginData()));
+            LoginRedirector::Redirect($this->page);
+        }
     }
 }
