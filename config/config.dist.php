@@ -217,9 +217,9 @@ $conf['settings']['logging']['sql'] = 'false'; //Set to true no enable the creat
 /**
 * Google login configuration
 */
-$conf['settings']['authentication']['redirect.uri'] = ''; 
-$conf['settings']['authentication']['client.id'] = ''; 
-$conf['settings']['authentication']['client.secret'] = '/Web/google-auth.php';
+$conf['settings']['authentication']['google.client.id'] = ''; 
+$conf['settings']['authentication']['google.client.secret'] = ''; 
+$conf['settings']['authentication']['google.redirect.uri'] = '/Web/google-auth.php';
 /**
  * Microsoft login configuration
  */
