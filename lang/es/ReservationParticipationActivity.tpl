@@ -1,4 +1,13 @@
-<p><strong>Detalles de la reserva:</strong></p>
+<p>{$ParticipantDetails} tiene
+    {if ($InvitationAction == InvitationAction::Decline || $InvitationAction == InvitationAction::CancelAll || $InvitationAction == InvitationAction::CancelInstance)}
+		ha rechazado tu invitación a la reserva.
+    {elseif ($InvitationAction == InvitationAction::Join || $InvitationAction == InvitationAction::JoinAll)}
+		joined your reservation.
+    {else}
+		se ha unido a tu reserva.
+    {/if}
+</p>
+<p><strong>Detalles de la Reserva:</strong></p>
 
 <p>
 	<strong>Inicio:</strong> {formatdate date=$StartDate key=reservation_email}<br/>
@@ -32,26 +41,9 @@
 	<div class="resource-image"><img alt="{$ResourceName|escape}" src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
 
-{if count($RepeatRanges) gt 0}
-	<br/>
-	<strong>La reserva tiene lugar en las siguientes fechas ({$RepeatRanges|default:array()|count}):</strong>
-	<br/>
-    {foreach from=$RepeatRanges item=date name=dates}
-        {formatdate date=$date->GetBegin()}
-        {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
-		<br/>
-    {/foreach}
-{/if}
-
-<p>
-    {if !empty($CreatedBy)}
-		<strong>Eliminado por:</strong>
-        {$CreatedBy}
-		<br/>
-		<strong>Motivo de eliminación: {$DeleteReason|nl2br}</strong>
-    {/if}
-</p>
-
 <p><strong>Número de referencia:</strong> {$ReferenceNumber}</p>
 
-<a href="{$ScriptUrl}">Iniciar sesión en {$AppTitle}</a>
+<p>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
+	<a href="{$ScriptUrl}">Iniciar sesión en {$AppTitle}</a>
+</p>
