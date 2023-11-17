@@ -92,6 +92,21 @@ interface ILoginPage extends IPage, ILoginBasePage
      * @param Announcement[] $announcements
      */
     public function SetAnnouncements($announcements);
+
+    /**
+     *  
+     */
+    public function SetGoogleUrl($URL);
+
+    /**
+     *  
+     */
+    public function SetMicrosoftUrl($URL);
+
+    /**
+     *  
+     */
+    public function SetFacebookUrl($URL);
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -111,6 +126,7 @@ class LoginPage extends Page implements ILoginPage
 
         $this->Set('AllowFacebookLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter()));
         $this->Set('AllowGoogleLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter()));
+        $this->Set('AllowMicrosoftLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT, new BooleanConverter()));
         $scriptUrl = Configuration::Instance()->GetScriptUrl();
         $parts = explode('://', $scriptUrl);
         $this->Set('Protocol', $parts[0]);
@@ -279,5 +295,32 @@ class LoginPage extends Page implements ILoginPage
     public function SetAnnouncements($announcements)
     {
         $this->Set('Announcements', $announcements);
+    }
+
+    /**
+     * Sends the created google url in the presenter to the smarty page 
+     */
+    public function SetGoogleUrl($googleUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
+            $this->Set('GoogleUrl',$googleUrl);
+        }
+    }
+
+    /**
+     * Sends the created microsoft url in the presenter to the smarty page 
+     */
+    public function SetMicrosoftUrl($microsoftUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT) == 'true'){
+            $this->Set('MicrosoftUrl',$microsoftUrl);
+        }
+    }
+
+    /**
+     * Sends the created facebook url in the presenter to the smarty page 
+     */
+    public function SetFacebookUrl($FacebookUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK) == 'true'){
+            $this->Set('FacebookUrl',$FacebookUrl);
+        }
     }
 }
