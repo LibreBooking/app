@@ -73,7 +73,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
         $repeatOptions = $roFactory->CreateFromComposite($this->page, $this->userSession->Timezone);
         $duration = $this->GetReservationDuration();
 
-        $reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->userSession);
+        $reservationSeries = ReservationSeries::Create($userId, $resource, htmlspecialchars_decode($title), htmlspecialchars_decode($description), $duration, $repeatOptions, $this->userSession);
 
         $resourceIds = $this->page->GetResources();
         foreach ($resourceIds as $resourceId) {
