@@ -197,7 +197,7 @@ class Registration implements IRegistration
                     Log::Debug('Syncing group %s for user %s', $group->Name(), $user->Username());
                     $groupsToSync[] = new UserGroup($group->Id(), $group->Name());
                 } else {
-                    Log::Debug('User %s is not part of group %s, sync skipped', $group->Name(), $user->Username());
+                    Log::Debug('User %s is not part of group %s, sync skipped', $user->Username(), $group->Name());
                 }
             }
         }
