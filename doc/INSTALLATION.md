@@ -170,15 +170,11 @@ At this time, it is recommended to change your password.
 
 ## Log Files
 
- LibreBooking logs multiple levels of information categorized into either application or database logs. To do this, the log4php library is used. By default, logging is turned OFF. - First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml
+ LibreBooking logs multiple levels of information categorized into either application or database logs. To do this:
 - To allow application logging, the PHP account requires write access (0755) to your configured log directory. 
-- Logging is configured in /config/log4php.config.xml - For Windows, set the path to something similar to <param name="file" value="c:/temp/log\_%s.log" />
-- For Unix, set the path to something similar to <param name="file" value="/tmp/librebooking/log\_%s.log" />
-
-- Logging is controlled by changing the <level> of each <logger>
+- Logging is configured in /config/config.php
 - Levels used by LibreBooking are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs are needed, DEBUG is appropriate. 
-- To turn on application logging, change the <level value="OFF" /> to an appropriate level for either the default or sql loggers. For example, <level value="ERROR" />
-- For more information on logging configuration, visit [log4php](<http://logging.apache.org/log4php/>)
+- To turn on application logging, change the $conf['settings']['logging']['level'] = to an appropriate level for either the default or sql loggers. For example, $conf['settings']['logging']['level'] = 'debug';
 
 
 ## Enabling LibreBooking API
