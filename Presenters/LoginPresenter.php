@@ -276,8 +276,13 @@ class LoginPresenter
             $helper = $facebook_Client->getRedirectLoginHelper();
 
             $permissions = ['email', 'public_profile']; // Add other permissions as needed
-
-            $FacebookUrl = $helper->getLoginUrl(        //??should it use getReAuthenticationUrl??
+            
+            //The FacebookRedirectLoginHelper makes use of sessions to store a CSRF value. 
+            //You need to make sure you have sessions enabled before invoking the getLoginUrl() method.
+            if (!session_id()) {
+                session_start();
+            }
+            $FacebookUrl = $helper->getLoginUrl(
                 Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_REDIRECT_URI),
                 $permissions
             );

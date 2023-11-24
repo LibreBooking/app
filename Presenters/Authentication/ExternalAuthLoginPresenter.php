@@ -162,7 +162,7 @@ class ExternalAuthLoginPresenter
             $this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
             return;
         }
-        if($this->registration->UserExists($email,$email)){
+        if($this->registration->UserExists($username,$email)){
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
         }
