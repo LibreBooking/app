@@ -5,7 +5,7 @@ Note: for users without web hosting service or existing environment, packages li
 # Fresh Installation
 
 ## Server Configuration
-In an **Apache** or similar server environment, some required modules for LibreBooking may not be enabled by default. The following modules (or their equivalents) are often not enabled as part of a standard installation but should be enabled for proper operation of the LibreBooking application:
+In an **Apache** or similar server environment, some required modules for LibreBooking may not be enabled by default. The following modules (or their equivalents) are often not enabled as part of a standard installation but should be enabled for the proper operation of the LibreBooking application:
 * headers
 * rewrite
 
@@ -19,28 +19,27 @@ If required modules are not present in the enabled list, modules can be enabled 
 
 ## Application Deployment to Server
 
-Unzip the archived distribution and execute `composer install` (after installing [composer](https://getcomposer.org/doc/00-intro.md)) in the extraction directory to download dependencies to the `vendor` folder.
-Move the contents of the directory to your webserver's document root. 
-If you don't have direct access to your document root or use hosting service, then transfer the directory to your web server's document root using FTP or [WinSCP](https://winscp.net/). 
+Move the contents of the directory to your webserver's document root (or subsite). 
+If you don't have direct access to your document root or use a hosting service, then transfer the directory to your web server's document root using FTP or [WinSCP](https://winscp.net/). 
 
 Copy `/config/config.dist.php` to `/config/config.php` and adjust the settings for your environment.
 
 Important! The web server must have write access (0755) to `/librebooking/tpl_c` and `/librebooking/tpl` [want to know why?](http://www.smarty.net/docs/en/variable.compile.dir.tpl")
 
-If using an FTP client, check read/write/execute for Owner and Group on `/tpl`, `/tpl_c`, and `/uploads` 
+If using an (S)FTP client, check read/write/execute for Owner and Group on `/tpl`, `/tpl_c`, and `/uploads` 
 
 LibreBooking will not work if PHP [session.autostart](http://www.php.net/manual/en/session.configuration.php#ini.session.auto-start) is enabled. 
 Ensure this setting is disabled.
 
 ## Application Configuration
 
-You can configure LibreBooking to fit your environments and needs, or use the minimal default settings which should be enough for the application to work.  
+You can configure LibreBooking to fit your environments and needs or use the minimal default settings which should be enough for the application to work.  
 We recommend you to change according to your specifics. Additional information on all configuration settings can be found in the application help page.  
 To configure the application, you can open `/config/config.php` and alter any settings accordingly.  
 The admin email address can be set in the `librebooking/config/config.php` file of `$conf['settings']['admin.email']`  
 When later register an account with admin email address the user will be given admin privilege.  
 
-In addition, to allow resource image uploads, the web-server must also have read/write access to your configurable uploads directory of `$conf['settings']['image.upload.directory']` in the `config.php`.  
+In addition, to allow resource image uploads, the web server must also have read/write access to your configurable uploads directory of `$conf['settings']['image.upload.directory']` in the `config.php`.  
 By default, LibreBooking uses standard username/password for user authentication.  
 Alternatively, you can use LDAP authentication.  
 See the plugins section of the application help page for more details.  
@@ -170,15 +169,11 @@ At this time, it is recommended to change your password.
 
 ## Log Files
 
- LibreBooking logs multiple levels of information categorized into either application or database logs. To do this, the log4php library is used. By default, logging is turned OFF. - First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml
+ LibreBooking logs multiple levels of information categorized into either application or database logs. To do this:
 - To allow application logging, the PHP account requires write access (0755) to your configured log directory. 
-- Logging is configured in /config/log4php.config.xml - For Windows, set the path to something similar to <param name="file" value="c:/temp/log\_%s.log" />
-- For Unix, set the path to something similar to <param name="file" value="/tmp/librebooking/log\_%s.log" />
-
-- Logging is controlled by changing the <level> of each <logger>
+- Logging is configured in /config/config.php
 - Levels used by LibreBooking are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs are needed, DEBUG is appropriate. 
-- To turn on application logging, change the <level value="OFF" /> to an appropriate level for either the default or sql loggers. For example, <level value="ERROR" />
-- For more information on logging configuration, visit [log4php](<http://logging.apache.org/log4php/>)
+- To turn on application logging, change the $conf['settings']['logging']['level'] = to an appropriate level for either the default or sql loggers. For example, $conf['settings']['logging']['level'] = 'debug';
 
 
 ## Enabling LibreBooking API
