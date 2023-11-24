@@ -134,7 +134,7 @@ class Ldap2Wrapper
             }
 
             if ($loadGroups) {
-                $userGroups = $currentResult->getValue('memberof');
+                $userGroups = $currentResult->getValue('memberof', 'all');
                 $userGroups = array_map('trim', $userGroups);
                 $userGroups = array_map('strtolower', $userGroups);
             }
