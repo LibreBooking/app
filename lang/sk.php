@@ -629,6 +629,17 @@ class sk extends en_gb
         $strings['UserAdded'] = 'Nový užívateľ bol pridaný';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nemáte žiadne predchádzajúce rezervácie';
+        $strings['PastReservations'] = 'Predchádzajúce rezervácie';
+        $strings['AllNoPastReservations'] = 'Žiadne predchádzajúce rezervácie v posledných %s dňoch';
+        $strings['AllPastReservations'] = 'Všetky predchádzajúce rezervácie';
+        $strings['Yesterday'] = 'Včera';
+        $strings['EarlierThisWeek'] = 'Skôr tento týždeň';
+        $strings['PreviousWeek'] = 'Predchádzajúci týždeň';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

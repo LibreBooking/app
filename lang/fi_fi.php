@@ -908,9 +908,18 @@ class fi_fi extends en_gb
         $strings['InviteeAddedSubjectWithResource'] = '%s Kutsui Sinut Varaukseen for %s :lle';
         $strings['MissedCheckinEmailSubject'] = 'Sisäänkirjaus puuttuu %s :lta';
         $strings['ReservationShareSubject'] = '%s Jakoi Varauksen %s :lle';
+        //End Email Subjects
 
-
-        //
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Sinulla ei ole aikaisempia varauksia';
+        $strings['PastReservations'] = 'Aikaisemmat varaukset';
+        $strings['AllNoPastReservations'] = 'Viimeisen %s päivän aikana ei ole aikaisempia varauksia';
+        $strings['AllPastReservations'] = 'Kaikki aikaisemmat varaukset';
+        $strings['Yesterday'] = 'Eilen';
+        $strings['EarlierThisWeek'] = 'Aiemmin tällä viikolla';
+        $strings['PreviousWeek'] = 'Edellinen viikko';
+        //End Past Reservations
 
         $this->Strings = $strings;
 

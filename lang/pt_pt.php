@@ -528,7 +528,7 @@ class pt_pt extends en_gb
         $strings['NoSavedReports'] = 'Não tem relatórios guardados';
         $strings['NoScheduleAdministratorLabel'] = 'Sem administrador de agenda';
         $strings['NoTitleLabel'] = '(nenhum título)';
-        $strings['NoUpcomingReservations'] = 'Não tem futuras reservas';
+        $strings['NoUpcomingReservations'] = 'Não tem reservas futuras';
         $strings['NoUpgradeNeeded'] = 'O LibreBooking está atualizado. Não há nenhuma atualização necessária.';
         $strings['None'] = 'Nenhum';
         $strings['NotAttending'] = 'Não comparecer';
@@ -871,7 +871,7 @@ class pt_pt extends en_gb
         $strings['UnknownError'] = 'Erro Desconhecido';
         $strings['Unlimited'] = 'Ilimitado';
         $strings['Unreservable'] = 'Não reservável';
-        $strings['UpcomingReservations'] = 'Futuras reservas';
+        $strings['UpcomingReservations'] = 'Reservas Futuras';
         $strings['Update'] = 'Atualizar';
         $strings['UpdateEmailTemplateFailure'] = 'Não foi possível atualizar o modelo de email. Por favor confirme que a pasta tem permissões de escrita';
         $strings['UpdateEmailTemplateSuccess'] = 'Modelo de email atualizado';
@@ -991,6 +991,16 @@ class pt_pt extends en_gb
         $strings['AvailableGroups'] = 'Grupos disponiveis';
         $strings['CheckingAvailabilityError'] = 'Não é possível obter a disponibilidade do recurso - demasiados recursos';
         //--
+
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Não tem reservas passadas';
+        $strings['PastReservations'] = 'Reservas Passadas';
+        $strings['AllNoPastReservations'] = 'Não existem reservas passadas nos anteriores %s dias';
+        $strings['AllPastReservations'] = 'Todas as Reservas Passadas';
+        $strings['Yesterday'] = 'Ontem';
+        $strings['EarlierThisWeek'] = 'Anteriormente Nesta Semana';
+        $strings['PreviousWeek'] = 'Semana Passada';
+        //End Past Reservations
         $this->Strings = $strings;
 
         return $this->Strings;
