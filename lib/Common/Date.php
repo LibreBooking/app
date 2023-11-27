@@ -331,6 +331,15 @@ class Date
     }
 
     /**
+     * Compares the time component of this date to the one passed in
+     * @param Time $time
+     * @return bool if the current object is greater than the one passed in
+     */
+    public function TimeLessThan(Time $time){
+        return $this->GetTime()->Compare($time) < 0;
+    }
+
+    /**
      * Compares this date to the one passed in
      * @param Date $end
      * @return bool if the current object is greater than the one passed in

@@ -60,7 +60,7 @@ class PastReservationsPresenter
         foreach ($consolidated as $reservation) {
             $start = $reservation->EndDate->ToTimezone($timezone);
 
-            if ($start->DateEquals($today)) {
+            if ($start->DateEquals($today) && $start->TimeLessThan($now->ToTimezone($timezone)->GetTime())) {
                 $todays[] = $reservation;
             } elseif ($start->DateEquals($yesterday)) {
                 $yesterdays[] = $reservation;
@@ -70,8 +70,6 @@ class PastReservationsPresenter
                 $previousWeeks[] = $reservation;
             }
         }
-
-        echo '<pre>' , var_dump($start) , '</pre>';
 
         $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
         $checkoutAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKOUT_ADMIN_ONLY, new BooleanConverter());
