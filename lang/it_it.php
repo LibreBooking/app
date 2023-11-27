@@ -1016,6 +1016,17 @@ class it_it extends en_us
         $strings['ReservationParticipantJoin'] = '%s si è unito alla sua prenotazione per %s il %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Non hai prenotazioni passate';
+        $strings['PastReservations'] = 'Prenotazioni passate';
+        $strings['AllNoPastReservations'] = 'Non ci sono prenotazioni passate nei precedenti %s giorni';
+        $strings['AllPastReservations'] = 'Tutte le prenotazioni passate';
+        $strings['Yesterday'] = 'Ieri';
+        $strings['EarlierThisWeek'] = 'All\'inizio di questa settimana';
+        $strings['PreviousWeek'] = 'Settimana precedente';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -1,8 +1,8 @@
 <div class="dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
 	<div class="dashboardHeader">
-		<div class="pull-left">{translate key="UpcomingReservations"} <span class="badge">{$Total}</span></div>
+		<div class="pull-left">{translate key="PastReservations"} <span class="badge">{$Total}</span></div>
 		<div class="pull-right">
-			<a href="#" title="{translate key=ShowHide} {translate key="UpcomingReservations"}">
+			<a href="#" title="{translate key=ShowHide} {translate key="PastReservations"}">
 				<i class="glyphicon"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
@@ -21,28 +21,28 @@
 				{/foreach}
 
 				<div class="timespan">
-					{translate key="Tomorrow"} ({$YesterdayReservations|default:array()|count})
+					{translate key="Yesterday"} ({$YesterdayReservations|default:array()|count})
 				</div>
 				{foreach from=$YesterdayReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
 				{/foreach}
 
 				<div class="timespan">
-					{translate key="LaterThisWeek"} ({$ThisWeeksReservations|default:array()|count})
+					{translate key="EarlierThisWeek"} ({$ThisWeeksReservations|default:array()|count})
 				</div>
 				{foreach from=$ThisWeeksReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
 				{/foreach}
 
 				<div class="timespan">
-					{translate key="NextWeek"} ({$PreviousWeekReservations|default:array()|count})
+					{translate key="PreviousWeek"} ({$PreviousWeekReservations|default:array()|count})
 				</div>
 				{foreach from=$PreviousWeekReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
 				{/foreach}
 			</div>
 		{else}
-			<div class="noresults">{translate key="NoUpcomingReservations"}</div>
+			<div class="noresults">{translate key="NoPastReservations"}</div>
 		{/if}
 	</div>
 

@@ -728,6 +728,17 @@ class he extends en_gb
         $strings['ReportSubject'] = ' הדוח שביקשת (%s)';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'אין לך הזמנות קודמות';
+        $strings['PastReservations'] = 'הזמנות קודמות';
+        $strings['AllNoPastReservations'] = 'אין הזמנות קודמות ב- %s הימים האחרונים';
+        $strings['AllPastReservations'] = 'כל הזמנות הקודמות';
+        $strings['Yesterday'] = 'אתמול';
+        $strings['EarlierThisWeek'] = 'בתחילת השבוע הזה';
+        $strings['PreviousWeek'] = 'השבוע הקודם';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

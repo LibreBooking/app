@@ -618,6 +618,17 @@ class hr_hr extends en_gb
         $strings['UserAdded'] = 'Dodan je novi korisnik';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nemate prethodne rezervacije';
+        $strings['PastReservations'] = 'Prethodne rezervacije';
+        $strings['AllNoPastReservations'] = 'Nema prethodnih rezervacija u posljednjih %s dana';
+        $strings['AllPastReservations'] = 'Sve prethodne rezervacije';
+        $strings['Yesterday'] = 'Jučer';
+        $strings['EarlierThisWeek'] = 'Ranije ove sedmice';
+        $strings['PreviousWeek'] = 'Prethodni tjedan';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -980,6 +980,17 @@ class fr_fr extends en_gb
         $strings['ResourceStatusChangedSubject'] = 'La disponibilité de %s a changé';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Vous n\'avez aucune réservation passée';
+        $strings['PastReservations'] = 'Réservations passées';
+        $strings['AllNoPastReservations'] = 'Il n\'y a aucune réservation passée au cours des %s derniers jours';
+        $strings['AllPastReservations'] = 'Toutes les réservations passées';
+        $strings['Yesterday'] = 'Hier';
+        $strings['EarlierThisWeek'] = 'Plus tôt cette semaine';
+        $strings['PreviousWeek'] = 'Semaine précédente';
+        //End Past Reservations
+
         $this->Strings = $strings;
     }
 
