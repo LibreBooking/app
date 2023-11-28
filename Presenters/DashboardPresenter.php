@@ -9,6 +9,8 @@ require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/ResourceAvailabilityControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/PastReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/GroupUpcomingReservations.php');
+
 
 class DashboardPresenter
 {
@@ -34,6 +36,11 @@ class DashboardPresenter
         if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin || ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin) {
             $allUpcomingReservations = new AllUpcomingReservations(new SmartyPage());
             $this->_page->AddItem($allUpcomingReservations);
+        }
+
+        if(ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+            $myGroupReservations = new AllGroupUpcomingReservations(new SmartyPage());
+            $this->_page->AddItem($myGroupReservations);
         }
     }
 }
