@@ -33,7 +33,7 @@ class DashboardPresenter
         $this->_page->AddItem($upcomingReservations);
         $this->_page->AddItem($availability);
 
-        if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin || ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin) {
+        if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin /*|| ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin*/) {
             $allUpcomingReservations = new AllUpcomingReservations(new SmartyPage());
             $this->_page->AddItem($allUpcomingReservations);
         }
