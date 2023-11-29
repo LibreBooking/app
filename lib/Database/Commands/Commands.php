@@ -1622,6 +1622,14 @@ class GetGroupResourcesId extends SqlCommand{
     }
 }
 
+class GetGroupSchedulesId extends SqlCommand{
+    public function __construct($groupId)
+    {
+        parent::__construct(Queries::GET_GROUP_SCHEDULES_ID);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+    }
+}
+
 class GetGroupsIManageCommand extends SqlCommand
 {
     public function __construct($userId)
