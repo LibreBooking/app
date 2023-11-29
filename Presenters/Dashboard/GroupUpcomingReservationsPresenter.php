@@ -81,9 +81,20 @@ class GroupUpcomingReservationsPresenter
         $nextWeeks = [];
 
         if ($consolidated != null){
+            //Since the arrays are being merged to generate a new $consolidated array, duplicates are created and dates get out of order,
+            //if the reservations are in the schedule admin responsabilities but not resource admin, so: 
+            
+            //Eliminate Duplicates
+            $consolidated = $this->eliminateDuplicates($consolidated);
+
+            //Sort By Date
+            $consolidated = $this->BubbleSort($consolidated);
+
             /* @var $reservation ReservationItemView */
             foreach ($consolidated as $reservation) {
                 $start = $reservation->StartDate->ToTimezone($timezone);
+                //echo '<pre>' , var_dump($start) , '</pre>';
+                
 
                 if ($start->DateEquals($today)) {
                     $todays[] = $reservation;
@@ -176,5 +187,62 @@ class GroupUpcomingReservationsPresenter
         $reader->Free();
 
         return $schedules;
+    }
+
+    /**
+     * Implements bubble sort algorithm to sort dates from array
+     */
+    function BubbleSort($array) {
+        for ($i = 0; $i < count($array); $i++){
+            $swapped = false;
+            for ($j = 0; $j < count($array) - $i - 1; $j++)
+            {
+
+                if ($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 1) {
+                    $t = $array[$j];
+                    $array[$j] = $array[$j+1];
+                    $array[$j+1] = $t;
+                    $swapped = True;
+                }
+
+                else if($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 0){
+                    if ($array[$j]->StartDate->CompareTime($array[$j+1]->StartDate) == 1) {
+                        $t = $array[$j];
+                        $array[$j] = $array[$j+1];
+                        $array[$j+1] = $t;
+                        $swapped = True;
+                    }
+                }
+            }
+
+            if ($swapped == false){
+                break;
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * Eliminates duplicate objects from array
+     */
+    function EliminateDuplicates($array, $keep_key_assoc = false){
+        $duplicate_keys = array();
+        $tmp = array();       
+    
+        foreach ($array as $key => $val){
+            // convert objects to arrays, in_array() does not support objects
+            if (is_object($val))
+                $val = (array)$val;
+    
+            if (!in_array($val, $tmp))
+                $tmp[] = $val;
+            else
+                $duplicate_keys[] = $key;
+        }
+    
+        foreach ($duplicate_keys as $key)
+            unset($array[$key]);
+    
+        return $keep_key_assoc ? $array : array_values($array);
     }
 }
