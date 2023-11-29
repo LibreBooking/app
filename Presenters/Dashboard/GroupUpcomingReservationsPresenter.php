@@ -81,8 +81,8 @@ class GroupUpcomingReservationsPresenter
         $nextWeeks = [];
 
         if ($consolidated != null){
-            //Since the arrays are being merged to generate a new $consolidated array, duplicates are created and dates get out of order,
-            //if the reservations are in the schedule admin responsabilities but not resource admin, so: 
+            //If the user is both a resource admin and schedule admin, when the consolidated array is merged with both groups reservations,
+            //this array gets out of order and with duplicates so:
             
             //Eliminate Duplicates
             $consolidated = $this->eliminateDuplicates($consolidated);
@@ -128,7 +128,7 @@ class GroupUpcomingReservationsPresenter
     }
 
     /**
-     * Gets array of groups the user belongs to
+     * Gets the groups the user belongs to
      */
     private function GetUserGroups(){
         $groups = [];
@@ -148,7 +148,7 @@ class GroupUpcomingReservationsPresenter
     }
 
     /**
-     * Gets the ids of the resources the group of the user is responsible for managing
+     * Gets the resource ids the group of the user is managing
      */
     private function GetGroupResources($groupId){
         $resources = [];
@@ -169,7 +169,7 @@ class GroupUpcomingReservationsPresenter
     }
 
     /**
-     * Gets the ids of the schedules the group of the user is responsible for managing
+     * Gets the schedule ids the group of the user is managing
      */
     private function GetGroupSchedules($groupId){
         $schedules = [];
