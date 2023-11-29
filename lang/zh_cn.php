@@ -542,6 +542,12 @@ class zh_cn extends en_us
         $strings['PreviousWeek'] = '上周';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = '我的团体即将到来的预订';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

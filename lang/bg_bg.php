@@ -504,6 +504,11 @@ class bg_bg extends en_gb
         $strings['PreviousWeek'] = 'Предходна седмица';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Бъдещите резервации на моята група(и)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

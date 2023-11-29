@@ -769,6 +769,11 @@ class ee_ee extends en_gb
         $strings['PreviousWeek'] = 'Eelmine nädal';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Minu grupi(t)e tulevased broneeringud';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

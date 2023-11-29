@@ -1026,6 +1026,11 @@ class el_gr extends en_gb
         $strings['PreviousWeek'] = 'Προηγούμενη εβδομάδα';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Μελλοντικές κρατήσεις της ομάδας(ών) μου';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

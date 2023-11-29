@@ -990,6 +990,11 @@ class es extends en_gb
         $strings['PreviousWeek'] = 'Semana pasada';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Próximas reservas de mi(s) grupo(s)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
 

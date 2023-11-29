@@ -1001,6 +1001,12 @@ class pt_pt extends en_gb
         $strings['EarlierThisWeek'] = 'Anteriormente Nesta Semana';
         $strings['PreviousWeek'] = 'Semana Passada';
         //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Reservas Futuras do(s) meu(s) Grupo(s)';
+        //End Group Upcoming Reservations
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -984,6 +984,12 @@ class hu_hu extends en_us
         $strings['PreviousWeek'] = 'Előző hét';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Csoportom(aim) következő foglalásai';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

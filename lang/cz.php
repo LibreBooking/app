@@ -820,6 +820,11 @@ class cz extends en_us
         $strings['PreviousWeek'] = 'Předchozí týden';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nadcházející rezervace mé skupiny(y)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

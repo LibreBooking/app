@@ -640,6 +640,12 @@ class sk extends en_gb
         $strings['PreviousWeek'] = 'Predchádzajúci týždeň';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nadchádzajúce rezervácie mojej skupiny(y)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -22,7 +22,7 @@ class GroupUpcomingReservations extends DashboardItem implements IGroupUpcomingR
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
         $this->presenter->SetSearchCriteria(ServiceLocator::GetServer()->GetUserSession()->UserId, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
-        $this->Display('upcoming_reservations.tpl');
+        $this->Display('group_upcoming_reservations.tpl');
     }
 
     public function SetTimezone($timezone)
@@ -93,6 +93,6 @@ class AllGroupUpcomingReservations extends GroupUpcomingReservations
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
         $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
-        $this->Display('admin_upcoming_reservations.tpl');
+        $this->Display('group_upcoming_reservations.tpl');
     }
 }

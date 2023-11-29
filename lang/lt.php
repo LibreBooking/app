@@ -991,6 +991,12 @@ class lt extends en_gb
         $strings['PreviousWeek'] = 'Ankstesnė savaitė';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Mano grupės ateities rezervacijos';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

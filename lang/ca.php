@@ -388,8 +388,9 @@ class ca extends en_gb
         $strings['InviteeAddedSubject'] = 'Invitaci&oacute; a Reserva';
         $strings['ResetPassword'] = 'Petici&oacute; de Reinici de Contrasenya';
         $strings['ForgotPasswordEmailSent'] = 'S\'ha enviat un email a la direcci&oacute; proporcionada amb instruccions per reiniciar la teva contrasenya';
-        //
+        //End Email Subjects
 
+        //NEEDS CHECKING
         //Past Reservations
         $strings['NoPastReservations'] = 'No tens cap reserva anterior';
         $strings['PastReservations'] = 'Reserves anteriors';
@@ -399,6 +400,11 @@ class ca extends en_gb
         $strings['EarlierThisWeek'] = 'Més aviat aquesta setmana';
         $strings['PreviousWeek'] = 'Setmana anterior';
         //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Properes reserves del meu(s) grup(s)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
 
         $this->Strings = $strings;
     }
