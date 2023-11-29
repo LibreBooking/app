@@ -739,6 +739,12 @@ class he extends en_gb
         $strings['PreviousWeek'] = 'השבוע הקודם';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'הזמנות קבוצתי(ות) הבאות';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

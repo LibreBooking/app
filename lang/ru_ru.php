@@ -814,6 +814,12 @@ class ru_ru extends en_gb
         $strings['PreviousWeek'] = 'Прошлая неделя';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Предстоящие бронирования моей группы(ов)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

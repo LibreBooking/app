@@ -1032,6 +1032,12 @@ class pl extends en_gb
         $strings['PreviousWeek'] = 'Poprzedni tydzień';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nadchodzące rezerwacje mojej grupy(y)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

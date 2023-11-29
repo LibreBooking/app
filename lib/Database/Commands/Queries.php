@@ -596,6 +596,13 @@ class Queries
 		FROM `group_resource_permissions`
 		WHERE `group_id` = @groupid';
 
+	public const GET_GROUP_RESOURCES_ID = 'SELECT `resource_id` FROM `resources` 
+			WHERE `admin_group_id` = @groupid';
+
+	public const GET_GROUP_SCHEDULES_ID = 'SELECT `schedule_id` FROM `schedules`
+			WHERE `admin_group_id` = @groupid';
+
+
     public const GET_GROUP_ROLES =
         'SELECT `r`.*
 		FROM `roles` `r`

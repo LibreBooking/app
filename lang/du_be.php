@@ -401,6 +401,11 @@ class du_be extends en_gb
         $strings['PreviousWeek'] = 'Vorige week';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Aankomende reserveringen van mijn groep(en)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
     }
 

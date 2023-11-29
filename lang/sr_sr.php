@@ -655,6 +655,12 @@ class sr_sr extends en_gb
         $strings['PreviousWeek'] = 'Prethodna nedelja';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nadolazeće rezervacije moje grupe(ova)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

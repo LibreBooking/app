@@ -787,6 +787,12 @@ class tr_tr extends en_gb
         $strings['PreviousWeek'] = 'Geçen Hafta';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Grubumun Yaklaşan Rezervasyonları';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

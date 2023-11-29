@@ -744,6 +744,12 @@ class vn_vn extends en_gb
         $strings['PreviousWeek'] = 'Tuần trước';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Đặt phòng sắp tới của Nhóm của tôi';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;
