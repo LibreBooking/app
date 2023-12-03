@@ -79,7 +79,7 @@ class Log
 
             $log = '[User=' . ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
 
-            self::GetInstance()->logger->info($log);
+            self::GetInstance()->logger->debug($log);
         } catch (Exception $ex) {
             echo $ex;
         }
