@@ -68,7 +68,7 @@ class Log
     public static function Debug($message, $args = [])
     {
         $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
-        if ($log_level == 'none' || $log_level == 'error') {
+        if ($log_level == 'none') {
             return;
         }
 
@@ -99,7 +99,7 @@ class Log
     public static function Error($message, $args = [])
     {
         $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
-        if ($log_level == 'none' || $log_level == 'debug') {
+        if ($log_level == 'none') {
             return;
         }
 
