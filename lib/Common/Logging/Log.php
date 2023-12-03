@@ -35,11 +35,18 @@ class Log
         if ($log_level != 'none') {
             $log_folder = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_FOLDER);
             $log_sql = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_SQL, new BooleanConverter());
-            $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::DEBUG));
-        }
-            if ($log_sql) {
-                $this->sqlLogger->pushHandler(new StreamHandler($log_folder.'/sql.log', Logger::DEBUG));
+            switch ($log_level) {
+                case 'debug':
+                    $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::DEBUG));
+                    break;
+                case 'error':
+                    $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::ERROR));
+                    break;
             }
+        }
+        if ($log_sql) {
+            $this->sqlLogger->pushHandler(new StreamHandler($log_folder.'/sql.log', Logger::ERROR));
+        }
     }
 
     /**
