@@ -120,7 +120,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
     {
         $nodeId = $this->page->GetNodeId();
 
-        Log::Debug('Deleting resource group. NodeId=%s, NewName=%s', $nodeId);
+        Log::Debug('Deleting resource group. NodeId=%s', $nodeId);
 
         $this->resourceRepository->DeleteResourceGroup($nodeId);
     }

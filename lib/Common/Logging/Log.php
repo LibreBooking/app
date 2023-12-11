@@ -35,11 +35,18 @@ class Log
         if ($log_level != 'none') {
             $log_folder = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_FOLDER);
             $log_sql = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_SQL, new BooleanConverter());
-            $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::DEBUG));
-        }
-            if ($log_sql) {
-                $this->sqlLogger->pushHandler(new StreamHandler($log_folder.'/sql.log', Logger::DEBUG));
+            switch ($log_level) {
+                case 'debug':
+                    $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::DEBUG));
+                    break;
+                case 'error':
+                    $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::ERROR));
+                    break;
             }
+        }
+        if ($log_sql) {
+            $this->sqlLogger->pushHandler(new StreamHandler($log_folder.'/sql.log', Logger::ERROR));
+        }
     }
 
     /**
@@ -61,7 +68,7 @@ class Log
     public static function Debug($message, $args = [])
     {
         $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
-        if ($log_level == 'none' || $log_level == 'error') {
+        if ($log_level == 'none') {
             return;
         }
 
@@ -79,7 +86,7 @@ class Log
 
             $log = '[User=' . ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
 
-            self::GetInstance()->logger->info($log);
+            self::GetInstance()->logger->debug($log);
         } catch (Exception $ex) {
             echo $ex;
         }
@@ -92,7 +99,7 @@ class Log
     public static function Error($message, $args = [])
     {
         $log_level = Configuration::Instance()->GetSectionKey(ConfigSection::LOGGING, ConfigKeys::LOGGING_LEVEL);
-        if ($log_level == 'none' || $log_level == 'debug') {
+        if ($log_level == 'none') {
             return;
         }
 
