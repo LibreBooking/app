@@ -488,7 +488,24 @@ class ro_ro extends en_gb
         $strings['InviteeAddedSubject'] = 'Invito a prenotazione';
         $strings['ResetPassword'] = 'Cerere de resetare parola';
         $strings['ForgotPasswordEmailSent'] = 'Un email\' a fost transmis\'in care sunt furnizate instructiuni pentru resetarea parolei';
-        //
+        //End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nu aveți rezervări anterioare';
+        $strings['PastReservations'] = 'Rezervări Anterioare';
+        $strings['AllNoPastReservations'] = 'Nu există rezervări anterioare în ultimele %s zile';
+        $strings['AllPastReservations'] = 'Toate Rezervările Anterioare';
+        $strings['Yesterday'] = 'Ieri';
+        $strings['EarlierThisWeek'] = 'Mai devreme în această săptămână';
+        $strings['PreviousWeek'] = 'Săptămâna trecută';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Viitoarele rezervări ale grupului/meu(ă)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
     }

@@ -388,7 +388,23 @@ class du_be extends en_gb
         $strings['InviteeAddedSubject'] = 'Uitnodiging reservering';
         $strings['ResetPassword'] = 'Verzoek om paswoord te resetten';
         $strings['ForgotPasswordEmailSent'] = 'Een email werd naar uw account gestuurd met de informatie om uw paswoord te resetten';
-        //
+        //End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'U heeft geen vorige reserveringen';
+        $strings['PastReservations'] = 'Vorige reserveringen';
+        $strings['AllNoPastReservations'] = 'Er zijn geen vorige reserveringen in de afgelopen %s dagen';
+        $strings['AllPastReservations'] = 'Alle vorige reserveringen';
+        $strings['Yesterday'] = 'Gisteren';
+        $strings['EarlierThisWeek'] = 'Eerder deze week';
+        $strings['PreviousWeek'] = 'Vorige week';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Aankomende reserveringen van mijn groep(en)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
 
         $this->Strings = $strings;
     }

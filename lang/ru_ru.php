@@ -803,6 +803,23 @@ class ru_ru extends en_gb
         $strings['AnnouncementSubject'] = 'Новое объявление было опубликовано %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'У вас нет предыдущих бронирований';
+        $strings['PastReservations'] = 'Предыдущие бронирования';
+        $strings['AllNoPastReservations'] = 'За последние %s дней нет предыдущих бронирований';
+        $strings['AllPastReservations'] = 'Все предыдущие бронирования';
+        $strings['Yesterday'] = 'Вчера';
+        $strings['EarlierThisWeek'] = 'Ранее на этой неделе';
+        $strings['PreviousWeek'] = 'Прошлая неделя';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Предстоящие бронирования моей группы(ов)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

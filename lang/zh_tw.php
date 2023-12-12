@@ -614,6 +614,23 @@ class zh_tw extends en_us
         $strings['ReservationEndingSoonSubject'] = '%s 的預約即將結束';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = '您沒有以前的預訂';
+        $strings['PastReservations'] = '以前的預訂';
+        $strings['AllNoPastReservations'] = '在過去的%s天內沒有以前的預訂';
+        $strings['AllPastReservations'] = '所有以前的預訂';
+        $strings['Yesterday'] = '昨天';
+        $strings['EarlierThisWeek'] = '本週早些時候';
+        $strings['PreviousWeek'] = '上週';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = '我的團體即將到來的預訂';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

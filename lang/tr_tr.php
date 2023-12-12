@@ -776,6 +776,23 @@ class tr_tr extends en_gb
         $strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Daha önce yapılmış rezervasyonunuz yok';
+        $strings['PastReservations'] = 'Önceki Rezervasyonlar';
+        $strings['AllNoPastReservations'] = 'Son %s günde önceki rezervasyon yok';
+        $strings['AllPastReservations'] = 'Tüm Önceki Rezervasyonlar';
+        $strings['Yesterday'] = 'Dün';
+        $strings['EarlierThisWeek'] = 'Bu Haftanın Daha Önceki Günleri';
+        $strings['PreviousWeek'] = 'Geçen Hafta';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Grubumun Yaklaşan Rezervasyonları';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

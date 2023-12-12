@@ -1000,6 +1000,22 @@ class ar extends en_us
         $strings['ReservationParticipantJoin'] = '%s Has Joined Your Reservation for %s on %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'ليس لديك حجوزات سابقة';
+        $strings['PastReservations'] = 'الحجوزات السابقة';
+        $strings['AllNoPastReservations'] = 'لا توجد حجوزات سابقة في الـ %s الأيام السابقة';
+        $strings['AllPastReservations'] = 'كل الحجوزات السابقة';
+        $strings['Yesterday'] = 'أمس';
+        $strings['EarlierThisWeek'] = 'في وقت سابق من هذا الأسبوع';
+        $strings['PreviousWeek'] = 'الأسبوع السابق';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'الحجوزات القادمة لمجموعتي';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

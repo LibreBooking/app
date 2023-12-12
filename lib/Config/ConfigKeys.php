@@ -172,6 +172,10 @@ class ConfigKeys
     public const FACEBOOK_CLIENT_SECRET = 'facebook.client.secret';
     public const FACEBOOK_REDIRECT_URI = 'facebook.redirect.uri';
 
+    public const YEARS_OLD_DATA = 'years.old.data';
+    public const DELETE_OLD_ANNOUNCEMENTS = 'delete.old.announcements'; 
+    public const DELETE_OLD_BLACKOUTS = 'delete.old.blackouts'; 
+    public const DELETE_OLD_RESERVATIONS = 'delete.old.reservations'; 
 }
 
 class ConfigSection
@@ -201,4 +205,5 @@ class ConfigSection
     public const TABLET_VIEW = 'tablet.view';
     public const REGISTRATION = 'registration';
     public const LOGGING = 'logging';
+    public const DELETE_OLD_DATA = 'delete.old.data';
 }

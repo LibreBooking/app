@@ -973,6 +973,23 @@ class hu_hu extends en_us
         $strings['ReservationParticipantJoin'] = '%s Csatlakozott foglalására for %s on %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nincsenek korábbi foglalásai';
+        $strings['PastReservations'] = 'Korábbi foglalások';
+        $strings['AllNoPastReservations'] = 'Az elmúlt %s napban nincsenek korábbi foglalásai';
+        $strings['AllPastReservations'] = 'Az összes korábbi foglalás';
+        $strings['Yesterday'] = 'Tegnap';
+        $strings['EarlierThisWeek'] = 'Korábban ezen a héten';
+        $strings['PreviousWeek'] = 'Előző hét';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Csoportom(aim) következő foglalásai';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

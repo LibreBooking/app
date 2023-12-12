@@ -556,8 +556,24 @@ class sv_sv extends en_gb
         $strings['ReservationUpdatedAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s har uppdaterats';
         $strings['ReservationDeleteAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s har tagits bort';
         $strings['ReservationApprovalAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s måste godkännas';
-
         // End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Du har inga tidigare bokningar';
+        $strings['PastReservations'] = 'Tidigare bokningar';
+        $strings['AllNoPastReservations'] = 'Det finns inga tidigare bokningar de senaste %s dagarna';
+        $strings['AllPastReservations'] = 'Alla tidigare bokningar';
+        $strings['Yesterday'] = 'Igår';
+        $strings['EarlierThisWeek'] = 'Tidigare den här veckan';
+        $strings['PreviousWeek'] = 'Förra veckan';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Mina grupps kommande bokningar';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
     }

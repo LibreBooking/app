@@ -644,6 +644,23 @@ class sr_sr extends en_gb
         $strings['UserAdded'] = 'Dodat je novi korisnik';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nemate prethodne rezervacije';
+        $strings['PastReservations'] = 'Prethodne rezervacije';
+        $strings['AllNoPastReservations'] = 'Nema prethodnih rezervacija u poslednjih %s dana';
+        $strings['AllPastReservations'] = 'Sve prethodne rezervacije';
+        $strings['Yesterday'] = 'Juče';
+        $strings['EarlierThisWeek'] = 'Ranije ove nedelje';
+        $strings['PreviousWeek'] = 'Prethodna nedelja';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nadolazeće rezervacije moje grupe(ova)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

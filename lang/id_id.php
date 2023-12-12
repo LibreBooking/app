@@ -574,6 +574,23 @@ class id_id extends en_gb
         $strings['ReservationEndingSoonSubject'] = 'Reservasi untuk %s akan segera berakhir';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Anda tidak memiliki reservasi sebelumnya';
+        $strings['PastReservations'] = 'Reservasi Sebelumnya';
+        $strings['AllNoPastReservations'] = 'Tidak ada reservasi sebelumnya dalam %s hari terakhir';
+        $strings['AllPastReservations'] = 'Semua Reservasi Sebelumnya';
+        $strings['Yesterday'] = 'Kemarin';
+        $strings['EarlierThisWeek'] = 'Lebih awal pekan ini';
+        $strings['PreviousWeek'] = 'Pekan sebelumnya';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Reservasi Mendatang Grup Saya';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
     }
 

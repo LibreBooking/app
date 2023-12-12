@@ -632,6 +632,23 @@ class no_no extends en_gb
         $strings['UserAdded'] = 'En ny bruker er lagt til';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Du har ingen tidligere reservasjoner';
+        $strings['PastReservations'] = 'Tidligere reservasjoner';
+        $strings['AllNoPastReservations'] = 'Det er ingen tidligere reservasjoner de siste %s dagene';
+        $strings['AllPastReservations'] = 'Alle tidligere reservasjoner';
+        $strings['Yesterday'] = 'I går';
+        $strings['EarlierThisWeek'] = 'Tidligere denne uken';
+        $strings['PreviousWeek'] = 'Forrige uke';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Mine grupp(er) kommende reservasjoner';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

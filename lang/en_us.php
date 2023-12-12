@@ -1016,6 +1016,20 @@ class en_us extends Language
         $strings['ReservationAvailableSubject'] = '%s is available on %s';
         $strings['ResourceStatusChangedSubject'] = 'The availability of %s has changed';
         // End Email Subjects
+        
+        //Past Reservations
+        $strings['NoPastReservations'] = 'You have no past reservations';
+        $strings['PastReservations'] = 'Past Reservations';
+        $strings['AllNoPastReservations'] = 'There are no past reservations in previous %s days';
+        $strings['AllPastReservations'] = 'All Past Reservations';
+        $strings['Yesterday'] = 'Yesterday';
+        $strings['EarlierThisWeek'] = 'Earlier This Week';
+        $strings['PreviousWeek'] = 'Previous Week';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'My Group(s) Upcoming Reservations';
+        //End Group Upcoming Reservations
 
         $this->Strings = $strings;
 

@@ -990,8 +990,24 @@ class ja_jp extends en_gb
         $strings['ReservationParticipantAccept'] = '%s は %s ( %s ) の予約への招待を受け入れました';
         $strings['ReservationParticipantDecline'] = '%s は %s ( %s ) の予約招待を拒否しました';
         $strings['ReservationParticipantJoin'] = '%s は %s ( %s ) の予約に参加しました';
-
         // End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = '過去の予約はありません';
+        $strings['PastReservations'] = '過去の予約';
+        $strings['AllNoPastReservations'] = '直近%s日間に過去の予約はありません';
+        $strings['AllPastReservations'] = 'すべての過去の予約';
+        $strings['Yesterday'] = '昨日';
+        $strings['EarlierThisWeek'] = '今週の前半';
+        $strings['PreviousWeek'] = '先週';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = '私のグループの今後の予約';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
 

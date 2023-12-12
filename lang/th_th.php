@@ -836,6 +836,23 @@ class th_th extends en_gb
         $strings['MissedCheckinEmailSubject'] = 'ไม่ได้รับการเช็คอินสำหรับ %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'คุณไม่มีการจองที่ผ่านมา';
+        $strings['PastReservations'] = 'การจองที่ผ่านมา';
+        $strings['AllNoPastReservations'] = 'ไม่มีการจองที่ผ่านมาใน %s วันที่ผ่านมา';
+        $strings['AllPastReservations'] = 'การจองที่ผ่านมาทั้งหมด';
+        $strings['Yesterday'] = 'เมื่อวาน';
+        $strings['EarlierThisWeek'] = 'ก่อนหน้านี้ในสัปดาห์นี้';
+        $strings['PreviousWeek'] = 'สัปดาห์ที่แล้ว';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'การจองที่มีต่อไปของกลุ่มของฉัน';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

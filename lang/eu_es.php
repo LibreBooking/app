@@ -717,6 +717,22 @@ class eu_es extends en_gb
         $strings['GuestAccountCreatedSubject'] = 'Kontuaren xehetasunak';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Ez duzu aurreko erreserik';
+        $strings['PastReservations'] = 'Aurreko erreserak';
+        $strings['AllNoPastReservations'] = 'Ez dago aurreko erreserarik azken %s egunetan';
+        $strings['AllPastReservations'] = 'Denak aurreko erreserak';
+        $strings['Yesterday'] = 'Atzo';
+        $strings['EarlierThisWeek'] = 'Aurreko astean';
+        $strings['PreviousWeek'] = 'Aurreko astean';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nire Taldeen Hurrengo Erreserba(k)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
     }
