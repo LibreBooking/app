@@ -301,7 +301,7 @@ class LoginPage extends Page implements ILoginPage
      * Sends the created google url in the presenter to the smarty page 
      */
     public function SetGoogleUrl($googleUrl){
-        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE) == 'true'){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter())){
             $this->Set('GoogleUrl',$googleUrl);
         }
     }
@@ -310,7 +310,7 @@ class LoginPage extends Page implements ILoginPage
      * Sends the created microsoft url in the presenter to the smarty page 
      */
     public function SetMicrosoftUrl($microsoftUrl){
-        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT) == 'true'){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT, new BooleanConverter())){
             $this->Set('MicrosoftUrl',$microsoftUrl);
         }
     }
@@ -319,7 +319,7 @@ class LoginPage extends Page implements ILoginPage
      * Sends the created facebook url in the presenter to the smarty page 
      */
     public function SetFacebookUrl($FacebookUrl){
-        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK) == 'true'){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter())){
             $this->Set('FacebookUrl',$FacebookUrl);
         }
     }
