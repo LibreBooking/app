@@ -19,51 +19,53 @@ JobCop::EnsureCommandLine();
 
 try {
     //Delete announcements, blackouts and reservations older than $deleteBefore (years -> -2 = 2+ years older)
-    $deleteBefore = Date::Now()->AddYears(-2);
-
+    $deleteBefore = Date::Now()->AddYears(-(Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::YEARS_OLD_DATA)));
+    
     //ANNOUNCEMENTS
-    $getAnnouncements = GetAnnoucementsIdsToDeleteQuery($deleteBefore);
-    $reader = ServiceLocator::GetDatabase()->Query($getAnnouncements);
-    Log::Debug('Getting %s old announcements', $reader->NumRows());
-    while ($row = $reader->GetRow()) {
-        $annoucementId = $row[ColumnNames::ANNOUNCEMENT_ID];
-        DeleteAnnouncementsQuery($annoucementId);
+    if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_ANNOUNCEMENTS, new BooleanConverter())){
+        $getAnnouncements = GetAnnoucementsIdsToDeleteQuery($deleteBefore);
+        $reader = ServiceLocator::GetDatabase()->Query($getAnnouncements);
+        Log::Debug('Getting %s old announcements', $reader->NumRows());
+        while ($row = $reader->GetRow()) {
+            $annoucementId = $row[ColumnNames::ANNOUNCEMENT_ID];
+            DeleteAnnouncementsQuery($annoucementId);
+        }
+        $reader->Free();
     }
-    $reader->Free();
-    echo "ANUNCIOS APAGADOS\n";
 
     //BLACKOUTS
-    $getBlackouts = GetBlackoutsIdsToDeleteQuery($deleteBefore);
-    $reader = ServiceLocator::GetDatabase()->Query($getBlackouts);
-    Log::Debug('Getting %s old blackouts', $reader->NumRows());
-    while ($row = $reader->GetRow()) {
-        $blackoutId = $row[ColumnNames::BLACKOUT_SERIES_ID];
-        DeleteBlackoutsQuery($blackoutId);      
+    if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_BLACKOUTS, new BooleanConverter())){
+        $getBlackouts = GetBlackoutsIdsToDeleteQuery($deleteBefore);
+        $reader = ServiceLocator::GetDatabase()->Query($getBlackouts);
+        Log::Debug('Getting %s old blackouts', $reader->NumRows());
+        while ($row = $reader->GetRow()) {
+            $blackoutId = $row[ColumnNames::BLACKOUT_SERIES_ID];
+            DeleteBlackoutsQuery($blackoutId);      
+        }
+        $reader->Free();
     }
-    $reader->Free();
-    echo "BLACKOUTS APAGADOS\n";
 
     //RESERVATIONS
-    $getReservations = GetReservationsIdsToDeleteQuery($deleteBefore);
-    $reader = ServiceLocator::GetDatabase()->Query($getReservations);
-    Log::Debug('Getting %s old reservations', $reader->NumRows());
-    while ($row = $reader->GetRow()) {
-        $reservationId = $row[ColumnNames::RESERVATION_SERIES_ID];
+    if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_RESERVATIONS, new BooleanConverter())){
+        $getReservations = GetReservationsIdsToDeleteQuery($deleteBefore);
+        $reader = ServiceLocator::GetDatabase()->Query($getReservations);
+        Log::Debug('Getting %s old reservations', $reader->NumRows());
+        while ($row = $reader->GetRow()) {
+            $reservationId = $row[ColumnNames::RESERVATION_SERIES_ID];
 
-        //RESERVATION USERS
-        $getReservationUsers = GetReservationUsersToDelete($reservationId);
-        $auxReader = ServiceLocator::GetDatabase()->Query($getReservationUsers);
-        while ($auxRow = $auxReader->GetRow()){
-            $reservationUser = $auxRow[ColumnNames::RESERVATION_INSTANCE_ID];
-            DeleteReservationUsersQuery($reservationUser);
+            //RESERVATION USERS
+            $getReservationUsers = GetReservationUsersToDelete($reservationId);
+            $auxReader = ServiceLocator::GetDatabase()->Query($getReservationUsers);
+            while ($auxRow = $auxReader->GetRow()){
+                $reservationUser = $auxRow[ColumnNames::RESERVATION_INSTANCE_ID];
+                DeleteReservationUsersQuery($reservationUser);
+            }
+
+            $auxReader->Free();
+            DeleteReservationsQuery($reservationId);
         }
-
-        $auxReader->Free();
-        echo "USER APAGADO\n";
-        DeleteReservationsQuery($reservationId);
+        $reader->Free();
     }
-    $reader->Free();
-    echo "RESERVAS APAGADAS\n";
 
 } catch (Exception $ex){
     Log::Error('Error running deleteolddata.php: %s', $ex);
