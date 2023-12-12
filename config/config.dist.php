@@ -169,7 +169,7 @@ $conf['settings']['reservation.labels']['reservation.popup'] = ''; // Format for
  * Security header settings
  */
 $conf['settings']['security']['security.headers'] = 'false'; // Enable the following options
-$conf['settings']['security']['security.strict-transport'] = 'true';
+$conf['settings']['security']['security.strict-transport'] = 'max-age=31536000';
 $conf['settings']['security']['security.x-frame'] = 'deny';
 $conf['settings']['security']['security.x-xss'] = '1; mode=block';
 $conf['settings']['security']['security.x-content-type'] = 'nosniff';
