@@ -8,6 +8,9 @@ Second, if you found a bug submit an issue.
 Third, if you managed to fix or trace the problem update the issue, even you can't code, others might be able to quickly provide a fix and maybe even submit a pr.
 Finally if you can code, please contribute to the project even if it's something simple, like fixing grammatical errors all the help is appreciated.
 
+## TODO list
+Because LibreBooking is an opensource project, there are some things we have to do to make it better. Here is a list of things you can do if you're interested in helping out
+- 
 
 # Welcome to LibreBooking
 
