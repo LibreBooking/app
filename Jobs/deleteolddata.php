@@ -17,61 +17,69 @@ Log::Debug('Running deleteolddata.php');
 
 JobCop::EnsureCommandLine();
 
-try {
-    //Delete announcements, blackouts and reservations older than $deleteBefore (years -> -2 = 2+ years older)
-    $deleteBefore = Date::Now()->AddYears(-(Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::YEARS_OLD_DATA)));
-    
-    //ANNOUNCEMENTS
-    if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_ANNOUNCEMENTS, new BooleanConverter())){
-        $getAnnouncements = GetAnnoucementsIdsToDeleteQuery($deleteBefore);
-        $reader = ServiceLocator::GetDatabase()->Query($getAnnouncements);
-        Log::Debug('Getting %s old announcements', $reader->NumRows());
-        while ($row = $reader->GetRow()) {
-            $annoucementId = $row[ColumnNames::ANNOUNCEMENT_ID];
-            DeleteAnnouncementsQuery($annoucementId);
-        }
-        $reader->Free();
-    }
+//Checks if years specified are positive (only 1+ years old data can be permanently deleted)
+if ((Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::YEARS_OLD_DATA)) > 0){
+    try {
+        //Delete announcements, blackouts and reservations older than $deleteBefore (years -> -2 = 2+ years older)
+        $deleteBefore = Date::Now()->AddYears(-(Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::YEARS_OLD_DATA)));
 
-    //BLACKOUTS
-    if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_BLACKOUTS, new BooleanConverter())){
-        $getBlackouts = GetBlackoutsIdsToDeleteQuery($deleteBefore);
-        $reader = ServiceLocator::GetDatabase()->Query($getBlackouts);
-        Log::Debug('Getting %s old blackouts', $reader->NumRows());
-        while ($row = $reader->GetRow()) {
-            $blackoutId = $row[ColumnNames::BLACKOUT_SERIES_ID];
-            DeleteBlackoutsQuery($blackoutId);      
-        }
-        $reader->Free();
-    }
-
-    //RESERVATIONS
-    if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_RESERVATIONS, new BooleanConverter())){
-        $getReservations = GetReservationsIdsToDeleteQuery($deleteBefore);
-        $reader = ServiceLocator::GetDatabase()->Query($getReservations);
-        Log::Debug('Getting %s old reservations', $reader->NumRows());
-        while ($row = $reader->GetRow()) {
-            $reservationId = $row[ColumnNames::RESERVATION_SERIES_ID];
-
-            //RESERVATION USERS
-            $getReservationUsers = GetReservationUsersToDelete($reservationId);
-            $auxReader = ServiceLocator::GetDatabase()->Query($getReservationUsers);
-            while ($auxRow = $auxReader->GetRow()){
-                $reservationUser = $auxRow[ColumnNames::RESERVATION_INSTANCE_ID];
-                DeleteReservationUsersQuery($reservationUser);
+        //ANNOUNCEMENTS
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_ANNOUNCEMENTS, new BooleanConverter())){
+            $getAnnouncements = GetAnnoucementsIdsToDeleteQuery($deleteBefore);
+            $reader = ServiceLocator::GetDatabase()->Query($getAnnouncements);
+            Log::Debug('Getting %s old announcements', $reader->NumRows());
+            while ($row = $reader->GetRow()) {
+                $annoucementId = $row[ColumnNames::ANNOUNCEMENT_ID];
+                DeleteAnnouncementsQuery($annoucementId);
             }
-
-            $auxReader->Free();
-            DeleteReservationsQuery($reservationId);
+            $reader->Free();
         }
-        $reader->Free();
+
+        //BLACKOUTS
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_BLACKOUTS, new BooleanConverter())){
+            $getBlackouts = GetBlackoutsIdsToDeleteQuery($deleteBefore);
+            $reader = ServiceLocator::GetDatabase()->Query($getBlackouts);
+            Log::Debug('Getting %s old blackouts', $reader->NumRows());
+            while ($row = $reader->GetRow()) {
+                $blackoutId = $row[ColumnNames::BLACKOUT_SERIES_ID];
+                DeleteBlackoutsQuery($blackoutId);      
+            }
+            $reader->Free();
+        }
+
+        //RESERVATIONS
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::DELETE_OLD_DATA, ConfigKeys::DELETE_OLD_RESERVATIONS, new BooleanConverter())){
+            $getReservations = GetReservationsIdsToDeleteQuery($deleteBefore);
+            $reader = ServiceLocator::GetDatabase()->Query($getReservations);
+            Log::Debug('Getting %s old reservations', $reader->NumRows());
+            while ($row = $reader->GetRow()) {
+                $reservationId = $row[ColumnNames::RESERVATION_SERIES_ID];
+
+                //RESERVATION USERS
+                $getReservationUsers = GetReservationUsersToDelete($reservationId);
+                $auxReader = ServiceLocator::GetDatabase()->Query($getReservationUsers);
+                while ($auxRow = $auxReader->GetRow()){
+                    $reservationUser = $auxRow[ColumnNames::RESERVATION_INSTANCE_ID];
+                    DeleteReservationUsersQuery($reservationUser);
+                }
+
+                $auxReader->Free();
+                DeleteReservationsQuery($reservationId);
+            }
+            $reader->Free();
+        }
+
+    } catch (Exception $ex){
+        Log::Error('Error running deleteolddata.php: %s', $ex);
     }
-
-} catch (Exception $ex){
-    Log::Error('Error running deleteolddata.php: %s', $ex);
 }
-
+else {
+    Log::Error('Error running deleteolddata.php');
+    Log::Error('Invalid years.old.data value in config file, value must be positive!');
+}
 Log::Debug('Finished running deleteolddata.php');
+
+
 
 //GET INSTANCES FUNCTIONS
 
