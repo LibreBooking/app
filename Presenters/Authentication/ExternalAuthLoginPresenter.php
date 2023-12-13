@@ -138,7 +138,8 @@ class ExternalAuthLoginPresenter
         
         if (isset($_SESSION['facebook_access_token'])) {
             $facebook_Client->setDefaultAccessToken(unserialize($_SESSION['facebook_access_token']));
-        } 
+        }
+        unset($_SESSION['facebook_access_token']);
 
         $profile_request = $facebook_Client ->get('/me?fields=name,first_name,last_name,email');
         $profile = $profile_request ->getGraphUser();

@@ -657,7 +657,11 @@ class sr_sr extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Nadolazeće rezervacije moje grupe(ova)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Došlo je do greške prilikom prijavljivanja putem Facebooka. Molimo pokušajte ponovo.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

@@ -571,7 +571,11 @@ class sv_sv extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Mina grupps kommande bokningar';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Ett fel inträffade vid inloggning med Facebook. Försök igen.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

@@ -645,7 +645,11 @@ class no_no extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Mine grupp(er) kommende reservasjoner';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Det oppstod en feil under pålogging med Facebook. Prøv igjen.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 
