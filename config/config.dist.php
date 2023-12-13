@@ -212,8 +212,9 @@ $conf['settings']['logging']['folder'] = '/var/log/librebooking/log'; //Absolute
 $conf['settings']['logging']['level'] = 'debug'; //Set to none disable logs, error to only log errors or debug to log all messages to the app.log file 
 $conf['settings']['logging']['sql'] = 'false'; //Set to true no enable the creation of and sql.log file
 
-//IN THE REDIRECT URI'S (OF THE AUTHENTICATION YOU ARE USING) YOU NEED TO ADD THE PATH FROM THE WEBSITE DOMAIN TO THE WEB/GOOGLE-AUTH.PHP
-//EG: http://localhost/Web/facebook-auth.php
+// IN THE REDIRECT URI'S (OF THE AUTHENTICATION YOU ARE USING) YOU NEED TO ADD THE PATH FROM THE WEBSITE DOMAIN TO THE
+// WEB/GOOGLE-AUTH.PHP or WEB/FACEBOOK-AUTH.PHP or WEB/MICROSOFT-AUTH.PHP (depending on the services you are using)
+// EG: http://localhost/Web/facebook-auth.php
 /**
 * Google login configuration
 */
@@ -227,14 +228,14 @@ $conf['settings']['authentication']['microsoft.client.id'] = '';
 $conf['settings']['authentication']['microsoft.client.secret'] = '';
 $conf['settings']['authentication']['microsoft.redirect.uri'] = '/Web/microsoft-auth.php';
 /**
- * Fcebook login configuration
+ * Facebook login configuration
  */
 $conf['settings']['authentication']['facebook.client.id'] = '';
 $conf['settings']['authentication']['facebook.client.secret'] = '';
 $conf['settings']['authentication']['facebook.redirect.uri'] = '/Web/facebook-auth.php';
 /**
- *  Delete old data job configuration
- *  Activate the deleteolddata.php as a background job to use this feature
+ * Delete old data job configuration
+ * Activate the deleteolddata.php as a background job to use this feature
  */
 $conf['settings']['delete.old.data']['years.old.data'] = '3';               //Choose how long a blackout, announcement and reservation stay in the database (in years) counting from the end date
 $conf['settings']['delete.old.data']['delete.old.announcements'] = 'false'; //Choose if this feature deletes old announcements from database
