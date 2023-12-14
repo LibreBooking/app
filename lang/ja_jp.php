@@ -1005,7 +1005,11 @@ class ja_jp extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = '私のグループの今後の予約';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Facebookでログイン中にエラーが発生しました。もう一度お試しください。';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

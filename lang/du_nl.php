@@ -1006,6 +1006,10 @@ class du_nl extends en_gb
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Aankomende reserveringen van mijn groep(en)';
         //End Group Upcoming Reservations 
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Er is een fout opgetreden bij het inloggen met Facebook. Probeer het opnieuw.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

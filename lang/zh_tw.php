@@ -627,7 +627,11 @@ class zh_tw extends en_us
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = '我的團體即將到來的預訂';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = '使用Facebook登入時發生錯誤。請重試。';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

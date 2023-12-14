@@ -1031,6 +1031,10 @@ class en_us extends Language
         $strings['GroupUpcomingReservations'] = 'My Group(s) Upcoming Reservations';
         //End Group Upcoming Reservations
 
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'An error occured while logging in with facebook. Please try again.';
+        //End Facebook Login SDK Error
+
         $this->Strings = $strings;
 
         return $this->Strings;

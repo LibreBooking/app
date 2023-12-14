@@ -816,7 +816,11 @@ class ru_ru extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Предстоящие бронирования моей группы(ов)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Произошла ошибка при входе через Facebook. Пожалуйста, попробуйте еще раз.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

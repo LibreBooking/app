@@ -741,7 +741,11 @@ class he extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'הזמנות קבוצתי(ות) הבאות';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'אירעה שגיאה בעת ניסיון להתחבר עם Facebook. אנא נסה שוב.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

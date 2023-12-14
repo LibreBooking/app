@@ -730,7 +730,11 @@ class eu_es extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Nire Taldeen Hurrengo Erreserba(k)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Facebook-en saioa hastean errorea gertatu da. Mesedez, saiatu berriro.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 
