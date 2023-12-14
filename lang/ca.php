@@ -403,7 +403,11 @@ class ca extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Properes reserves del meu(s) grup(s)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'S\'ha produït un error en iniciar la sessió amb Facebook. Torneu-ho a provar.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

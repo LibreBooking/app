@@ -1014,6 +1014,10 @@ class ar extends en_us
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'الحجوزات القادمة لمجموعتي';
         //End Group Upcoming Reservations 
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'حدث خطأ أثناء تسجيل الدخول باستخدام فيسبوك. يرجى المحاولة مرة أخرى.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

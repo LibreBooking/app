@@ -656,7 +656,11 @@ class si_si extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Prihodnje rezervacije moje skupine(i)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Prijavljanje prek Facebooka ni uspelo. Poskusite znova.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

@@ -822,7 +822,11 @@ class cz extends en_us
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Nadcházející rezervace mé skupiny(y)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Při přihlašování přes Facebook došlo k chybě. Zkuste to prosím znovu.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

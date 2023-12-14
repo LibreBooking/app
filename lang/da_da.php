@@ -1009,7 +1009,11 @@ class da_da extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Mine gruppers kommende reservationer';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Der opstod en fejl under login med Facebook. Prøv venligst igen.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         $this->Strings = $strings;
