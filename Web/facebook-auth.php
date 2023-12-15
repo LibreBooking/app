@@ -21,7 +21,7 @@ if (isset($_GET['code'])) {
         $code = filter_input(INPUT_GET,'code');
         header("Location: ".ROOT_DIR."Web/external-auth.php?type=fb&code=".$code);
         exit;
-    } catch (\Facebook\Exceptions\FacebookResponseException | \Facebook\Exceptions\FacebookSDKException) {
+    } catch (\Facebook\Exceptions\FacebookResponseException | \Facebook\Exceptions\FacebookSDKException $e) {
         Log::Debug("Exception during facebook login: %s", $e->getMessage());
         $_SESSION['facebook_error'] = true;
         header("Location:".ROOT_DIR."Web");
