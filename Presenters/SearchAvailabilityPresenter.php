@@ -221,7 +221,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
             $emptyStart = empty($start) && !empty($end);
             $bothEmpty = empty($start) && empty($end);
 
-            //IF THE END FIELD IS EMPTY OR THE BOTH FIELDS ARE SELECTED ARE EQUAL, IT RETURNS ONLY THE SLOTS SPECIFIED BY THE DAY OF THE START FIELD 
+            //IF THE END FIELD IS EMPTY OR THE BOTH FIELDS SELECTED ARE EQUAL, IT RETURNS ONLY THE SLOTS SPECIFIED BY THE DAY OF THE START FIELD 
             if ($notEmptyButEqual || $emptyEnd) {
                 $start = Date::Parse($start, $timezone);
                 $end = $start->AddDays(1);
@@ -235,12 +235,12 @@ class SearchAvailabilityPresenter extends ActionPresenter
                 return new DateRange($start, $end);
             }
 
-            //IF BOTH ARE EMPTY, IT RETURNS THE SLOTS FROM TODAY (INCLUDING START AND END DATE DAYS)
+            //IF BOTH ARE EMPTY, IT RETURNS THE SLOTS FROM TODAY
             if ($bothEmpty) {
                 return new DateRange($today->GetDate(), $today->AddDays(1)->GetDate());
             }
 
-            //IF THE FIELDS AREN'T EQUAL OR ANY OF THEM IS EMPTY RETURNS THE SPECIFIED RANGE
+            //IF THE FIELDS AREN'T EQUAL OR ANY OF THEM IS EMPTY RETURNS THE SPECIFIED RANGE (INCLUDING START AND END DATE DAYS)
             return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone)->AddDays(1));
         }
 
