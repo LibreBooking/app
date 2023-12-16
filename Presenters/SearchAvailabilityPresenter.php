@@ -208,7 +208,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
 
             $startDate = $today->AddDays($adjustedDays)->GetDate();
 
-            return new DateRange($startDate, $startDate->AddDays(6));
+            return new DateRange($startDate, $startDate->AddDays(7));
         }
 
         if ($range == 'daterange') {
