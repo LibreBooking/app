@@ -650,6 +650,13 @@ class no_no extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Det oppstod en feil under pålogging med Facebook. Prøv igjen.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reservasjoner venter på godkjenning';
+        $strings['LaterThisMonth'] = 'Senere denne måneden';
+        $strings['LaterThisYear'] = 'Senere i år';
+        $strings['Remaining'] = 'Gjenstående';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

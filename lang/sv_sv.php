@@ -576,6 +576,13 @@ class sv_sv extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Ett fel inträffade vid inloggning med Facebook. Försök igen.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reservationer som väntar på godkännande';
+        $strings['LaterThisMonth'] = 'Senare denna månad';
+        $strings['LaterThisYear'] = 'Senare i år';
+        $strings['Remaining'] = 'Återstående';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

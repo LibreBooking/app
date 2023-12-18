@@ -854,6 +854,13 @@ class th_th extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'เกิดข้อผิดพลาดขณะเข้าสู่ระบบด้วย Facebook กรุณาลองอีกครั้ง';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'รอการอนุมัติการจอง';
+        $strings['LaterThisMonth'] = 'หลังจากนี้ในเดือนนี้';
+        $strings['LaterThisYear'] = 'หลังจากนี้ในปีนี้';
+        $strings['Remaining'] = 'ที่เหลือ';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

@@ -821,6 +821,13 @@ class ru_ru extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Произошла ошибка при входе через Facebook. Пожалуйста, попробуйте еще раз.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Бронирования ожидающие подтверждения';
+        $strings['LaterThisMonth'] = 'Позже в этом месяце';
+        $strings['LaterThisYear'] = 'Позже в этом году';
+        $strings['Remaining'] = 'Осталось';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

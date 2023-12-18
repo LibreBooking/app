@@ -794,6 +794,13 @@ class tr_tr extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Facebook ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Onay Bekleyen Rezervasyonlar';
+        $strings['LaterThisMonth'] = 'Bu Ay Sonra';
+        $strings['LaterThisYear'] = 'Bu Yıl Sonra';
+        $strings['Remaining'] = 'Kalan';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

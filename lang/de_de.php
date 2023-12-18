@@ -949,6 +949,13 @@ class de_de extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Bei der Anmeldung mit Facebook ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reservierungen zur Genehmigung ausstehend';
+        $strings['LaterThisMonth'] = 'Später in diesem Monat';
+        $strings['LaterThisYear'] = 'Später in diesem Jahr';
+        $strings['Remaining'] = 'Verbleibend';  
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

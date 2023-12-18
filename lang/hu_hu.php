@@ -991,6 +991,13 @@ class hu_hu extends en_us
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Hiba történt a bejelentkezés során a Facebookkal. Kérjük, próbálja újra.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Jóváhagyásra váró foglalások';
+        $strings['LaterThisMonth'] = 'Később ebben a hónapban';
+        $strings['LaterThisYear'] = 'Később idén';
+        $strings['Remaining'] = 'Megmaradt';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

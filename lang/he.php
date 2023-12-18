@@ -746,6 +746,13 @@ class he extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'אירעה שגיאה בעת ניסיון להתחבר עם Facebook. אנא נסה שוב.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'ההזמנות בהמתנה לאישור';
+        $strings['LaterThisMonth'] = 'מאוחר יותר החודש';
+        $strings['LaterThisYear'] = 'מאוחר יותר השנה';
+        $strings['Remaining'] = 'יתרה';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

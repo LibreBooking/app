@@ -408,6 +408,13 @@ class du_be extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Er is een fout opgetreden bij het inloggen met Facebook. Probeer het opnieuw.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reserveringen in afwachting van goedkeuring';
+        $strings['LaterThisMonth'] = 'Later deze maand';
+        $strings['LaterThisYear'] = 'Later dit jaar';
+        $strings['Remaining'] = 'Resterend';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

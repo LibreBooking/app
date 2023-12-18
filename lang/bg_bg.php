@@ -511,7 +511,17 @@ class bg_bg extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Възникна грешка при влизане с Facebook. Моля, опитайте отново.';
         //End Facebook Login SDK Error
+
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Резервации в очакване на одобрение';
+        $strings['LaterThisMonth'] = 'По-късно този месец';
+        $strings['LaterThisYear'] = 'По-късно тази година';
+        $strings['Remaining'] = 'Оставащи';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
+
+
 
         $this->Strings = $strings;
 

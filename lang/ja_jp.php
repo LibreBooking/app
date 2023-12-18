@@ -1010,6 +1010,13 @@ class ja_jp extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Facebookでログイン中にエラーが発生しました。もう一度お試しください。';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Prenotazioni in attesa di approvazione';
+        $strings['LaterThisMonth'] = 'Più tardi questo mese';
+        $strings['LaterThisYear'] = 'Più tardi quest\'anno';
+        $strings['Remaining'] = 'Rimanenti';   
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

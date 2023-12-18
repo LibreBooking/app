@@ -662,6 +662,13 @@ class sr_sr extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Došlo je do greške prilikom prijavljivanja putem Facebooka. Molimo pokušajte ponovo.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Rezervacije na čekanju za odobrenje';
+        $strings['LaterThisMonth'] = 'Kasnije ovog meseca';
+        $strings['LaterThisYear'] = 'Kasnije ove godine';
+        $strings['Remaining'] = 'Preostalo';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

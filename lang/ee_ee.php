@@ -776,6 +776,13 @@ class ee_ee extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Facebooki sisselogimisel ilmnes viga. Palun proovi uuesti.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Ootel heakskiitmiseks määratud broneeringud';
+        $strings['LaterThisMonth'] = 'Hiljem sel kuul';
+        $strings['LaterThisYear'] = 'Hiljem sel aastal';
+        $strings['Remaining'] = 'Jäänud';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

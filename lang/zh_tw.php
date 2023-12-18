@@ -632,6 +632,13 @@ class zh_tw extends en_us
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = '使用Facebook登入時發生錯誤。請重試。';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = '待批准的預訂';
+        $strings['LaterThisMonth'] = '本月晚些時候';
+        $strings['LaterThisYear'] = '本年晚些時候';
+        $strings['Remaining'] = '剩餘';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

@@ -592,6 +592,13 @@ class id_id extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Terjadi kesalahan saat login dengan Facebook. Silakan coba lagi.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Pemesanan Menunggu Persetujuan';
+        $strings['LaterThisMonth'] = 'Nanti Bulan Ini';
+        $strings['LaterThisYear'] = 'Nanti Tahun Ini';
+        $strings['Remaining'] = 'Sisa';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

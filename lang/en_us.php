@@ -24,7 +24,7 @@ class en_us extends Language
         $dates['res_popup'] = 'D, n/d g:i A';
         $dates['res_popup_time'] = 'g:i A';
         $dates['short_reservation_date'] = 'n/j/y g:i A';
-        $dates['dashboard'] = 'D, n/d g:i A';
+        $dates['dashboard'] = 'D, n/d Y g:i A';
         $dates['period_time'] = 'g:i A';
         $dates['timepicker'] = 'h:i a';
         $dates['mobile_reservation_date'] = 'n/j g:i A';
@@ -1034,6 +1034,14 @@ class en_us extends Language
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'An error occured while logging in with facebook. Please try again.';
         //End Facebook Login SDK Error
+
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reservations Pending Approval';
+        $strings['LaterThisMonth'] = 'Later This Month';
+        $strings['LaterThisYear'] = 'Later This Year';
+        $strings['Remaining'] = 'Remaining';
+        //End Pending Approval Reservations in Dashboard
 
         $this->Strings = $strings;
 

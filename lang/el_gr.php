@@ -1033,6 +1033,13 @@ class el_gr extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Προέκυψε σφάλμα κατά τη σύνδεση με το Facebook. Παρακαλούμε δοκιμάστε ξανά.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Κρατήσεις προς Έγκριση';
+        $strings['LaterThisMonth'] = 'Αργότερα αυτόν το μήνα';
+        $strings['LaterThisYear'] = 'Αργότερα φέτος';
+        $strings['Remaining'] = 'Υπολειπόμενο';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

@@ -636,6 +636,13 @@ class hr_hr extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Došlo je do pogreške prilikom prijave putem Facebooka. Molimo pokušajte ponovno.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Rezervacije na odobrenje';
+        $strings['LaterThisMonth'] = 'Kasnije ovog mjeseca';
+        $strings['LaterThisYear'] = 'Kasnije ove godine';
+        $strings['Remaining'] = 'Preostalo';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

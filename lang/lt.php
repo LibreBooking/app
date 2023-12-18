@@ -998,6 +998,13 @@ class lt extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Vartotojo prisijungimo metu su Facebook įvyko klaida. Bandykite dar kartą.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Laukiančios patvirtinimo rezervacijos';
+        $strings['LaterThisMonth'] = 'Vėliau šį mėnesį';
+        $strings['LaterThisYear'] = 'Vėliau šiais metais';
+        $strings['Remaining'] = 'Liko';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

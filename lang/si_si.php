@@ -661,6 +661,13 @@ class si_si extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Prijavljanje prek Facebooka ni uspelo. Poskusite znova.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Rezervacije v čakanju na odobritev';
+        $strings['LaterThisMonth'] = 'Kasneje ta mesec';
+        $strings['LaterThisYear'] = 'Kasneje letos';
+        $strings['Remaining'] = 'Preostanek';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

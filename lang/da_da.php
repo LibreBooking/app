@@ -1014,6 +1014,13 @@ class da_da extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Der opstod en fejl under login med Facebook. Prøv venligst igen.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reservationer afventer godkendelse';
+        $strings['LaterThisMonth'] = 'Senere denne måned';
+        $strings['LaterThisYear'] = 'Senere på året';
+        $strings['Remaining'] = 'Resterende';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

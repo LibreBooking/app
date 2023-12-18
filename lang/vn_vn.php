@@ -751,6 +751,13 @@ class vn_vn extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Đã xảy ra lỗi khi đăng nhập bằng Facebook. Vui lòng thử lại.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Đặt phòng đang chờ duyệt';
+        $strings['LaterThisMonth'] = 'Sau đây trong tháng này';
+        $strings['LaterThisYear'] = 'Sau đây trong năm nay';
+        $strings['Remaining'] = 'Còn lại';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

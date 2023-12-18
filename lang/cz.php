@@ -827,6 +827,13 @@ class cz extends en_us
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Při přihlašování přes Facebook došlo k chybě. Zkuste to prosím znovu.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Rezervace čekající na schválení';
+        $strings['LaterThisMonth'] = 'Později tento měsíc';
+        $strings['LaterThisYear'] = 'Později letos';
+        $strings['Remaining'] = 'Zbývající';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

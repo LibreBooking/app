@@ -408,7 +408,16 @@ class ca extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'S\'ha produït un error en iniciar la sessió amb Facebook. Torneu-ho a provar.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reserves pendents d\'aprovació';
+        $strings['LaterThisMonth'] = 'Més endavant aquest mes';
+        $strings['LaterThisYear'] = 'Més endavant aquest any';
+        $strings['Remaining'] = 'Restant';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
+
+
 
         $this->Strings = $strings;
     }

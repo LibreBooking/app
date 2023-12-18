@@ -647,6 +647,13 @@ class sk extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Pri prihlásení cez Facebook sa vyskytla chyba. Skúste to prosím znovu.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Rezervácie čakajúce na schválenie';
+        $strings['LaterThisMonth'] = 'Neskôr tento mesiac';
+        $strings['LaterThisYear'] = 'Neskôr tento rok';
+        $strings['Remaining'] = 'Zostáva';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

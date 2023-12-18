@@ -1034,6 +1034,13 @@ class it_it extends en_us
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Si è verificato un errore durante l\'accesso con Facebook. Riprova.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Prenotazioni in attesa di approvazione';
+        $strings['LaterThisMonth'] = 'Più tardi questo mese';
+        $strings['LaterThisYear'] = 'Più tardi quest\'anno';
+        $strings['Remaining'] = 'Rimanenti';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

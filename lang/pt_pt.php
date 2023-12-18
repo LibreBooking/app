@@ -1010,6 +1010,13 @@ class pt_pt extends en_gb
         $strings['FacebookLoginErrorMessage'] = 'Ocorreu um erro ao fazer login com o Facebook. Por favor, tente novamente.';
         //End Facebook Login SDK Error
 
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Reservas Aguardando Aprovação';
+        $strings['LaterThisMonth'] = 'Ainda este mês';
+        $strings['LaterThisYear'] = 'Ainda este ano';
+        $strings['Remaining'] = 'Restantes';
+        //End Pending Approval Reservations in Dashboard
+
         $this->Strings = $strings;
 
         return $this->Strings;

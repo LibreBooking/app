@@ -735,6 +735,13 @@ class eu_es extends en_gb
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Facebook-en saioa hastean errorea gertatu da. Mesedez, saiatu berriro.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['PendingApprovalReservations'] = 'Onartzea zaindako erreserbak';
+        $strings['LaterThisMonth'] = 'Hilabete honetan geroago';
+        $strings['LaterThisYear'] = 'Aurten geroago';
+        $strings['Remaining'] = 'Geratzen dena';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 
