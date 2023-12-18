@@ -15,8 +15,8 @@ if (isset($_GET['code'])) {
         ]);
 
         $helper = $facebook_Client->getRedirectLoginHelper();
-        $acesstoken = $helper->getAccessToken();
-        $_SESSION['facebook_access_token'] = serialize($acesstoken);
+        $accesstoken = $helper->getAccessToken();
+        $_SESSION['facebook_access_token'] = serialize($accesstoken);
         
         $code = filter_input(INPUT_GET,'code');
         header("Location: ".ROOT_DIR."Web/external-auth.php?type=fb&code=".$code);
