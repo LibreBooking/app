@@ -39,7 +39,7 @@ class DashboardPresenter
         }
 
         if(ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
-            $myGroupReservations = new AllGroupUpcomingReservations(new SmartyPage());
+            $myGroupReservations = new GroupUpcomingReservations(new SmartyPage());
             $this->_page->AddItem($myGroupReservations);
         }
     }
