@@ -137,6 +137,10 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter
         $this->_page->BindReservations($items);
     }
 
+    /**
+     * Gets the resources the user has permissions (full access and view only permissions)
+     * This is used to block a user from seeing reservation details if he has no permissions to it's resources
+     */
     public function UserResourcePermissions()
     {
         $resourceIds = [];

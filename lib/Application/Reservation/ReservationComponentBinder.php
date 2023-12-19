@@ -380,6 +380,10 @@ class ReservationDetailsBinder implements IReservationComponentBinder
         $this->page->SetAutoReleaseMinutes($minAutoReleaseMinutes);
     }
 
+    /**
+     * Gets the resources the user has permissions (full access and view only permissions)
+     * This is used to block a user from seeing reservation details if he has no permissions to it's resources
+     */
     public function UserResourcePermissions()
     {
         $resourceIds = [];
@@ -392,6 +396,101 @@ class ReservationDetailsBinder implements IReservationComponentBinder
         }
         $reader->Free();
 
+        $userGroups = $this->GetUserGroups();
+        $groupResourceIds = [];
+
+        foreach ($userGroups as $group){
+            $groupResourceIds = array_unique(array_merge($groupResourceIds,$this->GetUserGroupPermissions($group)));
+        }
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin /*|| ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin*/){    
+            if(ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
+                foreach ($userGroups as $group){
+                    $groupResourceIds = array_unique(array_merge($groupResourceIds,$this->GetGroupResources($group)));
+                }
+            }
+            $resourceIds = array_unique(array_merge($groupResourceIds, $resourceIds));
+        }
+
         $this->page->BindViewableResourceReservations($resourceIds);
     }
+
+    /**
+     * Gets the groups the user belongs to
+     */
+    private function GetUserGroups(){
+        $groups = [];
+
+        $command = new GetUserGroupsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId, null);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $groupId = $row[ColumnNames::GROUP_ID];
+            if (!array_key_exists($groupId, $groups)) {
+                $groups[$groupId] = $groupId;
+            }
+        }
+        $reader->Free();
+
+        return $groups;
+    }
+
+    /**
+     * Gets the permissions of the groups the user belongs to
+     */
+    private function GetUserGroupPermissions($groupId){
+        $resources = [];
+
+        $command = new GetAllGroupPermissionsCommand($groupId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resources[] = $row[ColumnNames::RESOURCE_ID];
+        }
+        $reader->Free();
+
+        return $resources;
+    }
+
+    /**
+     * Gets the resource ids the group of the user is managing
+     */
+    private function GetGroupResources($groupId){
+        $resources = [];
+
+        $command = new GetGroupResourcesId($groupId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+            if (!array_key_exists($resourceId, $resources)) {
+                $resources[$resourceId] = $resourceId;
+            } 
+        }
+        $reader->Free();
+
+        return $resources;
+    }
+
+    // /**
+    //  * Gets the schedule ids the group of the user is managing
+    //  */
+    // private function GetGroupSchedules($groupId){
+    //     $schedules = [];
+
+    //     $command = new GetGroupSchedulesId($groupId);
+    //     $reader = ServiceLocator::GetDatabase()->Query($command);
+
+    //     while ($row = $reader->GetRow()) {
+    //         $scheduleId = $row[ColumnNames::SCHEDULE_ID];
+
+    //         if (!array_key_exists($scheduleId, $schedules)) {
+    //             $schedules[$scheduleId] = $scheduleId;
+    //         } 
+    //     }
+    //     $reader->Free();
+
+    //     return $schedules;
+    // }
 }

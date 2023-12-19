@@ -1,11 +1,11 @@
 {if $authorized}
-    {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ANY OF THEM*}
+    {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ALL OF THEM*}
+    {assign var=isResourcePermitted value=false}
     {foreach from=$resources item=checkResourcePermission}
-        {if !in_array($checkResourcePermission->Id(), $CanViewResourceReservations)}
-            {assign var=isResourcePermitted value=false}
+        {if in_array($checkResourcePermission->Id(), $CanViewResourceReservations)}
+            {assign var=isResourcePermitted value=true}
             {break};
         {/if}
-        {assign var=isResourcePermitted value=true}
     {{/foreach}}
     {*HOWEVER THE USER CAN SEE THE RESERVATION IF HE IS A OWNER, PARTICIPANT OR INVITEE*}
     {if $isResourcePermitted == false}

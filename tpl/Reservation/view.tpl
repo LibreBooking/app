@@ -3,11 +3,11 @@
     <div id="reservation-box" class="readonly">
         <div id="reservationFormDiv">
             <div class="row">
-                {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ANY OF THEM*}
+                {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ALL OF THEM*}
                 {assign var=isResourcePermitted value=in_array($ResourceId,$CanViewResourceReservations)}
                 {foreach from=$AdditionalResourceIds item=checkAditionalResourcePermissionsId}
-                    {if !in_array($checkAditionalResourcePermissionsId, $CanViewResourceReservations)}
-                        {assign var=isResourcePermitted value=false}
+                    {if in_array($checkAditionalResourcePermissionsId, $CanViewResourceReservations)}
+                        {assign var=isResourcePermitted value=true}
                         {break};
                     {/if}
                 {{/foreach}}

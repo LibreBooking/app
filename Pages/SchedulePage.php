@@ -256,7 +256,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
         $this->Set('CanViewUsers', !Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()));
         $this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
-        $this->Set('CreatePastReservationsButton', ServiceLocator::GetServer()->GetUserSession()->IsAdmin);
+        $this->Set('AllowCreatePastReservationsButton', ServiceLocator::GetServer()->GetUserSession()->IsAdmin);
 
         $permissionServiceFactory = new PermissionServiceFactory();
         $scheduleRepository = new ScheduleRepository();
