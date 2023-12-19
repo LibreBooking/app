@@ -815,6 +815,7 @@ class ru_ru extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Ваша группа не имеет предстоящих бронирований';
         $strings['GroupUpcomingReservations'] = 'Предстоящие бронирования моей группы(ов)';
         //End Group Upcoming Reservations
 
@@ -823,10 +824,11 @@ class ru_ru extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
-        $strings['PendingApprovalReservations'] = 'Бронирования ожидающие подтверждения';
+        $strings['NoPendingApprovalReservations'] = 'У вас нет резерваций, ожидающих утверждения';
+        $strings['PendingApprovalReservations'] = 'Резервации ожидают утверждения';
         $strings['LaterThisMonth'] = 'Позже в этом месяце';
         $strings['LaterThisYear'] = 'Позже в этом году';
-        $strings['Remaining'] = 'Осталось';
+        $strings['Remaining'] = 'Осталось';        
         //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 

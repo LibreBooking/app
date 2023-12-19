@@ -729,6 +729,7 @@ class eu_es extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Zure taldeak ez du etorriko erreserbarik';
         $strings['GroupUpcomingReservations'] = 'Nire Taldeen Hurrengo Erreserba(k)';
         //End Group Upcoming Reservations
 
@@ -737,6 +738,7 @@ class eu_es extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Ez duzu onartu beharreko erreserbarik';
         $strings['PendingApprovalReservations'] = 'Onartzea zaindako erreserbak';
         $strings['LaterThisMonth'] = 'Hilabete honetan geroago';
         $strings['LaterThisYear'] = 'Aurten geroago';

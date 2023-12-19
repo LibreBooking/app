@@ -1004,6 +1004,7 @@ class ja_jp extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'あなたのグループには今後の予約がありません';
         $strings['GroupUpcomingReservations'] = '私のグループの今後の予約';
         //End Group Upcoming Reservations
 
@@ -1012,10 +1013,11 @@ class ja_jp extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
-        $strings['PendingApprovalReservations'] = 'Prenotazioni in attesa di approvazione';
-        $strings['LaterThisMonth'] = 'Più tardi questo mese';
-        $strings['LaterThisYear'] = 'Più tardi quest\'anno';
-        $strings['Remaining'] = 'Rimanenti';   
+        $strings['NoPendingApprovalReservations'] = '承認待ちの予約はありません';
+        $strings['PendingApprovalReservations'] = '承認待ちの予約';
+        $strings['LaterThisMonth'] = '今月の後で';
+        $strings['LaterThisYear'] = '今年の後で';
+        $strings['Remaining'] = '残り';
         //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 

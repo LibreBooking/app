@@ -821,6 +821,7 @@ class cz extends en_us
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Vaše skupina nemá žádné nadcházející rezervace';
         $strings['GroupUpcomingReservations'] = 'Nadcházející rezervace mé skupiny(y)';
         //End Group Upcoming Reservations
 
@@ -829,6 +830,7 @@ class cz extends en_us
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nemáte žádné rezervace čekající na schválení';
         $strings['PendingApprovalReservations'] = 'Rezervace čekající na schválení';
         $strings['LaterThisMonth'] = 'Později tento měsíc';
         $strings['LaterThisYear'] = 'Později letos';

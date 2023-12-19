@@ -848,6 +848,7 @@ class th_th extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'กลุ่มของคุณไม่มีการจองที่จะมาถึง';
         $strings['GroupUpcomingReservations'] = 'การจองที่มีต่อไปของกลุ่มของฉัน';
         //End Group Upcoming Reservations
 
@@ -856,10 +857,11 @@ class th_th extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
-        $strings['PendingApprovalReservations'] = 'รอการอนุมัติการจอง';
-        $strings['LaterThisMonth'] = 'หลังจากนี้ในเดือนนี้';
-        $strings['LaterThisYear'] = 'หลังจากนี้ในปีนี้';
-        $strings['Remaining'] = 'ที่เหลือ';
+        $strings['NoPendingApprovalReservations'] = 'คุณไม่มีการจองที่รอการอนุมัติ';
+        $strings['PendingApprovalReservations'] = 'การจองรอการอนุมัติ';
+        $strings['LaterThisMonth'] = 'ในภายหลังเดือนนี้';
+        $strings['LaterThisYear'] = 'ในภายหลังปีนี้';
+        $strings['Remaining'] = 'ที่เหลือ';        
         //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 

@@ -655,6 +655,7 @@ class si_si extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Vaša skupina nima prihodnjih rezervacij';
         $strings['GroupUpcomingReservations'] = 'Prihodnje rezervacije moje skupine(i)';
         //End Group Upcoming Reservations
 
@@ -663,10 +664,11 @@ class si_si extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
-        $strings['PendingApprovalReservations'] = 'Rezervacije v čakanju na odobritev';
+        $strings['NoPendingApprovalReservations'] = 'Nimate rezervacij, ki čakajo na odobritev';
+        $strings['PendingApprovalReservations'] = 'Rezervacije, ki čakajo na odobritev';
         $strings['LaterThisMonth'] = 'Kasneje ta mesec';
         $strings['LaterThisYear'] = 'Kasneje letos';
-        $strings['Remaining'] = 'Preostanek';
+        $strings['Remaining'] = 'Preostalo';        
         //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 

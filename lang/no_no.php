@@ -644,6 +644,7 @@ class no_no extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Din gruppe har ingen kommende reservasjoner';
         $strings['GroupUpcomingReservations'] = 'Mine grupp(er) kommende reservasjoner';
         //End Group Upcoming Reservations
 
@@ -652,10 +653,11 @@ class no_no extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Du har ingen reservasjoner som venter på godkjenning';
         $strings['PendingApprovalReservations'] = 'Reservasjoner venter på godkjenning';
         $strings['LaterThisMonth'] = 'Senere denne måneden';
         $strings['LaterThisYear'] = 'Senere i år';
-        $strings['Remaining'] = 'Gjenstående';
+        $strings['Remaining'] = 'Gjenstående';        
         //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 

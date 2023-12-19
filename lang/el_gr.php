@@ -1027,6 +1027,7 @@ class el_gr extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Η ομάδα σας δεν έχει καμία προσεχή κράτηση';
         $strings['GroupUpcomingReservations'] = 'Μελλοντικές κρατήσεις της ομάδας(ών) μου';
         //End Group Upcoming Reservations
         
@@ -1035,6 +1036,7 @@ class el_gr extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Δεν έχετε κρατήσεις που αναμένουν έγκριση';
         $strings['PendingApprovalReservations'] = 'Κρατήσεις προς Έγκριση';
         $strings['LaterThisMonth'] = 'Αργότερα αυτόν το μήνα';
         $strings['LaterThisYear'] = 'Αργότερα φέτος';

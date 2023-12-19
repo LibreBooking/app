@@ -770,6 +770,7 @@ class ee_ee extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Teie grupil pole tulevasi broneeringuid';
         $strings['GroupUpcomingReservations'] = 'Minu grupi(t)e tulevased broneeringud';
         //End Group Upcoming Reservations
 
@@ -778,6 +779,7 @@ class ee_ee extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Teil pole ühtegi ootel olevat broneeringut';
         $strings['PendingApprovalReservations'] = 'Ootel heakskiitmiseks määratud broneeringud';
         $strings['LaterThisMonth'] = 'Hiljem sel kuul';
         $strings['LaterThisYear'] = 'Hiljem sel aastal';

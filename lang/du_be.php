@@ -402,6 +402,7 @@ class du_be extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Uw groep heeft geen toekomstige reserveringen';
         $strings['GroupUpcomingReservations'] = 'Aankomende reserveringen van mijn groep(en)';
         //End Group Upcoming Reservations
 
@@ -410,6 +411,7 @@ class du_be extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'U heeft geen reserveringen die wachten op goedkeuring';
         $strings['PendingApprovalReservations'] = 'Reserveringen in afwachting van goedkeuring';
         $strings['LaterThisMonth'] = 'Later deze maand';
         $strings['LaterThisYear'] = 'Later dit jaar';

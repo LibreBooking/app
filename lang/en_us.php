@@ -1029,14 +1029,15 @@ class en_us extends Language
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'My Group(s) Upcoming Reservations';
+        $strings['NoGroupUpcomingReservations'] = 'Your group has no upcoming reservations';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'An error occured while logging in with facebook. Please try again.';
         //End Facebook Login SDK Error
 
-
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'You have no reservations pending approval';
         $strings['PendingApprovalReservations'] = 'Reservations Pending Approval';
         $strings['LaterThisMonth'] = 'Later This Month';
         $strings['LaterThisYear'] = 'Later This Year';

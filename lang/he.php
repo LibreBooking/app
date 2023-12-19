@@ -740,6 +740,7 @@ class he extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'אין לקבוצתך הזמנות עתידיות';
         $strings['GroupUpcomingReservations'] = 'הזמנות קבוצתי(ות) הבאות';
         //End Group Upcoming Reservations
         
@@ -748,6 +749,7 @@ class he extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'אין לך הזמנות בהמתנה לאישור';
         $strings['PendingApprovalReservations'] = 'ההזמנות בהמתנה לאישור';
         $strings['LaterThisMonth'] = 'מאוחר יותר החודש';
         $strings['LaterThisYear'] = 'מאוחר יותר השנה';

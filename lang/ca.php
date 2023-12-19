@@ -402,6 +402,7 @@ class ca extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'El vostre grup no té cap reserva futura';
         $strings['GroupUpcomingReservations'] = 'Properes reserves del meu(s) grup(s)';
         //End Group Upcoming Reservations
         
@@ -410,6 +411,7 @@ class ca extends en_gb
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'No teniu cap reserva a l\'espera d\'aprovació';
         $strings['PendingApprovalReservations'] = 'Reserves pendents d\'aprovació';
         $strings['LaterThisMonth'] = 'Més endavant aquest mes';
         $strings['LaterThisYear'] = 'Més endavant aquest any';

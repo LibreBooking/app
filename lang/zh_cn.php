@@ -543,6 +543,7 @@ class zh_cn extends en_us
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = '您的团体没有即将到来的预订';
         $strings['GroupUpcomingReservations'] = '我的团体即将到来的预订';
         //End Group Upcoming Reservations
 
@@ -551,10 +552,11 @@ class zh_cn extends en_us
         //End Facebook Login SDK Error
 
         //Pending Approval Reservations in Dashboard
-        $strings['PendingApprovalReservations'] = '待批准的预订';
+        $strings['NoPendingApprovalReservations'] = '您没有等待批准的预订';
+        $strings['PendingApprovalReservations'] = '等待批准的预订';
         $strings['LaterThisMonth'] = '本月晚些时候';
         $strings['LaterThisYear'] = '本年晚些时候';
-        $strings['Remaining'] = '剩余';
+        $strings['Remaining'] = '剩余';        
         //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 

@@ -1012,6 +1012,7 @@ class ar extends en_us
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'ليس لديكم مجموعة قادمة للحجز';
         $strings['GroupUpcomingReservations'] = 'الحجوزات القادمة لمجموعتي';
         //End Group Upcoming Reservations 
 
@@ -1021,6 +1022,7 @@ class ar extends en_us
 
         
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'ليس لديك حجوزات في انتظار الموافقة';
         $strings['PendingApprovalReservations'] = 'الحجوزات قيد الموافقة';
         $strings['LaterThisMonth'] = 'في وقت لاحق هذا الشهر';
         $strings['LaterThisYear'] = 'في وقت لاحق هذا العام';

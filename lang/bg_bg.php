@@ -505,6 +505,7 @@ class bg_bg extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Вашата група няма предстоящи резервации';
         $strings['GroupUpcomingReservations'] = 'Бъдещите резервации на моята група(и)';
         //End Group Upcoming Reservations
 
@@ -514,6 +515,7 @@ class bg_bg extends en_gb
 
 
         //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Нямате резервации, изчакващи одобрение';
         $strings['PendingApprovalReservations'] = 'Резервации в очакване на одобрение';
         $strings['LaterThisMonth'] = 'По-късно този месец';
         $strings['LaterThisYear'] = 'По-късно тази година';

@@ -42,7 +42,7 @@
 				{/foreach}
 			</div>
 		{else}
-			<div class="noresults">{translate key="NoUpcomingReservations"}</div>
+			<div class="noresults">{translate key="NoGroupUpcomingReservations"}</div>
 		{/if}
 	</div>
 
