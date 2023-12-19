@@ -44,8 +44,8 @@ class PendingApprovalReservationsPresenter
         $now = Date::Now();
         $today = $now->ToTimezone($timezone)->GetDate();
         $dayOfWeek = $today->Weekday();
-        $endOfMonth = $today->AddDays($this->getMonthRemainingDays($timezone)+1);
-        $endOfYear = $today->AddDays($this->getYearRemainingDays($timezone)+1);
+        $endOfMonth = $today->AddDays(DateDiff::getMonthRemainingDays($timezone)+1);
+        $endOfYear = $today->AddDays(DateDiff::getYearRemainingDays($timezone)+1);
 
         $consolidated = [];
 
@@ -79,7 +79,7 @@ class PendingApprovalReservationsPresenter
         if ($consolidated != null){
 
             //Sort By Date
-            $consolidated = $this->BubbleSort($consolidated);
+            $consolidated = Date::BubbleSort($consolidated);
 
             foreach ($consolidated as $reservation) {
                 $start = $reservation->StartDate->ToTimezone($timezone);
@@ -161,65 +161,6 @@ class PendingApprovalReservationsPresenter
         $reader->Free();
 
         return $resources;
-    }
-
-    /**
-     * Implements bubble sort algorithm to sort dates from array
-     */
-    function BubbleSort($array) {
-        for ($i = 0; $i < count($array); $i++){
-            $swapped = false;
-            for ($j = 0; $j < count($array) - $i - 1; $j++)
-            {
-
-                if ($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 1) {
-                    $t = $array[$j];
-                    $array[$j] = $array[$j+1];
-                    $array[$j+1] = $t;
-                    $swapped = True;
-                }
-
-                else if($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 0){
-                    if ($array[$j]->StartDate->CompareTime($array[$j+1]->StartDate) == 1) {
-                        $t = $array[$j];
-                        $array[$j] = $array[$j+1];
-                        $array[$j+1] = $t;
-                        $swapped = True;
-                    }
-                }
-            }
-
-            if ($swapped == false){
-                break;
-            }
-        }
-        return $array;
-    }
-
-    /**
-     * Gets the number of remaining days in the present month
-     */
-    public function getMonthRemainingDays($timezone){
-        date_default_timezone_set($timezone);
-        $currentDate = new DateTime();
-        $endOfMonth = new DateTime($currentDate->format('Y-m-t 23:59:59'));
-        $interval = $currentDate->diff($endOfMonth);
-        $daysUntilEndOfMonth = $interval->days;
-
-        return $daysUntilEndOfMonth;
-    }
-
-    /**
-     * Gets the number of remaining days in the present year
-     */
-    public function getYearRemainingDays($timezone){
-        date_default_timezone_set($timezone);
-        $currentDate = new DateTime();
-        $endOfYear = new DateTime($currentDate->format('Y-12-31 23:59:59'));
-        $interval = $currentDate->diff($endOfYear);
-        $daysUntilEndOfYear = $interval->days;
-
-        return $daysUntilEndOfYear;
     }
 }
 
