@@ -641,12 +641,21 @@ class sk extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Vaša skupina nemá žiadne nadchádzajúce rezervácie';
         $strings['GroupUpcomingReservations'] = 'Nadchádzajúce rezervácie mojej skupiny(y)';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Pri prihlásení cez Facebook sa vyskytla chyba. Skúste to prosím znovu.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nemáte žiadne rezervácie čakajúce na schválenie';
+        $strings['PendingApprovalReservations'] = 'Rezervácie čakajúce na schválenie';
+        $strings['LaterThisMonth'] = 'Neskôr tento mesiac';
+        $strings['LaterThisYear'] = 'Neskôr tento rok';
+        $strings['Remaining'] = 'Zostáva';        
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

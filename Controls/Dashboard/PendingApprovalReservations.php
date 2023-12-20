@@ -1,20 +1,20 @@
 <?php
 
 require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
-require_once(ROOT_DIR . 'Presenters/Dashboard/GroupUpcomingReservationsPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/PendingApprovalReservationsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 
-class GroupUpcomingReservations extends DashboardItem implements IGroupUpcomingReservationsControl
+class PendingApprovalReservations extends DashboardItem implements IPendingApprovalReservationsControl
 {
     /**
-     * @var GroupUpcomingReservationsPresenter
+     * @var PendingApprovalReservationsPresenter
      */
     protected $presenter;
 
     public function __construct(SmartyPage $smarty)
     {
         parent::__construct($smarty);
-        $this->presenter = new GroupUpcomingReservationsPresenter($this, new ReservationViewRepository());
+        $this->presenter = new PendingApprovalReservationsPresenter($this, new ReservationViewRepository());
     }
 
     public function PageLoad()
@@ -22,7 +22,7 @@ class GroupUpcomingReservations extends DashboardItem implements IGroupUpcomingR
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
         $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
-        $this->Display('group_upcoming_reservations.tpl');
+        $this->Display('pending__approval_reservations.tpl');
     }
 
     public function SetTimezone($timezone)
@@ -55,9 +55,19 @@ class GroupUpcomingReservations extends DashboardItem implements IGroupUpcomingR
         $this->Set('ThisWeeksReservations', $reservations);
     }
 
-    public function BindNextWeek($reservations)
+    public function BindThisMonth($reservations)
     {
-        $this->Set('NextWeeksReservations', $reservations);
+        $this->Set('ThisMonthsReservations', $reservations);
+    }
+
+    public function BindThisYear($reservations)
+    {
+        $this->Set('ThisYearsReservations', $reservations);
+    }
+
+    public function BindRemaining($reservations)
+    {
+        $this->Set('RemainingReservations', $reservations);
     }
 
     public function SetAllowCheckin($allowCheckin)
@@ -71,7 +81,7 @@ class GroupUpcomingReservations extends DashboardItem implements IGroupUpcomingR
     }
 }
 
-interface IGroupUpcomingReservationsControl
+interface IPendingApprovalReservationsControl
 {
     public function SetTimezone($timezone);
     public function SetTotal($total);
@@ -83,5 +93,7 @@ interface IGroupUpcomingReservationsControl
     public function BindToday($reservations);
     public function BindTomorrow($reservations);
     public function BindThisWeek($reservations);
-    public function BindNextWeek($reservations);
+    public function BindThisMonth($reservations);
+    public function BindThisYear($reservations);
+    public function BindRemaining($reservations);
 }

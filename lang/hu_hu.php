@@ -985,12 +985,21 @@ class hu_hu extends en_us
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'A csoportodnak nincs következő foglalása';
         $strings['GroupUpcomingReservations'] = 'Csoportom(aim) következő foglalásai';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Hiba történt a bejelentkezés során a Facebookkal. Kérjük, próbálja újra.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nincsenek függő jóváhagyásra váró foglalásai';
+        $strings['PendingApprovalReservations'] = 'Jóváhagyásra váró foglalások';
+        $strings['LaterThisMonth'] = 'Később ebben a hónapban';
+        $strings['LaterThisYear'] = 'Később idén';
+        $strings['Remaining'] = 'Megmaradt';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 
