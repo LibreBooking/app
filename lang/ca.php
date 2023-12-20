@@ -402,13 +402,24 @@ class ca extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'El vostre grup no té cap reserva futura';
         $strings['GroupUpcomingReservations'] = 'Properes reserves del meu(s) grup(s)';
         //End Group Upcoming Reservations
         
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'S\'ha produït un error en iniciar la sessió amb Facebook. Torneu-ho a provar.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'No teniu cap reserva a l\'espera d\'aprovació';
+        $strings['PendingApprovalReservations'] = 'Reserves pendents d\'aprovació';
+        $strings['LaterThisMonth'] = 'Més endavant aquest mes';
+        $strings['LaterThisYear'] = 'Més endavant aquest any';
+        $strings['Remaining'] = 'Restant';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
+
+
 
         $this->Strings = $strings;
     }

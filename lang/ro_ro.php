@@ -502,12 +502,21 @@ class ro_ro extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Grupul tău nu are rezervări viitoare';
         $strings['GroupUpcomingReservations'] = 'Viitoarele rezervări ale grupului/meu(ă)';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'A apărut o eroare la autentificarea cu Facebook. Vă rugăm să încercați din nou.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nu aveți rezervări în așteptare de aprobare';
+        $strings['PendingApprovalReservations'] = 'Rezervări în așteptare de aprobare';
+        $strings['LaterThisMonth'] = 'Mai târziu în acest lună';
+        $strings['LaterThisYear'] = 'Mai târziu în acest an';
+        $strings['Remaining'] = 'Rămase';        
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

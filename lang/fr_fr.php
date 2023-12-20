@@ -992,12 +992,21 @@ class fr_fr extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Votre groupe n\'a aucune réservation à venir';
         $strings['GroupUpcomingReservations'] = 'Prochaines réservations de mon/des groupes';
         //End Group Upcoming Reservations
         
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Une erreur est survenue lors de la connexion avec Facebook. Veuillez réessayer.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Vous n\'avez aucune réservation en attente d\'approbation';
+        $strings['PendingApprovalReservations'] = 'Réservations en attente d\'approbation';
+        $strings['LaterThisMonth'] = 'Plus tard ce mois-ci';
+        $strings['LaterThisYear'] = 'Plus tard cette année';
+        $strings['Remaining'] = 'Restant';    
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

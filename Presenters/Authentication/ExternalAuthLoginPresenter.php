@@ -52,7 +52,7 @@ class ExternalAuthLoginPresenter
         if (isset($_GET['code'])) {
             //Token validations for the client
             $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-            //set the acess token that it received
+            //set the access token that it received
             $client->setAccessToken($token['access_token']);
         
             //Using the Google API to get the user information 

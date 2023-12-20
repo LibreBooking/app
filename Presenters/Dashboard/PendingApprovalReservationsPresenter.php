@@ -1,11 +1,11 @@
 <?php
 
-require_once(ROOT_DIR . 'Controls/Dashboard/GroupUpcomingReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/PendingApprovalReservations.php');
 
-class GroupUpcomingReservationsPresenter
+class PendingApprovalReservationsPresenter
 {
     /**
-     * @var IGroupUpcomingReservationsControl
+     * @var IPendingApprovalReservationsControl
      */
     private $control;
 
@@ -24,7 +24,7 @@ class GroupUpcomingReservationsPresenter
      */
     private $searchUserLevel = ReservationUserLevel::ALL;
 
-    public function __construct(IGroupUpcomingReservationsControl $control, IReservationViewRepository $repository)
+    public function __construct(IPendingApprovalReservationsControl $control, IReservationViewRepository $repository)
     {
         $this->control = $control;
         $this->repository = $repository;
@@ -44,31 +44,25 @@ class GroupUpcomingReservationsPresenter
         $now = Date::Now();
         $today = $now->ToTimezone($timezone)->GetDate();
         $dayOfWeek = $today->Weekday();
-        $lastDate = $now->AddDays(13-$dayOfWeek-1);
-
-        $userGroupIds = $this->GetUserGroups();
+        $endOfMonth = $today->AddDays(DateDiff::getMonthRemainingDays($timezone)+1);
+        $endOfYear = $today->AddDays(DateDiff::getYearRemainingDays($timezone)+1);
 
         $consolidated = [];
-        
-        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin){
+            $consolidated = $this->repository->GetReservationsPendingApproval($now, $this->searchUserId, $this->searchUserLevel, null, null,true);
+        }
+
+        else if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
+            $userGroupIds = $this->GetUserGroups();
+            
             $groupResourceIds = [];
 
             foreach ($userGroupIds as $userResource){
                 $groupResourceIds = array_merge($groupResourceIds, $this->GetGroupResources($userResource));
             }
             if($groupResourceIds != null){
-                $consolidated = array_merge($consolidated, $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, null, $groupResourceIds,true));
-            }
-        }
-
-        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
-            $groupScheduleIds = [];
-
-            foreach ($userGroupIds as $userGroup){
-                $groupScheduleIds = array_merge($groupScheduleIds, $this->GetGroupSchedules($userGroup));
-            }
-            if($groupScheduleIds != null){
-                $consolidated = array_merge($consolidated, $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, $groupScheduleIds, null,true));
+                $consolidated = array_merge($consolidated, $this->repository->GetReservationsPendingApproval($now, $this->searchUserId, $this->searchUserLevel, null, $groupResourceIds,true));
             }
         }
 
@@ -78,30 +72,32 @@ class GroupUpcomingReservationsPresenter
         $todays = [];
         $tomorrows = [];
         $thisWeeks = [];
-        $nextWeeks = [];
+        $thisMonths = [];
+        $thisYears = [];
+        $futures = [];
 
         if ($consolidated != null){
-            //If the user is both a resource admin and schedule admin, when the consolidated array is merged with both groups reservations,
-            //this array gets out of order and with duplicates so:
-            
-            //Eliminate Duplicates
-            $consolidated = ArrayDiff::eliminateDuplicates($consolidated);
 
             //Sort By Date
             $consolidated = Date::BubbleSort($consolidated);
 
             foreach ($consolidated as $reservation) {
-                $start = $reservation->StartDate->ToTimezone($timezone);                
-
+                $start = $reservation->StartDate->ToTimezone($timezone);
+                
                 if ($start->DateEquals($today)) {
                     $todays[] = $reservation;
                 } elseif ($start->DateEquals($tomorrow)) {
                     $tomorrows[] = $reservation;
                 } elseif ($start->LessThan($startOfNextWeek)) {
                     $thisWeeks[] = $reservation;
-                } else {
-                    $nextWeeks[] = $reservation;
+                } elseif ($start->LessThan($endOfMonth)) {
+                    $thisMonths[] = $reservation;
+                } elseif ($start->LessThan($endOfYear)){
+                    $thisYears[] = $reservation;
+                } else{
+                    $futures[] = $reservation;
                 }
+                
             }
 
             $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
@@ -120,7 +116,9 @@ class GroupUpcomingReservationsPresenter
             $this->control->BindToday($todays);
             $this->control->BindTomorrow($tomorrows);
             $this->control->BindThisWeek($thisWeeks);
-            $this->control->BindNextWeek($nextWeeks);
+            $this->control->BindThisMonth($thisMonths);
+            $this->control->BindThisYear($thisYears);
+            $this->control->BindRemaining($futures);
         }
     }
 
@@ -164,25 +162,5 @@ class GroupUpcomingReservationsPresenter
 
         return $resources;
     }
-
-    /**
-     * Gets the schedule ids the group of the user is managing
-     */
-    private function GetGroupSchedules($groupId){
-        $schedules = [];
-
-        $command = new GetGroupSchedulesId($groupId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        while ($row = $reader->GetRow()) {
-            $scheduleId = $row[ColumnNames::SCHEDULE_ID];
-
-            if (!array_key_exists($scheduleId, $schedules)) {
-                $schedules[$scheduleId] = $scheduleId;
-            } 
-        }
-        $reader->Free();
-
-        return $schedules;
-    }
 }
+

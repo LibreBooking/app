@@ -208,20 +208,40 @@ class SearchAvailabilityPresenter extends ActionPresenter
 
             $startDate = $today->AddDays($adjustedDays)->GetDate();
 
-            return new DateRange($startDate, $startDate->AddDays(6));
+            return new DateRange($startDate, $startDate->AddDays(7));
         }
 
         if ($range == 'daterange') {
             $start = $this->page->GetRequestedStartDate();
             $end = $this->page->GetRequestedEndDate();
 
-            if (empty($start)) {
-                $start = Date::Now()->ToTimezone($timezone);
+            //CHECKS IF ANY OF THE FIELDS IS EMPTY OR IF THEY ARE EQUAL
+            $notEmptyButEqual = !empty($start) && !empty($end) && $start == $end;
+            $emptyEnd = !empty($start) && empty($end);
+            $emptyStart = empty($start) && !empty($end);
+            $bothEmpty = empty($start) && empty($end);
+
+            //IF THE END FIELD IS EMPTY OR THE BOTH FIELDS SELECTED ARE EQUAL, IT RETURNS ONLY THE SLOTS SPECIFIED BY THE DAY OF THE START FIELD 
+            if ($notEmptyButEqual || $emptyEnd) {
+                $start = Date::Parse($start, $timezone);
+                $end = $start->AddDays(1);
+                return new DateRange($start, $end);
             }
-            if (empty($end)) {
-                $end = Date::Now()->ToTimezone($timezone)->AddDays(1);
+
+            //IF THE START FIELD IS EMPTY, IT RETURNS THE ALL THE SLOTS FROM THE PRESENT TILL THE DAY SPECIFIED BY THE END FIELD
+            if ($emptyStart) {
+                $end = Date::Parse($end, $timezone)->AddDays(1);
+                $start = $today->GetDate();
+                return new DateRange($start, $end);
             }
-            return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone));
+
+            //IF BOTH ARE EMPTY, IT RETURNS THE SLOTS FROM TODAY
+            if ($bothEmpty) {
+                return new DateRange($today->GetDate(), $today->AddDays(1)->GetDate());
+            }
+
+            //IF THE FIELDS AREN'T EQUAL OR ANY OF THEM IS EMPTY RETURNS THE SPECIFIED RANGE (INCLUDING START AND END DATE DAYS)
+            return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone)->AddDays(1));
         }
 
         return new DateRange($today->GetDate(), $today->AddDays(1)->GetDate());
