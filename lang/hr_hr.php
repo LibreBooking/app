@@ -645,6 +645,10 @@ class hr_hr extends en_gb
         $strings['LaterThisYear'] = 'Kasnije ove godine';
         $strings['Remaining'] = 'Preostalo';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Ne možete vidjeti pojedinosti o rezervaciji jer nemate dozvole za jedan ili više resursa u ovoj rezervaciji';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

@@ -1043,6 +1043,10 @@ class it_it extends en_us
         $strings['LaterThisYear'] = 'Più tardi quest\'anno';
         $strings['Remaining'] = 'Rimanenti';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Impossibile visualizzare i dettagli della prenotazione perché non hai le autorizzazioni per una o più risorse in questa prenotazione';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

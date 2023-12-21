@@ -1006,6 +1006,10 @@ class es extends en_gb
         $strings['LaterThisYear'] = 'Más tarde este año';
         $strings['Remaining'] = 'Restante';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'No se pueden ver los detalles de la reserva porque no tienes permisos para uno o más recursos en esta reserva';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

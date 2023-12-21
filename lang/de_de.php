@@ -958,6 +958,10 @@ class de_de extends en_gb
         $strings['LaterThisYear'] = 'Später in diesem Jahr';
         $strings['Remaining'] = 'Verbleibend';  
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Die Reservierungsdetails können nicht angezeigt werden, da Ihnen die Berechtigungen für einen oder mehrere Ressourcen in dieser Reservierung fehlen';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
         $this->Strings = $strings;
