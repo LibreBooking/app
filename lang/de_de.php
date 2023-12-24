@@ -713,7 +713,45 @@ class de_de extends en_gb
         $strings['AdHocMeeting'] = 'Ad hoc-Meeting';
         $strings['NextReservation'] = 'Nächste Reservierung';
         $strings['ReservationParticipationActivityPreference'] = 'Wenn jemand meiner Reservierung beitritt oder sie verlässt';
+        $strings['Utilization'] = 'Auslastung';
+        $strings['SpecificTime'] = 'Spezifische Zeit';
         $strings['ReservationSeriesEndingPreference'] = 'Wenn die Serie meiner wiederkehrenden Reservierungen endet';
+        $strings['NotAttending'] = 'Nicht teilnehmen';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservierungsdetails';
+        $strings['StartTime'] = 'Startzeit';
+        $strings['EndTime'] = 'Endzeit';
+        $strings['New'] = 'Neu';
+        $strings['Updated'] = 'Aktualisiert';
+        $strings['Custom'] = 'Benutzerdefiniert';
+        $strings['AddDate'] = 'Datum hinzufügen';
+        $strings['RepeatOn'] = 'Wiederholen am';
+        $strings['ScheduleConcurrentMaximum'] = 'Maximal <b>%s</b> Ressourcen können gleichzeitig reserviert werden';
+        $strings['ScheduleConcurrentMaximumNone'] = 'Es können unbeschränkt viele Ressourcen gleichzeitig reserviert werden';
+        $strings['ScheduleMaximumConcurrent'] = 'Maximale Anzahl gleichzeitig reservierter Ressourcen';
+        $strings['ScheduleMaximumConcurrentNote'] = 'Beschränkt die maximale Zahl der gleichzeitig reservierbaren Ressourcen für diesen Terminplan.';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Jede Reservierung ist auf maximal <b>%s</b> Ressourcen beschränkt';
+        $strings['ScheduleResourcesPerReservationNone'] = 'Es gibt keine Beschränkung für Ressourcen pro Reservierung';
+        $strings['ScheduleResourcesPerReservation'] = 'Maximale Anzahl an Ressourcen pro Reservierung';
+        $strings['ResourceConcurrentReservations'] = 'Lasse %s gleichzeitige Reservierungen zu';
+        $strings['ResourceConcurrentReservationsNone'] = 'Lasse keine gleichzeitigen Reservierungen zu';
+        $strings['AllowConcurrentReservations'] = 'Lasse gleichzeitige Reservierungen zu';
+        $strings['ResourceDisplayInstructions'] = 'Keine Ressource ausgewählt. Sie finden die URL um eine Ressource anzuzeigen in Anwendungsverwaltung, Ressourcen. Die Ressource muss öffentlich einsehbar sein.';
+        $strings['Owner'] = 'Besitzer';
+        $strings['MaximumConcurrentReservations'] = 'Maximale gleichzeitige Reservierungen';
+        $strings['NotifyUsers'] = 'Benutzer benachrichtigen';
+        $strings['Message'] = 'Nachricht';
+        $strings['AllUsersWhoHaveAReservationInTheNext'] = 'Jemand mit einer Reserveriung in den nächsten';
+        $strings['ChangeResourceStatus'] = 'Ressourcenstatus ändern';
+        $strings['UpdateGroupsOnImport'] = 'Bestehende Gruppe ändern, wenn sie gefunden wird';
+        $strings['GroupsImportInstructions'] = '<ul><li>Dati muss im CSV-Format sein.</li><li>Name ist obligatorisch.</li><li>Teilnehmerlisten sind kommagetrennte Listen von E-mails.</li><li>Eine leere Teilnehmerliste, lässt diese unverändert wenn Gruppen aktualisiert werden.</li><li>Berchtigungslisten sind eine Kommagetrennte Liste von Ressourcennamen.</li><li>Leere Berechtigungen lassen die bestehenden unverändert beim Aktualisieren von Gruppen.</li><li>Verwenden Sie die Vorlage als Beispiel.</li></ul>';
+        $strings['PhoneRequired'] = 'Telefonnummer wird benötigt.';
+        $strings['OrganizationRequired'] = 'Organisation wird benötigt';
+        $strings['PositionRequired'] = 'Position wird benötigt';
+        $strings['GroupMembership'] = 'Gruppen-Mitgliedschaft';
+        $strings['AvailableGroups'] = 'Verfügbare Gruppen';
+        $strings['CheckingAvailabilityError'] = 'Ressourcenverfügbarkeit kann nicht abgefragt werden - zu viele Ressourcen';
+
         // End Strings
 
         // Install
