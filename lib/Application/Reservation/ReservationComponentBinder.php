@@ -286,6 +286,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
         $this->page->SetParticipants($participants);
         $this->page->SetInvitees($invitees);
 
+        $this->UserResourcePermissions();
+
         $this->page->SetParticipatingGuests($this->reservationView->ParticipatingGuests);
         $this->page->SetInvitedGuests($this->reservationView->InvitedGuests);
 
@@ -376,5 +378,20 @@ class ReservationDetailsBinder implements IReservationComponentBinder
             $minAutoReleaseMinutes = $this->reservationView->AutoReleaseMinutes();
         }
         $this->page->SetAutoReleaseMinutes($minAutoReleaseMinutes);
+    }
+
+    public function UserResourcePermissions()
+    {
+        $resourceIds = [];
+
+        $command = new GetUserPermissionsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceIds[] = $row[ColumnNames::RESOURCE_ID];
+        }
+        $reader->Free();
+
+        $this->page->BindViewableResourceReservations($resourceIds);
     }
 }

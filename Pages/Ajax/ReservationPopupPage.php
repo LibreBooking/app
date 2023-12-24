@@ -20,6 +20,11 @@ interface IReservationPopupPage
     public function SetName($first, $last);
 
     /**
+     * @param $OwnerId string
+     */
+    public function SetId($OwnerId);
+
+    /**
      * @param $resources ScheduleResource[]
      */
     public function SetResources($resources);
@@ -87,6 +92,21 @@ interface IReservationPopupPage
      * @param DateDiff $duration
      */
     public function SetDuration($duration);
+
+    /**
+     * @param $viewableResourceReservations
+     */
+    public function BindViewableResourceReservations($resourceIds);
+
+     /**
+     * @param $amIParticipating
+     */
+    public function SetCurrentUserParticipating($amIParticipating);
+
+    /**
+     * @param $amIInvited
+     */
+    public function SetCurrentUserInvited($amIInvited);
 }
 
 class PopupFormatter
@@ -206,6 +226,10 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
         $this->Set('fullName', new FullName($first, $last));
     }
 
+    public function SetId($OwnerId){
+        $this->Set('OwnerId', $OwnerId);
+    }
+
     public function SetResources($resources)
     {
         $this->Set('resources', $resources);
@@ -271,6 +295,22 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
     {
         $this->Set('duration', $duration);
     }
+
+    public function BindViewableResourceReservations($resourceIds)
+    {
+        $this->Set('CanViewResourceReservations',$resourceIds);
+    }
+
+    public function SetCurrentUserParticipating($amIParticipating)
+    {
+        $this->Set('IAmParticipating', $amIParticipating);
+    }
+
+    public function SetCurrentUserInvited($amIInvited)
+    {
+        $this->Set('IAmInvited', $amIInvited);
+    }
+
 }
 
 
@@ -343,9 +383,12 @@ class ReservationPopupPresenter
         $this->_page->SetHideDetails($hideReservationDetails);
         $this->_page->SetHideUser($hideUserInfo);
 
+        $this->UserResourcePermissions();
+
         $startDate = $reservation->StartDate->ToTimezone($tz);
         $endDate = $reservation->EndDate->ToTimezone($tz);
 
+        $this->_page->SetId($reservation->OwnerId);
         $this->_page->SetName($reservation->OwnerFirstName, $reservation->OwnerLastName);
         $this->_page->SetEmail($reservation->OwnerEmailAddress);
         $this->_page->SetPhone($reservation->OwnerPhone);
@@ -363,6 +406,9 @@ class ReservationPopupPresenter
         $user = $this->_userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
         $owner = $this->_userRepository->LoadById($reservation->OwnerId);
 
+        $this->_page->SetCurrentUserParticipating($this->IsCurrentUserParticipating(ServiceLocator::GetServer()->GetUserSession()->UserId));
+        $this->_page->SetCurrentUserInvited($this->IsCurrentUserInvited(ServiceLocator::GetServer()->GetUserSession()->UserId));
+
         $canViewAdminAttributes = $user->IsAdminFor($owner);
 
         if (!$canViewAdminAttributes) {
@@ -377,5 +423,40 @@ class ReservationPopupPresenter
         $attributeValues = $this->attributeService->GetReservationAttributes($userSession, $reservation);
 
         $this->_page->BindAttributes($attributeValues);
+    }
+
+    public function UserResourcePermissions()
+    {
+        $resourceIds = [];
+
+        $command = new GetUserPermissionsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceIds[] = $row[ColumnNames::RESOURCE_ID];
+        }
+        $reader->Free();
+
+        $this->_page->BindViewableResourceReservations($resourceIds);
+    }
+
+    private function IsCurrentUserParticipating($currentUserId)
+    {
+        foreach ($this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId())->Participants as $user) {
+            if ($user->UserId == $currentUserId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function IsCurrentUserInvited($currentUserId)
+    {
+        foreach ($this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId())->Invitees as $user) {
+            if ($user->UserId == $currentUserId) {
+                return true;
+            }
+        }
+        return false;
     }
 }

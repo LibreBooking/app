@@ -1044,6 +1044,8 @@ class en_us extends Language
         $strings['Remaining'] = 'Remaining';
         //End Pending Approval Reservations in Dashboard
 
+        $strings['NoResourcePermissions'] = 'Can\'t see reservation details because you don\'t have permissions to one or more resources in this reservation';
+
         $this->Strings = $strings;
 
         return $this->Strings;
