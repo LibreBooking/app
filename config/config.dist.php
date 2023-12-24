@@ -223,9 +223,10 @@ $conf['settings']['authentication']['google.redirect.uri'] = '/Web/google-auth.p
 /**
  * Microsoft login configuration
  */
-$conf['settings']['authentication']['office.client.id'] = '';
-$conf['settings']['authentication']['office.client.secret'] = '';
-$conf['settings']['authentication']['office.redirect.uri'] = '/Web/microsoft-auth.php';
+$conf['settings']['authentication']['microsoft.client.id'] = '';
+$conf['settings']['authentication']['microsoft.tenant.id'] = 'common'; //Replace with your tenant id if the app is single tenant
+$conf['settings']['authentication']['microsoft.client.secret'] = '';
+$conf['settings']['authentication']['microsoft.redirect.uri'] = '/Web/microsoft-auth.php';
 /**
  * Fcebook login configuration
  */

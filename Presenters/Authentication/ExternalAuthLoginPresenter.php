@@ -77,7 +77,9 @@ class ExternalAuthLoginPresenter
         if (isset($_GET['code'])) {
             $code = filter_input(INPUT_GET, 'code');
 
-            $tokenEndpoint = 'https://login.microsoftonline.com/common/oauth2/v2.0/token';
+            $tokenEndpoint = 'https://login.microsoftonline.com/'
+                            .urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_TENANT_ID))
+                            .'/oauth2/v2.0/token';
 
             $postData = [
                 'client_id' => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_CLIENT_ID),
