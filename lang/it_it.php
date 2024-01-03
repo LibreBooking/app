@@ -1045,7 +1045,7 @@ class it_it extends en_us
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Impossibile visualizzare i dettagli della prenotazione perché non hai le autorizzazioni per una o più risorse in questa prenotazione';
+        $strings['NoResourcePermissions'] = 'Impossibile visualizzare i dettagli della prenotazione perché non hai le autorizzazioni per nessuna delle risorse in questa prenotazione';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

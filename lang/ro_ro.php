@@ -519,7 +519,7 @@ class ro_ro extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Nu puteți vedea detaliile rezervării deoarece nu aveți permisiuni pentru unul sau mai multe resurse în această rezervare';
+        $strings['NoResourcePermissions'] = 'Nu puteți vedea detaliile rezervării deoarece nu aveți permisiuni pentru niciunul dintre resursele din această rezervare';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

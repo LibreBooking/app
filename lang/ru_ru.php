@@ -832,7 +832,7 @@ class ru_ru extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Невозможно просмотреть детали бронирования, потому что у вас нет разрешений на один или несколько ресурсов в этом бронировании';
+        $strings['NoResourcePermissions'] = 'Невозможно просмотреть детали бронирования, потому что у вас нет разрешений на ни один из ресурсов в этом бронировании';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

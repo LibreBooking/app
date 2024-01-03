@@ -1021,7 +1021,7 @@ class ja_jp extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'この予約に含まれる 1 つ以上のリソースへの権限がないため、予約の詳細を表示できません';
+        $strings['NoResourcePermissions'] = 'この予約に含まれるいずれかのリソースへの権限がないため、予約の詳細を表示できません';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

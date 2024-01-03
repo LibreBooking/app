@@ -1044,7 +1044,7 @@ class el_gr extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Δεν μπορείτε να δείτε λεπτομέρειες κράτησης επειδή δεν έχετε άδειες για έναν ή περισσότερους πόρους σε αυτήν την κράτηση';
+        $strings['NoResourcePermissions'] = 'Δεν μπορείτε να δείτε λεπτομέρειες κράτησης επειδή δεν έχετε άδειες για κανένα από τους πόρους σε αυτήν την κράτηση';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

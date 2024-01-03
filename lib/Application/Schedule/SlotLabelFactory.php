@@ -72,7 +72,7 @@ class SlotLabelFactory
             return '';
         }
 
-        if(!in_array($reservation->ResourceId,$this->UserResourcePermissions())){
+        if(!in_array($reservation->ResourceId,$this->UserResourcePermissions()) && !$reservation->IsUserOwner($this->user->UserId) && !$reservation->IsUserInvited($this->user->UserId) && !$reservation->IsUserParticipating($this->user->UserId)){
             return '';
         }
 

@@ -757,7 +757,7 @@ class he extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'לא ניתן לראות פרטי ההזמנה מכיוון שאין לך הרשאות לאחת או יותר מהמשאבים בהזמנה זו';
+        $strings['NoResourcePermissions'] = 'לא ניתן לראות פרטי ההזמנה מכיוון שאין לך הרשאות לאף אחת מהמשאבים בהזמנה זו';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

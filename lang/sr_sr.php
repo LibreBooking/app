@@ -673,7 +673,7 @@ class sr_sr extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Ne možete videti detalje rezervacije jer nemate dozvole za jedan ili više resursa u ovoj rezervaciji';
+        $strings['NoResourcePermissions'] = 'Ne možete videti detalje rezervacije jer nemate dozvole za nijedan od resursa u ovoj rezervaciji';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

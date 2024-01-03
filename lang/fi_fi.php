@@ -939,7 +939,7 @@ class fi_fi extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Et voi nähdä varauksen tietoja, koska sinulla ei ole oikeuksia yhteen tai useampaan resurssiin tässä varauksessa';
+        $strings['NoResourcePermissions'] = 'Et voi nähdä varauksen tietoja, koska sinulla ei ole oikeuksia mihinkään tämän varauksen resursseista';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

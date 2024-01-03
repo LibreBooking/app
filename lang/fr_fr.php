@@ -1009,7 +1009,7 @@ class fr_fr extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Impossible de voir les détails de la réservation car vous n\'avez pas les autorisations pour un ou plusieurs ressources dans cette réservation';
+        $strings['NoResourcePermissions'] = 'Impossible de voir les détails de la réservation car vous n\'avez pas les autorisations pour l\'un des ressources dans cette réservation';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

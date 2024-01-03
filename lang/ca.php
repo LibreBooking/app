@@ -419,7 +419,7 @@ class ca extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'No es poden veure els detalls de la reserva perquè no teniu permisos per a un o més recursos en aquesta reserva';
+        $strings['NoResourcePermissions'] = 'No es poden veure els detalls de la reserva perquè no teniu permisos per a cap dels recursos d\'aquesta reserva';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

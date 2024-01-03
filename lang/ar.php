@@ -1030,7 +1030,7 @@ class ar extends en_us
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'لا يمكن رؤية تفاصيل الحجز لأن لديك أذونات على واحد أو أكثر من الموارد في هذا الحجز';
+        $strings['NoResourcePermissions'] = 'لا يمكن رؤية تفاصيل الحجز لأن ليس لديك أذونات لأي من الموارد في هذا الحجز';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

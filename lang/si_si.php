@@ -672,7 +672,7 @@ class si_si extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Podrobnosti rezervacije ni mogoče videti, ker nimate dovoljenj za eno ali več virov v tej rezervaciji';
+        $strings['NoResourcePermissions'] = 'Podrobnosti rezervacije ni mogoče videti, ker nimate dovoljenj za nobenega od virov v tej rezervaciji';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

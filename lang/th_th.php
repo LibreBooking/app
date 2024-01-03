@@ -865,7 +865,7 @@ class th_th extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'ไม่สามารถดูรายละเอียดการจองเนื่องจากคุณไม่มีสิทธิ์ที่หนึ่งหรือมากกว่าสิ่งทรัพยากรในการจองนี้';
+        $strings['NoResourcePermissions'] = 'ไม่สามารถดูรายละเอียดการจองเนื่องจากคุณไม่มีสิทธิ์ที่เพียงพอที่จะเข้าถึงทรัพยากรใด ๆ ในการจองนี้';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

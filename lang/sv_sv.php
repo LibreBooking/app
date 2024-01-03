@@ -587,7 +587,7 @@ class sv_sv extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Kan inte se detaljer om bokningen eftersom du inte har behörighet för en eller flera resurser i denna bokning';
+        $strings['NoResourcePermissions'] = 'Kan inte se detaljer om bokningen eftersom du inte har behörighet för någon av resurserna i denna bokning';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

@@ -419,7 +419,7 @@ class du_be extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een of meer bronnen in deze reservering';
+        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

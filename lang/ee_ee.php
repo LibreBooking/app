@@ -787,7 +787,7 @@ class ee_ee extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Üksikasju ei saa näha, kuna teil pole selles broneeringus ühe või mitme ressursi jaoks luba';
+        $strings['NoResourcePermissions'] = 'Üksikasju ei saa näha, kuna teil pole selles broneeringus ühegi ressursi jaoks luba';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

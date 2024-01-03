@@ -762,7 +762,7 @@ class vn_vn extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Không thể xem chi tiết đặt phòng vì bạn không có quyền truy cập một hoặc nhiều nguồn tài nguyên trong đặt phòng này';
+        $strings['NoResourcePermissions'] = 'Không thể xem chi tiết đặt phòng vì bạn không có quyền truy cập vào bất kỳ nguồn tài nguyên nào trong đặt phòng này';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

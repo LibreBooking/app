@@ -838,7 +838,7 @@ class cz extends en_us
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Nemůžete vidět podrobnosti rezervace, protože nemáte oprávnění k jednomu nebo více zdrojům v této rezervaci';
+        $strings['NoResourcePermissions'] = 'Nemůžete vidět podrobnosti rezervace, protože nemáte oprávnění k žádným zdrojům v této rezervaci';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

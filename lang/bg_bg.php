@@ -523,7 +523,7 @@ class bg_bg extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Не можете да видите подробности за резервацията, защото нямате права за един или повече ресурси в тази резервация';
+        $strings['NoResourcePermissions'] = 'Не можете да видите подробности за резервацията, защото нямате права за нито един от ресурсите в тази резервация';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

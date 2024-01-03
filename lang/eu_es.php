@@ -746,7 +746,7 @@ class eu_es extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Ezinezkoa da erreserbaaren xehetasunak ikustea, erreserba honetan dagoen baliabide bat edo gehiagoren baimenik ez delako';
+        $strings['NoResourcePermissions'] = 'Ezinezkoa da erreserbaaren xehetasunak ikustea, erreserba honetan dagoen edozein baliabideen baimenik ez delako';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

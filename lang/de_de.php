@@ -960,7 +960,7 @@ class de_de extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Die Reservierungsdetails können nicht angezeigt werden, da Ihnen die Berechtigungen für einen oder mehrere Ressourcen in dieser Reservierung fehlen';
+        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

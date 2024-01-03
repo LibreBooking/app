@@ -1025,7 +1025,7 @@ class da_da extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Kan ikke se reservationsoplysninger, fordi du ikke har tilladelser til en eller flere ressourcer i denne reservation';
+        $strings['NoResourcePermissions'] = 'Kan ikke se reservationsoplysninger, fordi du ikke har tilladelser til nogen af ressourcerne i denne reservation';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

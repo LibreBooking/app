@@ -1009,7 +1009,7 @@ class lt extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Dėl neturėtų teisių į vieną ar daugiau šioje rezervacijoje esančių išteklių, negalite matyti rezervacijos informacijos';
+        $strings['NoResourcePermissions'] = 'Dėl neturėtų teisių į šioje rezervacijoje esančius išteklius negalite matyti rezervacijos informacijos';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

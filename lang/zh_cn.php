@@ -560,7 +560,7 @@ class zh_cn extends en_us
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = '由于您没有在此预订中的一个或多个资源的权限，因此无法查看预订详细信息';
+        $strings['NoResourcePermissions'] = '由于您在此预订中的任何资源都没有权限，因此无法查看预订详细信息';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

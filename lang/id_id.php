@@ -603,7 +603,7 @@ class id_id extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Tidak dapat melihat detail pemesanan karena Anda tidak memiliki izin untuk satu atau lebih sumber daya dalam pemesanan ini';
+        $strings['NoResourcePermissions'] = 'Tidak dapat melihat detail pemesanan karena Anda tidak memiliki izin untuk salah satu dari sumber daya dalam pemesanan ini';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 

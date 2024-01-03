@@ -805,7 +805,7 @@ class tr_tr extends en_gb
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Bu rezervasyondaki bir veya daha fazla kaynağa izinleriniz olmadığından rezervasyon ayrıntılarını göremiyorsunuz';
+        $strings['NoResourcePermissions'] = 'Bu rezervasyondaki hiçbir kaynağa izinleriniz olmadığından rezervasyon ayrıntılarını göremiyorsunuz';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
