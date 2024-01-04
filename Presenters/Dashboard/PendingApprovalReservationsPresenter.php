@@ -54,13 +54,8 @@ class PendingApprovalReservationsPresenter
         }
 
         else if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
-            $userGroupIds = $this->GetUserGroups();
+            $groupResourceIds = $this->GetUserAdminResources();
             
-            $groupResourceIds = [];
-
-            foreach ($userGroupIds as $userResource){
-                $groupResourceIds = array_merge($groupResourceIds, $this->GetGroupResources($userResource));
-            }
             if($groupResourceIds != null){
                 $consolidated = array_merge($consolidated, $this->repository->GetReservationsPendingApproval($now, $this->searchUserId, $this->searchUserLevel, null, $groupResourceIds,true));
             }
@@ -77,10 +72,6 @@ class PendingApprovalReservationsPresenter
         $futures = [];
 
         if ($consolidated != null){
-
-            //Sort By Date
-            $consolidated = Date::BubbleSort($consolidated);
-
             foreach ($consolidated as $reservation) {
                 $start = $reservation->StartDate->ToTimezone($timezone);
                 
@@ -97,7 +88,6 @@ class PendingApprovalReservationsPresenter
                 } else{
                     $futures[] = $reservation;
                 }
-                
             }
 
             $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
@@ -123,44 +113,24 @@ class PendingApprovalReservationsPresenter
     }
 
     /**
-     * Gets the groups the user belongs to
+     * Gets the resources of which the groups of the user are in charge of
      */
-    private function GetUserGroups(){
-        $groups = [];
+    private function GetUserAdminResources(){
+        $resourceIds = [];
 
-        $command = new GetUserGroupsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId, null);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        while ($row = $reader->GetRow()) {
-            $groupId = $row[ColumnNames::GROUP_ID];
-            if (!array_key_exists($groupId, $groups)) {
-                $groups[$groupId] = $groupId;
-            }
-        }
-        $reader->Free();
-
-        return $groups;
-    }
-
-    /**
-     * Gets the resource ids the group of the user is managing
-     */
-    private function GetGroupResources($groupId){
-        $resources = [];
-
-        $command = new GetGroupResourcesId($groupId);
+        $command = new GetResourceAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
         while ($row = $reader->GetRow()) {
             $resourceId = $row[ColumnNames::RESOURCE_ID];
 
-            if (!array_key_exists($resourceId, $resources)) {
-                $resources[$resourceId] = $resourceId;
+            if (!array_key_exists($resourceId, $resourceIds)) {
+                $resourceIds[$resourceId] = $resourceId;
             } 
         }
         $reader->Free();
 
-        return $resources;
+        return $resourceIds;
     }
 }
 

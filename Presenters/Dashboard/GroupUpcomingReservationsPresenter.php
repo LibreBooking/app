@@ -46,31 +46,12 @@ class GroupUpcomingReservationsPresenter
         $dayOfWeek = $today->Weekday();
         $lastDate = $now->AddDays(13-$dayOfWeek-1);
 
-        $userGroupIds = $this->GetUserGroups();
-
         $consolidated = [];
-        
-        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
-            $groupResourceIds = [];
+        $resourceIds = $this->GetUserAdminResources();
 
-            foreach ($userGroupIds as $userResource){
-                $groupResourceIds = array_merge($groupResourceIds, $this->GetGroupResources($userResource));
-            }
-            if($groupResourceIds != null){
-                $consolidated = array_merge($consolidated, $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, null, $groupResourceIds,true));
-            }
-        }
-
-        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
-            $groupScheduleIds = [];
-
-            foreach ($userGroupIds as $userGroup){
-                $groupScheduleIds = array_merge($groupScheduleIds, $this->GetGroupSchedules($userGroup));
-            }
-            if($groupScheduleIds != null){
-                $consolidated = array_merge($consolidated, $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, $groupScheduleIds, null,true));
-            }
-        }
+        if($resourceIds != null){
+            $consolidated = $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, null, $resourceIds,true);
+        } 
 
         $tomorrow = $today->AddDays(1);
         $startOfNextWeek = $today->AddDays(7-$dayOfWeek);
@@ -81,15 +62,6 @@ class GroupUpcomingReservationsPresenter
         $nextWeeks = [];
 
         if ($consolidated != null){
-            //If the user is both a resource admin and schedule admin, when the consolidated array is merged with both groups reservations,
-            //this array gets out of order and with duplicates so:
-            
-            //Eliminate Duplicates
-            $consolidated = ArrayDiff::eliminateDuplicates($consolidated);
-
-            //Sort By Date
-            $consolidated = Date::BubbleSort($consolidated);
-
             foreach ($consolidated as $reservation) {
                 $start = $reservation->StartDate->ToTimezone($timezone);                
 
@@ -124,65 +96,37 @@ class GroupUpcomingReservationsPresenter
         }
     }
 
-    /**
-     * Gets the groups the user belongs to
-     */
-    private function GetUserGroups(){
-        $groups = [];
+    private function GetUserAdminResources(){
+        $resourceIds = [];
 
-        $command = new GetUserGroupsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId, null);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $command = new GetResourceAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
 
-        while ($row = $reader->GetRow()) {
-            $groupId = $row[ColumnNames::GROUP_ID];
-            if (!array_key_exists($groupId, $groups)) {
-                $groups[$groupId] = $groupId;
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
             }
+            $reader->Free();
         }
-        $reader->Free();
 
-        return $groups;
-    }
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+            $command = new GetScheduleAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
 
-    /**
-     * Gets the resource ids the group of the user is managing
-     */
-    private function GetGroupResources($groupId){
-        $resources = [];
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
 
-        $command = new GetGroupResourcesId($groupId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        while ($row = $reader->GetRow()) {
-            $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-            if (!array_key_exists($resourceId, $resources)) {
-                $resources[$resourceId] = $resourceId;
-            } 
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
+            }
+            $reader->Free();
         }
-        $reader->Free();
 
-        return $resources;
-    }
-
-    /**
-     * Gets the schedule ids the group of the user is managing
-     */
-    private function GetGroupSchedules($groupId){
-        $schedules = [];
-
-        $command = new GetGroupSchedulesId($groupId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        while ($row = $reader->GetRow()) {
-            $scheduleId = $row[ColumnNames::SCHEDULE_ID];
-
-            if (!array_key_exists($scheduleId, $schedules)) {
-                $schedules[$scheduleId] = $scheduleId;
-            } 
-        }
-        $reader->Free();
-
-        return $schedules;
+        return $resourceIds;
     }
 }
