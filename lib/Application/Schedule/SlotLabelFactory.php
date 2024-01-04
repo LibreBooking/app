@@ -164,19 +164,18 @@ class SlotLabelFactory
         $reader->Free();
 
         $userGroups = $this->GetUserGroups();
-        $groupResourceIds = [];
 
         foreach ($userGroups as $group){
-            $groupResourceIds = array_unique(array_merge($groupResourceIds,$this->GetUserGroupPermissions($group)));
+            $resourceIds = array_unique(array_merge($resourceIds,$this->GetUserGroupPermissions($group)));
         }
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin /*|| ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin*/){    
             if(ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
                 foreach ($userGroups as $group){
-                    $groupResourceIds = array_unique(array_merge($groupResourceIds,$this->GetGroupResources($group)));
+                    $resourceIds = array_unique(array_merge($resourceIds,$this->GetGroupResources($group)));
                 }
             }
-            $resourceIds = array_unique(array_merge($groupResourceIds, $resourceIds));
+            $resourceIds = array_unique(array_merge($resourceIds, $resourceIds));
         }
 
         return $resourceIds;
