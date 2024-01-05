@@ -921,6 +921,11 @@ class fi_fi extends en_gb
         $strings['PreviousWeek'] = 'Edellinen viikko';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Ryhmäni tulevat varaukset';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

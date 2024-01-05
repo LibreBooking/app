@@ -45,7 +45,7 @@ class PastReservationsPresenter
         $today = $now->ToTimezone($timezone)->GetDate();
         $dayOfWeek = $today->Weekday();
 
-        $firstDate = $now->AddDays(-(13-$dayOfWeek-1));
+        $firstDate = $now->AddDays(-13+(6-$dayOfWeek)+1);
         $consolidated = $this->repository->GetReservations($firstDate, $now, $this->searchUserId, $this->searchUserLevel, null, null, true);
         $yesterday = $today->AddDays(-1);
 

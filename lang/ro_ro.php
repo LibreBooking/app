@@ -501,6 +501,12 @@ class ro_ro extends en_gb
         $strings['PreviousWeek'] = 'Săptămâna trecută';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Viitoarele rezervări ale grupului/meu(ă)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
     }
 

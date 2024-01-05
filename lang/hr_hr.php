@@ -629,6 +629,12 @@ class hr_hr extends en_gb
         $strings['PreviousWeek'] = 'Prethodni tjedan';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nadolazeće rezervacije moje grupe/ova';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

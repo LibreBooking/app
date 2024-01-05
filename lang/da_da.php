@@ -1007,6 +1007,11 @@ class da_da extends en_gb
         $strings['PreviousWeek'] = 'Forrige uge';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Mine gruppers kommende reservationer';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

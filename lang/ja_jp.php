@@ -1003,6 +1003,12 @@ class ja_jp extends en_gb
         $strings['PreviousWeek'] = '先週';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = '私のグループの今後の予約';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

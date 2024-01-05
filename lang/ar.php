@@ -1011,6 +1011,11 @@ class ar extends en_us
         $strings['PreviousWeek'] = 'الأسبوع السابق';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'الحجوزات القادمة لمجموعتي';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -728,6 +728,11 @@ class eu_es extends en_gb
         $strings['PreviousWeek'] = 'Aurreko astean';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Nire Taldeen Hurrengo Erreserba(k)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
     }
