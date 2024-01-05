@@ -13,46 +13,47 @@
 		{assign var=colspan value="5"}
 		{if $Total > 0}
 			<div>
+				{assign var=orangePending value=false}
 				<div class="timespan">
 					{translate key="Today"} ({$TodaysReservations|default:array()|count})
 				</div>
 				{foreach from=$TodaysReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
 				{/foreach}
 
 				<div class="timespan">
 					{translate key="Tomorrow"} ({$TomorrowsReservations|default:array()|count})
 				</div>
 				{foreach from=$TomorrowsReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
 				{/foreach}
 
 				<div class="timespan">
 					{translate key="LaterThisWeek"} ({$ThisWeeksReservations|default:array()|count})
 				</div>
 				{foreach from=$ThisWeeksReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
 				{/foreach}
 
 				<div class="timespan">
 					{translate key="LaterThisMonth"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$ThisMonthsReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}				
 				{/foreach}
 
 				<div class="timespan">
 					{translate key="LaterThisYear"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$ThisYearsReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
 				{/foreach}
 
 				<div class="timespan">
 					{translate key="Remaining"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$RemainingReservations item=reservation}
-                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
 				{/foreach}
 			</div>
 		{else}
