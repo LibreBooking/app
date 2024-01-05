@@ -978,7 +978,18 @@ class lt extends en_gb
         $strings['ReservationParticipantJoin'] = '%s has joined your reservation for %s on %s';
         $strings['ReservationAvailableSubject'] = '%s is available on %s';
         $strings['ResourceStatusChangedSubject'] = 'The availability of %s has changed';
-        // End Email Subjects
+        //End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Neturite ankstesnių rezervacijų';
+        $strings['PastReservations'] = 'Ankstesnės rezervacijos';
+        $strings['AllNoPastReservations'] = 'Paskutiniuose %s dienos nėra ankstesnių rezervacijų';
+        $strings['AllPastReservations'] = 'Visos ankstesnės rezervacijos';
+        $strings['Yesterday'] = 'Vakar';
+        $strings['EarlierThisWeek'] = 'Anksčiau šią savaitę';
+        $strings['PreviousWeek'] = 'Ankstesnė savaitė';
+        //End Past Reservations
 
         $this->Strings = $strings;
 

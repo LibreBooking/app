@@ -1015,6 +1015,17 @@ class el_gr extends en_gb
         $strings['ResourceStatusChangedSubject'] = 'Η διαθεσιμότητα του %s άλλαξε';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Δεν έχετε προηγούμενες κρατήσεις';
+        $strings['PastReservations'] = 'Προηγούμενες κρατήσεις';
+        $strings['AllNoPastReservations'] = 'Δεν υπάρχουν προηγούμενες κρατήσεις τις τελευταίες %s ημέρες';
+        $strings['AllPastReservations'] = 'Όλες οι προηγούμενες κρατήσεις';
+        $strings['Yesterday'] = 'Χθες';
+        $strings['EarlierThisWeek'] = 'Νωρίτερα αυτήν την εβδομάδα';
+        $strings['PreviousWeek'] = 'Προηγούμενη εβδομάδα';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

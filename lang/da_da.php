@@ -996,6 +996,17 @@ class da_da extends en_gb
         $strings['ReservationParticipantJoin'] = '% har tilmeldt sig din reservationen af %s på %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Du har ingen tidligere reservationer';
+        $strings['PastReservations'] = 'Tidligere reservationer';
+        $strings['AllNoPastReservations'] = 'Der er ingen tidligere reservationer i de seneste %s dage';
+        $strings['AllPastReservations'] = 'Alle tidligere reservationer';
+        $strings['Yesterday'] = 'I går';
+        $strings['EarlierThisWeek'] = 'Tidligere på ugen';
+        $strings['PreviousWeek'] = 'Forrige uge';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

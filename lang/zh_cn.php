@@ -531,6 +531,17 @@ class zh_cn extends en_us
         $strings['ActivateYourAccount'] = '请启动您的账号';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = '您没有以前的预订';
+        $strings['PastReservations'] = '以前的预订';
+        $strings['AllNoPastReservations'] = '在过去的%s天内没有以前的预订';
+        $strings['AllPastReservations'] = '所有以前的预订';
+        $strings['Yesterday'] = '昨天';
+        $strings['EarlierThisWeek'] = '本周早些时候';
+        $strings['PreviousWeek'] = '上周';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

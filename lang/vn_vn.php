@@ -733,6 +733,17 @@ class vn_vn extends en_gb
         $strings['GuestAccountCreatedSubject'] = 'Thông tin tài khoản của bạn';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Bạn không có đặt phòng nào trong quá khứ';
+        $strings['PastReservations'] = 'Đặt phòng trong quá khứ';
+        $strings['AllNoPastReservations'] = 'Không có đặt phòng nào trong %s ngày qua';
+        $strings['AllPastReservations'] = 'Tất cả đặt phòng trong quá khứ';
+        $strings['Yesterday'] = 'Hôm qua';
+        $strings['EarlierThisWeek'] = 'Trước đó trong tuần này';
+        $strings['PreviousWeek'] = 'Tuần trước';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

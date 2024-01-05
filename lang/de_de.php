@@ -931,6 +931,17 @@ class de_de extends en_gb
         $strings['MissedCheckinEmailSubject'] = 'Anmeldung verpasst für %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Sie haben keine vergangenen Reservierungen';
+        $strings['PastReservations'] = 'Vergangene Reservierungen';
+        $strings['AllNoPastReservations'] = 'Es gibt keine vergangenen Reservierungen in den letzten %s Tagen';
+        $strings['AllPastReservations'] = 'Alle vergangenen Reservierungen';
+        $strings['Yesterday'] = 'Gestern';
+        $strings['EarlierThisWeek'] = 'Früher in dieser Woche';
+        $strings['PreviousWeek'] = 'Vorherige Woche';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;
