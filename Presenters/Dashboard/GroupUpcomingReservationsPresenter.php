@@ -96,6 +96,9 @@ class GroupUpcomingReservationsPresenter
         }
     }
 
+    /**
+     * Gets the resources of which the groups of the user are in charge of
+     */
     private function GetUserAdminResources(){
         $resourceIds = [];
 
