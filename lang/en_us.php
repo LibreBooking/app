@@ -1038,7 +1038,7 @@ class en_us extends Language
 
         //Pending Approval Reservations in Dashboard
         $strings['NoPendingApprovalReservations'] = 'You have no reservations pending approval';
-        $strings['PendingApprovalReservations'] = 'Reservations Pending Approval';
+        $strings['PendingApprovalReservations'] = 'Pending Approval Reservations';
         $strings['LaterThisMonth'] = 'Later This Month';
         $strings['LaterThisYear'] = 'Later This Year';
         $strings['Remaining'] = 'Remaining';

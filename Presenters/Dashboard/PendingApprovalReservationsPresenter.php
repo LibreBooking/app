@@ -130,6 +130,22 @@ class PendingApprovalReservationsPresenter
         }
         $reader->Free();
 
+        //If a given reservation is pending approval a user who is only a schedule admin can't approve them, only a resource admin that manages the resource of that same reservation
+        //However if this schedule admin is a resource admin (even if he does not manage the resource) and that resource is in the schedule he can approve (or reject)
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin && ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
+            $command = new GetScheduleAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
+
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
+            }
+            $reader->Free();
+        }
+
         return $resourceIds;
     }
 }
