@@ -365,6 +365,49 @@ class ResourceRepository implements IResourceRepository
     }
 
     /**
+     * Gets the resource ids that are under the responsability of the given resource user groups
+     */
+    public function GetResourceAdminResourceIds($userId, $resourceIds = []){
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $command = new GetResourceAdminResourcesCommand($userId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
+
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
+            }
+            $reader->Free();
+        }
+        return $resourceIds;
+    }
+
+    /**
+     * Gets the resource ids that are under the responsability of the given schedule user groups
+     */
+    public function GetScheduleAdminResourceIds($userId, $resourceIds = []){
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+            $command = new GetScheduleAdminResourcesCommand($userId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
+
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
+            }
+            $reader->Free();
+        }
+
+        return $resourceIds;
+    }
+
+    /**
      * @param $groups ResourceGroup[]
      * @param $assignments ResourceGroupAssignment[]
      * @param $resourceFilter IResourceFilter|null

@@ -47,7 +47,7 @@ class GroupUpcomingReservationsPresenter
         $lastDate = $now->AddDays(13-$dayOfWeek-1);
 
         $consolidated = [];
-        $resourceIds = $this->GetUserAdminResources();
+        $resourceIds = $this->GetUserAdminResources($user->UserId);
 
         if($resourceIds != null){
             $consolidated = $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, null, $resourceIds,true);
@@ -97,37 +97,19 @@ class GroupUpcomingReservationsPresenter
     }
 
     /**
-     * Gets the resources of which the groups of the user are in charge of
+     * Gets the resource ids that are under the responsability of the given resource user groups
      */
-    private function GetUserAdminResources(){
+    private function GetUserAdminResources($userId){
         $resourceIds = [];
 
+        $rep = new ResourceRepository();
+
         if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
-            $command = new GetResourceAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
-            $reader = ServiceLocator::GetDatabase()->Query($command);
-
-            while ($row = $reader->GetRow()) {
-                $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-                if (!array_key_exists($resourceId, $resourceIds)) {
-                    $resourceIds[$resourceId] = $resourceId;
-                } 
-            }
-            $reader->Free();
+            $resourceIds = $rep->GetResourceAdminResourceIds($userId);
         }
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
-            $command = new GetScheduleAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
-            $reader = ServiceLocator::GetDatabase()->Query($command);
-
-            while ($row = $reader->GetRow()) {
-                $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-                if (!array_key_exists($resourceId, $resourceIds)) {
-                    $resourceIds[$resourceId] = $resourceId;
-                } 
-            }
-            $reader->Free();
+            $resourceIds = $rep->GetScheduleAdminResourceIds($userId, $resourceIds);
         }
 
         return $resourceIds;

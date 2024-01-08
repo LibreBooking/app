@@ -54,7 +54,7 @@ class PendingApprovalReservationsPresenter
         }
 
         else if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
-            $groupResourceIds = $this->GetUserAdminResources();
+            $groupResourceIds = $this->GetUserAdminResources($user->UserId);
             
             if($groupResourceIds != null){
                 $consolidated = array_merge($consolidated, $this->repository->GetReservationsPendingApproval($now, $this->searchUserId, $this->searchUserLevel, null, $groupResourceIds,true));
@@ -113,37 +113,21 @@ class PendingApprovalReservationsPresenter
     }
 
     /**
-     * Gets the resources of which the groups of the user are in charge of
+     * Gets the resource ids that are under the responsability of the given resource user groups
      */
-    private function GetUserAdminResources(){
+    private function GetUserAdminResources($userId){
         $resourceIds = [];
 
-        $command = new GetResourceAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
+        $rep = new ResourceRepository();
 
-        while ($row = $reader->GetRow()) {
-            $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-            if (!array_key_exists($resourceId, $resourceIds)) {
-                $resourceIds[$resourceId] = $resourceId;
-            } 
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $resourceIds = $rep->GetResourceAdminResourceIds($userId);
         }
-        $reader->Free();
 
         //If a given reservation is pending approval a user who is only a schedule admin can't approve them, only a resource admin that manages the resource of that same reservation
         //However if this schedule admin is a resource admin (even if he does not manage the resource) and that resource is in the schedule he can approve (or reject)
         if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin && ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
-            $command = new GetScheduleAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
-            $reader = ServiceLocator::GetDatabase()->Query($command);
-
-            while ($row = $reader->GetRow()) {
-                $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-                if (!array_key_exists($resourceId, $resourceIds)) {
-                    $resourceIds[$resourceId] = $resourceId;
-                } 
-            }
-            $reader->Free();
+            $resourceIds = $rep->GetScheduleAdminResourceIds($userId, $resourceIds);
         }
 
         return $resourceIds;

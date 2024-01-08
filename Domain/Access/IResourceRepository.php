@@ -74,6 +74,17 @@ interface IResourceRepository
     public function GetResourceGroups($scheduleId = null, $resourceFilter = null);
 
     /**
+     * @param int $userId
+     */
+    public function GetResourceAdminResourceIds($userId);
+
+    /**
+     * @param int $userId
+     */
+    public function GetScheduleAdminResourceIds($userId);
+
+
+    /**
      * @param int $resourceId
      * @param int $groupId
      */
