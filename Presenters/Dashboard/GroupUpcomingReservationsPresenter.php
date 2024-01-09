@@ -102,14 +102,14 @@ class GroupUpcomingReservationsPresenter
     private function GetUserAdminResources($userId){
         $resourceIds = [];
 
-        $rep = new ResourceRepository();
+        $resourceRepo = new ResourceRepository();
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
-            $resourceIds = $rep->GetResourceAdminResourceIds($userId);
+            $resourceIds = $resourceRepo->GetResourceAdminResourceIds($userId);
         }
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
-            $resourceIds = $rep->GetScheduleAdminResourceIds($userId, $resourceIds);
+            $resourceIds = $resourceRepo->GetScheduleAdminResourceIds($userId, $resourceIds);
         }
 
         return $resourceIds;

@@ -75,13 +75,27 @@ interface IResourceRepository
 
     /**
      * @param int $userId
+     * @param array $resourceIds
      */
-    public function GetResourceAdminResourceIds($userId);
+    public function GetUserResourcePermissions($userId, $resourceIds = []);
 
     /**
      * @param int $userId
+     * @param array $resourceIds
      */
-    public function GetScheduleAdminResourceIds($userId);
+    public function GetUserGroupResourcePermissions($userId, $resourceIds = []);
+    
+    /**
+     * @param int $userId
+     * @param array $resourceIds
+     */
+    public function GetResourceAdminResourceIds($userId,  $resourceIds = []);
+
+    /**
+     * @param int $userId
+     * @param array $resourceIds
+     */
+    public function GetScheduleAdminResourceIds($userId,  $resourceIds = []);
 
 
     /**

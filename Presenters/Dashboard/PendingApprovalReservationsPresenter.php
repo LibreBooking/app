@@ -118,16 +118,16 @@ class PendingApprovalReservationsPresenter
     private function GetUserAdminResources($userId){
         $resourceIds = [];
 
-        $rep = new ResourceRepository();
+        $resourceRepo = new ResourceRepository();
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
-            $resourceIds = $rep->GetResourceAdminResourceIds($userId);
+            $resourceIds = $resourceRepo->GetResourceAdminResourceIds($userId);
         }
 
         //If a given reservation is pending approval a user who is only a schedule admin can't approve them, only a resource admin that manages the resource of that same reservation
         //However if this schedule admin is a resource admin (even if he does not manage the resource) and that resource is in the schedule he can approve (or reject)
         if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin && ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
-            $resourceIds = $rep->GetScheduleAdminResourceIds($userId, $resourceIds);
+            $resourceIds = $resourceRepo->GetScheduleAdminResourceIds($userId, $resourceIds);
         }
 
         return $resourceIds;

@@ -286,8 +286,6 @@ class ReservationDetailsBinder implements IReservationComponentBinder
         $this->page->SetParticipants($participants);
         $this->page->SetInvitees($invitees);
 
-        $this->UserResourcePermissions();
-
         $this->page->SetParticipatingGuests($this->reservationView->ParticipatingGuests);
         $this->page->SetInvitedGuests($this->reservationView->InvitedGuests);
 
@@ -299,6 +297,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
         $this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($currentUser->UserId));
         $this->page->SetCurrentUserInvited($this->IsCurrentUserInvited($currentUser->UserId));
+        $this->UserResourcePermissions($currentUser->UserId);
+
         $this->page->SetCanAlterParticipation($this->reservationView->EndDate->GreaterThan(Date::Now()));
 
         $canBeEdited = $this->reservationAuthorization->CanEdit($this->reservationView, $currentUser);
@@ -384,99 +384,23 @@ class ReservationDetailsBinder implements IReservationComponentBinder
      * Gets the resources the user has permissions (full access and view only permissions)
      * This is used to block a user from seeing reservation details if he has no permissions to it's resources
      */
-    public function UserResourcePermissions()
+    private function UserResourcePermissions($userId)
     {
-        $resourceIds = [];
-        $userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
-
-        $resourceIds = $this->GetUserResourcePermissions($userId);
-
-        $resourceIds = array_unique(array_merge($this->GetUserGroupResourcePermissions($userId), $resourceIds));
-
-        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){    
-            $resourceIds = array_unique(array_merge($this->GetUserAdminResources($userId), $resourceIds));
-        }
-
-        $this->page->BindViewableResourceReservations($resourceIds);
-    }
-
-    /**
-     * Gets the resource ids that the user has permissions to
-     */
-    private function GetUserResourcePermissions($userId){
+        $resourceRepo = new ResourceRepository();
         $resourceIds = [];
 
-        $command = new GetUserPermissionsCommand($userId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
+        $resourceIds = $resourceRepo->GetUserResourcePermissions($userId);
 
-        while ($row = $reader->GetRow()) {
-            $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-            if (!array_key_exists($resourceId, $resourceIds)) {
-                $resourceIds[$resourceId] = $resourceId;
-            }         
-        }
-        
-        $reader->Free();
-
-        return $resourceIds;
-    }
-
-    /**
-     * Gets the resource ids that the user groups have permissions to
-     */
-    private function GetUserGroupResourcePermissions($userId){
-        $resourceIds = [];
-
-        $command = new SelectUserGroupPermissions($userId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        while ($row = $reader->GetRow()) {
-            $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-            if (!array_key_exists($resourceId, $resourceIds)) {
-                $resourceIds[$resourceId] = $resourceId;
-            } 
-        }
-        $reader->Free();
-
-        return $resourceIds;
-    }
-
-    /**
-     * Gets the resources of which the groups of the user are in charge of
-     */
-    private function GetUserAdminResources(){
-        $resourceIds = [];
+        $resourceIds = $resourceRepo->GetUserGroupResourcePermissions($userId,$resourceIds);
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
-            $command = new GetResourceAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
-            $reader = ServiceLocator::GetDatabase()->Query($command);
-
-            while ($row = $reader->GetRow()) {
-                $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-                if (!array_key_exists($resourceId, $resourceIds)) {
-                    $resourceIds[$resourceId] = $resourceId;
-                } 
-            }
-            $reader->Free();
+            $resourceIds = $resourceRepo->GetResourceAdminResourceIds($userId, $resourceIds);
         }
 
         if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
-            $command = new GetScheduleAdminResourcesCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
-            $reader = ServiceLocator::GetDatabase()->Query($command);
-
-            while ($row = $reader->GetRow()) {
-                $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-                if (!array_key_exists($resourceId, $resourceIds)) {
-                    $resourceIds[$resourceId] = $resourceId;
-                } 
-            }
-            $reader->Free();
+            $resourceIds = $resourceRepo->GetScheduleAdminResourceIds($userId, $resourceIds);
         }
 
-        return $resourceIds;
+        $this->page->BindViewableResourceReservations($resourceIds);
     }
 }

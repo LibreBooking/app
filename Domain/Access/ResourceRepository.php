@@ -365,6 +365,45 @@ class ResourceRepository implements IResourceRepository
     }
 
     /**
+     * Gets the resource ids that the user has permissions to
+     */
+    public function GetUserResourcePermissions($userId, $resourceIds = []){
+        $command = new GetUserPermissionsCommand($userId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+            if (!array_key_exists($resourceId, $resourceIds)) {
+                $resourceIds[$resourceId] = $resourceId;
+            }         
+        }
+        
+        $reader->Free();
+
+        return $resourceIds;
+    }
+
+    /**
+     * Gets the resource ids that the user groups have permissions to
+     */
+    public function GetUserGroupResourcePermissions($userId, $resourceIds = []){
+        $command = new SelectUserGroupPermissions($userId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+            if (!array_key_exists($resourceId, $resourceIds)) {
+                $resourceIds[$resourceId] = $resourceId;
+            } 
+        }
+        $reader->Free();
+
+        return $resourceIds;
+    }
+
+    /**
      * Gets the resource ids that are under the responsability of the given resource user groups
      */
     public function GetResourceAdminResourceIds($userId, $resourceIds = []){
