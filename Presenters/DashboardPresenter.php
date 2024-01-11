@@ -11,6 +11,7 @@ require_once(ROOT_DIR . 'Controls/Dashboard/ResourceAvailabilityControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/PastReservations.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/GroupUpcomingReservations.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/PendingApprovalReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/MissingCheckInOutReservations.php');
 
 
 class DashboardPresenter
@@ -44,9 +45,16 @@ class DashboardPresenter
             $this->_page->AddItem($myGroupReservations);
         }
 
+        if(ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin || ServiceLocator::GetServer()->GetUserSession()->IsAdmin){
+            $missingCheckInOutReservations = new MissingCheckInOutReservations(new SmartyPage());
+            $this->_page->AddItem($missingCheckInOutReservations);
+        }
+
+        //Only Resource Admins or App Admins can accept or reject pending reservations 
         if(ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsAdmin){
             $pendingApprovalReservations = new PendingApprovalReservations(new SmartyPage());
             $this->_page->AddItem($pendingApprovalReservations);
         }
+
     }
 }

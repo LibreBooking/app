@@ -1,28 +1,28 @@
 <?php
 
 require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
-require_once(ROOT_DIR . 'Presenters/Dashboard/PastReservationsPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/MissingCheckInOutReservationsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 
-class PastReservations extends DashboardItem implements IPastReservationsControl
-{
+class MissingCheckInOutReservations extends DashboardItem implements IMissingCheckInOutReservationsControl {
+
     /**
-     * @var PastReservationsPresenter
+     * @var MissingCheckInOutReservationsPresenter
      */
     protected $presenter;
 
     public function __construct(SmartyPage $smarty)
     {
         parent::__construct($smarty);
-        $this->presenter = new PastReservationsPresenter($this, new ReservationViewRepository());
+        $this->presenter = new MissingCheckInOutReservationsPresenter($this, new ReservationViewRepository());
     }
 
     public function PageLoad()
     {
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
-        $this->presenter->SetSearchCriteria(ServiceLocator::GetServer()->GetUserSession()->UserId, ReservationUserLevel::ALL);
+        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
-        $this->Display('past_reservations.tpl');
+        $this->Display('missing_check_in_out_reservations.tpl');
     }
 
     public function SetTimezone($timezone)
@@ -71,7 +71,7 @@ class PastReservations extends DashboardItem implements IPastReservationsControl
     }
 }
 
-interface IPastReservationsControl
+interface IMissingCheckInOutReservationsControl
 {
     public function SetTimezone($timezone);
     public function SetTotal($total);
@@ -84,15 +84,4 @@ interface IPastReservationsControl
     public function BindYesterday($reservations);
     public function BindThisWeek($reservations);
     public function BindPreviousWeek($reservations);
-}
-
-class AllPastReservations extends PastReservations
-{
-    public function PageLoad()
-    {
-        $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
-        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
-        $this->presenter->PageLoad();
-        $this->Display('admin_upcoming_reservations.tpl');
-    }
 }

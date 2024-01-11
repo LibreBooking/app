@@ -1822,6 +1822,30 @@ class GetReservationsPendingApprovalCommand extends SqlCommand
     }
 }
 
+class GetReservationsMissingCheckInCheckOutCommand extends SqlCommand
+{
+    public function __construct(Date $startDate = null, Date $endDate, $userIds, $userLevelId, $scheduleIds, $resourceIds, $participantIds)
+    {
+        parent::__construct(QueryBuilder::GET_RESERVATION_MISSING_CHECK_IN_OUT_LIST());
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userIds));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleIds));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceIds));
+        $this->AddParameter(new Parameter(ParameterNames::PARTICIPANT_ID, $participantIds));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceIds)));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_SCHEDULES, (int)empty($scheduleIds)));
+        $this->AddParameter(new Parameter(ParameterNames::All_OWNERS, (int)empty($userIds)));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_PARTICIPANTS, (int)empty($participantIds)));
+
+        //When the interval is set (start and end date), if it includes future dates, it should only return reservations before today.
+        //It is impossible to miss a check in/out if the reservation hasn't even started (although checkin_date and checkout_date are null in the db)
+        $now = Date::Now();
+        $this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $now->ToDatabase()));
+    }
+}
+
 class GetReminderNoticesCommand extends SqlCommand
 {
     public function __construct(Date $currentDate, $type)

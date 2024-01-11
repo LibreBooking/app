@@ -50,7 +50,7 @@
 				{/foreach}
 
 				<div class="timespan">
-					{translate key="Remaining"} ({$T|default:array()|count})
+					{translate key="Other"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$RemainingReservations item=reservation}
 					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
