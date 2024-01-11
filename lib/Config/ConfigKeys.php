@@ -165,6 +165,7 @@ class ConfigKeys
     public const GOOGLE_REDIRECT_URI = 'google.redirect.uri';
 
     public const MICROSOFT_CLIENT_ID = 'microsoft.client.id';
+    public const MICROSOFT_TENANT_ID = 'microsoft.tenant.id';
     public const MICROSOFT_CLIENT_SECRET = 'microsoft.client.secret';
     public const MICROSOFT_REDIRECT_URI = 'microsoft.redirect.uri';
 

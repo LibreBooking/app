@@ -6,6 +6,7 @@ if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Processor\WebProcessor;
 
 
 class Log
@@ -43,6 +44,7 @@ class Log
                     $this->logger->pushHandler(new StreamHandler($log_folder.'/app.log', Logger::ERROR));
                     break;
             }
+            $this->logger->pushProcessor(new WebProcessor());
         }
         if ($log_sql) {
             $this->sqlLogger->pushHandler(new StreamHandler($log_folder.'/sql.log', Logger::ERROR));

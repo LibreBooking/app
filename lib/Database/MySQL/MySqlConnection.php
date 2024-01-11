@@ -95,6 +95,11 @@ class MySqlConnection implements IDbConnection
 
         if ($sqlCommand->IsMultiQuery()) {
             $result = mysqli_multi_query($this->_db, $mysqlCommand->GetQuery());
+            do
+            {
+                if ($r = mysqli_store_result($this->_db))
+                    mysqli_free_result($r);
+            } while(mysqli_next_result($this->_db));
         } else {
             $result = mysqli_query($this->_db, $mysqlCommand->GetQuery());
         }
