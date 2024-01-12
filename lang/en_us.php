@@ -1045,8 +1045,8 @@ class en_us extends Language
         //End Pending Approval Reservations in Dashboard
 
         //Missing Check In/Out Reservations in Dashboard
-        $strings['NoMissingCheckInOutReservations'] = 'There are no missing check in/out reservations';
-        $strings['MissingCheckInOutReservations'] = 'Missing Check In/Out Reservations';
+        $strings['NoMissingCheckOutReservations'] = 'There are no missing check out reservations';
+        $strings['MissingCheckOutReservations'] = 'Missing Check Out Reservations';
         //End Pending Approval Reservations in Dashboard
 
         //Schedule Resource Permissions

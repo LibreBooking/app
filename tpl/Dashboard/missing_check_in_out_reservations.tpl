@@ -1,6 +1,6 @@
 <div class="dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
 	<div class="dashboardHeader">
-		<div class="pull-left">{translate key="MissingCheckInOutReservations"}<span class="badge">{$Total}</span></div>
+		<div class="pull-left">{translate key="MissingCheckOutReservations"}<span class="badge">{$Total}</span></div>
 		<div class="pull-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="PastReservations"}">
 				<i class="glyphicon"></i>
@@ -40,9 +40,16 @@
 				{foreach from=$PreviousWeekReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
 				{/foreach}
+
+				<div class="timespan">
+					{translate key="Other"} ({$RemainingReservations|default:array()|count})
+				</div>
+				{foreach from=$RemainingReservations item=reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+				{/foreach}
 			</div>
 		{else}
-			<div class="noresults">{translate key="NoMissingCheckInOutReservations"}</div>
+			<div class="noresults">{translate key="NoMissingCheckOutReservations"}</div>
 		{/if}
 	</div>
 

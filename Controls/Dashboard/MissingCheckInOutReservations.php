@@ -60,6 +60,11 @@ class MissingCheckInOutReservations extends DashboardItem implements IMissingChe
         $this->Set('PreviousWeekReservations', $reservations);
     }
 
+    public function BindRemaining($reservations)                 
+    {
+        $this->Set('RemainingReservations', $reservations);
+    }
+
     public function SetAllowCheckin($allowCheckin)
     {
         $this->Set('allowCheckin', $allowCheckin);
@@ -84,4 +89,5 @@ interface IMissingCheckInOutReservationsControl
     public function BindYesterday($reservations);
     public function BindThisWeek($reservations);
     public function BindPreviousWeek($reservations);
+    public function BindRemaining($reservations);
 }

@@ -80,7 +80,7 @@ class MissingCheckInOutReservationsPresenter {
                 $thisWeeks[] = $reservation;
             } else {
                 $previousWeeks[] = $reservation;
-            }       //FALTA UM ELSE?
+            }
         }
 
         $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
@@ -89,7 +89,10 @@ class MissingCheckInOutReservationsPresenter {
         $allowCheckin = $user->IsAdmin || !$checkinAdminOnly;
         $allowCheckout = $user->IsAdmin || !$checkoutAdminOnly;
 
-        $this->control->SetTotal(count($consolidated));
+        //All the missing check out reservations should show, therefore those that don't fit the two week time period get sent to the "Other" section represented by this array
+        $remaining = $this->repository->GetReservationsMissingCheckInCheckOut(null, $firstDate, $this->searchUserId, $this->searchUserLevel, null, $resourceIds, true);
+        
+        $this->control->SetTotal(count($consolidated) + count($remaining));
         $this->control->SetTimezone($timezone);
         $this->control->SetUserId($user->UserId);
 
@@ -100,7 +103,8 @@ class MissingCheckInOutReservationsPresenter {
         $this->control->BindYesterday($yesterdays);
         $this->control->BindThisWeek($thisWeeks);
         $this->control->BindPreviousWeek($previousWeeks);
-        }
+        $this->control->BindRemaining($remaining);
+    }
 
     /**
      * Gets the resource ids that are under the responsability of the given resource user groups

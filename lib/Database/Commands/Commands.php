@@ -1827,7 +1827,12 @@ class GetReservationsMissingCheckInCheckOutCommand extends SqlCommand
     public function __construct(Date $startDate = null, Date $endDate, $userIds, $userLevelId, $scheduleIds, $resourceIds, $participantIds)
     {
         parent::__construct(QueryBuilder::GET_RESERVATION_MISSING_CHECK_IN_OUT_LIST());
-        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        if ($startDate !== null){
+            $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        }
+        else {
+            $this->AddParameter(new Parameter(ParameterNames::START_DATE, NULL));
+        }
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userIds));
         $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
