@@ -88,7 +88,7 @@ class PendingApprovalReservationsPresenter
                 $thisMonths[] = $reservation;
             } elseif ($start->LessThan($endOfYear)){
                 $thisYears[] = $reservation;
-            } else{
+            } else {
                 $futures[] = $reservation;
             }
         }

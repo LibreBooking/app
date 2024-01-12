@@ -1,10 +1,10 @@
 <?php
 
-require_once(ROOT_DIR . 'Controls/Dashboard/MissingCheckInOutReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/PastReservations.php');
 
 class MissingCheckInOutReservationsPresenter {
     /**
-     * @var IMissingCheckInOutReservationsControl
+     * @var IRemainingPastReservationsControl
      */
     private $control;
 
@@ -23,7 +23,7 @@ class MissingCheckInOutReservationsPresenter {
      */
     private $searchUserLevel = ReservationUserLevel::ALL;
 
-    public function __construct(IMissingCheckInOutReservationsControl $control, IReservationViewRepository $repository)
+    public function __construct(IRemainingPastReservationsControl $control, IReservationViewRepository $repository)
     {
         $this->control = $control;
         $this->repository = $repository;
@@ -51,16 +51,20 @@ class MissingCheckInOutReservationsPresenter {
 
         $consolidated = [];
 
+        //All the missing check out reservations should show, therefore those that don't fit the two week time period get sent to the "Other" section represented by this array        
+        $remaining = [];
+
         if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin){
             $consolidated = $this->repository->GetReservationsMissingCheckInCheckOut($firstDate, $now, $this->searchUserId, $this->searchUserLevel, null, null, true);
+            $remaining = $this->repository->GetReservationsMissingCheckInCheckOut(null, $firstDate, $this->searchUserId, $this->searchUserLevel, null, null, true);
         }
 
         else if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin || ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
             $resourceIds = $this->GetUserAdminResources($user->UserId);
 
             if($resourceIds != null){
-
                 $consolidated = $this->repository->GetReservationsMissingCheckInCheckOut($firstDate, $now, $this->searchUserId, $this->searchUserLevel, null, $resourceIds, true);
+                $remaining = $this->repository->GetReservationsMissingCheckInCheckOut(null, $firstDate, $this->searchUserId, $this->searchUserLevel, null, $resourceIds, true);
             }
         }
 
@@ -88,9 +92,6 @@ class MissingCheckInOutReservationsPresenter {
 
         $allowCheckin = $user->IsAdmin || !$checkinAdminOnly;
         $allowCheckout = $user->IsAdmin || !$checkoutAdminOnly;
-
-        //All the missing check out reservations should show, therefore those that don't fit the two week time period get sent to the "Other" section represented by this array
-        $remaining = $this->repository->GetReservationsMissingCheckInCheckOut(null, $firstDate, $this->searchUserId, $this->searchUserLevel, null, $resourceIds, true);
         
         $this->control->SetTotal(count($consolidated) + count($remaining));
         $this->control->SetTimezone($timezone);
