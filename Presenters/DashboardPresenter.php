@@ -9,7 +9,6 @@ require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/ResourceAvailabilityControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/PastReservations.php');
-require_once(ROOT_DIR . 'Controls/Dashboard/GroupUpcomingReservations.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/PendingApprovalReservations.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/MissingCheckInOutReservations.php');
 

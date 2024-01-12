@@ -2,7 +2,7 @@
 	<div class="dashboardHeader">
 		<div class="pull-left">{translate key="PendingApprovalReservations"}<span class="badge">{$Total}</span></div>
 		<div class="pull-right">
-			<a href="#" title="{translate key=ShowHide} {translate key="GroupUpcomingReservations"}">
+			<a href="#" title="{translate key=ShowHide} {translate key="PendingApprovalReservations"}">
 				<i class="glyphicon"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>

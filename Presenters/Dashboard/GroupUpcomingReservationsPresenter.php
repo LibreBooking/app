@@ -1,11 +1,11 @@
 <?php
 
-require_once(ROOT_DIR . 'Controls/Dashboard/GroupUpcomingReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
 
 class GroupUpcomingReservationsPresenter
 {
     /**
-     * @var IGroupUpcomingReservationsControl
+     * @var IUpcomingReservationsControl
      */
     private $control;
 
@@ -24,7 +24,7 @@ class GroupUpcomingReservationsPresenter
      */
     private $searchUserLevel = ReservationUserLevel::ALL;
 
-    public function __construct(IGroupUpcomingReservationsControl $control, IReservationViewRepository $repository)
+    public function __construct(IUpcomingReservationsControl $control, IReservationViewRepository $repository)
     {
         $this->control = $control;
         $this->repository = $repository;

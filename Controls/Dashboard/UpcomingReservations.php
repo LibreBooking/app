@@ -2,6 +2,7 @@
 
 require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
 require_once(ROOT_DIR . 'Presenters/Dashboard/UpcomingReservationsPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/GroupUpcomingReservationsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 
 class UpcomingReservations extends DashboardItem implements IUpcomingReservationsControl
@@ -94,5 +95,22 @@ class AllUpcomingReservations extends UpcomingReservations
         $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
         $this->Display('admin_upcoming_reservations.tpl');
+    }
+}
+
+class GroupUpcomingReservations extends UpcomingReservations
+{
+    public function __construct(SmartyPage $smarty)
+    {
+        parent::__construct($smarty);
+        $this->presenter = new GroupUpcomingReservationsPresenter($this, new ReservationViewRepository());
+    }
+
+    public function PageLoad()
+    {
+        $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
+        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
+        $this->presenter->PageLoad();
+        $this->Display('group_upcoming_reservations.tpl');
     }
 }
