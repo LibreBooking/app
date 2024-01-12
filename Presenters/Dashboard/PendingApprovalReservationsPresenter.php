@@ -1,11 +1,11 @@
 <?php
 
-require_once(ROOT_DIR . 'Controls/Dashboard/PendingApprovalReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
 
 class PendingApprovalReservationsPresenter
 {
     /**
-     * @var IPendingApprovalReservationsControl
+     * @var IAditionalUpcomingReservationsFieldsControl
      */
     private $control;
 
@@ -24,7 +24,7 @@ class PendingApprovalReservationsPresenter
      */
     private $searchUserLevel = ReservationUserLevel::ALL;
 
-    public function __construct(IPendingApprovalReservationsControl $control, IReservationViewRepository $repository)
+    public function __construct(IAditionalUpcomingReservationsFieldsControl $control, IReservationViewRepository $repository)
     {
         $this->control = $control;
         $this->repository = $repository;
@@ -63,10 +63,12 @@ class PendingApprovalReservationsPresenter
 
         $tomorrow = $today->AddDays(1);
         $startOfNextWeek = $today->AddDays(7-$dayOfWeek);
+        $endOfNextWeek = $startOfNextWeek->AddDays(7);
 
         $todays = [];
         $tomorrows = [];
         $thisWeeks = [];
+        $nextWeeks = [];
         $thisMonths = [];
         $thisYears = [];
         $futures = [];
@@ -80,7 +82,9 @@ class PendingApprovalReservationsPresenter
                 $tomorrows[] = $reservation;
             } elseif ($start->LessThan($startOfNextWeek)) {
                 $thisWeeks[] = $reservation;
-            } elseif ($start->LessThan($endOfMonth)) {
+            } elseif ($start->LessThan($endOfNextWeek)) {
+                $nextWeeks[] = $reservation;
+            }elseif ($start->LessThan($endOfMonth)) {
                 $thisMonths[] = $reservation;
             } elseif ($start->LessThan($endOfYear)){
                 $thisYears[] = $reservation;
@@ -105,6 +109,7 @@ class PendingApprovalReservationsPresenter
         $this->control->BindToday($todays);
         $this->control->BindTomorrow($tomorrows);
         $this->control->BindThisWeek($thisWeeks);
+        $this->control->BindNextWeek($nextWeeks);
         $this->control->BindThisMonth($thisMonths);
         $this->control->BindThisYear($thisYears);
         $this->control->BindRemaining($futures);

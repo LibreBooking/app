@@ -3,6 +3,7 @@
 require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
 require_once(ROOT_DIR . 'Presenters/Dashboard/UpcomingReservationsPresenter.php');
 require_once(ROOT_DIR . 'Presenters/Dashboard/GroupUpcomingReservationsPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/PendingApprovalReservationsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 
 class UpcomingReservations extends DashboardItem implements IUpcomingReservationsControl
@@ -87,6 +88,13 @@ interface IUpcomingReservationsControl
     public function BindNextWeek($reservations);
 }
 
+interface IAditionalUpcomingReservationsFieldsControl extends IUpcomingReservationsControl
+{
+    public function BindThisMonth($reservations);
+    public function BindThisYear($reservations);
+    public function BindRemaining($reservations);
+}
+
 class AllUpcomingReservations extends UpcomingReservations
 {
     public function PageLoad()
@@ -112,5 +120,37 @@ class GroupUpcomingReservations extends UpcomingReservations
         $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
         $this->Display('group_upcoming_reservations.tpl');
+    }
+}
+
+class PendingApprovalReservations extends UpcomingReservations implements IAditionalUpcomingReservationsFieldsControl
+{
+    public function __construct(SmartyPage $smarty)
+    {
+        parent::__construct($smarty);
+        $this->presenter = new PendingApprovalReservationsPresenter($this, new ReservationViewRepository());
+    }
+
+    public function PageLoad()
+    {
+        $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
+        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
+        $this->presenter->PageLoad();
+        $this->Display('pending__approval_reservations.tpl');
+    }
+
+    public function BindThisMonth($reservations)
+    {
+        $this->Set('ThisMonthsReservations', $reservations);
+    }
+
+    public function BindThisYear($reservations)
+    {
+        $this->Set('ThisYearsReservations', $reservations);
+    }
+
+    public function BindRemaining($reservations)
+    {
+        $this->Set('RemainingReservations', $reservations);
     }
 }

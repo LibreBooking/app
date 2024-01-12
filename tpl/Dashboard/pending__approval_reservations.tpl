@@ -36,6 +36,13 @@
 				{/foreach}
 
 				<div class="timespan">
+					{translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
+				</div>
+				{foreach from=$NextWeeksReservations item=reservation}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
+				{/foreach}
+
+				<div class="timespan">
 					{translate key="LaterThisMonth"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$ThisMonthsReservations item=reservation}
