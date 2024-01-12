@@ -1018,6 +1018,11 @@ class pt_pt extends en_gb
         $strings['LaterThisYear'] = 'Ainda este ano';
         $strings['Remaining'] = 'Restantes';
         //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Não há reservas de check-out em falta';
+        $strings['MissingCheckOutReservations'] = 'Reservas que Falharam Check Out';
+        //End Missing Check In/Out Reservations in Dashboard
         
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Não é possível ver os detalhes da reserva uma vez que não tem permissões para um ou mais recursos nesta reserva';

@@ -864,6 +864,11 @@ class th_th extends en_gb
         $strings['Remaining'] = 'ที่เหลือ';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'ไม่มีการจองเช็คเอาท์ที่ขาดหายไป';
+        $strings['MissingCheckOutReservations'] = 'การจองเช็คเอาท์ที่ขาดหายไป';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'ไม่สามารถดูรายละเอียดการจองเนื่องจากคุณไม่มีสิทธิ์ที่เพียงพอที่จะเข้าถึงทรัพยากรใด ๆ ในการจองนี้';
         //End Schedule Resource Permissions

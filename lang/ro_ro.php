@@ -518,6 +518,11 @@ class ro_ro extends en_gb
         $strings['Remaining'] = 'Rămase';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Nu există rezervări de ieșire lipsă';
+        $strings['MissingCheckOutReservations'] = 'Rezervări de ieșire lipsă';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Nu puteți vedea detaliile rezervării deoarece nu aveți permisiuni pentru niciunul dintre resursele din această rezervare';
         //End Schedule Resource Permissions

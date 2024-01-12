@@ -786,6 +786,11 @@ class ee_ee extends en_gb
         $strings['Remaining'] = 'Jäänud';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Puuduvad väljaregistreerimise broneeringud puuduvad';
+        $strings['MissingCheckOutReservations'] = 'Puuduvad väljaregistreerimise broneeringud';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Üksikasju ei saa näha, kuna teil pole selles broneeringus ühegi ressursi jaoks luba';
         //End Schedule Resource Permissions

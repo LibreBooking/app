@@ -831,6 +831,11 @@ class ru_ru extends en_gb
         $strings['Remaining'] = 'Осталось';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Отсутствуют пропущенные резервации на выезд';
+        $strings['MissingCheckOutReservations'] = 'Пропущенные резервации на выезд';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Невозможно просмотреть детали бронирования, потому что у вас нет разрешений на ни один из ресурсов в этом бронировании';
         //End Schedule Resource Permissions

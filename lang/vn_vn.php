@@ -761,6 +761,11 @@ class vn_vn extends en_gb
         $strings['Remaining'] = 'Còn lại';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Không có đặt phòng check out nào bị thiếu';
+        $strings['MissingCheckOutReservations'] = 'Đặt phòng Check Out bị thiếu';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Không thể xem chi tiết đặt phòng vì bạn không có quyền truy cập vào bất kỳ nguồn tài nguyên nào trong đặt phòng này';
         //End Schedule Resource Permissions
