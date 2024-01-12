@@ -68,6 +68,28 @@ interface IReservationViewRepository
     /**
      * @param Date $startDate
      * @param Date $endDate
+     * @param int|null|int[] $userIds
+     * @param int|ReservationUserLevel|null $userLevel
+     * @param int|int[]|null $scheduleIds
+     * @param int|int[]|null $resourceIds
+     * @param int|int[]|null $participantIds
+     * @param bool $consolidateByReferenceNumber
+     * @return ReservationItemView[]
+     */
+    public function GetReservationsMissingCheckInCheckOut(
+        Date $startDate = null,
+        Date $endDate,
+        $userIds = ReservationViewRepository::ALL_USERS,
+        $userLevel = ReservationUserLevel::OWNER,
+        $scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
+        $resourceIds = ReservationViewRepository::ALL_RESOURCES,
+        $consolidateByReferenceNumber = false,
+        $participantIds = ReservationViewRepository::ALL_USERS
+    );
+
+    /**
+     * @param Date $startDate
+     * @param Date $endDate
      * @param string $accessoryName
      * @return ReservationItemView[]
      */
@@ -343,8 +365,92 @@ class ReservationViewRepository implements IReservationViewRepository
             return array_values($reservations);
         }
         return $reservations;
-        
+    }
 
+    public function GetReservationsMissingCheckInCheckOut(
+        Date $startDate = null,
+        Date $endDate,
+        $userIds = self::ALL_USERS,
+        $userLevel = ReservationUserLevel::OWNER,
+        $scheduleIds = self::ALL_SCHEDULES,
+        $resourceIds = self::ALL_RESOURCES,
+        $consolidateByReferenceNumber = false,
+        $participantIds = self::ALL_USERS
+    ) {
+        if (empty($userIds)) {
+            $userIds = self::ALL_USERS;
+        }
+        if (is_null($userLevel)) {
+            $userLevel = ReservationUserLevel::OWNER;
+        }
+        if (empty($scheduleIds)) {
+            $scheduleIds = self::ALL_SCHEDULES;
+        }
+        if (empty($resourceIds)) {
+            $resourceIds = self::ALL_RESOURCES;
+        }
+        if (empty($participantIds)) {
+            $participantIds = self::ALL_USERS;
+        }
+        if ($resourceIds == self::ALL_RESOURCES) {
+            $resourceIds = null;
+        }
+        if ($scheduleIds == self::ALL_SCHEDULES) {
+            $scheduleIds = null;
+        }
+        if ($userIds == self::ALL_USERS) {
+            $userIds = null;
+        }
+        if ($participantIds == self::ALL_USERS) {
+            $participantIds = null;
+        }
+
+        if (!empty($resourceIds) && $resourceIds != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceIds)) {
+            $resourceIds = [$resourceIds];
+        }
+        if (!empty($scheduleIds) && $scheduleIds != ReservationViewRepository::ALL_SCHEDULES && !is_array($scheduleIds)) {
+            $scheduleIds = [$scheduleIds];
+        }
+        if (!empty($userIds) && $userIds != ReservationViewRepository::ALL_USERS && !is_array($userIds)) {
+            $userIds = [$userIds];
+        }
+        if (!empty($participantIds) && $participantIds != ReservationViewRepository::ALL_USERS && !is_array($participantIds)) {
+            $participantIds = [$participantIds];
+        }
+
+        $getReservations = new GetReservationsMissingCheckInCheckOutCommand($startDate, $endDate, $userIds, $userLevel, $scheduleIds, $resourceIds, $participantIds);
+
+        $reader = ServiceLocator::GetDatabase()->Query($getReservations);
+
+        $reservations = [];
+
+        $reservationRepository = new ReservationRepository();
+        $rules = $reservationRepository->GetReservationColorRules();
+
+        while ($row = $reader->GetRow()) {
+            if ($consolidateByReferenceNumber) {
+                $refNum = $row[ColumnNames::REFERENCE_NUMBER];
+
+                if (array_key_exists($refNum, $reservations)) {
+                    $reservations[$refNum]->ResourceNames[] = $row[ColumnNames::RESOURCE_NAME];
+                } else {
+                    $reservation = ReservationItemView::Populate($row);
+                    $reservation->WithColorRules($rules);
+                    $reservations[$refNum] = $reservation;
+                }
+            } else {
+                $reservation = ReservationItemView::Populate($row);
+                $reservation->WithColorRules($rules);
+                $reservations[] = $reservation;
+            }
+        }
+
+        $reader->Free();
+
+        if ($consolidateByReferenceNumber) {
+            return array_values($reservations);
+        }
+        return $reservations;
     }
 
     public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)

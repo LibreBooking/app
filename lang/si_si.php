@@ -671,6 +671,11 @@ class si_si extends en_gb
         $strings['Remaining'] = 'Preostalo';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Ni manjkajočih rezervacij za odhod';
+        $strings['MissingCheckOutReservations'] = 'Manjkajoče rezervacije za odhod';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Podrobnosti rezervacije ni mogoče videti, ker nimate dovoljenj za nobenega od virov v tej rezervaciji';
         //End Schedule Resource Permissions

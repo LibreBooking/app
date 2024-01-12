@@ -657,6 +657,11 @@ class sk extends en_gb
         $strings['Remaining'] = 'Zostáva';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Žiadne chýbajúce rezervácie na odchod';
+        $strings['MissingCheckOutReservations'] = 'Chýbajúce rezervácie na odchod';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Nie je možné zobraziť podrobnosti o rezervácii, pretože nemáte oprávnenie k žiadnym zdrojom v tejto rezervácii';
         //End Schedule Resource Permissions

@@ -1008,6 +1008,11 @@ class lt extends en_gb
         $strings['Remaining'] = 'Liko';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Trūksta išvykimo rezervacijų';
+        $strings['MissingCheckOutReservations'] = 'Trūksta išvykimo rezervacijų';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Dėl neturėtų teisių į šioje rezervacijoje esančius išteklius negalite matyti rezervacijos informacijos';
         //End Schedule Resource Permissions

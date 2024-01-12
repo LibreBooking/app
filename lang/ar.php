@@ -1029,6 +1029,11 @@ class ar extends en_us
         $strings['Remaining'] = 'المتبقي';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'لا توجد حجوزات للتسجيل الخروج المفقودة';
+        $strings['MissingCheckOutReservations'] = 'الحجوزات المفقودة للتسجيل الخروج';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'لا يمكن رؤية تفاصيل الحجز لأن ليس لديك أذونات لأي من الموارد في هذا الحجز';
         //End Schedule Resource Permissions

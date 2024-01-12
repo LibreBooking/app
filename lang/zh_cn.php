@@ -559,6 +559,11 @@ class zh_cn extends en_us
         $strings['Remaining'] = '剩余';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = '没有缺失的退房预订';
+        $strings['MissingCheckOutReservations'] = '缺失的退房预订';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = '由于您在此预订中的任何资源都没有权限，因此无法查看预订详细信息';
         //End Schedule Resource Permissions

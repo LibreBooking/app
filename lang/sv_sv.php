@@ -586,6 +586,11 @@ class sv_sv extends en_gb
         $strings['Remaining'] = 'Återstående';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Det finns inga saknade utcheckningsreservat';
+        $strings['MissingCheckOutReservations'] = 'Saknade utcheckningsreservat';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Kan inte se detaljer om bokningen eftersom du inte har behörighet för någon av resurserna i denna bokning';
         //End Schedule Resource Permissions
