@@ -136,7 +136,7 @@ class PendingApprovalReservations extends UpcomingReservations implements IAditi
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
         $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
-        $this->Display('pending__approval_reservations.tpl');
+        $this->Display('pending_approval_reservations.tpl');
     }
 
     public function BindThisMonth($reservations)
