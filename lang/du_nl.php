@@ -992,6 +992,17 @@ class du_nl extends en_gb
 		$strings['ResourceStatusChangedSubject'] = 'De beschikbaarheid van %s is gewijzigd';
 		// End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'U heeft geen eerdere reserveringen';
+        $strings['PastReservations'] = 'Eerdere reserveringen';
+        $strings['AllNoPastReservations'] = 'Er zijn geen eerdere reserveringen in de afgelopen %s dagen';
+        $strings['AllPastReservations'] = 'Alle eerdere reserveringen';
+        $strings['Yesterday'] = 'Gisteren';
+        $strings['EarlierThisWeek'] = 'Eerder deze week';
+        $strings['PreviousWeek'] = 'Vorige week';
+        //End Past Reservations
+
         $this->Strings = $strings;
     }
 

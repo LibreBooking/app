@@ -390,6 +390,16 @@ class ca extends en_gb
         $strings['ForgotPasswordEmailSent'] = 'S\'ha enviat un email a la direcci&oacute; proporcionada amb instruccions per reiniciar la teva contrasenya';
         //
 
+        //Past Reservations
+        $strings['NoPastReservations'] = 'No tens cap reserva anterior';
+        $strings['PastReservations'] = 'Reserves anteriors';
+        $strings['AllNoPastReservations'] = 'No hi ha cap reserva anterior en els darrers %s dies';
+        $strings['AllPastReservations'] = 'Totes les reserves anteriors';
+        $strings['Yesterday'] = 'Ahir';
+        $strings['EarlierThisWeek'] = 'Més aviat aquesta setmana';
+        $strings['PreviousWeek'] = 'Setmana anterior';
+        //End Past Reservations
+
         $this->Strings = $strings;
     }
 

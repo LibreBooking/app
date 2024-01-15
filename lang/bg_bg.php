@@ -493,6 +493,17 @@ class bg_bg extends en_gb
         $strings['ReportSubject'] = 'Вашият заявен отчет (%s)';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Нямате предходни резервации';
+        $strings['PastReservations'] = 'Предходни резервации';
+        $strings['AllNoPastReservations'] = 'Няма предходни резервации в последните %s дни';
+        $strings['AllPastReservations'] = 'Всички предходни резервации';
+        $strings['Yesterday'] = 'Вчера';
+        $strings['EarlierThisWeek'] = 'По-рано този седмица';
+        $strings['PreviousWeek'] = 'Предходна седмица';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

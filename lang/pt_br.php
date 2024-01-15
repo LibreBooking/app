@@ -1003,6 +1003,17 @@ class pt_br extends en_gb
         $strings['ResourceStatusChangedSubject'] = 'A disponibilidade de %s foi alterada';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Você não possui reservas anteriores';
+        $strings['PastReservations'] = 'Reservas Anteriores';
+        $strings['AllNoPastReservations'] = 'Não há reservas anteriores nos últimos %s dias';
+        $strings['AllPastReservations'] = 'Todas as Reservas Anteriores';
+        $strings['Yesterday'] = 'Ontem';
+        $strings['EarlierThisWeek'] = 'Antes desta semana';
+        $strings['PreviousWeek'] = 'Semana anterior';
+        //End Past Reservations
+
         // Currently unused strings
         $strings['of'] = 'de';
         $strings['ViewWeek'] = 'Ver Semana';
