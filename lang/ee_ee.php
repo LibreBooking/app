@@ -758,6 +758,17 @@ class ee_ee extends en_gb
         $strings['InviteeAddedSubjectWithResource'] = '%s Invited You to a Reservation for %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Teil pole varasemaid broneeringuid';
+        $strings['PastReservations'] = 'Varasemad broneeringud';
+        $strings['AllNoPastReservations'] = 'Viimase %s päeva jooksul pole varasemaid broneeringuid';
+        $strings['AllPastReservations'] = 'Kõik varasemad broneeringud';
+        $strings['Yesterday'] = 'Eile';
+        $strings['EarlierThisWeek'] = 'Varem sel nädalal';
+        $strings['PreviousWeek'] = 'Eelmine nädal';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

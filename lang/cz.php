@@ -809,6 +809,17 @@ class cz extends en_us
         $strings['ReservationParticipantJoin'] = '%s se přidal k vašemu pozvání k rezervaci %s na %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nemáte žádné minulé rezervace';
+        $strings['PastReservations'] = 'Minulé rezervace';
+        $strings['AllNoPastReservations'] = 'Nejsou žádné minulé rezervace v posledních %s dnech';
+        $strings['AllPastReservations'] = 'Všechny minulé rezervace';
+        $strings['Yesterday'] = 'Včera';
+        $strings['EarlierThisWeek'] = 'Dříve v tomto týdnu';
+        $strings['PreviousWeek'] = 'Předchozí týden';
+        //End Past Reservations
+
         $this->Strings = $strings;
 
         return $this->Strings;

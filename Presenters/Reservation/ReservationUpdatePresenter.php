@@ -84,8 +84,8 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
         $existingSeries->Update(
             $this->page->GetUserId(),
             $resource,
-            $this->page->GetTitle(),
-            $this->page->GetDescription(),
+            htmlspecialchars_decode($this->page->GetTitle()),
+            htmlspecialchars_decode($this->page->GetDescription()),
             $this->userSession
         );
 
