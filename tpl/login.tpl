@@ -90,12 +90,12 @@
 
 				<div class="clearfix"></div>
 
-				{if $AllowGoogleLogin && $AllowFacebookLogin}
+				{if $AllowGoogleLogin && $AllowFacebookLogin && $AllowMicrosoftLogin}
 					{assign var=socialClass value="col-sm-12 col-md-6"}
 				{else}
 					{assign var=socialClass value="col-sm-12"}
 				{/if}
-				<section style="display: flex; ">
+				<section style="display:flex; margin-top:8px;">
 					{if $AllowGoogleLogin}
 						<div class="{$socialClass} social-login" id="socialLoginGoogle">
 							<a href="{$GoogleUrl}">
@@ -118,6 +118,9 @@
 						</div>
 					{/if}
 				</section>
+				{if $facebookError}
+					<p style="text-align:center; margin-top:10px; margin-bottom:auto" class="text-primary"> {translate key="FacebookLoginErrorMessage"} </p>
+				{/if}
 			</div>
 			<div id="login-footer" class="col-xs-12">
 				{if $ShowForgotPasswordPrompt}

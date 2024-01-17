@@ -986,7 +986,11 @@ class hu_hu extends en_us
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Csoportom(aim) következő foglalásai';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Hiba történt a bejelentkezés során a Facebookkal. Kérjük, próbálja újra.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

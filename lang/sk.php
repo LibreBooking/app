@@ -642,7 +642,11 @@ class sk extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Nadchádzajúce rezervácie mojej skupiny(y)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Pri prihlásení cez Facebook sa vyskytla chyba. Skúste to prosím znovu.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

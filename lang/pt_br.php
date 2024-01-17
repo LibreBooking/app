@@ -1017,6 +1017,10 @@ class pt_br extends en_gb
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Reservas Futuras do(s) meu(s) Grupo(s)';
         //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Ocorreu um erro ao fazer login com o Facebook. Por favor, tente novamente.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         // Currently unused strings

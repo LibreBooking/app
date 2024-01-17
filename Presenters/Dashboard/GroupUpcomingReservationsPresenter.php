@@ -90,11 +90,8 @@ class GroupUpcomingReservationsPresenter
             //Sort By Date
             $consolidated = $this->BubbleSort($consolidated);
 
-            /* @var $reservation ReservationItemView */
             foreach ($consolidated as $reservation) {
-                $start = $reservation->StartDate->ToTimezone($timezone);
-                //echo '<pre>' , var_dump($start) , '</pre>';
-                
+                $start = $reservation->StartDate->ToTimezone($timezone);                
 
                 if ($start->DateEquals($today)) {
                     $todays[] = $reservation;

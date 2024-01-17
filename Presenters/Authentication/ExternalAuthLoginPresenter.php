@@ -52,7 +52,7 @@ class ExternalAuthLoginPresenter
         if (isset($_GET['code'])) {
             //Token validations for the client
             $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-            //set the acess token that it received
+            //set the access token that it received
             $client->setAccessToken($token['access_token']);
         
             //Using the Google API to get the user information 
@@ -140,7 +140,8 @@ class ExternalAuthLoginPresenter
         
         if (isset($_SESSION['facebook_access_token'])) {
             $facebook_Client->setDefaultAccessToken(unserialize($_SESSION['facebook_access_token']));
-        } 
+        }
+        unset($_SESSION['facebook_access_token']);
 
         $profile_request = $facebook_Client ->get('/me?fields=name,first_name,last_name,email');
         $profile = $profile_request ->getGraphUser();

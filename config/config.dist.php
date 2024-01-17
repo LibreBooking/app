@@ -233,3 +233,11 @@ $conf['settings']['authentication']['microsoft.redirect.uri'] = '/Web/microsoft-
 $conf['settings']['authentication']['facebook.client.id'] = '';
 $conf['settings']['authentication']['facebook.client.secret'] = '';
 $conf['settings']['authentication']['facebook.redirect.uri'] = '/Web/facebook-auth.php';
+/**
+ *  Delete old data job configuration
+ *  Activate the deleteolddata.php as a background job to use this feature
+ */
+$conf['settings']['delete.old.data']['years.old.data'] = '3';               //Choose how long a blackout, announcement and reservation stay in the database (in years) counting from the end date
+$conf['settings']['delete.old.data']['delete.old.announcements'] = 'false'; //Choose if this feature deletes old announcements from database
+$conf['settings']['delete.old.data']['delete.old.blackouts'] = 'false';     //Choose if this feature deletes old blackouts from database
+$conf['settings']['delete.old.data']['delete.old.reservations'] = 'false';  //Choose if this feature deletes old reservations from database

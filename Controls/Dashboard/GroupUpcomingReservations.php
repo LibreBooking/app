@@ -20,7 +20,7 @@ class GroupUpcomingReservations extends DashboardItem implements IGroupUpcomingR
     public function PageLoad()
     {
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
-        $this->presenter->SetSearchCriteria(ServiceLocator::GetServer()->GetUserSession()->UserId, ReservationUserLevel::ALL);
+        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
         $this->Display('group_upcoming_reservations.tpl');
     }
@@ -84,15 +84,4 @@ interface IGroupUpcomingReservationsControl
     public function BindTomorrow($reservations);
     public function BindThisWeek($reservations);
     public function BindNextWeek($reservations);
-}
-
-class AllGroupUpcomingReservations extends GroupUpcomingReservations
-{
-    public function PageLoad()
-    {
-        $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
-        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
-        $this->presenter->PageLoad();
-        $this->Display('group_upcoming_reservations.tpl');
-    }
 }
