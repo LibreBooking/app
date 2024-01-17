@@ -585,6 +585,12 @@ class id_id extends en_gb
         $strings['PreviousWeek'] = 'Pekan sebelumnya';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Reservasi Mendatang Grup Saya';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
     }
 

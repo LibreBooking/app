@@ -847,6 +847,12 @@ class th_th extends en_gb
         $strings['PreviousWeek'] = 'สัปดาห์ที่แล้ว';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'การจองที่มีต่อไปของกลุ่มของฉัน';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

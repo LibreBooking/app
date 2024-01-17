@@ -654,6 +654,12 @@ class si_si extends en_gb
         $strings['PreviousWeek'] = 'Prejšnji teden';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Prihodnje rezervacije moje skupine(i)';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

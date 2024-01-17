@@ -643,6 +643,12 @@ class no_no extends en_gb
         $strings['PreviousWeek'] = 'Forrige uke';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Mine grupp(er) kommende reservasjoner';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

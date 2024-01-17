@@ -569,6 +569,12 @@ class sv_sv extends en_gb
         $strings['PreviousWeek'] = 'Förra veckan';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Mina grupps kommande bokningar';
+        //End Group Upcoming Reservations 
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
     }
 

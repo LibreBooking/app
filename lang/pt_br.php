@@ -1014,6 +1014,11 @@ class pt_br extends en_gb
         $strings['PreviousWeek'] = 'Semana anterior';
         //End Past Reservations
 
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'Reservas Futuras do(s) meu(s) Grupo(s)';
+        //End Group Upcoming Reservations
+        //END NEEDS CHECKING
+
         // Currently unused strings
         $strings['of'] = 'de';
         $strings['ViewWeek'] = 'Ver Semana';
@@ -1023,6 +1028,7 @@ class pt_br extends en_gb
         $strings['ChangePermissions'] = 'Tente aplicar as permissões corretas';
         $strings['PwComplexity'] = 'A senha deve ter pelo menos 6 caracteres com uma combinação de letras, números e símbolos.';
         // End of Currently unused strings
+
 
         $this->Strings = $strings;
 
