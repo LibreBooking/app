@@ -1055,6 +1055,7 @@ class en_us extends Language
         //End Schedule Resource Permissions
 
         //View Resource
+        $strings['Check'] = 'Check';
         $strings['PermissionType'] = 'Permission Type';
         $strings['NoResourcesToView'] = 'You don\'t have permissions to any resource';
         //End View Resource

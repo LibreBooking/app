@@ -93,6 +93,18 @@ class ResourceRepository implements IResourceRepository
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
     }
 
+    public function GetUserList($resourceIds, $pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+    {
+        $command = new GetUserResourcesCommand($resourceIds);
+
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = ['BookableResource', 'Create'];
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+    }
+
     /**
      * @param int $resourceId
      * @return BookableResource

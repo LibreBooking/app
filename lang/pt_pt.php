@@ -1029,6 +1029,7 @@ class pt_pt extends en_gb
         //End Schedule Resource Permissions
 
         //View Resource
+        $strings['Check'] = 'Consultar';
         $strings['PermissionType'] = 'Tipo de Permissão';
         $strings['NoResourcesToView'] = 'Não tem permissão para nenhum recurso';
         //End View Resource

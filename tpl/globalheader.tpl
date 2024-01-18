@@ -173,7 +173,7 @@
                         </li>
                         {*if (isset($CanViewResources) && $CanViewResources)  || (isset($CanViewSchedules) && $CanViewSchedules)*}
                             <li class="dropdown" id="navReportsDropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{*translate key="Reports"*}Check<b
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Check"}<b
                                             class="caret"></b></a>
                                 <ul class="dropdown-menu">
 
@@ -181,13 +181,13 @@
                                 
                                 {*if (isset($CanViewResources) && $CanViewResources)*}
                                     <li id="CheckResources">
-                                        <a href="{$Path}view_resources.php">{*translate key=MySavedReports*}Resources</a>
+                                        <a href="{$Path}view_resources.php">{translate key=Resources}</a>
                                     </li>
                                 {*/if*}
 
                                 {*(isset($CanViewSchedules) && $CanViewSchedules)*}    
                                     <li id="CheckSchedules">
-                                        <a href="{$Path}view_schedules.php">{*translate key=CommonReports*}Schedules</a>
+                                        <a href="{$Path}view_schedules.php">{translate key=Schedules}</a>
                                     </li>
                                 {*/if*}
                                 </ul>

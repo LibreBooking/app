@@ -3,7 +3,7 @@
 class ViewResourcesPresenter{
     
     /**
-     * @var ViewResourcesPage;
+     * @var ResourceViewerViewResourcesPage;
      */
     private $page;
 
@@ -23,6 +23,11 @@ class ViewResourcesPresenter{
     private $groupRepo;
 
     /**
+    * @var IAttributeService
+    */
+    private $attributeService;
+
+    /**
      * @var int;
      */
     private $userId;
@@ -31,7 +36,8 @@ class ViewResourcesPresenter{
         ResourceViewerViewResourcesPage $page,
         IResourceRepository $resourceRepo,
         IScheduleRepository $scheduleRepo,
-        IGroupRepository $groupRepo
+        IGroupRepository $groupRepo,
+        IAttributeService $attributeService,
         )
     {
     
@@ -39,6 +45,7 @@ class ViewResourcesPresenter{
        $this->resourceRepo = $resourceRepo;
        $this->scheduleRepo = $scheduleRepo;
        $this->groupRepo = $groupRepo;
+       $this->attributeService = $attributeService;
 
        $this->userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 
@@ -57,34 +64,39 @@ class ViewResourcesPresenter{
         $this->page->SetResourceTypes($this->GetResourceTypes());
         $this->page->SetResourcePermissionTypes($this->GetUserResourcePermissionTypes());
 
+        $resourceAttributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
+
+        $filterValues = $this->page->GetFilterValues();
+
+        foreach($resources as $resource){
+            $resourceIds[] = $resource->GetId();
+        }
+
+        $results = $this->resourceRepo->GetUserList(
+            $resourceIds,
+            $this->page->GetPageNumber(),
+            $this->page->GetPageSize(),
+            null,
+            null,
+            $filterValues->AsFilter($resourceAttributes)
+        );
+        $resources = $results->Results();
+
+        $this->page->SetResources($resources);
+        $this->page->BindPageInfo($results->PageInfo());
+        
+        //$this->InitializeFilter($filterValues, $resourceAttributes);
     }
 
     private function GetUserResources(){
-        /**
-         * SERA QUE FICA MELHOR COM ROLES DOS GRUPOS VIEW OU COM PERMISSOES DE UTILIZADOR E DE GRUPOS??? OU OS 2s?????
-         */
-
         $resources = [];
 
-        //PERMISSOES DE UTILIZADOR
         $resourceIds = [];
 
         $resourceIds = $this->resourceRepo->GetUserResourcePermissions($this->userId);
 
         $resourceIds = $this->resourceRepo->GetUserGroupResourcePermissions($this->userId,$resourceIds);
 
-
-        //RESOURCE VIEWER RESOURCES
-        /*if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
-            $resourceIds = $this->resourceRepo->GetResourceAdminResourceIds($userId, $resourceIds);
-        }
-        */
-
-        //echo '<pre>' , var_dump($resourceIds) , '</pre>';
-
-        //$this->page->BindViewableResourceReservations($resourceIds);
-
-        //Only show not hidden resources
         foreach($resourceIds as $resourceId){
             $resource = $this->resourceRepo->LoadById($resourceId);
             if($resource->GetStatusId() != 0){
@@ -153,7 +165,7 @@ class ViewResourcesPresenter{
         return $resourceTypes;
     }
 
-    //To show user what type of permission he has to the resource
+    //To show user what type of permission he has to the resource (view only or full access)
     private function GetUserResourcePermissionTypes(){
         //USER
         $resourcePermissionTypes = [];
@@ -178,7 +190,6 @@ class ViewResourcesPresenter{
 
             if (!array_key_exists($resourceId,$resourcePermissionTypes)){
                 $resourceId = $permissionType;
-                var_dump($resourceId);
             }
             else if (array_key_exists($resourceId,$resourcePermissionTypes) && $resourcePermissionTypes[$resourceId] == 1 &&  $permissionType == 0){
                 $resourcePermissionTypes[$resourceId] = $permissionType;
@@ -187,4 +198,24 @@ class ViewResourcesPresenter{
 
         return $resourcePermissionTypes;
     }
+
+    // /**
+    //  * @param ResourceFilterValues $filterValues
+    //  * @param CustomAttribute[] $resourceAttributes
+    //  */
+    // public function InitializeFilter($filterValues, $resourceAttributes)
+    // {
+    //     $filters = $filterValues->Attributes;
+    //     $attributeFilters = [];
+    //     foreach ($resourceAttributes as $attribute) {
+    //         $attributeValue = null;
+    //         if (array_key_exists($attribute->Id(), $filters)) {
+    //             $attributeValue = $filters[$attribute->Id()];
+    //         }
+    //         $attributeFilters[] = new LBAttribute($attribute, $attributeValue);
+    //     }
+
+    //     $this->page->BindAttributeFilters($attributeFilters);
+    //     $this->page->SetFilterValues($filterValues);
+    // }
 }

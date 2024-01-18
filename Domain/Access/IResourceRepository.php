@@ -60,6 +60,17 @@ interface IResourceRepository
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
     /**
+     * @param array $resourceIds
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param string|null $sortField
+     * @param string|null $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|BookableResource[]
+     */
+    public function GetUserList($resourceIds,$pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+
+    /**
      * @param null|string $sortField
      * @param null|string $sortDirection
      * @return AccessoryDto[]|array all accessories
