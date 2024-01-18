@@ -11,7 +11,7 @@ class ResourceViewerViewResourcesPage extends Page
 
     public function __construct()
     {
-        parent::__construct('ViewResources');
+        parent::__construct('CheckResources');
         $this->presenter = new ViewResourcesPresenter($this,new ResourceRepository(), new ScheduleRepository(), new GroupRepository());
 
 
@@ -53,8 +53,11 @@ class ResourceViewerViewResourcesPage extends Page
     }
 
     public function SetResourceTypes($resourceTypes){
-        var_dump($resourceTypes);
         $this->Set("ResourceTypes",$resourceTypes);
+    }
+
+    public function SetResourcePermissionTypes($resourcePermissionTypes){
+        $this->Set("ResourcePermissionTypes",$resourcePermissionTypes);
     }
 
 }

@@ -1028,6 +1028,11 @@ class pt_pt extends en_gb
         $strings['NoResourcePermissions'] = 'Não é possível ver os detalhes da reserva uma vez que não tem permissões para um ou mais recursos nesta reserva';
         //End Schedule Resource Permissions
 
+        //View Resource
+        $strings['PermissionType'] = 'Tipo de Permissão';
+        $strings['NoResourcesToView'] = 'Não tem permissão para nenhum recurso';
+        //End View Resource
+
         $this->Strings = $strings;
 
         return $this->Strings;

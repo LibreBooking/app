@@ -171,6 +171,28 @@
                                 </li>
                             </ul>
                         </li>
+                        {*if (isset($CanViewResources) && $CanViewResources)  || (isset($CanViewSchedules) && $CanViewSchedules)*}
+                            <li class="dropdown" id="navReportsDropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{*translate key="Reports"*}Check<b
+                                            class="caret"></b></a>
+                                <ul class="dropdown-menu">
+
+                                {*->       /admin para o caminho do SCRIPT? Da erro no smarty??        *}
+                                
+                                {*if (isset($CanViewResources) && $CanViewResources)*}
+                                    <li id="CheckResources">
+                                        <a href="{$Path}view_resources.php">{*translate key=MySavedReports*}Resources</a>
+                                    </li>
+                                {*/if*}
+
+                                {*(isset($CanViewSchedules) && $CanViewSchedules)*}    
+                                    <li id="CheckSchedules">
+                                        <a href="{$Path}view_schedules.php">{*translate key=CommonReports*}Schedules</a>
+                                    </li>
+                                {*/if*}
+                                </ul>
+                            </li>
+                        {*/if*}
                         {if isset($CanViewAdmin) && $CanViewAdmin}
                             <li class="dropdown" id="navApplicationManagementDropdown">
                                 <a href="#" class="dropdown-toggle"
@@ -264,31 +286,6 @@
                                 </ul>
                             </li>
                         {/if}
-
-                        {*if (isset($CanViewResources) && $CanViewResources)  || (isset($CanViewSchedules) && $CanViewSchedules)*}
-                            <li class="dropdown" id="navReportsDropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{*translate key="Reports"*}Check<b
-                                            class="caret"></b></a>
-                                <ul class="dropdown-menu">
-
-                                {*->       /admin para o caminho do SCRIPT? Da erro no smarty??        *}
-                                
-                                {*if (isset($CanViewResources) && $CanViewResources)*}
-                                    <li id="CheckResources">
-                                        <a href="{$Path}view_resources.php">{*translate key=MySavedReports*}Resources</a>
-                                    </li>
-                                {*/if*}
-
-                                {*(isset($CanViewSchedules) && $CanViewSchedules)*}    
-                                    <li id="CheckSchedules">
-                                        <a href="{$Path}view_schedules.php">{*translate key=CommonReports*}Schedules</a>
-                                    </li>
-                                {*/if*}
-                                </ul>
-                            </li>
-                        {*/if*}
-
-
                         {if isset($CanViewReports) && $CanViewReports}
                             <li class="dropdown" id="navReportsDropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Reports"} <b

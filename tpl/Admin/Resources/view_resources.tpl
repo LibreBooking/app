@@ -2,21 +2,13 @@
 
 <div id="page-manage-resources" class="admin-page">
 	<div>
-		<div class="dropdown admin-header-more pull-right">
-			<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
-				<span class="no-show">More</span>
-				<span class="glyphicon glyphicon-option-horizontal"></span>
-				<span class="caret"></span>
-			</button>
-		</div>
-
 		<h1>{translate key='Resources'}</h1>
 	</div>
     {*----------------------------------------------------------------------*}
 
     {*              FILTRO               *}
 
-    {* <div class="panel panel-default filterTable" id="filter-resources-panel">
+    <div class="panel panel-default filterTable" id="filter-resources-panel">
         <form id="filterForm" class="horizontal-list" role="form" method="get">
             <div class="panel-heading"><span
                         class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}
@@ -99,247 +91,261 @@
                 {reset_button id="clearFilter" class="btn-sm"}
             </div>
         </form>
-    </div> *}
+    </div>
 
     {pagination pageInfo=$PageInfo showCount=true}
 
 	<div id="globalError" class="error no-show"></div>
 
     {*              RESOURCES               *}
-    <div class="panel panel-default admin-panel" id="list-resources-panel">
-		<div class="panel-body no-padding" id="resourceList">
+    {if !empty($Resources)}
+        <div class="panel panel-default admin-panel" id="list-resources-panel">
+            <div class="panel-body no-padding" id="resourceList" style="margin-top:20px">
+                {foreach from=$Resources item=resource}
+                    {assign var=id value=$resource->GetResourceId()}
+                    {* {$resource|@var_dump} *}
+                    <div class="resourceDetails" data-resourceId="{$id}">
+                        <div class="col-xs-12 col-sm-5">
+                            <input type="hidden" class="id" value="{$id}"/>
 
-            {foreach from=$Resources item=resource}
-                {assign var=id value=$resource->GetResourceId()}
-				<div class="resourceDetails" data-resourceId="{$id}">
-					<div class="col-xs-12 col-sm-5">
-						<input type="hidden" class="id" value="{$id}"/>
-
-						<div class="col-sm-3 col-xs-6 resourceImage">
-							<div class="margin-bottom-25">
-                                {if $resource->HasImage()}
-									<div class="owl-carousel owl-theme">
-										<div class="item">
-											<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
-										</div>
-                                        {foreach from=$resource->GetImages() item=image}
-											<div class="item">
-												<img src="{resource_image image=$image}" alt="Resource Image" class="image"/>
-											</div>
-                                        {/foreach}
-									</div>
-									<br/>
-                                {else}
-									<div class="noImage"><span class="fa fa-image"></span></div>
-                                {/if}
-							</div>
-							<div>
-                                {translate key=ResourceColor}
-								<input class="resourceColorPicker" type="color"
-									   value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}'
-									   alt="{translate key=ResourceColor}"
-									   title="{translate key=ResourceColor}"/>
-							</div>
-						</div>
-
-						<div class="col-sm-9 col-xs-6">
-							<div>
-							<span class="title resourceName" data-type="text" data-pk="{$id}"
-								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
-							</div>
-							<div>
-                                {translate key='Status'}
-                                {if $resource->IsAvailable()}
-                                    {html_image src="status.png"}
-									<b>{translate key='Available'}</b>
-                                {elseif $resource->IsUnavailable()}
-                                    {html_image src="status-away.png"}
-									<b>{translate key='Unavailable'}</b>
-                                {else}
-                                    {html_image src="status-busy.png"}
-									<b>{translate key='Hidden'}</b>
-                                {/if}
-
-                                {if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
-									<span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]}</span>
-                                {/if}
-
-							</div>
-
-							<div>
-                                {translate key='Schedule'}
-								<span class="propertyValue scheduleName"
-									  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
-									  data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
-							</div>
-
-							<div>
-                                {translate key='ResourceType'}
-								<span class="propertyValue resourceTypeName"
-									  data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}"
-									  data-name="{FormKeys::RESOURCE_TYPE_ID}">
-									{if $resource->HasResourceType()}
-                                        {$ResourceTypes[$resource->GetResourceTypeId()]}
+                            <div class="col-sm-3 col-xs-6 resourceImage">
+                                <div class="margin-bottom-25">
+                                    {if $resource->HasImage()}
+                                        <div class="owl-carousel owl-theme">
+                                            <div class="item">
+                                                <img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
+                                            </div>
+                                            {foreach from=$resource->GetImages() item=image}
+                                                <div class="item">
+                                                    <img src="{resource_image image=$image}" alt="Resource Image" class="image"/>
+                                                </div>
+                                            {/foreach}
+                                        </div>
+                                        <br/>
                                     {else}
-                                        {translate key='NoResourceTypeLabel'}
+                                        <div class="noImage"><span class="fa fa-image"></span></div>
                                     {/if}
-								</span>
-							</div>
-							<div>
-                                {translate key=SortOrder}
-								<span class="propertyValue sortOrderValue"
-									  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
-								    {$resource->GetSortOrder()|default:"0"}
-							    </span>
-							</div>
-							<div>
-                                {translate key='Location'}
-								<span class="propertyValue locationValue"
-									  data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}"
-									  data-name="{FormKeys::RESOURCE_LOCATION}">
-                                    {if $resource->HasLocation()}
-                                        {$resource->GetLocation()}
+                                </div>
+                                <div>
+                                    {translate key=ResourceColor}
+                                    <input class="resourceColorPicker" type="color"
+                                        value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}'
+                                        alt="{translate key=ResourceColor}"
+                                        title="{translate key=ResourceColor}"/>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-9 col-xs-6">
+                                <div>
+                                <span class="title resourceName" data-type="text" data-pk="{$id}"
+                                    data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
+                                </div>
+                                <div>
+                                    {translate key='Status'}
+                                    {if $resource->IsAvailable()}
+                                        {html_image src="status.png"}
+                                        <b>{translate key='Available'}</b>
+                                    {elseif $resource->IsUnavailable()}
+                                        {html_image src="status-away.png"}
+                                        <b>{translate key='Unavailable'}</b>
                                     {else}
-                                        {translate key='NoLocationLabel'}
+                                        {html_image src="status-busy.png"}
+                                        <b>{translate key='Hidden'}</b>
                                     {/if}
-                                </span>
-							</div>
-							<div>
-                                {translate key='Contact'}
-								<span class="propertyValue contactValue"
-									  data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}"
-									  data-name="{FormKeys::RESOURCE_CONTACT}">
-                                    {if $resource->HasContact()}
-                                        {$resource->GetContact()}
-                                    {else}
-                                        {translate key='NoContactLabel'}
+
+                                    {if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
+                                        <span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
                                     {/if}
-                                </span>
-							</div>
-							<div>
-                                {translate key='Description'}
-                                {if $resource->HasDescription()}
-                                    {assign var=description value=$resource->GetDescription()}
-                                {else}
-                                    {assign var=description value=''}
-                                {/if}
-                                {strip}
-									<div class="descriptionValue"
-										 data-type="textarea" data-pk="{$id}" data-value="{$description|escape}"
-										 data-name="{FormKeys::RESOURCE_DESCRIPTION}">
-                                        {if $resource->HasDescription()}
-                                            {$description}
+
+                                </div>
+
+                                <div>
+                                    {translate key='Schedule'}
+                                    <span class="propertyValue scheduleName"
+                                        data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
+                                        data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]->GetName()}</span>
+                                </div>
+
+                                <div>
+                                    {translate key='ResourceType'}
+                                    <span class="propertyValue resourceTypeName"
+                                        data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}"
+                                        data-name="{FormKeys::RESOURCE_TYPE_ID}">
+                                        {if $resource->HasResourceType()}
+                                            {$ResourceTypes[$resource->GetResourceTypeId()]->Name()}
                                         {else}
-                                            {translate key='NoDescriptionLabel'}
+                                            {translate key='NoResourceTypeLabel'}
                                         {/if}
-									</div>
-                                {/strip}
-							</div>
-							<div>
-                                {translate key='Notes'}
-                                {if $resource->HasNotes()}
-                                    {assign var=notes value=$resource->GetNotes()}
-                                {else}
-                                    {assign var=notes value=''}
-                                {/if}
-                                {strip}
-									<div class="notesValue"
-										 data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}"
-										 data-name="{FormKeys::RESOURCE_NOTES}">
-                                        {if $resource->HasNotes()}
-                                            {$notes}
+                                    </span>
+                                </div>
+                                <div>
+                                    {translate key=SortOrder}
+                                    <span class="propertyValue sortOrderValue"
+                                        data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
+                                        {$resource->GetSortOrder()|default:"0"}
+                                    </span>
+                                </div>
+                                <div>
+                                    {translate key='Location'}
+                                    <span class="propertyValue locationValue"
+                                        data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}"
+                                        data-name="{FormKeys::RESOURCE_LOCATION}">
+                                        {if $resource->HasLocation()}
+                                            {$resource->GetLocation()}
                                         {else}
-                                            {translate key='NoNotesLabel'}
+                                            {translate key='NoLocationLabel'}
                                         {/if}
-									</div>
-                                {/strip}
-							</div>
-							<div>
-                                {translate key='ResourceAdministrator'}
-								<span class="propertyValue resourceAdminValue"
-									  data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
-									  data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$ResourceAdminGroupNames[$resource->GetAdminGroupId()]}</span>
-							</div>
+                                    </span>
+                                </div>
+                                <div>
+                                    {translate key='Contact'}
+                                    <span class="propertyValue contactValue"
+                                        data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}"
+                                        data-name="{FormKeys::RESOURCE_CONTACT}">
+                                        {if $resource->HasContact()}
+                                            {$resource->GetContact()}
+                                        {else}
+                                            {translate key='NoContactLabel'}
+                                        {/if}
+                                    </span>
+                                </div>
+                                <div>
+                                    {translate key='Description'}
+                                    {if $resource->HasDescription()}
+                                        {assign var=description value=$resource->GetDescription()}
+                                    {else}
+                                        {assign var=description value=''}
+                                    {/if}
+                                    {strip}
+                                        <div class="descriptionValue"
+                                            data-type="textarea" data-pk="{$id}" data-value="{$description|escape}"
+                                            data-name="{FormKeys::RESOURCE_DESCRIPTION}">
+                                            {if $resource->HasDescription()}
+                                                {$description}
+                                            {else}
+                                                {translate key='NoDescriptionLabel'}
+                                            {/if}
+                                        </div>
+                                    {/strip}
+                                </div>
+                                <div>
+                                    {translate key='Notes'}
+                                    {if $resource->HasNotes()}
+                                        {assign var=notes value=$resource->GetNotes()}
+                                    {else}
+                                        {assign var=notes value=''}
+                                    {/if}
+                                    {strip}
+                                        <div class="notesValue"
+                                            data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}"
+                                            data-name="{FormKeys::RESOURCE_NOTES}">
+                                            {if $resource->HasNotes()}
+                                                {$notes}
+                                            {else}
+                                                {translate key='NoNotesLabel'}
+                                            {/if}
+                                        </div>
+                                    {/strip}
+                                </div>
+                                <div>
+                                    {translate key='ResourceAdministrator'}
+                                    <span class="propertyValue resourceAdminValue"
+                                        data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
+                                        data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$ResourceAdminGroupNames[$resource->GetAdminGroupId()]->Name}</span>
+                                </div>
+                                
+                                {*------------------------------ERRADO------------------------------*}
+                                {* <div>
+                                    <a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}"
+                                    target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
+                                </div> *}
+                            </div>
+                            {*------------------------------------------*}
+
+                        </div>
+
+
+                        <div class="col-xs-12 col-sm-7">
+                            <div class="col-sm-6 col-xs-12">
+                                <h5 class="inline">{translate key=Duration}</h5>
+
+                                <div class="durationPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
+                                </div>
+
+                                {if $CreditsEnabled}
+                                    <div>
+                                        <h5 class="inline">{translate key='Credits'}</h5>
+
+                                        <div class="creditsPlaceHolder">
+                                            {include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
+                                        </div>
+                                    </div>
+                                {/if}
+
+                                <div style="margin-top: 10px;">
+                                    <h5 class="inline">{translate key='Capacity'}</h5>
+
+                                    <div class="capacityPlaceHolder">
+                                        {include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-xs-12">
+                                <h5 class="inline">{translate key=Access}</h5>
+
+                                <div class="accessPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-xs-12">
+                                <h5 class="inline">{translate key='PermissionType'}</h5>
+                                <div class="resourcePermissionTypePlaceHolder">
+                                    {if $ResourcePermissionTypes[$resource->GetId()] == 0}
+                                        {translate key=FullAccess}
+                                    {else}
+                                        {translate key=ViewOnly}
+                                    {/if}
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6 col-xs-12" style="margin-top:10px">
+                                <h5 class="inline">{translate key='ResourceGroups'}</h5>
+                                <div class="resourceGroupsPlaceHolder">
+                                    {if $resource->GetResourceGroupIds()|default:array()|count == 0}
+                                        {translate key=None}
+                                    {/if}
+                                    {foreach from=$resource->GetResourceGroupIds() item=resourceGroupId name=eachGroup}
+                                        <span class="resourceGroupId" data-value="{$resourceGroupId}">{$ResourceGroupNames[$resourceGroupId]->name}</span>{if !$smarty.foreach.eachGroup.last}, {/if}
+                                    {/foreach}
+                                </div>
+                                <div class="clearfix">&nbsp;</div>
+                            </div>
                             
-                            {*------------------------------ERRADO------------------------------*}
-							{* <div>
-								<a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}"
-								   target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
-							</div> *}
-						</div>
-                        {*------------------------------------------*}
+                            <div class="col-sm-6 col-xs-12">&nbsp;</div>
+                            
 
-					</div>
+                        </div>
 
-					<div class="col-xs-12 col-sm-7">
-						<div class="col-sm-6 col-xs-12">
-							<h5 class="inline">{translate key=Duration}</h5>
-
-							<div class="durationPlaceHolder">
-                                {include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
-							</div>
-
-                            {if $CreditsEnabled}
-								<div>
-									<h5 class="inline">{translate key='Credits'}</h5>
-
-									<div class="creditsPlaceHolder">
-                                        {include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
-									</div>
-								</div>
-                            {/if}
-
-							<div style="margin-top: 20px;">
-								<h5 class="inline">{translate key='Capacity'}</h5>
-
-								<div class="capacityPlaceHolder">
-                                    {include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
-								</div>
-							</div>
-						</div>
-
-						<div class="col-sm-6 col-xs-12">
-							<h5 class="inline">{translate key=Access}</h5>
-
-							<div class="accessPlaceHolder">
-                                {include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
-							</div>
-						</div>
-
-
-						<div class="col-sm-6 col-xs-12">
-							<h5 class="inline">{translate key='ResourceGroups'}</h5>
-							<div class="resourceGroupsPlaceHolder">
-                                {if $resource->GetResourceGroupIds()|default:array()|count == 0}
-                                    {translate key=None}
-                                {/if}
-                                {foreach from=$resource->GetResourceGroupIds() item=resourceGroupId name=eachGroup}
-                                    <span class="resourceGroupId" data-value="{$resourceGroupId}">{$ResourceGroupNames[$resourceGroupId]}</span>{if !$smarty.foreach.eachGroup.last}, {/if}
+                        <div class="clearfix"></div>
+                        <div class="customAttributes">
+                            {if $AttributeList|default:array()|count > 0}
+                                {foreach from=$AttributeList item=attribute}
+                                    {include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$resource->GetAttributeValue($attribute->Id())}
                                 {/foreach}
-							</div>
-							<div class="clearfix">&nbsp;</div>
-						</div>
-                        
-						<div class="col-sm-6 col-xs-12">&nbsp;</div>
-
-					</div>
-
-					<div class="clearfix"></div>
-					<div class="customAttributes">
-                        {if $AttributeList|default:array()|count > 0}
-                            {foreach from=$AttributeList item=attribute}
-                                {include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$resource->GetAttributeValue($attribute->Id())}
-                            {/foreach}
-                        {/if}
-					</div>
-					<div class="clearfix"></div>
-				</div>
-            {/foreach}
-		</div>
-	</div>
-
-
-
+                            {/if}
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                {/foreach}
+            </div>
+        </div>
+    {else}
+		<h3 style="text-align:center">{translate key='NoResourcesToView'}</h3>
+    {/if}
 </div>
 
 {include file='globalfooter.tpl'}
