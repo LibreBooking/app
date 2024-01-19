@@ -1,12 +1,10 @@
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' InlineEdit=true Owl=true}
 
 <div id="page-manage-resources" class="admin-page">
 	<div>
 		<h1>{translate key='Resources'}</h1>
 	</div>
-    {*----------------------------------------------------------------------*}
 
-    {*              FILTRO               *}
     <div class="panel panel-default filterTable" id="filter-resources-panel">
 		<form id="filterForm" class="horizontal-list" role="form" method="get">
 			<div class="panel-heading"><span
@@ -21,7 +19,6 @@
 					<input type="text" id="filterResourceName" class="form-control" {formname key=RESOURCE_NAME}
 						   value="{$ResourceNameFilter}" placeholder="{translate key=Name}"/>
 					<span class="searchclear glyphicon glyphicon-remove-circle" ref="filterResourceName"></span>
-
 				</div>
 				<div class="form-group {$groupClass}">
 					<label for="filterScheduleId" class="no-show">{translate key=Schedule}</label>
@@ -44,7 +41,7 @@
 						<option value="">{translate key=AllResourceStatuses}</option>
 						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-						<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+						{*<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>*}
 					</select>
 					<label for="resourceReasonIdFilter" class="no-show">{translate key=Reason}</label>
 					<select id="resourceReasonIdFilter" style="width:auto;" class="form-control inline" {formname key=RESOURCE_STATUS_REASON_ID}>
@@ -102,7 +99,6 @@
             <div class="panel-body no-padding" id="resourceList" style="margin-top:20px">
                 {foreach from=$Resources item=resource}
                     {assign var=id value=$resource->GetResourceId()}
-                    {* {$resource|@var_dump} *}
                     <div class="resourceDetails" data-resourceId="{$id}">
                         <div class="col-xs-12 col-sm-5">
                             <input type="hidden" class="id" value="{$id}"/>
@@ -155,7 +151,6 @@
                                     {if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
                                         <span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
                                     {/if}
-
                                 </div>
 
                                 <div>
@@ -250,16 +245,10 @@
                                     {translate key='ResourceAdministrator'}
                                     <span class="propertyValue resourceAdminValue"
                                         data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
-                                        data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$ResourceAdminGroupNames[$resource->GetAdminGroupId()]->Name}</span>
+                                        data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$ResourceAdminGroup[$resource->GetAdminGroupId()]->Name}</span>
                                 </div>
                                 
-                                {*------------------------------ERRADO------------------------------*}
-                                {* <div>
-                                    <a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}"
-                                    target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
-                                </div> *}
                             </div>
-                            {*------------------------------------------*}
 
                         </div>
 
@@ -318,7 +307,7 @@
                                         {translate key=None}
                                     {/if}
                                     {foreach from=$resource->GetResourceGroupIds() item=resourceGroupId name=eachGroup}
-                                        <span class="resourceGroupId" data-value="{$resourceGroupId}">{$ResourceGroupNames[$resourceGroupId]->name}</span>{if !$smarty.foreach.eachGroup.last}, {/if}
+                                        <span class="resourceGroupId" data-value="{$resourceGroupId}">{$ResourceGroup[$resourceGroupId]->name}</span>{if !$smarty.foreach.eachGroup.last}, {/if}
                                     {/foreach}
                                 </div>
                                 <div class="clearfix">&nbsp;</div>
@@ -349,11 +338,24 @@
     {csrf_token}
 
     {include file="javascript-includes.tpl" InlineEdit=true Owl=true Clear=true}
-    {jsfile src="ajax-helpers.js"}
-    {jsfile src="autocomplete.js"}
-    {jsfile src="js/tree.jquery.js"}
-    {jsfile src="admin/resource.js"}
-    {jsfile src="dropzone.js"}
+
+    {jsfile src="../ajax-helpers.js"}                                                  {*???*}
+    {jsfile src="../autocomplete.js"}                                                  {*???*}
+    {jsfile src="../js/tree.jquery.js"}
+    {jsfile src="../admin/resource.js"}                                                {*???*}
+    {jsfile src="../dropzone.js"}                                                      {*???*}
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+		    $('#filter-resources-panel').showHidePanel();
+
+			$(".owl-carousel").owlCarousel({
+				items: 1
+			});
+		});
+
+	</script>
 </div>
 
 {pagination pageInfo=$PageInfo showCount=true}

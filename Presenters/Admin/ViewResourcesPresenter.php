@@ -54,17 +54,18 @@ class ViewResourcesPresenter{
 
     public function PageLoad(){
         $resources = $this->GetUserResources();
-
-        $this->page->SetResources($resources);
-
-        $this->page->SetScheduleNames($this->GetSchedulesNames());
-        $this->page->SetResourceAdminGroupNames($this->GetResourceAdminGroupNames());
-        $this->page->SetResourceGroups($this->GetResourceGroupNames());
-        $this->page->SetResourceStatusReasons($this->GetResourceStatusReasons());
-        $this->page->SetResourceTypes($this->GetResourceTypes());
-        $this->page->SetResourcePermissionTypes($this->GetUserResourcePermissionTypes());
-
         $resourceAttributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
+
+        $this->page->BindSchedule($this->GetSchedules());
+        $this->page->BindResourceAdminGroup($this->GetResourceAdminGroup());
+        $this->page->BindResourceGroups($this->GetResourceGroup());
+        $this->page->BindResourceStatusReasons($this->GetResourceStatusReasons());
+        $this->page->BindResourceTypes($this->GetResourceTypes());
+        $this->page->BindResourcePermissionTypes($this->GetUserResourcePermissionTypes());
+
+        $this->page->AllSchedules($this->scheduleRepo->GetAll());
+
+        $this->page->BindAttributeFilters($resourceAttributes);
 
         $filterValues = $this->page->GetFilterValues();
 
@@ -82,7 +83,7 @@ class ViewResourcesPresenter{
         );
         $resources = $results->Results();
 
-        $this->page->SetResources($resources);
+        $this->page->BindResources($resources);
         $this->page->BindPageInfo($results->PageInfo());
         
         //$this->InitializeFilter($filterValues, $resourceAttributes);
@@ -107,17 +108,16 @@ class ViewResourcesPresenter{
         return $resources;
     }
 
-    private function GetSchedulesNames(){
+    private function GetSchedules(){
         $scheduleNames = [];
         $schedules = $this->scheduleRepo->GetAll();
         foreach($schedules as $schedule){
             $scheduleNames[$schedule->GetId()] = $schedule;
         }
-
         return $scheduleNames;
     }
 
-    private function GetResourceAdminGroupNames(){
+    private function GetResourceAdminGroup(){
         $resourceAdminGroupNames = [];
 
         $resourceAdminGroups = $this->groupRepo->GetGroupsByRole(3); //RESOURCE ADMINS
@@ -129,7 +129,7 @@ class ViewResourcesPresenter{
         return $resourceAdminGroupNames;    
     }
 
-    private function GetResourceGroupNames(){
+    private function GetResourceGroup(){
         $resourceGroupNames = [];
         
         $resourceGroups = $this->resourceRepo->GetResourceGroupsList();
@@ -199,6 +199,52 @@ class ViewResourcesPresenter{
         return $resourcePermissionTypes;
     }
 
+    // private function GetInlineAttributeValue()
+    // {
+    //     $value = $this->page->GetValue();
+    //     if (is_array($value)) {
+    //         $value = $value[0];
+    //     }
+    //     $id = str_replace(FormKeys::ATTRIBUTE_PREFIX, '', $this->page->GetName());
+
+    //     return new AttributeValue($id, $value);
+    // }
+
+    // private function GetAttributeValues()
+    // {
+    //     $attributes = [];
+    //     foreach ($this->page->GetAttributes() as $attribute) {
+    //         $attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
+    //     }
+    //     return $attributes;
+    // }
+
+    // protected function LoadValidators($action)
+    // {
+    //     if ($action == ManageResourcesActions::ActionChangeAttribute) {
+    //         $attributes = $this->GetInlineAttributeValue();
+    //         $this->page->RegisterValidator('attributeValidator', new AttributeValidatorInline(
+    //             $this->attributeService,
+    //             CustomAttributeCategory::RESOURCE,
+    //             $attributes,
+    //             $this->page->GetResourceId(),
+    //             true,
+    //             true
+    //         ));
+    //     }
+    //     if ($action == ManageResourcesActions::ActionBulkUpdate) {
+    //         $attributes = $this->GetAttributeValues();
+    //         $this->page->RegisterValidator(
+    //             'bulkAttributeValidator',
+    //             new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, null, true, true)
+    //         );
+    //     }
+
+    //     if ($action == ManageResourcesActions::ImportResources) {
+    //         $this->page->RegisterValidator('fileExtensionValidator', new FileExtensionValidator('csv', $this->page->GetImportFile()));
+    //     }
+    // }
+
     // /**
     //  * @param ResourceFilterValues $filterValues
     //  * @param CustomAttribute[] $resourceAttributes
@@ -216,6 +262,6 @@ class ViewResourcesPresenter{
     //     }
 
     //     $this->page->BindAttributeFilters($attributeFilters);
-    //     $this->page->SetFilterValues($filterValues);
+    //     $this->page->BindFilterValues($filterValues);
     // }
 }
