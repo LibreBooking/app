@@ -339,11 +339,9 @@
 
     {include file="javascript-includes.tpl" InlineEdit=true Owl=true Clear=true}
 
-    {jsfile src="../ajax-helpers.js"}
-    {jsfile src="../autocomplete.js"}
-    {jsfile src="../js/tree.jquery.js"}
-    {jsfile src="../admin/resource.js"}
-    {jsfile src="../dropzone.js"}
+    {jsfile src="ajax-helpers.js"}      {*SHOULD KEEP FORM FIELD VALUES -> NOT WORKING?*}
+
+    {jsfile src="js/tree.jquery.js"}    {*DON'T KNOW IF IT'S NEEDED*}
 
 	<script type="text/javascript">
 
