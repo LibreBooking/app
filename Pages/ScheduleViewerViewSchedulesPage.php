@@ -18,8 +18,8 @@ class ScheduleViewerViewSchedulesPage extends Page implements IPageable
     public function __construct()
     {
     //  parent::__construct('ManageSchedules', 1);
-        parent::__construct('CheckResources');
-        $this->presenter = new ViewSchedulesPresenter($this);
+        parent::__construct('CheckSchedules');
+        $this->presenter = new ViewSchedulesPresenter($this, new ScheduleRepository());
 
     //     $this->pageablePage = new PageablePage($this);
     //     $this->_presenter = new ManageSchedulesPresenter(
@@ -49,6 +49,11 @@ class ScheduleViewerViewSchedulesPage extends Page implements IPageable
         //         ScheduleStyle::Tall => $resources->GetString('Tall'),
         //         ScheduleStyle::CondensedWeek => $resources->GetString('Week'),
         // ]);
+    }
+
+    public function BindSchedules($schedules)
+    {
+        $this->Set('Schedules', $schedules);
     }
 
     /**

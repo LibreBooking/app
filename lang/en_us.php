@@ -953,6 +953,7 @@ class en_us extends Language
         $strings['DataCleanup'] = 'Data Cleanup';
         $strings['ManageEmailTemplates'] = 'Manage Email Templates';
         $strings['CheckResources'] = 'Check Resources';
+        $strings['CheckSchedules'] = 'Check Schedules';
         // End Page Titles
 
         // Day representations

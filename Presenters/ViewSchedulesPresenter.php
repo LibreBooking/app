@@ -14,27 +14,21 @@ class ViewSchedulesPresenter
     // private $page;
 
     /**
-     * @var ManageScheduleService
-     */
-    private $manageSchedulesService;
-
-    /**
-     * @var IGroupViewRepository
-     */
-    private $groupViewRepository;
-
-    /**
      * @var ResourceViewerViewResourcesPage;
      */
     private $page;
 
+    /**
+     * @var IScheduleRepository;
+     */
+    private $scheduleRepo;
+
     public function __construct(
         ScheduleViewerViewSchedulesPage $page,
-        // IManageSchedulesPage $page,
-        // ManageScheduleService $manageSchedulesService,
-        // IGroupViewRepository $groupViewRepository
+        ScheduleRepository $scheduleRepo
     ) {
         $this->page = $page;
+        $this->scheduleRepo = $scheduleRepo;
         //parent::__construct($page);
         // $this->page = $page;
         // $this->manageSchedulesService = $manageSchedulesService;
@@ -45,6 +39,6 @@ class ViewSchedulesPresenter
 
     public function PageLoad()
     {
-
+        $this->page->BindSchedules($this->scheduleRepo->GetAll());
     }
 }

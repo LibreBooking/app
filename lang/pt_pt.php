@@ -200,6 +200,8 @@ class pt_pt extends en_gb
         $strings['CheckingIn'] = 'Efetuando o check-in';
         $strings['CheckingOut'] = 'Efetuando o check-out';
         $strings['Checkout'] = 'Check-out';
+        $strings['CheckResources'] = 'Consultar Recursos';
+        $strings['CheckSchedules'] = 'Consultar Horários';
         $strings['Choose'] = 'Escolher';
         $strings['ChooseOrDropFile'] = 'Escolha um ficheiro ou arraste-o para aqui';
         $strings['ClearFilter'] = 'Limpar filtro';
