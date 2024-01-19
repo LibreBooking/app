@@ -1031,7 +1031,7 @@ class pt_pt extends en_gb
         //View Resource
         $strings['Check'] = 'Consultar';
         $strings['PermissionType'] = 'Tipo de Permissão';
-        $strings['NoResourcesToView'] = 'Não tem permissão para nenhum recurso';
+        $strings['NoResourcesToView'] = 'Sem recursos disponíveis';
         //End View Resource
 
         $this->Strings = $strings;

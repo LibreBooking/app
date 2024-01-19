@@ -1057,7 +1057,7 @@ class en_us extends Language
         //View Resource
         $strings['Check'] = 'Check';
         $strings['PermissionType'] = 'Permission Type';
-        $strings['NoResourcesToView'] = 'You don\'t have permissions to any resource';
+        $strings['NoResourcesToView'] = 'No available resources';
         //End View Resource
 
         $this->Strings = $strings;

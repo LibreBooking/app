@@ -1,6 +1,6 @@
 <?php
 
-require_once(ROOT_DIR . 'Presenters/Admin/ViewResourcesPresenter.php');
+require_once(ROOT_DIR . 'Presenters/ViewResourcesPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Pages/IPageable.php');
@@ -148,22 +148,4 @@ class ResourceViewerViewResourcesPage extends Page implements IPageable
     {
         return count($_GET) > 0;
     }
-
-    // public function GetValue()
-    // {
-    //     return $this->GetForm(FormKeys::VALUE);
-    // }
-
-    // public function GetName()
-    // {
-    //     return $this->GetForm(FormKeys::NAME);
-    // }
-
-    // /**
-    //  * @return AttributeFormElement[]|array
-    //  */
-    // public function GetAttributes()
-    // {
-    //     return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
-    // }
 }

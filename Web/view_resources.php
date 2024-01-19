@@ -2,7 +2,7 @@
 
 define('ROOT_DIR', '../');
 
-require_once(ROOT_DIR . 'Pages/Admin/ResourceViewerViewResourcesPage.php');
+require_once(ROOT_DIR . 'Pages/ResourceViewerViewResourcesPage.php');
 
-$page = /*new RoleRestrictedPageDecorator(*/new ResourceViewerViewResourcesPage(new SmartyPage())/*, [RoleLevel::RESOURCE_ADMIN, RoleLevel::SCHEDULE_ADMIN])*/;
+$page = new ResourceViewerViewResourcesPage(new SmartyPage());
 $page->PageLoad();

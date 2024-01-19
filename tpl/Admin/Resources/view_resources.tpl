@@ -41,12 +41,13 @@
 						<option value="">{translate key=AllResourceStatuses}</option>
 						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-						{*<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>*}
 					</select>
+                    {*  NOT WORKING
 					<label for="resourceReasonIdFilter" class="no-show">{translate key=Reason}</label>
 					<select id="resourceReasonIdFilter" style="width:auto;" class="form-control inline" {formname key=RESOURCE_STATUS_REASON_ID}>
 						<option value="">-</option>
 					</select>
+                    *}
 				</div>
 				<div class="form-group {$groupClass}">
 					<label for="filterCapacity" class="no-show">{translate key=MinimumCapacity}</label>
@@ -93,7 +94,6 @@
 
 	<div id="globalError" class="error no-show"></div>
 
-    {*              RESOURCES               *}
     {if !empty($Resources)}
         <div class="panel panel-default admin-panel" id="list-resources-panel">
             <div class="panel-body no-padding" id="resourceList" style="margin-top:20px">
@@ -339,11 +339,11 @@
 
     {include file="javascript-includes.tpl" InlineEdit=true Owl=true Clear=true}
 
-    {jsfile src="../ajax-helpers.js"}                                                  {*???*}
-    {jsfile src="../autocomplete.js"}                                                  {*???*}
+    {jsfile src="../ajax-helpers.js"}
+    {jsfile src="../autocomplete.js"}
     {jsfile src="../js/tree.jquery.js"}
-    {jsfile src="../admin/resource.js"}                                                {*???*}
-    {jsfile src="../dropzone.js"}                                                      {*???*}
+    {jsfile src="../admin/resource.js"}
+    {jsfile src="../dropzone.js"}
 
 	<script type="text/javascript">
 
