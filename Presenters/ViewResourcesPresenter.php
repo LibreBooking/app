@@ -48,8 +48,6 @@ class ViewResourcesPresenter{
        $this->attributeService = $attributeService;
 
        $this->userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
-
-       $this->page->PageLoad;
     }
 
     public function PageLoad(){
@@ -85,8 +83,6 @@ class ViewResourcesPresenter{
 
         $this->page->BindResources($resources);
         $this->page->BindPageInfo($results->PageInfo());
-        
-        //$this->InitializeFilter($filterValues, $resourceAttributes);
     }
 
     private function GetUserResources(){

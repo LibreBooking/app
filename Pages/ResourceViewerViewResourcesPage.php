@@ -1,11 +1,7 @@
 <?php
 
 require_once(ROOT_DIR . 'Presenters/ViewResourcesPresenter.php');
-require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
-require_once(ROOT_DIR . 'Pages/Page.php');
-require_once(ROOT_DIR . 'Pages/IPageable.php');
-require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
-require_once(ROOT_DIR . 'Pages/Admin/ManageResourcesPage.php');
+require_once(ROOT_DIR . 'Pages/Admin/ManageResourcesPage.php');     //AttributeService
 
 class ResourceViewerViewResourcesPage extends Page implements IPageable
 {
@@ -62,6 +58,11 @@ class ResourceViewerViewResourcesPage extends Page implements IPageable
     public function AllSchedules($schedules)
     {
         $this->Set('AllSchedules', $schedules);
+    }
+
+    public function BindAttributeFilters($attributeFilters)
+    {
+        $this->Set('AttributeFilters', $attributeFilters);
     }
 
     /**
@@ -124,28 +125,5 @@ class ResourceViewerViewResourcesPage extends Page implements IPageable
         $filterValues->SetAttributes(AttributeFormParser::GetAttributes($this->GetQuerystring(FormKeys::ATTRIBUTE_PREFIX)));
 
         return $filterValues;
-    }
-
-    /**
-     * @param $resources AdminResourceJson[]
-     */
-    public function SetResourcesJson($resources)
-    {
-        $this->SetJson($resources);
-    }
-
-    public function SetJsonResponse($response)
-    {
-        parent::SetJson($response);
-    }
-
-    public function BindAttributeFilters($attributeFilters)
-    {
-        $this->Set('AttributeFilters', $attributeFilters);
-    }
-
-    public function FilterButtonPressed()
-    {
-        return count($_GET) > 0;
     }
 }
