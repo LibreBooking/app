@@ -18,7 +18,7 @@ This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBoo
 
 ## Prerequisites
 
-- PHP 8.1 or greater
+- PHP 8.2 or greater
 - MySQL 5.5 or greater
 - Web server (Apache, IIS)
 
