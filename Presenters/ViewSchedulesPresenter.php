@@ -1,44 +1,76 @@
 <?php
 
-require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
-require_once(ROOT_DIR . 'Domain/namespace.php');
-require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'config/timezones.php');
-require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
+require_once(ROOT_DIR . 'config/timezones.php');        //NEEDED?
 
 class ViewSchedulesPresenter
 {
-    // /**
-    //  * @var IManageSchedulesPage
-    //  */
-    // private $page;
-
     /**
      * @var ResourceViewerViewResourcesPage;
      */
     private $page;
 
     /**
-     * @var IScheduleRepository;
+     * @var IResourceRepository;
      */
-    private $scheduleRepo;
+    private $resourceRepo;
+
+    /**
+     * @var ManageScheduleService
+     */
+    private $manageSchedulesService;
+
+    /**
+     * @var IGroupViewRepository
+     */
+    private $groupViewRepository;
 
     public function __construct(
         ScheduleViewerViewSchedulesPage $page,
-        ScheduleRepository $scheduleRepo
+        ResourceRepository $resourceRepo,
+        ManageScheduleService $manageSchedulesService,
+        IGroupViewRepository $groupViewRepository
     ) {
         $this->page = $page;
-        $this->scheduleRepo = $scheduleRepo;
-        //parent::__construct($page);
-        // $this->page = $page;
-        // $this->manageSchedulesService = $manageSchedulesService;
-        // $this->groupViewRepository = $groupViewRepository;
-
-        $this->page->PageLoad;
+        $this->resourceRepo = $resourceRepo;
+        $this->manageSchedulesService = $manageSchedulesService;
+        $this->groupViewRepository = $groupViewRepository;
     }
 
     public function PageLoad()
     {
-        $this->page->BindSchedules($this->scheduleRepo->GetAll());
+        $results = $this->manageSchedulesService->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+        $schedules = $results->Results();
+
+        $sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
+
+        $layouts = [];
+        foreach ($schedules as $schedule) {
+            $layout = $this->manageSchedulesService->GetLayout($schedule);
+            $layouts[$schedule->GetId()] = $layout;
+        }
+
+        $this->page->BindResources($this->GetResources());
+        $this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
+        $this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
+        $this->page->BindPageInfo($results->PageInfo());
+
+    }
+
+    /**
+     * @return BookableResource[] resources indexed by scheduleId
+     */
+    public function GetResources()
+    {
+        $resources = [];
+
+        $all = $this->resourceRepo->GetResourceList();
+        /** @var BookableResource $resource */
+        foreach ($all as $resource) {
+            if($resource->GetStatusId() != 0){
+                $resources[$resource->GetScheduleId()][] = $resource;
+            }
+        }
+
+        return $resources;
     }
 }
