@@ -12,7 +12,7 @@
         "stripe/stripe-php": "^10.2",
         "monolog/monolog": "^2.9",
         "google/recaptcha": "1.2.4",
-        "gregwar/captcha": "1.*",
+        "effgarces/captcha": "1.*",
         "google/apiclient": "^2.0",
         "microsoft/microsoft-graph": "^2.0",
         "facebook/graph-sdk": "~5.0"
