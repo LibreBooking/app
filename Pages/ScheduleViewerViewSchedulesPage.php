@@ -86,8 +86,8 @@ class ScheduleViewerViewSchedulesPage extends Page implements IPageable
     {
         $pageSize = $this->pageablePage->GetPageSize();
 
-        if ($pageSize > 5) {
-            return 5;
+        if ($pageSize > 10) {
+            return 10;
         }
         return $pageSize;
     }

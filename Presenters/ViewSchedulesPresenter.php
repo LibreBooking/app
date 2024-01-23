@@ -53,7 +53,6 @@ class ViewSchedulesPresenter
         $this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
         $this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
         $this->page->BindPageInfo($results->PageInfo());
-
     }
 
     /**
