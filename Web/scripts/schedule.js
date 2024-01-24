@@ -235,10 +235,10 @@ function Schedule(opts, resourceGroups) {
                 return resourceOrder;
             });
 
-            var trHeights = {};
-
-            //ADJUST ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW
+            //ADJUST ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE
             if (opts.scheduleStyle === ScheduleStandard){
+                var trHeights = {};
+
                 reservationList.forEach(res => {
                     $('#reservations').find(".reservations").each(function () {
                         const t = $(this);
@@ -294,6 +294,8 @@ function Schedule(opts, resourceGroups) {
                     if (!rendersWithin) {
                         return;
                     }
+
+                    console.log(res);
 
                     let className = res.IsReservation ? "reserved" : "unreservable";
                     const mine = res.IsOwner ? "mine" : "";
