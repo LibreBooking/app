@@ -538,6 +538,42 @@ function Schedule(opts, resourceGroups) {
 
             $("#loading-schedule").addClass("no-show");
             renderingEvents = false;
+
+            if (opts.scheduleStyle === ScheduleStandard) {
+                //Blackouts slots should ocuppy the entire row
+                const blocked = $('.unreservable.event');
+                const slots = $('.slots');
+
+                // Iterate through each slot
+                slots.each(function () {
+                    const slot = $(this);
+                    const slotTop = slot.offset().top;
+                    const slotHeight = slot.height();
+
+                    // Find reservations that overlap with the current slot
+                    const overlappingReservations = blocked.filter(function () {
+                        const reservation = $(this);
+                        const reservationTop = reservation.offset().top;
+                        const reservationBottom = reservationTop + reservation.height();
+
+                        // Check if the reservation overlaps with the current slot
+                        return (reservationTop >= slotTop && reservationTop < slotTop + slotHeight) ||
+                            (reservationBottom > slotTop && reservationBottom <= slotTop + slotHeight) ||
+                            (reservationTop <= slotTop && reservationBottom >= slotTop + slotHeight);
+                    });
+
+                    // Compare heights and do something
+                    overlappingReservations.each(function () {
+                        const reservation = $(this);
+                        const reservationHeight = reservation.height();
+
+                        // Compare heights and do something
+                        if (reservationHeight < slotHeight) {
+                            reservation.css('height', slotHeight + 'px');
+                        }
+                    });
+                });
+            }
         });
     }
 
