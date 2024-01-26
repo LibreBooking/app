@@ -235,7 +235,7 @@ function Schedule(opts, resourceGroups) {
                 return resourceOrder;
             });
 
-            //ADJUST ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE
+            //GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE
             if (opts.scheduleStyle === ScheduleStandard){
                 var trHeights = {};
 
@@ -244,9 +244,16 @@ function Schedule(opts, resourceGroups) {
                         const t = $(this);
                         let current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
 
-                        let slotWidth = current_TD.width();
-
                         //----GET THE HEIGHT THAT THE SLOT LABEL WILL USE----
+                        const startEnd = findStartAndEnd(res, t, "StartDate", "EndDate");
+
+                        let slotWidth;
+                        if (!startEnd) {
+                            slotWidth = current_TD.width() + 10; //WIDTH OF A SINGLE SLOT (IF THE TOTAL RESERVATION SLOTS WIDTH SOMEHOW FAILS)
+                        } else {
+                            slotWidth = startEnd.width;
+                        }
+
                         let $tempElement = $('<div>')
                         .css({
                                 position: 'absolute',
@@ -274,9 +281,16 @@ function Schedule(opts, resourceGroups) {
 
                         let currentTrId = current_TR.attr('id');
 
-                        if (currentTrId !== undefined) {
-                            if ((trHeights.hasOwnProperty(currentTrId) && trHeights[currentTrId] < labelHeight) || !trHeights.hasOwnProperty(currentTrId)) {
+                        if (currentTrId !== undefined){
+                            if ((typeof trHeights[currentTrId] !== "undefined" && trHeights[currentTrId] < labelHeight)) {
                                 trHeights[currentTrId] = labelHeight;
+                            }
+                            else if (typeof trHeights[currentTrId] === "undefined") {
+                                if (labelHeight > 41) {                         //41 -> Default row height
+                                    trHeights[currentTrId] = labelHeight;
+                                } else {
+                                    trHeights[currentTrId] = 41;
+                                }
                             }
                         }
                     });
@@ -294,8 +308,6 @@ function Schedule(opts, resourceGroups) {
                     if (!rendersWithin) {
                         return;
                     }
-
-                    console.log(res);
 
                     let className = res.IsReservation ? "reserved" : "unreservable";
                     const mine = res.IsOwner ? "mine" : "";
@@ -376,9 +388,14 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             if (overlap) {
-                                top += height;
+                                if(opts.scheduleStyle === ScheduleStandard && trHeights[currentTrId]){
+                                    top += trHeights[currentTrId];
+                                }
+                                else{
+                                    top += height;
+                                }
                                 numberOfConflicts++;
-                                adjustOverlap();
+                                adjustOverlap();   
                             }
                         });
                     };
@@ -387,14 +404,18 @@ function Schedule(opts, resourceGroups) {
                         //----------CHANGE HEIGTH OF ROWS TO ALLOW FULL LABEL TEXT TO SHOW------------
                         let current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
 
-                        let current_TR = current_TD.parent(); 
+                        var current_TR = current_TD.parent(); 
                         
                         let currentHeight = current_TR.height();
 
                         var currentTrId = current_TR.attr('id');
 
-                        if (currentHeight < trHeights[currentTrId] && trHeights[currentTrId] > 41) {
-                            current_TR.height(trHeights[currentTrId]);
+                        if (currentHeight < trHeights[currentTrId] && trHeights[currentTrId]) {
+                            if(scheduleOpts.resourceConcurrentReservations[res.ResourceId] > 1) {       //TAKES INTO ACCOUT POSSIBLE CONCURRENT RESERVATIONS
+                                current_TR.height(trHeights[currentTrId] * 2);
+                            } else {
+                                current_TR.height(trHeights[currentTrId]);
+                            }
                         }
                     }
 
@@ -432,14 +453,23 @@ function Schedule(opts, resourceGroups) {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
                             startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
+
+                            //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
+                            if (opts.scheduleStyle === ScheduleStandard) {
+                                if (scheduleOpts.resourceConcurrentReservations[res.ResourceId] != numberOfConflicts + 1) {
+                                    current_TR.height(trHeights[currentTrId] * (numberOfConflicts + 2));
+                                }
+                            }
                         }
                     }
                     
-                    if (opts.scheduleStyle === ScheduleStandard && trHeights[currentTrId] > 41){
-                        var divHeight = trHeights[currentTrId];
+                    let divHeight;
+                    //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW
+                    if (opts.scheduleStyle === ScheduleStandard && trHeights[currentTrId]){
+                        divHeight = trHeights[currentTrId];
                     }
                     else {
-                        var divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
+                        divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
                     }
                     const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
                     const div = $(`<div 

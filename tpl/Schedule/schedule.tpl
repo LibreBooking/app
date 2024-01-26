@@ -405,6 +405,12 @@
 {jsfile src="ajax-helpers.js"}
 <script type="text/javascript">
 
+let resourceConcurrentReservations = {};
+{foreach from=$Resources item=r}
+    resourceConcurrentReservations[{$r->GetId()}] = {$r->MaxConcurrentReservations};
+{/foreach}
+let numberOfResources = {count($Resources)}
+
     const scheduleOpts = {
         reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
         summaryPopupUrl: "{$Path}ajax/respopup.php",
@@ -425,6 +431,8 @@
         updatedLabel: "{translate key=Updated}",
         isReservable: 1,
         autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
+        resourceConcurrentReservations,
+        numberOfResources,
     };
 
     const resourceOrder = [];
