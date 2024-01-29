@@ -235,9 +235,10 @@ function Schedule(opts, resourceGroups) {
                 return resourceOrder;
             });
 
-            //GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE
+            //--------GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE--------
             if (opts.scheduleStyle === ScheduleStandard){
-                var trHeights = {};
+                var trHeights = {};                         //row height to be implemented
+                var trAdjusted = {};                        //check if row height has already been adjusted
 
                 reservationList.forEach(res => {
                     $('#reservations').find(".reservations").each(function () {
@@ -281,22 +282,23 @@ function Schedule(opts, resourceGroups) {
 
                         let currentTrId = current_TR.attr('id');
 
-                        if (currentTrId !== undefined){
-                            if ((typeof trHeights[currentTrId] !== "undefined" && trHeights[currentTrId] < labelHeight)) {
+                        if ((typeof trHeights[currentTrId] !== "undefined" && trHeights[currentTrId] < labelHeight)) {
+                            trHeights[currentTrId] = labelHeight;
+                        }
+                        else if (typeof trHeights[currentTrId] === "undefined") {
+                            if (labelHeight > current_TR.height()) {
                                 trHeights[currentTrId] = labelHeight;
+                            } else {
+                                trHeights[currentTrId] = current_TR.height();
                             }
-                            else if (typeof trHeights[currentTrId] === "undefined") {
-                                if (labelHeight > 41) {                         //41 -> Default row height
-                                    trHeights[currentTrId] = labelHeight;
-                                } else {
-                                    trHeights[currentTrId] = 41;
-                                }
-                            }
+                            trAdjusted[currentTrId] = false;
                         }
                     });
                 });
             }
-
+            //-----------------------------------------------------------------------------------------------
+            console.log(trAdjusted);
+            
             reservationList.forEach(res => {
                 $('#reservations').find(".reservations").each(function () {
                     const t = $(this);
@@ -400,24 +402,28 @@ function Schedule(opts, resourceGroups) {
                         });
                     };
 
+                    //----------CHANGE HEIGTH OF ROWS TO ALLOW FULL LABEL TEXT TO SHOW------------
                     if (opts.scheduleStyle === ScheduleStandard){
-                        //----------CHANGE HEIGTH OF ROWS TO ALLOW FULL LABEL TEXT TO SHOW------------
                         let current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
 
-                        var current_TR = current_TD.parent(); 
-                        
-                        let currentHeight = current_TR.height();
+                        var current_TR = current_TD.parent();
 
                         var currentTrId = current_TR.attr('id');
 
-                        if (currentHeight < trHeights[currentTrId] && trHeights[currentTrId]) {
-                            if(scheduleOpts.resourceConcurrentReservations[res.ResourceId] > 1) {       //TAKES INTO ACCOUT POSSIBLE CONCURRENT RESERVATIONS
-                                current_TR.height(trHeights[currentTrId] * 2);
-                            } else {
-                                current_TR.height(trHeights[currentTrId]);
+                        if(trAdjusted[currentTrId] === false) {             //no sense in setting the row height multiple times because it will always be the same
+                            let currentHeight = current_TR.height();        //so do a check and set the height once per row with reservations
+
+                            if (currentHeight < trHeights[currentTrId]) {
+                                if(scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1) {       //TAKES INTO ACCOUT POSSIBLE CONCURRENT RESERVATIONS
+                                    current_TR.height(trHeights[currentTrId] + 41);
+                                } else {
+                                    current_TR.height(trHeights[currentTrId]);
+                                }
                             }
+                            trAdjusted[currentTrId] = true;
                         }
                     }
+                    //----------------------------------------------------------------------------
 
                     if (opts.scheduleStyle === ScheduleTall) {
                         const countConflicts = function () {
@@ -449,14 +455,15 @@ function Schedule(opts, resourceGroups) {
                         if (height === 0) {
                             height = endTd.outerHeight();
                         }
-                    } else {
+                    } 
+                    else {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
                             startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
 
                             //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
                             if (opts.scheduleStyle === ScheduleStandard) {
-                                if (scheduleOpts.resourceConcurrentReservations[res.ResourceId] != numberOfConflicts + 1) {
+                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] != numberOfConflicts + 1) {
                                     current_TR.height(trHeights[currentTrId] * (numberOfConflicts + 2));
                                 }
                             }
@@ -464,7 +471,7 @@ function Schedule(opts, resourceGroups) {
                     }
                     
                     let divHeight;
-                    //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW
+                    //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW IN STANDARD SCHEDULE
                     if (opts.scheduleStyle === ScheduleStandard && trHeights[currentTrId]){
                         divHeight = trHeights[currentTrId];
                     }
@@ -539,37 +546,67 @@ function Schedule(opts, resourceGroups) {
             $("#loading-schedule").addClass("no-show");
             renderingEvents = false;
 
+            // Final check -> sets all blackouts to ocupy full row height (can't do it before because of concurrent reservations possibility)
+            //             -> check if reservations are ocuppying intended height (reservations across days fail without this if there's a bigger label on the row, with the exceptiong of the first day)
             if (opts.scheduleStyle === ScheduleStandard) {
                 //Blackouts slots should ocuppy the entire row
                 const blocked = $('.unreservable.event');
-                const slots = $('.slots');
+                //Reservations from the same row should all be the same height
+                const reservations = $('.reserved.event');
+
+                const rows = $('.slots');
 
                 // Iterate through each slot
-                slots.each(function () {
-                    const slot = $(this);
-                    const slotTop = slot.offset().top;
-                    const slotHeight = slot.height();
+                rows.each(function () {
+                    const row = $(this);
+                    const rowId = row.attr('id');
+                    const rowTop = row.offset().top;
+                    const rowHeight = row.height();
 
-                    // Find reservations that overlap with the current slot
-                    const overlappingReservations = blocked.filter(function () {
-                        const reservation = $(this);
-                        const reservationTop = reservation.offset().top;
-                        const reservationBottom = reservationTop + reservation.height();
+                    // Find blackouts that overlap with the current slot
+                    const overlappingBlackouts = blocked.filter(function () {
+                        const blackout = $(this);
+                        const blackoutTop = blackout.offset().top;
+                        const blackoutBottom = blackoutTop + blackout.height();
 
-                        // Check if the reservation overlaps with the current slot
-                        return (reservationTop >= slotTop && reservationTop < slotTop + slotHeight) ||
-                            (reservationBottom > slotTop && reservationBottom <= slotTop + slotHeight) ||
-                            (reservationTop <= slotTop && reservationBottom >= slotTop + slotHeight);
+                        // Check if the blackout overlaps with the current slot
+                        return (blackoutTop >= rowTop && blackoutTop < rowTop + rowHeight) ||
+                            (blackoutBottom > rowTop && blackoutBottom <= rowTop + rowHeight) ||
+                            (blackoutTop <= rowTop && blackoutBottom >= rowTop + rowHeight);
                     });
 
-                    // Compare heights and do something
-                    overlappingReservations.each(function () {
-                        const reservation = $(this);
-                        const reservationHeight = reservation.height();
+                    // Compare heights
+                    overlappingBlackouts.each(function () {
+                        const blackout = $(this);
+                        const blackoutHeight = blackout.height();
 
-                        // Compare heights and do something
-                        if (reservationHeight < slotHeight) {
-                            reservation.css('height', slotHeight + 'px');
+                        // Change height if smaller than slot
+                        if (blackoutHeight < rowHeight) {
+                            blackout.css('height', rowHeight + 'px');
+                        }
+                    });
+
+                    // Find reservations that overlap with the current slot
+                    const overlapingReservations = reservations.filter(function () {
+                        const reserved = $(this);
+                        const reservedTop = reserved.offset().top + 1;          //FIREFOX -> CSS GETS BROKEN WITHOUT THE +1 (WHY? DON'T KNOW -> MAYBE ROUNDING ERROR?)
+                        const reservedBottom = reservedTop + reserved.height();
+
+                        return (reservedTop >= rowTop && reservedTop < rowTop + rowHeight) ||
+                            (reservedBottom > rowTop && reservedBottom <= rowTop + rowHeight) ||
+                            (reservedTop <= rowTop && reservedBottom >= rowTop + rowHeight);
+                    });
+
+                    // Compare heights
+                    overlapingReservations.each(function () {
+                        const reserved = $(this);
+                        const reservedHeight = reserved.height();
+
+                        // Change height if smaller than row
+                        if (reservedHeight < rowHeight) {
+                            if (typeof trHeights[rowId] !== "undefined") {
+                                reserved.css('height' , trHeights[rowId]  + 'px');
+                            }
                         }
                     });
                 });
