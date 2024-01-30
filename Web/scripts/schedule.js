@@ -297,7 +297,6 @@ function Schedule(opts, resourceGroups) {
                 });
             }
             //-----------------------------------------------------------------------------------------------
-            console.log(trAdjusted);
             
             reservationList.forEach(res => {
                 $('#reservations').find(".reservations").each(function () {
@@ -459,13 +458,13 @@ function Schedule(opts, resourceGroups) {
                     else {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
-                            startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
-
                             //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
                             if (opts.scheduleStyle === ScheduleStandard) {
                                 if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] != numberOfConflicts + 1) {
-                                    current_TR.height(trHeights[currentTrId] * (numberOfConflicts + 2));
+                                    startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 2) + "px");
                                 }
+                            } else {
+                                startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
                             }
                         }
                     }
@@ -566,8 +565,8 @@ function Schedule(opts, resourceGroups) {
                     // Find blackouts that overlap with the current slot
                     const overlappingBlackouts = blocked.filter(function () {
                         const blackout = $(this);
-                        const blackoutTop = blackout.offset().top;
-                        const blackoutBottom = blackoutTop + blackout.height();
+                        const blackoutTop = blackout.offset().top + (blocked.height() * (0.1));
+                        const blackoutBottom = blackoutTop + blackout.height() - (blocked.height() * (0.1));
 
                         // Check if the blackout overlaps with the current slot
                         return (blackoutTop >= rowTop && blackoutTop < rowTop + rowHeight) ||
@@ -589,8 +588,8 @@ function Schedule(opts, resourceGroups) {
                     // Find reservations that overlap with the current slot
                     const overlapingReservations = reservations.filter(function () {
                         const reserved = $(this);
-                        const reservedTop = reserved.offset().top + 1;          //FIREFOX -> CSS GETS BROKEN WITHOUT THE +1 (WHY? DON'T KNOW -> MAYBE ROUNDING ERROR?)
-                        const reservedBottom = reservedTop + reserved.height();
+                        const reservedTop = reserved.offset().top + (reserved.height() * (0.1));                  // FIREFOX -> CSS GETS BROKEN WITHOUT THE reserved.height() * 0,1 (WHY? DON'T KNOW -> MAYBE ROUNDING ERROR?)
+                        const reservedBottom = reservedTop + reserved.height() - (reserved.height() * (0.1));     // why reserved.height() * 0,1 -> because the bigger the label, the bigger the adition must be
 
                         return (reservedTop >= rowTop && reservedTop < rowTop + rowHeight) ||
                             (reservedBottom > rowTop && reservedBottom <= rowTop + rowHeight) ||
