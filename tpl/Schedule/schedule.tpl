@@ -405,10 +405,13 @@
 {jsfile src="ajax-helpers.js"}
 <script type="text/javascript">
 
+let resourcesAllowMultiDay = {};
 let resourceMaxConcurrentReservations = {};
 {foreach from=$Resources item=r}
     resourceMaxConcurrentReservations[{$r->GetId()}] = {$r->MaxConcurrentReservations};
+    resourcesAllowMultiDay[{$r->GetId()}] = {$ResourcesAllowMultiDay[$r->GetId()]}
 {/foreach}
+
 
     const scheduleOpts = {
         reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
@@ -431,6 +434,7 @@ let resourceMaxConcurrentReservations = {};
         isReservable: 1,
         autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
         resourceMaxConcurrentReservations,
+        resourcesAllowMultiDay,
     };
 
     const resourceOrder = [];

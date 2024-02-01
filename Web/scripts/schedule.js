@@ -236,9 +236,11 @@ function Schedule(opts, resourceGroups) {
             });
 
             //--------GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE--------
-            if (opts.scheduleStyle === ScheduleStandard){
+            if (opts.scheduleStyle === ScheduleStandard) {
                 var trHeights = {};                         //row height to be implemented
                 var trAdjusted = {};                        //check if row height has already been adjusted
+                
+                var showFullLabel = {};                     //DON'T SHOW FULL LABEL IF RESOURCE ALLOWS CONCURRENT AND MULTI DAY RESERVATIONS, OTHERWISE, CSS BREAKS FOR FULL LABEL
 
                 reservationList.forEach(res => {
                     $('#reservations').find(".reservations").each(function () {
@@ -250,7 +252,7 @@ function Schedule(opts, resourceGroups) {
 
                         let slotWidth;
                         if (!startEnd) {
-                            slotWidth = current_TD.width() + 10; //WIDTH OF A SINGLE SLOT (IF THE TOTAL RESERVATION SLOTS WIDTH SOMEHOW FAILS)
+                            slotWidth = current_TD.width(); //WIDTH OF A SINGLE SLOT (IF THE TOTAL RESERVATION SLOTS WIDTH SOMEHOW FAILS)
                         } else {
                             slotWidth = startEnd.width;
                         }
@@ -259,11 +261,11 @@ function Schedule(opts, resourceGroups) {
                         .css({
                                 position: 'absolute',
                                 left: -9999, // Move off-screen
+                                'font-size': '0.85em',
                                 width: slotWidth, //schedule slot width
                                 padding: 0,
                                 margin: 0,
                                 border: 'none',
-                                whiteSpace: 'pre-wrap', // Allow line breaks
                             })
                             .text(res.Label);
             
@@ -271,7 +273,7 @@ function Schedule(opts, resourceGroups) {
                         $('body').append($tempElement);
             
                         // Get the computed height
-                        var labelHeight = $tempElement.height();
+                        var labelHeight = $tempElement.height() + 5;
             
                         // Remove the temporary element
                         $tempElement.remove();
@@ -292,6 +294,12 @@ function Schedule(opts, resourceGroups) {
                                 trHeights[currentTrId] = current_TR.height();
                             }
                             trAdjusted[currentTrId] = false;
+                        }
+                        
+                        if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== 1 && scheduleOpts.resourcesAllowMultiDay[res.ResourceId] === 1) {
+                            showFullLabel[res.ResourceId] = false;
+                        } else {
+                            showFullLabel[res.ResourceId] = true;
                         }
                     });
                 });
@@ -389,34 +397,32 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             if (overlap) {
-                                if(opts.scheduleStyle === ScheduleStandard && trHeights[currentTrId]){
+                                if(opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined" && showFullLabel[res.ResourceId]){
                                     top += trHeights[currentTrId];
                                 }
                                 else{
                                     top += height;
                                 }
                                 numberOfConflicts++;
-                                adjustOverlap();   
+                                adjustOverlap();
                             }
                         });
                     };
 
                     //----------CHANGE HEIGTH OF ROWS TO ALLOW FULL LABEL TEXT TO SHOW------------
-                    if (opts.scheduleStyle === ScheduleStandard){
+                    if (opts.scheduleStyle === ScheduleStandard) {
                         let current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
 
                         var current_TR = current_TD.parent();
 
                         var currentTrId = current_TR.attr('id');
 
-                        if(trAdjusted[currentTrId] === false) {             //no sense in setting the row height multiple times because it will always be the same
-                            let currentHeight = current_TR.height();        //so do a check and set the height once per row with reservations
-
-                            if (currentHeight < trHeights[currentTrId]) {
+                        if(trAdjusted[currentTrId] === false && showFullLabel[res.ResourceId]) {             //no sense in setting the row height multiple times because it will always be the same so do a check and set the height once per row with reservations
+                            if (current_TR.height() < trHeights[currentTrId]) {
                                 if(scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1) {       //TAKES INTO ACCOUT POSSIBLE CONCURRENT RESERVATIONS
-                                    current_TR.height(trHeights[currentTrId] + 41);
+                                    current_TD.css('height', trHeights[currentTrId] + 41 + 'px');
                                 } else {
-                                    current_TR.height(trHeights[currentTrId]);
+                                    current_TD.css('height', trHeights[currentTrId] + 'px');
                                 }
                             }
                             trAdjusted[currentTrId] = true;
@@ -459,8 +465,8 @@ function Schedule(opts, resourceGroups) {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
                             //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
-                            if (opts.scheduleStyle === ScheduleStandard) {
-                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] != numberOfConflicts + 1) {
+                            if (opts.scheduleStyle === ScheduleStandard && showFullLabel[res.ResourceId]) {
+                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== numberOfConflicts + 1) {
                                     startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 2) + "px");
                                 }
                             } else {
@@ -471,7 +477,7 @@ function Schedule(opts, resourceGroups) {
                     
                     let divHeight;
                     //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW IN STANDARD SCHEDULE
-                    if (opts.scheduleStyle === ScheduleStandard && trHeights[currentTrId]){
+                    if (opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined"  && showFullLabel[res.ResourceId]) {
                         divHeight = trHeights[currentTrId];
                     }
                     else {
@@ -601,8 +607,10 @@ function Schedule(opts, resourceGroups) {
                         const reserved = $(this);
                         const reservedHeight = reserved.height();
 
-                        // Change height if smaller than row
-                        if (reservedHeight < rowHeight) {
+                        const reservedResourceId = reserved.attr('data-resourceid');
+
+                    // Change height if smaller than row
+                        if (reservedHeight < rowHeight && showFullLabel[reservedResourceId]) {
                             if (typeof trHeights[rowId] !== "undefined") {
                                 reserved.css('height' , trHeights[rowId]  + 'px');
                             }
