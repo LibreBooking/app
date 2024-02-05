@@ -1189,6 +1189,15 @@ class BookableResource implements IBookableResource
     }
 
     /**
+     * @param $value string[]
+     * @return void
+     */
+    public function SetImages($value)
+    {
+        $this->_imageNames = $value;
+    }
+
+    /**
      * @param string $fileName
      */
     public function AddImage($fileName)
