@@ -503,7 +503,11 @@ class ro_ro extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Viitoarele rezervări ale grupului/meu(ă)';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'A apărut o eroare la autentificarea cu Facebook. Vă rugăm să încercați din nou.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

@@ -923,7 +923,11 @@ class fi_fi extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Ryhmäni tulevat varaukset';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+    
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Virhe kirjautuessa Facebookin kanssa. Yritä uudelleen.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

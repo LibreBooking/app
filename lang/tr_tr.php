@@ -789,7 +789,11 @@ class tr_tr extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Grubumun Yaklaşan Rezervasyonları';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Facebook ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

@@ -849,7 +849,11 @@ class th_th extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'การจองที่มีต่อไปของกลุ่มของฉัน';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'เกิดข้อผิดพลาดขณะเข้าสู่ระบบด้วย Facebook กรุณาลองอีกครั้ง';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

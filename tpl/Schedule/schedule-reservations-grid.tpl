@@ -21,7 +21,7 @@
             {/if}
             <td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
             {foreach from=$periods.$ts item=period}
-                <td class="reslabel"
+                <td class="reslabel" style="text-align:center"
                     colspan="{$period->Span()}">{$period->Label($date)}</td>
             {/foreach}
         </tr>

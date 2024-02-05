@@ -746,7 +746,11 @@ class vn_vn extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Đặt phòng sắp tới của Nhóm của tôi';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Đã xảy ra lỗi khi đăng nhập bằng Facebook. Vui lòng thử lại.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

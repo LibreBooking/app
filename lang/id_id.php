@@ -587,7 +587,11 @@ class id_id extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Reservasi Mendatang Grup Saya';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Terjadi kesalahan saat login dengan Facebook. Silakan coba lagi.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 

@@ -993,7 +993,11 @@ class lt extends en_gb
 
         //Group Upcoming Reservations
         $strings['GroupUpcomingReservations'] = 'Mano grupės ateities rezervacijos';
-        //End Group Upcoming Reservations 
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Vartotojo prisijungimo metu su Facebook įvyko klaida. Bandykite dar kartą.';
+        //End Facebook Login SDK Error
         //END NEEDS CHECKING
 
 
