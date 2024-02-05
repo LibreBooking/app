@@ -1027,12 +1027,21 @@ class el_gr extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Η ομάδα σας δεν έχει καμία προσεχή κράτηση';
         $strings['GroupUpcomingReservations'] = 'Μελλοντικές κρατήσεις της ομάδας(ών) μου';
         //End Group Upcoming Reservations
         
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Προέκυψε σφάλμα κατά τη σύνδεση με το Facebook. Παρακαλούμε δοκιμάστε ξανά.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Δεν έχετε κρατήσεις που αναμένουν έγκριση';
+        $strings['PendingApprovalReservations'] = 'Κρατήσεις προς Έγκριση';
+        $strings['LaterThisMonth'] = 'Αργότερα αυτόν το μήνα';
+        $strings['LaterThisYear'] = 'Αργότερα φέτος';
+        $strings['Remaining'] = 'Υπολειπόμενο';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

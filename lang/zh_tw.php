@@ -626,12 +626,21 @@ class zh_tw extends en_us
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = '您的團體沒有即將到來的預訂';
         $strings['GroupUpcomingReservations'] = '我的團體即將到來的預訂';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = '使用Facebook登入時發生錯誤。請重試。';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = '您沒有等待審批的預訂';
+        $strings['PendingApprovalReservations'] = '等待審批的預訂';
+        $strings['LaterThisMonth'] = '本月晚些時候';
+        $strings['LaterThisYear'] = '本年晚些時候';
+        $strings['Remaining'] = '剩餘';        
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

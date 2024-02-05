@@ -922,12 +922,21 @@ class fi_fi extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Ryhmällänne ei ole tulevia varauksia';
         $strings['GroupUpcomingReservations'] = 'Ryhmäni tulevat varaukset';
         //End Group Upcoming Reservations
     
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Virhe kirjautuessa Facebookin kanssa. Yritä uudelleen.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Sinulla ei ole odottavia hyväksyttäviä varauksia';
+        $strings['PendingApprovalReservations'] = 'Odottaa hyväksyntää olevat varaukset';
+        $strings['LaterThisMonth'] = 'Myöhemmin tänä kuukautena';
+        $strings['LaterThisYear'] = 'Myöhemmin tänä vuonna';
+        $strings['Remaining'] = 'Jäljellä oleva';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

@@ -745,12 +745,21 @@ class vn_vn extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Nhóm của bạn không có đặt phòng sắp tới';
         $strings['GroupUpcomingReservations'] = 'Đặt phòng sắp tới của Nhóm của tôi';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Đã xảy ra lỗi khi đăng nhập bằng Facebook. Vui lòng thử lại.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Bạn không có đặt phòng nào đang chờ duyệt';
+        $strings['PendingApprovalReservations'] = 'Đặt phòng đang chờ duyệt';
+        $strings['LaterThisMonth'] = 'Sau này trong tháng này';
+        $strings['LaterThisYear'] = 'Sau này trong năm nay';
+        $strings['Remaining'] = 'Còn lại';        
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

@@ -586,12 +586,21 @@ class id_id extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Grup Anda tidak memiliki reservasi mendatang';
         $strings['GroupUpcomingReservations'] = 'Reservasi Mendatang Grup Saya';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Terjadi kesalahan saat login dengan Facebook. Silakan coba lagi.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Anda tidak memiliki reservasi yang menunggu persetujuan';
+        $strings['PendingApprovalReservations'] = 'Pemesanan Menunggu Persetujuan';
+        $strings['LaterThisMonth'] = 'Nanti Bulan Ini';
+        $strings['LaterThisYear'] = 'Nanti Tahun Ini';
+        $strings['Remaining'] = 'Sisa';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

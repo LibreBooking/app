@@ -992,12 +992,21 @@ class lt extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Jūsų grupė neturi ateinančių rezervacijų';
         $strings['GroupUpcomingReservations'] = 'Mano grupės ateities rezervacijos';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Vartotojo prisijungimo metu su Facebook įvyko klaida. Bandykite dar kartą.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Jūs neturite laukiančių patvirtinimo rezervacijų';
+        $strings['PendingApprovalReservations'] = 'Laukiančios patvirtinimo rezervacijos';
+        $strings['LaterThisMonth'] = 'Vėliau šį mėnesį';
+        $strings['LaterThisYear'] = 'Vėliau šiais metais';
+        $strings['Remaining'] = 'Liko';        
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 
