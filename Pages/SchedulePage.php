@@ -17,11 +17,6 @@ interface ISchedulePage extends IActionPage
     public function SetResources($resources);
 
     /**
-     * @param array|ResourceDto[] $resources
-     */
-    public function SetResourcesAllowMultiDay($resources);
-
-    /**
      * @param IDailyLayout $dailyLayout
      */
     public function SetDailyLayout($dailyLayout);
@@ -368,16 +363,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
     {
         $this->resourceCount = count($resources);
         $this->Set('Resources', $resources);
-        $this->SetResourcesAllowMultiDay($resources);
-    }
-
-    public function SetResourcesAllowMultiDay($resources){
-        $resourcesAllowMultiDay = [];
-        $resourceRepo = new ResourceRepository();
-        foreach ($resources as $resource){
-            $resourcesAllowMultiDay[$resource->Id] = $resourceRepo->LoadById($resource->Id)->GetAllowMultiday();
-        }
-        $this->Set("ResourcesAllowMultiDay", $resourcesAllowMultiDay);
     }
 
     public function SetDailyLayout($dailyLayout)
