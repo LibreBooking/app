@@ -134,7 +134,7 @@ class NewReservationInitializer extends ReservationInitializerBase
             $this->page->SetStartReminder($start['value'], $start['interval']);
         }
 
-        if ($start != null) {
+        if ($end != null) {
             $this->page->SetEndReminder($end['value'], $end['interval']);
         }
     }
