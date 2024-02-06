@@ -245,10 +245,12 @@ function Schedule(opts, resourceGroups) {
                         const t = $(this);
 
                         //ALLOWS FULL LABEL TO BE SHOWN CORRECTLY IN ROWS WITH MULTIDAY AND CONCURRENT RESERVATIONS (BOTH AT THE SAME TIME)
+                        let current_TD;
+
                         if (getNumberOfDaysInReservation(res.StartDate, res.EndDate) == 1) {
-                            var current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
+                            current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
                         } else {
-                            var current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"]:first');
+                            current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"]:first');
                         }
 
                         //----GET THE HEIGHT THAT THE SLOT LABEL WILL USE----
@@ -275,18 +277,18 @@ function Schedule(opts, resourceGroups) {
             
                         // Append the element to the body to get accurate dimensions
                         $('body').append($tempElement);
-            
+
                         // Get the computed height
-                        var labelHeight = $tempElement.height() + 5;
+                        const labelHeight = $tempElement.height() + 5;
             
                         // Remove the temporary element
                         $tempElement.remove();
                         
                         //---------------------------------------------------
 
-                        let current_TR = current_TD.parent();
+                        const current_TR = current_TD.parent();
 
-                        let currentTrId = current_TR.attr('id');
+                        const currentTrId = current_TR.attr('id');
                         
                         if ((typeof trHeights[currentTrId] !== "undefined" && trHeights[currentTrId] < labelHeight)) {
                             trHeights[currentTrId] = labelHeight;
@@ -417,8 +419,8 @@ function Schedule(opts, resourceGroups) {
 
                         if(trAdjusted[currentTrId] === false) {                                             //no sense in setting the row height multiple times because it will always be the same so do a check and set the height once per row with reservations
                             if (current_TR.height() <= trHeights[currentTrId]) {
-                                if(scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1) {    //takes into account possible existence of concurrent reservations
-                                    current_TD.css('height', trHeights[currentTrId] + 41 + 'px');
+                                if(scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1 && className != "unreservable") {    //takes into account possible existence of concurrent reservations
+                                    current_TD.css('height', trHeights[currentTrId] + 40 + 'px');
                                 } else {
                                     current_TD.css('height', trHeights[currentTrId] + 'px');
                                 }
@@ -464,10 +466,10 @@ function Schedule(opts, resourceGroups) {
                         if (numberOfConflicts > 0) {
                             //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
                             if (opts.scheduleStyle === ScheduleStandard) {
-                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== numberOfConflicts + 1) {
+                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== numberOfConflicts + 1 && scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 2) {
                                     startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 2) + "px");
                                 }
-                                else if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== numberOfConflicts) {
+                                else {
                                     startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 1) + "px");
                                 }
                             } else {
@@ -475,11 +477,17 @@ function Schedule(opts, resourceGroups) {
                             }
                         }
                     }
-                    
+
                     let divHeight;
                     //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW IN STANDARD SCHEDULE
                     if (opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined") {
-                        divHeight = trHeights[currentTrId];
+                        if (className == "reserved") {
+                            divHeight = trHeights[currentTrId];
+                        }
+                        //BLACKOUTS SHOULD OCUPPY ENTIRE ROW AND THERE'S NO NEED TO WORRY ABOUT CHANGES TO ROW HEIGHT BECAUSE THEY ARE ALWAYS THE LAST TO BE PUT IN EACH
+                        else if (className == "unreservable") {
+                            divHeight = current_TR.height();
+                        }
                     }
                     else {
                         divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
@@ -551,44 +559,6 @@ function Schedule(opts, resourceGroups) {
 
             $("#loading-schedule").addClass("no-show");
             renderingEvents = false;
-
-            //Makes blackouts ocupy full row (can't do it before because of concurrent reservations possibility)
-            if (opts.scheduleStyle === ScheduleStandard) {
-                //Blackouts slots should ocuppy the entire row
-                const blocked = $('.unreservable.event');                
-                const rows = $('.slots');
-
-                // Iterate through each slot
-                rows.each(function () {
-                    const row = $(this);
-                    const rowId = row.attr('id');
-                    const rowTop = row.offset().top;
-                    const rowHeight = row.height();
-
-                    // Find blackouts that overlap with the current slot
-                    const overlappingBlackouts = blocked.filter(function () {
-                        const blackout = $(this);
-                        const blackoutTop = blackout.offset().top + (blocked.height() * (0.1));
-                        const blackoutBottom = blackoutTop + blackout.height() - (blocked.height() * (0.1));
-
-                        // Check if the blackout overlaps with the current slot
-                        return (blackoutTop >= rowTop && blackoutTop < rowTop + rowHeight) ||
-                            (blackoutBottom > rowTop && blackoutBottom <= rowTop + rowHeight) ||
-                            (blackoutTop <= rowTop && blackoutBottom >= rowTop + rowHeight);
-                    });
-
-                    // Compare heights
-                    overlappingBlackouts.each(function () {
-                        const blackout = $(this);
-                        const blackoutHeight = blackout.height();
-
-                        // Change height if smaller than slot
-                        if (blackoutHeight < rowHeight) {
-                            blackout.css('height', rowHeight + 'px');
-                        }
-                    });
-                });
-            }
         });
     }
 
@@ -1042,9 +1012,9 @@ function Schedule(opts, resourceGroups) {
 }
 
 function addNumericalIdsToRows() {
-    var rows = document.getElementsByClassName('slots');
+    const rows = document.getElementsByClassName('slots');
 
-    for (var i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
         rows[i].id = 'row_' + (i + 1); // Set the ID to 'row_1', 'row_2', etc.
     }
 }
@@ -1052,6 +1022,8 @@ function addNumericalIdsToRows() {
 function getNumberOfDaysInReservation(StartDate, EndDate) {
     const start = new Date(StartDate * 1000);
     const end = new Date(EndDate * 1000);
+
+    start.setHours(0, 0, 0, 0);
 
     const timeDifference = end - start;
     const totalDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));

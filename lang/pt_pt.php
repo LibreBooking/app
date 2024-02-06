@@ -1027,7 +1027,7 @@ class pt_pt extends en_gb
         //End Missing Check In/Out Reservations in Dashboard
         
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'Não é possível ver os detalhes da reserva uma vez que não tem permissões para um ou mais recursos nesta reserva';
+        $strings['NoResourcePermissions'] = 'Não é possível ver os detalhes da reserva uma vez que não tem permissões para nenhum dos recursos';
         //End Schedule Resource Permissions
 
         //View Resource
