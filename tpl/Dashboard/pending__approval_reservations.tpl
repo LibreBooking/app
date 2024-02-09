@@ -1,6 +1,6 @@
 <div class="dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
 	<div class="dashboardHeader">
-		<div class="pull-left">{translate key="GroupUpcomingReservations"} <span class="badge">{$Total}</span></div>
+		<div class="pull-left">{translate key="PendingApprovalReservations"}<span class="badge">{$Total}</span></div>
 		<div class="pull-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="GroupUpcomingReservations"}">
 				<i class="glyphicon"></i>
@@ -35,14 +35,28 @@
 				{/foreach}
 
 				<div class="timespan">
-					{translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
+					{translate key="LaterThisMonth"} ({$T|default:array()|count})
 				</div>
-				{foreach from=$NextWeeksReservations item=reservation}
+				{foreach from=$ThisMonthsReservations item=reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+				{/foreach}
+
+				<div class="timespan">
+					{translate key="LaterThisYear"} ({$T|default:array()|count})
+				</div>
+				{foreach from=$ThisYearsReservations item=reservation}
+                    {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
+				{/foreach}
+
+				<div class="timespan">
+					{translate key="Remaining"} ({$T|default:array()|count})
+				</div>
+				{foreach from=$RemainingReservations item=reservation}
                     {include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout}
 				{/foreach}
 			</div>
 		{else}
-			<div class="noresults">{translate key="NoGroupUpcomingReservations"}</div>
+			<div class="noresults">{translate key="NoPendingApprovalReservations"}</div>
 		{/if}
 	</div>
 

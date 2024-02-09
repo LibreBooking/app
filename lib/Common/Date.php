@@ -742,6 +742,40 @@ class Date
     {
         return $this->ApplyDifference($interval->Diff());
     }
+
+
+    /**
+     * Implements bubble sort algorithm to sort dates from array
+     */
+    public static function BubbleSort($array) {
+        for ($i = 0; $i < count($array); $i++){
+            $swapped = false;
+            for ($j = 0; $j < count($array) - $i - 1; $j++)
+            {
+
+                if ($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 1) {
+                    $t = $array[$j];
+                    $array[$j] = $array[$j+1];
+                    $array[$j+1] = $t;
+                    $swapped = True;
+                }
+
+                else if($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 0){
+                    if ($array[$j]->StartDate->CompareTime($array[$j+1]->StartDate) == 1) {
+                        $t = $array[$j];
+                        $array[$j] = $array[$j+1];
+                        $array[$j+1] = $t;
+                        $swapped = True;
+                    }
+                }
+            }
+
+            if ($swapped == false){
+                break;
+            }
+        }
+        return $array;
+    }
 }
 
 class NullDate extends Date
@@ -1041,5 +1075,32 @@ class DateDiff
         }
 
         return trim($str);
+    }
+
+
+    /**
+     * Gets the number of remaining days in the present month
+     */
+    public static function getMonthRemainingDays($timezone){
+        date_default_timezone_set($timezone);           //NECESSARY??
+        $currentDate = new DateTime();
+        $endOfMonth = new DateTime($currentDate->format('Y-m-t 23:59:59'));
+        $interval = $currentDate->diff($endOfMonth);
+        $daysUntilEndOfMonth = $interval->days;
+
+        return $daysUntilEndOfMonth;
+    }
+
+    /**
+     * Gets the number of remaining days in the present year
+     */
+    public static function getYearRemainingDays($timezone){
+        date_default_timezone_set($timezone);           //NECESSARY??
+        $currentDate = new DateTime();
+        $endOfYear = new DateTime($currentDate->format('Y-12-31 23:59:59'));
+        $interval = $currentDate->diff($endOfYear);
+        $daysUntilEndOfYear = $interval->days;
+
+        return $daysUntilEndOfYear;
     }
 }

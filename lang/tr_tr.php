@@ -788,12 +788,21 @@ class tr_tr extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Grubunuzun gelecek rezervasyonu yok';
         $strings['GroupUpcomingReservations'] = 'Grubumun Yaklaşan Rezervasyonları';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Facebook ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Onay bekleyen rezervasyonunuz bulunmamaktadır';
+        $strings['PendingApprovalReservations'] = 'Onay bekleyen rezervasyonlar';
+        $strings['LaterThisMonth'] = 'Bu ayın ilerisinde';
+        $strings['LaterThisYear'] = 'Bu yılın ilerisinde';
+        $strings['Remaining'] = 'Kalan';        
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 

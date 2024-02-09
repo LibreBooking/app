@@ -630,12 +630,21 @@ class hr_hr extends en_gb
         //End Past Reservations
 
         //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Vaša grupa nema nadolazećih rezervacija';
         $strings['GroupUpcomingReservations'] = 'Nadolazeće rezervacije moje grupe/ova';
         //End Group Upcoming Reservations
 
         //Facebook Login SDK Error
         $strings['FacebookLoginErrorMessage'] = 'Došlo je do pogreške prilikom prijave putem Facebooka. Molimo pokušajte ponovno.';
         //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nemate rezervacija koje čekaju odobrenje';
+        $strings['PendingApprovalReservations'] = 'Rezervacije na odobrenje';
+        $strings['LaterThisMonth'] = 'Kasnije ovog mjeseca';
+        $strings['LaterThisYear'] = 'Kasnije ove godine';
+        $strings['Remaining'] = 'Preostalo';
+        //End Pending Approval Reservations in Dashboard
         //END NEEDS CHECKING
 
 
