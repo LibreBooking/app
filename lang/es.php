@@ -389,7 +389,7 @@ class es extends en_gb
         $strings['ConfigurationUpdated'] = 'Se actualizó el fichero de configuración';
         $strings['ConfigurationUiNotEnabled'] = 'No se puede acceder a esta página porque $conf[\'settings\'][\'pages\'][\'enable.configuration\'] está configurado a Falso.';
         $strings['ConfigurationFileNotWritable'] = 'El fichero de configuración no es editable. Por favor compruebe los permisos de este fichero e inténtelo de nuevo.';
-        $strings['ConfigurationUpdateHelp'] = 'Vaya a la sección de Configuración del <a target=_blank href=%s>Archivo de ayuda</a> para documentación sobre estas opciones.';
+        $strings['ConfigurationUpdateHelp'] = 'Vaya a la sección de Configuración del <a target=_blank href=%s class=link-primary>Archivo de ayuda</a> para documentación sobre estas opciones.';
         $strings['GeneralConfigSettings'] = 'opciones';
         $strings['UseSameLayoutForAllDays'] = 'Usar la misma distribución horaria para todos los días';
         $strings['LayoutVariesByDay'] = 'La distribución horaria varía por días';
@@ -567,15 +567,15 @@ class es extends en_gb
         $strings['ResourceImportInstructions'] = '<ul><li>El fichero debe tener formato CSV con codificación UTF-8.</li><li>El nombre es un campo obligatorio. Dejar otros campos en blanco establecerá los valores por defecto.</li><li>Los estados disponibles son \'Disponible\', \'No disponible\' and \'Oculto\'.</li><li>El color será el formato hexadecimal. ex) #ffffff.</li><li>Las columnas de asignación y aprobación automática pueden ser verdadero o falso.</li><li>La validez del atributo no se aplicará.</li><li>Separar por comas los grupos de recursos.</li><li>Utilice la plantilla suministrada como ejemplo.</li></ul>';
         $strings['ReservationImportInstructions'] = '<ul><li>El fichero debe tener formato CSV con codificación UTF-8.</li><li>Correo electrónico, nombre del recurso, comienzo y finalización son campos obligatorios.</li><li>Comienzo y finalización requieren la fecha completa. El formato recomendado es YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Las reglas, los conflictos y los intervalos de tiempo válidos no serán verificados.</li><li>No se enviarán notificaciones.</li><li>La validez del atributo no se aplicará.</li><li>Separar por comas los grupos de recursos.</li><li>Utilice la plantilla suministrada como ejemplo.</li></ul>';
         $strings['AutoReleaseMinutes'] = 'Autorelease Minutes';
-        $strings['CreditsPeak'] = 'Credits (peak)';
-        $strings['CreditsOffPeak'] = 'Credits (off peak)';
-        $strings['ResourceMinLengthCsv'] = 'Longitud Mínima de Reserva';
-        $strings['ResourceMaxLengthCsv'] = 'Longitud Máxima de Reserva';
-        $strings['ResourceBufferTimeCsv'] = 'Buffer Time';
-        $strings['ResourceMinNoticeAddCsv'] = 'Reservation Add Minimum Notice';
-        $strings['ResourceMinNoticeUpdateCsv'] = 'Reservation Update Minimum Notice';
-        $strings['ResourceMinNoticeDeleteCsv'] = 'Reservation Delete Minimum Notice';
-        $strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
+        $strings['CreditsPeak'] = 'Creditos (peak)';
+        $strings['CreditsOffPeak'] = 'Creditos (off peak)';
+        $strings['ResourceMinLengthCsv'] = 'Duración Mínima de Reserva';
+        $strings['ResourceMaxLengthCsv'] = 'Duración Máxima de Reserva';
+        $strings['ResourceBufferTimeCsv'] = 'Tiempo de Margen';
+        $strings['ResourceMinNoticeAddCsv'] = 'Antelación para Agregar una Reserva';
+        $strings['ResourceMinNoticeUpdateCsv'] = 'Antelación para Actualizar una Reserva';
+        $strings['ResourceMinNoticeDeleteCsv'] = 'Antelación para Eliminar una Reserva';
+        $strings['ResourceMaxNoticeCsv'] = 'Duración Máxima de reserva';
         $strings['Export'] = 'Exportar';
         $strings['DeleteMultipleUserWarning'] = 'Eliminar estos usuarios eliminará todas sus reservas actuales, futuras e históricas. No se enviarán correos electrónicos.';
         $strings['DeleteMultipleReservationsWarning'] = 'No se enviarán correos electrónicos.';
@@ -599,17 +599,17 @@ class es extends en_gb
         $strings['CreditsCost'] = 'Coste';
         $strings['Currency'] = 'Moneda';
         $strings['PayPalClientId'] = 'ID de cliente';
-        $strings['PayPalSecret'] = 'Password';
-        $strings['PayPalEnvironment'] = 'Environment';
+        $strings['PayPalSecret'] = 'Contraseña';
+        $strings['PayPalEnvironment'] = 'Entorno';
         $strings['Sandbox'] = 'Sandbox';
         $strings['Live'] = 'Live';
-        $strings['StripePublishableKey'] = 'Publishable key';
-        $strings['StripeSecretKey'] = 'Secret key';
+        $strings['StripePublishableKey'] = 'Clave pública';
+        $strings['StripeSecretKey'] = 'Clave secreta';
         $strings['CreditsUpdated'] = 'Credit cost has been updated';
         $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
         $strings['PurchaseSummary'] = 'Resumen de Compra';
         $strings['EachCreditCosts'] = 'Cada crédito cuesta';
-        $strings['Checkout'] = 'Checkout';
+        $strings['Checkout'] = 'Finalizar compra';
         $strings['Quantity'] = 'Cantidad';
         $strings['CreditPurchase'] = 'Compra de Crédito';
         $strings['EmptyCart'] = 'Su cesta está vacia.';
@@ -639,7 +639,7 @@ class es extends en_gb
         $strings['Gateway'] = 'Gateway';
         $strings['GatewayTransactionDate'] = 'Gateway Transaction Date';
         $strings['Refund'] = 'Reembolso';
-        $strings['IssueRefund'] = 'Issue Refund';
+        $strings['IssueRefund'] = 'Reembolsar';
         $strings['RefundIssued'] = 'Reembolso emitido con éxito';
         $strings['RefundAmount'] = 'Cantidad Devuelta';
         $strings['AmountRefunded'] = 'Reintegrado';
@@ -651,7 +651,7 @@ class es extends en_gb
         $strings['AddToGoogleCalendar'] = 'Añadir a Google';
         $strings['Image'] = 'Imagen';
         $strings['ChooseOrDropFile'] = 'Elige un fichero o arrástralo aquí';
-        $strings['SlackBookResource'] = 'Book %s now';
+        $strings['SlackBookResource'] = 'Reservar %s ahora';
         $strings['SlackBookNow'] = 'Reservar ahora';
         $strings['SlackNotFound'] = 'No hemos podido encontrar ningún recurso con ese nombre. Reservar ahora para comenzar una nueva reserva.';
         $strings['AutomaticallyAddToGroup'] = 'Automaticamente añadir nuevos usuarios a este grupo';
@@ -668,7 +668,7 @@ class es extends en_gb
         $strings['TheTermsOfService'] = 'los Términos del Servicio';
         $strings['DisplayPage'] = 'Mostrar Página';
         $strings['AvailableAllYear'] = 'Todo el Año';
-        $strings['Availability'] = 'Disopnibilidad';
+        $strings['Availability'] = 'Disponibilidad';
         $strings['AvailableBetween'] = 'Disponible Entre';
         $strings['ConcurrentYes'] = 'Los recursos pueden ser reservados por más de una persona a la vez';
         $strings['ConcurrentNo'] = 'Los recursos no pueden ser reservados por más de una persona a la vez';
@@ -679,19 +679,19 @@ class es extends en_gb
         $strings['ViewOnly'] = 'Sólo Ver';
         $strings['Purge'] = 'Purgar';
         $strings['UsersWillBeDeleted'] = 'los usuarios serán borrados';
-        $strings['BlackoutsWillBeDeleted'] = 'blackout times will be deleted';
-        $strings['ReservationsWillBePurged'] = 'reservations will be purged';
+        $strings['BlackoutsWillBeDeleted'] = 'se borrarán las agendas de no disponibilidad';
+        $strings['ReservationsWillBePurged'] = 'se purgarán las reservas';
         $strings['ReservationsWillBeDeleted'] = 'se borrarán las reservas';
         $strings['PermanentlyDeleteUsers'] = 'Borrar definitivamente los usuarios que no se han logado desde';
-        $strings['DeleteBlackoutsBefore'] = 'Delete blackout times before';
+        $strings['DeleteBlackoutsBefore'] = 'Borrar agenda de no disponibilidad antes de';
         $strings['DeletedReservations'] = 'Reservas Borradas';
         $strings['DeleteReservationsBefore'] = 'Borrar reservas anteriores a';
         $strings['SwitchToACustomLayout'] = 'Cambiar a un diseño personalizado';
-        $strings['SwitchToAStandardLayout'] = 'Cambiar a un diseño standard';
+        $strings['SwitchToAStandardLayout'] = 'Cambiar a un diseño estándar';
         $strings['ThisScheduleUsesACustomLayout'] = 'Este horario usa un diseño personalizado';
-        $strings['ThisScheduleUsesAStandardLayout'] = 'Este horario usa un diseño estandar';
-        $strings['SwitchLayoutWarning'] = 'Are you sure that you want to change the layout type? This will remove all existing slots.';
-        $strings['DeleteThisTimeSlot'] = 'Delete this time slot?';
+        $strings['ThisScheduleUsesAStandardLayout'] = 'Este horario usa un diseño estándar';
+        $strings['SwitchLayoutWarning'] = '¿Estás seguro de que deseas cambiar el tipo de diseño? Esto eliminará todos los espacios existentes.';
+        $strings['DeleteThisTimeSlot'] = '¿Eliminar este espacio?';
         $strings['Refresh'] = 'Refrescar';
         $strings['ViewReservation'] = 'Ver Reserva';
         $strings['PublicId'] = 'Id Público';
@@ -979,14 +979,13 @@ class es extends en_gb
         $strings['ResourceStatusChangedSubject'] = 'La disponibilidad de %s ha cambiado';
         // End Email Subjects
 
-        //NEEDS CHECKING
         //Past Reservations
         $strings['NoPastReservations'] = 'No tienes reservas pasadas';
         $strings['PastReservations'] = 'Reservas pasadas';
         $strings['AllNoPastReservations'] = 'No hay reservas pasadas en los %s días anteriores';
         $strings['AllPastReservations'] = 'Todas las reservas anteriores';
-        $strings['Yesterday'] = 'Ayer'; 
-        $strings['EarlierThisWeek'] = 'A principios de esta semana';
+        $strings['Yesterday'] = 'Ayer';
+        $strings['EarlierThisWeek'] = 'A principio de esta semana';
         $strings['PreviousWeek'] = 'Semana pasada';
         //End Past Reservations
 
@@ -1006,7 +1005,6 @@ class es extends en_gb
         $strings['LaterThisYear'] = 'Más tarde este año';
         $strings['Remaining'] = 'Restante';
         //End Pending Approval Reservations in Dashboard
-        //END NEEDS CHECKING
 
 
         $this->Strings = $strings;
