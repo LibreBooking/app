@@ -996,6 +996,10 @@ class de_de extends en_gb
         $strings['LaterThisYear'] = 'Später in diesem Jahr';
         $strings['Remaining'] = 'Verbleibend';  
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

@@ -72,6 +72,10 @@ class SlotLabelFactory
             return '';
         }
 
+        if(!in_array($reservation->ResourceId,$this->UserResourcePermissions($this->user->UserId)) && !$reservation->IsUserOwner($this->user->UserId) && !$reservation->IsUserInvited($this->user->UserId) && !$reservation->IsUserParticipating($this->user->UserId)){
+            return '';
+        }
+
         if (empty($format)) {
             $format = Configuration::Instance()->GetSectionKey(
                 ConfigSection::SCHEDULE,
@@ -141,6 +145,30 @@ class SlotLabelFactory
     {
         $name = new FullName($reservation->FirstName, $reservation->LastName);
         return $name->__toString();
+    }
+
+     /**
+     * Gets the resources the user has permissions (full access and view only permissions)
+     * This is used to block a user from seeing reservation details if he has no permissions to it's resources
+     */
+    private function UserResourcePermissions($userId)
+    {
+        $resourceRepo = new ResourceRepository();
+        $resourceIds = [];
+
+        $resourceIds = $resourceRepo->GetUserResourcePermissions($userId);
+
+        $resourceIds = $resourceRepo->GetUserGroupResourcePermissions($userId,$resourceIds);
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $resourceIds = $resourceRepo->GetResourceAdminResourceIds($userId, $resourceIds);
+        }
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+            $resourceIds = $resourceRepo->GetScheduleAdminResourceIds($userId, $resourceIds);
+        }
+
+        return $resourceIds;
     }
 }
 

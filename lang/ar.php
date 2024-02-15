@@ -1028,6 +1028,10 @@ class ar extends en_us
         $strings['LaterThisYear'] = 'في وقت لاحق هذا العام';
         $strings['Remaining'] = 'المتبقي';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'لا يمكن رؤية تفاصيل الحجز لأن ليس لديك أذونات لأي من الموارد في هذا الحجز';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

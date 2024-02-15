@@ -3,18 +3,33 @@
     <div id="reservation-box" class="readonly">
         <div id="reservationFormDiv">
             <div class="row">
+                {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ALL OF THEM*}
+                {assign var=isResourcePermitted value=in_array($ResourceId,$CanViewResourceReservations)}
+                {foreach from=$AdditionalResourceIds item=checkAditionalResourcePermissionsId}
+                    {if in_array($checkAditionalResourcePermissionsId, $CanViewResourceReservations)}
+                        {assign var=isResourcePermitted value=true}
+                        {break};
+                    {/if}
+                {{/foreach}}
+                {*HOWEVER THE USER CAN SEE THE RESERVATION IF HE IS A OWNER, PARTICIPANT OR INVITEE*}
+                {if $isResourcePermitted == false}
+                    {if $UserId == ServiceLocator::GetServer()->GetUserSession()->UserId || $IAmParticipating || $IAmInvited}
+                        {assign var=isResourcePermitted value=true}
+                    {/if}
+                {/if}
+
                 {assign var="detailsCol" value="col-xs-12"}
                 {assign var="participantCol" value="col-xs-12"}
 
-                {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
+                {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails && $isResourcePermitted}
                     {assign var="detailsCol" value="col-xs-12 col-sm-6"}
                     {assign var="participantCol" value="col-xs-12 col-sm-6"}
                 {/if}
-
+                
                 <div id="reservationDetails" class="{$detailsCol}">
                     <div class="col-xs-12">
                         <label>{translate key='User'}</label>
-                        {if $ShowUserDetails && $ShowReservationDetails}
+                        {if $ShowUserDetails && $ShowReservationDetails && $isResourcePermitted}
                             <a href="#" class="bindableUser" data-userid="{$UserId}">{$ReservationUserName}</a>
                             <input id="userId" type="hidden" value="{$UserId}"/>
                         {else}
@@ -78,16 +93,20 @@
                             <label>{translate key='Resources'}</label> {$ResourceName}
                             <input id="primaryResourceId" type="hidden" value="{$ResourceId}"/>
                             <div id="additionalResources" class="inline">
+
                                 {foreach from=$AvailableResources item=resource}
                                     {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
                                         ,{$resource->Name}
                                         <input class="resourceId" type="hidden" value="{$resource->Id}"/>
                                     {/if}
                                 {/foreach}
+                                {if !$isResourcePermitted}
+                                    <p class="text-danger">{translate key='NoResourcePermissions'}</p>
+                                {/if}
                             </div>
                         </div>
                         <div class="pull-right">
-                            {if $ShowReservationDetails}
+                            {if $ShowReservationDetails && $isResourcePermitted}
                                 <label>{translate key='Accessories'}</label>
                                 {foreach from=$Accessories item=accessory name=accessoryLoop}
                                     <span class="badge quantity">{$accessory->QuantityReserved}</span>
@@ -101,7 +120,7 @@
                         </div>
                     </div>
 
-                    {if $ShowReservationDetails}
+                    {if $ShowReservationDetails && $isResourcePermitted}
                         <div class="col-xs-12">
                             <label>{translate key='ReservationTitle'}</label>
                             {if $ReservationTitle neq ''}
@@ -128,7 +147,7 @@
                     {/if}
                 </div>
 
-                {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
+                {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails && $isResourcePermitted}
                     <div class="{$participantCol}">
                         <div id="reservationParticipation">
                             <div id="participationAction" class="participationAction">
@@ -195,7 +214,7 @@
 
                             <span id="participate-indicator" class="fa fa-spinner fa-spin" style="display:none;"></span>
 
-                            {if $ShowUserDetails}
+                            {if $ShowUserDetails && $isResourcePermitted}
                                 <div id="ro-participantList">
                                     <label>{translate key='ParticipantList'}</label>
                                     {foreach from=$Participants item=participant}
@@ -224,7 +243,7 @@
                     </div>
                 </div>
 
-                {if $ShowReservationDetails}
+                {if $ShowReservationDetails && $isResourcePermitted}
                     <div class="col-xs-12 buttons">
                         <div class="pull-right">
                             <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
@@ -271,7 +290,7 @@
                     </div>
                 {/if}
             </div>
-            {if $ShowReservationDetails}
+            {if $ShowReservationDetails && $isResourcePermitted}
                 {if $Attachments|default:array()|count > 0}
                     <div class="col-xs-12">
                         <div class="res-attachments">

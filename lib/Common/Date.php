@@ -747,21 +747,21 @@ class Date
     /**
      * Implements bubble sort algorithm to sort dates from array
      */
-    public static function BubbleSort($array) {
+    public static function BubbleSort($array, $sortBy = 'StartDate') {
         for ($i = 0; $i < count($array); $i++){
             $swapped = false;
             for ($j = 0; $j < count($array) - $i - 1; $j++)
             {
 
-                if ($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 1) {
+                if ($array[$j]->$sortBy->DateCompare($array[$j+1]->$sortBy) == 1) {
                     $t = $array[$j];
                     $array[$j] = $array[$j+1];
                     $array[$j+1] = $t;
                     $swapped = True;
                 }
 
-                else if($array[$j]->StartDate->DateCompare($array[$j+1]->StartDate) == 0){
-                    if ($array[$j]->StartDate->CompareTime($array[$j+1]->StartDate) == 1) {
+                else if($array[$j]->$sortBy->DateCompare($array[$j+1]->$sortBy) == 0){
+                    if ($array[$j]->$sortBy->CompareTime($array[$j+1]->$sortBy) == 1) {
                         $t = $array[$j];
                         $array[$j] = $array[$j+1];
                         $array[$j+1] = $t;

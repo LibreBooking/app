@@ -4,6 +4,8 @@ require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
 require_once(ROOT_DIR . 'Presenters/Dashboard/PendingApprovalReservationsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 
+//This section of the dashboard doesn't show pending approval reservations as orange because all of them are pending
+
 class PendingApprovalReservations extends DashboardItem implements IPendingApprovalReservationsControl
 {
     /**

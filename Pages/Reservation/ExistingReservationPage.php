@@ -122,6 +122,12 @@ interface IExistingReservationPage extends IReservationPage
      * @param bool $requiresApproval
      */
     public function SetRequiresApproval($requiresApproval);
+
+    /**
+     * @param $viewableResourceReservations
+     */
+    public function BindViewableResourceReservations($resourceIds);
+
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -309,6 +315,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
     public function SetTermsAccepted($accepted)
     {
         $this->Set('TermsAccepted', $accepted);
+    }
+
+    public function BindViewableResourceReservations($resourceIds)
+    {
+        $this->Set('CanViewResourceReservations',$resourceIds);
     }
 }
 

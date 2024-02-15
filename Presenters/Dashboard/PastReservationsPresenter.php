@@ -56,7 +56,10 @@ class PastReservationsPresenter
         $thisWeeks = [];
         $previousWeeks = [];
 
-        /* @var $reservation ReservationItemView */
+        //TimeLessThan($now->ToTimezone($timezone)->GetTime()) -> only when the reservations end does it display 
+        //                                                       (so the reservation doesn't repeat here and in upcoming reservation)
+        //!$start->DateEquals($today) -> today is always GreaterThan($startOfPreviousWeek->AddDays(7)) so if a reservation hasn't ended it won't appear on ($todays)
+        //                              but it also can't show in any other section (can't just use an else) 
         foreach ($consolidated as $reservation) {
             $start = $reservation->EndDate->ToTimezone($timezone);
 
@@ -73,9 +76,9 @@ class PastReservationsPresenter
                 }
             } elseif ($start->DateEquals($yesterday)) {
                 $yesterdays[] = $reservation;
-            } elseif ($start->GreaterThan($startOfPreviousWeek->AddDays(7))) {
+            } elseif ($start->GreaterThan($startOfPreviousWeek->AddDays(7)) && !$start->DateEquals($today)) {
                 $thisWeeks[] = $reservation;
-            } else {
+            } else if  (!$start->DateEquals($today)){
                 $previousWeeks[] = $reservation;
             }
         }

@@ -596,12 +596,50 @@ class Queries
 		FROM `group_resource_permissions`
 		WHERE `group_id` = @groupid';
 
-	public const GET_GROUP_RESOURCES_ID = 'SELECT `resource_id` FROM `resources` 
-			WHERE `admin_group_id` = @groupid';
+	public const GET_GROUP_RESOURCES_ID = 
+		'SELECT `resource_id` FROM `resources` 
+		WHERE `admin_group_id` = @groupid';
 
-	public const GET_GROUP_SCHEDULES_ID = 'SELECT `schedule_id` FROM `schedules`
-			WHERE `admin_group_id` = @groupid';
+	public const GET_GROUP_SCHEDULES_ID =
+		'SELECT `schedule_id` FROM `schedules`
+		WHERE `admin_group_id` = @groupid';
 
+	public const GET_RESOURCE_ADMIN_RESOURCES = 
+		'SELECT `resource_id`, `name` , `schedule_id`, `admin_group_id`
+		FROM `resources` 
+		WHERE `admin_group_id` 
+		IN (
+			SELECT `g`.group_id
+			FROM `user_groups` `ug`
+			INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
+			WHERE `user_id` = @userid
+			)';
+
+	public const GET_SHCEDULE_ADMIN_SCHEDULES = 
+		'SELECT `schedule_id`, `name` , `admin_group_id`
+		FROM `schedules`
+		WHERE `admin_group_id`
+		IN (
+			SELECT `g`.group_id
+			FROM `user_groups` `ug`
+			INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
+			WHERE `user_id` = @userid
+			);';
+
+	public const GET_SCHEDULE_ADMIN_RESOURCES = 
+		'SELECT `resource_id`, `name` , `schedule_id`, `admin_group_id`
+		FROM `resources`
+		WHERE `schedule_id` 
+		IN
+			(SELECT `schedule_id`
+			FROM `schedules`
+			WHERE `admin_group_id`
+			IN (
+				SELECT `g`.group_id
+				FROM `user_groups` `ug`
+				INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
+				WHERE `user_id` = @userid
+				))';
 
     public const GET_GROUP_ROLES =
         'SELECT `r`.*

@@ -1007,6 +1007,10 @@ class fr_fr extends en_gb
         $strings['LaterThisYear'] = 'Plus tard cette année';
         $strings['Remaining'] = 'Restant';    
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Impossible de voir les détails de la réservation car vous n\'avez pas les autorisations pour l\'un des ressources dans cette réservation';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

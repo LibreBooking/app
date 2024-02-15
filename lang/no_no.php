@@ -659,6 +659,10 @@ class no_no extends en_gb
         $strings['LaterThisYear'] = 'Senere i år';
         $strings['Remaining'] = 'Gjenstående';        
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Kan ikke se reservasjonsdetaljer fordi du ikke har tillatelser til noen av ressursene i denne reservasjonen';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

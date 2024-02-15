@@ -585,6 +585,10 @@ class sv_sv extends en_gb
         $strings['LaterThisYear'] = 'Senare i år';
         $strings['Remaining'] = 'Återstående';        
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Kan inte se detaljer om bokningen eftersom du inte har behörighet för någon av resurserna i denna bokning';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

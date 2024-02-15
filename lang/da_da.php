@@ -1023,6 +1023,10 @@ class da_da extends en_gb
         $strings['LaterThisYear'] = 'Senere på året';
         $strings['Remaining'] = 'Resterende';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Kan ikke se reservationsoplysninger, fordi du ikke har tilladelser til nogen af ressourcerne i denne reservation';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

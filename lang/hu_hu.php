@@ -1000,6 +1000,10 @@ class hu_hu extends en_us
         $strings['LaterThisYear'] = 'Később idén';
         $strings['Remaining'] = 'Megmaradt';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'A foglalás részleteit nem lehet látni, mert nincs jogosultságod egyik erőforráshoz sem ebben a foglalásban';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

@@ -99,6 +99,8 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter
         $filter = $this->_builder->GetResourceFilter($activeScheduleId, $this->_page);
         $this->_builder->BindResourceFilter($this->_page, $filter, $resourceAttributes, $resourceTypeAttributes);
 
+        $this->UserResourcePermissions();
+
         $resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $user, $filter);
 
         $reservationListing = new EmptyReservationListing();
@@ -133,5 +135,24 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter
         $filter = $this->_page->GetReservationRequest();
         $items = $this->_reservationService->Search($filter->DateRange(), $filter->ScheduleId(), $filter->ResourceIds(), $filter->OwnerId(), $filter->ParticipantId());
         $this->_page->BindReservations($items);
+    }
+
+    /**
+     * Gets the resources the user has permissions (full access and view only permissions)
+     * This is used to block a user from seeing reservation details if he has no permissions to its resources
+     */
+    public function UserResourcePermissions()
+    {
+        $resourceIds = [];
+
+        $command = new GetUserPermissionsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceIds[] = $row[ColumnNames::RESOURCE_ID];
+        }
+        $reader->Free();
+
+        $this->_page->BindViewableResourceReservations($resourceIds);
     }
 }

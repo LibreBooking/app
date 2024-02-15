@@ -803,6 +803,10 @@ class tr_tr extends en_gb
         $strings['LaterThisYear'] = 'Bu yılın ilerisinde';
         $strings['Remaining'] = 'Kalan';        
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Bu rezervasyondaki hiçbir kaynağa izinleriniz olmadığından rezervasyon ayrıntılarını göremiyorsunuz';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

@@ -209,6 +209,11 @@ interface ISchedulePage extends IActionPage
     public function BindScheduleAvailability($availability, $tooEarly);
 
     /**
+     * @param $viewableResourceReservations
+     */
+    public function BindViewableResourceReservations($resourceIds);
+
+    /**
      * @return LoadReservationRequest
      */
     public function GetReservationRequest();
@@ -251,7 +256,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
         $this->Set('CanViewUsers', !Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()));
         $this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
-        $this->Set('ViewPastReservationsButton', ServiceLocator::GetServer()->GetUserSession()->IsAdmin);
+        $this->Set('AllowCreatePastReservationsButton', ServiceLocator::GetServer()->GetUserSession()->IsAdmin);
 
         $permissionServiceFactory = new PermissionServiceFactory();
         $scheduleRepository = new ScheduleRepository();
@@ -585,6 +590,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
         $this->Set('ScheduleAvailabilityStart', $availability->GetBegin());
         $this->Set('ScheduleAvailabilityEnd', $availability->GetEnd());
         $this->Set('HideSchedule', true);
+    }
+
+    public function BindViewableResourceReservations($resourceIds)
+    {
+        $this->Set('CanViewResourceReservations',$resourceIds);
     }
 
     public function GetReservationRequest()

@@ -1630,6 +1630,30 @@ class GetGroupSchedulesId extends SqlCommand{
     }
 }
 
+class GetResourceAdminResourcesCommand extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_RESOURCE_ADMIN_RESOURCES);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class GetScheduleAdminSchedulesCommand extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_SHCEDULE_ADMIN_SCHEDULES);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class GetScheduleAdminResourcesCommand extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_SCHEDULE_ADMIN_RESOURCES);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
 class GetGroupsIManageCommand extends SqlCommand
 {
     public function __construct($userId)

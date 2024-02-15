@@ -601,6 +601,10 @@ class id_id extends en_gb
         $strings['LaterThisYear'] = 'Nanti Tahun Ini';
         $strings['Remaining'] = 'Sisa';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Tidak dapat melihat detail pemesanan karena Anda tidak memiliki izin untuk salah satu dari sumber daya dalam pemesanan ini';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

@@ -521,6 +521,10 @@ class bg_bg extends en_gb
         $strings['LaterThisYear'] = 'По-късно тази година';
         $strings['Remaining'] = 'Оставащи';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Не можете да видите подробности за резервацията, защото нямате права за нито един от ресурсите в тази резервация';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

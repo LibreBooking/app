@@ -54,13 +54,8 @@ class PendingApprovalReservationsPresenter
         }
 
         else if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
-            $userGroupIds = $this->GetUserGroups();
+            $groupResourceIds = $this->GetUserAdminResources($user->UserId);
             
-            $groupResourceIds = [];
-
-            foreach ($userGroupIds as $userResource){
-                $groupResourceIds = array_merge($groupResourceIds, $this->GetGroupResources($userResource));
-            }
             if($groupResourceIds != null){
                 $consolidated = array_merge($consolidated, $this->repository->GetReservationsPendingApproval($now, $this->searchUserId, $this->searchUserLevel, null, $groupResourceIds,true));
             }
@@ -77,10 +72,6 @@ class PendingApprovalReservationsPresenter
         $futures = [];
 
         if ($consolidated != null){
-
-            //Sort By Date
-            $consolidated = Date::BubbleSort($consolidated);
-
             foreach ($consolidated as $reservation) {
                 $start = $reservation->StartDate->ToTimezone($timezone);
                 
@@ -97,7 +88,6 @@ class PendingApprovalReservationsPresenter
                 } else{
                     $futures[] = $reservation;
                 }
-                
             }
 
             $checkinAdminOnly = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter());
@@ -123,44 +113,24 @@ class PendingApprovalReservationsPresenter
     }
 
     /**
-     * Gets the groups the user belongs to
+     * Gets the resource ids that are under the responsability of the given resource user groups
      */
-    private function GetUserGroups(){
-        $groups = [];
+    private function GetUserAdminResources($userId){
+        $resourceIds = [];
 
-        $command = new GetUserGroupsCommand(ServiceLocator::GetServer()->GetUserSession()->UserId, null);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
+        $resourceRepo = new ResourceRepository();
 
-        while ($row = $reader->GetRow()) {
-            $groupId = $row[ColumnNames::GROUP_ID];
-            if (!array_key_exists($groupId, $groups)) {
-                $groups[$groupId] = $groupId;
-            }
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $resourceIds = $resourceRepo->GetResourceAdminResourceIds($userId);
         }
-        $reader->Free();
 
-        return $groups;
-    }
-
-    /**
-     * Gets the resource ids the group of the user is managing
-     */
-    private function GetGroupResources($groupId){
-        $resources = [];
-
-        $command = new GetGroupResourcesId($groupId);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        while ($row = $reader->GetRow()) {
-            $resourceId = $row[ColumnNames::RESOURCE_ID];
-
-            if (!array_key_exists($resourceId, $resources)) {
-                $resources[$resourceId] = $resourceId;
-            } 
+        //If a given reservation is pending approval a user who is only a schedule admin can't approve them, only a resource admin that manages the resource of that same reservation
+        //However if this schedule admin is a resource admin (even if he does not manage the resource) and that resource is in the schedule he can approve (or reject)
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin && ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){
+            $resourceIds = $resourceRepo->GetScheduleAdminResourceIds($userId, $resourceIds);
         }
-        $reader->Free();
 
-        return $resources;
+        return $resourceIds;
     }
 }
 

@@ -1061,7 +1061,7 @@ input[type="radio"] .styled:checked + label::after {
 }
 .upcomingReservationsDashboard .reservation.hover {
   cursor: pointer;
-  background-color: #eaf2f2;
+  background-color: #eaf2f2 !important;
   color: #222;
 }
 .upcomingReservationsDashboard .reservation.clicked {
