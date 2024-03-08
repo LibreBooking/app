@@ -1008,6 +1008,11 @@ class fr_fr extends en_gb
         $strings['Remaining'] = 'Restant';    
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Il n\'y a pas de réservations de départ manquantes';
+        $strings['MissingCheckOutReservations'] = 'Réservations de départ manquantes';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Impossible de voir les détails de la réservation car vous n\'avez pas les autorisations pour l\'un des ressources dans cette réservation';
         //End Schedule Resource Permissions

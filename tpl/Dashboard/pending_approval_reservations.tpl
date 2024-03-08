@@ -2,7 +2,7 @@
 	<div class="dashboardHeader">
 		<div class="pull-left">{translate key="PendingApprovalReservations"}<span class="badge">{$Total}</span></div>
 		<div class="pull-right">
-			<a href="#" title="{translate key=ShowHide} {translate key="GroupUpcomingReservations"}">
+			<a href="#" title="{translate key=ShowHide} {translate key="PendingApprovalReservations"}">
 				<i class="glyphicon"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
@@ -36,6 +36,13 @@
 				{/foreach}
 
 				<div class="timespan">
+					{translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
+				</div>
+				{foreach from=$NextWeeksReservations item=reservation}
+					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
+				{/foreach}
+
+				<div class="timespan">
 					{translate key="LaterThisMonth"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$ThisMonthsReservations item=reservation}
@@ -50,7 +57,7 @@
 				{/foreach}
 
 				<div class="timespan">
-					{translate key="Remaining"} ({$T|default:array()|count})
+					{translate key="Other"} ({$T|default:array()|count})
 				</div>
 				{foreach from=$RemainingReservations item=reservation}
 					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}

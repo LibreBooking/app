@@ -522,6 +522,11 @@ class bg_bg extends en_gb
         $strings['Remaining'] = 'Оставащи';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Няма липсващи резервации за напускане';
+        $strings['MissingCheckOutReservations'] = 'Липсващи резервации за напускане';
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Не можете да видите подробности за резервацията, защото нямате права за нито един от ресурсите в тази резервация';
         //End Schedule Resource Permissions

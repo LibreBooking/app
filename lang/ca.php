@@ -418,6 +418,11 @@ class ca extends en_gb
         $strings['Remaining'] = 'Restant';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'No hi ha cap reserva de sortida que falti';
+        $strings['MissingCheckOutReservations'] = 'Reserves de sortida que falten';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'No es poden veure els detalls de la reserva perquè no teniu permisos per a cap dels recursos d\'aquesta reserva';
         //End Schedule Resource Permissions
