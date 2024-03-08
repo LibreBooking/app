@@ -937,6 +937,10 @@ class fi_fi extends en_gb
         $strings['LaterThisYear'] = 'Myöhemmin tänä vuonna';
         $strings['Remaining'] = 'Jäljellä oleva';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Et voi nähdä varauksen tietoja, koska sinulla ei ole oikeuksia mihinkään tämän varauksen resursseista';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
         $this->Strings = $strings;

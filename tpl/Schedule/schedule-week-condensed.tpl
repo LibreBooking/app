@@ -124,7 +124,7 @@
                                 data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"
                                 data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
 
-                                {assign var=addButton value=$TodaysDate->LessThanOrEqual($date) || $TodaysDate->DateEquals($date) || $ViewPastReservationsButton}
+                                {assign var=addButton value=$TodaysDate->LessThanOrEqual($date) || $TodaysDate->DateEquals($date) || $AllowCreatePastReservationsButton}
                                 {if $addButton}
                                     <div class="reservable clickres" ref="{$href}&rd={formatdate date=$date key=url}"
                                         data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"

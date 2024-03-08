@@ -1038,11 +1038,15 @@ class en_us extends Language
 
         //Pending Approval Reservations in Dashboard
         $strings['NoPendingApprovalReservations'] = 'You have no reservations pending approval';
-        $strings['PendingApprovalReservations'] = 'Reservations Pending Approval';
+        $strings['PendingApprovalReservations'] = 'Pending Approval Reservations';
         $strings['LaterThisMonth'] = 'Later This Month';
         $strings['LaterThisYear'] = 'Later This Year';
         $strings['Remaining'] = 'Remaining';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Can\'t see reservation details because you don\'t have permissions to any of the resources in this reservation';
+        //End Schedule Resource Permissions
 
         $this->Strings = $strings;
 

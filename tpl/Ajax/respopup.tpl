@@ -1,9 +1,24 @@
 {if $authorized}
+    {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ALL OF THEM*}
+    {assign var=isResourcePermitted value=false}
+    {foreach from=$resources item=checkResourcePermission}
+        {if in_array($checkResourcePermission->Id(), $CanViewResourceReservations)}
+            {assign var=isResourcePermitted value=true}
+            {break};
+        {/if}
+    {{/foreach}}
+    {*HOWEVER THE USER CAN SEE THE RESERVATION IF HE IS A OWNER, PARTICIPANT OR INVITEE*}
+    {if $isResourcePermitted == false}
+        {if $UserId == $OwnerId || $IAmParticipating || $IAmInvited}
+            {assign var=isResourcePermitted value=true}
+        {/if}
+    {/if}
+
     <div class="res_popup_details" style="margin:0">
 
         {capture "name"}
             <div class="user">
-                {if $hideUserInfo || $hideDetails}
+                {if ($hideUserInfo || $hideDetails) || !$isResourcePermitted}
                     {translate key=Private}
                 {else}
                     {$fullName}
@@ -14,7 +29,7 @@
 
         {capture "email"}
             <div class="email">
-                {if !$hideUserInfo && !$hideDetails}
+                {if !$hideUserInfo && !$hideDetails && $isResourcePermitted}
                     {$email}
                 {/if}
             </div>
@@ -23,7 +38,7 @@
 
         {capture "phone"}
             <div class="phone">
-                {if !$hideUserInfo && !$hideDetails}
+                {if !$hideUserInfo && !$hideDetails && $isResourcePermitted}
                     {$phone}
                 {/if}
             </div>
@@ -40,7 +55,7 @@
         {$formatter->Add('dates', $smarty.capture.dates)}
 
         {capture "title"}
-            {if !$hideDetails}
+            {if !$hideDetails && $isResourcePermitted}
                 <div class="title">{if $title neq ''}{$title}{else}{translate key=NoTitleLabel}{/if}</div>
             {/if}
         {/capture}
@@ -51,14 +66,18 @@
                 {translate key="Resources"} ({$resources|@count}):
                 {foreach from=$resources item=resource name=resource_loop}
                     {$resource->Name()}
+                    
                     {if !$smarty.foreach.resource_loop.last}, {/if}
                 {/foreach}
+                {if !$isResourcePermitted}
+                    <p class="text-danger">{translate key='NoResourcePermissions'}</p>
+                {/if}
             </div>
         {/capture}
         {$formatter->Add('resources', $smarty.capture.resources)}
 
         {capture "participants"}
-            {if !$hideUserInfo && !$hideDetails}
+            {if !$hideUserInfo && !$hideDetails && $isResourcePermitted}
                 <div class="users">
                     {translate key="Participants"} ({$participants|@count}):
                     {foreach from=$participants item=user name=participant_loop}
@@ -73,7 +92,7 @@
         {$formatter->Add('participants', $smarty.capture.participants)}
 
         {capture "accessories"}
-            {if !$hideDetails}
+            {if !$hideDetails && $isResourcePermitted}
                 <div class="accessories">
                     {translate key="Accessories"} ({$accessories|@count}):
                     {foreach from=$accessories item=accessory name=accessory_loop}
@@ -86,14 +105,14 @@
         {$formatter->Add('accessories', $smarty.capture.accessories)}
 
         {capture "description"}
-            {if !$hideDetails}
+            {if !$hideDetails && $isResourcePermitted}
                 <div class="summary">{if $summary neq ''}{$summary|truncate:300:"..."|nl2br}{else}{translate key=NoDescriptionLabel}{/if}</div>
             {/if}
         {/capture}
         {$formatter->Add('description', $smarty.capture.description)}
 
         {capture "attributes"}
-            {if !$hideDetails}
+            {if !$hideDetails && $isResourcePermitted}
                 {if $attributes|default:array()|count > 0}
                     <br/>
                     {foreach from=$attributes item=attribute}

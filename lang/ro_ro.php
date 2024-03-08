@@ -517,6 +517,10 @@ class ro_ro extends en_gb
         $strings['LaterThisYear'] = 'Mai târziu în acest an';
         $strings['Remaining'] = 'Rămase';        
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Nu puteți vedea detaliile rezervării deoarece nu aveți permisiuni pentru niciunul dintre resursele din această rezervare';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

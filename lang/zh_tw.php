@@ -641,6 +641,10 @@ class zh_tw extends en_us
         $strings['LaterThisYear'] = '本年晚些時候';
         $strings['Remaining'] = '剩餘';        
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = '由於您在此預訂中的任何資源都沒有權限，因此無法查看預訂詳細信息';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

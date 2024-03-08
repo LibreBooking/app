@@ -1007,6 +1007,10 @@ class lt extends en_gb
         $strings['LaterThisYear'] = 'Vėliau šiais metais';
         $strings['Remaining'] = 'Liko';        
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Dėl neturėtų teisių į šioje rezervacijoje esančius išteklius negalite matyti rezervacijos informacijos';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
 

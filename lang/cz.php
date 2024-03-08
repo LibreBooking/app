@@ -836,6 +836,10 @@ class cz extends en_us
         $strings['LaterThisYear'] = 'Později letos';
         $strings['Remaining'] = 'Zbývající';
         //End Pending Approval Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Nemůžete vidět podrobnosti rezervace, protože nemáte oprávnění k žádným zdrojům v této rezervaci';
+        //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
         $this->Strings = $strings;
