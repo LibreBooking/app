@@ -2,79 +2,82 @@
 
 <div id="page-user-credits">
 
-    <div class="default-box">
-        <div>
-            <h1 class="inline-block" style="width:100%">{translate key=YourCredits}
-                <div class="inline-block pull-right">{$CurrentCredits}</div>
-            </h1>
-        </div>
+    <div class="card shadow default-box">
+        <div class="card-body">
+            <div class="clearfix border-bottom mb-3">
+                <h1 class="float-start">{translate key=YourCredits}</h1>
+                <h1 class="float-end">{$CurrentCredits}</h1>
+            </div>
 
-        <div>
-            <ul class="nav nav-pills" role="tablist">
-                <li class="nav-item active">
-                    <a class="nav-link active" data-toggle="tab" href="#credit-log"
-                       role="tab">{translate key=CreditHistory}</a>
+            <ul class="nav nav-tabs mb-3" role="tablist">
+                <li class="nav-item active" role="presentation">
+                    <a class="nav-link active link-primary" data-bs-toggle="tab" href="#credit-log"
+                        role="tab">{translate key=CreditHistory}</a>
                 </li>
 
                 {if $AllowPurchasingCredits && $IsCreditCostSet}
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#purchase"
-                           role="tab">{translate key=BuyMoreCredits}</a>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link link-primary" data-bs-toggle="tab" href="#purchase"
+                            role="tab">{translate key=BuyMoreCredits}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#transaction-log"
-                           role="tab">{translate key=TransactionHistory}</a>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link link-primary" data-bs-toggle="tab" href="#transaction-log"
+                            role="tab">{translate key=TransactionHistory}</a>
                     </li>
                 {/if}
             </ul>
-        </div>
 
-        <div class="tab-content margin-top-25">
-            <div class="tab-pane active" id="credit-log" role="tabpanel">
-                {indicator id=creditLogIndicator}
-                <div id="credit-log-content">
+            <div class="tab-content margin-top-25">
+                <div class="tab-pane active" id="credit-log" role="tabpanel">
+                    {indicator id=creditLogIndicator}
+                    <div id="credit-log-content">
 
+                    </div>
                 </div>
+
+                {if $AllowPurchasingCredits && $IsCreditCostSet}
+                    <div class="tab-pane" id="purchase" role="tabpanel">
+
+                        <div class="col-4">
+                            <form role="form" name="purchaseCreditsForm" id="purchaseCreditsForm" method="post"
+                                action="checkout.php">
+                                <div class="d-flex align-items-center gap-1 mb-1">{translate key=CreditsEachCost1}
+                                    <select id="count" {formname key=CREDIT_COUNT}
+                                        class="form-select form-select-sm w-auto">
+                                        {foreach from=$CreditCosts item=credit}
+                                            <option value="{$credit->Count()}">{$credit->Count()}</option>
+                                        {/foreach}
+                                    </select>
+                                    {translate key=CreditsEachCost2} <span id="cost"
+                                        class="cost fw-bold">{$CreditCost}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">{translate key=Quantity}
+                                    <input id="quantity" {formname key=CREDIT_QUANTITY} type="number"
+                                        class="form-control form-control-sm inline-block" min="1" style="width:100px"
+                                        value="1" />
+                                </div>
+                                <div>
+                                    {translate key=Total} <span id="totalCost" class="cost fw-bold">{$CreditCost}</span>
+                                </div>
+                                <button type="submit"
+                                    class="btn btn-outline-secondary col-12">{translate key=Checkout}</button>
+                                {csrf_token}
+                            </form>
+                        </div>
+
+                        <div class="col-8">&nbsp;</div>
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <div class="tab-pane" id="transaction-log" role="tabpanel">
+                        {indicator id=transactionLogIndicator}
+                        <div id="transaction-log-content">
+
+                        </div>
+                    </div>
+                {/if}
             </div>
-
-            {if $AllowPurchasingCredits && $IsCreditCostSet}
-                <div class="tab-pane" id="purchase" role="tabpanel">
-
-                    <div class="col-xs-4">
-                        <form role="form" name="purchaseCreditsForm" id="purchaseCreditsForm" method="post"
-                              action="checkout.php">
-                            <div>{translate key=CreditsEachCost1} 
-                            <select id="count" {formname key=CREDIT_COUNT} class="form-control inline-block" style="width:auto">
-                                {foreach from=$CreditCosts item=credit}
-                                    <option value="{$credit->Count()}">{$credit->Count()}</option>
-                                {/foreach}
-                            </select>
-                            {translate key=CreditsEachCost2} <span id="cost" class="cost">{$CreditCost}</span></div>
-                            <div>{translate key=Quantity}
-                                <input id="quantity" {formname key=CREDIT_QUANTITY} type="number"
-                                       class="form-control inline-block" min="1"
-                                       style="width:100px" value="1"/>
-                            </div>
-                            <div>
-                                {translate key=Total} <span id="totalCost" class="cost">{$CreditCost}</span>
-                            </div>
-                            <button type="submit" class="btn btn-default col-xs-12">{translate key=Checkout}</button>
-                            {csrf_token}
-                        </form>
-                    </div>
-
-                    <div class="col-xs-8">&nbsp;</div>
-                    <div class="clearfix"></div>
-
-                </div>
-
-                <div class="tab-pane" id="transaction-log" role="tabpanel">
-                    {indicator id=transactionLogIndicator}
-                    <div id="transaction-log-content">
-
-                    </div>
-                </div>
-            {/if}
         </div>
     </div>
 
@@ -85,7 +88,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
 
         var opts = {
             calcQuantityUrl: '{$smarty.server.SCRIPT_NAME}?dr=calcQuantity&quantity=',
@@ -101,7 +104,7 @@
             $('.nav-pills a[href="#' + url.split('#')[1] + '"]').tab('show');
         }
 
-        $('.nav-pills a').on('shown.bs.tab', function (e) {
+        $('.nav-pills a').on('shown.bs.tab', function(e) {
             window.location.hash = e.target.hash;
         });
     });
