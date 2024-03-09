@@ -489,14 +489,17 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
         $this->Set(
             'YesNoOptions',
             [
-                           '1' => Resources::GetInstance()->GetString('Yes'),
-                           '0' => Resources::GetInstance()->GetString('No')]
+                '1' => Resources::GetInstance()->GetString('Yes'),
+                '0' => Resources::GetInstance()->GetString('No')
+            ]
         );
         $this->Set(
             'YesNoUnchangedOptions',
-            ['-1' => Resources::GetInstance()->GetString('Unchanged'),
-                           '1' => Resources::GetInstance()->GetString('Yes'),
-                           '0' => Resources::GetInstance()->GetString('No')]
+            [
+                '-1' => Resources::GetInstance()->GetString('Unchanged'),
+                '1' => Resources::GetInstance()->GetString('Yes'),
+                '0' => Resources::GetInstance()->GetString('No')
+            ]
         );
 
         $this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
@@ -526,12 +529,13 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
      */
     public function GetPageSize()
     {
+        /* Datatable now does pagination
         $pageSize = $this->pageablePage->GetPageSize();
 
         if ($pageSize > 10) {
             return 10;
         }
-        return $pageSize;
+        return $pageSize;*/
     }
 
     /**
