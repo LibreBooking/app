@@ -1,0 +1,451 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --primary: #669999;
+    /*#be6e34;*/
+    --primary-hover: #527a7a;
+    /*#a05c2c;*/
+    --primary-disabled: #85adad;
+    /* #e4b99b;*/
+
+    --color-lines: #a6a6a6;
+    --reservable: #ffffff;
+    --unreservable: #CF9D9B;
+    --reserved: #408AD2;
+    --reservedMine: #6F9BAE;
+    --reservedParticipating: #875cae;
+    --reservedPending: #f2dfbf;
+    /*#ffb540;*/
+    --pasttime: #bdbdbd;
+
+}
+
+[data-bs-theme="primary"] {
+    --bs-body-color: var(--bs-dark-text-emphasis);
+
+    .dropdown-menu {
+        --bs-dropdown-link-active-bg: var(--primary);
+        font-size: 12px;
+    }
+
+    .page-link {
+        color: var(--primary);
+        border: var(--bs-pagination-border-width) solid var(--primary);
+    }
+
+    .active>.page-link,
+    .page-link.active {
+        z-index: 3;
+        color: var(--bs-pagination-active-color);
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .btn-primary {
+        --bs-btn-bg: var(--primary);
+        --bs-btn-border-color: var(--primary-hover);
+        --bs-btn-hover-bg: var(--primary-hover);
+        --bs-btn-hover-border-color: var(--primary);
+        --bs-btn-active-bg: var(--primary);
+        --bs-btn-active-border-color: var(--primary);
+        --bs-btn-focus-border-color: var(--primary);
+        --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
+    }
+
+    .btn-outline-primary {
+        --bs-btn-border-color: var(--primary);
+        --bs-btn-color: var(--primary);
+        --bs-btn-hover-bg: var(--primary-hover);
+        --bs-btn-active-bg: var(--primary);
+        --bs-btn-hover-border-color: var(--primary);
+        --bs-btn-active-border-color: var(--primary);
+    }
+
+    .btn.disabled,
+    .btn:disabled,
+    fieldset:disabled .btn {
+        background-color: var(--primary-disabled);
+        border-color: var(--primary-disabled);
+    }
+
+    .link-primary {
+        color: var(--primary) !important;
+        text-decoration: none;
+    }
+
+    .bg-primary {
+        background-color: var(--primary) !important;
+    }
+
+    .bg-primary-opacity {
+        background-color: var(--primary) !important;
+        --bs-bg-opacity: .5 !important;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .form-check-input.is-valid:checked,
+    .was-validated .form-check-input:valid:checked {
+        background-color: var(--primary);
+    }
+}
+
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    font-family: "Hind", "system-ui", "sans-serif";
+    font-weight: 300;
+    font-style: normal;
+    font-size: 14px;
+    margin: 0;
+    margin-bottom: 100px;
+    /*padding-top: 70px;*/
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+}
+
+img.logo {
+    max-height: 50px;
+}
+
+.has-error .checkbox,
+.has-error .checkbox-inline,
+.has-error .control-label,
+.has-error .help-block,
+.has-error .radio,
+.has-error .radio-inline,
+.has-error.checkbox label,
+.has-error.checkbox-inline label,
+.has-error.radio label,
+.has-error.radio-inline label {
+    color: var(--bs-danger);
+}
+
+.wait-box {
+    display: none;
+    text-align: center;
+    top: 15%;
+    position: relative;
+    padding: 20px;
+    border: 1px solid #585754;
+}
+
+.inlineUpdate {
+    cursor: pointer;
+}
+
+.accordion-button.collapsed {
+    background: #ffffff;
+}
+
+.accordion-button:not(.collapsed) {
+    background: var(--bs-secondary-bg);
+}
+
+.accordion-button:hover {
+    background: var(--bs-secondary-bg);
+}
+
+.timespan {
+    --bs-bg-opacity: .2;
+}
+
+.upcomingReservationsDashboard .reservation.hover {
+    cursor: pointer;
+    background-color: #eaf2f2;
+    color: #222;
+}
+
+.upcomingReservationsDashboard .reservation.clicked {
+    cursor: pointer;
+    background-color: #F0F0F0;
+}
+
+.upcomingReservationsDashboard .reservation.pending {
+    background-color: var(--reservedPending);
+}
+
+.upcomingReservationsDashboard .reservation.pending.hover,
+.upcomingReservationsDashboard .reservation.pending.clicked {
+    background-color: #eac995;
+}
+
+#page-schedule a {
+    text-decoration: none;
+}
+
+.page-search-availability #repeatDiv label {
+    min-width: 80px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid var(--bs-border-color);
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid var(--bs-border-color) 1px;
+}
+
+.ui-widget {
+    font-family: inherit !important;
+}
+
+.ui-autocomplete {
+    z-index: 5000;
+}
+
+.horizontal-list li,
+.updateCustomAttribute,
+.reservation-list-dates div {
+    min-width: 240px;
+}
+
+#reservationTable tr.editable td {
+    cursor: pointer;
+}
+
+.form-control.dateinput {
+    width: 90px;
+}
+
+#add-blackout-panel label {
+    min-width: 90px;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: #291c1c;
+}
+
+span.searchclear,
+span.searchclear-label {
+    cursor: pointer;
+}
+
+#deleteCustomLayoutDialog,
+#confirmCreateSlotDialog {
+    display: none;
+    background-color: #F9F9F9;
+    border-color: #BCBCBC;
+    position: absolute;
+    z-index: 2;
+    padding: 12px;
+}
+
+/*
+.highlight {
+  background-color: #b2c5ab !important;
+}
+*/
+#button-up {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    transition: all 300ms ease;
+    transform: scale(0);
+    z-index: 1100;
+}
+
+#button-up:hover {
+    transform: scale(1.2) !important;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+#resourceGroupsContainer {
+    display: none;
+    width: 200px;
+    height: 300px;
+    z-index: 200;
+    position: absolute;
+    overflow: scroll;
+}
+
+/*.select2-container {
+   z-index: 2000;
+}*/
+
+.dropzone {
+    position: relative;
+    height: 85px;
+    width: 100%;
+}
+
+.dropzone div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.dropzone [type="file"] {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.dropzone img {
+    max-width: 95%;
+    max-height: 80px;
+}
+
+#dayDialog,
+#deleteCustomLayoutDialog,
+#confirmCreateSlotDialog {
+    background-color: #F9F9F9;
+    border-color: #BCBCBC;
+    position: absolute;
+    z-index: 2;
+    padding: 12px;
+}
+
+#dayDialog a,
+#deleteCustomLayoutDialog a,
+#confirmCreateSlotDialog a {
+    padding: 0 5px;
+}
+
+#changeLayoutDialog textarea {
+    width: 300px;
+    height: 375px;
+}
+
+.slotWizard input {
+    width: 80px;
+}
+
+#addedGroups a {
+    text-decoration: none;
+    color: var(--bs-danger);
+}
+
+#addedGroups a::before {
+    content: "\F628";
+    font-family: "bootstrap-icons";
+}
+
+#removedGroups a {
+    text-decoration: none;
+    color: var(--bs-success);
+}
+
+#removedGroups a::before {
+    content: "\F4FC";
+    font-family: "bootstrap-icons";
+}
+
+.resource-draggable {
+    cursor: move;
+    border: solid 1px transparent;
+    padding: 3px;
+}
+
+.resource-draggable:hover {
+    border: dotted 1px #666;
+}
+
+.drop-resource {
+    background-color: #fffcd3;
+}
+
+.jqtree-tree a,
+.jqtree-tree li a {
+    text-decoration: none;
+}
+
+.jqtree-tree,
+.jqtree-tree li {
+    list-style: none;
+}
+
+.qtip {
+    max-width: none;
+}
+
+ul.jqtree-tree .group-resource .jqtree-title {
+    color: #111111;
+}
+
+#manage-resource-groups-container {
+    max-width: 700px;
+}
+
+table.reservations td {
+    border: solid var(--color-lines) 1px !important;
+}
+
+.availability-highlighter {
+    position: absolute;
+    background-color: rebeccapurple;
+    opacity: 0.25;
+}
+
+.opening {
+    cursor: pointer;
+}
+
+#resourceDetailsDiv {
+    max-width: 50%;
+    display: none;
+    position: absolute;
+    z-index: 99999;
+}
+
+#userDetailsDiv,
+#customize-columns {
+    display: none;
+    position: absolute;
+    border: solid 1px var(--color-lines);
+    background-color: #fff;
+    padding: 5px;
+    -webkit-box-shadow: 0px 0px 3px 0px #212121;
+    -moz-box-shadow: 0px 0px 3px 0px #212121;
+    box-shadow: 0px 0px 3px 0px #212121;
+    z-index: 99999;
+}
+
+#reservation-box label {
+    min-width: 50px;
+}
+
+input[type=text].user-search {
+    width: 250px;
+}
+
+#participantList,
+#inviteeList {
+    height: 100px;
+    overflow-y: auto;
+}
+
+.blackouts-edit-resources {
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+.no-show {
+    display: none !important;
+}
