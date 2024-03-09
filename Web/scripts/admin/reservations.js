@@ -109,7 +109,7 @@ function ReservationManagement(opts, approval) {
         });
 
         elements.reservationTable.delegate('tr.editable', 'click', function (e) {
-            if ($(e.target).hasClass('action') || $(e.target).closest('td').hasClass('action')) {
+            if ($(e.target).hasClass('action') || $(e.target).hasClass('user') || $(e.target).closest('td').hasClass('action')) {
                 e.stopPropagation();
                 return;
             }
@@ -130,11 +130,11 @@ function ReservationManagement(opts, approval) {
             var refNum = $(this).attr('data-refnum');
             $(this).attachReservationPopup(refNum, options.popupUrl);
 
-            $(this).hover(function (e) {
+            /*$(this).hover(function (e) {
                 $(this).find('td').addClass('highlight');
             }, function (e) {
                 $(this).find('td').removeClass('highlight');
-            });
+            });*/
         });
 
         elements.reservationTable.delegate('.delete', 'click', function (e) {
@@ -249,8 +249,8 @@ function ReservationManagement(opts, approval) {
             }
         };
 
-        ConfigureAsyncForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
-        ConfigureAsyncForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
+        ConfigureAsyncForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, { dataType: 'json' });
+        ConfigureAsyncForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, { dataType: 'json' });
         ConfigureAsyncForm(elements.statusForm, getUpdateStatusUrl, function () {
             elements.statusDialog.modal('hide');
             // todo inline update
@@ -286,7 +286,7 @@ function ReservationManagement(opts, approval) {
             reasons[statusId] = [];
         }
 
-        reasons[statusId].push({id: id, description: description});
+        reasons[statusId].push({ id: id, description: description });
     };
 
     ReservationManagement.prototype.initializeStatusFilter = function (statusId, reasonId) {
@@ -331,7 +331,7 @@ function ReservationManagement(opts, approval) {
     }
 
     function populateReasonOptions(statusId, reasonsElement) {
-        reasonsElement.empty().append($('<option>', {value: '', text: '-'}));
+        reasonsElement.empty().append($('<option>', { value: '', text: '-' }));
 
         if (statusId in reasons) {
             $.each(reasons[statusId], function (i, v) {
@@ -373,7 +373,7 @@ function ReservationManagement(opts, approval) {
     }
 
     function approveReservation(referenceNumber) {
-        $.blockUI({message: $('#approveDiv')});
+        $.blockUI({ message: $('#approveDiv') });
         approval.Approve(referenceNumber);
     }
 
