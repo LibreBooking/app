@@ -7,7 +7,7 @@
 		{/foreach}
 	</div>
 
-	<a href="{$ScriptUrl}" class="btn btn-default col-xs-12">{translate key=Login}</a>
+	<a href="{$ScriptUrl}" class="btn btn-outline-secondary col-12">{translate key=Login}</a>
 </div>
 
 {include file="javascript-includes.tpl"}
