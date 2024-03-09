@@ -1,50 +1,34 @@
 {* All of the slot display formatting *}
 
 {function name=displayPastTime}
-    <td ref="{$SlotRef}"
-        class="pasttime slot"
-        data-href="{$Href}"
+    <td ref="{$SlotRef}" class="pasttime slot" data-href="{$Href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-min="{$Slot->BeginDate()->Timestamp()}"
-        data-max="{$Slot->EndDate()->Timestamp()}"
-        data-resourceId="{$ResourceId}">&nbsp;
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}" data-resourceId="{$ResourceId}">&nbsp;
     </td>
 {/function}
 
 {function name=displayReservable}
-    <td class="reservable clickres slot"
-        ref="{$SlotRef}"
-        data-href="{$Href}"
+    <td class="reservable clickres slot" ref="{$SlotRef}" data-href="{$Href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-min="{$Slot->BeginDate()->Timestamp()}"
-        data-max="{$Slot->EndDate()->Timestamp()}"
-        data-resourceId="{$ResourceId}">&nbsp;
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}" data-resourceId="{$ResourceId}">&nbsp;
     </td>
 {/function}
 
 {function name=displayRestricted}
-    <td ref="{$SlotRef}"
-        class="restricted slot"
-        data-href="{$Href}"
+    <td ref="{$SlotRef}" class="restricted slot" data-href="{$Href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-min="{$Slot->BeginDate()->Timestamp()}"
-        data-max="{$Slot->EndDate()->Timestamp()}"
-        data-resourceId="{$ResourceId}">&nbsp;
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}" data-resourceId="{$ResourceId}">&nbsp;
     </td>
 {/function}
 
 {function name=displayUnreservable}
-    <td ref="{$SlotRef}"
-        class="unreservable slot"
-        data-href="{$Href}"
+    <td ref="{$SlotRef}" class="unreservable slot" data-href="{$Href}"
         data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
-        data-min="{$Slot->BeginDate()->Timestamp()}"
-        data-max="{$Slot->EndDate()->Timestamp()}"
-        data-resourceId="{$ResourceId}">&nbsp;
+        data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" data-min="{$Slot->BeginDate()->Timestamp()}"
+        data-max="{$Slot->EndDate()->Timestamp()}" data-resourceId="{$ResourceId}">&nbsp;
     </td>
 {/function}
 
@@ -55,284 +39,294 @@
 {* End slot display formatting *}
 
 {block name="header"}
-    {include file='globalheader.tpl' Qtip=true Select2=true Owl=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
+    {include file='globalheader.tpl' Qtip=true Select2=true Owl=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
 <div id="page-schedule">
     {assign var=startTime value=microtime(true)}
 
     {if isset($ShowResourceWarning) && $ShowResourceWarning}
-        <div class="alert alert-warning no-resource-warning"><span
-                    class="fa fa-warning"></span> {translate key=NoResources} <a
-                    href="admin/manage_resources.php">{translate key=AddResource}</a></div>
-    {/if}
+        <div class="alert alert-warning no-resource-warning"><i class="bi bi-exclamation-triangle-fill"></i>
+            {translate key=NoResources}
+            <a class="alert-link" href="admin/manage_resources.php">{translate key=AddResource}</a>
+    </div> {/if}
 
     {if $CanViewAdmin}
-        <div id="slow-schedule-warning" class="alert alert-warning no-show" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-            We noticed this page is taking a long time to load. To speed ths page up, try
-            reducing the number of <a class="alert-link" href="admin/manage_resources.php">resources</a> on this
-            schedule or
-            reducing the number of <a class="alert-link" href="admin/manage_schedules.php">days</a> being shown.
-            <br/><br/>
-            This page is taking <span id="warning-time"></span> seconds to load
-            <span id="warning-resources"></span> resources for <span id="warning-days"></span> days.
-
-            <button type="button" class="close close-forever" aria-label="Do not show again">
-                <span aria-hidden="true">Do not show again</span>
-            </button>
+        <div id="slow-schedule-warning" class="alert alert-warning d-flex align-items-center d-none" role="alert">
+            <div>
+                <p>We noticed this page is taking a long time to load. To speed ths page up, try
+                    reducing the number of <a class="alert-link" href="admin/manage_resources.php">resources</a> on this
+                    schedule or
+                    reducing the number of <a class="alert-link" href="admin/manage_schedules.php">days</a> being shown.
+                </p>
+                <p class="mb-0">
+                    This page is taking <span id="warning-time"></span> seconds to load
+                    <span id="warning-resources"></span> resources for <span id="warning-days"></span> days.
+                    <button type="button" class="close close-forever btn btn-link alert-link"
+                        aria-label="Do not show again">
+                        <span aria-hidden="true">Do not show again</span> {*Cadena para traducir*}
+                    </button>
+                </p>
+            </div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {/if}
 
     {if $IsAccessible}
-        <div id="defaultSetMessage" class="alert alert-success hidden">
+        <div id="defaultSetMessage" class="alert alert-success d-none">
             {translate key=DefaultScheduleSet}
         </div>
         {block name="schedule_control"}
             <div class="row">
-                {assign var=titleWidth value="col-sm-12 col-xs-12"}
+                {assign var=titleWidth value="col-sm-12 col-12"}
                 {if !isset($HideSchedule) || !$HideSchedule}
-                    {assign var=titleWidth value="col-sm-6 col-xs-12"}
-                    <div id="schedule-actions" class="col-sm-3 col-xs-12">
+                    {assign var=titleWidth value="col-sm-6 col-12"}
+                    <div id="schedule-actions" class="col-sm-3 col-12">
                         {block name="actions"}
-                            <a href="#" id="print_schedule" title="{translate key=Print}"><span
-                                        class="fa fa-print"></span></a>
-                            <a href="#" id="make_default"
-                               style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
-                            <a href="#" class="schedule-style" id="schedule_standard"
-                               schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
-                            <a href="#" class="schedule-style" id="schedule_tall"
-                               schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
-                            <a href="#" class="schedule-style hidden-sm hidden-xs" id="schedule_wide"
-                               schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
-                            <a href="#" class="schedule-style hidden-sm hidden-xs" id="schedule_week"
-                               schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
-                            <div>
-                                {if isset($SubscriptionUrl) && $SubscriptionUrl != null && $ShowSubscription}
-                                    {html_image src="feed.png"}
-                                    <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a>
-                                    |
-                                    <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
-                                {/if}
+                            <div class="d-flex align-items-center">
+                                <a href="#" id="print_schedule" class="link-primary me-1" title="{translate key=Print}"><span
+                                        class="bi bi-printer"></span></a>
+                                <a href="#" id="make_default" class="link-primary me-2"
+                                    style="display:none;">{*{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}*}<i
+                                        class="bi bi-star-fill"></i></a>
+                                <a href="#" class="schedule-style me-1" id="schedule_standard"
+                                    schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
+                                <a href="#" class="schedule-style me-1" id="schedule_tall"
+                                    schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
+                                <a href="#" class="schedule-style d-none d-md-block me-1" id="schedule_wide"
+                                    schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
+                                <a href="#" class="schedule-style d-none d-md-block" id="schedule_week"
+                                    schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
                             </div>
+                            {if isset($SubscriptionUrl) && $SubscriptionUrl != null && $ShowSubscription}
+                                <div class="d-flex align-items-center"><i class="bi bi-rss-fill link-primary me-1"></i>
+                                    <a class="link-primary me-1" target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a>
+                                    <div class="vr me-1"></div>
+                                    <a class="link-primary" target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
+                                </div>
+                            {/if}
                         {/block}
                     </div>
                 {/if}
 
-                <div id="schedule-title" class="schedule_title {$titleWidth} col-xs-12">
-					{if count($Schedules) > 1}
-						 <label for="schedules" class="no-show">Schedule</label>
-						 <select id="schedules" class="form-control" style="width:auto;">
-							 {foreach from=$Schedules item=schedule}
-								 <option value="{$schedule->GetId()}"
-										 {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
-							 {/foreach}
-						 </select>
-					{/if}
-                    <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                        <span class="no-show">{translate key=ShowHideNavigation}</span>
-                    </a>
-                    <div id="individualDates">
-                        <div class="checkbox inline">
-                            <input type='checkbox' id='multidateselect'/>
-                            <label for='multidateselect'>{translate key=SpecificDates}</label>
-                        </div>
-                        <a class="btn btn-default btn-sm" href="#" id="individualDatesGo"><i
-                                    class="fa fa-angle-double-right"></i>
-                            <span class="no-show">{translate key=SpecificDates}</span>
+                <div id="schedule-title" class="schedule_title {$titleWidth}">
+                    <div class="d-flex justify-content-center">
+                        {if count($Schedules) > 1}
+                            <label for="schedules" class="visually-hidden">{translate key='Schedules'}</label>
+                            <select id="schedules" class="form-select w-auto">
+                                {foreach from=$Schedules item=schedule}
+                                    <option value="{$schedule->GetId()}" {if $schedule->GetId() == $ScheduleId}selected="selected"
+                                        {/if}>
+                                        {$schedule->GetName()}</option>
+                                {/foreach}
+                            </select>
+                        {/if}
+                        <a class="link-primary" href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}"
+                            data-bs-toggle="collapse" data-bs-target="#individualDates" aria-expanded="false"
+                            aria-controls="individualDates">
+                            <span class="bi bi-calendar"></span>
+                            <span class="visually-hidden">{translate key=ShowHideNavigation}</span>
                         </a>
                     </div>
-                    <div id="individualDatesList"></div>
+                    <div id="individualDates" class="collapse">
+                        <div class="d-flex justify-content-center align-items-center mt-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type='checkbox' id='multidateselect' />
+                                <label class="form-check-label" for='multidateselect'>{translate key=SpecificDates}</label>
+                            </div>
+                            <a class="btn btn-link link-primary" href="#" id="individualDatesGo">
+                                <i class="bi bi-caret-right-fill"></i>
+                                <span class="visually-hidden">{translate key=SpecificDates}</span>
+                            </a>
+                        </div>
+                        <div class="text-center" id="individualDatesList"></div>
+                    </div>
+                    <div type="text" id="datepicker" class="collapse"></div>
                 </div>
 
-                {capture name="date_navigation"}
-                    {if !isset($HideSchedule) || !$HideSchedule}
-                        <div class="schedule-dates col-sm-3 col-xs-12">
-                            {assign var=TodaysDate value=Date::Now()}
-                            <a href="#" class="change-date btn-link btn-success" data-year="{$TodaysDate->Year()}"
-                               data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}"
-                               alt="{translate key=Today}"><i class="fa fa-home"></i>
-                                <span class="no-show">{translate key=Today}</span>
-                            </a>
-                            {assign var=FirstDate value=$DisplayDates->GetBegin()}
-                            {assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
-                            <a href="#" class="change-date" data-year="{$PreviousDate->Year()}"
-                               data-month="{$PreviousDate->Month()}"
-                               data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="{translate key=Back}"}</a>
-                            {formatdate date=$FirstDate}
-                            {if $ShowWeekNumbers}({$FirstDate->WeekNumber()}){/if}
-                            -
-                            {formatdate date=$LastDate}
-                            {if $ShowWeekNumbers}({$LastDate->WeekNumber()}){/if}
-                            <a href="#" class="change-date" data-year="{$NextDate->Year()}"
-                               data-month="{$NextDate->Month()}"
-                               data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="{translate key=Forward}"}</a>
+            </div>
 
-                            {if $ShowFullWeekLink}
-                                <a href="{add_querystring key=SHOW_FULL_WEEK value=1}"
-                                   id="showFullWeek">({translate key=ShowFullWeek})</a>
-                            {/if}
+            {capture name="date_navigation"}
+                {if !isset($HideSchedule) || !$HideSchedule}
+                    <div class="schedule-dates d-flex justify-content-center mt-2 fs-5 gap-2">
+                        {assign var=TodaysDate value=Date::Now()}
+                        <a href="#" class="change-date link-primary" data-year="{$TodaysDate->Year()}"
+                            data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}" alt="{translate key=Today}"><i
+                                class="bi bi-house-fill"></i>
+                            <span class="visually-hidden">{translate key=Today}</span>
+                        </a>
+                        {assign var=FirstDate value=$DisplayDates->GetBegin()}
+                        {assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
+                        <a href="#" class="change-date link-primary" data-year="{$PreviousDate->Year()}"
+                            data-month="{$PreviousDate->Month()}" data-day="{$PreviousDate->Day()}"><i
+                                class="bi bi-arrow-left-circle-fill"></i></a>
+                        {formatdate date=$FirstDate}
+                        {if $ShowWeekNumbers}({$FirstDate->WeekNumber()}){/if}
+                        -
+                        {formatdate date=$LastDate}
+                        {if $ShowWeekNumbers}({$LastDate->WeekNumber()}){/if}
+                        <a href="#" class="change-date link-primary" data-year="{$NextDate->Year()}" data-month="{$NextDate->Month()}"
+                            data-day="{$NextDate->Day()}"><i class="bi bi-arrow-right-circle-fill"></i></a>
+                    </div>
+                    {if $ShowFullWeekLink}
+                        <div class="d-flex justify-content-center fs-5">
+                            <a class="link-primary" href="{add_querystring key=SHOW_FULL_WEEK value=1}"
+                                id="showFullWeek">({translate key=ShowFullWeek})</a>
                         </div>
                     {/if}
-                {/capture}
+                {/if}
+            {/capture}
 
-                {$smarty.capture.date_navigation}
-            </div>
-            <div type="text" id="datepicker" style="display:none;"></div>
+            {$smarty.capture.date_navigation}
         {/block}
 
         {if isset($ScheduleAvailabilityEarly) && $ScheduleAvailabilityEarly}
-            <div class="alert alert-warning center">
-                <strong>
-                    {translate key=ScheduleAvailabilityEarly}
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
-                       data-month="{$ScheduleAvailabilityStart->Month()}"
-                       data-day="{$ScheduleAvailabilityStart->Day()}">
-                        {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
-                    </a> -
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityEnd->Year()}"
-                       data-month="{$ScheduleAvailabilityEnd->Month()}"
-                       data-day="{$ScheduleAvailabilityEnd->Day()}">
-                        {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
-                    </a>
-                </strong>
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle-fill"></i> {translate key=ScheduleAvailabilityEarly}
+                <a href="#" class="change-date alert-link" data-year="{$ScheduleAvailabilityStart->Year()}"
+                    data-month="{$ScheduleAvailabilityStart->Month()}" data-day="{$ScheduleAvailabilityStart->Day()}">
+                    {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
+                </a> -
+                <a href="#" class="change-date alert-link" data-year="{$ScheduleAvailabilityEnd->Year()}"
+                    data-month="{$ScheduleAvailabilityEnd->Month()}" data-day="{$ScheduleAvailabilityEnd->Day()}">
+                    {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
+                </a>
             </div>
         {/if}
 
         {if isset($ScheduleAvailabilityLate) && $ScheduleAvailabilityLate}
-            <div class="alert alert-warning center">
-                <strong>
-                    {translate key=ScheduleAvailabilityLate}
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
-                       data-month="{$ScheduleAvailabilityStart->Month()}"
-                       data-day="{$ScheduleAvailabilityStart->Day()}">
-                        {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
-                    </a> -
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityEnd->Year()}"
-                       data-month="{$ScheduleAvailabilityEnd->Month()}"
-                       data-day="{$ScheduleAvailabilityEnd->Day()}">
-                        {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
-                    </a>
-                </strong>
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                {translate key=ScheduleAvailabilityLate}
+                <a href="#" class="change-date alert-link" data-year="{$ScheduleAvailabilityStart->Year()}"
+                    data-month="{$ScheduleAvailabilityStart->Month()}" data-day="{$ScheduleAvailabilityStart->Day()}">
+                    {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
+                </a> -
+                <a href="#" class="change-date alert-link" data-year="{$ScheduleAvailabilityEnd->Year()}"
+                    data-month="{$ScheduleAvailabilityEnd->Month()}" data-day="{$ScheduleAvailabilityEnd->Day()}">
+                    {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
+                </a>
             </div>
         {/if}
 
         {if !isset($HideSchedule) || !$HideSchedule}
             {block name="legend"}
-                <div class="hidden-xs row col-sm-12 schedule-legend">
-                    <div class="center">
-                        <div class="legend reservable">{translate key=Reservable}</div>
-                        <div class="legend unreservable">{translate key=Unreservable}</div>
-                        <div class="legend reserved">{translate key=Reserved}</div>
+                <div class="schedule-legend mt-3">
+                    <div class="d-none d-sm-flex justify-content-center flex-wrap gap-1 text-center">
+                        <div class="legend reservable border border-dark-subtle rounded-2">{translate key=Reservable}</div>
+                        <div class="legend unreservable border border-dark-subtle rounded-2">{translate key=Unreservable}</div>
+                        <div class="legend reserved border border-dark-subtle rounded-2">{translate key=Reserved}</div>
                         {if $LoggedIn}
-                            <div class="legend reserved mine">{translate key=MyReservation}</div>
-                            <div class="legend reserved participating">{translate key=Participant}</div>
+                            <div class="legend reserved mine border border-dark-subtle rounded-2">{translate key=MyReservation}
+                            </div>
+                            <div class="legend reserved participating border border-dark-subtle rounded-2">
+                                {translate key=Participant}</div>
                         {/if}
-                        <div class="legend reserved pending">{translate key=Pending}</div>
-                        <div class="legend pasttime">{translate key=Past}</div>
-                        <div class="legend restricted">{translate key=Restricted}</div>
+                        <div class="legend reserved pending border border-dark-subtle rounded-2">{translate key=Pending}</div>
+                        <div class="legend pasttime border border-dark-subtle rounded-2">{translate key=Past}</div>
+                        <div class="legend restricted border border-dark-subtle rounded-2">{translate key=Restricted}</div>
                     </div>
                 </div>
             {/block}
-            <div class="row">
-                <div id="reservations-left" class="col-md-2 col-sm-12 default-box">
-                    <div class="reservations-left-header">{translate key=Filter}
-                        <a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i
-                                    class="glyphicon glyphicon-remove"></i>
-                            <span class="no-show">Hide Reservation Filter</span>
-                        </a>
-                    </div>
 
-                    <div class="reservations-left-content">
-                        <form method="get" role="form" id="advancedFilter">
+            <div>
+                <a href="#" title="Show Reservation Filter" class="toggle-sidebar link-primary"><i
+                        class="bi bi-funnel-fill me-1"></i>{translate key=ResourceFilter}
+                    <i id="restore-sidebar" class="bi bi-chevron-double-right"></i></a>
+            </div>
+            <div class="row g-2">
+                <div id="reservations-left" class="col-md-2 col-sm-12">
+                    <div class="card h-100">
+                        <div
+                            class="reservations-left-header card-header d-flex justify-content-between align-items-center px-3 py-2">
+                            <h5 class="card-title text-center mb-0">{translate key=Filter}</h5>
+                            <a href="#" class="toggle-sidebar link-primary" title="Hide Reservation Filter">
+                                <i class="bi bi-x-circle-fill"></i>
+                                <span class="visually-hidden">Hide Reservation Filter</span>
+                            </a>
+                        </div>
 
-                            {if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
-                                <div>
-                                    <input type="submit" value="{translate key=Filter}"
-                                           class="btn btn-success btn-sm" {formname key=SUBMIT}/>
-                                </div>
-                            {/if}
+                        <div class="reservations-left-content card-body">
+                            <form method="get" role="form" id="advancedFilter">
 
-                            <div>
-                                {*<label>{translate key=Resource}</label>*}
-                                <div id="resourceGroups"></div>
-                            </div>
-
-                            <div id="resettable">
-                                {if $CanViewUsers}
-                                    <div class="form-group col-xs-12">
-                                        <label for="ownerFilter">{translate key=Owner}</label>
-                                        <input type='search' id='ownerFilter'
-                                               class="form-control input-sm search" {formname key=OWNER_TEXT} value="{if isset($OwnerText)}{$OwnerText}{/if}" />
-                                        <input {formname key=USER_ID} id="ownerId" type="hidden" value="{$OwnerId}"/>
-                                        <span class="searchclear searchclear-label glyphicon glyphicon-remove-circle" ref="ownerFilter,ownerId"></span>
+                                {if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
+                                    <div>
+                                        <input type="submit" value="{translate key=Filter}" class="btn btn-success btn-sm"
+                                            {formname key=SUBMIT} />
                                     </div>
-                                    {if $AllowParticipation}
-                                        <div class="form-group col-xs-12">
-                                            <label for="participantFilter">{translate key=Participant}</label>
-                                            <input type='search' id='participantFilter'
-                                                   class="form-control input-sm search" {formname key=PARTICIPANT_TEXT} value="{if isset($ParticipantText)}{$ParticipantText}{/if}" />
-                                            <input {formname key=PARTICIPANT_ID} id="participantId" type="hidden" value="{$ParticipantId}"/>
-                                            <span class="searchclear searchclear-label glyphicon glyphicon-remove-circle" ref="participantFilter,participantId"></span>
-                                        </div>
-                                    {/if}
                                 {/if}
-                                <div class="form-group col-xs-12">
-                                    <label for="maxCapactiy">{translate key=MinimumCapacity}</label>
-                                    <input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
-                                           class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
-                                           value="{$MaxParticipantsFilter}"/>
+
+                                <div>
+                                    {*<label>{translate key=Resource}</label>*}
+                                    <div id="resourceGroups"></div>
                                 </div>
 
-                                <div class="form-group col-xs-12">
-                                    <label for="resourceType">{translate key=ResourceType}</label>
-                                    <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
-                                            class="form-control input-sm">
-                                        <option value="">- {translate key=All} -</option>
-                                        {object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
-                                    </select>
-                                </div>
+                                <div id="resettable">
+                                    {if $CanViewUsers}
+                                        <div class="form-group mb-2">
+                                            <label for="ownerFilter" class="fw-bold">{translate key=Owner}</label>
+                                            <input type='search' id='ownerFilter' class="form-control form-control-sm search"
+                                                {formname key=OWNER_TEXT} value="{if isset($OwnerText)}{$OwnerText}{/if}" />
+                                            <input {formname key=USER_ID} id="ownerId" type="hidden" value="{$OwnerId}" />
+                                            <span class="searchclear searchclear-label" ref="ownerFilter,ownerId"></span>
+                                        </div>
+                                        {if $AllowParticipation}
+                                            <div class="form-group mb-2">
+                                                <label for="participantFilter" class="fw-bold">{translate key=Participant}</label>
+                                                <input type='search' id='participantFilter' class="form-control form-control-sm search"
+                                                    {formname key=PARTICIPANT_TEXT}
+                                                    value="{if isset($ParticipantText)}{$ParticipantText}{/if}" />
+                                                <input {formname key=PARTICIPANT_ID} id="participantId" type="hidden"
+                                                    value="{$ParticipantId}" />
+                                                <span class="searchclear searchclear-label"
+                                                    ref="participantFilter,participantId"></span>
+                                            </div>
+                                        {/if}
+                                    {/if}
+                                    <div class="form-group mb-2">
+                                        <label for="maxCapactiy" class="fw-bold">{translate key=MinimumCapacity}</label>
+                                        <input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
+                                            class="form-control form-control-sm" {formname key=MAX_PARTICIPANTS}
+                                            value="{$MaxParticipantsFilter}" />
+                                    </div>
 
-                                {foreach from=$ResourceAttributes item=attribute}
-                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm" class="customAttribute col-xs-12"}
-                                {/foreach}
+                                    <div class="form-group mb-2">
+                                        <label for="resourceType" class="fw-bold">{translate key=ResourceType}</label>
+                                        <select id="resourceType" {formname key=RESOURCE_TYPE_ID}
+                                            {formname key=RESOURCE_TYPE_ID} class="form-select form-control-sm">
+                                            <option value="">- {translate key=All} -</option>
+                                            {object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
+                                        </select>
+                                    </div>
 
-                                {foreach from=$ResourceTypeAttributes item=attribute}
-                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm" class="customAttribute col-xs-12"}
-                                {/foreach}
+                                    {foreach from=$ResourceAttributes item=attribute}
+                                        {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="form-control-sm" class="customAttribute  mb-2"}
+                                    {/foreach}
 
-                                <div class="btn-submit">
-                                    <button type="submit" class="btn btn-success btn-sm"
+                                    {foreach from=$ResourceTypeAttributes item=attribute}
+                                        {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="form-control-sm" class="customAttribute mb-2"}
+                                    {/foreach}
+
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-success btn-block btn-sm"
                                             value="submit">{translate key=Filter}</button>
-                                </div>
-                                <div class="btn-clear">
-                                    <button id="show_all_resources" type="button"
-                                            class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
+                                        <button id="show_all_resources" type="button"
+                                            class="btn btn-outline-secondary btn-sm">{translate key=ClearFilter}</button>
+                                    </div>
                                 </div>
 
-                            </div>
-
-                            <input type="hidden" name="sid" value="{$ScheduleId}"/>
-                            <input type="hidden" name="sds"
-                                   value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}"/>
-                            <input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}"/>
-                            <input type="hidden" {formname key=SUBMIT} value="true"/>
-                            <input type="hidden" name="clearFilter" id="clearFilter" value="0"/>
-                        </form>
+                                <input type="hidden" name="sid" value="{$ScheduleId}" />
+                                <input type="hidden" name="sds"
+                                    value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}" />
+                                <input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}" />
+                                <input type="hidden" {formname key=SUBMIT} value="true" />
+                                <input type="hidden" name="clearFilter" id="clearFilter" value="0" />
+                            </form>
+                        </div>
                     </div>
                 </div>
 
                 <div id="reservations" class="col-md-10 col-sm-12">
-                    <div>
-                        <a href="#" id="restore-sidebar" title="Show Reservation Filter"
-                           class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
-                                    class="glyphicon glyphicon-filter"></i> <i
-                                    class="glyphicon glyphicon-chevron-right"></i></a>
-                    </div>
                     {block name="reservations"}
                         {include file="Schedule/schedule-reservations-grid.tpl" }
                     {/block}
@@ -342,11 +336,10 @@
     {else}
         <div class="error">{translate key=NoResourcePermission}</div>
     {/if}
-    <div class="clearfix">&nbsp;</div>
-    <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
-    <div class="row no-margin">
-        <div class="col-sm-9 visible-md visible-lg">&nbsp;</div>
+    <input type="hidden" value="{$ScheduleId}" id="scheduleId" />
+
+    <div class="mt-2">
         {$smarty.capture.date_navigation}
     </div>
     {assign var=endTime value=microtime(true)}
@@ -363,31 +356,29 @@
 
 
 <form id="fetchReservationsForm">
-    <input type="hidden" {formname key=BEGIN_DATE} value="{formatdate date=$FirstDate key=system}"/>
-    <input type="hidden" {formname key=END_DATE} value="{formatdate date=$LastDate key=system}"/>
-    <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+    <input type="hidden" {formname key=BEGIN_DATE} value="{formatdate date=$FirstDate key=system}" />
+    <input type="hidden" {formname key=END_DATE} value="{formatdate date=$LastDate key=system}" />
+    <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
     {foreach from=$SpecificDates item=d}
-        <input type="hidden" {formname key=SPECIFIC_DATES multi=true} value="{formatdate date=$d key=system}"/>
+        <input type="hidden" {formname key=SPECIFIC_DATES multi=true} value="{formatdate date=$d key=system}" />
     {/foreach}
-    <input type="hidden" {formname key=MIN_CAPACITY} value="{if isset($MinCapacityFilter)}{$MinCapacityFilter}{/if}"/>
-    <input type="hidden" {formname key=RESOURCE_TYPE_ID} value="{$ResourceTypeIdFilter}"/>
+    <input type="hidden" {formname key=MIN_CAPACITY} value="{if isset($MinCapacityFilter)}{$MinCapacityFilter}{/if}" />
+    <input type="hidden" {formname key=RESOURCE_TYPE_ID} value="{$ResourceTypeIdFilter}" />
     {foreach from=$ResourceAttributes item=attribute}
-        <input type="hidden" name="RESOURCE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}"/>
+        <input type="hidden" name="RESOURCE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}" />
     {/foreach}
     {foreach from=$ResourceTypeAttributes item=attribute}
-        <input type="hidden" name="RESOURCE_TYPE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}"/>
+        <input type="hidden" name="RESOURCE_TYPE_ATTRIBUTE_ID[{$attribute->Id()}]" value="{$attribute->Value()}" />
     {/foreach}
     {foreach from=$ResourceIds item=id}
-        <input type="hidden" {formname key=RESOURCE_ID multi=true} value="{$id}"/>
+        <input type="hidden" {formname key=RESOURCE_ID multi=true} value="{$id}" />
     {/foreach}
-    <input type="hidden" {formname key=USER_ID} value="{$UserIdFilter}"/>
-    <input type="hidden" {formname key=PARTICIPANT_ID} value="{$ParticipantIdFilter}"/>
+    <input type="hidden" {formname key=USER_ID} value="{$UserIdFilter}" />
+    <input type="hidden" {formname key=PARTICIPANT_ID} value="{$ParticipantIdFilter}" />
     {csrf_token}
 </form>
 
-<div id="loading-schedule" class="no-show">Loading reservations...</div>
-
-<button id="reservationsToTop" title="Go to top"><i class="fa fa-2x fa-arrow-circle-o-up"></i></button>
+<div id="loading-schedule" class="d-none">Loading reservations...</div>
 
 {include file="javascript-includes.tpl" Qtip=true Select2=true Owl=true Clear=true}
 
@@ -404,7 +395,6 @@
 {jsfile src="autocomplete.js"}
 {jsfile src="ajax-helpers.js"}
 <script type="text/javascript">
-
     const scheduleOpts = {
         reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
         summaryPopupUrl: "{$Path}ajax/respopup.php",
@@ -430,17 +420,17 @@
     const resourceOrder = [];
     let resourceIndex = 0;
     {foreach from=$Resources item=r}
-    resourceOrder[{$r->GetId()}] = resourceIndex++;
+        resourceOrder[{$r->GetId()}] = resourceIndex++;
     {/foreach}
     scheduleOpts.resourceOrder = resourceOrder;
 
     {if $LoadViewOnly}
-    scheduleOpts.reservationUrlTemplate = "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]";
-    scheduleOpts.reservationLoadUrl = "{$Path}{Pages::VIEW_SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations";
-    scheduleOpts.isReservable = {if $AllowGuestBooking}1{else}0{/if};
+        scheduleOpts.reservationUrlTemplate = "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]";
+        scheduleOpts.reservationLoadUrl = "{$Path}{Pages::VIEW_SCHEDULE}?{QueryStringKeys::DATA_REQUEST}=reservations";
+        scheduleOpts.isReservable = {if $AllowGuestBooking}1{else}0{/if};
     {/if}
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         const schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
         schedule.init();
     });
