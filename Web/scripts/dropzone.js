@@ -7,33 +7,30 @@ function dropzone(element, opts) {
 	var originalDivContent = null;
 
 	element.on('dragover', function () {
-		$(this).addClass('hover');
+		$(this).addClass('border-secondary');
 	});
 
 	element.on('dragleave', function () {
-		$(this).removeClass('hover');
+		$(this).removeClass('border-secondary');
 	});
 
 	element.find('input').on('change', function (e) {
 		var file = this.files[0];
 
-		if (originalDivContent == null)
-		{
+		if (originalDivContent == null) {
 			originalDivContent = element.find('div').html();
 		}
-		if (!file)
-		{
+		if (!file) {
 			element.find('div').html(originalDivContent);
 			return;
 		}
 
-		element.removeClass('hover');
+		element.removeClass('border-secondary');
 
 		element.addClass('dropped');
 		element.find('img').remove();
 
-		if ((/^image\/(gif|png|jpeg)$/i).test(file.type))
-		{
+		if ((/^image\/(gif|png|jpeg)$/i).test(file.type)) {
 			var reader = new FileReader(file);
 
 			reader.readAsDataURL(file);
@@ -43,8 +40,7 @@ function dropzone(element, opts) {
 
 				element.find('div').html($img);
 
-				if (options.autoSubmit)
-				{
+				if (options.autoSubmit) {
 					element.closest('form').submit();
 					setTimeout(function () { // Delay for Chrome
 						element.find('div').html(originalDivContent);
@@ -52,8 +48,7 @@ function dropzone(element, opts) {
 				}
 			};
 		}
-		else
-		{
+		else {
 			element.find('div').html(file.name);
 		}
 	});

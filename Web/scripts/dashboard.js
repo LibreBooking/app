@@ -12,10 +12,10 @@ function Dashboard(opts) {
         $.unblockUI();
     };
     Dashboard.prototype.init = function () {
-        function setIcon(dash, targetIcon) {
-            var iconSpan = dash.find('.dashboardHeader').find('a>.glyphicon');
-            iconSpan.removeClass('glyphicon-chevron-up');
-            iconSpan.removeClass('glyphicon-chevron-down');
+        /*function setIcon(dash, targetIcon) {
+            var iconSpan = dash.find('.dashboardHeader').find('a>.bi');
+            iconSpan.removeClass('bi-chevron-up');
+            iconSpan.removeClass('bi-chevron-down');
             iconSpan.addClass(targetIcon);
         }
 
@@ -25,9 +25,9 @@ function Dashboard(opts) {
             var visibility = readCookie(id);
             if (visibility == '0') {
                 dash.find('.dashboardContents').hide();
-                setIcon(dash, 'glyphicon-chevron-down');
+                setIcon(dash, 'bi-chevron-down');
             } else {
-                setIcon(dash, 'glyphicon-chevron-up');
+                setIcon(dash, 'bi-chevron-up');
             }
 
             dash.find('.dashboardHeader a').click(function (e) {
@@ -37,14 +37,14 @@ function Dashboard(opts) {
                 if (dashboard.css('display') == 'none') {
                     createCookie(id, '1', 30, opts.scriptUrl);
                     dashboard.show();
-                    setIcon(dash, 'glyphicon-chevron-up');
+                    setIcon(dash, 'bi-chevron-up');
                 } else {
                     createCookie(id, '0', 30, opts.scriptUrl);
                     dashboard.hide();
-                    setIcon(dash, 'glyphicon-chevron-down');
+                    setIcon(dash, 'bi-chevron-down');
                 }
             });
-        });
+        });*/
 
         $('.resourceNameSelector').each(function () {
             $(this).bindResourceDetails($(this).attr('resource-id'));
@@ -60,7 +60,7 @@ function Dashboard(opts) {
             content: {
                 text: function (event, api) {
                     var refNum = $(this).attr('id');
-                    $.ajax({url: options.summaryPopupUrl, data: {id: refNum}})
+                    $.ajax({ url: options.summaryPopupUrl, data: { id: refNum } })
                         .done(function (html) {
                             api.set('content.text', html)
                         })
@@ -103,43 +103,43 @@ function Dashboard(opts) {
             var refNum = $(this).attr('id');
             window.location = options.reservationUrl + refNum;
         });
-
-        $('.btnCheckin').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var button = $(this);
-            button.attr('disabled', 'disabled');
-            button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
-
-            var form = $('#form-checkin');
-            var refNum = $(this).attr('data-referencenumber');
-            $('#referenceNumber').val(refNum);
-            $.blockUI({message: $('#wait-box')});
-            ajaxPost(form, $(this).data('url'), null, function (data) {
-                $('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
-                $('#result').html(data);
-                ShowReservationAjaxResponse();
-            });
-        });
-
-        $('.btnCheckout').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var button = $(this);
-            button.attr('disabled', 'disabled');
-            button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
-
-            var form = $('#form-checkout');
-            var refNum = $(this).attr('data-referencenumber');
-            $('#referenceNumber').val(refNum);
-            $.blockUI({message: $('#wait-box')});
-            ajaxPost(form, null, null, function (data) {
-                $('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
-                $('#result').html(data);
-                ShowReservationAjaxResponse();
-            });
-        });
-
+        /* There is no btnCheckin or btnCheckout button, it appears to be unused.
+                $('.btnCheckin').click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var button = $(this);
+                    button.attr('disabled', 'disabled');
+                    button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
+        
+                    var form = $('#form-checkin');
+                    var refNum = $(this).attr('data-referencenumber');
+                    $('#referenceNumber').val(refNum);
+                    $.blockUI({ message: $('#wait-box') });
+                    ajaxPost(form, $(this).data('url'), null, function (data) {
+                        $('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
+                        $('#result').html(data);
+                        ShowReservationAjaxResponse();
+                    });
+                });
+        
+                $('.btnCheckout').click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var button = $(this);
+                    button.attr('disabled', 'disabled');
+                    button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
+        
+                    var form = $('#form-checkout');
+                    var refNum = $(this).attr('data-referencenumber');
+                    $('#referenceNumber').val(refNum);
+                    $.blockUI({ message: $('#wait-box') });
+                    ajaxPost(form, null, null, function (data) {
+                        $('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
+                        $('#result').html(data);
+                        ShowReservationAjaxResponse();
+                    });
+                });
+        */
         $('#wait-box').on('click', '#btnSaveSuccessful', function (e) {
 
             CloseSaveDialog();

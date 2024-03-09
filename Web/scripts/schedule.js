@@ -11,10 +11,10 @@ function Schedule(opts, resourceGroups) {
     const ScheduleWide = "1";
     const ScheduleTall = "2";
     const ScheduleCondensed = "3";
-
-    const elements = {
-        topButton: $('#reservationsToTop')
-    };
+    //Replaced by a global button
+    /* const elements = {
+         topButton: $('#reservationsToTop')
+     };*/
 
     this.init = function () {
         this.initUserDefaultSchedule();
@@ -37,8 +37,8 @@ function Schedule(opts, resourceGroups) {
                 renderEvents(true);
             }
         }, 1000));
-
-        $(window).on('scroll', function () {
+        //Replaced by a global button
+        /*$(window).on('scroll', function () {
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 elements.topButton[0].style.display = "block";
             } else {
@@ -50,7 +50,7 @@ function Schedule(opts, resourceGroups) {
             $('html, body').animate({
                 scrollTop: 0
             }, 500);
-        });
+        });*/
 
         setInterval(function () {
             renderEvents(true);
@@ -69,7 +69,7 @@ function Schedule(opts, resourceGroups) {
     };
 
     function renderEvents(clear = false) {
-        $("#loading-schedule").removeClass("no-show");
+        $("#loading-schedule").removeClass("d-none");
         renderingEvents = true;
 
         if (clear) {
@@ -115,7 +115,7 @@ function Schedule(opts, resourceGroups) {
 
                 content: {
                     text: function (event, api) {
-                        $.ajax({url: options.summaryPopupUrl, data: {id: resid}})
+                        $.ajax({ url: options.summaryPopupUrl, data: { id: resid } })
                             .done(function (html) {
                                 api.set('content.text', html);
                             })
@@ -270,8 +270,8 @@ function Schedule(opts, resourceGroups) {
                         const endsAfter = res.EndDate > tableMax;
                         let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
                         let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
-                        const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event" 
+                        const div = $(`<div
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event"
                                     style="${color}"
                                     data-resid="${res.ReferenceNumber}">
                                     <span>${startTime}-${endTime}</span>
@@ -293,7 +293,7 @@ function Schedule(opts, resourceGroups) {
                     if (!startEnd) {
                         return;
                     }
-                    let {startTd, endTd, height, width, top, left} = startEnd;
+                    let { startTd, endTd, height, width, top, left } = startEnd;
 
                     let numberOfConflicts = 0;
                     let conflictIds = [];
@@ -371,8 +371,8 @@ function Schedule(opts, resourceGroups) {
 
                     let divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
                     const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
-                    const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
+                    const div = $(`<div
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} event"
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     data-resourceid="${res.ResourceId}"
@@ -407,8 +407,8 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             const style = `left:${bufferStartEnd.left}px; top:${bufferTop}px; width:${bufferStartEnd.width}px; height:${bufferHeight}px;`;
-                            const bufferDiv = $(`<div 
-					                                    class="${past} buffer" 
+                            const bufferDiv = $(`<div
+					                                    class="${past} buffer"
 					                                    style="${style}"
 					                                    data-resid="${res.ReferenceNumber}"
 					                                    data-resourceid="${res.ResourceId}"
@@ -435,7 +435,7 @@ function Schedule(opts, resourceGroups) {
                 initReservable();
             }
 
-            $("#loading-schedule").addClass("no-show");
+            $("#loading-schedule").addClass("d-none");
             renderingEvents = false;
         });
     }
@@ -449,19 +449,19 @@ function Schedule(opts, resourceGroups) {
     };
 
     this.initNavigation = function () {
-        var datePicker = $("#datepicker");
+        //var datePicker = $("#datepicker");
         var expandCalendar = readCookie('schedule_calendar_toggle');
 
         function collapse() {
             createCookie('schedule_calendar_toggle', false, 30, opts.scriptUrl);
-            datePicker.hide();
-            $('#individualDates').hide();
+            $('#datepicker').collapse('hide');
+            $('#individualDates').collapse('hide');
         }
 
         function expand() {
             createCookie('schedule_calendar_toggle', true, 30, opts.scriptUrl);
-            datePicker.show();
-            $('#individualDates').show();
+            $('#datepicker').collapse('show');
+            $('#individualDates').collapse('show');
         }
 
         if (expandCalendar == "true") {
@@ -473,7 +473,7 @@ function Schedule(opts, resourceGroups) {
         $("#calendar_toggle").click(function (event) {
             event.preventDefault();
 
-            if (datePicker.css("display") == "none") {
+            if ($("#datepicker").css("display") == "none") { //Change verification method
                 expand();
             } else {
                 collapse();
@@ -524,7 +524,7 @@ function Schedule(opts, resourceGroups) {
             multidateselect.attr('checked', true);
             $.each(options.specificDates, function (i, v) {
                 var d = v.split('-');
-                AddSpecificDate(v, {selectedYear: d[0], selectedMonth: d[1] - 1, selectedDay: d[2]});
+                AddSpecificDate(v, { selectedYear: d[0], selectedMonth: d[1] - 1, selectedDay: d[2] });
             });
         }
 
@@ -602,18 +602,22 @@ function Schedule(opts, resourceGroups) {
 
         function hide() {
             shown = false;
-            $('#reservations-left').addClass('hidden');
+            $('#reservations-left').addClass('d-none');
             $('#reservations').removeClass('col-md-10').addClass('col-md-12');
-            $('#restore-sidebar').removeClass('hidden');
+            $('#restore-sidebar').removeClass('bi-chevron-double-left');
+            $('#restore-sidebar').addClass('bi-chevron-double-right');
+
 
             localStorage.setItem('hide-sidebar-status', true);
         }
 
         function show() {
             shown = true;
-            $('#reservations-left').removeClass('hidden');
+            $('#reservations-left').removeClass('d-none');
             $('#reservations').addClass('col-md-10').removeClass('col-md-12');
-            $('#restore-sidebar').addClass('hidden');
+            $('#restore-sidebar').removeClass('bi-chevron-double-right');
+            $('#restore-sidebar').addClass('bi-chevron-double-left');
+
 
             localStorage.removeItem('hide-sidebar-status');
         }
@@ -804,7 +808,7 @@ function Schedule(opts, resourceGroups) {
 
                 var droppedCell = $(event.target);
                 droppedCell.addClass('dropped');
-                droppedCell.html('<i class="fa fa-spin fa-spinner" aria-hidden="true"></i>');
+                droppedCell.html('<i class="spinner-border spinner-border-sm" aria-hidden="true"></i>');
 
                 var targetResourceId = targetSlot.attr('data-resourceId');
                 var startDate = decodeURIComponent(targetSlot.attr('data-start'));
@@ -816,8 +820,8 @@ function Schedule(opts, resourceGroups) {
                 ajaxPost($('#moveReservationForm'), options.updateReservationUrl, null, function (updateResult) {
                     droppedCell.removeClass('dropped');
                     droppedCell.html('');
-					
-					if (updateResult.success) {
+
+                    if (updateResult.success) {
                         renderEvents(true);
                     } else {
                         renderingEvents = false;
@@ -921,7 +925,7 @@ function AddSpecificDate(dateText, inst) {
     }
     $('#individualDatesGo').show();
     scheduleSpecificDates.push(formattedDate);
-    var dateItem = '<div data-date="' + formattedDate + '">' + dateText + ' <i class="fa fa-remove icon remove removeSpecificDate"><i/><div>';
+    var dateItem = '<div data-date="' + formattedDate + '">' + dateText + ' <i class="bi bi-x-circle text-danger icon remove removeSpecificDate"><i/><div>';
 
     $('#individualDatesList').html($('#individualDatesList').html() + dateItem);
 }
