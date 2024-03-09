@@ -1,36 +1,54 @@
-{include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
+{include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css" DataTable=true}
 
-<div id="page-saved-reports">
+<div id="page-saved-reports" class="accordion">
+	<div>
+		<div class="accordion-item shadow mb-2" id="saved-reports-panel">
+			<h2 class="accordion-header">
+				<button class="accordion-button link-primary fw-bold" type="button" data-bs-toggle="collapse"
+					data-bs-target="#panelReportSaved" aria-expanded="false" aria-controls="panelReportSaved">
+					{translate key=MySavedReports} <span
+						class="badge bg-primary ms-1">{$ReportList|default:array()|count}</span>
+				</button>
+			</h2>
+			<div id="panelReportSaved" class="accordion-collapse collapse">
+				<div class="accordion-body no-padding">
+					{if $ReportList|default:array()|count == 0}
+						<h3 class="no-data text-center">{translate key=NoSavedReports}</h3>
+						<div class="text-center"><a href="{$Path}reports/{Pages::REPORTS_GENERATE}"
+								class="link-primary">{translate key=GenerateReport}</a></div>
+					{else}
+						<div id="report-list">
+							{assign var=tableId value='saved-reportsListTable'}
+							<table class="table table-striped table-hover border-top w-100" id="{$tableId}">
+								<thead>
+									<tr>
+										<th>{translate key='Title'}</th>
+										<th>{translate key='Date'}</th>
+										<th>{translate key='RunReport'}</th>
+										<th>{translate key='EmailReport'}</th>
+										<th>{translate key='Delete'}</th>
+									</tr>
+								</thead>
+								<tbody>
+									{foreach from=$ReportList item=report}
+										{*{cycle values=',alt' assign=rowCss}*}
+										<tr reportId="{$report->Id()}" class="{$rowCss}">
+											<td><span class="fw-bold">{$report->ReportName()|default:$untitled}</span></td>
+											<td class="right"><span
+													class="report-created-date fst-italic">{format_date date=$report->DateCreated()}</span>
+											</td>
 
-	<div class="panel panel-default" id="saved-reports-panel">
-		<div class="panel-heading">
-			{translate key=MySavedReports} <span class="badge">{$ReportList|default:array()|count}</span>
-		</div>
-		<div class="panel-body no-padding">
-			{if $ReportList|default:array()|count == 0}
-				<h2 class="no-data" style="text-align: center;">{translate key=NoSavedReports}</h2>
-                <div style="text-align:center;"><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></div>
-			{else}
-				<div id="report-list">
-					<table class="table">
-						<tbody>
-						{foreach from=$ReportList item=report}
-							{cycle values=',alt' assign=rowCss}
-							<tr reportId="{$report->Id()}" class="{$rowCss}">
-								<td><span class="report-title">{$report->ReportName()|default:$untitled}</span></td>
-								<td class="right"><span
-											class="report-created-date">{format_date date=$report->DateCreated()}</span>
-								</td>
-
-								<td class="report-action"><a href="#" class="runNow report"><span
-												class="fa fa-play-circle-o icon add"></span> {translate key=RunReport}
-									</a></td>
-								<td class="report-action"><a href="#" class="emailNow report"><span
-												class="fa fa-envelope-o icon"></span> {translate key=EmailReport}</a>
-								</td>
-								<td class="report-action"><a href="#" class="delete report"><span
-												class="fa fa-trash icon remove"></span> {translate key=Delete}</a></td>
-								{*
+											<td class="report-action"><a href="#" class="runNow report link-primary"><i
+														class="bi bi-play-circle text-success me-1"></i>{translate key='RunReport'}
+												</a></td>
+											<td class="report-action"><a href="#" class="emailNow report link-primary"><span
+														class="bi bi-envelope me-1 icon"></span>{translate key='EmailReport'}</a>
+											</td>
+											<td class="report-action"><a href="#"
+													class="delete report link-danger text-decoration-none"><i
+														class="bi bi-trash3-fill me-1 icon remove"></i>{translate key='Delete'}</a>
+											</td>
+											{*
 								   {if $report->IsScheduled()}
 									   Schedule: <a href="#" class="editSchedule report">{translate key=Edit}</a>
 									   {else}
@@ -39,16 +57,16 @@
 								   *}
 
 
-							</tr>
-						{/foreach}
-						</tbody>
-					</table>
+										</tr>
+									{/foreach}
+								</tbody>
+							</table>
+						</div>
+					{/if}
 				</div>
-			{/if}
+			</div>
 		</div>
-
 	</div>
-
 	<div id="resultsDiv">
 	</div>
 
@@ -57,24 +75,24 @@
 	</div>
 
 	<div class="modal fade" id="emailDiv" tabindex="-1" role="dialog" aria-labelledby="emailDialogLabel"
-		 aria-hidden="true">
+		aria-hidden="true">
 		<div class="modal-dialog">
 			<form id="emailForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="emailDialogLabel">{translate key=EmailReport}</h4>
+						<h5 class="modal-title" id="emailDialogLabel">{translate key=EmailReport}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label for="emailTo">{translate key=Email}</label>
-							<input id="emailTo" {formname key=EMAIL} value="{$UserEmail}" class="form-control"/>
+							<label class="fw-bold" for="emailTo">{translate key=Email}</label>
+							<input id="emailTo" {formname key=EMAIL} value="{$UserEmail}" class="form-control" />
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default cancel"
-									data-dismiss="modal">{translate key='Cancel'}</button>
-							<button id="btnSendEmail" type="button" class="btn btn-success save"><span
-										class="fa fa-envelope-o"></span> {translate key=EmailReport}
+							<button type="button" class="btn btn-outline-secondary cancel"
+								data-bs-dismiss="modal">{translate key='Cancel'}</button>
+							<button id="btnSendEmail" type="button" class="btn btn-success save"><i
+									class="bi bi-envelope me-1"></i>{translate key=EmailReport}
 							</button>
 							{indicator}
 						</div>
@@ -89,8 +107,8 @@
 			<form id="deleteForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteLabel">{translate key=Delete}</h4>
+						<h5 class="modal-title" id="deleteLabel">{translate key=Delete}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden=</button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-danger">
@@ -98,8 +116,8 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-outline-secondary cancel"
+							data-bs-dismiss="modal">{translate key='Cancel'}</button>
 						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
 						{indicator}
 					</div>
@@ -109,9 +127,8 @@
 		</div>
 	</div>
 
-	<div id="indicator" style="display:none; text-align: center;">
-		<h3>{translate key=Working}</h3>
-		{html_image src="admin-ajax-indicator.gif"}
+	<div id="indicator" class="text-center" style="display:none;">
+		{include file="wait-box.tpl"}
 	</div>
 
 	{include file="Reports/chart.tpl"}
@@ -169,14 +186,15 @@
 		</div>
 	</div>
 	*}
-    {include file="javascript-includes.tpl"}
+	{include file="javascript-includes.tpl" DataTable=true}
+	{datatable tableId={$tableId}}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="reports/saved-reports.js"}
 	{jsfile src="reports/chart.js"}
 	{jsfile src="reports/common.js"}
 
 	<script type="text/javascript">
-		$(document).ready(function () {
+		$(document).ready(function() {
 			var reportOptions = {
 				generateUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}&{QueryStringKeys::REPORT_ID}=",
 				emailUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Email}&{QueryStringKeys::REPORT_ID}=",
@@ -188,14 +206,12 @@
 			var reports = new SavedReports(reportOptions);
 			reports.init();
 
-			var common = new ReportsCommon(
-					{
-						scriptUrl: '{$ScriptUrl}',
-                        chartOpts: {
-                            dateAxisFormat: '{$DateAxisFormat}'
-                        }
-					}
-			);
+			var common = new ReportsCommon({
+				scriptUrl: '{$ScriptUrl}',
+				chartOpts: {
+					dateAxisFormat: '{$DateAxisFormat}'
+				}
+			});
 			common.init();
 		});
 	</script>
