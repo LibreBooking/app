@@ -3,10 +3,10 @@
         <div class="row">
             {foreach from=$Attributes item=attribute name=attributes}
                 {if $smarty.foreach.attributes.index % 3 == 0}
-                    </div>
-                    <div class="row">
+                </div>
+                <div class="row">
                 {/if}
-                <div class="customAttribute col-sm-4 col-xs-12">
+                <div class="customAttribute col-sm-4 col-12">
                     {control type="AttributeControl" attribute=$attribute readonly=$ReadOnly}
                 </div>
             {/foreach}
