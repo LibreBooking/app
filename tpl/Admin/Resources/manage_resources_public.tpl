@@ -1,24 +1,25 @@
 {if $resource->GetIsCalendarSubscriptionAllowed()}
-    <div><a class="update disableSubscription subscriptionButton"
+    <div><a class="update disableSubscription subscriptionButton link-primary"
             href="#">{translate key=TurnOffSubscription}</a>
     </div>
     <div>
-        {html_image src="feed.png"}
-        <a target="_blank" href="{$resource->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
-        |
-        <a target="_blank" href="{$resource->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+        <i class="bi bi-rss-fill link-primary"></i>
+        {*{html_image src="feed.png"}*}
+        <a target="_blank" href="{$resource->GetSubscriptionUrl()->GetAtomUrl()}" class="link-primary">Atom</a>
+        <div class="vr mx-1"></div>
+        <a target="_blank" href="{$resource->GetSubscriptionUrl()->GetWebcalUrl()}" class="link-primary">iCalendar</a>
     </div>
     <div>
         <span>{translate key=PublicId}</span>
-        <span class="propertyValue">{$resource->GetPublicId()}</span>
+        <span class="propertyValue fw-bold">{$resource->GetPublicId()}</span>
     </div>
     <div>
         <span>Resource Display</span>
-        <span class="propertyValue">{$ScriptUrl}/{Pages::DISPLAY_RESOURCE}?{QueryStringKeys::RESOURCE_ID}={$resource->GetPublicId()}</span>
+        <span
+            class="propertyValue fw-bold">{$ScriptUrl}/{Pages::DISPLAY_RESOURCE}?{QueryStringKeys::RESOURCE_ID}={$resource->GetPublicId()}</span>
     </div>
 {else}
     <div>
-        <a class="update enableSubscription subscriptionButton"
-           href="#">{translate key=TurnOnSubscription}</a>
+        <a class="update enableSubscription subscriptionButton link-primary" href="#">{translate key=TurnOnSubscription}</a>
     </div>
 {/if}

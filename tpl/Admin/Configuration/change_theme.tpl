@@ -1,79 +1,103 @@
 {include file='globalheader.tpl' }
 
 <div id="page-change-theme" class="admin-page">
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="card default-box col-12 col-sm-8 mx-auto">
+        <div class="card-body">
+            <h1 class="border-bottom mb-3">{translate key=LookAndFeel}</h1>
 
-        <h1>{translate key=LookAndFeel}</h1>
+            <div id="successMessage" class="alert alert-success d-none">
+                {translate key=ThemeUploadSuccess}
+            </div>
 
-        <div id="successMessage" class="alert alert-success hidden">
-            {translate key=ThemeUploadSuccess}
-        </div>
+            <form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post"
+                enctype="multipart/form-data">
+                <div class="validationSummary alert alert-danger no-show" id="validationErrors">
+                    <ul>
+                        {async_validator id="logoFileExt"}
+                        {async_validator id="cssFileExt"}
+                        {async_validator id="faviconFileExt"}
+                        {async_validator id="logoFile"}
+                        {async_validator id="cssFile"}
+                        {async_validator id="faviconFile"}
+                    </ul>
+                </div>
 
-        <form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post"
-              enctype="multipart/form-data">
-            <div class="validationSummary alert alert-danger no-show" id="validationErrors">
-                <ul>
-                    {async_validator id="logoFileExt"}
-                    {async_validator id="cssFileExt"}
-                    {async_validator id="faviconFileExt"}
-                    {async_validator id="logoFile"}
-                    {async_validator id="cssFile"}
-                    {async_validator id="faviconFile"}
+                <ul class="list-group mb-2">
+
+                    <li class="list-group-item">
+                        <h4>{translate key="Logo"} (*.png, *.gif, *.jpg)</h4>
+                        <img src="{$ScriptUrl}/img/{$LogoUrl}" class="d-block mx-auto" />
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}"
+                                class="link-primary"><i class="bi bi-download me-1"></i>{$LogoUrl}</a>
+                            <div class="vr m-1"></div>
+                            <a href="#" id="removeLogo" class="link-danger text-decoration-none"><i
+                                    class="bi bi-trash3-fill me-1"></i>{translate key=Remove}</a>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="file" {formname key=LOGO_FILE} class="form-control" id="logoFile"
+                                accept=".png, .gif, .jpg, .jpeg" />
+                            <a href="#" class="clearInput inline input-group-text"><span
+                                    class="visually-hidden">{translate key=Delete}</span><i
+                                    class="bi bi-x-square-fill text-danger ms-1"></i></a>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <h4>Favicon (*.ico, *.png, *.gif, *.jpg - 32px x 32px or 16px x 16px)</h4>
+                        <img src="{$ScriptUrl}/{$FaviconUrl}" class="d-block mx-auto" />
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}"
+                                class="link-primary"><i class="bi bi-download me-1"></i>{$FaviconUrl}</a>
+                            <div class="vr m-1"></div>
+                            <a href="#" id="removeFavicon" class="link-danger text-decoration-none"><i
+                                    class="bi bi-trash3-fill me-1"></i>{translate key=Remove}</a>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="file" {formname key=FAVICON_FILE} class="form-control" id="faviconFile"
+                                accept=".png, .gif, .jpg, .jpeg, .ico" />
+                            <a href="#" class="clearInput inline input-group-text"><span
+                                    class="visually-hidden">{translate key=Delete}</span><i
+                                    class="bi bi-x-square-fill text-danger ms-1"></i></a>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div>
+                            <h4>{translate key="CssFile"} (*.css)</h4>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}"
+                                    class="link-primary"><i class="bi bi-download me-1"></i>{$CssUrl}</a>
+                                <div class="vr m-1"></div>
+                                <a href="#" id="removeCss" class="link-danger text-decoration-none"><i
+                                        class="bi bi-trash3-fill me-1"></i>{translate key=Remove}</a>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <input type="file" {formname key=CSS_FILE} class="form-control" id="cssFile"
+                                accept=".css" />
+                            <a href="#" class="clearInput input-group-text"><span
+                                    class="visually-hidden">{translate key=Delete}</span><i
+                                    class="bi bi-x-square-fill text-danger ms-1"></i></a>
+                        </div>
+                    </li>
+
                 </ul>
-            </div>
 
-            <div>
-                <h4>{translate key="Logo"} (*.png, *.gif, *.jpg - 50px height)</h4>
-
-                <div>
-                    <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}">{$LogoUrl}</a>
-                    <a href="#" id="removeLogo">{translate key=Remove}</a>
+                <div class="d-grid">
+                    <button type="button" class="btn btn-success update" name="{Actions::SAVE}" id="saveButton">
+                        {translate key='Update'}
+                    </button>
                 </div>
-                <label for="logoFile" class="no-show">Logo File</label>
-                <input type="file" {formname key=LOGO_FILE} class="pull-left" id="logoFile"/>
 
-                <a href="#" class="clearInput inline"><span class="no-show">{translate key=Delete}</span>{html_image src="cross-button.png"}</a>
-            </div>
+                {csrf_token}
 
-            <div>
-                <h4>Favicon (*.ico, *.png, *.gif, *.jpg - 32px x 32px or 16px x 16px)</h4>
-
-                <div>
-                    <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}">{$FaviconUrl}</a>
-                    <a href="#" id="removeFavicon">{translate key=Remove}</a>
-                </div>
-                <label for="faviconFile" class="no-show">Favicon File</label>
-                <input type="file" {formname key=FAVICON_FILE} class="pull-left" id="faviconFile"/>
-
-                <a href="#" class="clearInput inline"><span class="no-show">{translate key=Delete}</span>{html_image src="cross-button.png"}</a>
-            </div>
-
-            <div>
-                <div>
-                    <h4>{translate key="CssFile"} (*.css)</h4>
-
-                    <a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}">{$CssUrl}</a>
-                </div>
-                <label for="cssFile" class="no-show">CSS File</label>
-                <input type="file" {formname key=CSS_FILE} class="pull-left" id="cssFile"/>
-                <a href="#" class="clearInput"><span class="no-show">{translate key=Delete}</span>{html_image src="cross-button.png"}</a>
-            </div>
-
-            <div class="clearfix"></div>
-
-            <button type="button" class="btn btn-success update margin-top-25" name="{Actions::SAVE}" id="saveButton">
-                {translate key='Update'}
-            </button>
-
-            {csrf_token}
-
-        </form>
-
+            </form>
+        </div>
     </div>
 
     <div id="wait-box" class="wait-box">
-        <h3>{translate key=Working}</h3>
-        {html_image src="reservation_submitting.gif"}
+        {include file="wait-box.tpl"}
     </div>
 
     {include file="javascript-includes.tpl"}
@@ -84,32 +108,39 @@
     {jsfile src="ajax-form-submit.js"}
 
     <script type="text/javascript">
-        $('document').ready(function () {
+        $('document').ready(function() {
 
             $('#elementForm').bindAjaxSubmit($('#saveButton'), $('#successMessage'), $('#wait-box'));
 
-            $('.clearInput').click(function (e) {
+            $('.clearInput').click(function(e) {
                 e.preventDefault();
                 $(this).prev('input').val('');
             });
 
-            $('#removeLogo').click(function (e) {
+            $('#removeLogo').click(function(e) {
                 e.preventDefault();
 
-                PerformAsyncAction($(this), function () {
+                PerformAsyncAction($(this), function() {
                     return '{$smarty.server.SCRIPT_NAME}?action=removeLogo';
                 });
             });
 
-            $('#removeFavicon').click(function (e) {
+            $('#removeFavicon').click(function(e) {
                 e.preventDefault();
 
-                PerformAsyncAction($(this), function () {
+                PerformAsyncAction($(this), function() {
                     return '{$smarty.server.SCRIPT_NAME}?action=removeFavicon';
                 });
             });
-        });
 
+            $('#removeCss').click(function(e) {
+                e.preventDefault();
+
+                PerformAsyncAction($(this), function() {
+                    return '{$smarty.server.SCRIPT_NAME}?action=removeCss';
+                });
+            });
+        });
     </script>
 
 </div>
