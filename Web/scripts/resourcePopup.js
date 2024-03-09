@@ -1,5 +1,5 @@
 $.fn.bindResourceDetails = function (resourceId, options) {
-    var opts = $.extend({preventClick: false, position: 'left bottom'}, options);
+    var opts = $.extend({ preventClick: false, position: 'left bottom' }, options);
 
     var owl;
 
@@ -71,7 +71,7 @@ $.fn.bindResourceDetails = function (resourceId, options) {
                         cache: true,
                         beforeSend: function () {
                             tag.html('Loading...').show();
-                            tag.position({my: 'left top', at: opts.position, of: resourceNameElement});
+                            tag.position({ my: 'left top', at: opts.position, of: resourceNameElement });
                         },
                         error: tag.html('Error loading resource data!').show(),
                         success: function (data, textStatus, jqXHR) {
@@ -87,13 +87,13 @@ $.fn.bindResourceDetails = function (resourceId, options) {
                         e.preventDefault();
                         hideDiv();
                     });
-                    tag.position({my: 'left top', at: opts.position, of: resourceNameElement});
-                    if (typeof '' !== "owlCarousel") {
+                    tag.position({ my: 'left top', at: opts.position, of: resourceNameElement });
+                    /*if (typeof '' !== "owlCarousel") {
                         owl = $(".owl-carousel");
                         owl.owlCarousel({
                             items: 1
                         });
-                    }
+                    }*/
                 }
             }, 500);
         }).mouseleave(function () {
