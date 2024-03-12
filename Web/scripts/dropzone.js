@@ -25,9 +25,9 @@ function dropzone(element, opts) {
 			return;
 		}
 
-		element.removeClass('border-secondary');
+		//element.removeClass('border-secondary');
 
-		element.addClass('dropped');
+		element.addClass('border-secondary');
 		element.find('img').remove();
 
 		if ((/^image\/(gif|png|jpeg)$/i).test(file.type)) {
