@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Hind:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
-    --primary: #669999;
-    /*#be6e34;*/
-    --primary-hover: #527a7a;
-    /*#a05c2c;*/
-    --primary-disabled: #85adad;
-    /* #e4b99b;*/
+    --primary: #be6e34;
+    --primary-hover: #a05c2c;
+    --primary-disabled: #e4b99b;
 
     --color-lines: #a6a6a6;
     --reservable: #ffffff;
@@ -15,7 +12,6 @@
     --reservedMine: #6F9BAE;
     --reservedParticipating: #875cae;
     --reservedPending: #f2dfbf;
-    /*#ffb540;*/
     --pasttime: #bdbdbd;
 
 }

@@ -25,12 +25,12 @@
                 <ul class="list-group mb-2">
 
                     <li class="list-group-item">
-                        <h4>{translate key="Logo"} (*.png, *.gif, *.jpg)</h4>
-                        <img src="{$ScriptUrl}/img/{$LogoUrl}" class="d-block mx-auto" />
-                        <div class="d-flex align-items-center justify-content-center">
+                        <h4>{translate key="Logo"} (*.png, *.gif, *.jpg - Recommended height 75px)</h4>
+                        <img src="{$ScriptUrl}/img/{$LogoUrl}" class="d-block mx-auto mw-100" />
+                        <div class="d-flex align-items-center justify-content-center my-2">
                             <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}"
                                 class="link-primary"><i class="bi bi-download me-1"></i>{$LogoUrl}</a>
-                            <div class="vr m-1"></div>
+                            <div class="vr mx-1"></div>
                             <a href="#" id="removeLogo" class="link-danger text-decoration-none"><i
                                     class="bi bi-trash3-fill me-1"></i>{translate key=Remove}</a>
                         </div>
@@ -39,17 +39,17 @@
                                 accept=".png, .gif, .jpg, .jpeg" />
                             <a href="#" class="clearInput inline input-group-text"><span
                                     class="visually-hidden">{translate key=Delete}</span><i
-                                    class="bi bi-x-square-fill text-danger ms-1"></i></a>
+                                    class="bi bi-x-square-fill text-danger"></i></a>
                         </div>
                     </li>
 
                     <li class="list-group-item">
-                        <h4>Favicon (*.ico, *.png, *.gif, *.jpg - 32px x 32px or 16px x 16px)</h4>
+                        <h4>Favicon (*.ico, *.png, *.gif, *.jpg - Recommended size 48px x 48px)</h4>
                         <img src="{$ScriptUrl}/{$FaviconUrl}" class="d-block mx-auto" />
-                        <div class="d-flex align-items-center justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center my-2">
                             <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}"
                                 class="link-primary"><i class="bi bi-download me-1"></i>{$FaviconUrl}</a>
-                            <div class="vr m-1"></div>
+                            <div class="vr mx-1"></div>
                             <a href="#" id="removeFavicon" class="link-danger text-decoration-none"><i
                                     class="bi bi-trash3-fill me-1"></i>{translate key=Remove}</a>
                         </div>
@@ -58,17 +58,17 @@
                                 accept=".png, .gif, .jpg, .jpeg, .ico" />
                             <a href="#" class="clearInput inline input-group-text"><span
                                     class="visually-hidden">{translate key=Delete}</span><i
-                                    class="bi bi-x-square-fill text-danger ms-1"></i></a>
+                                    class="bi bi-x-square-fill text-danger"></i></a>
                         </div>
                     </li>
 
                     <li class="list-group-item">
                         <div>
                             <h4>{translate key="CssFile"} (*.css)</h4>
-                            <div class="d-flex align-items-center justify-content-center">
+                            <div class="d-flex align-items-center justify-content-center my-2">
                                 <a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}"
                                     class="link-primary"><i class="bi bi-download me-1"></i>{$CssUrl}</a>
-                                <div class="vr m-1"></div>
+                                <div class="vr mx-1"></div>
                                 <a href="#" id="removeCss" class="link-danger text-decoration-none"><i
                                         class="bi bi-trash3-fill me-1"></i>{translate key=Remove}</a>
                             </div>
@@ -78,14 +78,14 @@
                                 accept=".css" />
                             <a href="#" class="clearInput input-group-text"><span
                                     class="visually-hidden">{translate key=Delete}</span><i
-                                    class="bi bi-x-square-fill text-danger ms-1"></i></a>
+                                    class="bi bi-x-square-fill text-danger"></i></a>
                         </div>
                     </li>
 
                 </ul>
 
                 <div class="d-grid">
-                    <button type="button" class="btn btn-success update" name="{Actions::SAVE}" id="saveButton">
+                    <button type="button" class="btn btn-primary update" name="{Actions::SAVE}" id="saveButton">
                         {translate key='Update'}
                     </button>
                 </div>
