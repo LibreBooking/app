@@ -210,29 +210,28 @@
 															<div class="mb-3">
 																{if $resource->HasImage()}
 
-																	<div id="resourceImageCarousel" class="carousel slide h-100"
-																		data-bs-ride="carousel">
+																	<div id="resourceImageCarousel" class="carousel slide h-75">
 																		<div class="carousel-inner">
 																			<div class="carousel-item active">
 																				<img src="{resource_image image=$resource->GetImage()}"
 																					alt="{$resource->GetName()}"
 																					class="rounded d-block w-100" />
 																			</div>
-																			{foreach from=$images item=image}
+																			{foreach from=$resource->GetImages() item=image}
 																				<div class="carousel-item">
-																					<img src="{resource_image image=$resource->GetImage()}"
+																					<img src="{resource_image image=$image}"
 																						alt="{$resource->GetName()}"
 																						class="rounded d-block w-100" />
 																				</div>
 																			{/foreach}
 																		</div>
 																		<div class="carousel-indicators">
-																			{if $images|count > 0}
+																			{if $resource->GetImages()|count > 0}
 																				{assign var=slide value=1}
 																				<button type="button"
 																					data-bs-target="#resourceImageCarousel"
 																					data-bs-slide-to="0" class="active"></button>
-																				{foreach from=$images item=image}
+																				{foreach from=$resource->GetImages() item=image}
 																					<button type="button"
 																						data-bs-target="#resourceImageCarousel"
 																						data-bs-slide-to="{$slide}"></button>
@@ -240,44 +239,11 @@
 																				{/foreach}
 																			{/if}
 																		</div>
-																	</div>
 
-
-
-																	<!-- Carousel -->
-																	<div id="resourceCarousel" class="carousel slide d-none"
-																		data-bs-ride="carousel">
-
-																		<div class="carousel-inner">
-																			<div class="carousel-item active">
-																				<img src="{resource_image image=$resource->GetImage()}"
-																					alt="{$resource->GetName()}"
-																					class="rounded d-block w-100">
-																			</div>
-																			{foreach from=$resource->GetImages() item=image}
-																				<div class="carousel-item">
-																					<img src="{resource_image image=$image}"
-																						alt="{$resource->GetName()}"
-																						class="rounded d-block w-100">
-																				</div>
-																			{/foreach}
+																		<div class="text-center">
+																			<a class="update imageButton link-primary"
+																				href="#">{translate key='Change'}</a>
 																		</div>
-
-																		<button class="carousel-control-prev" type="button"
-																			data-bs-target="#resourceCarousel"
-																			data-bs-slide="prev">
-																			<span class="carousel-control-prev-icon"></span>
-																		</button>
-																		<button class="carousel-control-next" type="button"
-																			data-bs-target="#resourceCarousel"
-																			data-bs-slide="next">
-																			<span class="carousel-control-next-icon"></span>
-																		</button>
-																	</div>
-
-																	<div class="text-center">
-																		<a class="update imageButton link-primary"
-																			href="#">{translate key='Change'}</a>
 																	</div>
 																{else}
 																	<div class="text-center">
@@ -291,16 +257,17 @@
 																		</div>
 																	</div>
 																{/if}
-															</div>
-															<div class="text-center">
-																<div>{translate key=ResourceColor}</div>
-																<input class="resourceColorPicker w-100" type="color"
-																	value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}'
-																	alt="{translate key=ResourceColor}"
-																	title="{translate key=ResourceColor}" />
-																<div>
-																	<a href="#"
-																		class="update clearColor link-primary">{translate key=Remove}</a>
+
+																<div class="text-center">
+																	<div>{translate key=ResourceColor}</div>
+																	<input class="resourceColorPicker w-100" type="color"
+																		value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}'
+																		alt="{translate key=ResourceColor}"
+																		title="{translate key=ResourceColor}" />
+																	<div>
+																		<a href="#"
+																			class="update clearColor link-primary">{translate key=Remove}</a>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -2053,7 +2020,7 @@
 
 {csrf_token}
 
-{include file="javascript-includes.tpl" InlineEdit=true Owl=true Clear=true DataTable=true}
+{include file="javascript-includes.tpl" InlineEdit=true Clear=true DataTable=true}
 {datatable tableId=$tableId}
 {jsfile src="ajax-helpers.js"}
 {jsfile src="autocomplete.js"}
