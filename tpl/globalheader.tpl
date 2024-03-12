@@ -74,10 +74,10 @@
         {cssfile src="scripts/css/fullcalendar.min.css"}
         <link rel='stylesheet' type='text/css' href='{$Path}scripts/css/fullcalendar.print.css' media='print' />
     {/if}
-    {if isset($Owl) && $Owl}
+    {*if isset($Owl) && $Owl}
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.theme.default.css"}
-    {/if}
+    {/if*}
 
     {jsfile src="js/jquery-ui-timepicker-addon.js"}
     {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
