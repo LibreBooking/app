@@ -1024,6 +1024,11 @@ class da_da extends en_gb
         $strings['Remaining'] = 'Resterende';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Der er ingen manglende check-out reservationer';
+        $strings['MissingCheckOutReservations'] = 'Manglende check-out reservationer';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Kan ikke se reservationsoplysninger, fordi du ikke har tilladelser til nogen af ressourcerne i denne reservation';
         //End Schedule Resource Permissions

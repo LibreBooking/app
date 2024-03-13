@@ -2,6 +2,7 @@
 
 require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
 require_once(ROOT_DIR . 'Presenters/Dashboard/PastReservationsPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/MissingCheckInOutReservationsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 
 class PastReservations extends DashboardItem implements IPastReservationsControl
@@ -42,22 +43,22 @@ class PastReservations extends DashboardItem implements IPastReservationsControl
 
     public function BindToday($reservations)
     {
-        $this->Set('TodaysReservations', $reservations);        //TodaysReservations (-)
+        $this->Set('TodaysReservations', $reservations);
     }
 
     public function BindYesterday($reservations)
     {
-        $this->Set('YesterdayReservations', $reservations);     //YesterdayReservations
+        $this->Set('YesterdayReservations', $reservations);
     }
 
     public function BindThisWeek($reservations)
     {
-        $this->Set('ThisWeeksReservations', $reservations);     //ThisWeekReservations (-)
+        $this->Set('ThisWeeksReservations', $reservations);
     }
 
     public function BindPreviousWeek($reservations)                 
     {
-        $this->Set('PreviousWeekReservations', $reservations);     //PreviousWeekReservations
+        $this->Set('PreviousWeekReservations', $reservations);
     }
 
     public function SetAllowCheckin($allowCheckin)
@@ -86,6 +87,11 @@ interface IPastReservationsControl
     public function BindPreviousWeek($reservations);
 }
 
+interface IRemainingPastReservationsControl extends IPastReservationsControl
+{
+    public function BindRemaining($reservations);
+}
+
 class AllPastReservations extends PastReservations
 {
     public function PageLoad()
@@ -94,5 +100,32 @@ class AllPastReservations extends PastReservations
         $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
         $this->presenter->PageLoad();
         $this->Display('admin_upcoming_reservations.tpl');
+    }
+}
+
+class MissingCheckInOutReservations extends PastReservations implements IRemainingPastReservationsControl
+{
+/**
+     * @var MissingCheckInOutReservationsPresenter
+     */
+    protected $presenter;
+
+    public function __construct(SmartyPage $smarty)
+    {
+        parent::__construct($smarty);
+        $this->presenter = new MissingCheckInOutReservationsPresenter($this, new ReservationViewRepository());
+    }
+
+    public function PageLoad()
+    {
+        $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
+        $this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
+        $this->presenter->PageLoad();
+        $this->Display('missing_check_in_out_reservations.tpl');
+    }
+
+    public function BindRemaining($reservations)                 
+    {
+        $this->Set('RemainingReservations', $reservations);
     }
 }

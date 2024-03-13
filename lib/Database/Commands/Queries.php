@@ -1309,9 +1309,21 @@ class QueryBuilder
 					(@levelid = 0 OR `ru`.`reservation_user_level` = @levelid) AND
 					(@all_schedules = 1 OR `resources`.`schedule_id` IN (@scheduleid)) AND
 					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid)) AND
-					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3)))
-					AND `rs`.`status_id` = 3 AND `ri`.`start_date` >= @startDate');
+					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3))) AND
+					`rs`.`status_id` = 3 AND `ri`.`start_date` >= @startDate');
     }
+
+	public static function GET_RESERVATION_MISSING_CHECK_IN_OUT_LIST(){
+		return self::Build(self::$SELECT_LIST_FRAGMENT, null,' AND 
+					(@all_owners = 1 OR `ru`.`user_id` IN (@userid) ) AND
+					(@levelid = 0 OR `ru`.`reservation_user_level` = @levelid) AND
+					(@all_schedules = 1 OR `resources`.`schedule_id` IN (@scheduleid)) AND
+					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid)) AND
+					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3))) AND
+					(@startDate IS NULL OR `ri`.`start_date` >= @startDate) AND (`ri`.`end_date` <= @endDate) AND
+					(`resources`.`enable_check_in` = 1) AND 
+					(`ri`.`checkout_date` is NULL AND `ri`.`end_date` <= @current_date AND `ri`.`checkin_date` is NOT NULL)');
+	}
 
     public static function GET_RESERVATION_LIST_FULL()
     {

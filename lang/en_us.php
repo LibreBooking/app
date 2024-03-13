@@ -1041,8 +1041,13 @@ class en_us extends Language
         $strings['PendingApprovalReservations'] = 'Pending Approval Reservations';
         $strings['LaterThisMonth'] = 'Later This Month';
         $strings['LaterThisYear'] = 'Later This Year';
-        $strings['Remaining'] = 'Remaining';
+        $strings['Other'] = 'Other';
         //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'There are no missing check out reservations';
+        $strings['MissingCheckOutReservations'] = 'Missing Check Out Reservations';
+        //End Missing Check In/Out Reservations in Dashboard
 
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Can\'t see reservation details because you don\'t have permissions to any of the resources in this reservation';

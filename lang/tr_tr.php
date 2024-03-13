@@ -804,6 +804,11 @@ class tr_tr extends en_gb
         $strings['Remaining'] = 'Kalan';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Eksik check-out rezervasyonu yok';
+        $strings['MissingCheckOutReservations'] = 'Eksik Check Out Rezervasyonları';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Bu rezervasyondaki hiçbir kaynağa izinleriniz olmadığından rezervasyon ayrıntılarını göremiyorsunuz';
         //End Schedule Resource Permissions
