@@ -8,7 +8,6 @@
 	</div>
 	<div id="PendingApprovalReservationsContents" class="accordion-collapse collapse">
 		<div class="dashboardContents accordion-body">
-			{assign var=colspan value="5"}
 			{if $Total > 0}
 				<div>
 					{assign var=orangePending value=false}
@@ -34,11 +33,11 @@
 					{/foreach}
 
 					<div class="timespan bg-warning border-bottom p-1 fw-medium fst-italic">
-					{translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
-				</div>
-				{foreach from=$NextWeeksReservations item=reservation}
-					{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
-				{/foreach}
+						{translate key="NextWeek"} ({$NextWeeksReservations|default:array()|count})
+					</div>
+					{foreach from=$NextWeeksReservations item=reservation}
+						{include file='Dashboard/dashboard_reservation.tpl' reservation=$reservation allowCheckin=$allowCheckin allowCheckout=$allowCheckout orangePending=$orangePending}
+					{/foreach}
 
 					<div class="timespan bg-warning border-bottom p-1 fw-medium fst-italic">
 						{translate key="LaterThisMonth"} ({$T|default:array()|count})

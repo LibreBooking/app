@@ -8,7 +8,6 @@
     </div>
     <div id="adminUpcomingReservationsDashboardContents" class=" accordion-collapse collapse">
         <div class="accordion-body">
-            {assign var=colspan value="5"}
             {if $Total > 0}
                 <div>
                     <div class="timespan bg-warning border-bottom p-1 fw-medium fst-italic">
