@@ -200,6 +200,8 @@ class pt_pt extends en_gb
         $strings['CheckingIn'] = 'Efetuando o check-in';
         $strings['CheckingOut'] = 'Efetuando o check-out';
         $strings['Checkout'] = 'Check-out';
+        $strings['CheckResources'] = 'Consultar Recursos';
+        $strings['CheckSchedules'] = 'Consultar Horários';
         $strings['Choose'] = 'Escolher';
         $strings['ChooseOrDropFile'] = 'Escolha um ficheiro ou arraste-o para aqui';
         $strings['ClearFilter'] = 'Limpar filtro';
@@ -1027,6 +1029,12 @@ class pt_pt extends en_gb
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Não é possível ver os detalhes da reserva uma vez que não tem permissões para um ou mais recursos nesta reserva';
         //End Schedule Resource Permissions
+
+        //View Resource
+        $strings['Check'] = 'Consultar';
+        $strings['PermissionType'] = 'Tipo de Permissão';
+        $strings['NoResourcesToView'] = 'Sem recursos disponíveis';
+        //End View Resource
 
         $this->Strings = $strings;
 

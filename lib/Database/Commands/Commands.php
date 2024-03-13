@@ -1438,6 +1438,15 @@ class GetAllResourcesCommand extends SqlCommand
     }
 }
 
+class GetUserResourcesCommand extends SqlCommand
+{
+    public function __construct($resourceIds)
+    {
+        parent::__construct(Queries::GET_USER_RESOURCES);
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IDS, $resourceIds));
+    }
+}
+
 class GetAllResourceGroupsCommand extends SqlCommand
 {
     public function __construct()
