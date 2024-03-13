@@ -745,6 +745,11 @@ class eu_es extends en_gb
         $strings['Remaining'] = 'Geratzen dena';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Ez dago irteerako erreserbarik falta';
+        $strings['MissingCheckOutReservations'] = 'Irteerako erreserbak falta dira';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Ezinezkoa da erreserbaaren xehetasunak ikustea, erreserba honetan dagoen edozein baliabideen baimenik ez delako';
         //End Schedule Resource Permissions

@@ -1044,6 +1044,11 @@ class it_it extends en_us
         $strings['Remaining'] = 'Rimanenti';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Non ci sono prenotazioni mancanti per il check out';
+        $strings['MissingCheckOutReservations'] = 'Prenotazioni mancanti per il check out';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Impossibile visualizzare i dettagli della prenotazione perché non hai le autorizzazioni per nessuna delle risorse in questa prenotazione';
         //End Schedule Resource Permissions

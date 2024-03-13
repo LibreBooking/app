@@ -837,6 +837,11 @@ class cz extends en_us
         $strings['Remaining'] = 'Zbývající';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Nejsou žádné chybějící rezervace pro odhlášení';
+        $strings['MissingCheckOutReservations'] = 'Chybějící rezervace pro odhlášení';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Nemůžete vidět podrobnosti rezervace, protože nemáte oprávnění k žádným zdrojům v této rezervaci';
         //End Schedule Resource Permissions

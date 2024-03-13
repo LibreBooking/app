@@ -1049,6 +1049,11 @@ class pl extends en_gb
         $strings['Remaining'] = 'Pozostałe';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Brak brakujących rezerwacji wymeldowania';
+        $strings['MissingCheckOutReservations'] = 'Brakujące rezerwacje wymeldowania';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Nie można zobaczyć szczegółów rezerwacji, ponieważ nie masz uprawnień do żadnych zasobów w tej rezerwacji';
         //End Schedule Resource Permissions

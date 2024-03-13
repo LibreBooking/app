@@ -997,6 +997,11 @@ class de_de extends en_gb
         $strings['Remaining'] = 'Verbleibend';  
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Es gibt keine fehlenden Auscheck-Reservierungen';
+        $strings['MissingCheckOutReservations'] = 'Fehlende Auscheck-Reservierungen';       
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
         //End Schedule Resource Permissions

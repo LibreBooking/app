@@ -660,6 +660,11 @@ class no_no extends en_gb
         $strings['Remaining'] = 'Gjenstående';        
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Det er ingen manglende utsjekkingsreservasjoner';
+        $strings['MissingCheckOutReservations'] = 'Manglende utsjekkingsreservasjoner';        
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Kan ikke se reservasjonsdetaljer fordi du ikke har tillatelser til noen av ressursene i denne reservasjonen';
         //End Schedule Resource Permissions

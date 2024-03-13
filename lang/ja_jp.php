@@ -1020,6 +1020,10 @@ class ja_jp extends en_gb
         $strings['Remaining'] = '残り';
         //End Pending Approval Reservations in Dashboard
 
+        //Missing Check In/Out Reservations in Dashboard
+
+        //End Missing Check In/Out Reservations in Dashboard
+
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'この予約に含まれるいずれかのリソースへの権限がないため、予約の詳細を表示できません';
         //End Schedule Resource Permissions
