@@ -6,7 +6,7 @@
         {/if}
         <div class="resourceNameTitle card-header clearfix" {$headerStyle}>
             <h5 class="float-start">{$resourceName}</h5>
-            <a href="#" class="btn btn-close d-sm-inline-block hideResourceDetailsPopup float-end"
+            <a href="#" class="btn btn-close d-sm-inline-block d-md-none hideResourceDetailsPopup float-end"
                 aria-label="{translate key=Close}"></a>
         </div>
         <div class="card-body row">

@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true DataTable=true}
+{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true qtip=true DataTable=true}
 
 <div id="page-manage-schedules" class="admin-page">
 
@@ -297,13 +297,11 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body vstack gap-2">
-						<div class="form-group has-feedback">
+						<div class="form-group">
 							<label class="fw-bold" for="addName">{translate key=Name}<i
 									class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i></label>
-							<input type="text" id="addName" class="form-control required"
+							<input type="text" id="addName" class="form-control has-feedback required"
 								{formname key=SCHEDULE_NAME} />
-							{*<i class="glyphicon glyphicon-asterisk form-control-feedback"
-								data-bv-icon-for="addName"></i>*}
 						</div>
 						<div class="form-group">
 							<label class="fw-bold" for="addStartsOn">{translate key=StartsOn}</label>

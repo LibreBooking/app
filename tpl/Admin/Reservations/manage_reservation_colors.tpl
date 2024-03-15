@@ -24,7 +24,8 @@
 
     <div class="card shadow">
         <div class="card-body">
-            <table class="table table-striped table-hover border-top" id="reservationTable">
+            {assign var=tableId value=reservationTable}
+            <table class="table table-striped table-hover border-top" id="{$tableId}">
                 <thead>
                     <tr>
                         <th>{translate key=Attribute}</th>
@@ -35,8 +36,7 @@
                 </thead>
                 <tbody>
                     {foreach from=$Rules item=rule}
-                        {*{cycle values='row0,row1' assign=rowCss}*}
-                        <tr class="{*{$rowCss}*}">
+                        <tr>
                             <td>{$rule->AttributeName}</td>
                             <td>{$rule->RequiredValue}</td>
                             <td style="background-color:{$rule->Color}">&nbsp;</td>
@@ -48,7 +48,6 @@
                     {/foreach}
                 </tbody>
             </table>
-            {datatable tableId=reservationTable}
         </div>
     </div>
 </div>
@@ -63,12 +62,13 @@
                 </div>
                 <div class="modal-body">
                     {translate key=ReservationCustomRuleAdd}
-
-                    <div id='attributeFillIn' class='d-inline-block'></div>
-                    <div id="color" class="d-inline">
-                        <label for="reservationColor" class="visually-hidden">Reservation Color</label>
-                        <input type="color" {formname key="RESERVATION_COLOR"}
-                            class="form-control form-control-color w-50 required" id="reservationColor" maxlength="6" />
+                    <div class="d-flex align-items-end">
+                        <div id="attributeFillIn"></div>
+                        <div id="color">
+                            <label for="reservationColor" class="visually-hidden">Reservation Color</label>
+                            <input type="color" {formname key="RESERVATION_COLOR"}
+                                class="form-control form-control-color required" id="reservationColor" maxlength="6" />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -115,8 +115,8 @@
 
 </div>
 
-{include file="javascript-includes.tpl"}
-
+{include file="javascript-includes.tpl" DataTable=true}
+{datatable tableId=$tableId}
 {jsfile src="ajax-helpers.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
 {jsfile src="ajax-form-submit.js"}

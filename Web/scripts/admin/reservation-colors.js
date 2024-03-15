@@ -30,7 +30,7 @@ function ReservationColorManagement(opts) {
         $('#addRuleButton').click(function (e) {
             var attrId = '#attribute' + elements.attributeOption.val();
             $('#attributeFillIn').empty();
-            $('#attributeFillIn').append($(attrId).clone().removeClass('hidden'));
+            $('#attributeFillIn').append($(attrId).clone().removeClass('d-none'));
             elements.addDialog.modal('show');
         });
 

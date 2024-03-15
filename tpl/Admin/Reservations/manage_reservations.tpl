@@ -21,7 +21,7 @@
 					<a role="menuitem" href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="add-link dropdown-item"
 						target="_blank">
 						<i class="bi bi-box-arrow-in-up"></i>
-						{translate key=Export}
+						{translate key=Export} CVS
 					</a>
 				</li>
 				{if $CanViewAdmin}
@@ -46,7 +46,7 @@
 	</div>
 
 	<div class="accordion">
-		<div class="panel-default filterTable accordion-item shadow mb-2" id="filter-reservations-panel">
+		<div class="filterTable accordion-item shadow mb-2" id="filter-reservations-panel">
 			<h2 class="accordion-header">
 				<button class="accordion-button link-primary fw-bold" type="button" data-bs-toggle="collapse"
 					data-bs-target="#filter-reservations-content" aria-expanded="true"
@@ -206,7 +206,7 @@
 									<label for="delete-all"></label>
 								</div>
 								<div class="action-delete">
-									<a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">
+									<a href="#" id="delete-selected" class="d-none" title="{translate key=Delete}">
 										<span class="bi bi-trash3-fill text-danger icon remove"></span>
 										<span class="visually-hidden">{translate key=Delete}</span>
 									</a>
@@ -347,8 +347,8 @@
 			<form id="deleteInstanceForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteInstanceDialogLabel">{translate key=Delete}</h4>
+						<h5 class="modal-title" id="deleteInstanceDialogLabel">{translate key=Delete}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="delResResponse"></div>
@@ -376,8 +376,8 @@
 			<form id="deleteSeriesForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -387,8 +387,8 @@
 						<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber" />
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-							data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-outline-secondary cancel"
+							data-bs-dismiss="modal">{translate key='Cancel'}</button>
 
 						<button type="button" class="btn btn-danger saveSeries btnUpdateThisInstance"
 							id="btnUpdateThisInstance">
@@ -415,9 +415,9 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span
 								id="deleteMultipleCount"></span>)</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -432,7 +432,7 @@
 						{delete_button}
 						{indicator}
 					</div>
-					<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+					<div id="deleteMultiplePlaceHolder" class="d-none"></div>
 				</div>
 			</div>
 		</form>
@@ -443,16 +443,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="inlineErrorLabel">{translate key=Error}</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 				</div>
 				<div class="modal-body">
 					<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
 					<div id="reservationAccessError" class="hidden error"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default cancel"
-						data-dismiss="modal">{translate key='OK'}</button>
+					<button type="button" class="btn btn-outline-secondary cancel"
+						data-bs-dismiss="modal">{translate key='OK'}</button>
 				</div>
 			</div>
 		</div>
@@ -465,35 +465,36 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="importReservationsModalLabel">{translate key=Import}</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
-						<div id="importUserResults" class="validationSummary alert alert-danger no-show">
+						<div id="importInstructions" class="alert alert-info">
+							<div class="note">{translate key=ReservationImportInstructions}</div>
+							<a href="{$smarty.server.SCRIPT_NAME}?dr=template" class="alert-link"
+								download="{$smarty.server.SCRIPT_NAME}?dr=template"
+								target="_blank">{translate key=GetTemplate}<span class="bi bi-download ms-1"></span></a>
+						</div>
+						<div id="importUserResults" class="validationSummary alert alert-danger d-none">
 							<ul>
 								{async_validator id="fileExtensionValidator" key=""}
 							</ul>
 						</div>
-						<div id="importErrors" class="alert alert-danger no-show"></div>
-						<div id="importResult" class="alert alert-success no-show">
+						<div id="importErrors" class="alert alert-danger d-none"></div>
+						<div id="importResult" class="alert alert-success d-none">
 							<span>{translate key=RowsImported}</span>
 
-							<div id="importCount" class="inline bold">0</div>
+							<span id="importCount" class="inline fw-bold">0</span>
 							<span>{translate key=RowsSkipped}</span>
 
-							<div id="importSkipped" class="inline bold">0</div>
-							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span
-									class="fa fa-refresh"></span></a>
+							<span id="importSkipped" class="inline fw-bold">0</span>
+							<a class="alert-link" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}<i
+									class="bi bi-arrow-repeat ms-1"></i></a>
 						</div>
-						<div class="margin-bottom-25">
-							<label for="reservationImportFile" class="no-show">{translate key=File}</label>
-							<input type="file" {formname key=RESERVATION_IMPORT_FILE} id="reservationImportFile" />
-						</div>
-						<div id="importInstructions" class="alert alert-info">
-							<div class="note">{translate key=ReservationImportInstructions}</div>
-							<a href="{$smarty.server.SCRIPT_NAME}?dr=template"
-								download="{$smarty.server.SCRIPT_NAME}?dr=template"
-								target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+						<div class="">
+							<label for="reservationImportFile" class="visually-hidden">{translate key=File}</label>
+							<input type="file" {formname key=RESERVATION_IMPORT_FILE} id="reservationImportFile"
+								class="form-control" accept=".csv" />
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -512,76 +513,77 @@
 			<form id="termsOfServiceForm" method="post" ajaxAction="termsOfService" enctype="multipart/form-data">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
+						<h5 class="modal-title" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div>
-							<div class="radio inline-block">
+							<div class="form-check form-check-inline">
 								<input type="radio" {formname key=TOS_METHOD} value="manual" id="tos_manual_radio"
-									checked="checked" data-ref="tos_manual_div" class="toggle">
+									checked="checked" data-ref="tos_manual_div" class="toggle form-check-input">
 								<label for="tos_manual_radio">{translate key=EnterTermsManually}</label>
 							</div>
-							<div class="radio inline-block">
+							<div class="form-check form-check-inline">
 								<input type="radio" {formname key=TOS_METHOD} value="url" id="tos_url_radio"
-									data-ref="tos_url_div" class="toggle">
+									data-ref="tos_url_div" class="toggle form-check-input">
 								<label for="tos_url_radio">{translate key=LinkToTerms}</label>
 							</div>
-							<div class="radio inline-block">
+							<div class="form-check form-check-inline">
 								<input type="radio" {formname key=TOS_METHOD} value="upload" id="tos_upload_radio"
-									data-ref="tos_upload_div" class="toggle">
+									data-ref="tos_upload_div" class="toggle form-check-input">
 								<label for="tos_upload_radio">{translate key=UploadTerms}</label>
 							</div>
 						</div>
 						<div id="tos_manual_div" class="tos-div">
 							<div class="form-group">
-								<label for="tos-manual">{translate key=TermsOfService}</label>
-								<textarea id="tos-manual" class="form-control" style="width:100%" rows="10"
+								<label for="tos-manual" class="fw-bold">{translate key=TermsOfService}</label>
+								<textarea id="tos-manual" class="form-control w-100" rows="10"
 									{formname key=TOS_TEXT}></textarea>
 							</div>
 						</div>
-						<div id="tos_url_div" class="tos-div no-show">
+						<div id="tos_url_div" class="tos-div d-none">
 							<div class="form-group">
-								<label for="tos-url">{translate key=LinkToTerms}</label>
+								<label for="tos-url" class="fw-bold">{translate key=LinkToTerms}</label>
 								<input type="url" id="tos-url" class="form-control"
 									placeholder="http://www.example.com/tos.html" {formname key=TOS_URL}
 									maxlength="255" />
 							</div>
 						</div>
-						<div id="tos_upload_div" class="tos-div no-show margin-bottom-15">
-							<label for="tos-upload">{translate key=TermsOfService} PDF</label>
-							<div class="dropzone" id="termsOfServiceUpload">
-								<div>
-									<span class="fa fa-file-pdf-o fa-3x"></span><br />
+						<div id="tos_upload_div" class="tos-div d-none margin-bottom-15">
+							<label for="tos-upload" class="fw-bold">{translate key=TermsOfService} PDF</label>
+							<div class="dropzone text-center border border-2 rounded-3 bg-light"
+								id="termsOfServiceUpload">
+								<div class="">
+									<i class="bi bi-filetype-pdf fs-1"></i><br />
 									{translate key=ChooseOrDropFile}
 								</div>
 								<input id="tos-upload" type="file" {formname key=TOS_UPLOAD} accept="application/pdf" />
 							</div>
-							<div id="tos-upload-link" class="no-show">
-								<a href="{$ScriptUrl}/uploads/tos/tos.pdf" target="_blank">
-									<span class="fa fa-file-pdf-o"></span> {translate key=ViewTerms}
+							<div id="tos-upload-link" class="d-none">
+								<a href="{$ScriptUrl}/uploads/tos/tos.pdf" target="_blank" class="link-primary"><span
+										class="bi bi-filetype-pdf me-1"></span> {translate key=ViewTerms}
 								</a>
 							</div>
 						</div>
-						<div>
+						<div class="mt-3">
 							<div>{translate key=RequireTermsOfServiceAcknowledgement}</div>
-							<div>
-								<div class="radio inline-block">
-									<input type="radio" {formname key=TOS_APPLICABILITY}
-										value="{TermsOfService::RESERVATION}" id="tos_reservation" checked="checked">
-									<label for="tos_reservation">{translate key=UponReservation}</label>
-								</div>
-								<div class="radio inline-block">
-									<input type="radio" {formname key=TOS_APPLICABILITY}
-										value="{TermsOfService::REGISTRATION}" id="tos_registration">
-									<label for="tos_registration">{translate key=UponRegistration}</label>
-								</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" {formname key=TOS_APPLICABILITY} class="form-check-input"
+									value="{TermsOfService::RESERVATION}" id="tos_reservation" checked="checked">
+								<label for="tos_reservation"
+									class="form-check-label">{translate key=UponReservation}</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" {formname key=TOS_APPLICABILITY} class="form-check-input"
+									value="{TermsOfService::REGISTRATION}" id="tos_registration">
+								<label for="tos_registration"
+									class="form-check-label">{translate key=UponRegistration}</label>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
 						{cancel_button}
-						{delete_button id='deleteTerms' class='no-show'}
+						{delete_button id='deleteTerms' class='d-none'}
 						{update_button submit=true}
 						{indicator}
 					</div>
