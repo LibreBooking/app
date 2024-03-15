@@ -435,8 +435,8 @@ function ResourceManagement(opts) {
 
 		elements.importTrigger.click(function (e) {
 			e.preventDefault();
-			$('#importErrors').empty().addClass('no-show');
-			$('#importResults').addClass('no-show');
+			$('#importErrors').empty().addClass('d-none');
+			$('#importResults').addClass('d-none');
 			elements.importDialog.modal('show');
 		});
 
@@ -497,13 +497,13 @@ function ResourceManagement(opts) {
 
 			$('#importCount').text(responseText.importCount);
 			$('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
-			$('#importResult').removeClass('no-show');
+			$('#importResult').removeClass('d-none');
 
 			var errors = $('#importErrors');
 			errors.empty();
 			if (responseText.messages && responseText.messages.length > 0) {
 				var messages = responseText.messages.join('</li><li>');
-				errors.html('<div>' + messages + '</div>').removeClass('no-show');
+				errors.html('<div>' + messages + '</div>').removeClass('d-none');
 			}
 		};
 

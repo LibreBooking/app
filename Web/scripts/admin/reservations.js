@@ -181,8 +181,8 @@ function ReservationManagement(opts, approval) {
         $('#import-reservations').click(function (e) {
             this.referenceNumber = '';
             e.preventDefault();
-            $('#importErrors').empty().addClass('no-show');
-            $('#importResults').addClass('no-show');
+            $('#importErrors').empty().addClass('d-none');
+            $('#importResults').addClass('d-none');
             elements.importReservationsDialog.modal('show');
         });
 
@@ -199,7 +199,7 @@ function ReservationManagement(opts, approval) {
             e.stopPropagation();
             var isChecked = elements.deleteMultipleSelectAll.is(":checked");
             elements.deleteMultipleCheckboxes.prop('checked', isChecked);
-            elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
+            elements.deleteMultiplePrompt.toggleClass('d-none', !isChecked);
         });
 
         elements.deleteMultipleCheckboxes.click(function (e) {
@@ -207,7 +207,7 @@ function ReservationManagement(opts, approval) {
             var numberChecked = elements.reservationTable.find('.delete-multiple:checked').length;
             var allSelected = numberChecked == elements.reservationTable.find('.delete-multiple').length;
             elements.deleteMultipleSelectAll.prop('checked', allSelected);
-            elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+            elements.deleteMultiplePrompt.toggleClass('d-none', numberChecked == 0);
         });
 
         elements.addTermsOfService.click(function (e) {
@@ -217,9 +217,9 @@ function ReservationManagement(opts, approval) {
         });
 
         elements.termsOfServiceDialog.find('.toggle').click(function (e) {
-            elements.termsOfServiceDialog.find('.tos-div').addClass('no-show');
+            elements.termsOfServiceDialog.find('.tos-div').addClass('d-none');
             var radio = $(e.target);
-            $('#' + radio.data('ref')).removeClass('no-show');
+            $('#' + radio.data('ref')).removeClass('d-none');
         });
 
         var deleteReservationResponseHandler = function (response, form) {
@@ -239,13 +239,13 @@ function ReservationManagement(opts, approval) {
 
             $('#importCount').text(responseText.importCount);
             $('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
-            $('#importResult').removeClass('no-show');
+            $('#importResult').removeClass('d-none');
 
             var errors = $('#importErrors');
             errors.empty();
             if (responseText.messages && responseText.messages.length > 0) {
                 var messages = responseText.messages.join('</li><li>');
-                errors.html('<div>' + messages + '</div>').removeClass('no-show');
+                errors.html('<div>' + messages + '</div>').removeClass('d-none');
             }
         };
 
@@ -380,8 +380,8 @@ function ReservationManagement(opts, approval) {
     function loadExistingTermsOfService() {
         ajaxGet(options.termsOfServiceUrl, null, function (data) {
 
-            elements.termsOfServiceFile.addClass('no-show');
-            elements.deleteTerms.addClass('no-show');
+            elements.termsOfServiceFile.addClass('d-none');
+            elements.deleteTerms.addClass('d-none');
             elements.termsOfServiceForm.attr('ajaxAction', options.updateTermsOfServiceAction);
 
             if (data == null) {
@@ -397,18 +397,18 @@ function ReservationManagement(opts, approval) {
 
             if (text != null && text != '') {
                 $('#tos_manual_radio').click();
-                elements.deleteTerms.removeClass('no-show');
+                elements.deleteTerms.removeClass('d-none');
                 elements.termsOfServiceText.val(text);
             }
             if (url != null && url != '') {
                 $('#tos_url_radio').click();
-                elements.deleteTerms.removeClass('no-show');
+                elements.deleteTerms.removeClass('d-none');
                 elements.termsOfServiceUrl.val(url);
             }
             if (filename != null && filename != '') {
                 $('#tos_upload_radio').click();
-                elements.deleteTerms.removeClass('no-show');
-                elements.termsOfServiceFile.removeClass('no-show');
+                elements.deleteTerms.removeClass('d-none');
+                elements.termsOfServiceFile.removeClass('d-none');
             }
 
             if (applicability == 'REGISTRATION') {
