@@ -56,7 +56,7 @@
     {$periods.$ts = $DailyLayout->GetPeriods($date)}
     <div>
         <table id="reservations-{formatdate date=$date format='Y-m-d'}" data-date="{formatdate date=$date format='Y-m-d'}"
-            class="reservations" border="1" cellpadding="0" width="100%">
+            class="reservations w-100">
             <thead>
                 <tr>
                     <td class="resdate">{formatdate date=$date key="schedule_daily"}</td>

@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true Owl=true printCssFiles='css/reservation.print.css'}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true Owl=false printCssFiles='css/reservation.print.css'}
 <div id="page-view-reservation">
     <div id="reservation-box" class="readonly">
         <div id="reservationFormDiv">

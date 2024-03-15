@@ -8,16 +8,14 @@
 
 	<div class="card shadow col-12 col-sm-8 mx-auto">
 		<div class="card-body">
-			<h2>{translate key=WeNeedYourEmailAddress}</h2>
+			<h2 class="text-center">{translate key=WeNeedYourEmailAddress}</h2>
 
 			<form method="post" id="form-guest-collect" action="{$smarty.server.REQUEST_URI|escape:'html'}" role="form">
 
-				<div class="row">
-					<div class="col-12">
-						<div class="form-group">
-							<label class="reg" for="email">{translate key="Email"}</label>
-							{textbox type="email" name="EMAIL" class="input" value="Email" required="required"}
-						</div>
+				<div class="mb-3">
+					<div class="form-group">
+						<label class="reg fw-bold" for="email">{translate key="Email"}</label>
+						{textbox type="email" name="EMAIL" class="input" value="Email" required="required"}
 					</div>
 				</div>
 

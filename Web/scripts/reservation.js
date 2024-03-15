@@ -431,7 +431,7 @@ function Reservation(opts) {
         }
         var x = 'accessory!-!id=' + id + ',quantity=' + quantity + ',name=' + encodeURIComponent(name);
 
-        elements.accessoriesList.append('<div accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></div>');
+        elements.accessoriesList.append('<div accessoryId="' + id + '"><span class="badge bg-secondary quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></div>');
     };
 
     var AddResources = function () {
@@ -474,17 +474,21 @@ function Reservation(opts) {
                     primaryResourceContainer.find('.resourceName').remove();
                     displayDiv = primaryResourceContainer;
                 }
-                var resourceHtml = `<div class="resourceName px-2 rounded-1 w-auto" style="background-color:${color}; color:${textColor};">
+                var resourceHtml = `<div class="resourceName rounded-1 d-inline-block m-1 p-1 ${!color ? `text-success bg-success bg-opacity-10"` : `" style="background-color:${color}; color:${textColor};"`}">
                 <span class="resourceDetails" data-resourceId="${checkedResourceId}">${checkedResourceName}</span>
                 <input class="resourceId" type="hidden" name="additionalResources[]" value="${checkedResourceId}" />
                 ${requiresApproval ? '<i class="bi bi-lock-fill" data-bs-toggle="tooltip" data-bs-title="approval"></i>' : ''}
                 ${requiresCheckin ? '<i class="bi bi-box-arrow-in-right" data-bs-toggle="tooltip" data-bs-title="checkin"></i>' : ''}
                 ${!_.isEmpty(autoReleaseMinutes) ? `<i class="bi bi-clock-history" data-bs-toggle="tooltip" data-bs-title="autorelease" data-autorelease="${autoReleaseMinutes}"></i>` : ''}
                 </div>`;
-                console.log('pasa poa acá');
+
                 displayDiv.append(resourceHtml);
             });
+
+            translateTooltips();
         }
+
+
 
         var accessoryIds = GetDisallowedAccessoryIds();
         _.forEach(accessoryIds, function (id) {

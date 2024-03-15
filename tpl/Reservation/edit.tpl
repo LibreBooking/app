@@ -1,7 +1,7 @@
 {extends file="Reservation/create.tpl"}
 
 {block name=header}
-    {include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' Qtip=true printCssFiles='css/reservation.print.css'}
+    {include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' Qtip=false printCssFiles='css/reservation.print.css'}
 {/block}
 
 {block name=reservationHeader}
@@ -13,7 +13,7 @@
         <div class="btn-group btn-group-sm btnMore">
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                <span class="d-none d-sm-inline">{translate key=More}</span>
+                <span class="d-none d-sm-inline"><i class="bi bi-plus-circle-fill me-1"></i>{translate key='More'}</span>
                 <span class="d-sm-none"><i class="bi bi-three-dots-vertical"></i></span>
             </button>
             <ul class="dropdown-menu" role="menu">
@@ -21,19 +21,19 @@
                     {assign var=icsUrl value="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
                     <a href="{$icsUrl}" download="{$icsUrl}" class="dropdown-item">
                         <span class="bi bi-calendar3"></span>
-                        {translate key=AddToOutlook}</a>
+                        {translate key='AddToOutlook'}</a>
                 </li>
                 <li>
                     <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$ReservationTitle|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$Resource->Name|escape:'url'}&trp=false&sprop=&sprop=name:"
                         target="_blank" rel="nofollow" class="dropdown-item">
                         <span class="bi bi-google"></span>
-                        {translate key=AddToGoogleCalendar}</a>
+                        {translate key='AddToGoogleCalendar'}</a>
                 </li>
                 {if $EmailEnabled}
                     <li>
                         <a href="#" class="btnSendEmail dropdown-item">
                             <span class="bi bi-envelope-fill"></span>
-                            {translate key=Email}</a>
+                            {translate key='Email'}</a>
                     </li>
                 {/if}
                 <li>

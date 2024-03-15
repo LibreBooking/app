@@ -34,13 +34,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="updateButtonsLabel">{translate key=Reject}</h4>
+                    <h5 class="modal-title" id="updateButtonsLabel">{translate key=Reject}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
                     <div>{translate key=DeleteReminderWarning}</div>
                     <div>
-                        <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
+                        <label for="deleteReason" class="fw-bold">{translate key=Reason} ({translate key=Optional})</label>
                         <textarea id="deleteReason" class="form-control"></textarea>
                     </div>
                 </div>
@@ -57,8 +57,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
+                    <h5 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
                     <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
