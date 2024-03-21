@@ -5,7 +5,8 @@
 		<div id="userDetailsEmail" class="fw-bold"><span class="label">{translate key=Email}</span> <a
 				href="mailto:{$User->EmailAddress()}" class="link-primary">{$User->EmailAddress()}</a></div>
 		<div id="userDetailsPhone" class="fw-bold"><span class="label">{translate key=Phone}</span> <a
-				href="tel:{$User->GetAttribute(UserAttribute::Phone)}">{$User->GetAttribute(UserAttribute::Phone)}</a>
+				href="tel:{$User->GetAttribute(UserAttribute::Phone)}"
+				class="link-primary">{$User->GetAttribute(UserAttribute::Phone)}</a>
 		</div>
 		<div id="userDetailsOrganization" class="fw-bold"><span class="label">{translate key=Organization}</span>
 			{$User->GetAttribute(UserAttribute::Organization)}</div>
