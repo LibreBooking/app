@@ -101,7 +101,7 @@ body {
     font-size: 14px;
     margin: 0;
     margin-bottom: 100px;
-    /*padding-top: 70px;*/
+    background-color: #fbfbfb;
 }
 
 footer {
@@ -361,6 +361,8 @@ span.searchclear-label {
 .jqtree-tree a,
 .jqtree-tree li a {
     text-decoration: none;
+    cursor: pointer;
+    color: #000;
 }
 
 .jqtree-tree,

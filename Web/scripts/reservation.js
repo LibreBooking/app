@@ -291,7 +291,7 @@ function Reservation(opts) {
             onCreateLi: function (node, $li) {
                 var span = $li.find('span');
                 var itemName = span.text();
-                var label = $('<label><input type="checkbox"/>' + itemName + '</label>');
+                var label = $('<div class="form-check d-inline ms-2"><label class="form-check-label"><input type="checkbox" class="form-check-input"/>' + itemName + '</label></div>');
 
                 var checkbox = label.find('input');
 
@@ -474,11 +474,11 @@ function Reservation(opts) {
                     primaryResourceContainer.find('.resourceName').remove();
                     displayDiv = primaryResourceContainer;
                 }
-                var resourceHtml = `<div class="resourceName rounded-1 d-inline-block m-1 p-1 ${!color ? `text-success bg-success bg-opacity-10"` : `" style="background-color:${color}; color:${textColor};"`}">
+                var resourceHtml = `<div class="resourceName rounded-1 my-1 p-1 ${!color ? `text-success bg-success bg-opacity-10"` : `" style="background-color:${color}; color:${textColor};"`}>
                 <span class="resourceDetails" data-resourceId="${checkedResourceId}">${checkedResourceName}</span>
                 <input class="resourceId" type="hidden" name="additionalResources[]" value="${checkedResourceId}" />
-                ${requiresApproval ? '<i class="bi bi-lock-fill" data-bs-toggle="tooltip" data-bs-title="approval"></i>' : ''}
-                ${requiresCheckin ? '<i class="bi bi-box-arrow-in-right" data-bs-toggle="tooltip" data-bs-title="checkin"></i>' : ''}
+                ${requiresApproval ? '<i class="bi bi-lock-fill me-1" data-bs-toggle="tooltip" data-bs-title="approval"></i>' : ''}
+                ${requiresCheckin ? '<i class="bi bi-box-arrow-in-right me-1" data-bs-toggle="tooltip" data-bs-title="checkin"></i>' : ''}
                 ${!_.isEmpty(autoReleaseMinutes) ? `<i class="bi bi-clock-history" data-bs-toggle="tooltip" data-bs-title="autorelease" data-autorelease="${autoReleaseMinutes}"></i>` : ''}
                 </div>`;
 
@@ -1270,7 +1270,7 @@ function Reservation(opts) {
             return;
         }
 
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="bi bi-x-lg text-danger"></span></a> <a href="#" class=" link-primary" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
+        var item = '<div class="user">' + '<a href="#" class="remove"><span class="bi bi-x-lg text-danger"></span></a> <a href="#" class="bindableUser link-primary" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
 
         elements.participantList.append(item);
         $('.bindableUser').bindUserDetails();

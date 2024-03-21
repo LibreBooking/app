@@ -1,7 +1,7 @@
 <div id="reservationParticipation">
 	<div class="d-flex align-items-center gap-1 mb-2">
-		<h6 class="fw-bold mb-0" for="participantAutocomplete">{translate key="ParticipantList"}<span
-				class="badge bg-secondary ms-1" id="participantBadge">0</span></h6>
+		<label class="fw-bold mb-0" for="participantAutocomplete">{translate key="ParticipantList"}<span
+				class="badge bg-secondary ms-1" id="participantBadge">0</span></label>
 	</div>
 
 	<div class="d-flex flex-wrap gap-1">

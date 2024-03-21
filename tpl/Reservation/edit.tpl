@@ -96,7 +96,7 @@
                             <h5 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
-                        <div class="modal-body mx-auto">
+                        <div class="modal-body">
                             <div id="deleteRecurringButtons" class="no-show mb-3">
                                 <div>{translate key=DeleteReminderWarning}</div>
                                 <div>

@@ -3,8 +3,8 @@
 {/block}
 
 {function name="displayResource"}
-    <div class="resourceName rounded-1 d-inline-block m-1 p-1 {if !$resource->GetColor()}text-success bg-success bg-opacity-10"
-            {else}" style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}" {/if}>
+    <div class="resourceName rounded-1 m-1 p-1 {if !$resource->GetColor()}text-success bg-success bg-opacity-10" {else}"
+    style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}" {/if}>
     <span class="resourceDetails" data-resourceId="{$resource->GetId()}">{$resource->Name}</span>
     {if $resource->GetRequiresApproval()}<span class="bi bi-lock-fill" data-bs-toggle="tooltip"
         data-bs-title="approval"></span>{/if}
@@ -19,10 +19,10 @@
     <div id="reservation-box" class="mx-3">
         <form id="form-reservation" method="post" enctype="multipart/form-data" role="form">
 
-            <div class="d-flex align-items-center justify-content-between bg-white sticky-top border-bottom my-3 py-2"
-                style="top: 53px;z-index:1000">
+            <div class="d-flex align-items-center justify-content-between border-bottom my-3 py-2">
                 <div class="reservationHeader">
-                    <h3 class="mb-0">{translate key="CreateReservationHeading"}</h3>
+                    <h3 class="mb-0">{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}
+                    </h3>
                 </div>
                 <div class="float-end buttonsEdit">
                     <button type="button" class="btn btn-sm btn-outline-secondary"
@@ -42,11 +42,11 @@
             <div class="row gx-2">
                 <div class="reservationTitle col-12 border-bottom py-2">
                     <div class="form-group">
-                        <h6 class="fw-bold mb-0" for="reservationTitle">{translate key="ReservationTitle"}
+                        <label class="fw-bold mb-0" for="reservationTitle">{translate key="ReservationTitle"}
                             {if $TitleRequired}
                             <i class="bi bi-asterisk text-danger align-top text-small"></i>
                             {/if}
-                        </h6>
+                        </label>
                         {textbox name="RESERVATION_TITLE" class="form-control has-feedback" value="ReservationTitle" id="reservationTitle" maxlength="300" required=$TitleRequired}
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                 {/if}
 
                 <div class="form-group {$detailsCol} py-2 border-bottom">
-                    <h6 class="fw-bold">{translate key='Owner'}</h6>
+                    <label class="fw-bold" for="userName">{translate key='Owner'}</label>
                     {if $ShowUserDetails && $ShowReservationDetails}
                     <a href="#" id="userName" data-userid="{$UserId}" class="link-primary">{$ReservationUserName}</a>
                     {else}
@@ -201,7 +201,7 @@
 
                 <div class="reservationResources col-12 col-sm-6 py-2 border-bottom" id="reservation-resources">
                     <div class="d-flex align-items-center gap-2">
-                        <h6 class="fw-bold mb-0">{translate key="Resources"}</h6>
+                        <label class="fw-bold mb-0">{translate key="Resources"}</label>
                         {if $ShowAdditionalResources}
                         <a id="btnAddResources" href="#" class="link-primary" data-bs-toggle="modal"
                             data-bs-target="#dialogResourceGroups">{translate key=Change} <span
@@ -209,21 +209,23 @@
                         {/if}
                     </div>
 
-                    <div id="primaryResourceContainer" class="d-inline-block">
-                        <input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
-                        <input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID}
-                            value="{$ResourceId}" />
-                        {displayResource resource=$Resource}
-                    </div>
+                    <div class="d-inline-block">
+                        <div id="primaryResourceContainer">
+                            <input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
+                            <input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID}
+                                value="{$ResourceId}" />
+                            {displayResource resource=$Resource}
+                        </div>
 
-                    <div id="additionalResources" class="mb-2">
-                        {foreach from=$AvailableResources item=resource}
-                        {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-                        <input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]"
-                            value="{$resource->Id}" />
-                        {displayResource resource=$resource}
-                        {/if}
-                        {/foreach}
+                        <div id="additionalResources">
+                            {foreach from=$AvailableResources item=resource}
+                            {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+                            <input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]"
+                                value="{$resource->Id}" />
+                            {displayResource resource=$resource}
+                            {/if}
+                            {/foreach}
+                        </div>
                     </div>
                 </div>
 
@@ -231,7 +233,7 @@
                     <div class="accessoriesDiv">
                         {if $ShowReservationDetails && $AvailableAccessories|default:array()|count > 0}
                         <div class="d-flex align-items-center gap-2">
-                            <h6 class="fw-bold mb-0">{translate key="Accessories"}</h6>
+                            <label class="fw-bold mb-0" for="addAccessoriesPrompt">{translate key="Accessories"}</label>
                             <a href="#" id="addAccessoriesPrompt" class="link-primary" data-bs-toggle="modal"
                                 data-bs-target="#dialogAddAccessories">{translate key='Add'} <span
                                     class="bi bi-plus-square-fill"></span></a>
@@ -252,7 +254,7 @@
 
                 {if $RemindersEnabled}
                 <div class="reservationReminders border-bottom py-2">
-                    <h6 class="fw-bold mb-0">{translate key=SendReminder}</h6>
+                    <label class="fw-bold mb-0">{translate key=SendReminder}</label>
                     <div class="d-flex gap-5">
                         <div id="reminderOptionsStart" class="d-flex align-items-center flex-wrap gap-1">
                             <div class="form-check">
@@ -301,11 +303,11 @@
 
                 <div class="reservationDescription border-bottom py-2">
                     <div class="form-group">
-                        <h6 class="fw-bold mb-0" for="description">
+                        <label class="fw-bold mb-0" for="description">
                             {translate key="ReservationDescription"}{if $DescriptionRequired}<i
                                 class="bi bi-asterisk text-danger align-top text-small"></i>
                             {/if}
-                        </h6>
+                        </label>
                         <textarea id="description" name="{FormKeys::DESCRIPTION}" class="form-control has-feedback"
                             {if $DescriptionRequired}required="required" {/if}>{$Description}</textarea>
                     </div>
@@ -329,9 +331,10 @@
             <div class="border-bottom py-2">
                 <div class="reservationAttachments">
 
-                    <h6 class="fw-bold mb-0">{translate key=AttachFile} <span class="note fst-italic">({$MaxUploadSize}
+                    <label class="fw-bold mb-0">{translate key=AttachFile} <span
+                            class="note fst-italic">({$MaxUploadSize}
                             MB {translate key=Maximum})</span>
-                    </h6>
+                    </label>
 
                     <div id="reservationAttachments">
                         <div class="attachment-item">
@@ -380,7 +383,7 @@
             <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
                 value="{SeriesUpdateScope::FullSeries}" />
 
-            <div class="d-none">
+            <div class="">
                 <div class="reservationButtons clearfix">
                     <div class="float-sm-end">
                         <button type="button" class="btn btn-sm btn-outline-secondary"
@@ -668,12 +671,12 @@
             }
             if (tooltipType === 'autorelease') {
                 var text = "{translate key=AutoReleaseNotification args='%s'}";
-                        var tooltipText = text.replace('%s', $(this).data('autorelease'));
-                    }
-                    resource.setAttribute('data-bs-title', tooltipText);
-                    new bootstrap.Tooltip(resource);
-                });
-            }
-        </script>
+                    var tooltipText = text.replace('%s', resource.getAttribute('data-autorelease'));
+                }
+                resource.setAttribute('data-bs-title', tooltipText);
+                new bootstrap.Tooltip(resource);
+            });
+        }
+    </script>
 
-        {include file='globalfooter.tpl'}
+    {include file='globalfooter.tpl'}

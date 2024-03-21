@@ -1,11 +1,11 @@
 <div id="reservationParticipation">
 
 	<div class="d-flex align-items-center gap-1 mb-2">
-		<h6 class="fw-bold mb-0" for="inviteeAutocomplete">{translate key="InvitationList"}<span
-				class="badge bg-secondary ms-1" id="inviteeBadge">0</span></h6>
+		<label class="fw-bold mb-0" for="inviteeAutocomplete">{translate key="InvitationList"}<span
+				class="badge bg-secondary ms-1" id="inviteeBadge">0</span></label>
 
 	</div>
-	<div class="d-flex flex-wrap gap-1">
+	<div class="d-flex align-items-center flex-wrap gap-1">
 		<div class="participationText d-flex align-items-center flex-wrap gap-1">
 			<span class="fw-bold d-none d-sm-inline-block">{translate key=Add}</span>
 			<input type="text" id="inviteeAutocomplete" class="form-control form-control-sm user-search"
@@ -14,20 +14,17 @@
 		</div>
 		<div class="participationButtons d-flex align-items-center flex-wrap gap-1">
 			<a href="#" id="promptForInvitees" class="link-primary me-2">
-				<i class="bi bi-person-fill"></i>
-				{translate key='Users'}
+				<i class="bi bi-person-fill me-1"></i>{translate key='Users'}
 			</a>
 			<a id="promptForGroupInvitees" type="button" class="link-primary me-2">
-				<i class="bi bi-people-fill"></i>
-				{translate key='Groups'}
+				<i class="bi bi-people-fill me-1"></i>{translate key='Groups'}
 			</a>
 			{if $AllowGuestParticipation}
 				<a href="#" id="promptForGuests" class="link-primary">
-					<i class="bi bi-person-plus-fill"></i>
-					{translate key='Guest'}
+					<i class="bi bi-person-plus-fill me-1"></i>{translate key='Guest'}
 				</a>
 			{/if}
-			<div id="allowParticipation">
+			<div id="allowParticipation" class="ms-1">
 				<div class="form-check">
 					<input class="form-check-input" type="checkbox" {if $AllowParticipantsToJoin}checked="checked" {/if}
 						{formname key=ALLOW_PARTICIPATION} id="allowParticipationCheckbox">
@@ -72,7 +69,7 @@
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="txtGuestEmail"
-							class="col-2 form-control-label fw-bold aling-items-center">{translate key=Email}</label>
+							class="col-2 form-control-label fw-bold align-items-center mb-0">{translate key=Email}</label>
 						<div class="col-8">
 							<input id="txtGuestEmail" type="email" class="form-control form-control-sm" />
 						</div>
