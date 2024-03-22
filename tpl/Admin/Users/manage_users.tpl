@@ -117,9 +117,9 @@
                                     {indicator id="userStatusIndicator"}
                                 </td>
                                 {if $CreditsEnabled}
-                                    <td class="align-right">
-                                        <span class="propertyValue inlineUpdate changeCredits" data-type="number"
-                                            data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
+                                    <td class="text-end">
+                                        <span class="propertyValue inlineUpdate changeCredits fw-bold text-decoration-underline"
+                                            data-type="number" data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
                                             data-name="{FormKeys::CREDITS}">{$user->CurrentCreditCount}</span>
                                         <a href="credit_log.php?{QueryStringKeys::USER_ID}={$id}"
                                             title="{translate key=CreditHistory}" class="link-primary">

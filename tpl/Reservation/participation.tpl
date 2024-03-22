@@ -7,7 +7,7 @@
 	<div class="d-flex flex-wrap gap-1">
 		<div class="participationText d-flex align-items-center flex-wrap gap-1">
 			<span class="fw-bold d-none d-sm-inline-block">{translate key=Add}</span>
-			<input type="text" id="participantAutocomplete" class="form-control form-control-sm user-search"
+			<input type="search" id="participantAutocomplete" class="form-control form-control-sm w-auto user-search"
 				placeholder="{translate key=NameOrEmail}" />
 			<span class="d-none d-sm-inline-block vr m-2"></span>
 		</div>
