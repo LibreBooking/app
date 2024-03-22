@@ -635,11 +635,22 @@ class SmartyPage extends Smarty
         $exportText = $this->Resources->GetString('Export');
         $printText = $this->Resources->GetString('Print');
         $showHideText = $this->Resources->GetString('ShowHide');
+
+        if ($tableId == 'report-results') {
+            $pagination = '"paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "info": false,
+                "ordering": false,';
+        } else {
+            $pagination = '"lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $viewAllText . '"] ],';
+        }
+
         return sprintf(
             '<script>
            var table =  $("#' . $tableId . '").DataTable({
                 "dom": \'<"d-flex justify-content-center flex-wrap"B><"d-flex justify-content-between flex-wrap"fil>rt<"d-flex justify-content-center"i><"d-flex justify-content-center"p><"clear">\',
-                "lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $viewAllText . '"] ],
+                ' . $pagination . '
                 responsive: true,
                 language: {
                     search: "' . $searchText . '",
