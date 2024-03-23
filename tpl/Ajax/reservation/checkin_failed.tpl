@@ -18,7 +18,7 @@
 	</div>
 
 	<div>
-		<button id="btnSaveFailed" class="btn btn-warning"><i
+		<button id="btnSaveFailed" class="btn btn-warning text-white"><i
 				class="bi bi-arrow-left-circle-fill me-1"></i>{translate key='Close'}</button>
 	</div>
 
