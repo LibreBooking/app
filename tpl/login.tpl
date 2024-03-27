@@ -88,30 +88,21 @@
 							{/if}
 						</div>
 
-						<section class="d-flex justify-content-center flex-wrap">
+						<section class="d-flex justify-content-center flex-wrap gap-2 my-3">
 							{if $AllowGoogleLogin}
-								<div class="{$socialClass} social-login m-1" id="socialLoginGoogle">
-									<a href="{$GoogleUrl}">
-										<img src="img/external/btn_google_signin_dark_normal_web.png"
-											alt="Sign in with Google" />
-									</a>
-								</div>
+								<a type="button" href="{$GoogleUrl}" class="btn btn-outline-primary"><i
+										class="bi bi-google me-1"></i>{translate key='SignInWith'}<span class="fw-medium">
+										Google</span></a>
 							{/if}
 							{if $AllowMicrosoftLogin}
-								<div class="{$socialClass} social-login m-1" id="socialLoginOffice" class="container">
-									<a href="{$MicrosoftUrl}">
-										<img style="max-height:42px;" src="img/external/microsoft-logo.jpeg"
-											alt="Sign in with Microsoft" />
-									</a>
-								</div>
+								<a type="button" href="{$MicrosoftUrl}" class="btn btn-outline-primary"><i
+										class="bi bi-microsoft me-1"></i>{translate key='SignInWith'}<span
+										class="fw-medium"> Microsoft</span></a>
 							{/if}
 							{if $AllowFacebookLogin}
-								<div class="{$socialClass} social-login m-1" id="socialLoginFacebook">
-									<a href="{$FacebookUrl}">
-										<img style="max-height:42px" src="img/external/facebook-logo.png"
-											alt="Sign in with Facebook" />
-									</a>
-								</div>
+								<a type="button" href="{$FacebookUrl}" class="btn btn-outline-primary"><i
+										class="bi bi-facebook me-1"></i>{translate key='SignInWith'}<span class="fw-medium">
+										Facebook</span></a>
 							{/if}
 						</section>
 						{if $facebookError}

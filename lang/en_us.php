@@ -426,7 +426,7 @@ class en_us extends Language
         $strings['ConfigurationUpdated'] = 'The configuration file was updated';
         $strings['ConfigurationUiNotEnabled'] = 'This page cannot be accessed because $conf[\'settings\'][\'pages\'][\'enable.configuration\'] is set to false or missing.';
         $strings['ConfigurationFileNotWritable'] = 'The config file is not writable. Please check the permissions of this file and try again.';
-        $strings['ConfigurationUpdateHelp'] = 'Refer to the Configuration section of the <a target=_blank href=%s>Help File</a> for documentation on these settings.';
+        $strings['ConfigurationUpdateHelp'] = 'Refer to the Configuration section of the <a target=_blank href=%s class=link-primary>Help File</a> for documentation on these settings.';
         $strings['GeneralConfigSettings'] = 'settings';
         $strings['UseSameLayoutForAllDays'] = 'Use the same layout for all days';
         $strings['LayoutVariesByDay'] = 'Layout varies by day';
@@ -502,6 +502,7 @@ class en_us extends Language
         $strings['LimitAttributeScope'] = 'Collect In Specific Cases';
         $strings['CollectFor'] = 'Collect For';
         $strings['SignIn'] = 'Sign In';
+        $strings['SignInWith'] = 'Sign in with';
         $strings['AllParticipants'] = 'All Participants';
         $strings['RegisterANewAccount'] = 'Register a New Account';
         $strings['Dates'] = 'Dates';
@@ -1016,7 +1017,7 @@ class en_us extends Language
         $strings['ReservationAvailableSubject'] = '%s is available on %s';
         $strings['ResourceStatusChangedSubject'] = 'The availability of %s has changed';
         // End Email Subjects
-        
+
         //Past Reservations
         $strings['NoPastReservations'] = 'You have no past reservations';
         $strings['PastReservations'] = 'Past Reservations';
