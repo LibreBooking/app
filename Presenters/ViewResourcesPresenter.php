@@ -74,6 +74,8 @@ class ViewResourcesPresenter
 
         $results = $this->resourceRepo->GetUserList(
             $resourceIds,
+            null,
+            null,
             //$this->page->GetPageNumber(),
             //$this->page->GetPageSize(),
             null,

@@ -53,13 +53,12 @@
                                         <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}
                                         </option>
                                     </select>
-
-                                    <label for="resourceReasonIdFilter"
+                                    {*<label for="resourceReasonIdFilter"
                                         class="visually-hidden">{translate key=Reason}</label>
                                     <select id="resourceReasonIdFilter" class="form-select w-auto"
                                         {formname key=RESOURCE_STATUS_REASON_ID}>
                                         <option value="">-</option>
-                                    </select>
+                                    </select>*}
                                 </div>
 
                             </div>
@@ -348,8 +347,7 @@
                                                             </div>
                                                         </div>
 
-
-                                                        <div class="col-sm-6 col-xs-12 mt-4">
+                                                        <div class="col-sm-6 col-12 mt-4">
                                                             <span class="fs-6 fw-bold">{translate key='ResourceGroups'}</span>
                                                             <div class="resourceGroupsPlaceHolder">
                                                                 {if $resource->GetResourceGroupIds()|default:array()|count == 0}
@@ -362,8 +360,15 @@
                                                                 {/foreach}
                                                             </div>
                                                         </div>
-                                                    </div>
 
+                                                        <div class="col-12 mt-2">
+                                                            <div class="fs-6 fw-bold">{translate key='Public'}</div>
+                                                            <div class="publicSettingsPlaceHolder">
+                                                                {include file="Admin/Resources/manage_resources_public.tpl" resource=$resource modeEdit=true}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
 
                                                 <div class="customAttributes">
@@ -391,6 +396,9 @@
 
     {include file="javascript-includes.tpl" DataTable=true}
     {datatable tableId=$tableId}
+    {jsfile src="ajax-helpers.js"}
+    {jsfile src="admin/schedule.js"}
+    {jsfile src="js/jquery.form-3.09.min.js"}
 </div>
 
 {*pagination pageInfo=$PageInfo showCount=true*}
