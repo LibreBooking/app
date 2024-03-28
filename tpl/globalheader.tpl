@@ -111,8 +111,100 @@
     <!-- End CSS -->
 </head>
 
-<body class="{if isset($HideNavBar) && $HideNavBar == true} pt-0{/if}" {if !isset($IsDesktop) || !$IsDesktop}
-    style="padding-top: 0px;" {/if} data-bs-theme="primary">
+{if !isset($HideNavBar) || $HideNavBar == false}
+    <nav class="navbar navbar-default {if isset($IsDesktop) && $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}"
+         role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#booked-navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand"
+                   href="{$HomeUrl}">{html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="booked-navigation">
+                <ul class="nav navbar-nav">
+                    {if isset($LoggedIn) && $LoggedIn}
+                        <li id="navDashboard"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
+                        <li class="dropdown" id="navMyAccountDropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="MyAccount"} <b
+                                        class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li id="navProfile"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
+                                <li id="navPassword"><a
+                                            href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>
+                                <li id="navNotification">
+                                    <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
+                                </li>
+                                {if isset($ShowParticipation) && $ShowParticipation}
+                                    <li id="navInvitations">
+                                        <a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
+                                    </li>
+                                {/if}
+                                {if isset($CreditsEnabled) && $CreditsEnabled}
+                                    <li id="navUserCredits">
+                                        <a href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>
+                                    </li>
+                                {/if}
+                            </ul>
+                        </li>
+                        <li class="dropdown" id="navScheduleDropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b
+                                        class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li id="navBookings"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a>
+                                </li>
+                                <li id="navMyCalendar"><a
+                                            href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
+                                <li id="navResourceCalendar"><a
+                                            href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
+                                <!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
+                                <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>
+                                </li>
+                                <li id="navFindATime"><a
+                                            href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" id="navReportsDropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Check"}<b
+                                        class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li id="CheckResources">
+                                    <a href="{$Path}view_resources.php">{translate key=Resources}</a>
+                                </li>
+                                <li id="CheckSchedules">
+                                    <a href="{$Path}view_schedules.php">{translate key=Schedules}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {if isset($CanViewAdmin) && $CanViewAdmin}
+                            <li class="dropdown" id="navApplicationManagementDropdown">
+                                <a href="#" class="dropdown-toggle"
+                                   data-toggle="dropdown">{translate key="ApplicationManagement"}
+                                    <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li id="navManageReservations"><a
+                                                href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
+                                    </li>
+                                    <li id="navManageBlackouts"><a
+                                                href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
+                                    </li>
+                                    <li id="navManageQuotas"><a
+                                                href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li id="navManageSchedules"><a
+                                                href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>
+                                    <li id="navManageResources"><a
+                                                href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
+                                    </li>
+                                    <li id="navManageAccessories"><a
+                                                href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
+                                    </li>
 
     {if !isset($HideNavBar) || $HideNavBar == false}
         <div class="container-fluid d-flex align-items-center gap-2 my-2">

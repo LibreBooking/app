@@ -953,6 +953,8 @@ class en_us extends Language
         $strings['ViewCalendar'] = 'View Calendar';
         $strings['DataCleanup'] = 'Data Cleanup';
         $strings['ManageEmailTemplates'] = 'Manage Email Templates';
+        $strings['CheckResources'] = 'Check Resources';
+        $strings['CheckSchedules'] = 'Check Schedules';
         // End Page Titles
 
         // Day representations
@@ -1053,6 +1055,12 @@ class en_us extends Language
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'Can\'t see reservation details because you don\'t have permissions to any of the resources in this reservation';
         //End Schedule Resource Permissions
+
+        //View Resource
+        $strings['Check'] = 'Check';
+        $strings['PermissionType'] = 'Permission Type';
+        $strings['NoResourcesToView'] = 'No available resources';
+        //End View Resource
 
         $this->Strings = $strings;
 

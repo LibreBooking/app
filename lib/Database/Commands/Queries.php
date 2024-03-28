@@ -428,6 +428,17 @@ class Queries
 		INNER JOIN `schedules` as `s` ON `r`.`schedule_id` = `s`.`schedule_id`
 		ORDER BY COALESCE(`r`.`sort_order`,0), `r`.`name`';
 
+	public const GET_USER_RESOURCES =
+		'SELECT `r`.*, `s`.`admin_group_id` as `s_admin_group_id`,
+		(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`, \'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
+						FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `r`.`resource_id` AND `cav`.`attribute_category` = 4) as `attribute_list`,
+		(SELECT GROUP_CONCAT(`rga`.`resource_group_id` SEPARATOR "!sep!") FROM `resource_group_assignment` `rga` WHERE `rga`.`resource_id` = `r`.`resource_id`) AS `group_list`,
+		(SELECT GROUP_CONCAT(`ri`.`image_name` SEPARATOR "!sep!") FROM `resource_images` `ri` WHERE `ri`.`resource_id` = `r`.`resource_id`) AS `image_list`
+		FROM `resources` as `r`
+		INNER JOIN `schedules` as `s` ON `r`.`schedule_id` = `s`.`schedule_id`
+		WHERE resource_id IN (@resourceids)
+		ORDER BY COALESCE(`r`.`sort_order`,0), `r`.`name`';
+
     public const GET_ALL_RESOURCE_GROUPS = 'SELECT * FROM `resource_groups` ORDER BY `parent_id`, `resource_group_name`';
 
     public const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT `r`.*, `a`.`resource_group_id`

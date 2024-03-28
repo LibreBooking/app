@@ -71,6 +71,7 @@ abstract class Page implements IPage
         $this->smarty->assign('CanViewResponsibilities', !$userSession->IsAdmin && ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
         $allowAllUsersToReports = Configuration::Instance()->GetSectionKey(ConfigSection::REPORTS, ConfigKeys::REPORTS_ALLOW_ALL, new BooleanConverter());
         $this->smarty->assign('CanViewReports', ($allowAllUsersToReports || $userSession->IsAdmin || $userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
+
         $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
         if (!empty($timeout)) {
             $this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
