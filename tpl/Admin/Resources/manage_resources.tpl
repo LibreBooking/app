@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' InlineEdit=true DataTable=false}
+{include file='globalheader.tpl' InlineEdit=true DataTable=true}
 
 <div id="page-manage-resources" class="admin-page">
 	<div class="clearfix border-bottom mb-3">
@@ -86,7 +86,6 @@
 									{formname key=RESOURCE_NAME} value="{$ResourceNameFilter}"
 									placeholder="{translate key=Name}" />
 								{*<span class="searchclear bi bi-x-circle input-group-text" ref="filterResourceName"></span>*}
-
 							</div>
 							<div class="form-group {$groupClass}">
 								<label for="filterScheduleId" class="fw-bold">{translate key=Schedule}</label>
