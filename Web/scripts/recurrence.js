@@ -257,7 +257,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
         var datediv = elements.customDatesDiv.find(".repeat-date-list");
         datediv.empty();
         repeatDates.sort((r1, r2) => r1.system.localeCompare(r2.system)).forEach((v, i) => {
-            datediv.append($("<div data-repeat-date='" + v.system + "'><span>" + v.user + "</span> <a class='link-danger' href='#'><i class='bi bi-x-lg icon delete remove-repeat-date' data-repeat-date='" + v.system + "' /></a><input type='hidden' name='repeatCustomDates[]' value='" + v.system + "'</div>"));
+            datediv.append($("<div data-repeat-date='" + v.system + "'><a class='link-danger' href='#'><i class='bi bi-x-lg icon delete remove-repeat-date' data-repeat-date='" + v.system + "' /></a> <span>" + v.user + "</span> <input type='hidden' name='repeatCustomDates[]' value='" + v.system + "'</div>"));
         });
     };
 

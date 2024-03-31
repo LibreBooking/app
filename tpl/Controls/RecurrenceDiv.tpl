@@ -104,17 +104,19 @@
 		</div>
 
 		<div id="{if isset($prefix)}{$prefix}{/if}customDatesDiv" class="d-none specific-dates">
-			<div class="d-flex align-items-center gap-1 mb-2">
+			<div class="d-flex align-items-center flex-wrap gap-1 mb-2">
 				<label class="fw-bold"
 					for="{if isset($prefix)}{$prefix}{/if}RepeatDate">{translate key=RepeatOn}</label>
-				<input type="text" id="{if isset($prefix)}{$prefix}{/if}RepeatDate"
-					class="form-control form-control-sm dateinput w-auto" value="" />
-				<input type="hidden" id="{if isset($prefix)}{$prefix}{/if}formattedRepeatDate" key="system" />
-				<a class="link-primary" href="#" role="button"
-					id="{if isset($prefix)}{$prefix}{/if}AddDate">{translate key=AddDate} <i
-						class="bi bi-plus-square-fill"></i></a>
+				<div class="input-group input-group-sm w-auto">
+					<input type="text" id="{if isset($prefix)}{$prefix}{/if}RepeatDate" class="form-control dateinput"
+						value="" />
+					<input type="hidden" id="{if isset($prefix)}{$prefix}{/if}formattedRepeatDate" key="system" />
+					<button class="btn btn-primary" role="button"
+						id="{if isset($prefix)}{$prefix}{/if}AddDate">{translate key=AddDate} <i
+							class="bi bi-plus-square-fill"></i></button>
+				</div>
 			</div>
-			<div class="repeat-date-list">
+			<div class="repeat-date-list rounded border bg-white my-2 p-2">
 
 			</div>
 		</div>

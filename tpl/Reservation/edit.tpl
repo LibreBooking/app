@@ -1,7 +1,7 @@
 {extends file="Reservation/create.tpl"}
 
 {block name=header}
-    {include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' Qtip=false printCssFiles='css/reservation.print.css'}
+    {include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' cssFiles='css/schedule.css' printCssFiles='css/reservation.print.css'}
 {/block}
 
 {block name=reservationHeader}

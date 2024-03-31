@@ -1,5 +1,5 @@
 {block name="header"}
-    {include file='globalheader.tpl' Qtip=false Owl=false cssFiles='css/schedule.css' printCssFiles='css/reservation.print.css'}
+    {include file='globalheader.tpl' cssFiles='css/schedule.css' printCssFiles='css/reservation.print.css'}
 {/block}
 
 {function name="displayResource"}
@@ -521,7 +521,7 @@
 
 {block name=extras}{/block}
 
-{include file="javascript-includes.tpl" Qtip=true Owl=true}
+{include file="javascript-includes.tpl" Qtip=false Owl=false}
 
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate MinDate=$AvailabilityStart MaxDate=$AvailabilityEnd FirstDay=$FirstWeekday}
