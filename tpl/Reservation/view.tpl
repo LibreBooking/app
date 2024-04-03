@@ -1,7 +1,7 @@
 {include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true Owl=false printCssFiles='css/reservation.print.css'}
 <div id="page-view-reservation">
-    <div id="reservation-box" class="readonly">
-        <div id="reservationFormDiv">
+    <div id="reservation-box" class="card shadow readonly">
+        <div id="reservationFormDiv" class="card-body">
             <div class="row">
                 {*CHECK IF USER HAS PERMISSIONS TO THE RESOURCES OF THE RESERVATIONS, HIDE DETAILS IF HE DOESN'T HAVE PERMISSIONS TO ALL OF THEM*}
                 {assign var=isResourcePermitted value=in_array($ResourceId,$CanViewResourceReservations)}

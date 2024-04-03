@@ -315,7 +315,7 @@
                     {if !empty($ReferenceNumber)}
                     <div class="">
                         <div class="form-group">
-                            <label>{translate key=ReferenceNumber}</label>
+                            <label class="fw-bold">{translate key=ReferenceNumber}</label>
                             {$ReferenceNumber}
                         </div>
                     </div>
@@ -324,16 +324,14 @@
             </div>
 
             <div class="order-bottom border-bottom py-2">
-                <div id="custom-attributes-placeholder" class="py-2">
-                </div>
+                <div id="custom-attributes-placeholder"></div>
             </div>
             {if $UploadsEnabled}
             <div class="border-bottom py-2">
                 <div class="reservationAttachments">
 
                     <label class="fw-bold mb-0">{translate key=AttachFile} <span
-                            class="note fst-italic">({$MaxUploadSize}
-                            MB {translate key=Maximum})</span>
+                            class="note fst-italic">({$MaxUploadSize} MB {translate key=Maximum})</span>
                     </label>
 
                     <div id="reservationAttachments">
