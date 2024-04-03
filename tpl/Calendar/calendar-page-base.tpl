@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/calendar.print.css'}
+{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/calendar.print.css'}
 
 <div id="page-{$pageIdSuffix}">
     {include file='Calendar/calendar.filter.tpl'}
