@@ -7,7 +7,7 @@
     </div>
 {/function}
 
-<div id="resource-display" class="resource-display row  bg-secondary bg-gradient text-white h-100">
+<div id="resource-display" class="resource-display rows">
     <div class="col-7 left-panel">
         <div class="resource-display-name">{$ResourceName}</div>
 
@@ -35,12 +35,13 @@
                 <form role="form" method="post" id="formCheckin" action="{$smarty.server.SCRIPT_NAME}?action=checkin"
                     class="inline-block">
                     <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$CheckinReferenceNumber}" />
-                    <div class="resource-display-action" id="checkin"><i
-                            class="bi bi-check-lg me-1"></i>{translate key=CheckIn}
+                    <div class="resource-display-action" id="checkin"><i class="fa fa-check"></i>
+                        {translate key=CheckIn}
                     </div>
                 </form>
             {/if}
-            <div class="resource-display-action" id="reservePopup"><i class="bi bi-plus"></i> {translate key=Reserve}
+            <div class="resource-display-action" id="reservePopup"><i class="fa fa-plus"></i>
+                {translate key=Reserve}
             </div>
         </div>
     </div>
@@ -69,7 +70,7 @@
         <form role="form" method="post" id="formReserve" action="{$smarty.server.SCRIPT_NAME}?action=reserve">
             <div class="row margin-top-25">
                 <div class="col-12">
-                    <div id="validationErrors" class="validationSummary alert alert-danger d-none">
+                    <div id="validationErrors" class="validationSummary alert alert-danger no-show">
                         <ul>
                         </ul>
                     </div>
@@ -113,21 +114,22 @@
                     </div>
 
                     <div class="input-group input-group-lg">
-                        <div class="input-group-text" id="email-addon"><i class="bi bi-envelope"></i></div>
-                        <label for="emailAddress" class="visually-hidden">{translate key=Email}</label>
+                        <span class="input-group-addon" id="email-addon"><span
+                                class="glyphicon glyphicon-envelope"></span></span>
+                        <label for="emailAddress" class="hidden">{translate key=Email}</label>
                         <input id="emailAddress" type="email" class="form-control" placeholder="{translate key=Email}"
                             aria-describedby="email-addon" required="required" {formname key=EMAIL} />
                     </div>
                 </div>
             </div>
             <div class="row margin-top-25">
-                <div class="col-6">
+                <div class="col-xs-6">
                     <div class="input-group input-group-lg has-feedback">
-                        <div class="input-group-text" id="starttime-addon">
-                            <i class="bi bi-clock"></i>
-                        </div>
-                        <select title="{translate key='BeginDate'}" class="form-control"
-                            aria-describedby="starttime-addon" id="beginPeriod" {formname key=BEGIN_PERIOD}>
+                        <span class="input-group-addon" id="starttime-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <select title="Begin" class="form-control" aria-describedby="starttime-addon" id="beginPeriod"
+                            {formname key=BEGIN_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
                                     <option value="{$slot->Begin()}">{$slot->Begin()->Format($TimeFormat)}</option>
@@ -136,13 +138,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-xs-6">
                     <div class="input-group input-group-lg">
-                        <div class="input-group-text" id="endtime-addon">
-                            <i class="bi bi-clock"></i>
-                        </div>
-                        <select title="{translate key='EndDate'}" class="form-control input-lg"
-                            aria-describedby="endtime-addon" id="endPeriod" {formname key=END_PERIOD}>
+                        <span class="input-group-addon" id="endtime-addon"><span
+                                class="glyphicon glyphicon-time"></span></span>
+                        <select title="End" class="form-control input-lg" aria-describedby="endtime-addon"
+                            id="endPeriod" {formname key=END_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
                                     <option value="{$slot->End()}">{$slot->End()->Format($TimeFormat)}</option>
@@ -154,7 +155,7 @@
             </div>
 
             {if $Terms != null}
-                <div class="row col-12" id="termsAndConditions">
+                <div class="row col-xs-12" id="termsAndConditions">
                     <div class="checkbox">
                         <input type="checkbox" id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT}
                             {if $TermsAccepted}checked="checked" {/if} />
@@ -167,12 +168,12 @@
 
             {if $Attributes|default:array()|count > 0}
                 <div class="row margin-top-25">
-                    <div class="customAttributes col-12">
+                    <div class="customAttributes col-xs-12">
                         {foreach from=$Attributes item=attribute name=attributeEach}
                             {if $smarty.foreach.attributeEach.index % 2 == 0}
                                 <div class="row">
                                 {/if}
-                                <div class="customAttribute col-6">
+                                <div class="customAttribute col-xs-6">
                                     {control type="AttributeControl" attribute=$attribute}
                                 </div>
                                 {if $smarty.foreach.attributeEach.index % 2 ==1}
@@ -180,17 +181,16 @@
                             {/if}
                         {/foreach}
                         {if $Attributes|default:array()|count % 2 == 1}
-                            <div class="col-6">&nbsp;</div>
+                            <div class="col-xs-6">&nbsp;</div>
                         {/if}
                     </div>
                 </div>
             {/if}
 
-            <div class="mt-4">
-                <div class="d-grid gap-2">
-                    <input type="submit" class="action-reserve col-12 btn btn-primary"
-                        value="{translate key=Reserve}" />
-                    <a href="#" class="action-cancel btn btn-secondary" id="reserveCancel">{translate key=Cancel}</a>
+            <div class="row margin-top-25">
+                <div class="col-xs-12 text-center">
+                    <input type="submit" class="action-reserve col-xs-12" value="{translate key=Reserve}" />
+                    <a href="#" class="action-cancel" id="reserveCancel">{translate key=Cancel}</a>
                 </div>
             </div>
 

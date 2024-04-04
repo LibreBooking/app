@@ -45,21 +45,19 @@
                             <div class="form-group {$groupClass}">
                                 <label for="resourceStatusIdFilter"
                                     class="fw-bold">{translate key=ResourceStatus}</label>
-                                <div class="d-flex flex-wrap">
-                                    <select id="resourceStatusIdFilter" class="form-select w-auto"
-                                        {formname key=RESOURCE_STATUS_ID}>
-                                        <option value="">{translate key=AllResourceStatuses}</option>
-                                        <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-                                        <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}
-                                        </option>
-                                    </select>
-                                    {*<label for="resourceReasonIdFilter"
+                                <select id="resourceStatusIdFilter" class="form-select"
+                                    {formname key=RESOURCE_STATUS_ID}>
+                                    <option value="">{translate key=AllResourceStatuses}</option>
+                                    <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+                                    <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}
+                                    </option>
+                                </select>
+                                {*<label for="resourceReasonIdFilter"
                                         class="visually-hidden">{translate key=Reason}</label>
                                     <select id="resourceReasonIdFilter" class="form-select w-auto"
                                         {formname key=RESOURCE_STATUS_REASON_ID}>
                                         <option value="">-</option>
                                     </select>*}
-                                </div>
 
                             </div>
                             <div class="form-group {$groupClass}">
