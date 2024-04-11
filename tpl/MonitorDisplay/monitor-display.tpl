@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' HideNavBar=true cssFiles='css/schedule.css'}
+{include file='globalheader.tpl' HideNavBar=true cssFiles='css/schedule.css, css/monitor-display.css'}
 
 <div id="page-monitor-display">
     {if $Enabled}

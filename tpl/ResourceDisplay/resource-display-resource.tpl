@@ -1,204 +1,234 @@
 {function name=displayReservation}
-    <div class="resource-display-reservation">
+    <div class="resource-display-reservation fs-5">
         {format_date date=$reservation->StartDate() key=res_popup_time timezone=$Timezone}
         - {format_date date=$reservation->EndDate() key=res_popup_time timezone=$Timezone}
         | {$reservation->GetUserName()}
-        <div class="title">{$reservation->GetTitle()|default:$NoTitle}</div>
+        <div class="title fst-italic">{$reservation->GetTitle()|default:$NoTitle}</div>
     </div>
 {/function}
 
-<div id="resource-display" class="resource-display rows">
-    <div class="col-7 left-panel">
-        <div class="resource-display-name">{$ResourceName}</div>
-
-        <div class="resource-display-current">
-            {if $AvailableNow}
-                <div class="resource-display-available">{translate key=Available}</div>
-            {else}
-                <div class="resource-display-unavailable">{translate key=Unavailable}</div>
-            {/if}
-
-            {if $CurrentReservation != null}
-                {call name=displayReservation reservation=$CurrentReservation}
-            {/if}
-        </div>
-
-        <div class="left-panel-bottom">
-            <div class="resource-display-heading">{translate key=NextReservation}</div>
-            {if $NextReservation != null}
-                {call name=displayReservation reservation=$NextReservation}
-            {else}
-                <div class="resource-display-reservation">{translate key=None}</div>
-            {/if}
-
-            {if $RequiresCheckin}
-                <form role="form" method="post" id="formCheckin" action="{$smarty.server.SCRIPT_NAME}?action=checkin"
-                    class="inline-block">
-                    <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$CheckinReferenceNumber}" />
-                    <div class="resource-display-action" id="checkin"><i class="fa fa-check"></i>
-                        {translate key=CheckIn}
-                    </div>
-                </form>
-            {/if}
-            <div class="resource-display-action" id="reservePopup"><i class="fa fa-plus"></i>
-                {translate key=Reserve}
-            </div>
-        </div>
-    </div>
-    <div class="col-5 right-panel">
-        <div class="date">{formatdate date=$ReservationDate key=schedule_daily timezone=$Timezone}</div>
-        <div class="upcoming-reservations">
-            <div class="resource-display-heading">{translate key=UpcomingReservations}</div>
-            {if $UpcomingReservations|default:array()|count > 0}
-                {foreach from=$UpcomingReservations item=r name=upcoming}
-                    <div class="resource-display-upcoming">
-                        {call name=displayReservation reservation=$r}
-                    </div>
-                    {if !$smarty.foreach.upcoming.last}
-                        <hr class="upcoming-separator" />
+<div id="resource-display" class="resource-display">
+    <div class="card shadow h-100">
+        <div class="card-body">
+            <h4 class="card-title clearfix pb-5">
+                <div class="float-start">
+                    {if $AvailableNow}
+                        <div class="text-success">{$ResourceName}:<i
+                                class="bi bi-check-circle-fill mx-1"></i>{translate key=Available}</div>
+                    {else}
+                        <div class="text-warning">{$ResourceName}:<i
+                                class="bi bi-exclamation-circle-fill mx-1"></i>{translate key=Unavailable}</div>
                     {/if}
-                {/foreach}
-            {else}
-                <div class="resource-display-none">{translate key=None}</div>
-            {/if}
-        </div>
-    </div>
-
-    <div id="reservation-box-wrapper">
-    </div>
-    <div id="reservation-box">
-        <form role="form" method="post" id="formReserve" action="{$smarty.server.SCRIPT_NAME}?action=reserve">
-            <div class="row margin-top-25">
-                <div class="col-12">
-                    <div id="validationErrors" class="validationSummary alert alert-danger no-show">
-                        <ul>
-                        </ul>
-                    </div>
-                    <div>
-                        <table class="reservations">
-                            <thead>
-                                <tr>
-                                    {foreach from=$DailyLayout->GetPeriods($ReservationDate, true) item=period}
-                                        <td class="reslabel" colspan="{$period->Span()}">{$period->Label($ReservationDate)}
-                                        </td>
-                                    {/foreach}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    {assign var=slots value=$DailyLayout->GetLayout($ReservationDate, $ResourceId)}
-                                    {foreach from=$slots item=slot}
-                                        {assign var="referenceNumber" value=""}
-                                        {if $slot->IsReserved()}
-                                            {assign var="class" value="reserved"}
-                                            {assign var="referenceNumber" value=$slot->Reservation()->ReferenceNumber}
-                                        {elseif $slot->IsReservable()}
-                                            {assign var="class" value="reservable"}
-                                            {if $slot->IsPastDate(Date::Now())}
-                                                {assign var="class" value="pasttime"}
-                                            {/if}
-                                        {else}
-                                            {assign var="class" value="unreservable"}
-                                        {/if}
-                                        {if $slot->HasCustomColor()}
-                                            {assign var=color value='style="background-color:'|cat:$slot->Color()|cat:';color:'|cat:$slot->TextColor()|cat:';"'}
-                                        {/if}
-                                        <td colspan="{$slot->PeriodSpan()}" {$color} data-begin="{$slot->Begin()}"
-                                            data-end="{$slot->End()}" class="slot {$class}"
-                                            data-refnum="{$referenceNumber}">
-                                            {$slot->Label($SlotLabelFactory)|escape|default:'&nbsp;'}</td>
-                                    {/foreach}
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon" id="email-addon"><span
-                                class="glyphicon glyphicon-envelope"></span></span>
-                        <label for="emailAddress" class="hidden">{translate key=Email}</label>
-                        <input id="emailAddress" type="email" class="form-control" placeholder="{translate key=Email}"
-                            aria-describedby="email-addon" required="required" {formname key=EMAIL} />
-                    </div>
                 </div>
-            </div>
-            <div class="row margin-top-25">
-                <div class="col-xs-6">
-                    <div class="input-group input-group-lg has-feedback">
-                        <span class="input-group-addon" id="starttime-addon">
-                            <span class="glyphicon glyphicon-time"></span>
-                        </span>
-                        <select title="Begin" class="form-control" aria-describedby="starttime-addon" id="beginPeriod"
-                            {formname key=BEGIN_PERIOD}>
-                            {foreach from=$slots item=slot}
-                                {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
-                                    <option value="{$slot->Begin()}">{$slot->Begin()->Format($TimeFormat)}</option>
-                                {/if}
-                            {/foreach}
-                        </select>
-                    </div>
+                <div class="float-end">
+                    <div class="date">{formatdate date=$ReservationDate key=schedule_daily timezone=$Timezone}</div>
                 </div>
-                <div class="col-xs-6">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon" id="endtime-addon"><span
-                                class="glyphicon glyphicon-time"></span></span>
-                        <select title="End" class="form-control input-lg" aria-describedby="endtime-addon"
-                            id="endPeriod" {formname key=END_PERIOD}>
-                            {foreach from=$slots item=slot}
-                                {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
-                                    <option value="{$slot->End()}">{$slot->End()->Format($TimeFormat)}</option>
-                                {/if}
-                            {/foreach}
-                        </select>
-                    </div>
-                </div>
-            </div>
+            </h4>
+            <div class="row pt-5">
+                <div class="col-6 ">
+                    <div class="fw-bold text-uppercase fs-6 text-secondary">
+                        {translate key=NextReservation}</div>
+                    {if $NextReservation != null}
+                        {call name=displayReservation reservation=$NextReservation}
+                    {else}
+                        <div class="resource-display-reservation">{translate key=None}</div>
+                    {/if}
 
-            {if $Terms != null}
-                <div class="row col-xs-12" id="termsAndConditions">
-                    <div class="checkbox">
-                        <input type="checkbox" id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT}
-                            {if $TermsAccepted}checked="checked" {/if} />
-                        <label for="termsAndConditionsAcknowledgement">{translate key=IAccept}</label>
-                        <a href="{$Terms->DisplayUrl()}" style="vertical-align: middle"
-                            target="_blank">{translate key=TheTermsOfService}</a>
-                    </div>
-                </div>
-            {/if}
+                    {if $RequiresCheckin}
+                        <form role="form" method="post" id="formCheckin"
+                            action="{$smarty.server.SCRIPT_NAME}?action=checkin" class="inline-block">
+                            <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$CheckinReferenceNumber}" />
+                            <div class="resource-display-action" id="checkin"><i class="fa fa-check"></i>
+                                {translate key=CheckIn}
+                            </div>
+                        </form>
+                    {/if}
 
-            {if $Attributes|default:array()|count > 0}
-                <div class="row margin-top-25">
-                    <div class="customAttributes col-xs-12">
-                        {foreach from=$Attributes item=attribute name=attributeEach}
-                            {if $smarty.foreach.attributeEach.index % 2 == 0}
-                                <div class="row">
-                                {/if}
-                                <div class="customAttribute col-xs-6">
-                                    {control type="AttributeControl" attribute=$attribute}
-                                </div>
-                                {if $smarty.foreach.attributeEach.index % 2 ==1}
-                                </div>
+                </div>
+                <div class="col-6 ">
+                    <h5 class="fw-bold text-uppercase fs-6 text-secondary">{translate key=UpcomingReservations}</h5>
+                    {if $UpcomingReservations|default:array()|count > 0}
+                        {foreach from=$UpcomingReservations item=r name=upcoming}
+                            <div class="resource-display-upcoming">
+                                {call name=displayReservation reservation=$r}
+                            </div>
+                            {if !$smarty.foreach.upcoming.last}
+                                <hr class="border border-dark-subtle">
                             {/if}
                         {/foreach}
-                        {if $Attributes|default:array()|count % 2 == 1}
-                            <div class="col-xs-6">&nbsp;</div>
-                        {/if}
-                    </div>
+                    {else}
+                        <div class="resource-display-none">{translate key=None}</div>
+                    {/if}
                 </div>
-            {/if}
+                <div class="col-12 mt-3">
+                    <div class="resource-display-action d-none" id="reservePopup"><i class="bi bi-plus-lg"></i>
+                        {translate key=Reserve}
+                    </div>
 
-            <div class="row margin-top-25">
-                <div class="col-xs-12 text-center">
-                    <input type="submit" class="action-reserve col-xs-12" value="{translate key=Reserve}" />
-                    <a href="#" class="action-cancel" id="reserveCancel">{translate key=Cancel}</a>
+                    <!-- Button trigger modal -->
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#reservation-box">
+                            <i class="bi bi-plus-lg me-1"></i>{translate key=Reserve}
+                        </button>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="reservation-box" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title" id="exampleModalLabel">{translate key=Reserve}</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" method="post" id="formReserve"
+                                        action="{$smarty.server.SCRIPT_NAME}?action=reserve">
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <div id="validationErrors"
+                                                    class="validationSummary alert alert-danger no-show">
+                                                    <ul></ul>
+                                                </div>
+                                                <div>
+                                                    <table class="reservations my-5">
+                                                        <thead>
+                                                            <tr>
+                                                                {foreach from=$DailyLayout->GetPeriods($ReservationDate, true) item=period}
+                                                                    <td class="reslabel" colspan="{$period->Span()}">
+                                                                        {$period->Label($ReservationDate)}
+                                                                    </td>
+                                                                {/foreach}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                {assign var=slots value=$DailyLayout->GetLayout($ReservationDate, $ResourceId)}
+                                                                {foreach from=$slots item=slot}
+                                                                    {assign var="referenceNumber" value=""}
+                                                                    {if $slot->IsReserved()}
+                                                                        {assign var="class" value="reserved"}
+                                                                        {assign var="referenceNumber" value=$slot->Reservation()->ReferenceNumber}
+                                                                    {elseif $slot->IsReservable()}
+                                                                        {assign var="class" value="reservable"}
+                                                                        {if $slot->IsPastDate(Date::Now())}
+                                                                            {assign var="class" value="pasttime"}
+                                                                        {/if}
+                                                                    {else}
+                                                                        {assign var="class" value="unreservable"}
+                                                                    {/if}
+                                                                    {if $slot->HasCustomColor()}
+                                                                        {assign var=color value='style="background-color:'|cat:$slot->Color()|cat:';color:'|cat:$slot->TextColor()|cat:';"'}
+                                                                    {/if}
+                                                                    <td colspan="{$slot->PeriodSpan()}" {$color}
+                                                                        data-begin="{$slot->Begin()}"
+                                                                        data-end="{$slot->End()}" class="slot {$class}"
+                                                                        data-refnum="{$referenceNumber}">
+                                                                        {$slot->Label($SlotLabelFactory)|escape|default:'&nbsp;'}
+                                                                    </td>
+                                                                {/foreach}
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-text" id="email-addon"><span
+                                                            class="bi bi-envelope"></span></span>
+                                                    <label for="emailAddress"
+                                                        class="visually-hidden">{translate key=Email}</label>
+                                                    <input id="emailAddress" type="email" class="form-control"
+                                                        placeholder="{translate key=Email}"
+                                                        aria-describedby="email-addon" required="required"
+                                                        {formname key=EMAIL} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-6">
+                                                <div class="input-group input-group-lg has-feedback">
+                                                    <span class="input-group-text" id="starttime-addon">
+                                                        <span class="bi bi-clock"></span>
+                                                    </span>
+                                                    <select title="Begin" class="form-select"
+                                                        aria-describedby="starttime-addon" id="beginPeriod"
+                                                        {formname key=BEGIN_PERIOD}>
+                                                        {foreach from=$slots item=slot}
+                                                            {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
+                                                                <option value="{$slot->Begin()}">
+                                                                    {$slot->Begin()->Format($TimeFormat)}</option>
+                                                            {/if}
+                                                        {/foreach}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-text" id="endtime-addon"><span
+                                                            class="bi bi-clock"></span></span>
+                                                    <select title="End" class="form-select input-lg"
+                                                        aria-describedby="endtime-addon" id="endPeriod"
+                                                        {formname key=END_PERIOD}>
+                                                        {foreach from=$slots item=slot}
+                                                            {if $slot->IsReservable() && !$slot->IsPastDate($ReservationDate)}
+                                                                <option value="{$slot->End()}">
+                                                                    {$slot->End()->Format($TimeFormat)}
+                                                                </option>
+                                                            {/if}
+                                                        {/foreach}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {if $Terms != null}
+                                            <div class="mt-3" id="termsAndConditions">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="termsAndConditionsAcknowledgement"
+                                                        {formname key=TOS_ACKNOWLEDGEMENT}
+                                                        {if $TermsAccepted}checked="checked" {/if} />
+                                                    <label class="form-check-label"
+                                                        for="termsAndConditionsAcknowledgement">{translate key=IAccept}</label>
+                                                    <a href="{$Terms->DisplayUrl()}" class="link-primary"
+                                                        target="_blank">{translate key=TheTermsOfService}</a>
+                                                </div>
+                                            </div>
+                                        {/if}
+
+                                        {if $Attributes|default:array()|count > 0}
+                                            <div class="mt-3">
+                                                <div class="customAttributes row gy-3">
+                                                    {foreach from=$Attributes item=attribute name=attributeEach}
+                                                        <div class="customAttribute col-6">
+                                                            {control type="AttributeControl" attribute=$attribute}
+                                                        </div>
+                                                    {/foreach}
+                                                </div>
+                                            </div>
+                                        {/if}
+
+                                        <div class="d-grid gap-2 mt-3">
+                                            <input type="submit" class="action-reserve btn btn-primary"
+                                                value="{translate key=Reserve}" />
+                                            <a href="#" class="action-cancel btn btn-outline-secondary"
+                                                data-bs-dismiss="modal" id="reserveCancel">{translate key=Cancel}</a>
+                                        </div>
+
+                                        <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
+                                        <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
+                                        <input type="hidden" {formname key=TIMEZONE} value="{$Timezone}" />
+                                        <input type="hidden" {formname key=BEGIN_DATE} value="{$ReservationDate}" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
-            <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
-            <input type="hidden" {formname key=TIMEZONE} value="{$Timezone}" />
-            <input type="hidden" {formname key=BEGIN_DATE} value="{$ReservationDate}" />
-        </form>
+        </div>
     </div>
-
 </div>

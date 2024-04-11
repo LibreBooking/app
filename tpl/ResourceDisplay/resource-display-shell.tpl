@@ -1,10 +1,11 @@
-{include file='globalheader.tpl' HideNavBar=true cssFiles='css/resource-display.css'}
+{include file='globalheader.tpl' HideNavBar=true cssFiles='css/schedule.css'}
 
 <div id="page-resource-display-resource">
 
-        <div class="resource-display date-picker">
-                <div class="date form-group" style="width: 50%;">
-                        <label for="availabilityStartDate">{translate key='Date'}</label>
+        <div class="resource-display date-picker ms-4">
+                <div class="date form-group w-50">
+                        <label class="fw-bold text-uppercase fs-6 text-secondary"
+                                for="availabilityStartDate">{translate key='Date'}</label>
                         <input type="text" id="availabilityStartDate" class="form-control w-auto"
                                 {formname key=ANNOUNCEMENT_START} />
                         <input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />

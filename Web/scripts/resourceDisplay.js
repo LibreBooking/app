@@ -65,7 +65,7 @@ function ResourceDisplay(opts) {
 
         refreshResource();
 
-        setInterval(refreshResource, 60000);
+        //setInterval(refreshResource, 60000);
 
         elements.placeholder.on('click', '.reservePrompt', function (e) {
             var emailAddress = $('#emailAddress');
@@ -148,7 +148,7 @@ function ResourceDisplay(opts) {
         var beginIndex = 0;
 
         function showPopup() {
-            $('#reservation-box-wrapper').show();
+            /*$('#reservation-box-wrapper').show();
             var reservationBox = $('#reservation-box');
             reservationBox.show();
             var offsetFromTop = ($('body').height() - reservationBox.height()) / 2;
@@ -156,7 +156,7 @@ function ResourceDisplay(opts) {
                 { top: offsetFromTop + 'px' }
             );
 
-            $('#emailAddress').focus();
+            $('#emailAddress').focus();*/
         }
 
         function pauseRefresh() {
@@ -164,8 +164,8 @@ function ResourceDisplay(opts) {
         }
 
         function hidePopup() {
-            $('#reservation-box').hide();
-            $('#reservation-box-wrapper').hide();
+            // $('#reservation-box').hide();
+            // $('#reservation-box-wrapper').hide();
         }
 
         function resumeRefresh() {
@@ -190,7 +190,7 @@ function ResourceDisplay(opts) {
                 }
                 elements.placeholder.html(data);
 
-                $('#resource-display').height($('body').height());
+                //$('#resource-display').height($('body').height());
 
                 var formCheckin = $('#formCheckin');
                 formCheckin.unbind('submit');

@@ -439,6 +439,16 @@ input[type=text].user-search {
     font-size: 0.5rem;
 }
 
+#page-resource-display-resource table.reservations td {
+    font-size: 1.1em;
+}
+
+#page-resource-display-resource .date-picker {
+    position: absolute;
+    top: 72px;
+    z-index: 500;
+}
+
 .no-show {
     display: none !important;
 }
