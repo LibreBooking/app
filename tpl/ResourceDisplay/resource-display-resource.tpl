@@ -38,14 +38,14 @@
                         <form role="form" method="post" id="formCheckin"
                             action="{$smarty.server.SCRIPT_NAME}?action=checkin" class="inline-block">
                             <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$CheckinReferenceNumber}" />
-                            <div class="resource-display-action" id="checkin"><i class="fa fa-check"></i>
+                            <div class="resource-display-action btn btn-primary" id="checkin"><i class="bi bi-check-lg"></i>
                                 {translate key=CheckIn}
                             </div>
                         </form>
                     {/if}
 
                 </div>
-                <div class="col-6 ">
+                <div class="col-6">
                     <h5 class="fw-bold text-uppercase fs-6 text-secondary">{translate key=UpcomingReservations}</h5>
                     {if $UpcomingReservations|default:array()|count > 0}
                         {foreach from=$UpcomingReservations item=r name=upcoming}
@@ -61,11 +61,6 @@
                     {/if}
                 </div>
                 <div class="col-12 mt-3">
-                    <div class="resource-display-action d-none" id="reservePopup"><i class="bi bi-plus-lg"></i>
-                        {translate key=Reserve}
-                    </div>
-
-                    <!-- Button trigger modal -->
                     <div class="d-grid gap-2">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#reservation-box">
