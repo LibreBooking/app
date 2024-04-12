@@ -111,11 +111,10 @@
     <!-- End CSS -->
 </head>
 
-<body class="{if isset($HideNavBar) && $HideNavBar == true} pt-0{/if}" {if !isset($IsDesktop) || !$IsDesktop}
-    style="padding-top: 0px;" {/if} data-bs-theme="primary">
+<body data-bs-theme='{$cssTheme}'>
 
     {if !isset($HideNavBar) || $HideNavBar == false}
-        <div class="container-fluid d-flex align-items-center gap-2 my-2">
+        <div class="d-flex align-items-center gap-2 m-2">
             <a class="navbar-brand" href="{$HomeUrl}">
                 {html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}
             </a>
@@ -411,4 +410,4 @@
         </nav>
     {/if}
 
-<div id="main" class="container-fluid mt-3" {if isset($HideNavBar) && $HideNavBar}style="padding-bottom:0;" {/if}>
+<div id="main" class="container-fluid mt-3">

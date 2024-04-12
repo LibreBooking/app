@@ -37,6 +37,11 @@
                             <select id=" {$name}" name="{$name}" class="form-select">
                                 {html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
                             </select>
+                        {elseif $setting->Key == ConfigKeys::CSS_THEME}
+                            <i class="bi bi-question-circle-fill link-primary" data-bs-toggle="tooltip"
+                                title="default, pastel_blue, french_blue, dark_green, dark_red, dimgray"></i>
+                            <input id="{$name}" type="text" size="50" name="{$name}" value="{$setting->Value|escape}"
+                                class="form-control" />
                         {elseif $setting->Key == ConfigKeys::LANGUAGE}
                             <i class="bi bi-question-circle-fill link-primary" data-bs-toggle="tooltip"
                                 title="Find your language in the lang directory"></i>
