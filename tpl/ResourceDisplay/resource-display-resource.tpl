@@ -8,7 +8,7 @@
 {/function}
 
 <div id="resource-display" class="resource-display">
-    <div class="card shadow h-100">
+    <div class="card shadow">
         <div class="card-body">
             <h4 class="card-title clearfix pb-5">
                 <div class="float-start">
@@ -223,7 +223,6 @@
 
                 </div>
             </div>
-
         </div>
     </div>
 </div>
