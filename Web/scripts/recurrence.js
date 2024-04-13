@@ -162,7 +162,8 @@ function Recurrence(recurOptions, recurElements, prefix) {
             for (var i = 0; i < options.repeatWeekdays.length; i++) {
                 var id = '#' + prefix + 'repeatDay' + options.repeatWeekdays[i];
                 if (!$(id).is(':checked')) {
-                    $(id).closest('label').button('toggle');
+                    //$(id).closest('label').button('toggle');
+                    $('label[for="' + id.replace(/#/g, '') + '"]').addClass('active');
                 }
             }
 
