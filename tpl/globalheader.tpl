@@ -45,8 +45,6 @@
 
     {else}
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" type="text/css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-            type="text/css" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -74,10 +72,6 @@
         {cssfile src="scripts/css/fullcalendar.min.css"}
         <link rel='stylesheet' type='text/css' href='{$Path}scripts/css/fullcalendar.print.css' media='print' />
     {/if}
-    {*if isset($Owl) && $Owl}
-        {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}
-        {cssfile src="scripts/js/owl-2.2.1/assets/owl.theme.default.css"}
-    {/if*}
 
     {jsfile src="js/jquery-ui-timepicker-addon.js"}
     {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
@@ -342,7 +336,7 @@
                             <li class="nav-item dropdown" id="navHelpDropdown">
                                 <a href="#" class="nav-link link-primary dropdown-toggle" role="button"
                                     data-bs-toggle="dropdown">
-                                    <span class="no-show">Configuration</span>
+                                    <span class="visually-hidden">Configuration</span>
                                     <i class="bi bi-gear-fill"></i>
                                     {if isset($ShowNewVersion) && $ShowNewVersion}<span
                                             class="badge badge-new-version new-version"

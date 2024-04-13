@@ -1,6 +1,6 @@
 {include file='globalheader.tpl' HideNavBar=true cssFiles='css/schedule.css'}
 
-<div id="page-resource-display-resource">
+<div id="page-resource-display-resource" class="h-100">
 
         <div class="resource-display date-picker ms-4">
                 <div class="date form-group w-50">

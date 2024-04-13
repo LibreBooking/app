@@ -132,7 +132,8 @@ fieldset:disabled .btn {
     text-decoration: none;
 }
 
-.link-primary:hover {
+.link-primary:hover,
+.link-primary:focus {
     color: var(--primary-hover) !important;
 }
 
@@ -220,10 +221,6 @@ fieldset:disabled .btn {
     background-color: #eac995;
 }
 
-#page-schedule a {
-    text-decoration: none;
-}
-
 .page-search-availability #repeatDiv label {
     min-width: 80px;
 }
@@ -295,6 +292,7 @@ span.searchclear-label {
     transition: all 300ms ease;
     transform: scale(0);
     z-index: 1100;
+    opacity: 0.9;
 }
 
 #button-up:hover {

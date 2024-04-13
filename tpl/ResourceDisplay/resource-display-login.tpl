@@ -2,17 +2,17 @@
 
 <div id="page-resource-display-shell">
 
-	<div class="col-md-offset-3 col-md-6 col-xs-12">
+	<div class="col-md-6 col-12 mx-auto">
 
-		<div id="login-box" class="col-xs-12 default-box straight-top">
+		<div id="login-box" class="col-12 default-box straight-top">
 			<form role="form" name="loginForm" id="loginForm" class="form-horizontal" method="post"
 				action="{$smarty.server.SCRIPT_NAME}?action=login">
 
-				<div id="loginError" class="alert alert-danger col-xs-12 no-show">
+				<div id="loginError" class="alert alert-danger col-12 no-show">
 					{translate key=LoginError}
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-12">
 					<div class="input-group margin-bottom-25">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 						<input type="text" required="" class="form-control" id="email" {formname key=EMAIL}
@@ -20,7 +20,7 @@
 					</div>
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-12">
 					<div class="input-group margin-bottom-25">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-lock"></i>
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-12">
 					<button type="submit" class="btn btn-large btn-primary btn-block" name="{Actions::LOGIN}"
 						value="submit" id="loginButton">{translate key='LogIn'}</button>
 				</div>
@@ -38,7 +38,7 @@
 			</form>
 		</div>
 
-		<div id="resource-list-box" class="col-xs-12 default-box straight-top no-show">
+		<div id="resource-list-box" class="col-12 default-box straight-top no-show">
 			<form role="form" id="activateResourceDisplayForm" method="post"
 				action="{$smarty.server.SCRIPT_NAME}?action=activate">
 				<h2><label for="resourceList">{translate key=ResourceDisplayPrompt}</label></h2>

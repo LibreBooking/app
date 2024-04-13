@@ -55,7 +55,7 @@
     {assign var=TodaysDate value=Date::Now()}
     {assign var=columnWidth value=(1/($BoundDates|default:array()|count+1))*100}
     <div id="reservations">
-        <table class="reservations condensed" border="1" cellpadding="0" style="width:100%;">
+        <table class="reservations condensed w-100" cellpadding="0">
             <thead>
                 <tr>
                     <td style="width:{$columnWidth}%">&nbsp;</td>
