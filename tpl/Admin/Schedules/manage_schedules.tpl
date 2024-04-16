@@ -55,7 +55,7 @@
 																data-pk="{$id}"
 																data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
 															<a class="update renameButton link-primary" href="#"><span
-																	class="no-show">{translate key=Rename}</span><span
+																	class="visually-hidden">{translate key=Rename}</span><span
 																	class="bi bi-pencil-square"></span></a>
 														</div>
 
@@ -63,18 +63,20 @@
 															{translate key="LayoutDescription" args="{$smarty.capture.dayName},
 														{$smarty.capture.daysVisible}" class="fw-bold"}</div>
 
-														<div>{translate key='ScheduleAdministrator'}
+														<div>
+															{translate key='ScheduleAdministrator'}
 															<span class="propertyValue scheduleAdmin fw-bold"
 																data-type="select" data-pk="{$id}"
 																data-value="{$schedule->GetAdminGroupId()}"
 																data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{($GroupLookup[$schedule->GetAdminGroupId()]) ? $GroupLookup[$schedule->GetAdminGroupId()]->Name : 'None'}</span>
 															{if $AdminGroups|default:array()|count > 0}
-																<a class="update changeScheduleAdmin link-primary" href="#">
-																	<span
-																		class="visually-hidden">{translate key='ScheduleAdministrator'}</span>
-																	<span class="bi bi-pencil-square"></span>
+																<a class="link-primary update changeScheduleAdmin"
+																	{*href="#" If used, clicking scrolls up the page *}><span
+																		class="visually-hidden">{translate key='ScheduleAdministrator'}</span><span
+																		class="bi bi-pencil-square"></span>
 																</a>
 															{/if}
+
 														</div>
 
 														<div>

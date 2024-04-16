@@ -23,7 +23,7 @@
 			action="{$smarty.server.SCRIPT_NAME}">
 			<div class="card shadow mb-2">
 				<div class="card-body mx-3">
-					<div id="login-box" class="col-12 default-box">
+					<div id="login-box" class="default-box">
 						<div class="login-icon my-2">
 							{html_image src="$LogoUrl?{$Version}" alt="$Title" class="mx-auto d-block w-50"}
 						</div>
@@ -88,7 +88,7 @@
 							{/if}
 						</div>
 
-						<section class="d-flex justify-content-center flex-wrap gap-2 my-3">
+						<section class="d-flex justify-content-center flex-wrap gap-2 my-3 social-login">
 							{if $AllowGoogleLogin}
 								<a type="button" href="{$GoogleUrl}" class="btn btn-outline-primary"><i
 										class="bi bi-google me-1"></i>{translate key='SignInWith'}<span class="fw-medium">

@@ -178,7 +178,8 @@ fieldset:disabled .btn {
     border: 1px solid #585754;
 }
 
-.inlineUpdate {
+.inlineUpdate,
+.changeScheduleAdmin {
     cursor: pointer;
 }
 
@@ -488,6 +489,10 @@ input[type=text].user-search {
     position: absolute;
     top: 72px;
     z-index: 500;
+}
+
+.social-login a {
+    min-width: 250px;
 }
 
 .no-show {
