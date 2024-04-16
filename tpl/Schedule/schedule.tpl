@@ -128,23 +128,25 @@
                             <span class="visually-hidden">{translate key=ShowHideNavigation}</span>
                         </a>
                     </div>
-                    <div id="individualDates" class="collapse">
-                        <div class="d-flex justify-content-center align-items-center mt-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type='checkbox' id='multidateselect' />
-                                <label class="form-check-label" for='multidateselect'>{translate key=SpecificDates}</label>
-                            </div>
-                            <a class="btn btn-link link-primary" href="#" id="individualDatesGo">
-                                <i class="bi bi-caret-right-fill"></i>
-                                <span class="visually-hidden">{translate key=SpecificDates}</span>
-                            </a>
-                        </div>
-                        <div class="text-center" id="individualDatesList"></div>
-                    </div>
-                    <div type="text" id="datepicker" class="collapse"></div>
                 </div>
-
             </div>
+
+            <div id="individualDates" class="collapse">
+                <div class="d-flex justify-content-center align-items-center mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type='checkbox' id='multidateselect' />
+                        <label class="form-check-label" for='multidateselect'>{translate key=SpecificDates}</label>
+                    </div>
+                    <a class="btn btn-link link-primary" href="#" id="individualDatesGo">
+                        <i class="bi bi-caret-right-fill"></i>
+                        <span class="visually-hidden">{translate key=SpecificDates}</span>
+                    </a>
+                </div>
+                <div class="text-center" id="individualDatesList"></div>
+            </div>
+            <div type="text" id="datepicker" class="collapse"></div>
+
+
 
             {capture name="date_navigation"}
                 {if !isset($HideSchedule) || !$HideSchedule}
