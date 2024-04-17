@@ -23,6 +23,7 @@ function Schedule(opts, resourceGroups) {
         renderEvents();
         this.initResources();
         this.initNavigation();
+        addNumericalIdsToRows();
 
         var today = $(".today");
         if (today && today.length > 0) {
@@ -234,6 +235,77 @@ function Schedule(opts, resourceGroups) {
                 return resourceOrder;
             });
 
+            //--------GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE--------
+            if (opts.scheduleStyle === ScheduleStandard) {
+                var trHeights = {};                         //row height to be implemented
+                var trAdjusted = {};                        //check if row height has already been adjusted
+                
+                reservationList.forEach(res => {
+                    $('#reservations').find(".reservations").each(function () {
+                        const t = $(this);
+
+                        //ALLOWS FULL LABEL TO BE SHOWN CORRECTLY IN ROWS WITH MULTIDAY AND CONCURRENT RESERVATIONS (BOTH AT THE SAME TIME)
+                        let current_TD;
+
+                        if (getNumberOfDaysInReservation(res.StartDate, res.EndDate) == 1) {
+                            current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"][data-min="' + res["StartDate"] + '"]:first');
+                        } else {
+                            current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"]:first');
+                        }
+
+                        //----GET THE HEIGHT THAT THE SLOT LABEL WILL USE----
+                        const startEnd = findStartAndEnd(res, t, "StartDate", "EndDate");
+
+                        let slotWidth;
+                        if (!startEnd) {
+                            slotWidth = current_TD.width(); //WIDTH OF A SINGLE SLOT (IF THE TOTAL RESERVATION SLOTS WIDTH SOMEHOW FAILS)
+                        } else {
+                            slotWidth = startEnd.width;
+                        }
+
+                        let $tempElement = $('<div>')
+                        .css({
+                                position: 'absolute',
+                                left: -9999, // Move off-screen
+                                'font-size': '0.85em',
+                                width: slotWidth, //schedule slot width
+                                padding: 0,
+                                margin: 0,
+                                border: 'none',
+                            })
+                            .text(res.Label);
+            
+                        // Append the element to the body to get accurate dimensions
+                        $('body').append($tempElement);
+
+                        // Get the computed height
+                        const labelHeight = $tempElement.height() + 5;
+            
+                        // Remove the temporary element
+                        $tempElement.remove();
+                        
+                        //---------------------------------------------------
+
+                        const current_TR = current_TD.parent();
+
+                        const currentTrId = current_TR.attr('id');
+                        
+                        if ((typeof trHeights[currentTrId] !== "undefined" && trHeights[currentTrId] < labelHeight)) {
+                            trHeights[currentTrId] = labelHeight;
+                        }
+                        else if (typeof trHeights[currentTrId] === "undefined") {
+                            if (labelHeight > current_TR.height()) {
+                                trHeights[currentTrId] = labelHeight;
+                            } else {
+                                trHeights[currentTrId] = current_TR.height();
+                            }
+                            trAdjusted[currentTrId] = false;
+                        }
+                    });
+                });
+            }
+            //-----------------------------------------------------------------------------------------------
+
             reservationList.forEach(res => {
                 $('#reservations').find(".reservations").each(function () {
                     const t = $(this);
@@ -325,12 +397,38 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             if (overlap) {
-                                top += height;
+                                if(opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined"){
+                                    top += trHeights[currentTrId];
+                                }
+                                else{
+                                    top += height;
+                                }
                                 numberOfConflicts++;
                                 adjustOverlap();
                             }
                         });
                     };
+
+                    //----------CHANGE HEIGTH OF ROWS TO ALLOW FULL LABEL TEXT TO SHOW------------
+                    if (opts.scheduleStyle === ScheduleStandard) {
+                        let current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"]:first');
+
+                        var current_TR = current_TD.parent();
+
+                        var currentTrId = current_TR.attr('id');
+
+                        if(trAdjusted[currentTrId] === false) {                                             //no sense in setting the row height multiple times because it will always be the same so do a check and set the height once per row with reservations
+                            if (current_TR.height() <= trHeights[currentTrId]) {
+                                if(scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1 && className != "unreservable") {    //takes into account possible existence of concurrent reservations
+                                    current_TD.css('height', trHeights[currentTrId] + 40 + 'px');
+                                } else {
+                                    current_TD.css('height', trHeights[currentTrId] + 'px');
+                                }
+                            }
+                            trAdjusted[currentTrId] = true;
+                        }
+                    }
+                    //----------------------------------------------------------------------------
 
                     if (opts.scheduleStyle === ScheduleTall) {
                         const countConflicts = function () {
@@ -362,14 +460,38 @@ function Schedule(opts, resourceGroups) {
                         if (height === 0) {
                             height = endTd.outerHeight();
                         }
-                    } else {
+                    } 
+                    else {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
-                            startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
+                            //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
+                            if (opts.scheduleStyle === ScheduleStandard) {
+                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== numberOfConflicts + 1 && scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 2) {
+                                    startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 2) + "px");
+                                }
+                                else {
+                                    startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 1) + "px");
+                                }
+                            } else {
+                                startTd.css('height', 40 * (numberOfConflicts + 1) + "px");
+                            }
                         }
                     }
 
-                    let divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
+                    let divHeight;
+                    //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW IN STANDARD SCHEDULE
+                    if (opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined") {
+                        if (className == "reserved") {
+                            divHeight = trHeights[currentTrId];
+                        }
+                        //BLACKOUTS SHOULD OCUPPY ENTIRE ROW AND THERE'S NO NEED TO WORRY ABOUT CHANGES TO ROW HEIGHT BECAUSE THEY ARE ALWAYS THE LAST TO BE PUT IN EACH
+                        else if (className == "unreservable") {
+                            divHeight = current_TR.height();
+                        }
+                    }
+                    else {
+                        divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
+                    }
                     const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
                     const div = $(`<div 
                                     class="${className} ${mine} ${past} ${participant} ${isPending} event" 
@@ -889,6 +1011,25 @@ function Schedule(opts, resourceGroups) {
     }
 }
 
+function addNumericalIdsToRows() {
+    const rows = document.getElementsByClassName('slots');
+
+    for (let i = 0; i < rows.length; i++) {
+        rows[i].id = 'row_' + (i + 1); // Set the ID to 'row_1', 'row_2', etc.
+    }
+}
+
+function getNumberOfDaysInReservation(StartDate, EndDate) {
+    const start = new Date(StartDate * 1000);
+    const end = new Date(EndDate * 1000);
+
+    start.setHours(0, 0, 0, 0);
+
+    const timeDifference = end - start;
+    const totalDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    return totalDays;
+}
 
 function RemoveResourceId(url) {
     if (!url) {
