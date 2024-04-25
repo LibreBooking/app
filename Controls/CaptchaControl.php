@@ -37,11 +37,12 @@ class CaptchaControl extends Control
             {
                 grecaptcha.ready(function ()
                 {
-                     grecaptcha.execute('$publicKey', { action: 'submit' }).then(function (token)
-                        {
-                            var captcha = document.getElementById('g-recaptcha-response');
-                            captcha.value = token;
-                        })
+                    grecaptcha.public_key = '$publicKey';
+                    grecaptcha.execute(grecaptcha.public_key, { action: 'submit' }).then(function (token)
+                       {
+                           var captcha = document.getElementById('g-recaptcha-response');
+                           captcha.value = token;
+                       })
                 });
             };
         </script>

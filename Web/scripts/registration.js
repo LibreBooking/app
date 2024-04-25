@@ -75,10 +75,13 @@ function Registration()
 			var src = captchaImg.attr('src') + '?' + Math.random();
 			captchaImg.attr('src', src);
 			$('#captchaValue').val('');
-		}
-		else if(window.grecaptcha)
+		} else if (window.grecaptcha)
 		{
-            grecaptcha.reset();
+			grecaptcha.execute(grecaptcha.public_key, { action: 'reload' }).then(function (token)
+			{
+				var captcha = document.getElementById('g-recaptcha-response');
+				captcha.value = token;
+			});
 		}
 	}
 }
