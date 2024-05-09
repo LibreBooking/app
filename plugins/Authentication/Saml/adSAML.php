@@ -75,7 +75,6 @@ class adSAML
         $this->samlLib = $options["ssphp_lib"];
         $this->samlConfig = $options["ssphp_config"];
         require_once($this->samlLib . '/lib/_autoload.php');
-        SimpleSAML\Configuration::init($this->samlConfig);
 
         // You can specifically overide any of the default configuration options setup above
         if (count($options) > 0) {
