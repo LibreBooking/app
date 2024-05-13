@@ -1,6 +1,6 @@
 <?php
 
-if (file_exists(ROOT_DIR . 'vendor/autoload.php')) { 
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
     require_once ROOT_DIR . 'vendor/autoload.php';
 }
 
@@ -29,11 +29,24 @@ class CaptchaControl extends Control
 
         $publicKey = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_PUBLIC_KEY);
 
-        $response = '<script src="https://www.google.com/recaptcha/api.js?render=' . $publicKey . '"></script>';
-        $response .= '<input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">';
-        $response .= '<script> grecaptcha.ready(function () { grecaptcha.execute(\''. $publicKey .'\', { action: \'submit\' }).then(function (token) { var captcha = document.getElementById(\'g-recaptcha-response\'); captcha.value = token;})}); </script>';
-
-        echo $response;
+        echo <<<ReCaptcha
+        <script src="https://www.google.com/recaptcha/api.js?onload=ReCaptchaCallbackV3&render=$publicKey"></script>
+        <input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">
+        <script>
+            var ReCaptchaCallbackV3 = function()
+            {
+                grecaptcha.ready(function ()
+                {
+                    grecaptcha.public_key = '$publicKey';
+                    grecaptcha.execute(grecaptcha.public_key, { action: 'submit' }).then(function (token)
+                       {
+                           var captcha = document.getElementById('g-recaptcha-response');
+                           captcha.value = token;
+                       })
+                });
+            };
+        </script>
+        ReCaptcha;
     }
 
     private function showCaptcha()
