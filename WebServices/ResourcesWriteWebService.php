@@ -75,7 +75,7 @@ class ResourcesWriteWebService
         $request = new ResourceRequest($this->server->GetRequest());
 
         Log::Debug(
-            'ResourcesWriteWebService.Create() User=%s, Request=%s',
+            'ResourcesWriteWebService.Update() User=%s, Request=%s',
             $this->server->GetSession()->UserId,
             json_encode($request)
         );
@@ -93,7 +93,7 @@ class ResourcesWriteWebService
                 RestResponse::OK_CODE
             );
         } else {
-            Log::Debug('ResourcesWriteWebService.Create() - Resource Update Failed.');
+            Log::Debug('ResourcesWriteWebService.Update() - Resource Update Failed.');
 
             $this->server->WriteResponse(
                 new FailedResponse($this->server, $result->Errors()),
