@@ -124,12 +124,15 @@
                                 data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"
                                 data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
 
-                                <div class="reservable clickres" ref="{$href}&rd={formatdate date=$date key=url}"
-                                     data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"
-                                     data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
-                                    <i class="fa fa-plus-circle"></i> {translate key=CreateReservation}
-                                    <input type="hidden" class="href" value="{$href}"/>
-                                </div>
+                                {assign var=addButton value=$TodaysDate->LessThanOrEqual($date) || $TodaysDate->DateEquals($date) || $AllowCreatePastReservationsButton}
+                                {if $addButton}
+                                    <div class="reservable clickres" ref="{$href}&rd={formatdate date=$date key=url}"
+                                        data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"
+                                        data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
+                                        <i class="fa fa-plus-circle"></i> {translate key=CreateReservation}
+                                        <input type="hidden" class="href" value="{$href}"/>
+                                    </div>
+                                {/if}
                                 <div class="reservations" data-min="{$min}" data-max="{$max}" data-resourceid="{$resourceId}"></div>
                             </td>
 {*                        {/if}*}
@@ -159,4 +162,4 @@
             });
         });
     </script>
-{/block}
+{/block}Z

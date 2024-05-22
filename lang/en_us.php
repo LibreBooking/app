@@ -24,7 +24,7 @@ class en_us extends Language
         $dates['res_popup'] = 'D, n/d g:i A';
         $dates['res_popup_time'] = 'g:i A';
         $dates['short_reservation_date'] = 'n/j/y g:i A';
-        $dates['dashboard'] = 'D, n/d g:i A';
+        $dates['dashboard'] = 'D, n/d Y g:i A';
         $dates['period_time'] = 'g:i A';
         $dates['timepicker'] = 'h:i a';
         $dates['mobile_reservation_date'] = 'n/j g:i A';
@@ -952,6 +952,8 @@ class en_us extends Language
         $strings['ViewCalendar'] = 'View Calendar';
         $strings['DataCleanup'] = 'Data Cleanup';
         $strings['ManageEmailTemplates'] = 'Manage Email Templates';
+        $strings['CheckResources'] = 'Check Resources';
+        $strings['CheckSchedules'] = 'Check Schedules';
         // End Page Titles
 
         // Day representations
@@ -1016,6 +1018,48 @@ class en_us extends Language
         $strings['ReservationAvailableSubject'] = '%s is available on %s';
         $strings['ResourceStatusChangedSubject'] = 'The availability of %s has changed';
         // End Email Subjects
+        
+        //Past Reservations
+        $strings['NoPastReservations'] = 'You have no past reservations';
+        $strings['PastReservations'] = 'Past Reservations';
+        $strings['AllNoPastReservations'] = 'There are no past reservations in previous %s days';
+        $strings['AllPastReservations'] = 'All Past Reservations';
+        $strings['Yesterday'] = 'Yesterday';
+        $strings['EarlierThisWeek'] = 'Earlier This Week';
+        $strings['PreviousWeek'] = 'Previous Week';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['GroupUpcomingReservations'] = 'My Group(s) Upcoming Reservations';
+        $strings['NoGroupUpcomingReservations'] = 'Your group has no upcoming reservations';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'An error occured while logging in with facebook. Please try again.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'You have no reservations pending approval';
+        $strings['PendingApprovalReservations'] = 'Pending Approval Reservations';
+        $strings['LaterThisMonth'] = 'Later This Month';
+        $strings['LaterThisYear'] = 'Later This Year';
+        $strings['Other'] = 'Other';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'There are no missing check out reservations';
+        $strings['MissingCheckOutReservations'] = 'Missing Check Out Reservations';
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Can\'t see reservation details because you don\'t have permissions to any of the resources in this reservation';
+        //End Schedule Resource Permissions
+
+        //View Resource
+        $strings['Check'] = 'Check';
+        $strings['PermissionType'] = 'Permission Type';
+        $strings['NoResourcesToView'] = 'No available resources';
+        //End View Resource
 
         $this->Strings = $strings;
 

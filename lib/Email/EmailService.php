@@ -71,7 +71,7 @@ class EmailService implements IEmailService
             $this->phpMailer->addStringAttachment($emailMessage->AttachmentContents(), $emailMessage->AttachmentFileName());
         }
 
-        Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
+        Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $this->phpMailer->From);
 
         $success = false;
         try {

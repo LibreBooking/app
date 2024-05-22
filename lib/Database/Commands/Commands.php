@@ -1438,6 +1438,15 @@ class GetAllResourcesCommand extends SqlCommand
     }
 }
 
+class GetUserResourcesCommand extends SqlCommand
+{
+    public function __construct($resourceIds)
+    {
+        parent::__construct(Queries::GET_USER_RESOURCES);
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IDS, $resourceIds));
+    }
+}
+
 class GetAllResourceGroupsCommand extends SqlCommand
 {
     public function __construct()
@@ -1614,6 +1623,46 @@ class GetGroupByIdCommand extends SqlCommand
     }
 }
 
+class GetGroupResourcesId extends SqlCommand{
+    public function __construct($groupId)
+    {
+        parent::__construct(Queries::GET_GROUP_RESOURCES_ID);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+    }
+}
+
+class GetGroupSchedulesId extends SqlCommand{
+    public function __construct($groupId)
+    {
+        parent::__construct(Queries::GET_GROUP_SCHEDULES_ID);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+    }
+}
+
+class GetResourceAdminResourcesCommand extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_RESOURCE_ADMIN_RESOURCES);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class GetScheduleAdminSchedulesCommand extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_SHCEDULE_ADMIN_SCHEDULES);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class GetScheduleAdminResourcesCommand extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_SCHEDULE_ADMIN_RESOURCES);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
 class GetGroupsIManageCommand extends SqlCommand
 {
     public function __construct($userId)
@@ -1761,6 +1810,53 @@ class GetReservationListCommand extends SqlCommand
     public function ContainsGroupConcat()
     {
         return true;
+    }
+}
+
+class GetReservationsPendingApprovalCommand extends SqlCommand
+{
+    public function __construct(Date $startDate, $userIds, $userLevelId, $scheduleIds, $resourceIds, $participantIds)
+    {
+        parent::__construct(QueryBuilder::GET_RESERVATION_PENDING_APPROVAL_LIST());
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userIds));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleIds));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceIds));
+        $this->AddParameter(new Parameter(ParameterNames::PARTICIPANT_ID, $participantIds));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceIds)));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_SCHEDULES, (int)empty($scheduleIds)));
+        $this->AddParameter(new Parameter(ParameterNames::All_OWNERS, (int)empty($userIds)));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_PARTICIPANTS, (int)empty($participantIds)));
+    }
+}
+
+class GetReservationsMissingCheckInCheckOutCommand extends SqlCommand
+{
+    public function __construct(Date $startDate = null, Date $endDate, $userIds, $userLevelId, $scheduleIds, $resourceIds, $participantIds)
+    {
+        parent::__construct(QueryBuilder::GET_RESERVATION_MISSING_CHECK_IN_OUT_LIST());
+        if ($startDate !== null){
+            $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        }
+        else {
+            $this->AddParameter(new Parameter(ParameterNames::START_DATE, NULL));
+        }
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userIds));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleIds));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceIds));
+        $this->AddParameter(new Parameter(ParameterNames::PARTICIPANT_ID, $participantIds));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceIds)));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_SCHEDULES, (int)empty($scheduleIds)));
+        $this->AddParameter(new Parameter(ParameterNames::All_OWNERS, (int)empty($userIds)));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_PARTICIPANTS, (int)empty($participantIds)));
+
+        //When the interval is set (start and end date), if it includes future dates, it should only return reservations before today.
+        //It is impossible to miss a check in/out if the reservation hasn't even started (although checkin_date and checkout_date are null in the db)
+        $now = Date::Now();
+        $this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $now->ToDatabase()));
     }
 }
 

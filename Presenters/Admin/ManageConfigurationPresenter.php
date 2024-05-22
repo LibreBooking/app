@@ -224,7 +224,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 
     private function ShouldBeSkipped($key, $section = null)
     {
-        if ($section == ConfigSection::DATABASE || $section == ConfigSection::API) {
+        if ($section == ConfigSection::DATABASE) {
             return true;
         }
         if (in_array($key, $this->deletedSettings)) {

@@ -90,25 +90,36 @@
 
 				<div class="clearfix"></div>
 
-				{if $AllowGoogleLogin && $AllowFacebookLogin}
+				{if $AllowGoogleLogin && $AllowFacebookLogin && $AllowMicrosoftLogin}
 					{assign var=socialClass value="col-sm-12 col-md-6"}
 				{else}
 					{assign var=socialClass value="col-sm-12"}
 				{/if}
-
-				{if $AllowGoogleLogin}
-					<div class="{$socialClass} social-login" id="socialLoginGoogle">
-						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state={$GoogleState}&redirect_uri=https://www.social.twinkletoessoftware.com/googleresume.php&response_type=code&client_id=531675809673-3sfvrchh6svd9bfl7m55dao8n4s6cqpc.apps.googleusercontent.com">
-							<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
-						</a>
-					</div>
-				{/if}
-				{if $AllowFacebookLogin}
-					<div class="{$socialClass} social-login" id="socialLoginFacebook">
-						<a href="https://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
-							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
-						</a>
-					</div>
+				<section style="display:flex; margin-top:8px;">
+					{if $AllowGoogleLogin}
+						<div class="{$socialClass} social-login" id="socialLoginGoogle">
+							<a href="{$GoogleUrl}">
+									<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
+							</a>
+						</div>
+					{/if}
+					{if $AllowMicrosoftLogin}
+						<div class="{$socialClass} social-login" id="socialLoginOffice" class="container">
+							<a href="{$MicrosoftUrl}">
+								<img style="max-height:42px;" src="img/external/microsoft-logo.jpeg" alt="Sign in with Microsoft"/>
+							</a>
+						</div>
+					{/if}
+					{if $AllowFacebookLogin}
+						<div class="{$socialClass} social-login" id="socialLoginFacebook">
+							<a href="{$FacebookUrl}">
+								<img style="max-height:42px" src="img/external/facebook-logo.png" alt="Sign in with Facebook"/>
+							</a>
+						</div>
+					{/if}
+				</section>
+				{if $facebookError}
+					<p style="text-align:center; margin-top:10px; margin-bottom:auto" class="text-primary"> {translate key="FacebookLoginErrorMessage"} </p>
 				{/if}
 			</div>
 			<div id="login-footer" class="col-xs-12">

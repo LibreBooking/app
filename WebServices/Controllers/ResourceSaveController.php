@@ -74,7 +74,7 @@ class ResourceSaveController implements IResourceSaveController
         if (!empty($errors)) {
             return new ResourceControllerResult(null, $errors);
         }
-        $oldResource = $this->repository->LoadById($resourceID);
+        $oldResource = $this->repository->LoadById($resourceId);
         $resource = $this->BuildResource($request, $resourceId);
         $resource->SetImages($oldResource->GetImages());
         $this->repository->Update($resource);

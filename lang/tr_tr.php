@@ -776,6 +776,45 @@ class tr_tr extends en_gb
         $strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Daha önce yapılmış rezervasyonunuz yok';
+        $strings['PastReservations'] = 'Önceki Rezervasyonlar';
+        $strings['AllNoPastReservations'] = 'Son %s günde önceki rezervasyon yok';
+        $strings['AllPastReservations'] = 'Tüm Önceki Rezervasyonlar';
+        $strings['Yesterday'] = 'Dün';
+        $strings['EarlierThisWeek'] = 'Bu Haftanın Daha Önceki Günleri';
+        $strings['PreviousWeek'] = 'Geçen Hafta';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Grubunuzun gelecek rezervasyonu yok';
+        $strings['GroupUpcomingReservations'] = 'Grubumun Yaklaşan Rezervasyonları';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Facebook ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Onay bekleyen rezervasyonunuz bulunmamaktadır';
+        $strings['PendingApprovalReservations'] = 'Onay bekleyen rezervasyonlar';
+        $strings['LaterThisMonth'] = 'Bu ayın ilerisinde';
+        $strings['LaterThisYear'] = 'Bu yılın ilerisinde';
+        $strings['Remaining'] = 'Kalan';        
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Eksik check-out rezervasyonu yok';
+        $strings['MissingCheckOutReservations'] = 'Eksik Check Out Rezervasyonları';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Bu rezervasyondaki hiçbir kaynağa izinleriniz olmadığından rezervasyon ayrıntılarını göremiyorsunuz';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

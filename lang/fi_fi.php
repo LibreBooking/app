@@ -908,9 +908,45 @@ class fi_fi extends en_gb
         $strings['InviteeAddedSubjectWithResource'] = '%s Kutsui Sinut Varaukseen for %s :lle';
         $strings['MissedCheckinEmailSubject'] = 'Sisäänkirjaus puuttuu %s :lta';
         $strings['ReservationShareSubject'] = '%s Jakoi Varauksen %s :lle';
+        //End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Sinulla ei ole aikaisempia varauksia';
+        $strings['PastReservations'] = 'Aikaisemmat varaukset';
+        $strings['AllNoPastReservations'] = 'Viimeisen %s päivän aikana ei ole aikaisempia varauksia';
+        $strings['AllPastReservations'] = 'Kaikki aikaisemmat varaukset';
+        $strings['Yesterday'] = 'Eilen';
+        $strings['EarlierThisWeek'] = 'Aiemmin tällä viikolla';
+        $strings['PreviousWeek'] = 'Edellinen viikko';
+        //End Past Reservations
 
-        //
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Ryhmällänne ei ole tulevia varauksia';
+        $strings['GroupUpcomingReservations'] = 'Ryhmäni tulevat varaukset';
+        //End Group Upcoming Reservations
+    
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Virhe kirjautuessa Facebookin kanssa. Yritä uudelleen.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Sinulla ei ole odottavia hyväksyttäviä varauksia';
+        $strings['PendingApprovalReservations'] = 'Odottaa hyväksyntää olevat varaukset';
+        $strings['LaterThisMonth'] = 'Myöhemmin tänä kuukautena';
+        $strings['LaterThisYear'] = 'Myöhemmin tänä vuonna';
+        $strings['Remaining'] = 'Jäljellä oleva';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Puuttuvia uloskirjautumisvarauksia ei ole';
+        $strings['MissingCheckOutReservations'] = 'Puuttuvat uloskirjautumisvaraukset';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Et voi nähdä varauksen tietoja, koska sinulla ei ole oikeuksia mihinkään tämän varauksen resursseista';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
 
         $this->Strings = $strings;
 

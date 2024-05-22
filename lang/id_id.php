@@ -574,6 +574,45 @@ class id_id extends en_gb
         $strings['ReservationEndingSoonSubject'] = 'Reservasi untuk %s akan segera berakhir';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Anda tidak memiliki reservasi sebelumnya';
+        $strings['PastReservations'] = 'Reservasi Sebelumnya';
+        $strings['AllNoPastReservations'] = 'Tidak ada reservasi sebelumnya dalam %s hari terakhir';
+        $strings['AllPastReservations'] = 'Semua Reservasi Sebelumnya';
+        $strings['Yesterday'] = 'Kemarin';
+        $strings['EarlierThisWeek'] = 'Lebih awal pekan ini';
+        $strings['PreviousWeek'] = 'Pekan sebelumnya';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Grup Anda tidak memiliki reservasi mendatang';
+        $strings['GroupUpcomingReservations'] = 'Reservasi Mendatang Grup Saya';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Terjadi kesalahan saat login dengan Facebook. Silakan coba lagi.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Anda tidak memiliki reservasi yang menunggu persetujuan';
+        $strings['PendingApprovalReservations'] = 'Pemesanan Menunggu Persetujuan';
+        $strings['LaterThisMonth'] = 'Nanti Bulan Ini';
+        $strings['LaterThisYear'] = 'Nanti Tahun Ini';
+        $strings['Remaining'] = 'Sisa';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Tidak ada reservasi check out yang hilang';
+        $strings['MissingCheckOutReservations'] = 'Reservasi Check Out yang Hilang';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Tidak dapat melihat detail pemesanan karena Anda tidak memiliki izin untuk salah satu dari sumber daya dalam pemesanan ini';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
     }
 

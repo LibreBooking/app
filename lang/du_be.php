@@ -388,7 +388,45 @@ class du_be extends en_gb
         $strings['InviteeAddedSubject'] = 'Uitnodiging reservering';
         $strings['ResetPassword'] = 'Verzoek om paswoord te resetten';
         $strings['ForgotPasswordEmailSent'] = 'Een email werd naar uw account gestuurd met de informatie om uw paswoord te resetten';
-        //
+        //End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'U heeft geen vorige reserveringen';
+        $strings['PastReservations'] = 'Vorige reserveringen';
+        $strings['AllNoPastReservations'] = 'Er zijn geen vorige reserveringen in de afgelopen %s dagen';
+        $strings['AllPastReservations'] = 'Alle vorige reserveringen';
+        $strings['Yesterday'] = 'Gisteren';
+        $strings['EarlierThisWeek'] = 'Eerder deze week';
+        $strings['PreviousWeek'] = 'Vorige week';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Uw groep heeft geen toekomstige reserveringen';
+        $strings['GroupUpcomingReservations'] = 'Aankomende reserveringen van mijn groep(en)';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Er is een fout opgetreden bij het inloggen met Facebook. Probeer het opnieuw.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'U heeft geen reserveringen die wachten op goedkeuring';
+        $strings['PendingApprovalReservations'] = 'Reserveringen in afwachting van goedkeuring';
+        $strings['LaterThisMonth'] = 'Later deze maand';
+        $strings['LaterThisYear'] = 'Later dit jaar';
+        $strings['Remaining'] = 'Resterend';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Er zijn geen ontbrekende uitcheckreserveringen';
+        $strings['MissingCheckOutReservations'] = 'Ontbrekende uitcheckreserveringen';              
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
 
         $this->Strings = $strings;
     }

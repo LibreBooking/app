@@ -122,6 +122,10 @@ class LoginPresenter
         $this->_page->SetPasswordResetUrl($this->authentication->GetPasswordResetUrl());
         $this->_page->SetAnnouncements($this->announcementRepository->GetFuture(Pages::ID_LOGIN));
         $this->_page->SetSelectedLanguage(Resources::GetInstance()->CurrentLanguage);
+
+        $this->_page->SetGoogleUrl($this->GetGoogleUrl());
+        $this->_page->SetMicrosoftUrl($this->GetMicrosoftUrl());
+        $this->_page->SetFacebookUrl($this->GetFacebookUrl());
     }
 
     public function Login()
@@ -218,6 +222,74 @@ class LoginPresenter
     {
         if (Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_CAPTCHA_ON_LOGIN, new BooleanConverter())) {
             $this->_page->RegisterValidator('captcha', new CaptchaValidator($this->_page->GetCaptcha(), $this->captchaService));
+        }
+    }
+
+    /**
+     * Checks in the config files if google authentication is active creating a new client if true and setting it's config keys.
+     * Returns the created google url for the authentication  
+     */
+    public function GetGoogleUrl(){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter())){
+            $client = new Google\Client();
+            $client->setClientId(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_ID));
+            $client->setClientSecret(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_CLIENT_SECRET));
+            $client->setRedirectUri(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::GOOGLE_REDIRECT_URI));
+            $client->addScope("email");
+            $client->addScope("profile");
+            $client->setPrompt("select_account");
+            $GoogleUrl = $client->createAuthUrl();
+            
+            return $GoogleUrl;
+        }
+    }
+
+    /**
+     * Checks in the config files if microsoft authentication is active creating the url if true with the respective keys
+     * Returns the created microsoft url for the authentication  
+     */
+    public function GetMicrosoftUrl(){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT, new BooleanConverter())){
+            $MicrosoftUrl = 'https://login.microsoftonline.com/'
+                            .urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_TENANT_ID))
+                            .'/oauth2/v2.0/authorize?'
+                            .'client_id=' . urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_CLIENT_ID))
+                            .'&redirect_uri=' . urlencode(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::MICROSOFT_REDIRECT_URI))
+                            .'&scope=user.read'
+                            .'&response_type=code'
+                            .'&prompt=select_account';
+
+            return $MicrosoftUrl;
+        }
+    }
+
+    /**
+     * Checks in the config files if facebook authentication is active creating the url if true with the respective keys
+     * Returns the created facebook url for the authentication  
+     */
+    public function GetFacebookUrl(){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter())){
+            $facebook_Client = new Facebook\Facebook([
+                            'app_id'                => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_CLIENT_ID),
+                            'app_secret'            => Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_CLIENT_SECRET),
+                            'default_graph_version' => 'v2.5'
+            ]);
+
+            $helper = $facebook_Client->getRedirectLoginHelper();
+
+            $permissions = ['email', 'public_profile']; // Add other permissions as needed
+            
+            //The FacebookRedirectLoginHelper makes use of sessions to store a CSRF value. 
+            //You need to make sure you have sessions enabled before invoking the getLoginUrl() method.
+            if (!session_id()) {
+                session_start();
+            }
+            $FacebookUrl = $helper->getLoginUrl(
+                Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::FACEBOOK_REDIRECT_URI),
+                $permissions
+            );
+
+            return $FacebookUrl;
         }
     }
 }

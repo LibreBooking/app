@@ -1,6 +1,6 @@
 # Developer Documentation
 
-## Working on the projekt
+## Working on the project
 The `develop` branch contains the most current working code of the Project and should be considered beta.  
 The `master` branch is the most current stable release of LibreBooking.  
 You can automatically keep your fork up to date with the [pull GitHub App](https://github.com/apps/pull). which will sync the `master` (hardreset) and `develop` (rebase) branches for you.

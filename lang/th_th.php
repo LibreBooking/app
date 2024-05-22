@@ -836,6 +836,45 @@ class th_th extends en_gb
         $strings['MissedCheckinEmailSubject'] = 'ไม่ได้รับการเช็คอินสำหรับ %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'คุณไม่มีการจองที่ผ่านมา';
+        $strings['PastReservations'] = 'การจองที่ผ่านมา';
+        $strings['AllNoPastReservations'] = 'ไม่มีการจองที่ผ่านมาใน %s วันที่ผ่านมา';
+        $strings['AllPastReservations'] = 'การจองที่ผ่านมาทั้งหมด';
+        $strings['Yesterday'] = 'เมื่อวาน';
+        $strings['EarlierThisWeek'] = 'ก่อนหน้านี้ในสัปดาห์นี้';
+        $strings['PreviousWeek'] = 'สัปดาห์ที่แล้ว';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'กลุ่มของคุณไม่มีการจองที่จะมาถึง';
+        $strings['GroupUpcomingReservations'] = 'การจองที่มีต่อไปของกลุ่มของฉัน';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'เกิดข้อผิดพลาดขณะเข้าสู่ระบบด้วย Facebook กรุณาลองอีกครั้ง';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'คุณไม่มีการจองที่รอการอนุมัติ';
+        $strings['PendingApprovalReservations'] = 'การจองรอการอนุมัติ';
+        $strings['LaterThisMonth'] = 'ในภายหลังเดือนนี้';
+        $strings['LaterThisYear'] = 'ในภายหลังปีนี้';
+        $strings['Remaining'] = 'ที่เหลือ';        
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'ไม่มีการจองเช็คเอาท์ที่ขาดหายไป';
+        $strings['MissingCheckOutReservations'] = 'การจองเช็คเอาท์ที่ขาดหายไป';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'ไม่สามารถดูรายละเอียดการจองเนื่องจากคุณไม่มีสิทธิ์ที่เพียงพอที่จะเข้าถึงทรัพยากรใด ๆ ในการจองนี้';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -996,6 +996,44 @@ class da_da extends en_gb
         $strings['ReservationParticipantJoin'] = '% har tilmeldt sig din reservationen af %s på %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Du har ingen tidligere reservationer';
+        $strings['PastReservations'] = 'Tidligere reservationer';
+        $strings['AllNoPastReservations'] = 'Der er ingen tidligere reservationer i de seneste %s dage';
+        $strings['AllPastReservations'] = 'Alle tidligere reservationer';
+        $strings['Yesterday'] = 'I går';
+        $strings['EarlierThisWeek'] = 'Tidligere på ugen';
+        $strings['PreviousWeek'] = 'Forrige uge';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Din gruppe har ingen kommende reservationer';
+        $strings['GroupUpcomingReservations'] = 'Mine gruppers kommende reservationer';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Der opstod en fejl under login med Facebook. Prøv venligst igen.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Du har ingen reservationer, der venter på godkendelse';
+        $strings['PendingApprovalReservations'] = 'Reservationer afventer godkendelse';
+        $strings['LaterThisMonth'] = 'Senere denne måned';
+        $strings['LaterThisYear'] = 'Senere på året';
+        $strings['Remaining'] = 'Resterende';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Der er ingen manglende check-out reservationer';
+        $strings['MissingCheckOutReservations'] = 'Manglende check-out reservationer';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Kan ikke se reservationsoplysninger, fordi du ikke har tilladelser til nogen af ressourcerne i denne reservation';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

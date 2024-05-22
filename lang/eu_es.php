@@ -717,6 +717,44 @@ class eu_es extends en_gb
         $strings['GuestAccountCreatedSubject'] = 'Kontuaren xehetasunak';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Ez duzu aurreko erreserik';
+        $strings['PastReservations'] = 'Aurreko erreserak';
+        $strings['AllNoPastReservations'] = 'Ez dago aurreko erreserarik azken %s egunetan';
+        $strings['AllPastReservations'] = 'Denak aurreko erreserak';
+        $strings['Yesterday'] = 'Atzo';
+        $strings['EarlierThisWeek'] = 'Aurreko astean';
+        $strings['PreviousWeek'] = 'Aurreko astean';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Zure taldeak ez du etorriko erreserbarik';
+        $strings['GroupUpcomingReservations'] = 'Nire Taldeen Hurrengo Erreserba(k)';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Facebook-en saioa hastean errorea gertatu da. Mesedez, saiatu berriro.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Ez duzu onartu beharreko erreserbarik';
+        $strings['PendingApprovalReservations'] = 'Onartzea zaindako erreserbak';
+        $strings['LaterThisMonth'] = 'Hilabete honetan geroago';
+        $strings['LaterThisYear'] = 'Aurten geroago';
+        $strings['Remaining'] = 'Geratzen dena';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Ez dago irteerako erreserbarik falta';
+        $strings['MissingCheckOutReservations'] = 'Irteerako erreserbak falta dira';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Ezinezkoa da erreserbaaren xehetasunak ikustea, erreserba honetan dagoen edozein baliabideen baimenik ez delako';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
     }

@@ -556,8 +556,46 @@ class sv_sv extends en_gb
         $strings['ReservationUpdatedAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s har uppdaterats';
         $strings['ReservationDeleteAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s har tagits bort';
         $strings['ReservationApprovalAdminSubjectWithResource'] = 'Underrättelse: En bokning av %s måste godkännas';
-
         // End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Du har inga tidigare bokningar';
+        $strings['PastReservations'] = 'Tidigare bokningar';
+        $strings['AllNoPastReservations'] = 'Det finns inga tidigare bokningar de senaste %s dagarna';
+        $strings['AllPastReservations'] = 'Alla tidigare bokningar';
+        $strings['Yesterday'] = 'Igår';
+        $strings['EarlierThisWeek'] = 'Tidigare den här veckan';
+        $strings['PreviousWeek'] = 'Förra veckan';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Din grupp har inga kommande bokningar';
+        $strings['GroupUpcomingReservations'] = 'Mina grupps kommande bokningar';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Ett fel inträffade vid inloggning med Facebook. Försök igen.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Du har inga bokningar som väntar på godkännande';
+        $strings['PendingApprovalReservations'] = 'Bokningar väntar på godkännande';
+        $strings['LaterThisMonth'] = 'Senare denna månad';
+        $strings['LaterThisYear'] = 'Senare i år';
+        $strings['Remaining'] = 'Återstående';        
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Det finns inga saknade utcheckningsreservat';
+        $strings['MissingCheckOutReservations'] = 'Saknade utcheckningsreservat';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Kan inte se detaljer om bokningen eftersom du inte har behörighet för någon av resurserna i denna bokning';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
 
         $this->Strings = $strings;
     }

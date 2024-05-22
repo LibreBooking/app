@@ -95,6 +95,7 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->Set('UserName', $this->reservationOwner->FullName());
         $this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));
         $this->Set('EndDate', $currentInstance->EndDate()->ToTimezone($this->timezone));
+        $this->Set('ScheduleId', $this->reservationSeries->ScheduleId());
         $this->Set('ResourceName', $this->reservationSeries->Resource()->GetName());
         $img = $this->reservationSeries->Resource()->GetImage();
         if (!empty($img)) {

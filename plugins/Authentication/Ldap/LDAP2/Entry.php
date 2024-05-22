@@ -152,7 +152,7 @@ class Net_LDAP2_Entry extends PEAR
         parent::__construct('Net_LDAP2_Error');
 
         // set up entry resource or DN
-        if (is_resource($entry)) {
+        if (is_resource($entry) || $entry instanceof \LDAP\ResultEntry) {
             $this->_entry = $entry;
         } else {
             $this->_dn = $entry;
@@ -162,7 +162,7 @@ class Net_LDAP2_Entry extends PEAR
         if ($ldap instanceof Net_LDAP2) {
             $this->_ldap = $ldap;
             $this->_link = $ldap->getLink();
-        } elseif (is_resource($ldap)) {
+        } elseif (is_resource($ldap) || $ldap instanceof \LDAP\Connection) {
             $this->_link = $ldap;
         } elseif (is_array($ldap)) {
             // Special case: here $ldap is an array of attributes,
@@ -174,7 +174,8 @@ class Net_LDAP2_Entry extends PEAR
 
         // if this is an entry existing in the directory,
         // then set up as old and fetch attrs
-        if (is_resource($this->_entry) && is_resource($this->_link)) {
+        if ((is_resource($this->_entry) || $this->_entry instanceof \LDAP\ResultEntry)
+            && (is_resource($this->_link) || $this->_link instanceof \LDAP\Connection)) {
             $this->_new = false;
             $this->_dn  = @ldap_get_dn($this->_link, $this->_entry);
             $this->setAttributes();  // fetch attributes from server
@@ -236,7 +237,7 @@ class Net_LDAP2_Entry extends PEAR
         if (!$ldap instanceof Net_LDAP2) {
             return PEAR::raiseError("Unable to create connected entry: Parameter \$ldap needs to be a Net_LDAP2 object!");
         }
-        if (!is_resource($entry)) {
+        if (!is_resource($entry) && !$entry instanceof \LDAP\ResultEntry) {
             return PEAR::raiseError("Unable to create connected entry: Parameter \$entry needs to be a ldap entry resource!");
         }
 
@@ -355,7 +356,9 @@ class Net_LDAP2_Entry extends PEAR
         /*
         * fetch attributes from the server
         */
-        if (is_null($attributes) && is_resource($this->_entry) && is_resource($this->_link)) {
+        if (is_null($attributes)
+            && (is_resource($this->_entry) || $this->_entry instanceof \LDAP\ResultEntry)
+            && (is_resource($this->_link) || $this->_link instanceof \LDAP\Connection)) {
             // fetch schema
             if ($this->_ldap instanceof Net_LDAP2) {
                 $schema = $this->_ldap->schema();
@@ -365,9 +368,9 @@ class Net_LDAP2_Entry extends PEAR
             do {
                 if (empty($attr)) {
                     $ber  = null;
-                    $attr = @ldap_first_attribute($this->_link, $this->_entry, $ber);
+                    $attr = @ldap_first_attribute($this->_link, $this->_entry);
                 } else {
-                    $attr = @ldap_next_attribute($this->_link, $this->_entry, $ber);
+                    $attr = @ldap_next_attribute($this->_link, $this->_entry);
                 }
                 if ($attr) {
                     $func = 'ldap_get_values'; // standard function to fetch value
@@ -767,7 +770,7 @@ class Net_LDAP2_Entry extends PEAR
 
         // Get and check link
         $link = $ldap->getLink();
-        if (!is_resource($link)) {
+        if (!is_resource($link) && !$link instanceof \LDAP\Connection) {
             return PEAR::raiseError("Could not update entry: internal LDAP link is invalid");
         }
 

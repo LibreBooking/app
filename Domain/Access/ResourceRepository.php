@@ -93,6 +93,18 @@ class ResourceRepository implements IResourceRepository
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
     }
 
+    public function GetUserList($resourceIds, $pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+    {
+        $command = new GetUserResourcesCommand($resourceIds);
+
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = ['BookableResource', 'Create'];
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+    }
+
     /**
      * @param int $resourceId
      * @return BookableResource
@@ -362,6 +374,88 @@ class ResourceRepository implements IResourceRepository
         }
 
         return $this->BuildResourceGroupTree($_groups, $_assignments, $resourceFilter);
+    }
+
+    /**
+     * Gets the resource ids that the user has permissions to
+     */
+    public function GetUserResourcePermissions($userId, $resourceIds = []){
+        $command = new GetUserPermissionsCommand($userId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+            if (!array_key_exists($resourceId, $resourceIds)) {
+                $resourceIds[$resourceId] = $resourceId;
+            }         
+        }
+        
+        $reader->Free();
+
+        return $resourceIds;
+    }
+
+    /**
+     * Gets the resource ids that the user groups have permissions to
+     */
+    public function GetUserGroupResourcePermissions($userId, $resourceIds = []){
+        $command = new SelectUserGroupPermissions($userId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        while ($row = $reader->GetRow()) {
+            $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+            if (!array_key_exists($resourceId, $resourceIds)) {
+                $resourceIds[$resourceId] = $resourceId;
+            } 
+        }
+        $reader->Free();
+
+        return $resourceIds;
+    }
+
+    /**
+     * Gets the resource ids that are under the responsability of the given resource user groups
+     */
+    public function GetResourceAdminResourceIds($userId, $resourceIds = []){
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $command = new GetResourceAdminResourcesCommand($userId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
+
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
+            }
+            $reader->Free();
+        }
+        return $resourceIds;
+    }
+
+    /**
+     * Gets the resource ids that are under the responsability of the given schedule user groups
+     */
+    public function GetScheduleAdminResourceIds($userId, $resourceIds = []){
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+            $command = new GetScheduleAdminResourcesCommand($userId);
+            $reader = ServiceLocator::GetDatabase()->Query($command);
+
+            while ($row = $reader->GetRow()) {
+                $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+                if (!array_key_exists($resourceId, $resourceIds)) {
+                    $resourceIds[$resourceId] = $resourceId;
+                } 
+            }
+            $reader->Free();
+        }
+
+        return $resourceIds;
     }
 
     /**

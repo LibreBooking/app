@@ -169,7 +169,7 @@ $conf['settings']['reservation.labels']['reservation.popup'] = ''; // Format for
  * Security header settings
  */
 $conf['settings']['security']['security.headers'] = 'false'; // Enable the following options
-$conf['settings']['security']['security.strict-transport'] = 'true';
+$conf['settings']['security']['security.strict-transport'] = 'max-age=31536000';
 $conf['settings']['security']['security.x-frame'] = 'deny';
 $conf['settings']['security']['security.x-xss'] = '1; mode=block';
 $conf['settings']['security']['security.x-content-type'] = 'nosniff';
@@ -181,6 +181,7 @@ $conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Ana
 
 $conf['settings']['authentication']['allow.facebook.login'] = 'false';
 $conf['settings']['authentication']['allow.google.login'] = 'false';
+$conf['settings']['authentication']['allow.microsoft.login'] = 'false';
 $conf['settings']['authentication']['required.email.domains'] = '';
 $conf['settings']['authentication']['hide.booked.login.prompt'] = 'false';
 $conf['settings']['authentication']['captcha.on.login'] = 'false';
@@ -210,3 +211,34 @@ $conf['settings']['registration']['require.organization'] = 'false';
 $conf['settings']['logging']['folder'] = '/var/log/librebooking/log'; //Absolute path to folder were the log will be written, writing permissions to the folder are required
 $conf['settings']['logging']['level'] = 'debug'; //Set to none disable logs, error to only log errors or debug to log all messages to the app.log file 
 $conf['settings']['logging']['sql'] = 'false'; //Set to true no enable the creation of and sql.log file
+
+// IN THE REDIRECT URI'S (OF THE AUTHENTICATION YOU ARE USING) YOU NEED TO ADD THE PATH FROM THE WEBSITE DOMAIN TO THE
+// WEB/GOOGLE-AUTH.PHP or WEB/FACEBOOK-AUTH.PHP or WEB/MICROSOFT-AUTH.PHP (depending on the services you are using)
+// EG: http://localhost/Web/facebook-auth.php
+/**
+* Google login configuration
+*/
+$conf['settings']['authentication']['google.client.id'] = ''; 
+$conf['settings']['authentication']['google.client.secret'] = ''; 
+$conf['settings']['authentication']['google.redirect.uri'] = '/Web/google-auth.php';
+/**
+ * Microsoft login configuration
+ */
+$conf['settings']['authentication']['microsoft.client.id'] = '';
+$conf['settings']['authentication']['microsoft.tenant.id'] = 'common'; //Replace with your tenant id if the app is single tenant
+$conf['settings']['authentication']['microsoft.client.secret'] = '';
+$conf['settings']['authentication']['microsoft.redirect.uri'] = '/Web/microsoft-auth.php';
+/**
+ * Facebook login configuration
+ */
+$conf['settings']['authentication']['facebook.client.id'] = '';
+$conf['settings']['authentication']['facebook.client.secret'] = '';
+$conf['settings']['authentication']['facebook.redirect.uri'] = '/Web/facebook-auth.php';
+/**
+ * Delete old data job configuration
+ * Activate the deleteolddata.php as a background job to use this feature
+ */
+$conf['settings']['delete.old.data']['years.old.data'] = '3';               //Choose how long a blackout, announcement and reservation stay in the database (in years) counting from the end date
+$conf['settings']['delete.old.data']['delete.old.announcements'] = 'false'; //Choose if this feature deletes old announcements from database
+$conf['settings']['delete.old.data']['delete.old.blackouts'] = 'false';     //Choose if this feature deletes old blackouts from database
+$conf['settings']['delete.old.data']['delete.old.reservations'] = 'false';  //Choose if this feature deletes old reservations from database

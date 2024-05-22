@@ -60,6 +60,17 @@ interface IResourceRepository
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
     /**
+     * @param array $resourceIds
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param string|null $sortField
+     * @param string|null $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|BookableResource[]
+     */
+    public function GetUserList($resourceIds,$pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+
+    /**
      * @param null|string $sortField
      * @param null|string $sortDirection
      * @return AccessoryDto[]|array all accessories
@@ -72,6 +83,31 @@ interface IResourceRepository
      * @return ResourceGroupTree
      */
     public function GetResourceGroups($scheduleId = null, $resourceFilter = null);
+
+    /**
+     * @param int $userId
+     * @param array $resourceIds
+     */
+    public function GetUserResourcePermissions($userId, $resourceIds = []);
+
+    /**
+     * @param int $userId
+     * @param array $resourceIds
+     */
+    public function GetUserGroupResourcePermissions($userId, $resourceIds = []);
+    
+    /**
+     * @param int $userId
+     * @param array $resourceIds
+     */
+    public function GetResourceAdminResourceIds($userId,  $resourceIds = []);
+
+    /**
+     * @param int $userId
+     * @param array $resourceIds
+     */
+    public function GetScheduleAdminResourceIds($userId,  $resourceIds = []);
+
 
     /**
      * @param int $resourceId

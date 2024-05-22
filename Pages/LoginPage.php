@@ -92,6 +92,21 @@ interface ILoginPage extends IPage, ILoginBasePage
      * @param Announcement[] $announcements
      */
     public function SetAnnouncements($announcements);
+
+    /**
+     *  
+     */
+    public function SetGoogleUrl($URL);
+
+    /**
+     *  
+     */
+    public function SetMicrosoftUrl($URL);
+
+    /**
+     *  
+     */
+    public function SetFacebookUrl($URL);
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -109,8 +124,10 @@ class LoginPage extends Page implements ILoginPage
         $this->Set('ShowLoginError', false);
         $this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 
+        $this->SetFacebookErrorMessage();
         $this->Set('AllowFacebookLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter()));
         $this->Set('AllowGoogleLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter()));
+        $this->Set('AllowMicrosoftLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT, new BooleanConverter()));
         $scriptUrl = Configuration::Instance()->GetScriptUrl();
         $parts = explode('://', $scriptUrl);
         $this->Set('Protocol', $parts[0]);
@@ -279,5 +296,44 @@ class LoginPage extends Page implements ILoginPage
     public function SetAnnouncements($announcements)
     {
         $this->Set('Announcements', $announcements);
+    }
+
+    /**
+     * Sends the created google url in the presenter to the smarty page 
+     */
+    public function SetGoogleUrl($googleUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_GOOGLE, new BooleanConverter())){
+            $this->Set('GoogleUrl',$googleUrl);
+        }
+    }
+
+    /**
+     * Sends the created microsoft url in the presenter to the smarty page 
+     */
+    public function SetMicrosoftUrl($microsoftUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_MICROSOFT, new BooleanConverter())){
+            $this->Set('MicrosoftUrl',$microsoftUrl);
+        }
+    }
+
+    /**
+     * Sends the created facebook url in the presenter to the smarty page 
+     */
+    public function SetFacebookUrl($FacebookUrl){
+        if(Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_FACEBOOK, new BooleanConverter())){
+            $this->Set('FacebookUrl',$FacebookUrl);
+        }
+    }
+
+    /**
+     * Temporary solution for facebook auth SDK error 
+     * After facebook failed authentication user is redirected to login page (this one) and is shown a message to try again
+     * Error occurs rarely (FacebookSDKException)
+     */
+    private function SetFacebookErrorMessage(){
+        if (isset($_SESSION['facebook_error']) && $_SESSION['facebook_error'] == true) {
+            $this->Set('facebookError',$_SESSION['facebook_error']);
+            unset($_SESSION['facebook_error']);
+        }
     }
 }

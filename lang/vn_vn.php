@@ -733,6 +733,45 @@ class vn_vn extends en_gb
         $strings['GuestAccountCreatedSubject'] = 'Thông tin tài khoản của bạn';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Bạn không có đặt phòng nào trong quá khứ';
+        $strings['PastReservations'] = 'Đặt phòng trong quá khứ';
+        $strings['AllNoPastReservations'] = 'Không có đặt phòng nào trong %s ngày qua';
+        $strings['AllPastReservations'] = 'Tất cả đặt phòng trong quá khứ';
+        $strings['Yesterday'] = 'Hôm qua';
+        $strings['EarlierThisWeek'] = 'Trước đó trong tuần này';
+        $strings['PreviousWeek'] = 'Tuần trước';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Nhóm của bạn không có đặt phòng sắp tới';
+        $strings['GroupUpcomingReservations'] = 'Đặt phòng sắp tới của Nhóm của tôi';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Đã xảy ra lỗi khi đăng nhập bằng Facebook. Vui lòng thử lại.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Bạn không có đặt phòng nào đang chờ duyệt';
+        $strings['PendingApprovalReservations'] = 'Đặt phòng đang chờ duyệt';
+        $strings['LaterThisMonth'] = 'Sau này trong tháng này';
+        $strings['LaterThisYear'] = 'Sau này trong năm nay';
+        $strings['Remaining'] = 'Còn lại';        
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Không có đặt phòng check out nào bị thiếu';
+        $strings['MissingCheckOutReservations'] = 'Đặt phòng Check Out bị thiếu';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Không thể xem chi tiết đặt phòng vì bạn không có quyền truy cập vào bất kỳ nguồn tài nguyên nào trong đặt phòng này';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

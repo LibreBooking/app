@@ -1015,6 +1015,44 @@ class el_gr extends en_gb
         $strings['ResourceStatusChangedSubject'] = 'Η διαθεσιμότητα του %s άλλαξε';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Δεν έχετε προηγούμενες κρατήσεις';
+        $strings['PastReservations'] = 'Προηγούμενες κρατήσεις';
+        $strings['AllNoPastReservations'] = 'Δεν υπάρχουν προηγούμενες κρατήσεις τις τελευταίες %s ημέρες';
+        $strings['AllPastReservations'] = 'Όλες οι προηγούμενες κρατήσεις';
+        $strings['Yesterday'] = 'Χθες';
+        $strings['EarlierThisWeek'] = 'Νωρίτερα αυτήν την εβδομάδα';
+        $strings['PreviousWeek'] = 'Προηγούμενη εβδομάδα';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Η ομάδα σας δεν έχει καμία προσεχή κράτηση';
+        $strings['GroupUpcomingReservations'] = 'Μελλοντικές κρατήσεις της ομάδας(ών) μου';
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Προέκυψε σφάλμα κατά τη σύνδεση με το Facebook. Παρακαλούμε δοκιμάστε ξανά.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Δεν έχετε κρατήσεις που αναμένουν έγκριση';
+        $strings['PendingApprovalReservations'] = 'Κρατήσεις προς Έγκριση';
+        $strings['LaterThisMonth'] = 'Αργότερα αυτόν το μήνα';
+        $strings['LaterThisYear'] = 'Αργότερα φέτος';
+        $strings['Remaining'] = 'Υπολειπόμενο';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Δεν υπάρχουν λείπουσες κρατήσεις εξόδου';
+        $strings['MissingCheckOutReservations'] = 'Λείπουσες κρατήσεις εξόδου';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Δεν μπορείτε να δείτε λεπτομέρειες κράτησης επειδή δεν έχετε άδειες για κανένα από τους πόρους σε αυτήν την κράτηση';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

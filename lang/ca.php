@@ -388,7 +388,47 @@ class ca extends en_gb
         $strings['InviteeAddedSubject'] = 'Invitaci&oacute; a Reserva';
         $strings['ResetPassword'] = 'Petici&oacute; de Reinici de Contrasenya';
         $strings['ForgotPasswordEmailSent'] = 'S\'ha enviat un email a la direcci&oacute; proporcionada amb instruccions per reiniciar la teva contrasenya';
-        //
+        //End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'No tens cap reserva anterior';
+        $strings['PastReservations'] = 'Reserves anteriors';
+        $strings['AllNoPastReservations'] = 'No hi ha cap reserva anterior en els darrers %s dies';
+        $strings['AllPastReservations'] = 'Totes les reserves anteriors';
+        $strings['Yesterday'] = 'Ahir';
+        $strings['EarlierThisWeek'] = 'Més aviat aquesta setmana';
+        $strings['PreviousWeek'] = 'Setmana anterior';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'El vostre grup no té cap reserva futura';
+        $strings['GroupUpcomingReservations'] = 'Properes reserves del meu(s) grup(s)';
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'S\'ha produït un error en iniciar la sessió amb Facebook. Torneu-ho a provar.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'No teniu cap reserva a l\'espera d\'aprovació';
+        $strings['PendingApprovalReservations'] = 'Reserves pendents d\'aprovació';
+        $strings['LaterThisMonth'] = 'Més endavant aquest mes';
+        $strings['LaterThisYear'] = 'Més endavant aquest any';
+        $strings['Remaining'] = 'Restant';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'No hi ha cap reserva de sortida que falti';
+        $strings['MissingCheckOutReservations'] = 'Reserves de sortida que falten';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'No es poden veure els detalls de la reserva perquè no teniu permisos per a cap dels recursos d\'aquesta reserva';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
 
         $this->Strings = $strings;
     }

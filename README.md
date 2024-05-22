@@ -1,10 +1,24 @@
+# Current status
+
+As some are aware, due to a chronic lack of time and health issues, I' haven't been the fastest to answer, implement new features or fix bugs., so I just want to inform everyone on the current status of the project.
+At the moment my health is not the strongest, this combined with a heavy workload means that I'm simply not able to keep a very close eye on librebooking, this does NOT mean that this project is dead, in fact the usage on my workplace has steadily increased and will continue to do so in a nearby future, what this means is that in the coming months I won't be able to do much, besides fixing breaking bugs or merge pull requests.
+I'm hoping this phase will pass quickly and that soon I will be able to a more active role, especially implementing new features.
+So what can you do to help, first thing, fork the project, even if you are not a coder, fork the project, the more that have the code the better.
+Second, if you found a bug submit an issue.
+Third, if you managed to fix or trace the problem update the issue, even you can't code, others might be able to quickly provide a fix and maybe even submit a pr.
+Finally if you can code, please contribute to the project even if it's something simple, like fixing grammatical errors all the help is appreciated.
+
+## TODO list
+Because LibreBooking is an opensource project, there are some things we have to do to make it better. Here is a list of things you can do if you're interested in helping out
+- 
+
 # Welcome to LibreBooking
 
 This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBooking alive, see [History](./doc/HISTORY.md)
 
 ## Prerequisites
 
-- PHP 7.0 or greater
+- PHP 8.1 or greater
 - MySQL 5.5 or greater
 - Web server (Apache, IIS)
 
@@ -22,22 +36,27 @@ Please consult the wiki for more help <https://github.com/LibreBooking/app/wiki>
 ## REPO
 <https://github.com/LibreBooking/app>
 
-## Chat
-We now have a chatroom on Gitter.im, join us at: <https://gitter.im/bookedscheduler>
-
 ## ReCaptcha
 
 09/03/2023 - The ReCaptcha integration has been updated to v3, you will need to generate new keys for your website if you are using it on your website.
 
+## Docker usage
+
+For information on how to use LibreBooking in a Docker container see:
+<https://github.com/LibreBooking/docker>
+
 ## Release Notes
 
-#### 2.8.6
+#### 2.8.6.1 - 2023-09-26
+Mainly Bug fixes, special mention for the ldap plugin, more details at <https://github.com/LibreBooking/app/commits/develop>
+
+#### 2.8.6 - 2023-04-18
 
 Librebooking now has PHP8 support
 Many bugs, updates and even new features were added but the list is a bit long so for further details please check the commit history <https://github.com/LibreBooking/app/commits/develop>
 
 
-#### 2.8.5.5
+#### 2.8.5.5 - 2022-02-11
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](https://github.com/LibreBooking/app)  
@@ -46,7 +65,7 @@ Fork this repo, contribute and help keep it alive
 Small update to fix a security issue
 
 
-#### 2.8.5.4
+#### 2.8.5.4 - 2021-09-03
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](https://github.com/LibreBooking/app)  
@@ -54,7 +73,7 @@ Fork this repo, contribute and help keep it alive
 
 Way too many changes, bugfixes and improvements to list them all here, so please take a look at: https://github.com/LibreBooking/app/commits/master
 
-#### 2.8.5.3
+#### 2.8.5.3 - 2021-03-10
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](https://github.com/LibreBooking/app)  
@@ -64,13 +83,13 @@ Fork this repo, contribute and help keep it alive
 - Updated jsPDF
 - Bugfixes
 
-#### 2.8.5.2
+#### 2.8.5.2 - 2021-01-25
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](<https://github.com/LibreBooking/app>)  
 Fork this repo, contribute and help keep it alive - Bugfixes
 
-#### 2.8.5.1
+#### 2.8.5.1 - 2020-11-11
 
 **This version is no longer developed by Twinkle Toes Software (<https://www.bookedscheduler.com>)**
 Based on the original open source version of Booked, now available at: [https://github.com/LibreBooking/app](<https://github.com/LibreBooking/app>)<br>

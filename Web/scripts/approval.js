@@ -27,7 +27,7 @@ function Approval(opts)
 			{
 				if (options.returnUrl)
 				{
-					window.location = options.returnUrl;
+					window.location = options.returnUrl.replace(/&amp;/g, '&');
 				}
 				else
 				{

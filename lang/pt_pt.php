@@ -200,6 +200,8 @@ class pt_pt extends en_gb
         $strings['CheckingIn'] = 'Efetuando o check-in';
         $strings['CheckingOut'] = 'Efetuando o check-out';
         $strings['Checkout'] = 'Check-out';
+        $strings['CheckResources'] = 'Consultar Recursos';
+        $strings['CheckSchedules'] = 'Consultar Horários';
         $strings['Choose'] = 'Escolher';
         $strings['ChooseOrDropFile'] = 'Escolha um ficheiro ou arraste-o para aqui';
         $strings['ClearFilter'] = 'Limpar filtro';
@@ -528,7 +530,7 @@ class pt_pt extends en_gb
         $strings['NoSavedReports'] = 'Não tem relatórios guardados';
         $strings['NoScheduleAdministratorLabel'] = 'Sem administrador de agenda';
         $strings['NoTitleLabel'] = '(nenhum título)';
-        $strings['NoUpcomingReservations'] = 'Não tem futuras reservas';
+        $strings['NoUpcomingReservations'] = 'Não tem reservas futuras';
         $strings['NoUpgradeNeeded'] = 'O LibreBooking está atualizado. Não há nenhuma atualização necessária.';
         $strings['None'] = 'Nenhum';
         $strings['NotAttending'] = 'Não comparecer';
@@ -871,7 +873,7 @@ class pt_pt extends en_gb
         $strings['UnknownError'] = 'Erro Desconhecido';
         $strings['Unlimited'] = 'Ilimitado';
         $strings['Unreservable'] = 'Não reservável';
-        $strings['UpcomingReservations'] = 'Futuras reservas';
+        $strings['UpcomingReservations'] = 'Reservas Futuras';
         $strings['Update'] = 'Atualizar';
         $strings['UpdateEmailTemplateFailure'] = 'Não foi possível atualizar o modelo de email. Por favor confirme que a pasta tem permissões de escrita';
         $strings['UpdateEmailTemplateSuccess'] = 'Modelo de email atualizado';
@@ -991,6 +993,49 @@ class pt_pt extends en_gb
         $strings['AvailableGroups'] = 'Grupos disponiveis';
         $strings['CheckingAvailabilityError'] = 'Não é possível obter a disponibilidade do recurso - demasiados recursos';
         //--
+
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Não tem reservas passadas';
+        $strings['PastReservations'] = 'Reservas Passadas';
+        $strings['AllNoPastReservations'] = 'Não existem reservas passadas nos anteriores %s dias';
+        $strings['AllPastReservations'] = 'Todas as Reservas Passadas';
+        $strings['Yesterday'] = 'Ontem';
+        $strings['EarlierThisWeek'] = 'Anteriormente Nesta Semana';
+        $strings['PreviousWeek'] = 'Semana Passada';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'O seu grupo não tem reservas futuras';
+        $strings['GroupUpcomingReservations'] = 'Reservas Futuras do(s) meu(s) Grupo(s)';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Ocorreu um erro ao fazer login com o Facebook. Por favor, tente novamente.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Não existem reservas aguardando aprovação';
+        $strings['PendingApprovalReservations'] = 'Reservas Aguardando Aprovação';
+        $strings['LaterThisMonth'] = 'Ainda este mês';
+        $strings['LaterThisYear'] = 'Ainda este ano';
+        $strings['Remaining'] = 'Restantes';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Não há reservas de check-out em falta';
+        $strings['MissingCheckOutReservations'] = 'Reservas que Falharam Check Out';
+        //End Missing Check In/Out Reservations in Dashboard
+        
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Não é possível ver os detalhes da reserva uma vez que não tem permissões para nenhum dos recursos';
+        //End Schedule Resource Permissions
+
+        //View Resource
+        $strings['Check'] = 'Consultar';
+        $strings['PermissionType'] = 'Tipo de Permissão';
+        $strings['NoResourcesToView'] = 'Sem recursos disponíveis';
+        //End View Resource
+
         $this->Strings = $strings;
 
         return $this->Strings;

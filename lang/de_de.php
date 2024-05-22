@@ -713,7 +713,45 @@ class de_de extends en_gb
         $strings['AdHocMeeting'] = 'Ad hoc-Meeting';
         $strings['NextReservation'] = 'Nächste Reservierung';
         $strings['ReservationParticipationActivityPreference'] = 'Wenn jemand meiner Reservierung beitritt oder sie verlässt';
+        $strings['Utilization'] = 'Auslastung';
+        $strings['SpecificTime'] = 'Spezifische Zeit';
         $strings['ReservationSeriesEndingPreference'] = 'Wenn die Serie meiner wiederkehrenden Reservierungen endet';
+        $strings['NotAttending'] = 'Nicht teilnehmen';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservierungsdetails';
+        $strings['StartTime'] = 'Startzeit';
+        $strings['EndTime'] = 'Endzeit';
+        $strings['New'] = 'Neu';
+        $strings['Updated'] = 'Aktualisiert';
+        $strings['Custom'] = 'Benutzerdefiniert';
+        $strings['AddDate'] = 'Datum hinzufügen';
+        $strings['RepeatOn'] = 'Wiederholen am';
+        $strings['ScheduleConcurrentMaximum'] = 'Maximal <b>%s</b> Ressourcen können gleichzeitig reserviert werden';
+        $strings['ScheduleConcurrentMaximumNone'] = 'Es können unbeschränkt viele Ressourcen gleichzeitig reserviert werden';
+        $strings['ScheduleMaximumConcurrent'] = 'Maximale Anzahl gleichzeitig reservierter Ressourcen';
+        $strings['ScheduleMaximumConcurrentNote'] = 'Beschränkt die maximale Zahl der gleichzeitig reservierbaren Ressourcen für diesen Terminplan.';
+        $strings['ScheduleResourcesPerReservationMaximum'] = 'Jede Reservierung ist auf maximal <b>%s</b> Ressourcen beschränkt';
+        $strings['ScheduleResourcesPerReservationNone'] = 'Es gibt keine Beschränkung für Ressourcen pro Reservierung';
+        $strings['ScheduleResourcesPerReservation'] = 'Maximale Anzahl an Ressourcen pro Reservierung';
+        $strings['ResourceConcurrentReservations'] = 'Lasse %s gleichzeitige Reservierungen zu';
+        $strings['ResourceConcurrentReservationsNone'] = 'Lasse keine gleichzeitigen Reservierungen zu';
+        $strings['AllowConcurrentReservations'] = 'Lasse gleichzeitige Reservierungen zu';
+        $strings['ResourceDisplayInstructions'] = 'Keine Ressource ausgewählt. Sie finden die URL um eine Ressource anzuzeigen in Anwendungsverwaltung, Ressourcen. Die Ressource muss öffentlich einsehbar sein.';
+        $strings['Owner'] = 'Besitzer';
+        $strings['MaximumConcurrentReservations'] = 'Maximale gleichzeitige Reservierungen';
+        $strings['NotifyUsers'] = 'Benutzer benachrichtigen';
+        $strings['Message'] = 'Nachricht';
+        $strings['AllUsersWhoHaveAReservationInTheNext'] = 'Jemand mit einer Reserveriung in den nächsten';
+        $strings['ChangeResourceStatus'] = 'Ressourcenstatus ändern';
+        $strings['UpdateGroupsOnImport'] = 'Bestehende Gruppe ändern, wenn sie gefunden wird';
+        $strings['GroupsImportInstructions'] = '<ul><li>Dati muss im CSV-Format sein.</li><li>Name ist obligatorisch.</li><li>Teilnehmerlisten sind kommagetrennte Listen von E-mails.</li><li>Eine leere Teilnehmerliste, lässt diese unverändert wenn Gruppen aktualisiert werden.</li><li>Berchtigungslisten sind eine Kommagetrennte Liste von Ressourcennamen.</li><li>Leere Berechtigungen lassen die bestehenden unverändert beim Aktualisieren von Gruppen.</li><li>Verwenden Sie die Vorlage als Beispiel.</li></ul>';
+        $strings['PhoneRequired'] = 'Telefonnummer wird benötigt.';
+        $strings['OrganizationRequired'] = 'Organisation wird benötigt';
+        $strings['PositionRequired'] = 'Position wird benötigt';
+        $strings['GroupMembership'] = 'Gruppen-Mitgliedschaft';
+        $strings['AvailableGroups'] = 'Verfügbare Gruppen';
+        $strings['CheckingAvailabilityError'] = 'Ressourcenverfügbarkeit kann nicht abgefragt werden - zu viele Ressourcen';
+
         // End Strings
 
         // Install
@@ -930,6 +968,44 @@ class de_de extends en_gb
         $strings['InviteeAddedSubjectWithResource'] = '%s hat Sie zu einer Reservierung für %s eingeladen';
         $strings['MissedCheckinEmailSubject'] = 'Anmeldung verpasst für %s';
         // End Email Subjects
+
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Sie haben keine vergangenen Reservierungen';
+        $strings['PastReservations'] = 'Vergangene Reservierungen';
+        $strings['AllNoPastReservations'] = 'Es gibt keine vergangenen Reservierungen in den letzten %s Tagen';
+        $strings['AllPastReservations'] = 'Alle vergangenen Reservierungen';
+        $strings['Yesterday'] = 'Gestern';
+        $strings['EarlierThisWeek'] = 'Früher in dieser Woche';
+        $strings['PreviousWeek'] = 'Vorherige Woche';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Ihre Gruppe hat keine kommenden Reservierungen';
+        $strings['GroupUpcomingReservations'] = 'Kommende Reservierungen meiner Gruppe(n)';
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Bei der Anmeldung mit Facebook ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Sie haben keine Reservierungen, die auf Genehmigung warten';
+        $strings['PendingApprovalReservations'] = 'Reservierungen zur Genehmigung ausstehend';
+        $strings['LaterThisMonth'] = 'Später in diesem Monat';
+        $strings['LaterThisYear'] = 'Später in diesem Jahr';
+        $strings['Remaining'] = 'Verbleibend';  
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Es gibt keine fehlenden Auscheck-Reservierungen';
+        $strings['MissingCheckOutReservations'] = 'Fehlende Auscheck-Reservierungen';       
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
 
         $this->Strings = $strings;
 

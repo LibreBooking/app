@@ -531,6 +531,45 @@ class zh_cn extends en_us
         $strings['ActivateYourAccount'] = '请启动您的账号';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = '您没有以前的预订';
+        $strings['PastReservations'] = '以前的预订';
+        $strings['AllNoPastReservations'] = '在过去的%s天内没有以前的预订';
+        $strings['AllPastReservations'] = '所有以前的预订';
+        $strings['Yesterday'] = '昨天';
+        $strings['EarlierThisWeek'] = '本周早些时候';
+        $strings['PreviousWeek'] = '上周';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = '您的团体没有即将到来的预订';
+        $strings['GroupUpcomingReservations'] = '我的团体即将到来的预订';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = '使用Facebook登录时发生错误。请重试。';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = '您没有等待批准的预订';
+        $strings['PendingApprovalReservations'] = '等待批准的预订';
+        $strings['LaterThisMonth'] = '本月晚些时候';
+        $strings['LaterThisYear'] = '本年晚些时候';
+        $strings['Remaining'] = '剩余';        
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = '没有缺失的退房预订';
+        $strings['MissingCheckOutReservations'] = '缺失的退房预订';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = '由于您在此预订中的任何资源都没有权限，因此无法查看预订详细信息';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

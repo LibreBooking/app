@@ -428,6 +428,17 @@ class Queries
 		INNER JOIN `schedules` as `s` ON `r`.`schedule_id` = `s`.`schedule_id`
 		ORDER BY COALESCE(`r`.`sort_order`,0), `r`.`name`';
 
+	public const GET_USER_RESOURCES =
+		'SELECT `r`.*, `s`.`admin_group_id` as `s_admin_group_id`,
+		(SELECT GROUP_CONCAT(CONCAT(`cav`.`custom_attribute_id`, \'=\', `cav`.`attribute_value`) SEPARATOR "!sep!")
+						FROM `custom_attribute_values` `cav` WHERE `cav`.`entity_id` = `r`.`resource_id` AND `cav`.`attribute_category` = 4) as `attribute_list`,
+		(SELECT GROUP_CONCAT(`rga`.`resource_group_id` SEPARATOR "!sep!") FROM `resource_group_assignment` `rga` WHERE `rga`.`resource_id` = `r`.`resource_id`) AS `group_list`,
+		(SELECT GROUP_CONCAT(`ri`.`image_name` SEPARATOR "!sep!") FROM `resource_images` `ri` WHERE `ri`.`resource_id` = `r`.`resource_id`) AS `image_list`
+		FROM `resources` as `r`
+		INNER JOIN `schedules` as `s` ON `r`.`schedule_id` = `s`.`schedule_id`
+		WHERE resource_id IN (@resourceids)
+		ORDER BY COALESCE(`r`.`sort_order`,0), `r`.`name`';
+
     public const GET_ALL_RESOURCE_GROUPS = 'SELECT * FROM `resource_groups` ORDER BY `parent_id`, `resource_group_name`';
 
     public const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT `r`.*, `a`.`resource_group_id`
@@ -595,6 +606,51 @@ class Queries
         'SELECT *
 		FROM `group_resource_permissions`
 		WHERE `group_id` = @groupid';
+
+	public const GET_GROUP_RESOURCES_ID = 
+		'SELECT `resource_id` FROM `resources` 
+		WHERE `admin_group_id` = @groupid';
+
+	public const GET_GROUP_SCHEDULES_ID =
+		'SELECT `schedule_id` FROM `schedules`
+		WHERE `admin_group_id` = @groupid';
+
+	public const GET_RESOURCE_ADMIN_RESOURCES = 
+		'SELECT `resource_id`, `name` , `schedule_id`, `admin_group_id`
+		FROM `resources` 
+		WHERE `admin_group_id` 
+		IN (
+			SELECT `g`.group_id
+			FROM `user_groups` `ug`
+			INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
+			WHERE `user_id` = @userid
+			)';
+
+	public const GET_SHCEDULE_ADMIN_SCHEDULES = 
+		'SELECT `schedule_id`, `name` , `admin_group_id`
+		FROM `schedules`
+		WHERE `admin_group_id`
+		IN (
+			SELECT `g`.group_id
+			FROM `user_groups` `ug`
+			INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
+			WHERE `user_id` = @userid
+			);';
+
+	public const GET_SCHEDULE_ADMIN_RESOURCES = 
+		'SELECT `resource_id`, `name` , `schedule_id`, `admin_group_id`
+		FROM `resources`
+		WHERE `schedule_id` 
+		IN
+			(SELECT `schedule_id`
+			FROM `schedules`
+			WHERE `admin_group_id`
+			IN (
+				SELECT `g`.group_id
+				FROM `user_groups` `ug`
+				INNER JOIN `groups` `g` ON `ug`.`group_id` = `g`.`group_id`
+				WHERE `user_id` = @userid
+				))';
 
     public const GET_GROUP_ROLES =
         'SELECT `r`.*
@@ -1256,6 +1312,29 @@ class QueryBuilder
 					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid)) AND
 					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3)))');
     }
+
+	public static function GET_RESERVATION_PENDING_APPROVAL_LIST()
+    {
+        return self::Build(self::$SELECT_LIST_FRAGMENT, null,' AND
+					(@all_owners = 1 OR `ru`.`user_id` IN (@userid) ) AND
+					(@levelid = 0 OR `ru`.`reservation_user_level` = @levelid) AND
+					(@all_schedules = 1 OR `resources`.`schedule_id` IN (@scheduleid)) AND
+					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid)) AND
+					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3))) AND
+					`rs`.`status_id` = 3 AND `ri`.`start_date` >= @startDate');
+    }
+
+	public static function GET_RESERVATION_MISSING_CHECK_IN_OUT_LIST(){
+		return self::Build(self::$SELECT_LIST_FRAGMENT, null,' AND 
+					(@all_owners = 1 OR `ru`.`user_id` IN (@userid) ) AND
+					(@levelid = 0 OR `ru`.`reservation_user_level` = @levelid) AND
+					(@all_schedules = 1 OR `resources`.`schedule_id` IN (@scheduleid)) AND
+					(@all_resources = 1 OR `rr`.`resource_id` IN (@resourceid)) AND
+					(@all_participants = 1 OR `ri`.`reservation_instance_id` IN (SELECT `reservation_instance_id` FROM `reservation_users` WHERE `user_id` IN (@participant_id) AND `reservation_user_level` IN (2, 3))) AND
+					(@startDate IS NULL OR `ri`.`start_date` >= @startDate) AND (`ri`.`end_date` <= @endDate) AND
+					(`resources`.`enable_check_in` = 1) AND 
+					(`ri`.`checkout_date` is NULL AND `ri`.`end_date` <= @current_date AND `ri`.`checkin_date` is NOT NULL)');
+	}
 
     public static function GET_RESERVATION_LIST_FULL()
     {

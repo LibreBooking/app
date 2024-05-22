@@ -728,6 +728,45 @@ class he extends en_gb
         $strings['ReportSubject'] = ' הדוח שביקשת (%s)';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'אין לך הזמנות קודמות';
+        $strings['PastReservations'] = 'הזמנות קודמות';
+        $strings['AllNoPastReservations'] = 'אין הזמנות קודמות ב- %s הימים האחרונים';
+        $strings['AllPastReservations'] = 'כל הזמנות הקודמות';
+        $strings['Yesterday'] = 'אתמול';
+        $strings['EarlierThisWeek'] = 'בתחילת השבוע הזה';
+        $strings['PreviousWeek'] = 'השבוע הקודם';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'אין לקבוצתך הזמנות עתידיות';
+        $strings['GroupUpcomingReservations'] = 'הזמנות קבוצתי(ות) הבאות';
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'אירעה שגיאה בעת ניסיון להתחבר עם Facebook. אנא נסה שוב.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'אין לך הזמנות בהמתנה לאישור';
+        $strings['PendingApprovalReservations'] = 'ההזמנות בהמתנה לאישור';
+        $strings['LaterThisMonth'] = 'מאוחר יותר החודש';
+        $strings['LaterThisYear'] = 'מאוחר יותר השנה';
+        $strings['Remaining'] = 'יתרה';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'אין הזמנות ליציאה חסרות';
+        $strings['MissingCheckOutReservations'] = 'הזמנות ליציאה חסרות';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'לא ניתן לראות פרטי ההזמנה מכיוון שאין לך הרשאות לאף אחת מהמשאבים בהזמנה זו';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

@@ -973,6 +973,45 @@ class hu_hu extends en_us
         $strings['ReservationParticipantJoin'] = '%s Csatlakozott foglalására for %s on %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nincsenek korábbi foglalásai';
+        $strings['PastReservations'] = 'Korábbi foglalások';
+        $strings['AllNoPastReservations'] = 'Az elmúlt %s napban nincsenek korábbi foglalásai';
+        $strings['AllPastReservations'] = 'Az összes korábbi foglalás';
+        $strings['Yesterday'] = 'Tegnap';
+        $strings['EarlierThisWeek'] = 'Korábban ezen a héten';
+        $strings['PreviousWeek'] = 'Előző hét';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'A csoportodnak nincs következő foglalása';
+        $strings['GroupUpcomingReservations'] = 'Csoportom(aim) következő foglalásai';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Hiba történt a bejelentkezés során a Facebookkal. Kérjük, próbálja újra.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nincsenek függő jóváhagyásra váró foglalásai';
+        $strings['PendingApprovalReservations'] = 'Jóváhagyásra váró foglalások';
+        $strings['LaterThisMonth'] = 'Később ebben a hónapban';
+        $strings['LaterThisYear'] = 'Később idén';
+        $strings['Remaining'] = 'Megmaradt';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Nincsenek hiányzó kijelentkezési foglalások';
+        $strings['MissingCheckOutReservations'] = 'Hiányzó kijelentkezési foglalások';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'A foglalás részleteit nem lehet látni, mert nincs jogosultságod egyik erőforráshoz sem ebben a foglalásban';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;

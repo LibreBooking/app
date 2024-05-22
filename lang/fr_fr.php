@@ -980,6 +980,45 @@ class fr_fr extends en_gb
         $strings['ResourceStatusChangedSubject'] = 'La disponibilité de %s a changé';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Vous n\'avez aucune réservation passée';
+        $strings['PastReservations'] = 'Réservations passées';
+        $strings['AllNoPastReservations'] = 'Il n\'y a aucune réservation passée au cours des %s derniers jours';
+        $strings['AllPastReservations'] = 'Toutes les réservations passées';
+        $strings['Yesterday'] = 'Hier';
+        $strings['EarlierThisWeek'] = 'Plus tôt cette semaine';
+        $strings['PreviousWeek'] = 'Semaine précédente';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Votre groupe n\'a aucune réservation à venir';
+        $strings['GroupUpcomingReservations'] = 'Prochaines réservations de mon/des groupes';
+        //End Group Upcoming Reservations
+        
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Une erreur est survenue lors de la connexion avec Facebook. Veuillez réessayer.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Vous n\'avez aucune réservation en attente d\'approbation';
+        $strings['PendingApprovalReservations'] = 'Réservations en attente d\'approbation';
+        $strings['LaterThisMonth'] = 'Plus tard ce mois-ci';
+        $strings['LaterThisYear'] = 'Plus tard cette année';
+        $strings['Remaining'] = 'Restant';    
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Il n\'y a pas de réservations de départ manquantes';
+        $strings['MissingCheckOutReservations'] = 'Réservations de départ manquantes';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Impossible de voir les détails de la réservation car vous n\'avez pas les autorisations pour l\'un des ressources dans cette réservation';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
     }
 

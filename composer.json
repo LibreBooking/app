@@ -12,8 +12,24 @@
         "stripe/stripe-php": "^10.2",
         "monolog/monolog": "^2.9",
         "google/recaptcha": "1.2.4",
-        "gregwar/captcha": "1.*"
+        "gregwar/captcha": "1.*",
+        "google/apiclient": "^2.0",
+        "microsoft/microsoft-graph": "^2.0",
+        "facebook/graph-sdk": "~5.0"
     },
+    "repositories": [
+        {
+            "type":"package",
+            "package": {
+              "name": "gregwar/captcha",
+              "version":"1.2.1",
+              "dist": {
+                  "url": "https://github.com/effgarces/Captcha/archive/refs/heads/master.zip",
+                  "type": "zip"
+                }
+            }
+        }
+    ],
     "scripts": {
         "install-tools": "phive install --trust-gpg-keys",
         "build": "./tools/phing",
@@ -24,5 +40,10 @@
             "@lint"
         ],
         "sniffer:php8": "phpcs -p ./ --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --report-full=./php8-report.log --ignore=./vendor/*,./tools/*,./.git/*,./tpl_c/*,./build/*,./.phpdoc/*,./var/*,./Web/scripts/*,./Web/css/* --runtime-set testVersion 8.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

@@ -331,6 +331,15 @@ class Date
     }
 
     /**
+     * Compares the time component of this date to the one passed in
+     * @param Time $time
+     * @return bool if the current object is greater than the one passed in
+     */
+    public function TimeLessThan(Time $time){
+        return $this->GetTime()->Compare($time) < 0;
+    }
+
+    /**
      * Compares this date to the one passed in
      * @param Date $end
      * @return bool if the current object is greater than the one passed in
@@ -439,6 +448,10 @@ class Date
         return !$this->IsWeekday();
     }
 
+    private function getOperator(int $number): string
+    {
+        return $number < 0 ? " -" : " +";
+    }
     /**
      * @param int $days
      * @return Date
@@ -446,7 +459,7 @@ class Date
     public function AddDays($days)
     {
         // can also use DateTime->modify()
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $days . " days", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($days) . abs($days) . " days", $this->timezone);
     }
 
     /**
@@ -455,7 +468,7 @@ class Date
      */
     public function AddMonths($months)
     {
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $months . " months", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($months) . abs($months) . " months", $this->timezone);
     }
 
     /**
@@ -464,7 +477,7 @@ class Date
      */
     public function AddYears($years)
     {
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $years . " years", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($years) . abs($years) . " years", $this->timezone);
     }
 
     /**
@@ -729,6 +742,40 @@ class Date
     {
         return $this->ApplyDifference($interval->Diff());
     }
+
+
+    /**
+     * Implements bubble sort algorithm to sort dates from array
+     */
+    public static function BubbleSort($array, $sortBy = 'StartDate') {
+        for ($i = 0; $i < count($array); $i++){
+            $swapped = false;
+            for ($j = 0; $j < count($array) - $i - 1; $j++)
+            {
+
+                if ($array[$j]->$sortBy->DateCompare($array[$j+1]->$sortBy) == 1) {
+                    $t = $array[$j];
+                    $array[$j] = $array[$j+1];
+                    $array[$j+1] = $t;
+                    $swapped = True;
+                }
+
+                else if($array[$j]->$sortBy->DateCompare($array[$j+1]->$sortBy) == 0){
+                    if ($array[$j]->$sortBy->CompareTime($array[$j+1]->$sortBy) == 1) {
+                        $t = $array[$j];
+                        $array[$j] = $array[$j+1];
+                        $array[$j+1] = $t;
+                        $swapped = True;
+                    }
+                }
+            }
+
+            if ($swapped == false){
+                break;
+            }
+        }
+        return $array;
+    }
 }
 
 class NullDate extends Date
@@ -835,7 +882,7 @@ class DateDiff
 
     public function Minutes()
     {
-        $minutes = intval(($this->seconds / 60) % 60);
+        $minutes = intval($this->seconds / 60) % 60;
         return $minutes;
     }
 
@@ -1028,5 +1075,32 @@ class DateDiff
         }
 
         return trim($str);
+    }
+
+
+    /**
+     * Gets the number of remaining days in the present month
+     */
+    public static function getMonthRemainingDays($timezone){
+        date_default_timezone_set($timezone);           //NECESSARY??
+        $currentDate = new DateTime();
+        $endOfMonth = new DateTime($currentDate->format('Y-m-t 23:59:59'));
+        $interval = $currentDate->diff($endOfMonth);
+        $daysUntilEndOfMonth = $interval->days;
+
+        return $daysUntilEndOfMonth;
+    }
+
+    /**
+     * Gets the number of remaining days in the present year
+     */
+    public static function getYearRemainingDays($timezone){
+        date_default_timezone_set($timezone);           //NECESSARY??
+        $currentDate = new DateTime();
+        $endOfYear = new DateTime($currentDate->format('Y-12-31 23:59:59'));
+        $interval = $currentDate->diff($endOfYear);
+        $daysUntilEndOfYear = $interval->days;
+
+        return $daysUntilEndOfYear;
     }
 }

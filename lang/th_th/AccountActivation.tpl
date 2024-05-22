@@ -1,2 +1,2 @@
 {$FirstName},<br/>
-Thank you for registering with LibreBooking. Please <a href="{$ActivationUrl}">activate your account</a>.
+ขอบคุณสำหรับการลงทะเบียนกับ LibreBooking โปรด<a href="{$ActivationUrl}">เปิดใช้งานบัญชีของคุณ</a>

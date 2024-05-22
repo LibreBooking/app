@@ -80,6 +80,7 @@ class ConfigKeys
     public const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
     public const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
     public const PRIVACY_ALLOW_GUEST_BOOKING = 'allow.guest.reservations';
+    public const PRIVACY_PUBLIC_FUTURE_DAYS = 'public.future.days';
 
     public const NOTIFY_CREATE_RESOURCE_ADMINS = 'resource.admin.add';
     public const NOTIFY_CREATE_APPLICATION_ADMINS = 'application.admin.add';
@@ -139,6 +140,7 @@ class ConfigKeys
 
     public const AUTHENTICATION_ALLOW_FACEBOOK = 'allow.facebook.login';
     public const AUTHENTICATION_ALLOW_GOOGLE = 'allow.google.login';
+    public const AUTHENTICATION_ALLOW_MICROSOFT = 'allow.microsoft.login';
     public const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
     public const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
     public const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
@@ -158,6 +160,23 @@ class ConfigKeys
     public const LOGGING_LEVEL = 'level';
     public const LOGGING_SQL = 'sql';
 
+    public const GOOGLE_CLIENT_ID = 'google.client.id';
+    public const GOOGLE_CLIENT_SECRET = 'google.client.secret';
+    public const GOOGLE_REDIRECT_URI = 'google.redirect.uri';
+
+    public const MICROSOFT_CLIENT_ID = 'microsoft.client.id';
+    public const MICROSOFT_TENANT_ID = 'microsoft.tenant.id';
+    public const MICROSOFT_CLIENT_SECRET = 'microsoft.client.secret';
+    public const MICROSOFT_REDIRECT_URI = 'microsoft.redirect.uri';
+
+    public const FACEBOOK_CLIENT_ID = 'facebook.client.id';
+    public const FACEBOOK_CLIENT_SECRET = 'facebook.client.secret';
+    public const FACEBOOK_REDIRECT_URI = 'facebook.redirect.uri';
+
+    public const YEARS_OLD_DATA = 'years.old.data';
+    public const DELETE_OLD_ANNOUNCEMENTS = 'delete.old.announcements'; 
+    public const DELETE_OLD_BLACKOUTS = 'delete.old.blackouts'; 
+    public const DELETE_OLD_RESERVATIONS = 'delete.old.reservations'; 
 }
 
 class ConfigSection
@@ -187,4 +206,5 @@ class ConfigSection
     public const TABLET_VIEW = 'tablet.view';
     public const REGISTRATION = 'registration';
     public const LOGGING = 'logging';
+    public const DELETE_OLD_DATA = 'delete.old.data';
 }

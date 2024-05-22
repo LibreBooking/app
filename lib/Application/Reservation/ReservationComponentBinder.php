@@ -297,6 +297,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
         $this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($currentUser->UserId));
         $this->page->SetCurrentUserInvited($this->IsCurrentUserInvited($currentUser->UserId));
+        $this->UserResourcePermissions($currentUser->UserId);
+
         $this->page->SetCanAlterParticipation($this->reservationView->EndDate->GreaterThan(Date::Now()));
 
         $canBeEdited = $this->reservationAuthorization->CanEdit($this->reservationView, $currentUser);
@@ -376,5 +378,29 @@ class ReservationDetailsBinder implements IReservationComponentBinder
             $minAutoReleaseMinutes = $this->reservationView->AutoReleaseMinutes();
         }
         $this->page->SetAutoReleaseMinutes($minAutoReleaseMinutes);
+    }
+
+    /**
+     * Gets the resources the user has permissions (full access and view only permissions)
+     * This is used to block a user from seeing reservation details if he has no permissions to it's resources
+     */
+    private function UserResourcePermissions($userId)
+    {
+        $resourceRepo = new ResourceRepository();
+        $resourceIds = [];
+
+        $resourceIds = $resourceRepo->GetUserResourcePermissions($userId);
+
+        $resourceIds = $resourceRepo->GetUserGroupResourcePermissions($userId,$resourceIds);
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+            $resourceIds = $resourceRepo->GetResourceAdminResourceIds($userId, $resourceIds);
+        }
+
+        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+            $resourceIds = $resourceRepo->GetScheduleAdminResourceIds($userId, $resourceIds);
+        }
+
+        $this->page->BindViewableResourceReservations($resourceIds);
     }
 }

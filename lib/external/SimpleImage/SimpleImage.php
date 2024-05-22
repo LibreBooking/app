@@ -98,21 +98,21 @@ class SimpleImage
 	function resizeToHeight($height)
 	{
 		$ratio = $height / $this->getHeight();
-		$width = $this->getWidth() * $ratio;
+		$width = (int)($this->getWidth() * $ratio);
 		$this->resize($width, $height);
 	}
 
 	function resizeToWidth($width)
 	{
 		$ratio = $width / $this->getWidth();
-		$height = $this->getheight() * $ratio;
+		$height = (int)($this->getheight() * $ratio);
 		$this->resize($width, $height);
 	}
 
 	function scale($scale)
 	{
-		$width = $this->getWidth() * $scale / 100;
-		$height = $this->getheight() * $scale / 100;
+		$width = (int)($this->getWidth() * $scale / 100);
+		$height = (int)($this->getheight() * $scale / 100);
 		$this->resize($width, $height);
 	}
 

@@ -809,6 +809,44 @@ class cz extends en_us
         $strings['ReservationParticipantJoin'] = '%s se přidal k vašemu pozvání k rezervaci %s na %s';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Nemáte žádné minulé rezervace';
+        $strings['PastReservations'] = 'Minulé rezervace';
+        $strings['AllNoPastReservations'] = 'Nejsou žádné minulé rezervace v posledních %s dnech';
+        $strings['AllPastReservations'] = 'Všechny minulé rezervace';
+        $strings['Yesterday'] = 'Včera';
+        $strings['EarlierThisWeek'] = 'Dříve v tomto týdnu';
+        $strings['PreviousWeek'] = 'Předchozí týden';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Vaše skupina nemá žádné nadcházející rezervace';
+        $strings['GroupUpcomingReservations'] = 'Nadcházející rezervace mé skupiny(y)';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Při přihlašování přes Facebook došlo k chybě. Zkuste to prosím znovu.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nemáte žádné rezervace čekající na schválení';
+        $strings['PendingApprovalReservations'] = 'Rezervace čekající na schválení';
+        $strings['LaterThisMonth'] = 'Později tento měsíc';
+        $strings['LaterThisYear'] = 'Později letos';
+        $strings['Remaining'] = 'Zbývající';
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Nejsou žádné chybějící rezervace pro odhlášení';
+        $strings['MissingCheckOutReservations'] = 'Chybějící rezervace pro odhlášení';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Nemůžete vidět podrobnosti rezervace, protože nemáte oprávnění k žádným zdrojům v této rezervaci';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
         $this->Strings = $strings;
 
         return $this->Strings;

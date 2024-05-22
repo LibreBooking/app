@@ -643,6 +643,45 @@ class si_si extends en_gb
         $strings['UserAdded'] = 'Dodan je bil nov uporabnik';
         // End Email Subjects
 
+        //NEEDS CHECKING
+        //Past Reservations
+        $strings['NoPastReservations'] = 'Ni preteklih rezervacij';
+        $strings['PastReservations'] = 'Pretekla rezervacija';
+        $strings['AllNoPastReservations'] = 'Ni preteklih rezervacij v zadnjih %s dneh';
+        $strings['AllPastReservations'] = 'Vse pretekle rezervacije';
+        $strings['Yesterday'] = 'Včeraj';
+        $strings['EarlierThisWeek'] = 'Prejšnji teden';
+        $strings['PreviousWeek'] = 'Prejšnji teden';
+        //End Past Reservations
+
+        //Group Upcoming Reservations
+        $strings['NoGroupUpcomingReservations'] = 'Vaša skupina nima prihodnjih rezervacij';
+        $strings['GroupUpcomingReservations'] = 'Prihodnje rezervacije moje skupine(i)';
+        //End Group Upcoming Reservations
+
+        //Facebook Login SDK Error
+        $strings['FacebookLoginErrorMessage'] = 'Prijavljanje prek Facebooka ni uspelo. Poskusite znova.';
+        //End Facebook Login SDK Error
+
+        //Pending Approval Reservations in Dashboard
+        $strings['NoPendingApprovalReservations'] = 'Nimate rezervacij, ki čakajo na odobritev';
+        $strings['PendingApprovalReservations'] = 'Rezervacije, ki čakajo na odobritev';
+        $strings['LaterThisMonth'] = 'Kasneje ta mesec';
+        $strings['LaterThisYear'] = 'Kasneje letos';
+        $strings['Remaining'] = 'Preostalo';        
+        //End Pending Approval Reservations in Dashboard
+
+        //Missing Check In/Out Reservations in Dashboard
+        $strings['NoMissingCheckOutReservations'] = 'Ni manjkajočih rezervacij za odhod';
+        $strings['MissingCheckOutReservations'] = 'Manjkajoče rezervacije za odhod';        
+        //End Missing Check In/Out Reservations in Dashboard
+
+        //Schedule Resource Permissions
+        $strings['NoResourcePermissions'] = 'Podrobnosti rezervacije ni mogoče videti, ker nimate dovoljenj za nobenega od virov v tej rezervaciji';
+        //End Schedule Resource Permissions
+        //END NEEDS CHECKING
+
+
         $this->Strings = $strings;
 
         return $this->Strings;
