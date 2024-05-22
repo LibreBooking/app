@@ -1003,7 +1003,7 @@ class de_de extends en_gb
         //End Missing Check In/Out Reservations in Dashboard
 
         //Schedule Resource Permissions
-        $strings['NoResourcePermissions'] = 'U kunt geen details van de reservering zien omdat u geen toestemming heeft voor een van de bronnen in deze reservering';
+        $strings['NoResourcePermissions'] = 'Detailansicht gesperrt: Berechtigung für eine der verbundenen Ressourcen erforderlich';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
 
