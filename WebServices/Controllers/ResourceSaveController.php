@@ -118,10 +118,15 @@ class ResourceSaveController implements IResourceSaveController
             $request->requiresApproval,
             $request->allowMultiday,
             $request->maxParticipants,
-            $request->minNotice,
-            $request->maxNotice,
-            $request->description,
-            $request->scheduleId
+            minNoticeAdd: $request->minNoticeAdd,
+            maxNotice: $request->maxNotice,
+            description: $request->description,
+            scheduleId: $request->scheduleId,
+            minNoticeDelete: $request->minNoticeDelete,
+            minNoticeUpdate: $request->minNoticeUpdate,
+            bufferTime: $request->bufferTime,
+            groupIds: $request->groupIds,
+            resourceTypeId: $request->typeId,
         );
         $resource->SetSortOrder($request->sortOrder);
 
