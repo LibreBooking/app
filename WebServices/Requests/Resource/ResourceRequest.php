@@ -103,6 +103,15 @@ class ResourceRequest extends JsonRequest
      */
     public $maxConcurrentReservations;
 
+    public string $bufferTime;
+    public array|null $groupIds;
+    public string|null $icsUrl;
+    public string $minNoticeAdd;
+    public string $minNoticeDelete;
+    public string $minNoticeUpdate;
+    public int|null $typeId;
+
+
     /**
      * @return ExampleResourceRequest
      */
@@ -151,5 +160,12 @@ class ExampleResourceRequest extends ResourceRequest
         $this->creditsPerSlot = 3;
         $this->peakCreditsPerSlot = 6;
         $this->maxConcurrentReservations = 1;
+        $this->bufferTime = '1d2h3m';
+        $this->groupIds = [];
+        $this->icsUrl = 'http://ics.example.com/a_calendar.ics';
+        $this->minNoticeAdd = '0d0h1m';
+        $this->minNoticeDelete = '0d0h2m';
+        $this->minNoticeUpdate = '0d0h3m';
+        $this->typeId = 1;
     }
 }
