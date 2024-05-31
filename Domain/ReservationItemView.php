@@ -487,7 +487,7 @@ class ReservationItemView implements IReservedItemView
                     # more than just one first and one last name
                     $lastIndex = count($name_parts) - 1;
                     $firstnames = implode(' ', array_splice($name_parts, 0, $lastIndex));
-                    $lastnames = $name_parts[$lastIndex];
+                    $lastnames = $name_parts[0];
                     // could be extended to guess which is a middle name etc.
                 }
                 $this->ParticipantIds[] = $id;
