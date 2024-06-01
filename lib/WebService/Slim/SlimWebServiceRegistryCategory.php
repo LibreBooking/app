@@ -2,6 +2,7 @@
 
 class SlimWebServiceRegistryCategory
 {
+    private $name;
     private $gets = [];
     private $posts = [];
     private $deletes = [];
