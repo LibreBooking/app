@@ -94,7 +94,7 @@ EOT;
 
                 echo '<h4>Request</h4>' . "\n";
                 if (is_object($request)) {
-                    echo '<div class="code">' . json_encode($request) . '</div>' . "\n";
+                    echo '<div class="code"><pre>' . json_encode($request, JSON_PRETTY_PRINT) . '</pre></div>' . "\n";
                 } elseif (is_null($request)) {
                     echo 'No request' . "\n";
                 } else {
@@ -147,7 +147,7 @@ EOT;
 
         echo '<h4>Response</h4>' . "\n";
         if (is_object($response)) {
-            echo '<div class="code">' . json_encode($response) . '</div>' . "\n";
+            echo '<div class="code"><pre>' . json_encode($response, JSON_PRETTY_PRINT) . '</pre></div>' . "\n";
         } elseif (is_null($response)) {
             echo 'No response' . "\n";
         } else {
