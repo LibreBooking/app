@@ -214,6 +214,11 @@ interface ISchedulePage extends IActionPage
     public function BindViewableResourceReservations($resourceIds);
 
     /**
+     *
+     */
+    public function ShowFullLabel();
+
+    /**
      * @return LoadReservationRequest
      */
     public function GetReservationRequest();
@@ -490,6 +495,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
         }
 
         return array_filter($resourceIds, 'intval');
+    }
+
+    public function ShowFullLabel() {
+        $this->Set('ShowFullLabel', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::SHOW_FULL_LABEL));
     }
 
     public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)

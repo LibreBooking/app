@@ -242,3 +242,9 @@ $conf['settings']['delete.old.data']['years.old.data'] = '3';               //Ch
 $conf['settings']['delete.old.data']['delete.old.announcements'] = 'false'; //Choose if this feature deletes old announcements from database
 $conf['settings']['delete.old.data']['delete.old.blackouts'] = 'false';     //Choose if this feature deletes old blackouts from database
 $conf['settings']['delete.old.data']['delete.old.reservations'] = 'false';  //Choose if this feature deletes old reservations from database
+
+/**
+ * Adjust labels in standard schedule to show full text (true) or not (false)
+ * Not recommended if there are to many reservations being shown because it can take a while to load them all
+ */
+$conf['settings']['reservation']['show.full.label'] = 'false';

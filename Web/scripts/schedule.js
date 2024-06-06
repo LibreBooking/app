@@ -236,7 +236,7 @@ function Schedule(opts, resourceGroups) {
             });
 
             //--------GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE--------
-            if (opts.scheduleStyle === ScheduleStandard) {
+            if (opts.scheduleStyle === ScheduleStandard && scheduleOpts.showFullLabel) {
                 var trHeights = {};                         //row height to be implemented
                 var trAdjusted = {};                        //check if row height has already been adjusted
                 
@@ -397,10 +397,15 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             if (overlap) {
-                                if(opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined"){
-                                    top += trHeights[currentTrId];
+                                if(opts.scheduleStyle === ScheduleStandard && scheduleOpts.showFullLabel){
+                                    if (typeof trHeights[currentTrId] !== "undefined") {
+                                        top += trHeights[currentTrId];
+                                    }
+                                    else {
+                                        top += height;
+                                    }
                                 }
-                                else{
+                                else {
                                     top += height;
                                 }
                                 numberOfConflicts++;
@@ -410,7 +415,7 @@ function Schedule(opts, resourceGroups) {
                     };
 
                     //----------CHANGE HEIGTH OF ROWS TO ALLOW FULL LABEL TEXT TO SHOW------------
-                    if (opts.scheduleStyle === ScheduleStandard) {
+                    if (opts.scheduleStyle === ScheduleStandard && scheduleOpts.showFullLabel) {
                         let current_TD = t.find('td[data-resourceid="' + res.ResourceId + '"]:first');
 
                         var current_TR = current_TD.parent();
@@ -465,7 +470,7 @@ function Schedule(opts, resourceGroups) {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
                             //CHANGE ROW SIZE BASED ON NUMBER OF CONCURRENT RESERVATIONS ALLOWING SPACE IN SLOT IF NOT REACHED THE MAX NUMBER
-                            if (opts.scheduleStyle === ScheduleStandard) {
+                            if (opts.scheduleStyle === ScheduleStandard && scheduleOpts.showFullLabel) {
                                 if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] !== numberOfConflicts + 1 && scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 2) {
                                     startTd.css('height', trHeights[currentTrId] * (numberOfConflicts + 2) + "px");
                                 }
@@ -480,13 +485,15 @@ function Schedule(opts, resourceGroups) {
 
                     let divHeight;
                     //SLOT LABEL HEIGHT TO ALLOW FULL TEXT TO SHOW IN STANDARD SCHEDULE
-                    if (opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined") {
-                        if (className == "reserved") {
-                            divHeight = trHeights[currentTrId];
-                        }
-                        //BLACKOUTS SHOULD OCUPPY ENTIRE ROW AND THERE'S NO NEED TO WORRY ABOUT CHANGES TO ROW HEIGHT BECAUSE THEY ARE ALWAYS THE LAST TO BE PUT IN EACH
-                        else if (className == "unreservable") {
-                            divHeight = current_TR.height();
+                    if (opts.scheduleStyle === ScheduleStandard & scheduleOpts.showFullLabel) {
+                        if (typeof trHeights[currentTrId] !== "undefined") {
+                            if (className == "reserved") {
+                                divHeight = trHeights[currentTrId];
+                            }
+                            //BLACKOUTS SHOULD OCUPPY ENTIRE ROW AND THERE'S NO NEED TO WORRY ABOUT CHANGES TO ROW HEIGHT BECAUSE THEY ARE ALWAYS THE LAST TO BE PUT IN EACH
+                            else if (className == "unreservable") {
+                                divHeight = current_TR.height();
+                            }
                         }
                     }
                     else {

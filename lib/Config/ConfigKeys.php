@@ -177,6 +177,8 @@ class ConfigKeys
     public const DELETE_OLD_ANNOUNCEMENTS = 'delete.old.announcements'; 
     public const DELETE_OLD_BLACKOUTS = 'delete.old.blackouts'; 
     public const DELETE_OLD_RESERVATIONS = 'delete.old.reservations'; 
+
+    public const SHOW_FULL_LABEL = 'show.full.label';
 }
 
 class ConfigSection
