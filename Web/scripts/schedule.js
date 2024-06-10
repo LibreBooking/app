@@ -225,6 +225,76 @@ function Schedule(opts, resourceGroups) {
             };
         }
 
+        function isReservationInTable(reservation, table) {
+            const tableStartDate = Number.parseInt(table.data("min"));
+            const tableEndDate = Number.parseInt(table.data("max"));
+            return (
+                (reservation.StartDate >= tableStartDate && reservation.StartDate < tableEndDate)
+                    || (reservation.EndDate > tableStartDate && reservation.EndDate <= tableEndDate)
+                    || (reservation.StartDate <= tableStartDate && reservation.EndDate >= tableEndDate)
+            );
+        }
+
+        function findReservationStartAndEndSlots(reservation, tr_slots) {
+            // Each time slot is 30 minutes. There are 48 slots in a day.
+            let startSlot = null;
+            let endSlot = null;
+            const StartDate = Number.parseInt(reservation.StartDate);
+            const EndDate = Number.parseInt(reservation.EndDate);
+            tr_slots.find("td").each(function () {
+                const slot = $(this);
+                const slotStartDate = Number.parseInt(slot.data("min"));
+                const slotEndDate = Number.parseInt(slot.data("max"));
+                if (!startSlot && slotStartDate >= StartDate) {
+                    startSlot = slot;
+                }
+                if (slotEndDate <= EndDate) {
+                    endSlot = slot;
+                } else {
+                    return;
+                }
+            });
+
+            let left = startSlot.position().left;
+            let height = 40;
+            let width = endSlot.position().left - startSlot.position().left + endSlot.outerWidth();
+            let top = startSlot.position().top;
+            return {
+                startSlot,
+                endSlot,
+                height,
+                width,
+                top: top - cellAdjustment,
+                left: left - cellAdjustment
+            };
+        }
+
+        function createDivForReservation(reservation, startSlot, endSlot, height, width, top, left) {
+            let divHeight = height;
+            let className = reservation.IsReservation ? "reserved" : "unreservable";
+            const mine = reservation.IsOwner ? "mine" : "";
+            const past = reservation.IsPast ? "past" : "";
+            const participant = reservation.IsParticipant ? "participating" : "";
+            const isPending = reservation.IsPending ? "pending" : "";
+            const isNew = reservation.IsNew ? `<span class="reservation-new">${opts.newLabel}</span>` : "";
+            const isUpdated = reservation.IsUpdated ? `<span class="reservation-updated">${opts.updatedLabel}</span>` : "";
+            const isDraggable = reservation.IsReservation && ((reservation.IsOwner && !reservation.IsPast) || reservation.IsAdmin);
+            const draggableAttribute = isDraggable ? 'draggable="true"' : "";
+
+            let color = reservation.BackgroundColor !== "" ? `background-color:${reservation.BackgroundColor};color:${reservation.TextColor};` : "";
+            const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
+            const div = $(`<div
+                            class="${className} ${mine} ${past} ${participant} ${isPending} event"
+                            style="${style} ${color}"
+                            data-resid="${reservation.ReferenceNumber}"
+                            data-resourceid="${reservation.ResourceId}"
+                            data-start="${startSlot.data('min')}"
+                            data-end="${endSlot.data('min')}"
+                            ${draggableAttribute}>${isNew} ${isUpdated} ${reservation.Label}</div>`);
+            return div;
+        }
+
+
         ajaxPost($("#fetchReservationsForm"), options.reservationLoadUrl, null, function (reservationList) {
             reservationList.sort((r1, r2) => {
                 const resourceOrder = options.resourceOrder[r1.ResourceId] - options.resourceOrder[r2.ResourceId];
@@ -235,11 +305,81 @@ function Schedule(opts, resourceGroups) {
                 return resourceOrder;
             });
 
+            if (opts.scheduleStyle === ScheduleStandard && opts.fastReservationLoad) {
+
+                // convert our list of reservations to a mapping of arrays. keyed by the resourceId
+                let resourceIdMap = new Map();
+                reservationList.forEach(item => {
+                    let resource_id = Number.parseInt(item.ResourceId);
+                    if (!resourceIdMap.has(resource_id)) {
+                        resourceIdMap.set(resource_id, []);
+                    }
+                    resourceIdMap.get(resource_id).push(item);
+                });
+
+
+                // Loop through all the days of reservations.
+                $('#reservations').find(".reservations").each(function () {
+                    const t = $(this);
+                    let divs = $();
+
+                    // Iterate through all the <tr class="slots"> in the `tbody`.
+                    // This will be the row of reservation slots for a resource.
+                    // The tr_slots object will contain the resourceId.
+                    t.find("tbody").find("tr.slots").each(function () {
+                        const tr_slots = $(this);
+                        let resourceId = tr_slots.data("resourceid");
+                        if (resourceIdMap.has(resourceId)) {
+                            for (reservation of resourceIdMap.get(resourceId)) {
+                                if (isReservationInTable(reservation, t)) {
+                                    if (reservation.IsBuffer) {
+                                        // buffers are added dynamically in grid views
+                                        continue;
+                                    }
+                                    const startEnd = findReservationStartAndEndSlots(reservation, tr_slots);
+                                    const {startSlot, endSlot, height, width, top, left} = startEnd;
+                                    let div = createDivForReservation(reservation, startSlot, endSlot, height, width, top, left);
+                                    if (reservation.IsReservation) {
+                                        attachReservationEvents(div, reservation);
+                                    }
+                                    const isDraggable = reservation.IsReservation && ((reservation.IsOwner && !reservation.IsPast) || reservation.IsAdmin);
+                                    if (isDraggable) {
+                                        div.on(
+                                            'dragstart',
+                                            {referenceNumber: reservation.ReferenceNumber, resourceId: reservation.ResourceId},
+                                            function (event) {
+                                                div.qtip("hide");
+                                                $(event.target).removeClass('clicked');
+                                                const data = JSON.stringify({
+                                                    referenceNumber: event.data.referenceNumber, resourceId: event.data.resourceId
+                                                });
+                                                event.originalEvent.dataTransfer.setData("text", data);
+                                            }
+                                        );
+                                    }
+                                    divs = divs.add(div);
+                                }
+                            }
+                        }
+                    });
+                    // By adding all the `div` elements for a day at one-time is significant performance boost.
+                    t.append(divs);
+                });
+
+                if (options.isReservable) {
+                    initReservable();
+                }
+                $("#loading-schedule").addClass("no-show");
+                renderingEvents = false;
+
+                return;
+            }
+
             //--------GET ROW AND LABELS HEIGHT TO ALLOW FULL LABEL TEXT TO SHOW IN STANDARD SCHEDULE--------
             if (opts.scheduleStyle === ScheduleStandard) {
                 var trHeights = {};                         //row height to be implemented
                 var trAdjusted = {};                        //check if row height has already been adjusted
-                
+
                 reservationList.forEach(res => {
                     $('#reservations').find(".reservations").each(function () {
                         const t = $(this);
@@ -274,22 +414,22 @@ function Schedule(opts, resourceGroups) {
                                 border: 'none',
                             })
                             .text(res.Label);
-            
+
                         // Append the element to the body to get accurate dimensions
                         $('body').append($tempElement);
 
                         // Get the computed height
                         const labelHeight = $tempElement.height() + 5;
-            
+
                         // Remove the temporary element
                         $tempElement.remove();
-                        
+
                         //---------------------------------------------------
 
                         const current_TR = current_TD.parent();
 
                         const currentTrId = current_TR.attr('id');
-                        
+
                         if ((typeof trHeights[currentTrId] !== "undefined" && trHeights[currentTrId] < labelHeight)) {
                             trHeights[currentTrId] = labelHeight;
                         }
@@ -342,8 +482,8 @@ function Schedule(opts, resourceGroups) {
                         const endsAfter = res.EndDate > tableMax;
                         let startTime = startsBefore ? opts.midnightLabel : res.StartTime;
                         let endTime = endsAfter ? opts.midnightLabel : res.EndTime;
-                        const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event" 
+                        const div = $(`<div
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} condensed-event"
                                     style="${color}"
                                     data-resid="${res.ReferenceNumber}">
                                     <span>${startTime}-${endTime}</span>
@@ -460,7 +600,7 @@ function Schedule(opts, resourceGroups) {
                         if (height === 0) {
                             height = endTd.outerHeight();
                         }
-                    } 
+                    }
                     else {
                         adjustOverlap();
                         if (numberOfConflicts > 0) {
@@ -493,8 +633,8 @@ function Schedule(opts, resourceGroups) {
                         divHeight = opts.scheduleStyle === ScheduleTall ? height : 41;
                     }
                     const style = `left:${left}px; top:${top}px; width:${width}px; height:${divHeight}px;`;
-                    const div = $(`<div 
-                                    class="${className} ${mine} ${past} ${participant} ${isPending} event" 
+                    const div = $(`<div
+                                    class="${className} ${mine} ${past} ${participant} ${isPending} event"
                                     style="${style} ${color}"
                                     data-resid="${res.ReferenceNumber}"
                                     data-resourceid="${res.ResourceId}"
@@ -529,8 +669,8 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             const style = `left:${bufferStartEnd.left}px; top:${bufferTop}px; width:${bufferStartEnd.width}px; height:${bufferHeight}px;`;
-                            const bufferDiv = $(`<div 
-					                                    class="${past} buffer" 
+                            const bufferDiv = $(`<div
+					                                    class="${past} buffer"
 					                                    style="${style}"
 					                                    data-resid="${res.ReferenceNumber}"
 					                                    data-resourceid="${res.ResourceId}"
@@ -938,7 +1078,7 @@ function Schedule(opts, resourceGroups) {
                 ajaxPost($('#moveReservationForm'), options.updateReservationUrl, null, function (updateResult) {
                     droppedCell.removeClass('dropped');
                     droppedCell.html('');
-					
+
 					if (updateResult.success) {
                         renderEvents(true);
                     } else {

@@ -431,6 +431,7 @@ let resourceMaxConcurrentReservations = {};
         updatedLabel: "{translate key=Updated}",
         isReservable: 1,
         autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
+        fastReservationLoad: "{$FastReservationLoad}",
         resourceMaxConcurrentReservations,
     };
 
