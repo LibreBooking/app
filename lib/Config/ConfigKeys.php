@@ -33,6 +33,7 @@ class ConfigKeys
     public const SCHEDULE_HIDE_BLOCKED_PERIODS = 'hide.blocked.periods';
     public const SCHEDULE_UPDATE_HIGHLIGHT_MINUTES = 'update.highlight.minutes';
     public const SCHEDULE_SHOW_WEEK_NUMBERS = 'show.week.numbers';
+    public const SCHEDULE_FAST_RESERVATION_LOAD = 'fast.reservation.load';
 
     public const DATABASE_TYPE = 'type';
     public const DATABASE_USER = 'user';

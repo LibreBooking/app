@@ -41,6 +41,7 @@ $conf['settings']['schedule']['reservation.label'] = '{name}';          // forma
 $conf['settings']['schedule']['hide.blocked.periods'] = 'false';        // if blocked periods should be hidden or shown
 $conf['settings']['schedule']['update.highlight.minutes'] = '0';    // if set, will show reservations as 'updated' for a certain amount of time
 $conf['settings']['schedule']['show.week.numbers'] = 'false';
+$conf['settings']['schedule']['fast.reservation.load'] = 'false';  // Experimental: Use new algorithm to load reservations faster in the schedule. Currently does not support concurrent reservations. With larger number of resources this can be 10x or 100x faster. Only runs with the StandardSchedule otherwise will fall back to legacy mode.
 /**
  * ical integration configuration
  */
