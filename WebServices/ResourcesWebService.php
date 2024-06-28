@@ -56,7 +56,7 @@ class ResourcesWebService
      */
     public function GetAll()
     {
-        $resources = $this->resourceRepository->GetResourceList();
+        $resources = $this->resourceRepository->GetUserResourceList();
         $resourceIds = [];
         foreach ($resources as $resource) {
             $resourceIds[] = $resource->GetId();
