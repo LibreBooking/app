@@ -833,6 +833,7 @@ class PEAR_Error
     var $message              = '';
     var $userinfo             = '';
     var $backtrace            = null;
+    public $callback          = null;
 
 //    /**
 //     * Only here for backwards compatibility.
