@@ -13,6 +13,11 @@ class ServiceLocator
     private static $_server = null;
 
     /**
+     * @var IRestServer
+     */
+    private static IRestServer|null $_apiServer = null;
+
+    /**
      * @var IEmailService
      */
     private static $_emailService = null;
@@ -38,6 +43,19 @@ class ServiceLocator
     public static function SetDatabase(Database $database)
     {
         self::$_database = $database;
+    }
+
+    /**
+     * @return Server
+     */
+    public static function GetApiServer(): IRestServer|null
+    {
+        return self::$_apiServer;
+    }
+
+    public static function SetApiServer(IRestServer $apiServer)
+    {
+        self::$_apiServer = $apiServer;
     }
 
     /**
