@@ -119,4 +119,19 @@ class ServiceLocator
     {
         self::$_fileSystem = $fileSystem;
     }
+
+    public static function GetUserSession(): UserSession|null
+    {
+        if (!is_null(self::$_server)) {
+            $userSession = self::$_server->GetUserSession();
+            if (!$userSession instanceof NullUserSession) {
+                return $userSession;
+            }
+        }
+        if (is_null(self::$_apiServer)) {
+            return null;
+        }
+        return self::$_apiServer->GetSession();
+    }
+
 }
