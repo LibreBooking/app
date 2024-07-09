@@ -13,6 +13,11 @@ class ServiceLocator
     private static $_server = null;
 
     /**
+     * @var IRestServer
+     */
+    private static IRestServer|null $_apiServer = null;
+
+    /**
      * @var IEmailService
      */
     private static $_emailService = null;
@@ -38,6 +43,19 @@ class ServiceLocator
     public static function SetDatabase(Database $database)
     {
         self::$_database = $database;
+    }
+
+    /**
+     * @return Server
+     */
+    public static function GetApiServer(): IRestServer|null
+    {
+        return self::$_apiServer;
+    }
+
+    public static function SetApiServer(IRestServer $apiServer)
+    {
+        self::$_apiServer = $apiServer;
     }
 
     /**
@@ -101,4 +119,19 @@ class ServiceLocator
     {
         self::$_fileSystem = $fileSystem;
     }
+
+    public static function GetUserSession(): UserSession|null
+    {
+        if (!is_null(self::$_server)) {
+            $userSession = self::$_server->GetUserSession();
+            if (!$userSession instanceof NullUserSession) {
+                return $userSession;
+            }
+        }
+        if (is_null(self::$_apiServer)) {
+            return null;
+        }
+        return self::$_apiServer->GetSession();
+    }
+
 }

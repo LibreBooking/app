@@ -50,6 +50,21 @@ interface IResourceRepository
     public function GetResourceList();
 
     /**
+     * @return array|$resourceIds[] array of all resource IDs
+     */
+    public function GetResourceIdList(): array;
+
+    /**
+     * @return array|BookableResource[] array of user accessible resources
+     */
+    public function GetUserResourceList();
+
+    /**
+     * @return array|$resourceIds[] array of user accessible resources IDs
+     */
+    public function GetUserResourceIdList();
+
+    /**
      * @param int $pageNumber
      * @param int $pageSize
      * @param string|null $sortField
@@ -95,7 +110,7 @@ interface IResourceRepository
      * @param array $resourceIds
      */
     public function GetUserGroupResourcePermissions($userId, $resourceIds = []);
-    
+
     /**
      * @param int $userId
      * @param array $resourceIds
