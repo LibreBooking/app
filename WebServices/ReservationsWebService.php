@@ -58,7 +58,7 @@ class ReservationsWebService
 
         Log::Debug('GetReservations called. userId=%s, startDate=%s, endDate=%s', $userId, $startDate, $endDate);
 
-        $reservations = $this->reservationViewRepository->GetReservations(
+        $allReservations = $this->reservationViewRepository->GetReservations(
             $startDate,
             $endDate,
             $userId,
@@ -67,6 +67,19 @@ class ReservationsWebService
             $resourceId
         );
 
+        $userSession = $this->server->GetSession();
+        if ($userSession->IsAdmin) {
+            $reservations = $allReservations;
+        } else {
+            $resourceRepository = new ResourceRepository();
+            $allowedResourceIds = $resourceRepository->GetUserResourceIdList();
+            $reservations = [];
+            foreach ($allReservations as $reservation) {
+                if (in_array($reservation->ResourceId, $allowedResourceIds)) {
+                    $reservations[] = $reservation;
+                }
+            }
+        }
         $response = new ReservationsResponse($this->server, $reservations, $this->privacyFilter, $startDate, $endDate);
         $this->server->WriteResponse($response);
     }
