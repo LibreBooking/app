@@ -959,8 +959,6 @@ _This service is secure and requires authentication_
 __Response:__  
 
 ```json
-And get your pretty indented JSON right here
-
 {
     "referenceNumber": "referenceNumber", 
     "isPendingApproval": true, 
@@ -1688,7 +1686,8 @@ __Response:__
     ], 
     "links": [], 
     "message": null
-}```
+}
+```
 
 
 #### GetGroups
@@ -1777,7 +1776,8 @@ __Response:__
     ], 
     "links": [], 
     "message": null
-}```
+}
+```
 
 
 #### GetResource
@@ -1835,7 +1835,8 @@ __Response:__
     "maxConcurrentReservations": 1, 
     "links": [], 
     "message": null
-}```
+}
+```
 
 
 GetAvailability
