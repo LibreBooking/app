@@ -19,16 +19,16 @@ class ja_jp extends en_gb
 
         $dates['general_date'] = 'Y-m-d';
         $dates['general_datetime'] = 'Y-m-d H:i:s';
-        $dates['short_datetime'] = 'Y-m-d g:i A';
+        $dates['short_datetime'] = 'Y-m-d G:i';
         $dates['schedule_daily'] = 'Y-m-d (l)';
-        $dates['reservation_email'] = 'Y-m-d @ g:i A (e)';
-        $dates['res_popup'] = 'Y-m-d g:i A';
-        $dates['res_popup_time'] = 'g:i A';
-        $dates['short_reservation_date'] = 'Y-m-d g:i A';
-        $dates['dashboard'] = 'Y-m-d (l) g:i A';
-        $dates['period_time'] = "g:i A";
+        $dates['reservation_email'] = 'Y-m-d @ G:i (e)';
+        $dates['res_popup'] = 'Y-m-d G:i';
+        $dates['res_popup_time'] = 'G:i';
+        $dates['short_reservation_date'] = 'Y-m-d G:i';
+        $dates['dashboard'] = 'Y-m-d (l) G:i';
+        $dates['period_time'] = "G:i";
         $dates['timepicker'] = 'h:i a';
-        $dates['mobile_reservation_date'] = 'M/d g:i A';
+        $dates['mobile_reservation_date'] = 'M/d G:i';
         $dates['general_date_js'] = "yy-mm-dd";
         $dates['general_time_js'] = 'h:mm tt';
         $dates['timepicker_js'] = 'h:i a';
@@ -36,8 +36,8 @@ class ja_jp extends en_gb
         $dates['calendar_time'] = 'h:mmt';
         $dates['calendar_dates'] = 'm/d';
         $dates['embedded_date'] = 'D d';
-        $dates['embedded_time'] = 'g:i A';
-        $dates['embedded_datetime'] = 'm/d g:i A';
+        $dates['embedded_time'] = 'G:i';
+        $dates['embedded_datetime'] = 'm/d G:i';
         $dates['report_date'] = '%m/%d';
 
         $this->Dates = $dates;
