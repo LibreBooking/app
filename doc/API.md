@@ -26,9 +26,9 @@ For all of the secure service calls it is required to be
 1. The result from the [Authenticate](#Authenticate) POST API call, if
    successful, will contain the two values: `sessionToken` and `userId`
 1. When making secure service calls the following headers must be set:
-    1.  `X-LibreBooking-SessionToken` set to the value of `sessionToken`
+    1.  `X-Booked-SessionToken` set to the value of `sessionToken`
         returned by the [Authenticate](#Authenticate) API call.
-    1.  `X-LibreBooking-UserId` set to the value of `userId` returned by the
+    1.  `X-Booked-UserId` set to the value of `userId` returned by the
         [Authenticate](#Authenticate) API call.
 
 ### POST Requests
@@ -959,8 +959,6 @@ _This service is secure and requires authentication_
 __Response:__  
 
 ```json
-And get your pretty indented JSON right here
-
 {
     "referenceNumber": "referenceNumber", 
     "isPendingApproval": true, 
@@ -1688,7 +1686,8 @@ __Response:__
     ], 
     "links": [], 
     "message": null
-}```
+}
+```
 
 
 #### GetGroups
@@ -1777,7 +1776,8 @@ __Response:__
     ], 
     "links": [], 
     "message": null
-}```
+}
+```
 
 
 #### GetResource
@@ -1835,7 +1835,8 @@ __Response:__
     "maxConcurrentReservations": 1, 
     "links": [], 
     "message": null
-}```
+}
+```
 
 
 GetAvailability
