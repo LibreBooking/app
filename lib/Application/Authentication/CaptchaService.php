@@ -1,6 +1,6 @@
 <?php
 
-if (file_exists(ROOT_DIR . 'vendor/autoload.php')) { 
+if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
     require_once ROOT_DIR . 'vendor/autoload.php';
 }
 
@@ -106,8 +106,26 @@ class ReCaptchaService implements ICaptchaService
         $server = ServiceLocator::GetServer();
 
         $privatekey = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_PRIVATE_KEY);
- 
-        $recap = new \ReCaptcha\ReCaptcha($privatekey);
+
+        $configuredMethod = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_REQUEST_METHOD);
+        $method = new \ReCaptcha\RequestMethod\Post();
+        switch ($configuredMethod)
+        {
+            case null:
+            case '':
+            case 'post':
+                break;
+            case 'socket':
+                $method = new \ReCaptcha\RequestMethod\SocketPost();
+                break;
+            case 'curl':
+                $method = new \ReCaptcha\RequestMethod\CurlPost();
+                break;
+            default:
+                Log::Error('Invalid ReCaptcha request method: %s. Fallback to', $configuredMethod);
+        }
+
+        $recap = new \ReCaptcha\ReCaptcha($privatekey, $method);
         $resp = $recap->verify($server->GetForm('g-recaptcha-response'),$server->GetRemoteAddress());
 
         $success = $resp->isSuccess();

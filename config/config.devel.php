@@ -141,6 +141,7 @@ $conf['settings']['api']['allow.self.registration'] = 'false';
 $conf['settings']['recaptcha']['enabled'] = 'false';
 $conf['settings']['recaptcha']['public.key'] = '';
 $conf['settings']['recaptcha']['private.key'] = '';
+$conf['settings']['recaptcha']['request.method'] = 'curl'; // options are curl, post or socket. default: post
 /**
  * Email
  */

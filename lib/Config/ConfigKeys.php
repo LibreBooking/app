@@ -107,6 +107,7 @@ class ConfigKeys
     public const RECAPTCHA_ENABLED = 'enabled';
     public const RECAPTCHA_PUBLIC_KEY = 'public.key';
     public const RECAPTCHA_PRIVATE_KEY = 'private.key';
+    public const RECAPTCHA_REQUEST_METHOD = 'request.method';
 
     public const DEFAULT_FROM_ADDRESS = 'default.from.address';
     public const DEFAULT_FROM_NAME = 'default.from.name';
