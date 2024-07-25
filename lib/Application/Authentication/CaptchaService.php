@@ -110,8 +110,11 @@ class ReCaptchaService implements ICaptchaService
         $recap = new \ReCaptcha\ReCaptcha($privatekey);
         $resp = $recap->verify($server->GetForm('g-recaptcha-response'),$server->GetRemoteAddress());
 
-        Log::Debug('ReCaptcha IsValid: %s', $resp->isSuccess());
+        $success = $resp->isSuccess();
+        Log::Debug('ReCaptcha IsValid: %s', $success ? 'TRUE' : 'FALSE');
+        if (!$success)
+            Log::Debug('ReCaptcha error codes: %s', join(', ', $resp->getErrorCodes()));
 
-        return $resp->isSuccess();
+        return $success;
     }
 }
