@@ -43,7 +43,7 @@
                     <div>{translate key=DeleteReminderWarning}</div>
                     <div>
                         <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
-                        <textarea id="deleteReason" class="form-control"></textarea>
+                        <textarea id="deleteReason" class="deleteReason form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
