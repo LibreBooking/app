@@ -148,7 +148,7 @@ class Ldap2Wrapper
                 if (in_array(strtolower(trim($requiredGroup)), $userGroups)) {
                     Log::Debug('Matched Required Group %s', $requiredGroup);
                     $this->user = new LdapUser($currentResult, $this->options->AttributeMapping(), $userGroups);
-                    return true;
+                    return !empty($this->user->GetEmail());
                 } else {
                     Log::Error('Not in required group %s', $requiredGroup);
                     return false;
@@ -156,7 +156,7 @@ class Ldap2Wrapper
             } else {
                 /** @var Net_LDAP2_Entry $entry */
                 $this->user = new LdapUser($currentResult, $this->options->AttributeMapping(), $userGroups);
-                return true;
+                return !empty($this->user->GetEmail());
             }
         } else {
             Log::Error('Could not find user %s', $username);
