@@ -283,6 +283,9 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
         $user = ServiceLocator::GetServer()->GetUserSession();
 
+        // ensure Smarty $ResourceIds is an empty array to prevent an error if no
+        // resources. Will be overridden if there are resources.
+        $this->Set('ResourceIds', []);
         $this->_presenter->PageLoad($user);
 
         $endLoad = microtime(true);
