@@ -47,6 +47,9 @@ For information on how to use LibreBooking in a Docker container see:
 
 ## Release Notes
 
+#### 2.8.6.2 - 2024-08-18
+See all the changes at <https://github.com/LibreBooking/app/commits/develop>
+
 #### 2.8.6.1 - 2023-09-26
 Mainly Bug fixes, special mention for the ldap plugin, more details at <https://github.com/LibreBooking/app/commits/develop>
 
