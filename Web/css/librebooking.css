@@ -14,9 +14,9 @@
 }
 
 [data-bs-theme="default"] {
-    --primary: #be6e34;
-    --primary-hover: #a05c2c;
-    --primary-disabled: #e4b99b;
+    --primary: #669999;
+    --primary-hover: #527a7a;
+    --primary-disabled: #85adad;
 }
 
 [data-bs-theme="dimgray"] {

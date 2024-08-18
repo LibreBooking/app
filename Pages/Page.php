@@ -106,7 +106,7 @@ abstract class Page implements IPage
             $this->smarty->assign('CssUrl', 'custom-style.css');
         }
 
-        $this->smarty->assign('FaviconUrl', 'favicon.png');
+        $this->smarty->assign('FaviconUrl', 'favicon.ico');
         if (file_exists($this->path . 'custom-favicon.png')) {
             $this->smarty->assign('FaviconUrl', 'custom-favicon.png');
         }
