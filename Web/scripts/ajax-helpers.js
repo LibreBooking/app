@@ -7,14 +7,12 @@ function ajaxPost(formElement, url, onBefore, onAfter) {
 		url: url ? url : formElement.attr('action'),
 		cache: false,
 		beforeSend: function () {
-			if (onBefore)
-			{
+			if (onBefore) {
 				onBefore();
 			}
 		}
 	}).done(function (data) {
-		if (onAfter)
-		{
+		if (onAfter) {
 			onAfter(data);
 		}
 	});
@@ -26,14 +24,12 @@ var ajaxGet = function (url, onBefore, onAfter) {
 		url: url,
 		cache: false,
 		beforeSend: function () {
-			if (onBefore)
-			{
+			if (onBefore) {
 				onBefore();
 			}
 		}
 	}).done(function (data) {
-		if (onAfter)
-		{
+		if (onAfter) {
 			onAfter(data);
 		}
 	});
@@ -47,21 +43,21 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 
 	var beforeSerialize = (options ? options.onBeforeSerialize : null);
 	var opts = $.extend(
-			{
-				dataType: null,
-				onBeforeSubmit: BeforeFormSubmit,
-				target: null,
-				validationSummary: null
-			}, options);
+		{
+			dataType: null,
+			onBeforeSubmit: BeforeFormSubmit,
+			target: null,
+			validationSummary: null
+		}, options);
 
 	opts.onBeforeSerialize = BeforeSerializeDecorator(beforeSerialize);
 
-    var getAction = function(form) {
-        var action = $(form).attr('action');
-        var ajaxAction = $(form).attr('ajaxAction');
+	var getAction = function (form) {
+		var action = $(form).attr('action');
+		var ajaxAction = $(form).attr('ajaxAction');
 
-        return _.isEmpty(action) ? (window.location.href.split('?')[0] + '?action=' + ajaxAction) : action;
-    };
+		return _.isEmpty(action) ? (window.location.href.split('?')[0] + '?action=' + ajaxAction) : action;
+	};
 
 	formElement.submit(function () {
 
@@ -72,26 +68,22 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 			dataType: opts.dataType,
 			target: opts.target,
 			success: function (responseText, statusText, xhr, form) {
-				formElement.find('.indicator').addClass('no-show');
-				formElement.find('button').removeClass('no-show');
+				formElement.find('.indicator').addClass('d-none');
+				formElement.find('button').removeClass('d-none');
 
 				var formValidationSummary = formElement.find('.validationSummary');
 				var validationSummary = opts.validationSummary || formValidationSummary;
 				var hasValidationSummary = validationSummary && validationSummary.length > 0;
 				var hasResponseText = HasResponseText(responseText);
 
-				if (hasValidationSummary)
-				{
-					validationSummary.addClass('no-show');
+				if (hasValidationSummary) {
+					validationSummary.addClass('d-none');
 				}
-				if (responseHandler && hasResponseText)
-				{
+				if (responseHandler && hasResponseText) {
 					responseHandler(responseText, form);
 				}
-				else if (hasValidationSummary && hasResponseText)
-				{
-					if (!responseText.ErrorIds)
-					{
+				else if (hasValidationSummary && hasResponseText) {
+					if (!responseText.ErrorIds) {
 						var message = responseText;
 						responseText = {
 							ErrorIds: [0],
@@ -99,37 +91,30 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 						};
 
 					}
-					formElement.find('.asyncValidation').addClass('no-show');
+					formElement.find('.asyncValidation').addClass('d-none');
 					$.each(responseText.ErrorIds, function (index, errorId) {
 						var errorElement = $('#' + errorId);
-						if (responseText.Messages[errorId].length > 0)
-						{
-							if (errorElement.length > 0)
-							{
+						if (responseText.Messages[errorId].length > 0) {
+							if (errorElement.length > 0) {
 								errorElement.text("" + responseText.Messages[errorId].join(' '));
 							}
-							else
-							{
-								validationSummary.find('ul').empty().append($('<li/>', {text: responseText.Messages[errorId]}));
+							else {
+								validationSummary.find('ul').empty().append($('<li/>', { text: responseText.Messages[errorId] }));
 							}
 						}
-						errorElement.removeClass('no-show');
+						errorElement.removeClass('d-none');
 					});
 
-					if (responseText.ErrorIds.length > 0)
-					{
-						validationSummary.removeClass('no-show');
+					if (responseText.ErrorIds.length > 0) {
+						validationSummary.removeClass('d-none');
 						formElement.trigger('onValidationFailed', responseText);
 					}
 				}
-				else
-				{
-					if (successHandler)
-					{
+				else {
+					if (successHandler) {
 						successHandler(responseText);
 					}
-					else
-					{
+					else {
 						window.location.reload();
 					}
 				}
@@ -144,8 +129,7 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, successHandler, responseHandler) {
 	buttonElement.click(function () {
 
-		if (preSubmitCallback && !preSubmitCallback())
-		{
+		if (preSubmitCallback && !preSubmitCallback()) {
 			return false;
 		}
 
@@ -153,27 +137,23 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 		var uploadElementId = form.find('input:file').attr('id');
 
 		$.ajaxFileUpload
-		(
+			(
 				{
 					url: urlCallback(),
 					secureuri: false,
 					fileElementId: uploadElementId,
 					success: function (responseText, status) {
-						form.find('.indicator').addClass('no-show');
-						form.find('button').removeClass('no-show');
+						form.find('.indicator').addClass('d-none');
+						form.find('button').removeClass('d-none');
 
-						if (responseText.trim() != '' && responseHandler)
-						{
+						if (responseText.trim() != '' && responseHandler) {
 							responseHandler(responseText);
 						}
-						else
-						{
-							if (successHandler)
-							{
+						else {
+							if (successHandler) {
 								successHandler();
 							}
-							else
-							{
+							else {
 								window.location.reload();
 							}
 						}
@@ -182,7 +162,7 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 						alert(e);
 					}
 				}
-		);
+			);
 
 		return false;
 	});
@@ -191,17 +171,15 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 function BeforeFormSubmit(formData, jqForm, opts) {
 	var isValid = true;
 	$(jqForm).find('.required').each(function (index, ele) {
-		if ($(ele).is(':visible') && $(ele).val() == '' && $(ele).attr('disabled')!='disabled' )
-		{
+		if ($(ele).is(':visible') && $(ele).val() == '' && $(ele).attr('disabled') != 'disabled') {
 			isValid = false;
-			$(ele).closest('.form-group').addClass('has-error');
+			$(ele).closest('.has-feedback').addClass('is-invalid');
 		}
 	});
 
-	if (isValid)
-	{
-		$(jqForm).find('button').addClass('no-show');
-		$(jqForm).find('.indicator').removeClass('no-show');
+	if (isValid) {
+		$(jqForm).find('button').addClass('d-none');
+		$(jqForm).find('.indicator').removeClass('d-none');
 	}
 
 	return isValid;
@@ -210,16 +188,14 @@ function BeforeFormSubmit(formData, jqForm, opts) {
 function BeforeSerializeDecorator(onBeforeSerialize) {
 	return function (jqForm, options) {
 		BeforeSerialize(jqForm, options);
-		if (onBeforeSerialize)
-		{
+		if (onBeforeSerialize) {
 			onBeforeSerialize(jqForm, options);
 		}
 	}
 }
 function BeforeSerialize(jqForm, options) {
 	var csrf_token = $('#csrf_token');
-	if (csrf_token.length != 0 && $(jqForm).find('#csrf_token').length == 0)
-	{
+	if (csrf_token.length != 0 && $(jqForm).find('#csrf_token').length == 0) {
 		$(jqForm).append(csrf_token);
 	}
 }
@@ -227,37 +203,31 @@ function BeforeSerialize(jqForm, options) {
 function PerformAsyncAction(element, urlCallback, indicator, successCallback) {
 	var data = null;
 	var csrf_token = $('#csrf_token');
-	if (csrf_token.length != 0)
-	{
+	if (csrf_token.length != 0) {
 		data = csrf_token.serialize();
 	}
 
-	if (indicator)
-	{
+	if (indicator) {
 		element.after(indicator);
-		indicator.removeClass('no-show');
+		indicator.removeClass('d-none');
 	}
 	$.post(
-			urlCallback(),
-			data,
-			function (data) {
-				if (indicator)
-				{
-					indicator.addClass('no-show');
-				}
-				if (!successCallback && data && (data.trim() != ""))
-				{
-					alert(data);
-				}
-				if (!successCallback)
-				{
-					window.location.reload();
-				}
-				else
-				{
-					successCallback(data);
-				}
+		urlCallback(),
+		data,
+		function (data) {
+			if (indicator) {
+				indicator.addClass('d-none');
 			}
+			if (!successCallback && data && (data.trim() != "")) {
+				alert(data);
+			}
+			if (!successCallback) {
+				window.location.reload();
+			}
+			else {
+				successCallback(data);
+			}
+		}
 	);
 }
 
@@ -275,26 +245,24 @@ function PerformAsyncPost(url, options) {
 		data: {}
 	}, options);
 	var csrf_token = $('#csrf_token');
-	if (csrf_token.length != 0)
-	{
+	if (csrf_token.length != 0) {
 		opts.data = csrf_token.serialize();
 	}
-	if (opts.indicator)
-	{
+	if (opts.indicator) {
 		opts.element.after(opts.indicator);
-		opts.indicator.removeClass('no-show');
+		opts.indicator.removeClass('d-none');
 	}
 	$.post(url, opts.data)
-			.done(
+		.done(
 			function (data) {
 				opts.done(data);
 			})
-			.fail(function (data) {
-				opts.fail(data);
-			})
-			.always(function (data) {
-				opts.always(data);
-			});
+		.fail(function (data) {
+			opts.fail(data);
+		})
+		.always(function (data) {
+			opts.always(data);
+		});
 }
 
 function ClearAsyncErrors(element) {
@@ -305,10 +273,10 @@ function HtmlDecode(encoded) {
 	return $('<textarea/>').html(encoded).val();
 }
 
-function ajaxPagination(element, callback){
-    element.find('a.page').on('click', function(e){
-        e.preventDefault();
-        var a = $(e.target);
-        callback(a.data('page'), a.data('page-size'));
-    });
+function ajaxPagination(element, callback) {
+	element.find('a.page').on('click', function (e) {
+		e.preventDefault();
+		var a = $(e.target);
+		callback(a.data('page'), a.data('page-size'));
+	});
 }

@@ -315,25 +315,21 @@ function ResourceManagement(opts) {
 		wireUpCheckboxToggle(elements.bulkUpdateDialog);
 
 		$('#bulkEditEnableCheckIn').change(function () {
-			if ($(this).val() == '1')
-			{
-				$('#bulkUpdateAutoReleaseMinutesDiv').removeClass('no-show');
+			if ($(this).val() == '1') {
+				$('#bulkUpdateAutoReleaseMinutesDiv').removeClass('d-none');
 			}
 
-			if ($(this).val() == '0')
-			{
-				$('#bulkUpdateAutoReleaseMinutesDiv').addClass('no-show');
+			if ($(this).val() == '0') {
+				$('#bulkUpdateAutoReleaseMinutesDiv').addClass('d-none');
 			}
 		});
 
 		$('#bulkEditConcurrent').change(function () {
-			if ($(this).val() == '1')
-			{
+			if ($(this).val() == '1') {
 				$('#bulkEditAllowConcurrentDiv').removeClass('no-show');
 			}
 
-			if ($(this).val() == '0')
-			{
+			if ($(this).val() == '0') {
 				$('#bulkEditAllowConcurrentDiv').addClass('no-show');
 			}
 		});
@@ -345,9 +341,9 @@ function ResourceManagement(opts) {
 			elements.bulkUpdateList.empty();
 			$.each(resources, function (i, r) {
 				var checkId = 'bulk' + r.id;
-				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
+				items.push('<div class="form-check">' + '<input class="form-check-input" type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label class="form-check-label" for="' + checkId + '">' + r.name + '</label>' + '</div>');
 			});
-			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
+			$('<div/>', { html: items.join('') }).appendTo(elements.bulkUpdateList);
 
 			$('#bulkUpdateDialog').modal('show');
 		});
@@ -359,9 +355,9 @@ function ResourceManagement(opts) {
 			elements.bulkDeleteList.empty();
 			$.each(resources, function (i, r) {
 				var checkId = 'bulk' + r.id;
-				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
+				items.push('<div class="form-check">' + '<input class="form-check-input" type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label class="form-check-label" for="' + checkId + '">' + r.name + '</label>' + '</div>');
 			});
-			$('<div/>', {html: items.join('')}).appendTo(elements.bulkDeleteList);
+			$('<div/>', { html: items.join('') }).appendTo(elements.bulkDeleteList);
 
 			$('#bulkDeleteDialog').modal('show');
 		});
@@ -416,13 +412,11 @@ function ResourceManagement(opts) {
 
 		elements.autoAssign.on('click', function () {
 			elements.removeAllPermissions.find('input').prop('checked', false);
-			if (!elements.autoAssign.is(':checked'))
-			{
-				elements.removeAllPermissions.removeClass('no-show');
+			if (!elements.autoAssign.is(':checked')) {
+				elements.removeAllPermissions.collapse('show');
 			}
-			else
-			{
-				elements.removeAllPermissions.addClass('no-show');
+			else {
+				elements.removeAllPermissions.collapse('hide');
 			}
 		});
 
@@ -441,8 +435,8 @@ function ResourceManagement(opts) {
 
 		elements.importTrigger.click(function (e) {
 			e.preventDefault();
-			$('#importErrors').empty().addClass('no-show');
-			$('#importResults').addClass('no-show');
+			$('#importErrors').empty().addClass('d-none');
+			$('#importResults').addClass('d-none');
 			elements.importDialog.modal('show');
 		});
 
@@ -466,12 +460,10 @@ function ResourceManagement(opts) {
 
 
 		elements.toggleStatusChangeMessage.on('change', function (e) {
-			if ($(this).is(":checked"))
-			{
+			if ($(this).is(":checked")) {
 				elements.sendStatusChangeMessageContent.removeClass('no-show');
 			}
-			else
-			{
+			else {
 				elements.sendStatusChangeMessageContent.addClass('no-show');
 			}
 		});
@@ -499,21 +491,19 @@ function ResourceManagement(opts) {
 		};
 
 		var importHandler = function (responseText, form) {
-			if (!responseText)
-			{
+			if (!responseText) {
 				return;
 			}
 
 			$('#importCount').text(responseText.importCount);
 			$('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
-			$('#importResult').removeClass('no-show');
+			$('#importResult').removeClass('d-none');
 
 			var errors = $('#importErrors');
 			errors.empty();
-			if (responseText.messages && responseText.messages.length > 0)
-			{
+			if (responseText.messages && responseText.messages.length > 0) {
 				var messages = responseText.messages.join('</li><li>');
-				errors.html('<div>' + messages + '</div>').removeClass('no-show');
+				errors.html('<div>' + messages + '</div>').removeClass('d-none');
 			}
 		};
 
@@ -535,10 +525,10 @@ function ResourceManagement(opts) {
 			$('#resourceList').find('[data-resourceid="' + id + '"]').remove();
 			elements.deleteDialog.modal('hide');
 		});
-		ConfigureAsyncForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), onDurationSaved, null, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), onDurationSaved, null, { onBeforeSerialize: combineIntervals });
 		ConfigureAsyncForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), onCapacitySaved);
-		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), onAccessSaved, null, {onBeforeSerialize: combineIntervals});
-		ConfigureAsyncForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), onAccessSaved, null, { onBeforeSerialize: combineIntervals });
+		ConfigureAsyncForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, { onBeforeSerialize: combineIntervals });
 		ConfigureAsyncForm(elements.changeUserForm, defaultSubmitCallback(elements.changeUserForm), changeUserPermissions, errorHandler);
 		ConfigureAsyncForm(elements.changeGroupForm, defaultSubmitCallback(elements.changeGroupForm), changeGroupPermissions, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
@@ -556,12 +546,11 @@ function ResourceManagement(opts) {
 	};
 
 	ResourceManagement.prototype.addStatusReason = function (id, statusId, description) {
-		if (!(statusId in reasons))
-		{
+		if (!(statusId in reasons)) {
 			reasons[statusId] = [];
 		}
 
-		reasons[statusId].push({id: id, description: description});
+		reasons[statusId].push({ id: id, description: description });
 	};
 
 	ResourceManagement.prototype.initializeStatusFilter = function (statusId, reasonId) {
@@ -619,16 +608,14 @@ function ResourceManagement(opts) {
 		imageContainer.empty();
 
 		var imageContents = function (image, isDefault) {
-			imageContainer.append('<div class="resource-image col-xs-4" id="' + image + '"><img src="' + image + '"/><div class="center">' + (isDefault ? 'Default' : '<a href="#" class="defaultImage">Default</a>') + ' | <a href="#" class="deleteImage"><span class="fa fa-trash"></span> Remove</a></div></div>');
+			imageContainer.append('<div class="resource-image col-4" id="' + image + '"><img class="w-100" src="' + image + '"/><div class="text-center">' + (isDefault ? 'Default' : '<a href="#" class="defaultImage link-primary">Default</a>') + ' | <a href="#" class="deleteImage link-danger"><i class="bi bi-trash3-fill me-1"></i>Remove</a></div></div>');
 		};
 
-		if (resource.image)
-		{
+		if (resource.image) {
 			imageContents(resource.image, true);
 		}
 
-		for (var i = 0; i < resource.images.length; i++)
-		{
+		for (var i = 0; i < resource.images.length; i++) {
 			imageContents(resource.images[i]);
 		}
 	};
@@ -685,7 +672,8 @@ function ResourceManagement(opts) {
 		$('#requiresApproval').prop('checked', resource.requiresApproval && resource.requiresApproval == "1");
 
 		elements.autoAssign.prop('checked', resource.autoAssign && resource.autoAssign == "1");
-		elements.removeAllPermissions.addClass('no-show');
+
+		elements.removeAllPermissions.addClass('collapse');
 
 		elements.enableCheckIn.prop('checked', resource.enableCheckin && resource.enableCheckin == "1");
 		elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
@@ -699,31 +687,26 @@ function ResourceManagement(opts) {
 	};
 
 	var showHideAutoRelease = function () {
-		if (!elements.enableCheckIn.is(':checked'))
-		{
-			elements.autoReleaseMinutesDiv.addClass('no-show');
+		if (!elements.enableCheckIn.is(':checked')) {
+			elements.autoReleaseMinutesDiv.collapse('hide');
 		}
-		else
-		{
-			elements.autoReleaseMinutesDiv.removeClass('no-show');
+		else {
+			elements.autoReleaseMinutesDiv.collapse('show');
 		}
 	};
 
 	var showHideConcurrent = function () {
-		if (elements.checkAllowConcurrent.is(':checked'))
-		{
-			elements.allowConcurrentDiv.removeClass('no-show');
+		if (elements.checkAllowConcurrent.is(':checked')) {
+			elements.allowConcurrentDiv.collapse('show');
 		}
-		else
-		{
-			elements.allowConcurrentDiv.addClass('no-show');
+		else {
+			elements.allowConcurrentDiv.collapse('hide');
 		}
 	};
 
 	var setDuration = function (container, resourceDuration) {
 		var emptyIfZero = function (val) {
-			if (val == 0)
-			{
+			if (val == 0) {
 				return '';
 			}
 			return val;
@@ -853,14 +836,12 @@ function ResourceManagement(opts) {
 			statusForm.find(elements.newStatusReason).toggleClass('no-show');
 			statusForm.find(elements.existingStatusReason).toggleClass('no-show');
 
-			if (statusForm.find(elements.newStatusReason).hasClass('no-show'))
-			{
+			if (statusForm.find(elements.newStatusReason).hasClass('no-show')) {
 				statusForm.find(elements.statusReasons).data('prev', statusReasons.val());
 				statusForm.find(elements.statusReasons).val('');
 				statusForm.find(elements.resourceStatusReason).focus();
 			}
-			else
-			{
+			else {
 				statusForm.find(elements.statusReasons).val(statusReasons.data('prev'));
 				statusForm.find(elements.statusReasons).focus();
 			}
@@ -884,10 +865,9 @@ function ResourceManagement(opts) {
 	};
 
 	function populateReasonOptions(statusId, reasonsElement) {
-		reasonsElement.empty().append($('<option>', {value: '', text: '-'}));
+		reasonsElement.empty().append($('<option>', { value: '', text: '-' }));
 
-		if (statusId in reasons)
-		{
+		if (statusId in reasons) {
 			$.each(reasons[statusId], function (i, v) {
 				reasonsElement.append($('<option>', {
 					value: v.id, text: v.description
@@ -897,9 +877,8 @@ function ResourceManagement(opts) {
 	}
 
 	function setDaysHoursMinutes(elementPrefix, interval, attributeCheckbox) {
-		if (!interval)
-		{
-			interval = {days: null, hours: null, minutes: null, value: null};
+		if (!interval) {
+			interval = { days: null, hours: null, minutes: null, value: null };
 		}
 		$(elementPrefix + 'Days').val(interval.days);
 		$(elementPrefix + 'Hours').val(interval.hours);
@@ -915,15 +894,14 @@ function ResourceManagement(opts) {
 		var container = attributeCheckbox.closest('form');
 		var span = container.find(selector);
 
-		if (attributeValue == '' || attributeValue == undefined)
-		{
+		if (attributeValue == '' || attributeValue == undefined) {
 			attributeCheckbox.prop('checked', true);
-			span.hide();
+			span.collapse('hide');
 		}
-		else
-		{
+		else {
 			attributeCheckbox.prop('checked', false);
-			span.show();
+			span.collapse('show');
+
 		}
 	}
 
@@ -932,14 +910,12 @@ function ResourceManagement(opts) {
 			var selector = $(this).attr('data-related-inputs');
 			var span = container.find(selector);
 
-			if ($(this).is(":checked"))
-			{
+			if ($(this).is(":checked")) {
 				span.find("input[type=text],input[type=number]").val('');
-				span.hide();
+				span.collapse('hide');
 			}
-			else
-			{
-				span.show();
+			else {
+				span.collapse('show');
 			}
 		});
 	}
@@ -950,7 +926,7 @@ function ResourceManagement(opts) {
 
 	var changeUserPermissions = function () {
 		var resourceId = getActiveResourceId();
-		$.get(opts.permissionsUrl + '?dr=users', {rid: resourceId}, function (data) {
+		$.get(opts.permissionsUrl + '?dr=users', { rid: resourceId }, function (data) {
 			elements.resourceUserList.html(data);
 			$('.user-permission-spinner').addClass('no-show');
 		});
@@ -968,7 +944,7 @@ function ResourceManagement(opts) {
 		elements.allUsersList.empty();
 
 		var resourceId = getActiveResourceId();
-		$.get(opts.permissionsUrl + '?dr=usersAll', {rid: resourceId}, function (data) {
+		$.get(opts.permissionsUrl + '?dr=usersAll', { rid: resourceId }, function (data) {
 			elements.allUsersList.html(data);
 		});
 
@@ -977,7 +953,7 @@ function ResourceManagement(opts) {
 
 	var changeGroupPermissions = function () {
 		var resourceId = getActiveResourceId();
-		$.get(opts.permissionsUrl + '?dr=groups', {rid: resourceId}, function (data) {
+		$.get(opts.permissionsUrl + '?dr=groups', { rid: resourceId }, function (data) {
 			elements.resourceGroupList.html(data);
 			$('.group-permission-spinner').addClass('no-show');
 		});
@@ -995,7 +971,7 @@ function ResourceManagement(opts) {
 		elements.allGroupsList.empty();
 
 		var resourceId = getActiveResourceId();
-		$.get(opts.permissionsUrl + '?dr=groupsAll', {rid: resourceId}, function (data) {
+		$.get(opts.permissionsUrl + '?dr=groupsAll', { rid: resourceId }, function (data) {
 			elements.allGroupsList.html(data);
 		});
 

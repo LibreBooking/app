@@ -180,7 +180,8 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 
     public function GetPageSize()
     {
-        return $this->pageable->GetPageSize();
+        /* replaced by dataTable */
+        //return $this->pageable->GetPageSize();
     }
 
     public function BindGroups($groups)

@@ -115,12 +115,10 @@ function ScheduleManagement(opts) {
 			});
 
 			details.find('.changeLayoutButton').click(function (e) {
-				if ($(e.target).data('layout-type') == 0)
-				{
+				if ($(e.target).data('layout-type') == 0) {
 					showChangeLayout(e, reservable, blocked, timezone, (usesDailyLayouts.val() == 'false'));
 				}
-				else
-				{
+				else {
 					showChangeCustomLayout(id);
 				}
 				return false;
@@ -201,13 +199,11 @@ function ScheduleManagement(opts) {
 		});
 
 		elements.availableAllYear.on('click', function (e) {
-			if ($(e.target).is(':checked'))
-			{
+			if ($(e.target).is(':checked')) {
 				elements.availableStartDateTextbox.prop('disabled', true);
 				elements.availableEndDateTextbox.prop('disabled', true);
 			}
-			else
-			{
+			else {
 				elements.availableStartDateTextbox.prop('disabled', false);
 				elements.availableEndDateTextbox.prop('disabled', false);
 			}
@@ -308,18 +304,15 @@ function ScheduleManagement(opts) {
 		var startTime = elements.quickLayoutStart.val();
 		var endTime = elements.quickLayoutEnd.val();
 
-		if (intervalMinutes != '' && startTime != '' && endTime != '')
-		{
+		if (intervalMinutes != '' && startTime != '' && endTime != '') {
 			var layout = '';
 			var blocked = '';
 
-			if (startTime != '00:00')
-			{
+			if (startTime != '00:00') {
 				blocked += '00:00 - ' + startTime + "\n";
 			}
 
-			if (endTime != '00:00')
-			{
+			if (endTime != '00:00') {
 				blocked += endTime + ' - 00:00';
 			}
 
@@ -337,8 +330,7 @@ function ScheduleManagement(opts) {
 			var nextTime = new Date(currentTime);
 
 			var intervalMilliseconds = 60 * 1000 * intervalMinutes;
-			while (currentTime.getTime() < endDateTime.getTime())
-			{
+			while (currentTime.getTime() < endDateTime.getTime()) {
 				nextTime.setTime(nextTime.getTime() + intervalMilliseconds);
 
 				layout += getFormattedTime(currentTime) + ' - ';
@@ -368,43 +360,36 @@ function ScheduleManagement(opts) {
 
 		var reservableText = _.trim($('.reservableEdit:visible', elements.layoutDialog).val());
 		var reservable = _.split(reservableText, "\n");
-		if (reservable.length === 0)
-		{
+		if (reservable.length === 0) {
 			$('.blockedEdit:visible', elements.layoutDialog).val("00:00 - 00:00");
 			return;
 		}
 
 		var startIndex = 0;
-		if (!_.startsWith(reservable[0], '00:00') && !_.startsWith(reservable[0], '0:00'))
-		{
+		if (!_.startsWith(reservable[0], '00:00') && !_.startsWith(reservable[0], '0:00')) {
 			blocked += "00:00 - " + splitAndTrim(reservable)[0] + "\n";
 			startIndex = 1;
 		}
 
-		for (var i = startIndex; i < reservable.length; i++)
-		{
+		for (var i = startIndex; i < reservable.length; i++) {
 			var firstIteration = i === 0;
 			var lastIteration = i + 1 === reservable.length;
 
-			if (_.isEmpty(_.trim(reservable[i])))
-			{
+			if (_.isEmpty(_.trim(reservable[i]))) {
 				continue;
 			}
 
 			var current = splitAndTrim(reservable[i]);
 			var previous = null;
-			if (!firstIteration)
-			{
+			if (!firstIteration) {
 				previous = splitAndTrim(reservable[i - 1]);
 			}
 
-			if (!firstIteration && !lastIteration && current[0] != previous[1])
-			{
+			if (!firstIteration && !lastIteration && current[0] != previous[1]) {
 				blocked += previous[1] + " - " + current[0] + "\n";
 			}
 
-			if (lastIteration && current[1] != '00:00')
-			{
+			if (lastIteration && current[1] != '00:00') {
 				blocked += current[1] + ' - 00:00' + "\n";
 			}
 		}
@@ -440,8 +425,7 @@ function ScheduleManagement(opts) {
 		elements.layoutTimezone.val(timezone.val());
 		elements.usesSingleLayout.prop('checked', false);
 
-		if (usesSingleLayout)
-		{
+		if (usesSingleLayout) {
 			elements.usesSingleLayout.prop('checked', true);
 		}
 		elements.usesSingleLayout.trigger('change');
@@ -450,13 +434,11 @@ function ScheduleManagement(opts) {
 	};
 
 	var toggleLayoutChange = function (useSingleLayout) {
-		if (useSingleLayout)
-		{
+		if (useSingleLayout) {
 			$('#dailySlots').hide();
 			$('#staticSlots').show();
 		}
-		else
-		{
+		else {
 			$('#staticSlots').hide();
 			$('#dailySlots').show();
 		}
@@ -485,8 +467,7 @@ function ScheduleManagement(opts) {
 		var days = peakPlaceHolder.find('.peakDays');
 		var months = peakPlaceHolder.find('.peakMonths');
 
-		if (times.length > 0)
-		{
+		if (times.length > 0) {
 			var allDay = times.data('all-day');
 			var startTime = times.data('start-time');
 			var endTime = times.data('end-time');
@@ -500,12 +481,10 @@ function ScheduleManagement(opts) {
 			var endMonth = months.data('end-month');
 			var endDay = months.data('end-day');
 
-			if (allDay == 1)
-			{
+			if (allDay == 1) {
 				elements.peakAllDay.prop('checked', true);
 			}
-			else
-			{
+			else {
 				elements.peakAllDay.prop('checked', false);
 				$('#peakStartTime').val(startTime);
 				$('#peakEndTime').val(endTime);
@@ -521,12 +500,10 @@ function ScheduleManagement(opts) {
 				$('#peakDay' + day).closest('label').button('toggle');
 			});
 
-			if (allYear == 1)
-			{
+			if (allYear == 1) {
 				elements.peakAllYear.prop('checked', true);
 			}
-			else
-			{
+			else {
 				elements.peakAllYear.prop('checked', false);
 				$('#peakBeginMonth').val(beginMonth);
 				$('#peakBeginDay').val(beginDay);
@@ -544,34 +521,28 @@ function ScheduleManagement(opts) {
 	};
 
 	var peakOnEveryDayChanged = function () {
-		if ((elements.peakEveryDay).is(':checked'))
-		{
+		if ((elements.peakEveryDay).is(':checked')) {
 			elements.peakDayList.addClass('no-show');
 		}
-		else
-		{
+		else {
 			elements.peakDayList.removeClass('no-show');
 		}
 	};
 
 	var peakOnAllYearChanged = function () {
-		if ((elements.peakAllYear).is(':checked'))
-		{
+		if ((elements.peakAllYear).is(':checked')) {
 			elements.peakDateRange.addClass('no-show');
 		}
-		else
-		{
+		else {
 			elements.peakDateRange.removeClass('no-show');
 		}
 	};
 
 	var peakOnAllDayChanged = function () {
-		if ((elements.peakAllDay).is(':checked'))
-		{
+		if ((elements.peakAllDay).is(':checked')) {
 			elements.peakTimes.addClass('no-show');
 		}
-		else
-		{
+		else {
 			elements.peakTimes.removeClass('no-show');
 		}
 	};
@@ -608,8 +579,7 @@ function ScheduleManagement(opts) {
 		elements.availableEndDateTextbox.datepicker("setDate", dates.data('end-date'));
 		elements.availableEndDate.trigger('change');
 
-		if (!hasAvailability)
-		{
+		if (!hasAvailability) {
 			elements.availableAllYear.trigger('click');
 		}
 
@@ -623,13 +593,11 @@ function ScheduleManagement(opts) {
 
 	var toggleConcurrentReservations = function (scheduleId, toggle, container) {
 		var allow = toggle.data('allow') == 1;
-		if (allow)
-		{
+		if (allow) {
 			container.find('.allowConcurrentYes').addClass('no-show');
 			container.find('.allowConcurrentNo').removeClass('no-show');
 		}
-		else
-		{
+		else {
 			container.find('.allowConcurrentYes').removeClass('no-show');
 			container.find('.allowConcurrentNo').addClass('no-show');
 		}
@@ -655,8 +623,7 @@ function ScheduleManagement(opts) {
 
 		$('#customLayoutDialog').unbind('shown.bs.modal');
 		$('#customLayoutDialog').on('shown.bs.modal', function () {
-			if (_fullCalendar != null)
-			{
+			if (_fullCalendar != null) {
 				_fullCalendar.fullCalendar('destroy');
 			}
 			var calendar = $('#calendar');
@@ -674,8 +641,7 @@ function ScheduleManagement(opts) {
 					}
 				}],
 				dayClick: function (date, jsEvent, view) {
-					if (view.name == 'month')
-					{
+					if (view.name == 'month') {
 						calendar.fullCalendar('changeView', 'agendaDay');
 						calendar.fullCalendar('gotoDate', date);
 					}
@@ -686,8 +652,7 @@ function ScheduleManagement(opts) {
 				droppable: true,
 				eventOverlap: false,
 				select: function (start, end, jsEvent, view) {
-					if (view.name != 'month')
-					{
+					if (view.name != 'month') {
 						elements.confirmCreateSlotDialog.show();
 						elements.confirmCreateSlotDialog.position({
 							my: 'left bottom', at: 'left top', of: jsEvent

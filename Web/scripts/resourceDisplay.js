@@ -27,7 +27,7 @@ function ResourceDisplay(opts) {
     }
 
     function activateResourceDisplay(resourceId) {
-        $.blockUI({message: $('#wait-box')});
+        $.blockUI({ message: $('#wait-box') });
         ajaxPost(elements.activateResourceDisplayForm, null, null, function (data) {
             if (data.location) {
                 window.location = data.location;
@@ -59,13 +59,13 @@ function ResourceDisplay(opts) {
 
         var url = opts.url;
 
-        if(_.isEmpty(elements.startDate.val())){
+        if (_.isEmpty(elements.startDate.val())) {
             elements.rawStartDate.datepicker("setDate", new Date(opts.initialDate));
         }
 
         refreshResource();
 
-        setInterval(refreshResource, 60000);
+        //setInterval(refreshResource, 60000);
 
         elements.placeholder.on('click', '.reservePrompt', function (e) {
             var emailAddress = $('#emailAddress');
@@ -148,15 +148,15 @@ function ResourceDisplay(opts) {
         var beginIndex = 0;
 
         function showPopup() {
-            $('#reservation-box-wrapper').show();
+            /*$('#reservation-box-wrapper').show();
             var reservationBox = $('#reservation-box');
             reservationBox.show();
             var offsetFromTop = ($('body').height() - reservationBox.height()) / 2;
             reservationBox.css(
-                {top: offsetFromTop + 'px'}
+                { top: offsetFromTop + 'px' }
             );
 
-            $('#emailAddress').focus();
+            $('#emailAddress').focus();*/
         }
 
         function pauseRefresh() {
@@ -164,8 +164,8 @@ function ResourceDisplay(opts) {
         }
 
         function hidePopup() {
-            $('#reservation-box').hide();
-            $('#reservation-box-wrapper').hide();
+            // $('#reservation-box').hide();
+            // $('#reservation-box-wrapper').hide();
         }
 
         function resumeRefresh() {
@@ -173,24 +173,24 @@ function ResourceDisplay(opts) {
         }
 
         function refreshResource(next) {
-            if(!next){
-                next = function(){};
+            if (!next) {
+                next = function () { };
             }
             if (!_refreshEnabled) {
                 return next();
             }
             var startDate = elements.startDate.val();
-            if(!_.isEmpty(startDate)){
+            if (!_.isEmpty(startDate)) {
                 url = opts.url + "&sd=" + startDate
             }
-            
+
             ajaxGet(url, null, function (data) {
                 if (!_refreshEnabled) {
                     return;
                 }
                 elements.placeholder.html(data);
 
-                $('#resource-display').height($('body').height());
+                //$('#resource-display').height($('body').height());
 
                 var formCheckin = $('#formCheckin');
                 formCheckin.unbind('submit');
@@ -241,7 +241,7 @@ function ResourceDisplay(opts) {
 
     function showWait() {
         $('#waitIndicator').removeClass('no-show');
-        $.blockUI({message: $('#wait-box')});
+        $.blockUI({ message: $('#wait-box') });
     }
 
     function hideWait() {

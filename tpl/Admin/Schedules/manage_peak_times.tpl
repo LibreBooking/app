@@ -1,7 +1,8 @@
 {if $Layout->HasPeakTimesDefined()}
 	{assign var=p value=$Layout->GetPeakTimes()}
 
-	<div class="peakTimes" data-all-day="{$p->IsAllDay()}" data-start-time="{$p->GetBeginTime()->Format('h:i A')}" data-end-time="{$p->GetEndTime()->Format('h:i A')}">
+	<div class="peakTimes" data-all-day="{$p->IsAllDay()}" data-start-time="{$p->GetBeginTime()->Format('h:i A')}"
+		data-end-time="{$p->GetEndTime()->Format('h:i A')}">
 		{if $p->IsAllDay()}
 			{translate key=AllDay}
 		{else}
@@ -18,12 +19,8 @@
 		{/if}
 	</div>
 
-	<div class="peakMonths"
-		 data-all-year="{$p->IsAllYear()}"
-		 data-begin-month="{$p->GetBeginMonth()}"
-		 data-begin-day="{$p->GetBeginDay()}"
-		 data-end-month="{$p->GetEndMonth()}"
-		 data-end-day="{$p->GetEndDay()}">
+	<div class="peakMonths" data-all-year="{$p->IsAllYear()}" data-begin-month="{$p->GetBeginMonth()}"
+		data-begin-day="{$p->GetBeginDay()}" data-end-month="{$p->GetEndMonth()}" data-end-day="{$p->GetEndDay()}">
 		{if $p->IsAllYear()}
 			{translate key=AllYear}
 		{else}

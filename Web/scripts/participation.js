@@ -1,5 +1,4 @@
-function Participation(opts)
-{
+function Participation(opts) {
 	var options = opts;
 
 	var elements = {
@@ -9,8 +8,8 @@ function Participation(opts)
 		jsonResult: $('#jsonResult')
 	};
 
-	Participation.prototype.initReservation = function() {
-		elements.invitationAction.click(function(e) {
+	Participation.prototype.initReservation = function () {
+		elements.invitationAction.click(function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 			elements.indicator.show();
@@ -18,19 +17,19 @@ function Participation(opts)
 		});
 	};
 
-	Participation.prototype.initParticipation = function() {
+	Participation.prototype.initParticipation = function () {
 
-		elements.invitationAction.click(function() {
+		elements.invitationAction.click(function () {
 			elements.jsonResult.hide();
 
-			var li = $(this).parents('li');
-			li.last('button').append(elements.indicator);
+			var td = $(this).parents('td');
+			td.last('button').append(elements.indicator);
 			elements.indicator.show();
-			var referenceNumber = li.find('.referenceNumber').val();
+			var referenceNumber = td.find('.referenceNumber').val();
 			RespondToInvitation($(this).val(), referenceNumber, $(this));
 		});
-		
-		$('.reservation').each(function(){
+
+		$('.reservation').each(function () {
 			var refNum = $(this).attr('referenceNumber');
 			$(this).attachReservationPopup(refNum);
 		});
@@ -42,15 +41,14 @@ function Participation(opts)
 		$.ajax({
 			url: 'participation.php',
 			dataType: 'json',
-			data: {ia: action, rn: referenceNumber, rs: options.responseType},
-			success: function(data) {
-				if (data && data != null)
-				{
+			data: { ia: action, rn: referenceNumber, rs: options.responseType },
+			success: function (data) {
+				if (data && data != null) {
 					elements.indicator.hide();
 					element.hide();
 					element.after('<div class="alert alert-danger" id="invite-error">' + data + '</span>');
 				}
-				else{
+				else {
 					window.location.reload();
 				}
 			}

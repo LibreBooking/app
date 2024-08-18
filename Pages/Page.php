@@ -88,6 +88,8 @@ abstract class Page implements IPage
         $this->smarty->assign('checkinAdminOnly', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_ADMIN_ONLY, new BooleanConverter()));
         $this->smarty->assign('checkoutAdminOnly', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKOUT_ADMIN_ONLY, new BooleanConverter()));
 
+        $this->smarty->assign('cssTheme', (Configuration::Instance()->GetKey(ConfigKeys::CSS_THEME) ?? 'default'));
+
         $this->smarty->assign('LogoUrl', 'librebooking.png');
         if (file_exists($this->path . 'img/custom-logo.png')) {
             $this->smarty->assign('LogoUrl', 'custom-logo.png');
@@ -104,7 +106,7 @@ abstract class Page implements IPage
             $this->smarty->assign('CssUrl', 'custom-style.css');
         }
 
-        $this->smarty->assign('FaviconUrl', 'favicon.ico');
+        $this->smarty->assign('FaviconUrl', 'favicon.png');
         if (file_exists($this->path . 'custom-favicon.png')) {
             $this->smarty->assign('FaviconUrl', 'custom-favicon.png');
         }

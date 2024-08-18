@@ -465,6 +465,7 @@ class es extends en_gb
         $strings['LimitAttributeScope'] = 'Recopilar en casos específicos';
         $strings['CollectFor'] = 'Recopilar para';
         $strings['SignIn'] = 'Iniciar sesión';
+        $strings['SignInWith'] = 'Iniciar sesión con';
         $strings['AllParticipants'] = 'Todos los participantes';
         $strings['RegisterANewAccount'] = 'Registrar una nueva cuenta';
         $strings['Dates'] = 'Fechas';
@@ -1008,7 +1009,7 @@ class es extends en_gb
 
         //Missing Check In/Out Reservations in Dashboard
         $strings['NoMissingCheckOutReservations'] = 'No hay reservas de salida que falten';
-        $strings['MissingCheckOutReservations'] = 'Reservas de salida que faltan';        
+        $strings['MissingCheckOutReservations'] = 'Reservas de salida que faltan';
         //End Missing Check In/Out Reservations in Dashboard
 
         //Schedule Resource Permissions

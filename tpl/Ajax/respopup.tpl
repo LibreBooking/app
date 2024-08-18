@@ -14,10 +14,10 @@
         {/if}
     {/if}
 
-    <div class="res_popup_details" style="margin:0">
+    <div class="res_popup_details mb-0">
 
         {capture "name"}
-            <div class="user">
+            <div class="user fw-bold">
                 {if ($hideUserInfo || $hideDetails) || !$isResourcePermitted}
                     {translate key=Private}
                 {else}
@@ -66,7 +66,7 @@
                 {translate key="Resources"} ({$resources|@count}):
                 {foreach from=$resources item=resource name=resource_loop}
                     {$resource->Name()}
-                    
+
                     {if !$smarty.foreach.resource_loop.last}, {/if}
                 {/foreach}
                 {if !$isResourcePermitted}
@@ -106,7 +106,8 @@
 
         {capture "description"}
             {if !$hideDetails && $isResourcePermitted}
-                <div class="summary">{if $summary neq ''}{$summary|truncate:300:"..."|nl2br}{else}{translate key=NoDescriptionLabel}{/if}</div>
+                <div class="summary">
+                    {if $summary neq ''}{$summary|truncate:300:"..."|nl2br}{else}{translate key=NoDescriptionLabel}{/if}</div>
             {/if}
         {/capture}
         {$formatter->Add('description', $smarty.capture.description)}
@@ -114,7 +115,7 @@
         {capture "attributes"}
             {if !$hideDetails && $isResourcePermitted}
                 {if $attributes|default:array()|count > 0}
-                    <br/>
+                    <br />
                     {foreach from=$attributes item=attribute}
                         {assign var=attr value="att`$attribute->Id()`"}
                         {capture name="attr"}

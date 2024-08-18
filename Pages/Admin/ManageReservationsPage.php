@@ -489,7 +489,8 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 
     public function GetPageSize()
     {
-        return $this->pageablePage->GetPageSize();
+        /* replaced by dataTable */
+        //return $this->pageablePage->GetPageSize();
     }
 
     public function BindPageInfo(PageInfo $pageInfo)

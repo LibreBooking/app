@@ -10,6 +10,7 @@ class ConfigKeys
     public const CREDITS_ENABLED = 'enabled';
     public const CREDITS_ALLOW_PURCHASE = 'allow.purchase';
     public const CSS_EXTENSION_FILE = 'css.extension.file';
+    public const CSS_THEME = 'css.theme';
     public const DEFAULT_HOMEPAGE = 'default.homepage';
     public const DEFAULT_PAGE_SIZE = 'default.page.size';
     public const DISABLE_PASSWORD_RESET = 'disable.password.reset';
@@ -157,7 +158,7 @@ class ConfigKeys
     public const REGISTRATION_REQUIRE_PHONE = 'require.phone';
     public const REGISTRATION_REQUIRE_ORGANIZATION = 'require.organization';
     public const REGISTRATION_REQUIRE_POSITION = 'require.position';
-    
+
     public const LOGGING_FOLDER = 'folder';
     public const LOGGING_LEVEL = 'level';
     public const LOGGING_SQL = 'sql';
@@ -176,9 +177,9 @@ class ConfigKeys
     public const FACEBOOK_REDIRECT_URI = 'facebook.redirect.uri';
 
     public const YEARS_OLD_DATA = 'years.old.data';
-    public const DELETE_OLD_ANNOUNCEMENTS = 'delete.old.announcements'; 
-    public const DELETE_OLD_BLACKOUTS = 'delete.old.blackouts'; 
-    public const DELETE_OLD_RESERVATIONS = 'delete.old.reservations'; 
+    public const DELETE_OLD_ANNOUNCEMENTS = 'delete.old.announcements';
+    public const DELETE_OLD_BLACKOUTS = 'delete.old.blackouts';
+    public const DELETE_OLD_RESERVATIONS = 'delete.old.reservations';
 }
 
 class ConfigSection

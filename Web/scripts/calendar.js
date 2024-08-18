@@ -18,11 +18,11 @@ function Calendar(opts) {
     Calendar.prototype.init = function () {
 
         function showLoadingIndicator() {
-            elements.loadingIndicator.removeClass('no-show');
+            elements.loadingIndicator.removeClass('d-none');
         }
 
         function hideLoadingIndicator() {
-            elements.loadingIndicator.addClass('no-show');
+            elements.loadingIndicator.addClass('d-none');
         }
 
         _fullCalendar = $('#calendar').fullCalendar({
@@ -65,8 +65,8 @@ function Calendar(opts) {
             timeFormat: _options.timeFormat,
             firstDay: _options.firstDay,
             views: {
-                agendaDay: {slotLabelFormat: _options.timeFormat},
-                agendaWeek: {slotLabelFormat: _options.timeFormat}
+                agendaDay: { slotLabelFormat: _options.timeFormat },
+                agendaWeek: { slotLabelFormat: _options.timeFormat }
             },
             slotLabelFormat: _options.timeFormat,
             loading: function (isLoading) {
@@ -77,11 +77,10 @@ function Calendar(opts) {
                     hideLoadingIndicator();
                 }
             },
-            eventDrop: function(event, delta, revertFunc) {
-                var handleMoveResponse = function(result) {
+            eventDrop: function (event, delta, revertFunc) {
+                var handleMoveResponse = function (result) {
                     hideLoadingIndicator();
-                    if (result.errors.length > 0)
-                    {
+                    if (result.errors.length > 0) {
                         revertFunc();
 
                         var messages = result.errors.join('</li><li>');
@@ -151,8 +150,8 @@ function Calendar(opts) {
         $('#subscriptionContainer').on('click', '#turnOnSubscription', function (e) {
             e.preventDefault();
             PerformAsyncAction($(this), function () {
-                    return opts.subscriptionEnableUrl;
-                },
+                return opts.subscriptionEnableUrl;
+            },
                 null,
                 function () {
                     return rebindSubscriptionData('', '', '');
@@ -165,7 +164,7 @@ function Calendar(opts) {
         });
 
         $('#dayDialogCancel').click(function (e) {
-            dayDialog.hide();
+            dayDialog.addClass('d-none');
         });
 
         $('#dayDialogView').click(function (e) {
@@ -186,14 +185,14 @@ function Calendar(opts) {
             }
             else {
                 if (!resourceGroupsContainer.data('positionSet')) {
-                    resourceGroupsContainer.position({my: 'left top', at: 'right bottom', of: '#showResourceGroups'})
+                    resourceGroupsContainer.position({ my: 'left top', at: 'right bottom', of: '#showResourceGroups' })
                 }
                 resourceGroupsContainer.data('positionSet', true);
                 resourceGroupsContainer.show();
             }
         });
 
-        elements.moveErrorOk.click(function(e) {
+        elements.moveErrorOk.click(function (e) {
             e.preventDefault();
             elements.moveErrorDialog.modal('hide');
         });
@@ -223,7 +222,7 @@ function Calendar(opts) {
             participantFilter.userAutoComplete(opts.autocompleteUrl, selectParticipant);
         }
 
-        $("#clearUserFilter").on('click', function(e) {
+        $("#clearUserFilter").on('click', function (e) {
             _options.eventsData.uid = null;
             _options.eventsData.pid = null;
             ownerFilter.val('');
@@ -327,7 +326,7 @@ function Calendar(opts) {
         }
         else {
             //dayDialog.dialog({modal: false, height: 70, width: 'auto'});
-            dayDialog.show();
+            dayDialog.removeClass('d-none');
             dayDialog.position({
                 my: 'left bottom',
                 at: 'left top',
@@ -367,7 +366,7 @@ function Calendar(opts) {
             "&sd=" + getUrlFormattedDate(dateVar) +
             "&ed=" + getUrlFormattedDate(end) +
             "&redirect=" + _options.returnTo + encodeURIComponent('?ct=' + view.name + '&start=' + year + '-' + month + '-' + day)
-        ;
+            ;
 
         window.location = url;
     };

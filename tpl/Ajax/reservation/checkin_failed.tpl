@@ -1,9 +1,9 @@
 <div>
 	<div id="reservation-response-image">
-		<span class="fa fa-warning fa-5x error"></span>
+		<i class="bi bi-exclamation-triangle-fill fs-1 text-danger"></i>
 	</div>
 
-	<div id="failed-message" class="reservation-message">
+	<div id="failed-message" class="reservation-message fw-bold fs-4">
 		{if $IsCheckingIn}
 			{translate key=CheckInFailed}
 		{else}
@@ -18,8 +18,8 @@
 	</div>
 
 	<div>
-		<button id="btnSaveFailed" class="btn btn-warning"><span
-					class="fa fa-arrow-circle-left"></span> {translate key='Close'}</button>
+		<button id="btnSaveFailed" class="btn btn-warning text-white"><i
+				class="bi bi-arrow-left-circle-fill me-1"></i>{translate key='Close'}</button>
 	</div>
 
 </div>

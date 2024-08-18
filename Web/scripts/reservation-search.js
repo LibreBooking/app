@@ -10,7 +10,7 @@ function ReservationSearch(options) {
 		// thisweek: $('#thisweek'),
 		daterange: $('input[name="AVAILABILITY_RANGE"]'),
 		beginDate: $('#beginDate'),
-		endDate: $('#endDate')
+		endDate: $('#endDate'),
 	};
 
 	var init = function () {
@@ -21,33 +21,28 @@ function ReservationSearch(options) {
 		elements.userFilter.userAutoComplete(options.autocompleteUrl, selectUser);
 
 		elements.userFilter.change(function () {
-			if ($(this).val() == '')
-			{
+			if ($(this).val() == '') {
 				elements.userId.val('');
 			}
 		});
 
 		elements.daterange.change(function (e) {
-			if ($(e.target).val() == 'daterange')
-			{
+			if ($(e.target).val() == 'daterange') {
 				elements.beginDate.removeAttr('disabled');
 				elements.endDate.removeAttr('disabled');
 			}
-			else
-			{
+			else {
 				elements.beginDate.val('').attr('disabled', 'disabled');
 				elements.endDate.val('').attr('disabled', 'disabled');
 			}
 		});
 
 		$('input[name="AVAILABILITY_RANGE"]').change(function (e) {
-			if ($(e.target).val() == 'daterange')
-			{
+			if ($(e.target).val() == 'daterange') {
 				elements.beginDate.removeAttr('disabled');
 				elements.endDate.removeAttr('disabled');
 			}
-			else
-			{
+			else {
 				elements.beginDate.val('').attr('disabled', 'disabled');
 				elements.endDate.val('').attr('disabled', 'disabled');
 			}
@@ -66,16 +61,16 @@ function ReservationSearch(options) {
 			var seriesId = $(this).attr('data-seriesId');
 			var refNum = $(this).attr('data-refnum');
 			$(this).attachReservationPopup(refNum, options.popupUrl);
-
+			/* Replaced by Bootstrap 5
 			$(this).hover(function (e) {
 				$(this).find('td').addClass('highlight');
 			}, function (e) {
 				$(this).find('td').removeClass('highlight');
-			});
+			});*/
 		});
 	};
 
-	elements.reservationResults.delegate('tr.editable', 'click', function () {
+	elements.reservationResults.delegate('tr.editable', 'click', function (e) {
 		viewReservation($(this).attr('data-refnum'));
 	});
 
@@ -84,5 +79,5 @@ function ReservationSearch(options) {
 		window.location = options.reservationUrlTemplate.replace('[refnum]', referenceNumber);
 	}
 
-	return {init: init};
+	return { init: init };
 }
