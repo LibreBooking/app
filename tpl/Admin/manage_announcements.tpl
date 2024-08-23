@@ -307,11 +307,13 @@
 			//$('#add-announcement-panel').showHidePanel();
 
 			$('#announcementGroups, #editUserGroups').select2({
-				placeholder: '{translate key=UsersInGroups}'
+				placeholder: '{translate key=UsersInGroups}',
+				dropdownParent: $('#editDialog')
 			});
 
 			$('#resourceGroups, #editResourceGroups').select2({
-				placeholder: '{translate key=UsersWithAccessToResources}'
+				placeholder: '{translate key=UsersWithAccessToResources}',
+				dropdownParent: $('#editDialog')
 			});
 		});
 	</script>
