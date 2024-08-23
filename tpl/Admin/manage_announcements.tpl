@@ -175,7 +175,7 @@
 
 	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
 		aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<form id="editForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -187,7 +187,7 @@
 							<label class="fw-bold" for="editText">{translate key=Announcement}<i
 									class="bi bi-asterisk text-danger align-top form-control-feedback"
 									style="font-size: 0.5rem;"></i></label>
-							<textarea id="editText" class="form-control  has-feedback required"
+							<textarea id="editText" class="form-control  has-feedback required" rows="5"
 								{formname key=ANNOUNCEMENT_TEXT}></textarea>
 						</div>
 						<div class="form-group mb-2">
