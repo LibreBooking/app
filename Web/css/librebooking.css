@@ -43,10 +43,10 @@
     --primary-disabled: #0091e6;
 }
 
-[data-bs-theme="pastel_blue"] {
-    --primary: #5d9b9b;
-    --primary-hover: #4d8080;
-    --primary-disabled: #70a9a9;
+[data-bs-theme="orange"] {
+    --primary: #be6e34;
+    --primary-hover: #a05c2c;
+    --primary-disabled: #e4b99b;
 }
 
 html {
