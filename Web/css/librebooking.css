@@ -101,6 +101,16 @@ img.logo {
     border-color: var(--primary);
 }
 
+.page-link:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.disabled>.page-link {
+    border-color: var(--primary);
+}
+
 .btn-primary {
     --bs-btn-bg: var(--primary);
     --bs-btn-border-color: var(--primary-hover);
