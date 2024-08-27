@@ -655,7 +655,7 @@
 						<label for="resourceImage" class="off-screen no-show">{translate key=Image}</label>
 						<div class="dropzone text-center border border-2 rounded-3 bg-light" id="changeResourceImage">
 							<div class="dropzone-empty">
-								<i class="bi bi-filetype-pdf fs-1"></i><br />
+								<i class="bi bi-image fs-1"></i><br />
 								{translate key=ChooseOrDropFile}
 							</div>
 							<div class="dropzone-preview"></div>
