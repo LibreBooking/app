@@ -306,12 +306,20 @@
 
 			//$('#add-announcement-panel').showHidePanel();
 
-			$('#announcementGroups, #editUserGroups').select2({
+			$('#announcementGroups').select2({
+				placeholder: '{translate key=UsersInGroups}'
+			});
+
+			$('#editUserGroups').select2({
 				placeholder: '{translate key=UsersInGroups}',
 				dropdownParent: $('#editDialog')
 			});
 
-			$('#resourceGroups, #editResourceGroups').select2({
+			$('#resourceGroups').select2({
+				placeholder: '{translate key=UsersWithAccessToResources}'
+			});
+
+			$('#editResourceGroups').select2({
 				placeholder: '{translate key=UsersWithAccessToResources}',
 				dropdownParent: $('#editDialog')
 			});
