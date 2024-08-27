@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationSavePresenterTests extends TestBase
+class ReservationSavePresenterTest extends TestBase
 {
     /**
      * @var UserSession

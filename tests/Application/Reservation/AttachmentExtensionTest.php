@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class AttachmentExtensionTests extends TestBase
+class AttachmentExtensionTest extends TestBase
 {
     /**
      * @var ReservationAttachmentRule

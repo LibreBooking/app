@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class DailyLayoutTests extends TestBase
+class DailyLayoutTest extends TestBase
 {
     public function setUp(): void
     {

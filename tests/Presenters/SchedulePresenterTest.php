@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Presenters/Schedule/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
-class SchedulePresenterTests extends TestBase
+class SchedulePresenterTest extends TestBase
 {
     private $scheduleId;
     private $currentSchedule;
@@ -908,6 +908,8 @@ class FakeSchedulePage implements ISchedulePage
      * @var int
      */
     public $_ParticipantId;
+
+    public function BindViewableResourceReservations($resourceIds) { }
 
     public function TakingAction()
     {

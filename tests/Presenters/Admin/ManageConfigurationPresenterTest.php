@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageConfigurationPresenter.php');
 
-class ManageConfigurationPresenterTests extends TestBase
+class ManageConfigurationPresenterTest extends TestBase
 {
     /**
      * @var ManageConfigurationPresenter

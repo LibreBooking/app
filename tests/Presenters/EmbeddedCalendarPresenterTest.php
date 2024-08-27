@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/EmbeddedCalendarPresenter.php');
 
-class EmbeddedCalendarPresenterTests extends TestBase
+class EmbeddedCalendarPresenterTest extends TestBase
 {
     /**
      * @var FakeEmbeddedCalendarPage

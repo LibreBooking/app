@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
 
-class SchedulesWebServiceTests extends TestBase
+class SchedulesWebServiceTest extends TestBase
 {
     /**
      * @var SchedulesWebService

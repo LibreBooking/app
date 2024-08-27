@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class WebAuthenticationTests extends TestBase
+class WebAuthenticationTest extends TestBase
 {
     /**
      * @var WebLoginContext

@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'Pages/RegistrationPage.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class RegisterPresenterTests extends TestBase
+class RegisterPresenterTest extends TestBase
 {
     /**
      * @var FakeRegistrationPage

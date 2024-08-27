@@ -102,7 +102,7 @@ class TestSlim extends Slim\Slim
 }
 
 
-class SlimWebServiceRegistryTests extends TestBase
+class SlimWebServiceRegistryTest extends TestBase
 {
     public function setUp(): void
     {

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageQuotasPage.php');
 
-class ManageQuotasPresenterTests extends TestBase
+class ManageQuotasPresenterTest extends TestBase
 {
     /**
      * @var IManageQuotasPage|PHPUnit_Framework_MockObject_MockObject

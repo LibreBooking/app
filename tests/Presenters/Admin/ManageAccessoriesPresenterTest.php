@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageAccessoriesPage.php');
 
-class ManageAccessoriesPresenterTests extends TestBase
+class ManageAccessoriesPresenterTest extends TestBase
 {
     /**
      * @var IManageAccessoriesPage|PHPUnit_Framework_MockObject_MockObject

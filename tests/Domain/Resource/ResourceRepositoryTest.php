@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'tests/fakes/namespace.php');
 
-class ResourceRepositoryTests extends TestBase
+class ResourceRepositoryTest extends TestBase
 {
     /**
      * @var ResourceRepository

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class CalendarSubscriptionServiceTests extends TestBase
+class CalendarSubscriptionServiceTest extends TestBase
 {
     /**
      * @var CalendarSubscriptionService

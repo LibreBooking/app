@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
-class AttributeValidatorTests extends TestBase
+class AttributeValidatorTest extends TestBase
 {
     public function testChecksAttributesAgainstService()
     {

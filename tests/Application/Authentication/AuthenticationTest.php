@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 
-class AuthenticationTests extends TestBase
+class AuthenticationTest extends TestBase
 {
     private $username;
     private $password;

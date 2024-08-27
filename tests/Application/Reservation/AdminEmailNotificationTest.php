@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-class AdminEmailNotificationTests extends TestBase
+class AdminEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class ScheduleRepositoryTests extends TestBase
+class ScheduleRepositoryTest extends TestBase
 {
     /**
      * @var ScheduleRepository

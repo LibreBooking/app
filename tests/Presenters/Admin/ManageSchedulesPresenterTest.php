@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Pages/Admin/ManageSchedulesPage.php');
 
-class ManageSchedulesPresenterTests extends TestBase
+class ManageSchedulesPresenterTest extends TestBase
 {
     /**
      * @var IUpdateSchedulePage|PHPUnit_Framework_MockObject_MockObject

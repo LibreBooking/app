@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/ResourcesWriteWebService.php');
 
-class ResourcesWriteWebServiceTests extends TestBase
+class ResourcesWriteWebServiceTest extends TestBase
 {
     /**
      * @var ResourcesWriteWebService

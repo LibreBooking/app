@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/ResourceService.php');
 
-class ResourceServiceTests extends TestBase
+class ResourceServiceTest extends TestBase
 {
     /**
      * @var IPermissionService|PHPUnit_Framework_MockObject_MockObject

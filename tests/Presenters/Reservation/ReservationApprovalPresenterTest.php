@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationApprovalPresenter.php');
 
-class ReservationApprovalPresenterTests extends TestBase
+class ReservationApprovalPresenterTest extends TestBase
 {
     /**
      * @var IReservationApprovalPage|PHPUnit_Framework_MockObject_MockObject

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
-class AttributeServiceTests extends TestBase
+class AttributeServiceTest extends TestBase
 {
     /**
      * @var AttributeService

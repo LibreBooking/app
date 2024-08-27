@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/User/ManageUsersService.php');
 
-class ManageUsersServiceTests extends TestBase
+class ManageUsersServiceTest extends TestBase
 {
     /**
      * @var ManageUsersService

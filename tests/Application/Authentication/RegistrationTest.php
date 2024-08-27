@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class RegistrationTests extends TestBase
+class RegistrationTest extends TestBase
 {
     /**
      * @var Registration

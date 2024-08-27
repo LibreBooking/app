@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class CustomAttributeValidationRuleTests extends TestBase
+class CustomAttributeValidationRuleTest extends TestBase
 {
     /**
      * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject

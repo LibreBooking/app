@@ -1,6 +1,6 @@
 <?php
 
-class ReservationHandlerTests extends TestBase
+class ReservationHandlerTest extends TestBase
 {
     public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()
     {

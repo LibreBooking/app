@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class ResourceAdminResourceRepositoryTests extends TestBase
+class ResourceAdminResourceRepositoryTest extends TestBase
 {
     /**
      * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject

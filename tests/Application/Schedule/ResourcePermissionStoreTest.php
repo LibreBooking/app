@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class ResourcePermissionStoreTests extends TestBase
+class ResourcePermissionStoreTest extends TestBase
 {
     public function testRepositoryIsAccessedForUserPermissionInformation()
     {

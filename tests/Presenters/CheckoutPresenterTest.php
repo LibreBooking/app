@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Credits/CheckoutPresenter.php');
 
-class CheckoutPresenterTests extends TestBase
+class CheckoutPresenterTest extends TestBase
 {
     /**
      * @var FakeCheckoutPage

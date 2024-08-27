@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class ValidatorTests extends TestBase
+class ValidatorTest extends TestBase
 {
     public function testValidatorsAreEvaluatedWhenRegistered()
     {

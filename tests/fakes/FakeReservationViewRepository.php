@@ -51,6 +51,10 @@ class FakeReservationViewRepository implements IReservationViewRepository
         $this->_FilterResults = new PageableData();
     }
 
+    public function GetReservationsPendingApproval(Date $startDate, $userIds = ReservationViewRepository::ALL_USERS, $userLevel = ReservationUserLevel::OWNER, $scheduleIds = ReservationViewRepository::ALL_SCHEDULES, $resourceIds = ReservationViewRepository::ALL_RESOURCES, $consolidateByReferenceNumber = false, $participantIds = ReservationViewRepository::ALL_USERS) { }
+
+    public function GetReservationsMissingCheckInCheckOut(?Date $startDate = null, Date $endDate, $userIds = ReservationViewRepository::ALL_USERS, $userLevel = ReservationUserLevel::OWNER, $scheduleIds = ReservationViewRepository::ALL_SCHEDULES, $resourceIds = ReservationViewRepository::ALL_RESOURCES, $consolidateByReferenceNumber = false, $participantIds = ReservationViewRepository::ALL_USERS) { }
+
     public function GetReservationForEditing($referenceNumber)
     {
         return $this->_ReservationView;

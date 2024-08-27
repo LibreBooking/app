@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/AttributesWebService.php');
 
-class AttributesWebServiceTests extends TestBase
+class AttributesWebServiceTest extends TestBase
 {
     /**
      * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject

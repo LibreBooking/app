@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class QuotaWhenModifyingTests extends TestBase
+class QuotaWhenModifyingTest extends TestBase
 {
     /**
      * @var string

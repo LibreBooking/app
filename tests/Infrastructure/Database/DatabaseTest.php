@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 
-class DatabaseTests extends TestBase
+class DatabaseTest extends TestBase
 {
     public $db = null;
 

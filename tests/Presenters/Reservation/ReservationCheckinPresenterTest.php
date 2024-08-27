@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationCheckinPresenter.php');
 
-class ReservationCheckinPresenterTests extends TestBase
+class ReservationCheckinPresenterTest extends TestBase
 {
     /**
      * @var FakeReservationCheckinPage

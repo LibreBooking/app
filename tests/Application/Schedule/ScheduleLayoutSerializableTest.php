@@ -1,6 +1,6 @@
 <?php
 
-class ScheduleLayoutSerializableTests extends TestBase
+class ScheduleLayoutSerializableTest extends TestBase
 {
     public function setUp(): void
     {

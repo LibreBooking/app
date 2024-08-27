@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageResourceTypesPresenter.php');
 
-class ManageResourceTypesPresenterTests extends TestBase
+class ManageResourceTypesPresenterTest extends TestBase
 {
     /**
      * @var ManageResourceTypesPresenter

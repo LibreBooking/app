@@ -1,6 +1,6 @@
 <?php
 
-class AccountActivationTests extends TestBase
+class AccountActivationTest extends TestBase
 {
     /**
      * @var IAccountActivationRepository|PHPUnit_Framework_MockObject_MockObject

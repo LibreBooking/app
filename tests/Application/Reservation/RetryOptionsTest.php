@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class RetryOptionsTests extends TestBase
+class RetryOptionsTest extends TestBase
 {
     /**
      * @var FakeReservationConflictIdentifier

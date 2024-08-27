@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
 
-class UsersWebServiceTests extends TestBase
+class UsersWebServiceTest extends TestBase
 {
     /**
      * @var FakeRestServer

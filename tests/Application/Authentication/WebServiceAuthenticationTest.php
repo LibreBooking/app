@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class WebServiceAuthenticationTests extends TestBase
+class WebServiceAuthenticationTest extends TestBase
 {
     /**
      * @var FakeAuth

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class ManageReservationsServiceTests extends TestBase
+class ManageReservationsServiceTest extends TestBase
 {
     /**
      * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject

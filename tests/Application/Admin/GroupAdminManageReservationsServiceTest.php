@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class GroupAdminManageReservationsServiceTests extends TestBase
+class GroupAdminManageReservationsServiceTest extends TestBase
 {
     public function testGetsListOfReservationsThatThisUserCanAdminister()
     {

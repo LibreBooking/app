@@ -4,7 +4,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 require_once(ROOT_DIR . 'WebServices/UsersWriteWebService.php');
 
-class UsersWriteWebServiceTests extends TestBase
+class UsersWriteWebServiceTest extends TestBase
 {
     /**
      * @var UsersWriteWebService

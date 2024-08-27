@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'WebServices/AccessoriesWebService.php');
 
 
-class AccessoriesWebServiceTests extends TestBase
+class AccessoriesWebServiceTest extends TestBase
 {
     /**
      * @var AccessoriesWebService

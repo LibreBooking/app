@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/MonitorDisplayPresenter.php');
 
-class MonitorDisplayPresenterTests extends TestBase
+class MonitorDisplayPresenterTest extends TestBase
 {
     /**
      * @var TestMonitorDisplayPage

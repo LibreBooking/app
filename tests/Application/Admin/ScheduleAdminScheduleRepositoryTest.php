@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class ScheduleAdminScheduleRepositoryTests extends TestBase
+class ScheduleAdminScheduleRepositoryTest extends TestBase
 {
     /**
      * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject

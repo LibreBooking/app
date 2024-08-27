@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageBlackoutsPresenter.php');
 
-class ManageBlackoutsPresenterTests extends TestBase
+class ManageBlackoutsPresenterTest extends TestBase
 {
     /**
      * @var ManageBlackoutsPresenter

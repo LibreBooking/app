@@ -1,6 +1,6 @@
 <?php
 
-class EditReservationPresenterTests extends TestBase
+class EditReservationPresenterTest extends TestBase
 {
     /**
      * @var UserSession

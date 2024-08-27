@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationStartTimeRuleTests extends TestBase
+class ReservationStartTimeRuleTest extends TestBase
 {
     /**
      * @var IScheduleRepository

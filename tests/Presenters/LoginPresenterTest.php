@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'Pages/LoginPage.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class LoginPresenterTests extends TestBase
+class LoginPresenterTest extends TestBase
 {
     /**
      * @var FakeWebAuthentication
@@ -201,7 +201,7 @@ class LoginPresenterTests extends TestBase
     }
 }
 
-class FakeLoginPage extends FakePageBase implements ILoginPage
+abstract class FakeLoginPage extends FakePageBase implements ILoginPage
 {
     public $_EmailAddress;
     public $_Password;

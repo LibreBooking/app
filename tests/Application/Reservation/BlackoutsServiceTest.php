@@ -4,7 +4,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php');
 
-class BlackoutsServiceTests extends TestBase
+class BlackoutsServiceTest extends TestBase
 {
     /**
      * @var ManageBlackoutsService

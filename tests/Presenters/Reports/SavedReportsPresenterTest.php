@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reports/SavedReportsPresenter.php');
 
-class SavedReportsPresenterTests extends TestBase
+class SavedReportsPresenterTest extends TestBase
 {
     /**
      * @var SavedReportsPresenter

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManagePaymentsPresenter.php');
 
-class ManagePaymentsPresenterTests extends TestBase
+class ManagePaymentsPresenterTest extends TestBase
 {
     /**
      * @var FakeManagePaymentsPage

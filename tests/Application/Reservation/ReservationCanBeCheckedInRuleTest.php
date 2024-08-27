@@ -1,6 +1,6 @@
 <?php
 
-class ReservationCanBeCheckedInRuleTests extends TestBase
+class ReservationCanBeCheckedInRuleTest extends TestBase
 {
     public function setUp(): void
     {

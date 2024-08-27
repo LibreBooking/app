@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/ResourceSaveController.php');
 
-class ResourceSaveControllerTests extends TestBase
+class ResourceSaveControllerTest extends TestBase
 {
     /**
      * @var ResourceSaveController

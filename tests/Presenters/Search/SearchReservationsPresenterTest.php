@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Search/SearchReservationsPresenter.php');
 
-class SearchReservationsPresenterTests extends TestBase
+class SearchReservationsPresenterTest extends TestBase
 {
     /**
      * @var SearchReservationsPresenter

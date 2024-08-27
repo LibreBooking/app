@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ReservationServiceTests extends TestBase
+class ReservationServiceTest extends TestBase
 {
     public function setUp(): void
     {

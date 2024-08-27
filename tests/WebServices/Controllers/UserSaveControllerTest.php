@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/UserSaveController.php');
 
-class UserSaveControllerTests extends TestBase
+class UserSaveControllerTest extends TestBase
 {
     /**
      * @var UserSaveController

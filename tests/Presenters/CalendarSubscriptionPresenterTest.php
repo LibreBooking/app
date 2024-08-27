@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Export/CalendarSubscriptionPage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarSubscriptionPresenter.php');
 
-class CalendarSubscriptionPresenterTests extends TestBase
+class CalendarSubscriptionPresenterTest extends TestBase
 {
     /**
      * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class ReservationValidationRuleProcessorTests extends TestBase
+class ReservationValidationRuleProcessorTest extends TestBase
 {
     public function setUp(): void
     {

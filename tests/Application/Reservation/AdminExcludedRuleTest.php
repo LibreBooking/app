@@ -1,6 +1,6 @@
 <?php
 
-class AdminExcludedRuleTests extends TestBase
+class AdminExcludedRuleTest extends TestBase
 {
     /**
      * @var AdminExcludedRule

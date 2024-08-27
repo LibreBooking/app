@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationAttributesPresenter.php');
 
-class ReservationAttributesPresenterTests extends TestBase
+class ReservationAttributesPresenterTest extends TestBase
 {
     /**
      * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject

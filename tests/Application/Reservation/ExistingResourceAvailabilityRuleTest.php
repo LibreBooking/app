@@ -5,7 +5,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ExistingResourceAvailabilityRuleTests extends TestBase
+class ExistingResourceAvailabilityRuleTest extends TestBase
 {
     private $timezone = 'UTC';
     /**

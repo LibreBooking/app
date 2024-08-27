@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class GroupAdminGroupsRepositoryTests extends TestBase
+class GroupAdminGroupsRepositoryTest extends TestBase
 {
     public function testGetsListOfGroupsThatThisUserCanAdminister()
     {

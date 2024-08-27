@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Validators/UserRequestValidator.php');
 
-class UserRequestValidatorTests extends TestBase
+class UserRequestValidatorTest extends TestBase
 {
     /**
      * @var IAttributeService

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reservation/GuestReservationPresenter.php');
 
-class GuestReservationPresenterTests extends TestBase
+class GuestReservationPresenterTest extends TestBase
 {
     /**
      * @var FakeGuestReservationPage

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/ActivationPresenter.php');
 
-class ActivationPresenterTests extends TestBase
+class ActivationPresenterTest extends TestBase
 {
     /**
      * @var ActivationPresenter

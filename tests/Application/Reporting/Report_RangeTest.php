@@ -1,6 +1,6 @@
 <?php
 
-class Report_RangeTests extends TestBase
+class Report_RangeTest extends TestBase
 {
     /**
      * @var Date

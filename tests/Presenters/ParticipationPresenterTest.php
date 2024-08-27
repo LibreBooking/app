@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/ParticipationPresenter.php');
 
-class ParticipationPresenterTests extends TestBase
+class ParticipationPresenterTest extends TestBase
 {
     /**
      * @var IParticipationPage|PHPUnit_Framework_MockObject_MockObject

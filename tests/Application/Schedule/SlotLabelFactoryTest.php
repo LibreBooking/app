@@ -1,6 +1,6 @@
 <?php
 
-class SlotLabelFactoryTests extends TestBase
+class SlotLabelFactoryTest extends TestBase
 {
     /**
      * @var ReservationItemView

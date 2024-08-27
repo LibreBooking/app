@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
-class AttributeListTests extends TestBase
+class AttributeListTest extends TestBase
 {
     public function testCanGetLabelsOfAllAttributes()
     {

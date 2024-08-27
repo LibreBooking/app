@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php')
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationUpdatePresenterTests extends TestBase
+class ReservationUpdatePresenterTest extends TestBase
 {
     private $userId;
 

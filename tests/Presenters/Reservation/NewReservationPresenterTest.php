@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class NewReservationPresenterTests extends TestBase
+class NewReservationPresenterTest extends TestBase
 {
     /**
      * @var UserSession

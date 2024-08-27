@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/ReservationSaveController.php');
 
-class ReservationSaveControllerTests extends TestBase
+class ReservationSaveControllerTest extends TestBase
 {
     /**
      * @var ReservationSaveController

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 
-class ManageReservationsPresenterTests extends TestBase
+class ManageReservationsPresenterTest extends TestBase
 {
     /**
      * @var ManageReservationsPresenter

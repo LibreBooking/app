@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/PasswordPage.php');
 require_once(ROOT_DIR . 'Presenters/PasswordPresenter.php');
 
-class PasswordPresenterTests extends TestBase
+class PasswordPresenterTest extends TestBase
 {
     public function testResetsPassword()
     {

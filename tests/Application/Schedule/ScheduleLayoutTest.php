@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ScheduleLayoutTests extends TestBase
+class ScheduleLayoutTest extends TestBase
 {
     private $date;
 

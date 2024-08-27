@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class PermissionServiceTests extends TestBase
+class PermissionServiceTest extends TestBase
 {
     public function testAsksStoreForAllowedResourcesAndReturnsTrueIfItExists()
     {

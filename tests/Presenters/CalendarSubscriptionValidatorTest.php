@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Export/CalendarSubscriptionPage.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class CalendarSubscriptionValidatorTests extends TestBase
+class CalendarSubscriptionValidatorTest extends TestBase
 {
     /**
      * @var ICalendarSubscriptionPage|PHPUnit_Framework_MockObject_MockObject

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
-class WebServiceSecurityTests extends TestBase
+class WebServiceSecurityTest extends TestBase
 {
     private $sessionToken = 'sessionToken';
     private $userId = 'userId';

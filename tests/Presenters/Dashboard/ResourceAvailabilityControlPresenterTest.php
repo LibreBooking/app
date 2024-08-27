@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Dashboard/ResourceAvailabilityControlPresenter.php');
 
-class ResourceAvailabilityControlPresenterTests extends TestBase
+class ResourceAvailabilityControlPresenterTest extends TestBase
 {
     /**
      * @var FakeReservationViewRepository

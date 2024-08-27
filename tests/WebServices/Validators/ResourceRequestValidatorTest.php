@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Validators/ResourceRequestValidator.php');
 
-class ResourceRequestValidatorTests extends TestBase
+class ResourceRequestValidatorTest extends TestBase
 {
     /**
      * @var ResourceRequestValidator

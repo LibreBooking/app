@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
 require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/NewReservationInitializer.php');
 
-class ReservationInitializationTests extends TestBase
+class ReservationInitializationTest extends TestBase
 {
     /**
      * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject

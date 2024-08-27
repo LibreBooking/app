@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class PrivacyFilterTests extends TestBase
+class PrivacyFilterTest extends TestBase
 {
     /**
      * @var PrivacyFilter

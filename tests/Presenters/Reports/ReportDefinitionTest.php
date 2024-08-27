@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
 
-class ReportDefinitionTests extends TestBase
+class ReportDefinitionTest extends TestBase
 {
     /**
      * @var FakeAttributeRepository

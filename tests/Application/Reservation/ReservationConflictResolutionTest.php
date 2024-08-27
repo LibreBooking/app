@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php');
 
-class ReservationConflictResolutionTests extends TestBase
+class ReservationConflictResolutionTest extends TestBase
 {
     public function setUp(): void
     {

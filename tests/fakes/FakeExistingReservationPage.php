@@ -8,6 +8,8 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
     public $_CheckOutRequired = false;
     public $_AutoReleaseMinutes = null;
 
+    public function BindViewableResourceReservations($resourceIds) { }
+
     public function GetReferenceNumber()
     {
     }

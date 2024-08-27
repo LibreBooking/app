@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-class InvitationEmailNotificationTests extends TestBase
+class InvitationEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {

@@ -1,6 +1,6 @@
 <?php
 
-class RequiresApprovalRuleTests extends TestBase
+class RequiresApprovalRuleTest extends TestBase
 {
     /**
      * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject

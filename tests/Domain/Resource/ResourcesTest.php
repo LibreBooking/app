@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
-class ResourcesTests extends TestBase
+class ResourcesTest extends TestBase
 {
     private $Resources;
 

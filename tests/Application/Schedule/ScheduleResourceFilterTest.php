@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ScheduleResourceFilterTests extends TestBase
+class ScheduleResourceFilterTest extends TestBase
 {
     /**
      * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject

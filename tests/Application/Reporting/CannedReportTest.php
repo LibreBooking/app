@@ -1,6 +1,6 @@
 <?php
 
-class CannedReportTests extends TestBase
+class CannedReportTest extends TestBase
 {
     public function setUp(): void
     {

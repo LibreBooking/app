@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Pages/Reports/GenerateReportPage.php');
 
-class GenerateReportPresenterTests extends TestBase
+class GenerateReportPresenterTest extends TestBase
 {
     /**
      * @var GenerateReportPresenter

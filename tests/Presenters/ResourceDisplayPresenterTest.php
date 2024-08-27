@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Presenters/ResourceDisplayPresenter.php');
 require_once(ROOT_DIR . 'Pages/ResourceDisplayPage.php');
 
-class ResourceDisplayPresenterTests extends TestBase
+class ResourceDisplayPresenterTest extends TestBase
 {
     /**
      * @var FakeGuestUserService

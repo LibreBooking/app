@@ -1,6 +1,6 @@
 <?php
 
-class UserRepositoryTests extends TestBase
+class UserRepositoryTest extends TestBase
 {
     public function setUp(): void
     {

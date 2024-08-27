@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Pages/Admin/ManageAttributesPage.php');
 
-class ManageAttributesPresenterTests extends TestBase
+class ManageAttributesPresenterTest extends TestBase
 {
     /**
      * @var FakeAttributePage

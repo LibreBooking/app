@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/AttributeRepository.php');
 
-class AttributeRepositoryTests extends TestBase
+class AttributeRepositoryTest extends TestBase
 {
     /**
      * @var AttributeRepository

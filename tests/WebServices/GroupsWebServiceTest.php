@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/GroupsWebService.php');
 
-class GroupsWebServiceTests extends TestBase
+class GroupsWebServiceTest extends TestBase
 {
     /**
      * @var FakeRestServer

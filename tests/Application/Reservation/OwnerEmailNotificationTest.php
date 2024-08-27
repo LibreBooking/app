@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmail.php');
 
-class OwnerEmailNotificationTests extends TestBase
+class OwnerEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {
