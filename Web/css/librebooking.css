@@ -244,12 +244,22 @@ fieldset:disabled .btn {
     border: solid var(--bs-border-color) 1px;
 }
 
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: var(--primary);
+}
+
 .ui-widget {
     font-family: inherit !important;
 }
 
 .ui-autocomplete {
     z-index: 5000;
+}
+
+li.ui-timepicker-selected,
+.ui-timepicker-list li:hover,
+.ui-timepicker-list .ui-timepicker-selected:hover {
+    background: var(--primary);
 }
 
 .horizontal-list li,
