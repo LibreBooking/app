@@ -28,10 +28,11 @@
     border-width: 0 0 1px;
   }
 
+  /*
   .navbar-collapse.collapse {
     display: none !important;
   }
-
+*/
   .navbar-nav {
     float: none !important;
     margin-top: 7.5px;
@@ -496,7 +497,7 @@ ul.jqtree-tree .jqtree-toggler {
   height: 30px;
   background-color: rgba(76, 175, 80, 0.7);
   border: solid 2px rgba(32, 65, 32, 0.7);
-  top: 75px;
+  top: 300px;
   left: 50%;
   z-index: 101;
   width: auto;

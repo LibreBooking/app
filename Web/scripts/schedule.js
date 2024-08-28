@@ -230,8 +230,8 @@ function Schedule(opts, resourceGroups) {
             const tableEndDate = Number.parseInt(table.data("max"));
             return (
                 (reservation.StartDate >= tableStartDate && reservation.StartDate < tableEndDate)
-                    || (reservation.EndDate > tableStartDate && reservation.EndDate <= tableEndDate)
-                    || (reservation.StartDate <= tableStartDate && reservation.EndDate >= tableEndDate)
+                || (reservation.EndDate > tableStartDate && reservation.EndDate <= tableEndDate)
+                || (reservation.StartDate <= tableStartDate && reservation.EndDate >= tableEndDate)
             );
         }
 
@@ -337,7 +337,7 @@ function Schedule(opts, resourceGroups) {
                                         continue;
                                     }
                                     const startEnd = findReservationStartAndEndSlots(reservation, tr_slots);
-                                    const {startSlot, endSlot, height, width, top, left} = startEnd;
+                                    const { startSlot, endSlot, height, width, top, left } = startEnd;
                                     let div = createDivForReservation(reservation, startSlot, endSlot, height, width, top, left);
                                     if (reservation.IsReservation) {
                                         attachReservationEvents(div, reservation);
@@ -346,7 +346,7 @@ function Schedule(opts, resourceGroups) {
                                     if (isDraggable) {
                                         div.on(
                                             'dragstart',
-                                            {referenceNumber: reservation.ReferenceNumber, resourceId: reservation.ResourceId},
+                                            { referenceNumber: reservation.ReferenceNumber, resourceId: reservation.ResourceId },
                                             function (event) {
                                                 div.qtip("hide");
                                                 $(event.target).removeClass('clicked');
@@ -369,7 +369,7 @@ function Schedule(opts, resourceGroups) {
                 if (options.isReservable) {
                     initReservable();
                 }
-                $("#loading-schedule").addClass("no-show");
+                $("#loading-schedule").addClass("d-none");
                 renderingEvents = false;
 
                 return;
@@ -404,7 +404,7 @@ function Schedule(opts, resourceGroups) {
                         }
 
                         let $tempElement = $('<div>')
-                        .css({
+                            .css({
                                 position: 'absolute',
                                 left: -9999, // Move off-screen
                                 'font-size': '0.85em',
@@ -537,10 +537,10 @@ function Schedule(opts, resourceGroups) {
                             }
 
                             if (overlap) {
-                                if(opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined"){
+                                if (opts.scheduleStyle === ScheduleStandard && typeof trHeights[currentTrId] !== "undefined") {
                                     top += trHeights[currentTrId];
                                 }
-                                else{
+                                else {
                                     top += height;
                                 }
                                 numberOfConflicts++;
@@ -557,9 +557,9 @@ function Schedule(opts, resourceGroups) {
 
                         var currentTrId = current_TR.attr('id');
 
-                        if(trAdjusted[currentTrId] === false) {                                             //no sense in setting the row height multiple times because it will always be the same so do a check and set the height once per row with reservations
+                        if (trAdjusted[currentTrId] === false) {                                             //no sense in setting the row height multiple times because it will always be the same so do a check and set the height once per row with reservations
                             if (current_TR.height() <= trHeights[currentTrId]) {
-                                if(scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1 && className != "unreservable") {    //takes into account possible existence of concurrent reservations
+                                if (scheduleOpts.resourceMaxConcurrentReservations[res.ResourceId] > 1 && className != "unreservable") {    //takes into account possible existence of concurrent reservations
                                     current_TD.css('height', trHeights[currentTrId] + 40 + 'px');
                                 } else {
                                     current_TD.css('height', trHeights[currentTrId] + 'px');
