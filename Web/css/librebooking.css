@@ -43,10 +43,10 @@
     --primary-disabled: #0091e6;
 }
 
-[data-bs-theme="pastel_blue"] {
-    --primary: #5d9b9b;
-    --primary-hover: #4d8080;
-    --primary-disabled: #70a9a9;
+[data-bs-theme="orange"] {
+    --primary: #be6e34;
+    --primary-hover: #a05c2c;
+    --primary-disabled: #e4b99b;
 }
 
 html {
@@ -98,6 +98,16 @@ img.logo {
     z-index: 3;
     color: var(--bs-pagination-active-color);
     background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.page-link:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.disabled>.page-link {
     border-color: var(--primary);
 }
 
@@ -234,12 +244,22 @@ fieldset:disabled .btn {
     border: solid var(--bs-border-color) 1px;
 }
 
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: var(--primary);
+}
+
 .ui-widget {
     font-family: inherit !important;
 }
 
 .ui-autocomplete {
     z-index: 5000;
+}
+
+li.ui-timepicker-selected,
+.ui-timepicker-list li:hover,
+.ui-timepicker-list .ui-timepicker-selected:hover {
+    background: var(--primary);
 }
 
 .horizontal-list li,
@@ -253,6 +273,10 @@ fieldset:disabled .btn {
 }
 
 .form-control.dateinput {
+    width: 90px;
+}
+
+.form-select.dateinput {
     width: 90px;
 }
 

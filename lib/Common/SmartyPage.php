@@ -575,10 +575,14 @@ class SmartyPage extends Smarty
         $sb->Append('<ul class="pagination">');
         $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
-            ['page' => max(
-                1,
-                $currentPage - 1
-            ), 'size' => $size, 'text' => '&laquo;'],
+            [
+                'page' => max(
+                    1,
+                    $currentPage - 1
+                ),
+                'size' => $size,
+                'text' => '&laquo;'
+            ],
             $smarty
         ));
         $sb->Append('</li>');
@@ -596,10 +600,14 @@ class SmartyPage extends Smarty
         }
         $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
-            ['page' => min(
-                $pageInfo->TotalPages,
-                $currentPage + 1
-            ), 'size' => $size, 'text' => '&raquo;'],
+            [
+                'page' => min(
+                    $pageInfo->TotalPages,
+                    $currentPage + 1
+                ),
+                'size' => $size,
+                'text' => '&raquo;'
+            ],
             $smarty
         ));
         $sb->Append('</li>');
@@ -629,12 +637,14 @@ class SmartyPage extends Smarty
     {
         $tableId = $params['tableId'];
         $searchText = $this->Resources->GetString('Filter');
-        $viewAllText = $this->Resources->GetString('ViewAll');
+        $AllText = $this->Resources->GetString('All');
         $NoResultsFoundText = $this->Resources->GetString('NoResultsFound');
         $copyText = $this->Resources->GetString('Copy');
         $exportText = $this->Resources->GetString('Export');
         $printText = $this->Resources->GetString('Print');
         $showHideText = $this->Resources->GetString('ShowHide');
+        $infoText = $this->Resources->GetString('Info');
+        $lengthMenuText = $this->Resources->GetString('LengthMenu');
 
         if ($tableId == 'report-results') {
             $pagination = '"paging": false,
@@ -643,23 +653,22 @@ class SmartyPage extends Smarty
                 "info": false,
                 "ordering": false,';
         } else {
-            $pagination = '"lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $viewAllText . '"] ],';
+            $pagination = '"lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $AllText . '"] ],';
         }
 
         return sprintf(
             '<script>
            var table =  $("#' . $tableId . '").DataTable({
-                "dom": \'<"d-flex justify-content-center flex-wrap"B><"d-flex justify-content-between flex-wrap"fil>rt<"d-flex justify-content-center"i><"d-flex justify-content-center"p><"clear">\',
+                "dom": \'<"d-flex justify-content-center flex-wrap"B><"d-flex justify-content-between flex-wrap mt-2"fil>rt<"d-flex justify-content-center"i><"d-flex justify-content-center"p><"clear">\',
                 ' . $pagination . '
-                responsive: true,
                 language: {
                     search: "' . $searchText . '",
-                    info: "Showing page _PAGE_ of _PAGES_ of _MAX_",
+                    info: "' . $infoText . '",
                     infoEmpty: "' . $NoResultsFoundText . '",
-                    infoFiltered: "(filtered from _MAX_ total records)",
-                    lengthMenu: "Display _MENU_ records per page",
+                    infoFiltered: "",
+                    lengthMenu: "' . $lengthMenuText . '",
                     zeroRecords: "' . $NoResultsFoundText .
-                '"
+            '"
                 },
                 buttons: [ 
                     {
@@ -669,7 +678,7 @@ class SmartyPage extends Smarty
                     {
                         extend: "excelHtml5",
                         text: "<i class=\"bi bi-file-earmark-spreadsheet me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $exportText .
-                ' Excel</div>", 
+            ' Excel</div>", 
                     },
                     {
                         extend: "pdfHtml5",
@@ -701,22 +710,24 @@ class SmartyPage extends Smarty
     {
         $tableId = $params['tableId'];
         $searchText = $this->Resources->GetString('Filter');
-        $viewAllText = $this->Resources->GetString('ViewAll');
+        $viewAllText = $this->Resources->GetString('All');
         $NoResultsFoundText = $this->Resources->GetString('NoResultsFound');
+        $infoText = $this->Resources->GetString('Info');
+        $lengthMenuText = $this->Resources->GetString('LengthMenu');
+
         return sprintf(
             '<script>
            var table =  $("#' . $tableId . '").DataTable({
                 "dom": \'<"d-flex justify-content-between my-1"fl><t>t<"d-flex justify-content-center"i><"d-flex justify-content-center"p><"clear">\',
                 "lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $viewAllText . '"] ],
-                responsive: true,
                 language: {
                     search: "' . $searchText . '",
-                    info: "Showing page _PAGE_ of _PAGES_ of _MAX_",
-                    infoEmpty: "' . $NoResultsFoundText . '",
-                    infoFiltered: "(filtered from _MAX_ total records)",
-                    lengthMenu: "Display _MENU_ records per page",
+                    info: "' . $searchText . '",
+                    infoEmpty: "' . $infoText . '",
+                    infoFiltered: "",
+                    lengthMenu: "' . $lengthMenuText . '",
                     zeroRecords: "' . $NoResultsFoundText .
-                '"
+            '"
                 },
             });
         </script>

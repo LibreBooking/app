@@ -7,7 +7,7 @@
 			<input {formname key=BEGIN_DATE} id="formattedUpdateStartDate" type="hidden"
 				value="{formatdate date=$BlackoutStartDate key=system}" />
 			<input {formname key=BEGIN_TIME} type="text" id="updateStartTime"
-				class="form-select form-select-sm w-auto dateinput timepicker"
+				class="form-select form-select-sm dateinput timepicker"
 				value="{formatdate date=$BlackoutStartDate format='h:i A'}" />
 		</div>
 
@@ -18,7 +18,7 @@
 			<input {formname key=END_DATE} type="hidden" id="formattedUpdateEndDate"
 				value="{formatdate date=$BlackoutEndDate key=system}" />
 			<input {formname key=END_TIME} type="text" id="updateEndTime"
-				class="form-select form-select-sm w-auto dateinput timepicker"
+				class="form-select form-select-sm dateinput timepicker"
 				value="{formatdate date=$BlackoutEndDate format='h:i A'}" />
 		</div>
 

@@ -7,7 +7,7 @@
 
 	<div id="jsonResult" class="error "></div>
 
-	<div id="participation-box" class="default-box card shadow col-12 col-sm-8 mx-auto">
+	<div id="participation-box" class="default-box card shadow">
 		<div class="card-body">
 			<h1 class="text-center border-bottom mb-3">{translate key=OpenInvitations}
 				<span class="badge bg-primary">{$Reservations|default:array()|count}</span>

@@ -98,53 +98,58 @@
 	<div class="card shadow">
 		<div class="card-body">
 			{assign var=tableId value=announcementList}
-			<table class="table table-striped table-hover border-top w-100 align-middle" id="{$tableId}">
-				<thead>
-					<tr>
-						<th>{translate key='Announcement'}</th>
-						<th>{translate key='Priority'}</th>
-						<th>{translate key='BeginDate'}</th>
-						<th>{translate key='EndDate'}</th>
-						<th>{translate key='Groups'}</th>
-						<th>{translate key='Resources'}</th>
-						<th>{translate key='DisplayPage'}</th>
-						<th class="action">{translate key='Actions'}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{foreach from=$announcements item=announcement}
-						{*{cycle values='row0,row1' assign=rowCss}*}
-						<tr class="{$rowCss}" data-announcement-id="{$announcement->Id()}">
-							<td class="announcementText">{$announcement->Text()|nl2br}</td>
-							<td class="announcementPriority">{$announcement->Priority()}</td>
-							<td class="announcementStart">{formatdate date=$announcement->Start()->ToTimezone($timezone)}
-							</td>
-							<td class="announcementEnd">{formatdate date=$announcement->End()->ToTimezone($timezone)}</td>
-							<td class="announcementGroups">
-								{foreach from=$announcement->GroupIds() item=groupId}{$Groups[$groupId]->Name} {/foreach}
-							</td>
-							<td class="announcementResources">
-								{foreach from=$announcement->ResourceIds() item=resourceId}{$Resources[$resourceId]->GetName()}
-								{/foreach}</td>
-							<td class="announcementDisplayPage">
-								{translate key={Pages::NameFromId($announcement->DisplayPage())}}
-							</td>
-							<td class="action announcementActions">
-								<a href="#" title="{translate key=Edit}" class="update edit link-primary"><span
-										class="bi bi-pencil-square icon"></a>
-								<div class="vr"></div>
-								{if $announcement->CanEmail()}
-									<a href="#" title="{translate key=Email}" class="update sendEmail link-primary"><span
-											class="bi bi-envelope icon"></a>
-									<div class="vr"></div>
-								{/if}
-								<a href="#" title="{translate key=Delete}" class="update delete"><span
-										class="bi bi-trash3-fill text-danger icon remove"></span></a>
-							</td>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover border-top w-100 align-middle" id="{$tableId}">
+					<thead>
+						<tr>
+							<th>{translate key='Announcement'}</th>
+							<th>{translate key='Priority'}</th>
+							<th>{translate key='BeginDate'}</th>
+							<th>{translate key='EndDate'}</th>
+							<th>{translate key='Groups'}</th>
+							<th>{translate key='Resources'}</th>
+							<th>{translate key='DisplayPage'}</th>
+							<th class="action">{translate key='Actions'}</th>
 						</tr>
-					{/foreach}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{foreach from=$announcements item=announcement}
+							{*{cycle values='row0,row1' assign=rowCss}*}
+							<tr class="{$rowCss}" data-announcement-id="{$announcement->Id()}">
+								<td class="announcementText">{$announcement->Text()|nl2br}</td>
+								<td class="announcementPriority">{$announcement->Priority()}</td>
+								<td class="announcementStart">
+									{formatdate date=$announcement->Start()->ToTimezone($timezone)}
+								</td>
+								<td class="announcementEnd">{formatdate date=$announcement->End()->ToTimezone($timezone)}
+								</td>
+								<td class="announcementGroups">
+									{foreach from=$announcement->GroupIds() item=groupId}{$Groups[$groupId]->Name}
+									{/foreach}
+								</td>
+								<td class="announcementResources">
+									{foreach from=$announcement->ResourceIds() item=resourceId}{$Resources[$resourceId]->GetName()}
+									{/foreach}</td>
+								<td class="announcementDisplayPage">
+									{translate key={Pages::NameFromId($announcement->DisplayPage())}}
+								</td>
+								<td class="action announcementActions">
+									<a href="#" title="{translate key=Edit}" class="update edit link-primary"><span
+											class="bi bi-pencil-square icon"></a>
+									<div class="vr"></div>
+									{if $announcement->CanEmail()}
+										<a href="#" title="{translate key=Email}" class="update sendEmail link-primary"><span
+												class="bi bi-envelope icon"></a>
+										<div class="vr"></div>
+									{/if}
+									<a href="#" title="{translate key=Delete}" class="update delete"><span
+											class="bi bi-trash3-fill text-danger icon remove"></span></a>
+								</td>
+							</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 	<input type="hidden" id="activeId" />
@@ -175,7 +180,7 @@
 
 	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
 		aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<form id="editForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -187,7 +192,7 @@
 							<label class="fw-bold" for="editText">{translate key=Announcement}<i
 									class="bi bi-asterisk text-danger align-top form-control-feedback"
 									style="font-size: 0.5rem;"></i></label>
-							<textarea id="editText" class="form-control  has-feedback required"
+							<textarea id="editText" class="form-control  has-feedback required" rows="5"
 								{formname key=ANNOUNCEMENT_TEXT}></textarea>
 						</div>
 						<div class="form-group mb-2">
@@ -306,12 +311,22 @@
 
 			//$('#add-announcement-panel').showHidePanel();
 
-			$('#announcementGroups, #editUserGroups').select2({
+			$('#announcementGroups').select2({
 				placeholder: '{translate key=UsersInGroups}'
 			});
 
-			$('#resourceGroups, #editResourceGroups').select2({
+			$('#editUserGroups').select2({
+				placeholder: '{translate key=UsersInGroups}',
+				dropdownParent: $('#editDialog')
+			});
+
+			$('#resourceGroups').select2({
 				placeholder: '{translate key=UsersWithAccessToResources}'
+			});
+
+			$('#editResourceGroups').select2({
+				placeholder: '{translate key=UsersWithAccessToResources}',
+				dropdownParent: $('#editDialog')
 			});
 		});
 	</script>

@@ -126,9 +126,11 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group has-feedback mb-2">
-							<label class="fw-bold" for="editName">{translate key=AccessoryName}</label>
-							<input id="editName" type="text" class="form-control required" autofocus maxlength="85"
-								{formname key=ACCESSORY_NAME} />
+							<label class="fw-bold" for="editName">{translate key=AccessoryName}<i
+									class="bi bi-asterisk text-danger align-top form-control-feedback"
+									data-bv-icon-for="editName" style="font-size: 0.5rem;"></i></label>
+							<input id="editName" type="text" class="form-control has-feedback required" autofocus
+								maxlength="85" {formname key=ACCESSORY_NAME} />
 						</div>
 						<div class="form-group">
 							<label class="fw-bold" for="editQuantity">{translate key='QuantityAvailable'}</label>
@@ -181,9 +183,11 @@
 														name="{FormKeys::ACCESSORY_RESOURCE}[{$resource->GetId()}]"
 														value="{$resource->GetId()}">
 													<label class="form-check-label" for="accessoryResource{$resourceId}">
-														{$resource->GetName()}</label>
+														{$resource->GetName()}
+													</label>
 												</div>
-												<div class="quantities no-show mb-2 ms-4">
+												<div class="quantities mb-2 ms-4 collapse"
+													id="quantitiesaccessoryResource{$resourceId}">
 													<label class="fw-bold">{translate key=MinimumQuantity}
 														<input type="number" min="0" data-type="min-quantity"
 															class="form-control form-control-sm" size="4" maxlength="4"
@@ -246,6 +250,18 @@
 			//$('#add-accessory-panel').showHidePanel();
 		});
 	</script>
+	<script>
+		$(document).ready(function() {
+			$('.resourceCheckbox').on('change', function() {
+				var collapseTarget = $('#quantitiesaccessoryResource' + $(this).val());
 
+				if ($(this).is(':checked')) {
+					collapseTarget.collapse('show');
+				} else {
+					collapseTarget.collapse('hide');
+				}
+			});
+		});
+	</script>
 </div>
 {include file='globalfooter.tpl'}

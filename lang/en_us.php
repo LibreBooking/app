@@ -1062,6 +1062,11 @@ class en_us extends Language
         $strings['NoResourcesToView'] = 'No available resources';
         //End View Resource
 
+         //Datatables
+        $strings['Info'] = "Showing page _PAGE_ of _PAGES_ of _MAX_";
+        $strings['LengthMenu'] = "Display _MENU_ records per page";
+        //End Datatables
+
         $this->Strings = $strings;
 
         return $this->Strings;
