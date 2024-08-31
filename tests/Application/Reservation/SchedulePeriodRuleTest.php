@@ -47,13 +47,13 @@ class SchedulePeriodRuleTest extends TestBase
                     $this->equalTo($scheduleId),
                     $this->equalTo(new ScheduleLayoutFactory($this->fakeUser->Timezone))
                 )
-                ->will($this->returnValue($this->layout));
+                ->willReturn($this->layout);
 
         $this->layout
-                ->expects($this->at(0))
+                ->expects($this->atLeastOnce())
                 ->method('GetPeriod')
                 ->with($this->equalTo($series->CurrentInstance()->StartDate()))
-                ->will($this->returnValue(new SchedulePeriod($date, $date->AddMinutes(1))));
+                ->willReturn(new SchedulePeriod($date->AddMinutes(1), $date));
 
         $result = $this->rule->Validate($series, null);
 
@@ -77,19 +77,26 @@ class SchedulePeriodRuleTest extends TestBase
                     $this->equalTo($scheduleId),
                     $this->equalTo(new ScheduleLayoutFactory($this->fakeUser->Timezone))
                 )
-                ->will($this->returnValue($this->layout));
+                ->willReturn($this->layout);
 
+        $matcher = $this->exactly(2);
         $this->layout
-                ->expects($this->at(0))
+                ->expects($matcher)
                 ->method('GetPeriod')
-                ->with($this->equalTo($series->CurrentInstance()->StartDate()))
-                ->will($this->returnValue(new SchedulePeriod($date, $date)));
+                ->willReturnCallback(function (Date $d) use ($matcher, $series, $date)
+                {
+                    match ($matcher->numberOfInvocations())
+                    {
+                        1 => $this->assertEquals($d, $series->CurrentInstance()->StartDate()),
+                        2 => $this->assertEquals($d, $series->CurrentInstance()->EndDate())
+                    };
 
-        $this->layout
-                ->expects($this->at(1))
-                ->method('GetPeriod')
-                ->with($this->equalTo($series->CurrentInstance()->EndDate()))
-                ->will($this->returnValue(new SchedulePeriod($date->AddMinutes(1), $date)));
+                    return match ($matcher->numberOfInvocations())
+                    {
+                        1 => new SchedulePeriod($date, $date),
+                        2 => new SchedulePeriod($date->AddMinutes(1), $date->AddMinutes(1))
+                    };
+                });
 
         $result = $this->rule->Validate($series, null);
 
@@ -113,20 +120,13 @@ class SchedulePeriodRuleTest extends TestBase
                     $this->equalTo($scheduleId),
                     $this->equalTo(new ScheduleLayoutFactory($this->fakeUser->Timezone))
                 )
-                ->will($this->returnValue($this->layout));
+                ->willReturn($this->layout);
 
         $period = new SchedulePeriod($date, $date);
         $this->layout
-                ->expects($this->at(0))
+                ->expects($this->exactly(2))
                 ->method('GetPeriod')
-                ->with($this->equalTo($series->CurrentInstance()->StartDate()))
-                ->will($this->returnValue($period));
-
-        $this->layout
-                ->expects($this->at(1))
-                ->method('GetPeriod')
-                ->with($this->equalTo($series->CurrentInstance()->EndDate()))
-                ->will($this->returnValue($period));
+                ->willReturn($period);
 
         $result = $this->rule->Validate($series, null);
 

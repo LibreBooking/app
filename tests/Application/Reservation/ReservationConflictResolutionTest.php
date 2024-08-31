@@ -25,7 +25,7 @@ class ReservationConflictResolutionTest extends TestBase
         $repo->expects($this->once())
              ->method('LoadById')
              ->with($this->equalTo($id))
-             ->will($this->returnValue($reservation));
+             ->willReturn($reservation);
 
         $repo->expects($this->once())
              ->method('Delete')

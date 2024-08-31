@@ -104,7 +104,7 @@ class OwnerEmailNotificationTest extends TestBase
     //		$user->expects($this->once())
     //			->method('WantsEventEmail')
     //			->with($this->equalTo($event))
-    //			->will($this->returnValue(true));
+    //			->willReturn(true);
     //	}
 
     public function LoadsUser($userRepo, $ownerId)
@@ -115,7 +115,7 @@ class OwnerEmailNotificationTest extends TestBase
         $userRepo->expects($this->once())
             ->method('LoadById')
             ->with($this->equalTo($ownerId))
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         return $user;
     }

@@ -20,7 +20,7 @@ class ReservationHandlerTest extends TestBase
         $validationService->expects($this->once())
                           ->method('Validate')
                           ->with($this->equalTo($series))
-                          ->will($this->returnValue($validationResult));
+                          ->willReturn($validationResult);
 
         $persistenceService->expects($this->once())
                            ->method('Persist')
@@ -65,7 +65,7 @@ class ReservationHandlerTest extends TestBase
         $validationService->expects($this->once())
                           ->method('Validate')
                           ->with($this->equalTo($series))
-                          ->will($this->returnValue($validationResult));
+                          ->willReturn($validationResult);
 
         $persistenceService->expects($this->never())
                            ->method('Persist');
@@ -113,7 +113,7 @@ class ReservationHandlerTest extends TestBase
         $validationService->expects($this->once())
                           ->method('Validate')
                           ->with($this->equalTo($series), $this->equalTo($page->retryParameters))
-                          ->will($this->returnValue($validationResult));
+                          ->willReturn($validationResult);
 
         $persistenceService->expects($this->never())
                            ->method('Persist');
@@ -150,7 +150,7 @@ class ReservationHandlerTest extends TestBase
         $validationService->expects($this->once())
             ->method('Validate')
             ->with($this->equalTo($series))
-            ->will($this->returnValue($validationResult));
+            ->willReturn($validationResult);
 
         $persistenceService->expects($this->never())
             ->method('Persist');

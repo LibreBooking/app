@@ -52,17 +52,14 @@ class CustomAttributeValidationRuleTest extends TestBase
         $this->bookedBy->_IsResourceAdmin = false;
         $this->bookedBy->_SetIsAdminForUser(false);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                              ->method('LoadById')
-                             ->with($this->equalTo($this->reservation->UserId()))
-                             ->will($this->returnValue($this->user));
+                             ->willReturnMap([
+                                [$this->reservation->UserId(), $this->user],
+                                [$this->reservation->BookedBy()->UserId, $this->bookedBy]
+                             ]);
 
-        $this->userRepository->expects($this->at(1))
-                             ->method('LoadById')
-                             ->with($this->equalTo($this->reservation->BookedBy()->UserId))
-                             ->will($this->returnValue($this->bookedBy));
-
-        $this->rule = $rule = new CustomAttributeValidationRule($this->attributeService, $this->userRepository);
+        $this->rule = new CustomAttributeValidationRule($this->attributeService, $this->userRepository);
     }
 
     public function teardown(): void
@@ -81,7 +78,7 @@ class CustomAttributeValidationRuleTest extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->equalTo([]), $this->isFalse(), $this->isFalse())
-                ->will($this->returnValue($validationResult));
+                ->willReturn($validationResult);
 
         $userAttribute = new FakeCustomAttribute();
         $userAttribute->WithSecondaryEntities(CustomAttributeCategory::USER, 123);
@@ -101,7 +98,7 @@ class CustomAttributeValidationRuleTest extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->equalTo([]), $this->isFalse(), $this->isFalse())
-                ->will($this->returnValue($validationResult));
+                ->willReturn($validationResult);
 
         $result = $this->rule->Validate($this->reservation, null);
 
@@ -116,7 +113,7 @@ class CustomAttributeValidationRuleTest extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->equalTo([]), $this->isFalse(), $this->isTrue())
-                ->will($this->returnValue($validationResult));
+                ->willReturn($validationResult);
 
         $result = $this->rule->Validate($this->reservation, null);
 
@@ -137,7 +134,7 @@ class CustomAttributeValidationRuleTest extends TestBase
         $attributeService->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()))
-                ->will($this->returnValue($validationResult));
+                ->willReturn($validationResult);
 
         $rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 
@@ -162,7 +159,7 @@ class CustomAttributeValidationRuleTest extends TestBase
         $attributeService->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()))
-                ->will($this->returnValue($validationResult));
+                ->willReturn($validationResult);
 
         $rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 
@@ -189,7 +186,7 @@ class CustomAttributeValidationRuleTest extends TestBase
         $attributeService->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()))
-                ->will($this->returnValue($validationResult));
+                ->willReturn($validationResult);
 
         $rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 

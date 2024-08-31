@@ -41,7 +41,7 @@ class ReservationWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($reservationRequest), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Create();
 
@@ -69,7 +69,7 @@ class ReservationWriteWebServiceTest extends TestBase
                     $this->equalTo($referenceNumber),
                     $this->equalTo($updateScope)
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Update($referenceNumber);
 
@@ -92,7 +92,7 @@ class ReservationWriteWebServiceTest extends TestBase
                     $this->equalTo($this->server->GetSession()),
                     $this->equalTo($referenceNumber)
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Approve($referenceNumber);
 
@@ -116,7 +116,7 @@ class ReservationWriteWebServiceTest extends TestBase
                     $this->equalTo($referenceNumber),
                     $this->equalTo($updateScope)
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Delete($referenceNumber);
 
@@ -137,7 +137,7 @@ class ReservationWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($reservationRequest), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Create();
 
@@ -159,7 +159,7 @@ class ReservationWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Update')
                 ->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Update($referenceNumber);
 
@@ -182,7 +182,7 @@ class ReservationWriteWebServiceTest extends TestBase
                     $this->equalTo($this->server->GetSession()),
                     $this->equalTo($referenceNumber)
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Approve($referenceNumber);
 
@@ -201,7 +201,7 @@ class ReservationWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Delete')
                 ->with($this->anything(), $this->anything(), $this->anything())
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Delete($referenceNumber);
 

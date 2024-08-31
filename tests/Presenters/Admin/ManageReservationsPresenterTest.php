@@ -69,7 +69,7 @@ class ManageReservationsPresenterTest extends TestBase
         $this->userRepository->expects($this->any())
             ->method('LoadById')
             ->with($this->anything())
-            ->will($this->returnValue(new FakeUser()));
+            ->willReturn(new FakeUser());
     }
 
     public function testUsesTwoWeekSpanWhenNoDateFilterProvided()
@@ -92,55 +92,55 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->resourceRepository->expects($this->once())
             ->method('GetStatusReasons')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->page->expects($this->any())
             ->method('FilterButtonPressed')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetStartDate')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetEndDate')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetScheduleId')
-            ->will($this->returnValue($searchedScheduleId));
+            ->willReturn($searchedScheduleId);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetResourceId')
-            ->will($this->returnValue($searchedResourceId));
+            ->willReturn($searchedResourceId);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetReservationStatusId')
-            ->will($this->returnValue($searchedStatusId));
+            ->willReturn($searchedStatusId);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetUserId')
-            ->will($this->returnValue($searchedUserId));
+            ->willReturn($searchedUserId);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetUserName')
-            ->will($this->returnValue($searchedUserName));
+            ->willReturn($searchedUserName);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($searchedReferenceNumber));
+            ->willReturn($searchedReferenceNumber);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetResourceStatusFilterId')
-            ->will($this->returnValue($searchedResourceStatusId));
+            ->willReturn($searchedResourceStatusId);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetResourceStatusReasonFilterId')
-            ->will($this->returnValue($searchedResourceStatusReasonId));
+            ->willReturn($searchedResourceStatusReasonId);
 
         $this->page->expects($this->atLeastOnce())
             ->method('GetAttributeFilters')
-            ->will($this->returnValue([new AttributeFormElement($customAttributes[0]->Id(), 'value')]));
+            ->willReturn([new AttributeFormElement($customAttributes[0]->Id(), 'value')]);
 
         $filter = $this->GetExpectedFilter(
             $defaultStart,
@@ -166,12 +166,12 @@ class ManageReservationsPresenterTest extends TestBase
                 $this->equalTo($filter),
                 $this->equalTo($this->fakeUser)
             )
-            ->will($this->returnValue($data));
+            ->willReturn($data);
 
         $this->attributeService->expects($this->once())
             ->method('GetByCategory')
             ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-            ->will($this->returnValue($customAttributes));
+            ->willReturn($customAttributes);
 
         $this->page->expects($this->once())
             ->method('SetAttributeFilters')
@@ -236,32 +236,32 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('CanUpdateResourceStatuses')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->page->expects($this->once())
             ->method('GetResourceStatus')
-            ->will($this->returnValue($resourceStatusId));
+            ->willReturn($resourceStatusId);
 
         $this->page->expects($this->once())
             ->method('GetUpdateScope')
-            ->will($this->returnValue(''));
+            ->willReturn('');
 
         $this->page->expects($this->once())
             ->method('GetResourceStatusReason')
-            ->will($this->returnValue($resourceStatusReasonId));
+            ->willReturn($resourceStatusReasonId);
 
         $this->page->expects($this->once())
             ->method('GetUpdateResourceId')
-            ->will($this->returnValue($resourceId));
+            ->willReturn($resourceId);
 
         $this->page->expects($this->once())
             ->method('GetResourceStatusReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->resourceRepository->expects($this->once())
             ->method('LoadById')
             ->with($resourceId)
-            ->will($this->returnValue($resource));
+            ->willReturn($resource);
 
         $this->resourceRepository->expects($this->once())
             ->method('Update')
@@ -290,23 +290,23 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('CanUpdateResourceStatuses')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->page->expects($this->once())
             ->method('GetResourceStatus')
-            ->will($this->returnValue($resourceStatusId));
+            ->willReturn($resourceStatusId);
 
         $this->page->expects($this->once())
             ->method('GetUpdateScope')
-            ->will($this->returnValue('all'));
+            ->willReturn('all');
 
         $this->page->expects($this->once())
             ->method('GetResourceStatusReason')
-            ->will($this->returnValue($resourceStatusReasonId));
+            ->willReturn($resourceStatusReasonId);
 
         $this->page->expects($this->once())
             ->method('GetResourceStatusReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->reservationsService->expects($this->once())
             ->method('LoadFiltered')
@@ -318,23 +318,17 @@ class ManageReservationsPresenterTest extends TestBase
                 $this->equalTo(new ReservationFilter(null, null, $referenceNumber, null, null, null, null, null)),
                 $this->equalTo($this->fakeUser)
             )
-            ->will($this->returnValue($pageableReservations));
+            ->willReturn($pageableReservations);
 
-        $this->resourceRepository->expects($this->at(0))
+        $this->resourceRepository->expects($this->exactly(2))
             ->method('LoadById')
-            ->with(1)
-            ->will($this->returnValue($resource1));
+            ->willReturnMap(
+            [
+                [1, $resource1],
+                [2, $resource2]
+            ]);
 
-        $this->resourceRepository->expects($this->at(2))
-            ->method('LoadById')
-            ->with(2)
-            ->will($this->returnValue($resource2));
-
-        $this->resourceRepository->expects($this->at(1))
-            ->method('Update')
-            ->with($this->anything());
-
-        $this->resourceRepository->expects($this->at(3))
+        $this->resourceRepository->expects($this->exactly(2))
             ->method('Update')
             ->with($this->anything());
 
@@ -352,12 +346,12 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->reservationsService->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber), $this->equalTo($this->fakeUser))
-            ->will($this->returnValue($reservationView));
+            ->willReturn($reservationView);
 
         $this->page->expects($this->once())
             ->method('SetReservationJson')
@@ -374,20 +368,20 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetName')
-            ->will($this->returnValue($attrId));
+            ->willReturn($attrId);
 
         $this->page->expects($this->once())
             ->method('GetValue')
-            ->will($this->returnValue($attrValue));
+            ->willReturn($attrValue);
 
         $this->reservationsService->expects($this->once())
             ->method('UpdateAttribute')
             ->with($this->equalTo($referenceNumber), $this->equalTo($attrId), $this->equalTo($attrValue), $this->equalTo($this->fakeUser))
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->presenter->UpdateAttribute();
     }
@@ -420,28 +414,32 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetImportFile')
-            ->will($this->returnValue($importFile));
+            ->willReturn($importFile);
 
         $this->attributeService->expects($this->once())
             ->method('GetByCategory')
             ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-            ->will($this->returnValue($attributes));
+            ->willReturn($attributes);
 
         $this->resourceRepository->expects($this->once())
             ->method('GetResourceList')
-            ->will($this->returnValue($resources));
+            ->willReturn($resources);
 
         $this->userRepository->expects($this->once())
             ->method('GetAll')
-            ->will($this->returnValue($users));
+            ->willReturn($users);
 
-        $this->reservationsService->expects($this->at(0))
+        $matcher = $this->exactly(2);
+        $this->reservationsService->expects($matcher)
             ->method('UnsafeAdd')
-            ->with($this->equalTo($res1));
-
-        $this->reservationsService->expects($this->at(1))
-            ->method('UnsafeAdd')
-            ->with($this->equalTo($res2));
+            ->willReturnCallback(function ($res) use ($matcher, $res1, $res2)
+            {
+                match ($matcher->numberOfInvocations())
+                {
+                    1 => $this->assertEquals($res, $res1),
+                    2 => $this->assertEquals($res, $res2)
+                };
+            });
 
         $this->page->expects($this->once())
             ->method('SetImportResult')
@@ -456,15 +454,20 @@ class ManageReservationsPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetDeletedReservationIds')
-            ->will($this->returnValue($ids));
+            ->willReturn($ids);
 
-        $this->reservationsService->expects($this->at(0))
+        $matcher = $this->exactly(2);
+        $this->reservationsService->expects($matcher)
             ->method('UnsafeDelete')
-            ->with($this->equalTo(1), $this->equalTo($this->fakeUser));
-
-        $this->reservationsService->expects($this->at(1))
-            ->method('UnsafeDelete')
-            ->with($this->equalTo(2), $this->equalTo($this->fakeUser));
+            ->willReturnCallback(function(int $id, UserSession $session) use ($matcher)
+            {
+                $this->assertEquals($this->fakeUser, $session);
+                match ($matcher->numberOfInvocations())
+                {
+                    1 => $this->assertEquals(1, $id),
+                    2 => $this->assertEquals(2, $id)
+                };
+            });
 
         $this->presenter->DeleteMultiple();
     }

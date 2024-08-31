@@ -29,7 +29,7 @@ class ResourceRepositoryTest extends TestBase
         $scheduleId = 10;
 
         $ra = new FakeResourceAccess();
-        $rows = $ra->GetRows();
+        $rows = $ra->Rows();
         $this->db->SetRow(0, $rows);
 
         foreach ($rows as $row) {
@@ -238,7 +238,7 @@ class ResourceRepositoryTest extends TestBase
         $publicId = uniqid();
 
         $fr = new FakeResourceAccess();
-        $rows = $fr->GetRows();
+        $rows = $fr->Rows();
         $this->db->SetRow(0, $rows);
 
         $car = new CustomAttributeValueRow();
@@ -263,7 +263,7 @@ class ResourceRepositoryTest extends TestBase
         $id = 1;
 
         $fr = new FakeResourceAccess();
-        $rows = $fr->GetRows();
+        $rows = $fr->Rows();
         $this->db->SetRow(0, $rows);
 
         $car = new CustomAttributeValueRow();

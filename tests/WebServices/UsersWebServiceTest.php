@@ -66,17 +66,17 @@ class UsersWebServiceTest extends TestBase
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($this->userRepository));
+                ->willReturn($this->userRepository);
 
         $this->userRepository->expects($this->once())
                 ->method('GetList')
                 ->with($this->isNull(), $this->isNull(), $this->isNull(), $this->isNull(), $expectedFilter->GetFilter(), AccountStatus::ACTIVE)
-                ->will($this->returnValue($users));
+                ->willReturn($users);
 
         $this->attributeService->expects($this->once())
                 ->method('GetByCategory')
                 ->with($this->equalTo(CustomAttributeCategory::USER))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $expectedResponse = new UsersResponse($this->server, $userList, [1=>'fakeCustomAttribute1', 2=>'fakeCustomAttribute2']);
 
@@ -101,22 +101,20 @@ class UsersWebServiceTest extends TestBase
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($this->userRepository));
+                ->willReturn($this->userRepository);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                 ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
-
-        $this->userRepository->expects($this->at(1))
-                ->method('LoadById')
-                ->with($this->equalTo($sessionUserId))
-                ->will($this->returnValue($me));
+                ->willReturnMap(
+                [
+                    [$userId, $user],
+                    [$sessionUserId, $me]
+                ]);
 
         $this->attributeService->expects($this->once())
                 ->method('GetAttributes')
                 ->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo([$userId]))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $expectedResponse = new UserResponse($this->server, $user, $attributes);
 
@@ -137,17 +135,17 @@ class UsersWebServiceTest extends TestBase
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($this->userRepository));
+                ->willReturn($this->userRepository);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $this->attributeService->expects($this->once())
                 ->method('GetAttributes')
                 ->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo([$userId]))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $expectedResponse = new UserResponse($this->server, $user, $attributes);
 
@@ -164,12 +162,12 @@ class UsersWebServiceTest extends TestBase
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($this->userRepository));
+                ->willReturn($this->userRepository);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue(User::Null()));
+                ->willReturn(User::Null());
 
         $expectedResponse = RestResponse::NotFound();
 
@@ -194,22 +192,20 @@ class UsersWebServiceTest extends TestBase
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($this->userRepository));
+                ->willReturn($this->userRepository);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                 ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
-
-        $this->userRepository->expects($this->at(1))
-                ->method('LoadById')
-                ->with($this->equalTo($sessionUserId))
-                ->will($this->returnValue($me));
+                ->willReturnMap(
+                [
+                    [$userId, $user],
+                    [$sessionUserId, $me]
+                ]);
 
         $this->attributeService->expects($this->once())
                 ->method('GetAttributes')
                 ->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo([$userId]))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $this->service->GetUser($userId);
 
@@ -229,17 +225,17 @@ class UsersWebServiceTest extends TestBase
         $this->userRepositoryFactory->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($this->userRepository));
+                ->willReturn($this->userRepository);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $this->attributeService->expects($this->once())
                 ->method('GetAttributes')
                 ->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo([$userId]))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $expectedResponse = new UserResponse($this->server, $user, $attributes);
 

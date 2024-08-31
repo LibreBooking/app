@@ -34,10 +34,10 @@ class GuestEmailNotificationTest extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $notification = new GuestAddedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);
@@ -71,10 +71,10 @@ class GuestEmailNotificationTest extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $notification = new GuestDeletedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);
@@ -107,10 +107,10 @@ class GuestEmailNotificationTest extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $notification = new GuestUpdatedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);

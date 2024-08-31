@@ -39,8 +39,9 @@ class CheckoutPresenterTest extends TestBase
     public function testPageLoadCreatesCartAndPresentsPaymentOptions()
     {
         $this->page->_CreditQuantity = 10;
-        $cost = new CreditCost(5);
-        $this->paymentRepository->_CreditCost = $cost;
+        $this->page->_CreditCount = 1;
+        $cost = new CreditCost(1, 5);
+        $this->paymentRepository->_CreditCost = [$cost];
         $this->paymentRepository->_PayPal = new PayPalGateway(true, 'client', 'secret', 'live');
         $this->paymentRepository->_Stripe = new StripeGateway(true, 'publish', 'secret');
 

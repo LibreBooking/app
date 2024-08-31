@@ -47,7 +47,7 @@ class GroupsWebServiceTest extends TestBase
         $this->groupViewRepository->expects($this->once())
                 ->method('GetList')
                 ->with($this->isNull(), $this->isNull())
-                ->will($this->returnValue($groups));
+                ->willReturn($groups);
 
         $this->service->GetGroups();
 
@@ -63,7 +63,7 @@ class GroupsWebServiceTest extends TestBase
         $this->groupRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($groupId))
-                ->will($this->returnValue($group));
+                ->willReturn($group);
 
         $expectedResponse = new GroupResponse($this->server, $group);
 
@@ -78,7 +78,7 @@ class GroupsWebServiceTest extends TestBase
         $this->groupRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($groupId))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $expectedResponse = RestResponse::NotFound();
 

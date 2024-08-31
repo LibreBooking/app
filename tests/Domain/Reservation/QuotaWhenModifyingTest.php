@@ -187,6 +187,6 @@ class QuotaWhenModifyingTest extends TestBase
         $this->reservationViewRepository->expects($this->once())
             ->method('GetReservations')
             ->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
     }
 }

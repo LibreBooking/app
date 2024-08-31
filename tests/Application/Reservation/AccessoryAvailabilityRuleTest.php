@@ -60,25 +60,19 @@ class AccessoryAvailabilityRuleTest extends TestBase
         $accessoryReservation = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 3);
         $accessoryReservationForOtherResource = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 3);
 
-        $this->accessoryRepository->expects($this->at(0))
+        $this->accessoryRepository->expects($this->exactly(2))
             ->method('LoadById')
-            ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+            ->willReturnMap([
+                [$accessory1->AccessoryId, new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)],
+                [$accessory2->AccessoryId, new Accessory($accessory2->AccessoryId, 'name2', $quantityAvailable)]
+            ]);
 
-        $this->accessoryRepository->expects($this->at(1))
-            ->method('LoadById')
-            ->with($accessory2->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory2->AccessoryId, 'name1', $quantityAvailable)));
-
-        $this->reservationRepository->expects($this->at(0))
+        $this->reservationRepository->expects($this->exactly(2))
             ->method('GetAccessoriesWithin')
-            ->with($this->equalTo($dr1))
-            ->will($this->returnValue([$accessoryReservation, $accessoryReservationForOtherResource]));
-
-        $this->reservationRepository->expects($this->at(1))
-            ->method('GetAccessoriesWithin')
-            ->with($this->equalTo($dr2))
-            ->will($this->returnValue([]));
+            ->willReturnMap([
+                [$dr1, [$accessoryReservation, $accessoryReservationForOtherResource]],
+                [$dr2, []]
+            ]);
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -102,15 +96,15 @@ class AccessoryAvailabilityRuleTest extends TestBase
         $lowerQuantity2 = new AccessoryReservation(3, $startDate, $endDate, $accessory1->AccessoryId, 2);
         $notOnReservation = new AccessoryReservation(4, $startDate, $endDate, 100, 1);
 
-        $this->accessoryRepository->expects($this->at(0))
+        $this->accessoryRepository->expects($this->once())
             ->method('LoadById')
             ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+            ->willReturn(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable));
 
-        $this->reservationRepository->expects($this->at(0))
+        $this->reservationRepository->expects($this->once())
             ->method('GetAccessoriesWithin')
             ->with($this->equalTo($dr1))
-            ->will($this->returnValue([$lowerQuantity1, $lowerQuantity2, $notOnReservation]));
+            ->willReturn([$lowerQuantity1, $lowerQuantity2, $notOnReservation]);
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -128,15 +122,15 @@ class AccessoryAvailabilityRuleTest extends TestBase
         $reservation->WithDuration($dr1);
         $reservation->WithAccessory($accessory1);
 
-        $this->accessoryRepository->expects($this->at(0))
+        $this->accessoryRepository->expects($this->once())
             ->method('LoadById')
             ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+            ->willReturn(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable));
 
         $this->reservationRepository->expects($this->once(0))
             ->method('GetAccessoriesWithin')
             ->with($this->anything())
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -157,10 +151,10 @@ class AccessoryAvailabilityRuleTest extends TestBase
         $dr1 = new DateRange($startDate, $endDate);
         $reservation->WithDuration($dr1);
 
-        $this->accessoryRepository->expects($this->at(0))
+        $this->accessoryRepository->expects($this->once())
             ->method('LoadById')
             ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+            ->willReturn(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable));
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -186,14 +180,14 @@ class AccessoryAvailabilityRuleTest extends TestBase
         $a1 = new AccessoryReservation(2, Date::Parse('2010-04-04 10:00', 'UTC'), Date::Parse('2010-04-04 12:00', 'UTC'), $accessory1->AccessoryId, 1);
         $a2 = new AccessoryReservation(3, Date::Parse('2010-04-04 13:00', 'UTC'), Date::Parse('2010-04-04 15:00', 'UTC'), $accessory1->AccessoryId, 1);
 
-        $this->accessoryRepository->expects($this->at(0))
+        $this->accessoryRepository->expects($this->once())
             ->method('LoadById')
             ->with($accessory1->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+            ->willReturn(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable));
 
-        $this->reservationRepository->expects($this->any())
+        $this->reservationRepository->expects($this->atLeast(1))
             ->method('GetAccessoriesWithin')
-            ->will($this->returnValue([$accessoryReservation, $a1, $a2]));
+            ->willReturn([$accessoryReservation, $a1, $a2]);
 
         $result = $this->rule->Validate($reservation, null);
 
@@ -221,11 +215,11 @@ class AccessoryAvailabilityRuleTest extends TestBase
         $this->accessoryRepository->expects($this->any())
             ->method('LoadById')
             ->with($accessory->AccessoryId)
-            ->will($this->returnValue(new Accessory($accessory->AccessoryId, 'name1', $quantityAvailable)));
+            ->willReturn(new Accessory($accessory->AccessoryId, 'name1', $quantityAvailable));
 
         $this->reservationRepository->expects($this->any())
             ->method('GetAccessoriesWithin')
-            ->will($this->returnValue([$ar1, $ar2, $ar3, $ar4]));
+            ->willReturn([$ar1, $ar2, $ar3, $ar4]);
 
         $result = $this->rule->Validate($reservation, null);
 

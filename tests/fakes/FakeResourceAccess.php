@@ -30,7 +30,7 @@ class FakeResourceAccess extends ResourceRepository
 
     private function FillRows()
     {
-        $rows = $this->GetRows();
+        $rows = $this->BuildRows();
         foreach ($rows as $row) {
             $this->_Resources[] = BookableResource::Create($row);
         }
@@ -115,7 +115,7 @@ class FakeResourceAccess extends ResourceRepository
         return $this;
     }
 
-    public function GetRows()
+    private function BuildRows()
     {
         $this->With(
             1,

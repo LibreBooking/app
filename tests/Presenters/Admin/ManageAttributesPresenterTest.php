@@ -40,7 +40,7 @@ class ManageAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                 ->method('GetByCategory')
                 ->with($this->equalTo($categoryId))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $this->presenter->HandleDataRequest('');
 
@@ -79,7 +79,7 @@ class ManageAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                 ->method('Add')
                 ->with($this->equalTo($expectedAttribute))
-                ->will($this->returnValue(1));
+                ->willReturn(1);
 
         $this->presenter->AddAttribute();
     }
@@ -115,7 +115,7 @@ class ManageAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($attributeId))
-                ->will($this->returnValue($expectedAttribute));
+                ->willReturn($expectedAttribute);
 
         $this->attributeRepository->expects($this->once())
                 ->method('Update')

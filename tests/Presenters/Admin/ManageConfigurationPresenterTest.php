@@ -51,7 +51,7 @@ class ManageConfigurationPresenterTest extends TestBase
         $this->configSettings->expects($this->once())
                 ->method('CanOverwriteFile')
                 ->with($this->equalTo($this->configFilePath))
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $this->presenter->PageLoad();
 
@@ -63,14 +63,14 @@ class ManageConfigurationPresenterTest extends TestBase
         $this->configSettings->expects($this->once())
                 ->method('CanOverwriteFile')
                 ->with($this->equalTo($this->configFilePath))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $configValues = $this->getDefaultConfigValues();
 
         $this->configSettings->expects($this->once())
                 ->method('GetSettings')
                 ->with($this->equalTo($this->configFilePath))
-                ->will($this->returnValue($configValues));
+                ->willReturn($configValues);
 
         $this->presenter->PageLoad();
 
@@ -115,7 +115,7 @@ class ManageConfigurationPresenterTest extends TestBase
         $this->configSettings->expects($this->once())
                 ->method('GetSettings')
                 ->with($this->equalTo($this->configFilePath))
-                ->will($this->returnValue($existingValues));
+                ->willReturn($existingValues);
 
         $this->configSettings->expects($this->once())
                 ->method('WriteSettings')

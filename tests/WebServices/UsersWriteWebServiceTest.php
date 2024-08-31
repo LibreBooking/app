@@ -43,7 +43,7 @@ class UsersWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($userRequest), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Create();
 
@@ -61,7 +61,7 @@ class UsersWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($userRequest), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Create();
 
@@ -85,7 +85,7 @@ class UsersWriteWebServiceTest extends TestBase
                     $this->equalTo($userRequest),
                     $this->equalTo($this->server->GetSession())
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Update($userId);
 
@@ -108,7 +108,7 @@ class UsersWriteWebServiceTest extends TestBase
                     $this->equalTo($userRequest),
                     $this->equalTo($this->server->GetSession())
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Update($userId);
 
@@ -125,7 +125,7 @@ class UsersWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Delete')
                 ->with($this->equalTo($userId), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Delete($userId);
 
@@ -142,7 +142,7 @@ class UsersWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Delete')
                 ->with($this->equalTo($userId), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Delete($userId);
 
@@ -163,7 +163,7 @@ class UsersWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('UpdatePassword')
                 ->with($this->equalTo($userId), $this->equalTo($password), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->UpdatePassword($userId);
 
@@ -184,7 +184,7 @@ class UsersWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
             ->method('UpdatePassword')
             ->with($this->equalTo($userId), $this->equalTo($password), $this->equalTo($this->server->GetSession()))
-            ->will($this->returnValue($controllerResult));
+            ->willReturn($controllerResult);
 
         $this->service->UpdatePassword($userId);
 

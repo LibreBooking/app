@@ -940,7 +940,7 @@ class QuotaTest extends TestBase
 
         $this->reservationViewRepository->expects($this->any())
                                         ->method('GetReservations')
-                                        ->will($this->returnValue([$res1]));
+                                        ->willReturn([$res1]);
 
         $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
@@ -955,7 +955,7 @@ class QuotaTest extends TestBase
 
         $this->reservationViewRepository->expects($this->any())
                                         ->method('GetReservations')
-                                        ->will($this->returnValue([]));
+                                        ->willReturn([]);
 
         $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
@@ -971,7 +971,7 @@ class QuotaTest extends TestBase
 
         $this->reservationViewRepository->expects($this->any())
                                         ->method('GetReservations')
-                                        ->will($this->returnValue([$overnightReservation]));
+                                        ->willReturn([$overnightReservation]);
 
         $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
@@ -1018,7 +1018,7 @@ class QuotaTest extends TestBase
                                             $this->equalTo($series->UserId()),
                                             $this->equalTo(ReservationUserLevel::OWNER)
                                         )
-                                        ->will($this->returnValue($reservations));
+                                        ->willReturn($reservations);
     }
 
     private function SearchReturns($reservations)
@@ -1026,6 +1026,6 @@ class QuotaTest extends TestBase
         $this->reservationViewRepository->expects($this->once())
                                         ->method('GetReservations')
                                         ->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
-                                        ->will($this->returnValue($reservations));
+                                        ->willReturn($reservations);
     }
 }

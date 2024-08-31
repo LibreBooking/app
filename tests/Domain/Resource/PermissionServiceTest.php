@@ -19,7 +19,7 @@ class PermissionServiceTest extends TestBase
         $store->expects($this->once())
             ->method('GetAllResources')
             ->with($this->equalTo($userId))
-            ->will($this->returnValue($resourceIdList));
+            ->willReturn($resourceIdList);
 
         $canAccess = $ps->CanAccessResource($resource, $user);
 
@@ -41,7 +41,7 @@ class PermissionServiceTest extends TestBase
         $store->expects($this->once())
             ->method('GetAllResources')
             ->with($this->equalTo($userId))
-            ->will($this->returnValue($resourceIdList));
+            ->willReturn($resourceIdList);
 
         $canAccess1 = $ps->CanAccessResource($resource, $user);
         $canAccess2 = $ps->CanAccessResource($resource, $user);

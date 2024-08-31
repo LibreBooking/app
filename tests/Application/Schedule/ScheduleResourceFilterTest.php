@@ -123,7 +123,7 @@ class ScheduleResourceFilterTest extends TestBase
         $this->attributeService->expects($this->once())
         ->method('GetAttributes')
         ->with($this->equalTo(CustomAttributeCategory::RESOURCE), $this->isNull())
-        ->will($this->returnValue($attributeList));
+        ->willReturn($attributeList);
 
         $filter = new ScheduleResourceFilter();
         $filter->ResourceAttributes = [
@@ -163,7 +163,7 @@ class ScheduleResourceFilterTest extends TestBase
         $this->attributeService->expects($this->once())
         ->method('GetAttributes')
         ->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE), $this->isNull())
-        ->will($this->returnValue($attributeList));
+        ->willReturn($attributeList);
 
         $filter = new ScheduleResourceFilter();
         $filter->ResourceTypeAttributes = [

@@ -45,7 +45,7 @@ class ActivationPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetActivationCode')
-                ->will($this->returnValue($activationCode));
+                ->willReturn($activationCode);
 
         $this->page->expects($this->once())
                 ->method('Redirect')
@@ -67,7 +67,7 @@ class ActivationPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetActivationCode')
-                ->will($this->returnValue($activationCode));
+                ->willReturn($activationCode);
 
         $this->page->expects($this->once())
                 ->method('ShowError');

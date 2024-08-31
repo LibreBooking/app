@@ -41,12 +41,12 @@ class AuthenticationWebServiceTest extends TestBase
         $this->authentication->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo($username), $this->equalTo($password))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->authentication->expects($this->once())
                 ->method('Login')
                 ->with($this->equalTo($username))
-                ->will($this->returnValue($session));
+                ->willReturn($session);
 
         $this->service->Authenticate($this->server);
 
@@ -65,7 +65,7 @@ class AuthenticationWebServiceTest extends TestBase
         $this->authentication->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo($username), $this->equalTo($password))
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $this->service->Authenticate($this->server);
 

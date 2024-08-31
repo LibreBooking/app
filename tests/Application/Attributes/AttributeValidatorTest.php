@@ -18,7 +18,7 @@ class AttributeValidatorTest extends TestBase
         $service->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo($category), $this->equalTo($attributes), $this->equalTo($entityId))
-                ->will($this->returnValue($serviceResult));
+                ->willReturn($serviceResult);
 
         $validator = new AttributeValidator($service, $category, $attributes, $entityId);
         $validator->Validate();

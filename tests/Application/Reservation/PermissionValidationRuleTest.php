@@ -46,7 +46,7 @@ class PermissionValidationRuleTest extends TestBase
 
         $factory->expects($this->once())
             ->method('GetPermissionService')
-            ->will($this->returnValue($service));
+            ->willReturn($service);
 
         $rule = new PermissionValidationRule($factory);
         $result = $rule->Validate($reservation, null);

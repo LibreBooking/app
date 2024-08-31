@@ -42,7 +42,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate), $this->equalTo($endDate))
-                 ->will($this->returnValue([$scheduleReservation]));
+                 ->willReturn([$scheduleReservation]);
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, null);
@@ -85,7 +85,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate), $this->equalTo($endDate))
-                 ->will($this->returnValue($reservations));
+                 ->willReturn($reservations);
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, null);
@@ -122,7 +122,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate), $this->equalTo($endDate))
-                 ->will($this->returnValue($reservations));
+                 ->willReturn($reservations);
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, null);
@@ -191,7 +191,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
-                 ->will($this->returnValue([$scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5]));
+                 ->willReturn([$scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5]);
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, null);
@@ -259,7 +259,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
-                 ->will($this->returnValue([$conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3]));
+                 ->willReturn([$conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3]);
 
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
@@ -297,7 +297,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate), $this->equalTo($endDate))
-                 ->will($this->returnValue([$conflict1]));
+                 ->willReturn([$conflict1]);
 
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), "UTC");
@@ -325,7 +325,7 @@ class ResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->exactly(1 + count($repeatDates)))
                  ->method('GetItemsBetween')
                  ->with($this->anything(), $this->anything())
-                 ->will($this->returnValue([]));
+                 ->willReturn([]);
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, null);
@@ -347,13 +347,13 @@ class ResourceAvailabilityRuleTest extends TestBase
         $repository->expects($this->once())
                    ->method('GetReservations')
                    ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceIds))
-                   ->will($this->returnValue($reservations));
+                   ->willReturn($reservations);
 
         $blackouts = ['blackout'];
         $repository->expects($this->once())
                    ->method('GetBlackoutsWithin')
                    ->with($this->equalTo(new DateRange($startDate, $endDate)))
-                   ->will($this->returnValue($blackouts));
+                   ->willReturn($blackouts);
 
         $items = $strategy->GetItemsBetween($startDate, $endDate, $resourceIds);
 
@@ -380,15 +380,18 @@ class ResourceAvailabilityRuleTest extends TestBase
 
         $strategy = $this->createMock('IResourceAvailabilityStrategy');
 
-        $strategy->expects($this->at(0))
+        $strategy->expects($this->exactly(2))
                  ->method('GetItemsBetween')
-                 ->with($this->equalTo($startDate), $this->equalTo($endDate))
-                 ->will($this->returnValue($reservations));
+                 ->willReturnCallback(function(Date $start, Date $end) use ($startDate, $endDate, $reservations, $instance)
+                 {
+                    if ($start->Equals($startDate) && $end->Equals($endDate))
+                        return $reservations;
 
-        $strategy->expects($this->at(1))
-                 ->method('GetItemsBetween')
-                 ->with($this->equalTo($instance->GetBegin()), $this->equalTo($instance->GetEnd()))
-                 ->will($this->returnValue([]));
+                    if ($start->Equals($instance->GetBegin()) && $end->Equals($instance->GetEnd()))
+                        return [];
+
+                    throw new Exception("Unexpected arguments");
+                 });
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, null);
@@ -420,15 +423,18 @@ class ResourceAvailabilityRuleTest extends TestBase
 
         $strategy = $this->createMock('IResourceAvailabilityStrategy');
 
-        $strategy->expects($this->at(0))
+        $strategy->expects($this->exactly(2))
                  ->method('GetItemsBetween')
-                 ->with($this->equalTo($startDate), $this->equalTo($endDate))
-                 ->will($this->returnValue([]));
+                 ->willReturnCallback(function(Date $start, Date $end) use ($startDate, $endDate, $reservations, $instance)
+                 {
+                    if ($start->Equals($startDate) && $end->Equals($endDate))
+                        return [];
 
-        $strategy->expects($this->at(1))
-                 ->method('GetItemsBetween')
-                 ->with($this->equalTo($instance->GetBegin()), $this->equalTo($instance->GetEnd()))
-                 ->will($this->returnValue($reservations));
+                    if ($start->Equals($instance->GetBegin()) && $end->Equals($instance->GetEnd()))
+                        return $reservations;
+
+                    throw new Exception("Unexpected arguments");
+                 });
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), 'UTC');
         $result = $rule->Validate($reservation, [new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)]);
@@ -464,7 +470,7 @@ class ResourceAvailabilityRuleTest extends TestBase
 
         $strategy->expects($this->atLeastOnce())
                  ->method('GetItemsBetween')
-                 ->will($this->returnValue($reservations));
+                 ->willReturn($reservations);
 
         $rule = new ResourceAvailabilityRule(new ReservationConflictIdentifier($strategy, $this->scheduleRepository), 'UTC');
         $result = $rule->Validate($reservation, [new ReservationRetryParameter(ReservationRetryParameter::$SKIP_CONFLICTS, true)]);

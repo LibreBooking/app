@@ -41,7 +41,7 @@ class AccessoriesWebServiceTest extends TestBase
 
         $this->resourceRepository->expects($this->once())
                 ->method('GetAccessoryList')
-                ->will($this->returnValue($accessories));
+                ->willReturn($accessories);
 
         $this->service->GetAll();
 
@@ -58,7 +58,7 @@ class AccessoriesWebServiceTest extends TestBase
         $this->accessoryRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($accessoryId))
-                ->will($this->returnValue($accessory));
+                ->willReturn($accessory);
 
         $this->service->GetAccessory($accessoryId);
 
@@ -73,7 +73,7 @@ class AccessoriesWebServiceTest extends TestBase
         $this->accessoryRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($accessoryId))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->service->GetAccessory($accessoryId);
 

@@ -109,35 +109,35 @@ class CalendarPresenterTest extends TestBase
         $this->scheduleRepository
             ->expects($this->atLeastOnce())
             ->method('GetAll')
-            ->will($this->returnValue($schedules));
+            ->willReturn($schedules);
 
         $this->resourceService
             ->expects($this->atLeastOnce())
             ->method('GetAllResources')
             ->with($this->equalTo($showInaccessible), $this->equalTo($this->fakeUser))
-            ->will($this->returnValue($resources));
+            ->willReturn($resources);
 
         $this->resourceService
             ->expects($this->atLeastOnce())
             ->method('GetResourceGroups')
             ->with($this->isNull(), $this->equalTo($this->fakeUser))
-            ->will($this->returnValue(new ResourceGroupTree()));
+            ->willReturn(new ResourceGroupTree());
 
         $this->page
             ->expects($this->atLeastOnce())
             ->method('GetScheduleId')
-            ->will($this->returnValue($defaultScheduleId));
+            ->willReturn($defaultScheduleId);
 
         $this->page
             ->expects($this->atLeastOnce())
             ->method('GetResourceId')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
 
         $this->page
             ->expects($this->atLeastOnce())
             ->method('GetCalendarType')
-            ->will($this->returnValue($calendarType));
+            ->willReturn($calendarType);
 
         $this->page
             ->expects($this->atLeastOnce())
@@ -145,7 +145,7 @@ class CalendarPresenterTest extends TestBase
             ->with($this->equalTo($schedules[1]->GetWeekdayStart()));
 
         $details = new CalendarSubscriptionDetails(true);
-        $this->subscriptionService->expects($this->once())->method('ForSchedule')->with($this->equalTo($defaultScheduleId))->will($this->returnValue($details));
+        $this->subscriptionService->expects($this->once())->method('ForSchedule')->with($this->equalTo($defaultScheduleId))->willReturn($details);
 
         $this->page->expects($this->atLeastOnce())->method('BindSubscription')->with($this->equalTo($details));
 
@@ -213,31 +213,31 @@ class CalendarPresenterTest extends TestBase
         $this->page
             ->expects($this->atLeastOnce())
             ->method('GetResourceId')
-            ->will($this->returnValue($resourceId));
+            ->willReturn($resourceId);
         $this->page
             ->expects($this->atLeastOnce())
             ->method('GetScheduleId')
-            ->will($this->returnValue($scheduleId));
+            ->willReturn($scheduleId);
         $this->resourceService
             ->expects($this->atLeastOnce())
             ->method('GetAllResources')
-            ->will($this->returnValue($resources));
+            ->willReturn($resources);
         $this->resourceService
             ->expects($this->atLeastOnce())
             ->method('GetResource')
-            ->will($this->returnValue(new FakeBookableResource(1)));
+            ->willReturn(new FakeBookableResource(1));
         $this->repository
             ->expects($this->atLeastOnce())
             ->method('GetReservations')
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
         $this->repository
             ->expects($this->atLeastOnce())
             ->method('GetBlackoutsWithin')
-            ->will($this->returnValue($blackouts));
+            ->willReturn($blackouts);
         $this->scheduleRepository
             ->expects($this->atLeastOnce())
             ->method('GetLayout')
-            ->will($this->returnValue($layout));
+            ->willReturn($layout);
 
         $this->presenter->ProcessDataRequest('events');
     }

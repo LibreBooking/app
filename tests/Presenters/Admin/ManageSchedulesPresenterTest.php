@@ -58,23 +58,23 @@ class ManageSchedulesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+                ->willReturn($scheduleId);
 
         $this->page->expects($this->once())
                 ->method('GetLayoutTimezone')
-                ->will($this->returnValue($timezone));
+                ->willReturn($timezone);
 
         $this->page->expects($this->once())
                 ->method('GetUsingSingleLayout')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->page->expects($this->once())
                 ->method('GetReservableSlots')
-                ->will($this->returnValue($reservableSlots));
+                ->willReturn($reservableSlots);
 
         $this->page->expects($this->once())
                 ->method('GetBlockedSlots')
-                ->will($this->returnValue($blockedSlots));
+                ->willReturn($blockedSlots);
 
         $this->scheduleRepo->expects($this->once())
                 ->method('AddScheduleLayout')
@@ -100,23 +100,23 @@ class ManageSchedulesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+                ->willReturn($scheduleId);
 
         $this->page->expects($this->once())
                 ->method('GetLayoutTimezone')
-                ->will($this->returnValue($timezone));
+                ->willReturn($timezone);
 
         $this->page->expects($this->once())
                 ->method('GetUsingSingleLayout')
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $this->page->expects($this->once())
                 ->method('GetDailyReservableSlots')
-                ->will($this->returnValue($reservableSlots));
+                ->willReturn($reservableSlots);
 
         $this->page->expects($this->once())
                 ->method('GetDailyBlockedSlots')
-                ->will($this->returnValue($blockedSlots));
+                ->willReturn($blockedSlots);
 
         $this->scheduleRepo->expects($this->once())
                 ->method('AddScheduleLayout')
@@ -137,19 +137,19 @@ class ManageSchedulesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetSourceScheduleId')
-                ->will($this->returnValue($sourceScheduleId));
+                ->willReturn($sourceScheduleId);
 
         $this->page->expects($this->once())
                 ->method('GetScheduleName')
-                ->will($this->returnValue($name));
+                ->willReturn($name);
 
         $this->page->expects($this->once())
                 ->method('GetStartDay')
-                ->will($this->returnValue($startDay));
+                ->willReturn($startDay);
 
         $this->page->expects($this->once())
                 ->method('GetDaysVisible')
-                ->will($this->returnValue($daysVisible));
+                ->willReturn($daysVisible);
 
         $this->scheduleRepo->expects($this->once())
                 ->method('Add')
@@ -175,16 +175,16 @@ class ManageSchedulesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+                ->willReturn($scheduleId);
 
         $this->page->expects($this->once())
                 ->method('GetTargetScheduleId')
-                ->will($this->returnValue($targetId));
+                ->willReturn($targetId);
 
         $this->scheduleRepo->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($schedule));
+                ->willReturn($schedule);
 
         $this->scheduleRepo->expects($this->once())
                 ->method('Delete')
@@ -193,15 +193,19 @@ class ManageSchedulesPresenterTest extends TestBase
         $this->resourceRepo->expects($this->once())
                 ->method('GetScheduleResources')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($resources));
+                ->willReturn($resources);
 
-        $this->resourceRepo->expects($this->at(1))
+        $matcher = $this->exactly(2);
+        $this->resourceRepo->expects($matcher)
                 ->method('Update')
-                ->with($this->equalTo($resource1));
-
-        $this->resourceRepo->expects($this->at(2))
-                ->method('Update')
-                ->with($this->equalTo($resource2));
+                ->willReturnCallback(function ($resource) use ($matcher, $resource1, $resource2)
+                {
+                    match ($matcher->numberOfInvocations())
+                    {
+                        1 => $this->assertEquals($resource, $resource1),
+                        2 => $this->assertEquals($resource, $resource2)
+                    };
+                });
 
         $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
 

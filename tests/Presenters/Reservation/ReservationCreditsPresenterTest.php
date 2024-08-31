@@ -67,7 +67,7 @@ class ReservationCreditsPresenterTest extends TestBase
 
         $expectedCost = Booked\Currency::Create('USD')->Format(150);
 
-        $this->paymentRepository->_CreditCost = new CreditCost(15, 'USD');
+        $this->paymentRepository->_CreditCost = [new CreditCost(1, 15, 'USD')];
 
         $this->page->_ResourceId = 1;
         $this->page->_ResourceIds = [2];

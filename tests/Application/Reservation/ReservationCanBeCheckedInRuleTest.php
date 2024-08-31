@@ -2,9 +2,16 @@
 
 class ReservationCanBeCheckedInRuleTest extends TestBase
 {
+    /**
+     *
+     * @var UserSession
+     */
+    private $userSession;
+
     public function setUp(): void
     {
         parent::setup();
+        $this->userSession = new UserSession(123);
     }
 
     public function testCanBeCheckedInIfWithinWindowWithAutoRelease()
@@ -24,7 +31,7 @@ class ReservationCanBeCheckedInRuleTest extends TestBase
         $series->WithCurrentInstance($reservation);
         $series->AddResource($resource2);
 
-        $rule = new ReservationCanBeCheckedInRule();
+        $rule = new ReservationCanBeCheckedInRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertTrue($result->IsValid());
     }
@@ -42,7 +49,7 @@ class ReservationCanBeCheckedInRuleTest extends TestBase
         $series->WithPrimaryResource($resource1);
         $series->WithCurrentInstance($reservation);
 
-        $rule = new ReservationCanBeCheckedInRule();
+        $rule = new ReservationCanBeCheckedInRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertTrue($result->IsValid());
     }
@@ -60,7 +67,7 @@ class ReservationCanBeCheckedInRuleTest extends TestBase
         $series->WithPrimaryResource($resource1);
         $series->WithCurrentInstance($reservation);
 
-        $rule = new ReservationCanBeCheckedInRule();
+        $rule = new ReservationCanBeCheckedInRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }
@@ -74,7 +81,7 @@ class ReservationCanBeCheckedInRuleTest extends TestBase
         $series->WithPrimaryResource($resource1);
         $series->WithCurrentInstance(new TestReservation());
 
-        $rule = new ReservationCanBeCheckedInRule();
+        $rule = new ReservationCanBeCheckedInRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }
@@ -96,7 +103,7 @@ class ReservationCanBeCheckedInRuleTest extends TestBase
         $series->WithCurrentInstance($reservation);
         $series->AddResource($resource2);
 
-        $rule = new ReservationCanBeCheckedInRule();
+        $rule = new ReservationCanBeCheckedInRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }
@@ -112,7 +119,7 @@ class ReservationCanBeCheckedInRuleTest extends TestBase
         $series->WithPrimaryResource($resource1);
         $series->WithCurrentInstance($reservation);
 
-        $rule = new ReservationCanBeCheckedInRule();
+        $rule = new ReservationCanBeCheckedInRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }

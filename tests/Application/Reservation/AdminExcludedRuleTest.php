@@ -65,17 +65,11 @@ class AdminExcludedRuleTest extends TestBase
         $this->userRepository->expects($this->once())
                     ->method('LoadById')
                     ->with($this->equalTo($this->fakeUser->UserId))
-                    ->will($this->returnValue($this->user));
+                    ->willReturn($this->user);
 
-        $this->user->expects($this->at(0))
+        $this->user->expects($this->exactly(2))
                     ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($this->resource1))
-                    ->will($this->returnValue(true));
-
-        $this->user->expects($this->at(1))
-                    ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($this->resource2))
-                    ->will($this->returnValue(true));
+                    ->willReturn(true);
 
         $result = $this->rule->Validate($this->reservationSeries, null);
 
@@ -90,22 +84,18 @@ class AdminExcludedRuleTest extends TestBase
         $this->userRepository->expects($this->once())
                     ->method('LoadById')
                     ->with($this->equalTo($this->fakeUser->UserId))
-                    ->will($this->returnValue($this->user));
+                    ->willReturn($this->user);
 
-        $this->user->expects($this->at(0))
+        $this->user->expects($this->exactly(2))
                     ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($this->resource1))
-                    ->will($this->returnValue(true));
-
-        $this->user->expects($this->at(1))
-                    ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($this->resource2))
-                    ->will($this->returnValue(false));
+                    ->willReturnCallback(function ($resource) {
+                        return $this->equalTo($this->resource1)->evaluate($resource, '', true);
+                    });
 
         $this->baseRule->expects($this->once())
                     ->method('Validate')
                     ->with($this->equalTo($this->reservationSeries))
-                    ->will($this->returnValue($expectedResult));
+                    ->willReturn($expectedResult);
 
         $result = $this->rule->Validate($this->reservationSeries, null);
 
@@ -120,20 +110,17 @@ class AdminExcludedRuleTest extends TestBase
         $adminUser =  $this->createMock('User');
         $reservationUser =  $this->createMock('User');
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                             ->method('LoadById')
-                            ->with($this->equalTo($this->fakeUser->UserId))
-                            ->will($this->returnValue($adminUser));
-
-        $this->userRepository->expects($this->at(1))
-                            ->method('LoadById')
-                            ->with($this->equalTo($this->reservationSeries->UserId()))
-                            ->will($this->returnValue($reservationUser));
+                            ->willReturnMap([
+                                [$this->fakeUser->UserId, $adminUser],
+                                [$this->reservationSeries->UserId(), $reservationUser]
+                            ]);
 
         $adminUser->expects($this->once())
                     ->method('IsAdminFor')
                     ->with($this->equalTo($reservationUser))
-                    ->will($this->returnValue(true));
+                    ->willReturn(true);
 
         $result = $this->rule->Validate($this->reservationSeries, null);
 

@@ -49,16 +49,16 @@ class CalendarExportPresenterTest extends TestBase
 
         $this->validator->expects($this->atLeastOnce())
                 ->method('IsValid')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->repo->expects($this->once())
                 ->method('GetReservationForEditing')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationResult));
+                ->willReturn($reservationResult);
 
         $this->page->expects($this->once())
                 ->method('SetReservations')
@@ -74,16 +74,16 @@ class CalendarExportPresenterTest extends TestBase
 
         $this->validator->expects($this->atLeastOnce())
                 ->method('IsValid')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->repo->expects($this->once())
                 ->method('GetReservationForEditing')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationResult));
+                ->willReturn($reservationResult);
 
         $this->page->expects($this->once())
                 ->method('SetReservations')

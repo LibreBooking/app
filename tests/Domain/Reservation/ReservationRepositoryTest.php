@@ -184,7 +184,7 @@ class ReservationRepositoryTest extends TestBase
         $repeats->expects($this->once())
             ->method('GetDates')
             ->with($this->anything())
-            ->will($this->returnValue($dates));
+            ->willReturn($dates);
 
         $userSession = new FakeUserSession();
 

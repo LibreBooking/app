@@ -63,12 +63,12 @@ class EditReservationPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->reservationViewRepository->expects($this->once())
             ->method('GetReservationForEditing')
             ->with($referenceNumber)
-            ->will($this->returnValue($reservationView));
+            ->willReturn($reservationView);
 
         $this->preconditionService->expects($this->once())
             ->method('CheckAll')
@@ -77,7 +77,7 @@ class EditReservationPresenterTest extends TestBase
         $this->initializerFactory->expects($this->once())
             ->method('GetExistingInitializer')
             ->with($this->equalTo($this->page), $this->equalTo($reservationView))
-            ->will($this->returnValue($this->initializer));
+            ->willReturn($this->initializer);
 
         $this->initializer->expects($this->once())
             ->method('Initialize');

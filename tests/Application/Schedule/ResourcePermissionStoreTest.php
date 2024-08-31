@@ -27,14 +27,14 @@ class ResourcePermissionStoreTest extends TestBase
 
         $user->expects($this->once())
             ->method('GetAllResources')
-            ->will($this->returnValue([$r1, $r2, $r3, $r4]));
+            ->willReturn([$r1, $r2, $r3, $r4]);
 
         $userRepository = $this->createMock('IScheduleUserRepository');
 
         $userRepository->expects($this->once())
             ->method('GetUser')
             ->with($this->equalTo($userId))
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $rps = new ResourcePermissionStore($userRepository);
 
@@ -65,7 +65,7 @@ class ResourcePermissionStoreTest extends TestBase
         $userRepository = $this->createMock('IScheduleUserRepository');
         $userRepository->expects($this->any())
             ->method('GetUser')
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $rps = new ResourcePermissionStore($userRepository);
 

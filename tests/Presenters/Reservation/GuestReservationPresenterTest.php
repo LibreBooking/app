@@ -47,7 +47,7 @@ class GuestReservationPresenterTest extends TestBase
         $this->factory->expects($this->any())
             ->method('GetNewInitializer')
             ->with($this->anything())
-            ->will($this->returnValue($this->initializer));
+            ->willReturn($this->initializer);
 
         $this->presenter = new GuestReservationPresenter(
             $this->page,

@@ -34,21 +34,16 @@ class AuthorizationServiceTest extends TestBase
 
         $groupAdmin->expects($this->once())
                 ->method('IsGroupAdmin')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $normalDude->expects($this->once())
                 ->method('IsGroupAdmin')
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue($groupAdmin));
-
-        $this->userRepository->expects($this->at(1))
-                ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($normalDude));
+                ->willReturn($groupAdmin, $normalDude);
 
         $asAdmin = $this->authorizationService->CanReserveForOthers($adminUser);
         $asGroupAdmin = $this->authorizationService->CanReserveForOthers($user);
@@ -73,36 +68,19 @@ class AuthorizationServiceTest extends TestBase
         $reserveForUser = $this->createMock('User');
 
         // group admin
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(4))
                 ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($groupAdmin));
-
-        $this->userRepository->expects($this->at(1))
-                ->method('LoadById')
-                ->with($this->equalTo($reserveForId))
-                ->will($this->returnValue($reserveForUser));
+                ->willReturn($groupAdmin, $reserveForUser, $normalDude, $reserveForUser);
 
         $groupAdmin->expects($this->once())
                 ->method('IsAdminFor')
                 ->with($this->equalTo($reserveForUser))
-                ->will($this->returnValue(true));
-
-        // normal dude
-        $this->userRepository->expects($this->at(2))
-                ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($normalDude));
-
-        $this->userRepository->expects($this->at(3))
-                ->method('LoadById')
-                ->with($this->equalTo($reserveForId))
-                ->will($this->returnValue($reserveForUser));
+                ->willReturn(true);
 
         $normalDude->expects($this->once())
                 ->method('IsAdminFor')
                 ->with($this->equalTo($reserveForUser))
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $asAdmin = $this->authorizationService->CanReserveFor($adminUser, $reserveForId);
         $asGroupAdmin = $this->authorizationService->CanReserveFor($user, $reserveForId);
@@ -128,36 +106,20 @@ class AuthorizationServiceTest extends TestBase
         $reserveForUser = $this->createMock('User');
 
         // group admin
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(4))
                 ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($groupAdmin));
-
-        $this->userRepository->expects($this->at(1))
-                ->method('LoadById')
-                ->with($this->equalTo($reserveForId))
-                ->will($this->returnValue($reserveForUser));
+                ->willReturn($groupAdmin, $reserveForUser, $normalDude, $reserveForUser);
 
         $groupAdmin->expects($this->once())
                 ->method('IsAdminFor')
                 ->with($this->equalTo($reserveForUser))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         // normal dude
-        $this->userRepository->expects($this->at(2))
-                ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($normalDude));
-
-        $this->userRepository->expects($this->at(3))
-                ->method('LoadById')
-                ->with($this->equalTo($reserveForId))
-                ->will($this->returnValue($reserveForUser));
-
         $normalDude->expects($this->once())
                 ->method('IsAdminFor')
                 ->with($this->equalTo($reserveForUser))
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $asAdmin = $this->authorizationService->CanApproveFor($adminUser, $reserveForId);
         $asGroupAdmin = $this->authorizationService->CanApproveFor($user, $reserveForId);
@@ -244,15 +206,15 @@ class AuthorizationServiceTest extends TestBase
         $groupAdmin = $this->createMock('User');
         $resource = $this->createMock('IResource');
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue($groupAdmin));
+                ->willReturn($groupAdmin);
 
         $groupAdmin->expects($this->once())
                 ->method('IsResourceAdminFor')
                 ->with($this->equalTo($resource))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $canEdit = $this->authorizationService->CanEditForResource($userSession, $resource);
 
@@ -268,15 +230,15 @@ class AuthorizationServiceTest extends TestBase
         $groupAdmin = $this->createMock('User');
         $resource = $this->createMock('IResource');
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue($groupAdmin));
+                ->willReturn($groupAdmin);
 
         $groupAdmin->expects($this->once())
                 ->method('IsResourceAdminFor')
                 ->with($this->equalTo($resource))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $canApprove = $this->authorizationService->CanApproveForResource($userSession, $resource);
 

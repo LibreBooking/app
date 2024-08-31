@@ -124,20 +124,14 @@ class ReservationSavePresenterTest extends TestBase
         $startReminder = new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval());
         $endReminder = new ReservationReminder($this->page->GetEndReminderValue(), $this->page->GetEndReminderInterval());
 
-        $this->resourceRepository->expects($this->at(0))
+        $this->resourceRepository->expects($this->exactly(3))
                                  ->method('LoadById')
-                                 ->with($this->equalTo($resourceId))
-                                 ->will($this->returnValue($resource));
-
-        $this->resourceRepository->expects($this->at(1))
-                                 ->method('LoadById')
-                                 ->with($this->equalTo($additionalResources[0]))
-                                 ->will($this->returnValue($additionalResource1));
-
-        $this->resourceRepository->expects($this->at(2))
-                                 ->method('LoadById')
-                                 ->with($this->equalTo($additionalResources[1]))
-                                 ->will($this->returnValue($additionalResource2));
+                                 ->willReturnMap(
+                                 [
+                                     [$resourceId, $resource],
+                                     [$additionalResources[0], $additionalResource1],
+                                     [$additionalResources[1], $additionalResource2]
+                                 ]);
 
         $fakeScheduleLayout = new FakeScheduleLayout();
         $fakeScheduleLayout->_SlotCount = new SlotCount(1, 2);
@@ -183,7 +177,7 @@ class ReservationSavePresenterTest extends TestBase
         $this->handler->expects($this->once())
                       ->method('Handle')
                       ->with($this->equalTo($series), $this->isInstanceOf('FakeReservationSavePage'))
-                      ->will($this->returnValue(true));
+                      ->willReturn(true);
 
         $this->presenter->HandleReservation($series);
 

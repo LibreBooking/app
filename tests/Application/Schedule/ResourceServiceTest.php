@@ -68,70 +68,28 @@ class ResourceServiceTest extends TestBase
                 ->expects($this->once())
                 ->method('GetScheduleResources')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($resources));
+                ->willReturn($resources);
 
+        $matcher = $this->exactly(4);
         $this->permissionService
-                ->expects($this->at(0))
+                ->expects($matcher)
                 ->method('CanAccessResource')
-                ->with(
-                    $this->equalTo($resource1),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(true));
+                ->willReturnCallback(function ($res, $u) use ($matcher, $resource1, $resource2, $resource3, $resource4, $user) {
+                    $this->assertEquals($u, $user);
+                    match ($matcher->numberOfInvocations())
+                    {
+                        1 => $this->assertEquals($res, $resource1),
+                        2 => $this->assertEquals($res, $resource2),
+                        3 => $this->assertEquals($res, $resource3),
+                        4 => $this->assertEquals($res, $resource4)
+                    };
+                    return $matcher->numberOfInvocations() == 4 ? false : true;
+                });
 
         $this->permissionService
-                ->expects($this->at(1))
+                ->expects($this->exactly(3))
                 ->method('CanBookResource')
-                ->with(
-                    $this->equalTo($resource1),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(true));
-
-        $this->permissionService
-                ->expects($this->at(2))
-                ->method('CanAccessResource')
-                ->with(
-                    $this->equalTo($resource2),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(true));
-
-        $this->permissionService
-                ->expects($this->at(3))
-                ->method('CanBookResource')
-                ->with(
-                    $this->equalTo($resource2),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(true));
-
-        $this->permissionService
-                ->expects($this->at(4))
-                ->method('CanAccessResource')
-                ->with(
-                    $this->equalTo($resource3),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(true));
-
-        $this->permissionService
-                ->expects($this->at(5))
-                ->method('CanBookResource')
-                ->with(
-                    $this->equalTo($resource3),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(true));
-
-        $this->permissionService
-                ->expects($this->at(6))
-                ->method('CanAccessResource')
-                ->with(
-                    $this->equalTo($resource4),
-                    $this->equalTo($user)
-                )
-                ->will($this->returnValue(false));
+                ->willReturn(true);
 
         $resourceDto1 = new ResourceDto(
             1,
@@ -226,39 +184,37 @@ class ResourceServiceTest extends TestBase
         $this->resourceRepository
                 ->expects($this->once())
                 ->method('GetResourceList')
-                ->will($this->returnValue($resources));
+                ->willReturn($resources);
 
+        $matcher = $this->exactly(2);
         $this->permissionService
-                ->expects($this->at(0))
+                ->expects($matcher)
                 ->method('CanAccessResource')
-                ->with(
-                    $this->equalTo($resource1),
-                    $this->equalTo($session)
-                )
-                ->will($this->returnValue(false));
+                ->willReturnCallback(function($res, $ses) use ($resource1, $resource2, $session, $matcher)
+                {
+                    $this->assertEquals($ses, $session);
+                    match ($matcher->numberOfInvocations())
+                    {
+                        1 => $this->assertEquals($res, $resource1),
+                        2 => $this->assertEquals($res, $resource2),
+                    };
+                    return $matcher->numberOfInvocations() == 2;
+                });
 
         $this->permissionService
-                ->expects($this->at(1))
-                ->method('CanAccessResource')
-                ->with(
-                    $this->equalTo($resource2),
-                    $this->equalTo($session)
-                )
-                ->will($this->returnValue(true));
-
-        $this->permissionService
-                ->expects($this->at(2))
+                ->expects($this->once())
                 ->method('CanBookResource')
                 ->with(
                     $this->equalTo($resource2),
                     $this->equalTo($session)
                 )
-                ->will($this->returnValue(true));
+                ->willReturn(true);
+
 
         $this->userRepository->expects($this->any())
                              ->method('LoadById')
                              ->with($this->equalTo($session->UserId))
-                             ->will($this->returnValue($user));
+                             ->willReturn($user);
 
         $resourceDto1 = new ResourceDto(
             1,
@@ -320,21 +276,21 @@ class ResourceServiceTest extends TestBase
                 ->expects($this->any())
                 ->method('GetScheduleResources')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($resources));
+                ->willReturn($resources);
 
         $this->permissionService
-                ->expects($this->at(0))
+                ->expects($this->any())
                 ->method('CanAccessResource')
                 ->with(
                     $this->equalTo($resource1),
                     $this->equalTo($session)
                 )
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->userRepository->expects($this->any())
                              ->method('LoadById')
                              ->with($this->equalTo($session->UserId))
-                             ->will($this->returnValue($user));
+                             ->willReturn($user);
 
         $resourceDto1 = new ResourceDto(
             1,
@@ -376,13 +332,13 @@ class ResourceServiceTest extends TestBase
                 ->expects($this->once())
                 ->method('GetScheduleResources')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue([$resource1]));
+                ->willReturn([$resource1]);
 
         $this->permissionService
-                ->expects($this->at(0))
+                ->expects($this->once())
                 ->method('CanAccessResource')
                 ->with($this->equalTo($resource1))
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $includeInaccessibleResources = false;
         $actual = $this->resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources, $user);
@@ -397,7 +353,7 @@ class ResourceServiceTest extends TestBase
         $this->accessoryRepository
                 ->expects($this->once())
                 ->method('LoadAll')
-                ->will($this->returnValue($accessories));
+                ->willReturn($accessories);
 
         $actualAccessories = $this->resourceService->GetAccessories();
 
@@ -419,20 +375,20 @@ class ResourceServiceTest extends TestBase
                 ->expects($this->once())
                 ->method('GetScheduleResources')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($resources));
+                ->willReturn($resources);
 
         $this->permissionService
                 ->expects($this->any())
                 ->method('CanAccessResource')
                 ->with($this->anything(), $this->anything())
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $filter = $this->createMock('IScheduleResourceFilter');
 
         $filter->expects($this->once())
                ->method('FilterResources')
                ->with($this->equalTo($resources), $this->equalTo($this->resourceRepository))
-               ->will($this->returnValue([$resourceId]));
+               ->willReturn([$resourceId]);
 
         $resources = $this->resourceService->GetScheduleResources($scheduleId, true, $this->fakeUser, $filter);
 
@@ -447,7 +403,7 @@ class ResourceServiceTest extends TestBase
         $this->attributeService->expects($this->once())
                                ->method('GetByCategory')
                                ->with($this->equalTo(CustomAttributeCategory::RESOURCE))
-                               ->will($this->returnValue($customAttributes));
+                               ->willReturn($customAttributes);
 
         $attributes = $this->resourceService->GetResourceAttributes();
 
@@ -462,7 +418,7 @@ class ResourceServiceTest extends TestBase
         $this->attributeService->expects($this->once())
                                ->method('GetByCategory')
                                ->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE))
-                               ->will($this->returnValue($customAttributes));
+                               ->willReturn($customAttributes);
 
         $attributes = $this->resourceService->GetResourceTypeAttributes();
 
@@ -479,7 +435,7 @@ class ResourceServiceTest extends TestBase
         $this->resourceRepository->expects($this->once())
                                  ->method('GetResourceGroups')
                                  ->with($this->equalTo($scheduleId), $this->anything())
-                                 ->will($this->returnValue($expectedGroups));
+                                 ->willReturn($expectedGroups);
 
         $groups = $this->resourceService->GetResourceGroups($scheduleId, $this->fakeUser);
 

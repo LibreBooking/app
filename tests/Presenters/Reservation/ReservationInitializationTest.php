@@ -83,7 +83,7 @@ class ReservationInitializationTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetRequestedScheduleId')
-            ->will($this->returnValue($scheduleId));
+            ->willReturn($scheduleId);
 
         $this->page->expects($this->once())
             ->method('SetScheduleId')
@@ -165,7 +165,7 @@ class ReservationInitializationTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetRequestedScheduleId')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->page->expects($this->once())
             ->method('SetScheduleId')

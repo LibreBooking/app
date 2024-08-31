@@ -38,12 +38,12 @@ class ManageResourceGroupsPresenterTest extends TestBase
         $this->resourceRepository
                 ->expects($this->once())
         ->method('GetResourceGroups')
-        ->will($this->returnValue($groupTree));
+        ->willReturn($groupTree);
 
         $this->resourceRepository
                 ->expects($this->once())
         ->method('GetResourceList')
-        ->will($this->returnValue($resources));
+        ->willReturn($resources);
 
         $this->page
                 ->expects($this->atLeastOnce())
@@ -66,12 +66,12 @@ class ManageResourceGroupsPresenterTest extends TestBase
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetResourceId')
-        ->will($this->returnValue($resourceId));
+        ->willReturn($resourceId);
 
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetGroupId')
-        ->will($this->returnValue($groupId));
+        ->willReturn($groupId);
 
         $this->resourceRepository
                 ->expects($this->once())
@@ -89,12 +89,12 @@ class ManageResourceGroupsPresenterTest extends TestBase
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetResourceId')
-        ->will($this->returnValue($resourceId));
+        ->willReturn($resourceId);
 
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetGroupId')
-        ->will($this->returnValue($groupId));
+        ->willReturn($groupId);
 
         $this->resourceRepository
                 ->expects($this->once())
@@ -117,28 +117,28 @@ class ManageResourceGroupsPresenterTest extends TestBase
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetNodeId')
-        ->will($this->returnValue($nodeId));
+        ->willReturn($nodeId);
 
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetTargetNodeId')
-        ->will($this->returnValue($targetId));
+        ->willReturn($targetId);
 
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetNodeType')
-        ->will($this->returnValue($nodeType));
+        ->willReturn($nodeType);
 
         $this->page
                 ->expects($this->atLeastOnce())
         ->method('GetPreviousNodeId')
-        ->will($this->returnValue($previousNodeId));
+        ->willReturn($previousNodeId);
 
         $this->resourceRepository
                 ->expects($this->once())
         ->method('LoadResourceGroup')
         ->with($this->equalTo($nodeId))
-        ->will($this->returnValue($group));
+        ->willReturn($group);
 
         $this->resourceRepository
                 ->expects($this->once())

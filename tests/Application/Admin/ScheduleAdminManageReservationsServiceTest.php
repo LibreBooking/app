@@ -53,7 +53,7 @@ class ScheduleAdminManageReservationsServiceTest extends TestBase
         $this->userRepository->expects($this->once())
                     ->method('LoadGroups')
                     ->with($this->equalTo($this->fakeUser->UserId), $this->equalTo(RoleLevel::SCHEDULE_ADMIN))
-                    ->will($this->returnValue($groups));
+                    ->willReturn($groups);
 
         $filter = new ReservationFilter();
         $expectedFilter = $filter->GetFilter();
@@ -63,7 +63,7 @@ class ScheduleAdminManageReservationsServiceTest extends TestBase
         $this->reservationViewRepository->expects($this->once())
                 ->method('GetList')
                 ->with($pageNumber, $pageSize, null, null, $expectedFilter)
-                ->will($this->returnValue($data));
+                ->willReturn($data);
 
         $actualData = $this->service->LoadFiltered($pageNumber, $pageSize, null, null, $filter, $this->fakeUser);
 

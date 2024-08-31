@@ -48,7 +48,7 @@ class UpcomingReservationsPresenterTest extends TestBase
         $this->repository->expects($this->once())
             ->method('GetReservations')
             ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL))
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
 
         $this->control->expects($this->once())
             ->method('SetTimezone')
@@ -95,7 +95,7 @@ class UpcomingReservationsPresenterTest extends TestBase
         $this->repository->expects($this->once())
             ->method('GetReservations')
             ->with($this->anything(), $this->anything(), $this->anything())
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
 
         $this->control->expects($this->once())
             ->method('BindToday')

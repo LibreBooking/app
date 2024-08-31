@@ -44,7 +44,7 @@ class NewReservationPresenterTest extends TestBase
         $reservationInitializerFactory->expects($this->once())
             ->method('GetNewInitializer')
             ->with($this->equalTo($page))
-            ->will($this->returnValue($initializer));
+            ->willReturn($initializer);
 
         $initializer->expects($this->once())
             ->method('Initialize');

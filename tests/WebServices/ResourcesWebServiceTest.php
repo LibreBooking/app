@@ -52,7 +52,11 @@ class ResourcesWebServiceTest extends TestBase
         $this->repository->expects($this->once())
                          ->method('LoadById')
                          ->with($this->equalTo($resourceId))
-                         ->will($this->returnValue($resource));
+                         ->willReturn($resource);
+
+        $this->repository->expects($this->once())
+                         ->method('GetUserResourceIdList')
+                         ->willReturn([$resourceId]);
 
         $this->attributeService->expects($this->once())
                                ->method('GetAttributes')
@@ -60,7 +64,7 @@ class ResourcesWebServiceTest extends TestBase
                                    $this->equalTo(CustomAttributeCategory::RESOURCE),
                                    $this->equalTo([$resourceId])
                                )
-                               ->will($this->returnValue($attributes));
+                               ->willReturn($attributes);
 
         $this->service->GetResource($resourceId);
 
@@ -73,7 +77,11 @@ class ResourcesWebServiceTest extends TestBase
         $this->repository->expects($this->once())
                          ->method('LoadById')
                          ->with($this->equalTo($resourceId))
-                         ->will($this->returnValue(BookableResource::Null()));
+                         ->willReturn(BookableResource::Null());
+
+        $this->repository->expects($this->once())
+                         ->method('GetUserResourceIdList')
+                         ->willReturn([$resourceId]);
 
         $this->service->GetResource($resourceId);
 
@@ -87,8 +95,8 @@ class ResourcesWebServiceTest extends TestBase
         $attributes = new AttributeList();
 
         $this->repository->expects($this->once())
-                         ->method('GetResourceList')
-                         ->will($this->returnValue($resources));
+                         ->method('GetUserResourceList')
+                         ->willReturn($resources);
 
         $this->attributeService->expects($this->once())
                                ->method('GetAttributes')
@@ -96,7 +104,7 @@ class ResourcesWebServiceTest extends TestBase
                                    $this->equalTo(CustomAttributeCategory::RESOURCE),
                                    $this->equalTo([$resourceId])
                                )
-                               ->will($this->returnValue($attributes));
+                               ->willReturn($attributes);
 
         $this->service->GetAll();
 
@@ -119,7 +127,7 @@ class ResourcesWebServiceTest extends TestBase
 
         $this->repository->expects($this->once())
                          ->method('GetStatusReasons')
-                         ->will($this->returnValue($reasons));
+                         ->willReturn($reasons);
 
         $this->service->GetStatusReasons();
 
@@ -137,8 +145,8 @@ class ResourcesWebServiceTest extends TestBase
         $resources = [new FakeBookableResource($resourceId1), new FakeBookableResource($resourceId2), new FakeBookableResource($resourceId3)];
 
         $this->repository->expects($this->once())
-                         ->method('GetResourceList')
-                         ->will($this->returnValue($resources));
+                         ->method('GetUserResourceList')
+                         ->willReturn($resources);
 
         $conflicting = new TestReservationItemView(1, $startTime, $endTime, $resourceId1);
         $upcoming = new TestReservationItemView(2, $endTime, $endTime->AddHours(3), $resourceId1);
@@ -148,11 +156,10 @@ class ResourcesWebServiceTest extends TestBase
         $upcoming5 = new TestReservationItemView(6, $startTime, $endTime->AddHours(2), $resourceId3);
         $reservations = [$conflicting, $upcoming, $upcoming2, $upcoming3, $upcoming4, $upcoming5];
 
-        $endDate = Date::Now()->AddDays(30);
+        $endDate = Date::Now()->AddDays(7);
         $this->reservationRepository->expects($this->once())
                                     ->method('GetReservations')
-                                    ->with($this->equalTo(Date::Now()), $this->equalTo($endDate))
-                                    ->will($this->returnValue($reservations));
+                                    ->willReturn($reservations);
 
         $this->service->GetAvailability();
 
@@ -173,19 +180,19 @@ class ResourcesWebServiceTest extends TestBase
         $resources = [new FakeBookableResource(1)];
 
         $this->repository->expects($this->once())
-                         ->method('GetResourceList')
-                         ->will($this->returnValue($resources));
+                         ->method('GetUserResourceList')
+                         ->willReturn($resources);
 
         $reservations = [];
 
-        $endDate = $date->AddDays(30);
+        $endDate = $date->AddDays(7);
         $this->reservationRepository->expects($this->once())
                                     ->method('GetReservations')
                                     ->with(
                                         $this->equalTo($date->ToUtc()),
                                         $this->equalTo($endDate->ToUtc())
                                     )
-                                    ->will($this->returnValue($reservations));
+                                    ->willReturn($reservations);
 
         $this->service->GetAvailability();
     }
@@ -194,15 +201,20 @@ class ResourcesWebServiceTest extends TestBase
     {
         $resourceId1 = 1;
         $resource = new FakeBookableResource($resourceId1);
+        $this->server->SetQueryString(WebServiceQueryStringKeys::RESOURCE_ID, $resourceId1);
 
         $this->repository->expects($this->once())
                          ->method('LoadById')
                          ->with($this->equalTo($resourceId1))
-                         ->will($this->returnValue($resource));
+                         ->willReturn($resource);
+
+        $this->repository->expects($this->once())
+                         ->method('GetUserResourceIdList')
+                         ->willReturn([$resourceId1]);
 
         $reservations = [];
 
-        $endDate = Date::Now()->AddDays(30);
+        $endDate = Date::Now()->AddDays(7);
         $this->reservationRepository->expects($this->once())
                                     ->method('GetReservations')
                                     ->with(
@@ -213,7 +225,7 @@ class ResourcesWebServiceTest extends TestBase
                                         $this->isEmpty(),
                                         $this->equalTo($resourceId1)
                                     )
-                                    ->will($this->returnValue($reservations));
+                                    ->willReturn($reservations);
 
         $this->service->GetAvailability($resourceId1);
     }
@@ -224,15 +236,20 @@ class ResourcesWebServiceTest extends TestBase
         $this->server->SetQueryString(WebServiceQueryStringKeys::DATE_TIME, $date->ToIso());
         $resourceId1 = 1;
         $resource = new FakeBookableResource($resourceId1);
+        $this->server->SetQueryString(WebServiceQueryStringKeys::RESOURCE_ID, $resourceId1);
 
         $this->repository->expects($this->once())
                          ->method('LoadById')
                          ->with($this->equalTo($resourceId1))
-                         ->will($this->returnValue($resource));
+                         ->willReturn($resource);
+
+        $this->repository->expects($this->once())
+                         ->method('GetUserResourceIdList')
+                         ->willReturn([$resourceId1]);
 
         $reservations = [];
 
-        $endDate = $date->AddDays(30);
+        $endDate = $date->AddDays(7);
         $this->reservationRepository->expects($this->once())
                                     ->method('GetReservations')
                                     ->with(
@@ -243,7 +260,7 @@ class ResourcesWebServiceTest extends TestBase
                                         $this->isEmpty(),
                                         $this->equalTo($resourceId1)
                                     )
-                                    ->will($this->returnValue($reservations));
+                                    ->willReturn($reservations);
 
         $this->service->GetAvailability($resourceId1);
     }

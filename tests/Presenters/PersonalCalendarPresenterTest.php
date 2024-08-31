@@ -94,23 +94,23 @@ class PersonalCalendarPresenterTest extends TestBase
         $this->page
                 ->expects($this->atLeastOnce())
                 ->method('GetScheduleId')
-                ->will($this->returnValue($defaultScheduleId));
+                ->willReturn($defaultScheduleId);
 
         $this->page
                 ->expects($this->atLeastOnce())
                 ->method('GetResourceId')
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->page->expects($this->once())
                    ->method('GetCalendarType')
-                   ->will($this->returnValue($calendarType));
+                   ->willReturn($calendarType);
 
         $details = new CalendarSubscriptionDetails(true);
 
         $this->subscriptionService->expects($this->once())
                                   ->method('ForUser')
                                   ->with($this->equalTo($userId))
-                                  ->will($this->returnValue($details));
+                                  ->willReturn($details);
 
         $this->page->expects($this->once())
                    ->method('BindSubscription')
@@ -119,19 +119,19 @@ class PersonalCalendarPresenterTest extends TestBase
         $this->scheduleRepository
                 ->expects($this->atLeastOnce())
                 ->method('GetAll')
-                ->will($this->returnValue($schedules));
+                ->willReturn($schedules);
 
         $this->resourceService
                 ->expects($this->atLeastOnce())
                 ->method('GetAllResources')
                 ->with($this->equalTo($showInaccessible), $this->equalTo($this->fakeUser))
-                ->will($this->returnValue($resources));
+                ->willReturn($resources);
 
         $this->resourceService
                 ->expects($this->atLeastOnce())
                 ->method('GetResourceGroups')
                 ->with($this->anything(), $this->equalTo($this->fakeUser))
-                ->will($this->returnValue($resourceGroupTree));
+                ->willReturn($resourceGroupTree);
         $this->page
                 ->expects($this->atLeastOnce())
                 ->method('SetFirstDay')
@@ -140,7 +140,7 @@ class PersonalCalendarPresenterTest extends TestBase
         $this->userRepository->expects($this->once())
                     ->method('LoadById')
                     ->with($this->equalTo($this->fakeUser->UserId))
-                    ->will($this->returnValue(new FakeUser()));
+                    ->willReturn(new FakeUser());
 
         $calendarFilters = new CalendarFilters($schedules, $resources, $defaultScheduleId, null, $resourceGroupTree);
         $this->page->expects($this->atLeastOnce())->method('BindFilters')->with($this->equalTo($calendarFilters));

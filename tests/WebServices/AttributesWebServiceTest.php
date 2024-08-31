@@ -38,7 +38,7 @@ class AttributesWebServiceTest extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetById')
                 ->with($this->equalTo($attributeId))
-                ->will($this->returnValue($attribute));
+                ->willReturn($attribute);
 
         $expectedResponse = new CustomAttributeDefinitionResponse($this->server, $attribute);
 
@@ -54,7 +54,7 @@ class AttributesWebServiceTest extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetById')
                 ->with($this->equalTo($attributeId))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->service->GetAttribute($attributeId);
 
@@ -69,7 +69,7 @@ class AttributesWebServiceTest extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetByCategory')
                 ->with($this->equalTo($categoryId))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $expectedResponse = new CustomAttributesResponse($this->server, $attributes);
 

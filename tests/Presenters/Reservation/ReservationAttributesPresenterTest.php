@@ -86,7 +86,7 @@ class ReservationAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                                ->method('GetByCategory')
                                ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-                               ->will($this->returnValue($attributes));
+                               ->willReturn($attributes);
 
         $this->page->_RequestedUserId = $requestedUserId;
 
@@ -115,7 +115,7 @@ class ReservationAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                                ->method('GetByCategory')
                                ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-                               ->will($this->returnValue($attributes));
+                               ->willReturn($attributes);
 
         $this->page->_RequestedUserId = $requestedUserId;
 
@@ -137,7 +137,7 @@ class ReservationAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                                        ->method('GetByCategory')
                                        ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-                                       ->will($this->returnValue($attributes));
+                                       ->willReturn($attributes);
 
         $this->reservationRepository->_ReservationView->AddAttribute(new AttributeValue(1, 'value1'));
         $this->reservationRepository->_ReservationView->AddAttribute(new AttributeValue(2, 'value2'));
@@ -180,7 +180,7 @@ class ReservationAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                                        ->method('GetByCategory')
                                        ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-                                       ->will($this->returnValue($attributes));
+                                       ->willReturn($attributes);
 
         $this->presenter->PageLoad($this->fakeUser);
 
@@ -204,7 +204,7 @@ class ReservationAttributesPresenterTest extends TestBase
         $this->attributeRepository->expects($this->once())
                                        ->method('GetByCategory')
                                        ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-                                       ->will($this->returnValue($attributes));
+                                       ->willReturn($attributes);
 
         $this->presenter->PageLoad($this->fakeUser);
 

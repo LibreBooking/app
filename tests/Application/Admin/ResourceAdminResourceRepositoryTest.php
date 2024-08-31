@@ -1,11 +1,13 @@
 <?php
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
 class ResourceAdminResourceRepositoryTest extends TestBase
 {
     /**
-     * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+     * @var IUserRepository|MockObject
      */
     private $userRepository;
 
@@ -21,20 +23,19 @@ class ResourceAdminResourceRepositoryTest extends TestBase
         $this->userRepository->expects($this->once())
                         ->method('LoadById')
                         ->with($this->equalTo($this->fakeUser->UserId))
-                        ->will($this->returnValue($user));
+                        ->willReturn($user);
 
         $ra = new FakeResourceAccess();
-        $this->db->SetRows($ra->GetRows());
+        $this->db->SetRows($ra->Rows());
 
-        $user->expects($this->at(0))
+        $user->expects($this->exactly(2))
                     ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($ra->_Resources[0]))
-                    ->will($this->returnValue(false));
-
-        $user->expects($this->at(1))
-                    ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($ra->_Resources[1]))
-                    ->will($this->returnValue(true));
+                    ->willReturnCallback(function ($resource) use ($ra)
+                    {
+                        return $this
+                            ->equalTo($ra->_Resources[1])
+                            ->evaluate($resource, '', true);
+                    });
 
         $repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
         $resources = $repo->GetResourceList();
@@ -58,7 +59,7 @@ class ResourceAdminResourceRepositoryTest extends TestBase
         $this->userRepository->expects($this->once())
                     ->method('LoadGroups')
                     ->with($this->equalTo($this->fakeUser->UserId), $this->equalTo([RoleLevel::SCHEDULE_ADMIN, RoleLevel::RESOURCE_ADMIN]))
-                    ->will($this->returnValue($groups));
+                    ->willReturn($groups);
 
         $repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
         $repo->GetList($pageNum, $pageSize, null, null, $existingFilter);
@@ -78,16 +79,16 @@ class ResourceAdminResourceRepositoryTest extends TestBase
         $this->userRepository->expects($this->once())
                         ->method('LoadById')
                         ->with($this->equalTo($this->fakeUser->UserId))
-                        ->will($this->returnValue($user));
+                        ->willReturn($user);
 
         $repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
         $resource = new FakeBookableResource(1);
         $resource->SetAdminGroupId(2);
 
-        $user->expects($this->at(0))
+        $user->expects($this->once())
                             ->method('IsResourceAdminFor')
                             ->with($this->equalTo($resource))
-                            ->will($this->returnValue(false));
+                            ->willReturn(false);
 
         $actualEx = null;
         try {
@@ -105,20 +106,19 @@ class ResourceAdminResourceRepositoryTest extends TestBase
         $this->userRepository->expects($this->once())
                         ->method('LoadById')
                         ->with($this->equalTo($this->fakeUser->UserId))
-                        ->will($this->returnValue($user));
+                        ->willReturn($user);
 
         $ra = new FakeResourceAccess();
-        $this->db->SetRows($ra->GetRows());
+        $this->db->SetRows($ra->Rows());
 
-        $user->expects($this->at(0))
+        $user->expects($this->exactly(2))
                     ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($ra->_Resources[0]))
-                    ->will($this->returnValue(false));
-
-        $user->expects($this->at(1))
-                    ->method('IsResourceAdminFor')
-                    ->with($this->equalTo($ra->_Resources[1]))
-                    ->will($this->returnValue(true));
+                    ->willReturnCallback(function ($resource) use ($ra)
+                    {
+                        return $this
+                            ->equalTo($ra->_Resources[1])
+                            ->evaluate($resource, '', true);
+                    });
 
         $repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
         $resources = $repo->GetScheduleResources($scheduleId);

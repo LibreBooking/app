@@ -51,22 +51,22 @@ class ReservationApprovalPresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->persistence->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($reservation));
+            ->willReturn($reservation);
 
         $this->handler->expects($this->once())
             ->method('Handle')
             ->with($this->equalTo($reservation), $this->equalTo($this->page))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->auth->expects($this->once())
                     ->method('CanApprove')
                     ->with($this->equalTo(new ReservationViewAdapter($reservation)), $this->equalTo($this->fakeUser))
-                    ->will($this->returnValue(true));
+                    ->willReturn(true);
 
         $this->presenter->PageLoad();
 

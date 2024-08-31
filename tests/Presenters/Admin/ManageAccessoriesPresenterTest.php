@@ -51,11 +51,11 @@ class ManageAccessoriesPresenterTest extends TestBase
 
         $this->resourceRepository->expects($this->once())
             ->method('GetAccessoryList')
-            ->will($this->returnValue($accessories));
+            ->willReturn($accessories);
 
         $this->resourceRepository->expects($this->once())
             ->method('GetResourceList')
-            ->will($this->returnValue($resources));
+            ->willReturn($resources);
 
         $this->page->expects($this->once())
             ->method('BindAccessories')
@@ -77,11 +77,11 @@ class ManageAccessoriesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetAccessoryName')
-                ->will($this->returnValue($name));
+                ->willReturn($name);
 
         $this->page->expects($this->once())
                 ->method('GetQuantityAvailable')
-                ->will($this->returnValue($quantity));
+                ->willReturn($quantity);
 
         $this->accessoryRepository->expects($this->once())
             ->method('Add')
@@ -101,20 +101,20 @@ class ManageAccessoriesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetAccessoryId')
-                ->will($this->returnValue($id));
+                ->willReturn($id);
 
         $this->page->expects($this->once())
                 ->method('GetAccessoryName')
-                ->will($this->returnValue($name));
+                ->willReturn($name);
 
         $this->page->expects($this->once())
                 ->method('GetQuantityAvailable')
-                ->will($this->returnValue($quantity));
+                ->willReturn($quantity);
 
         $this->accessoryRepository->expects($this->once())
             ->method('LoadById')
             ->with($this->equalTo($id))
-            ->will($this->returnValue($currentAccessory));
+            ->willReturn($currentAccessory);
 
         $this->accessoryRepository->expects($this->once())
             ->method('Update')
@@ -129,7 +129,7 @@ class ManageAccessoriesPresenterTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetAccessoryId')
-                ->will($this->returnValue($id));
+                ->willReturn($id);
 
         $this->accessoryRepository->expects($this->once())
             ->method('Delete')

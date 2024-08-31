@@ -73,12 +73,12 @@ class ScheduleReservationListTest extends TestBase
         $layout = $this->createMock('IScheduleLayout');
         $layout->expects($this->once())
                 ->method('Timezone')
-                ->will($this->returnValue($userTz));
+                ->willReturn($userTz);
 
         $layout->expects($this->once())
                 ->method('GetLayout')
                 ->with($this->equalTo($date), $this->equalTo($hideBlocked))
-                ->will($this->returnValue($layoutPeriods));
+                ->willReturn($layoutPeriods);
 
         $scheduleList = new ScheduleReservationList([$r1], $layout, $date, $hideBlocked);
         $slots = $scheduleList->BuildSlots();

@@ -16,7 +16,7 @@ class GroupAdminGroupsRepositoryTest extends TestBase
         $userRepo->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $groupRepository = new GroupAdminGroupRepository($userRepo, $this->fakeUser);
 

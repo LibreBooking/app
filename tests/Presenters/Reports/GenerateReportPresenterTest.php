@@ -78,7 +78,7 @@ class GenerateReportPresenterTest extends TestBase
                                    $this->equalTo($range),
                                    $this->equalTo($filter)
                                )
-                               ->will($this->returnValue($expectedReport));
+                               ->willReturn($expectedReport);
 
         $user = new FakeUser();
         $savedReportColumns = 'savedreport';

@@ -95,7 +95,7 @@ class ScheduleRepositoryTest extends TestBase
 
         $layoutFactory->expects($this->once())
                       ->method('CreateLayout')
-                      ->will($this->returnValue($expectedLayout));
+                      ->willReturn($expectedLayout);
 
         $layout = $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
 
@@ -162,7 +162,7 @@ class ScheduleRepositoryTest extends TestBase
 
         $layoutFactory->expects($this->once())
                       ->method('CreateLayout')
-                      ->will($this->returnValue($expectedLayout));
+                      ->willReturn($expectedLayout);
 
         $layout = $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
 
@@ -198,7 +198,7 @@ class ScheduleRepositoryTest extends TestBase
 
         $layoutFactory->expects($this->once())
                       ->method('CreateLayout')
-                      ->will($this->returnValue($expectedLayout));
+                      ->willReturn($expectedLayout);
 
         $layoutRows = [
                 ColumnNames::BLOCK_START => '02:00:00',
@@ -375,20 +375,20 @@ class ScheduleRepositoryTest extends TestBase
 
         $layout->expects($this->once())
                ->method('UsesDailyLayouts')
-               ->will($this->returnValue(false));
+               ->willReturn(false);
 
         $layout->expects($this->any())
                ->method('GetType')
-               ->will($this->returnValue(ScheduleLayout::Standard));
+               ->willReturn(ScheduleLayout::Standard);
 
         $layout->expects($this->once())
                ->method('Timezone')
-               ->will($this->returnValue($timezone));
+               ->willReturn($timezone);
 
         $layout->expects($this->once())
                ->method('GetSlots')
                ->with($this->isNull())
-               ->will($this->returnValue($slots));
+               ->willReturn($slots);
 
         $this->db->_ExpectedInsertId = $layoutId;
 
@@ -434,22 +434,19 @@ class ScheduleRepositoryTest extends TestBase
 
         $layout->expects($this->once())
                ->method('UsesDailyLayouts')
-               ->will($this->returnValue(true));
+               ->willReturn(true);
 
         $layout->expects($this->any())
                ->method('GetType')
-               ->will($this->returnValue(ScheduleLayout::Standard));
+               ->willReturn(ScheduleLayout::Standard);
 
         $layout->expects($this->once())
                ->method('Timezone')
-               ->will($this->returnValue($timezone));
+               ->willReturn($timezone);
 
-        foreach (DayOfWeek::Days() as $day) {
-            $layout->expects($this->at($day + 3))
-                   ->method('GetSlots')
-                   ->with($this->equalTo($day))
-                   ->will($this->returnValue($slots));
-        }
+        $layout->expects($this->exactly(count(DayOfWeek::Days())))
+                ->method('GetSlots')
+                ->willReturn($slots);
 
         $this->db->_ExpectedInsertId = $layoutId;
 

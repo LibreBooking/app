@@ -79,7 +79,7 @@ class PrivacyFilterTest extends TestBase
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanViewDetails')
                                        ->with($this->equalTo($reservation), $this->equalTo($user))
-                                       ->will($this->returnValue(true));
+                                       ->willReturn(true);
 
         $canView = $this->privacyFilter->CanViewUser($user, $reservation);
         $canView2 = $this->privacyFilter->CanViewUser($user, $reservation);
@@ -144,7 +144,7 @@ class PrivacyFilterTest extends TestBase
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanViewDetails')
                                        ->with($this->equalTo($reservation), $this->equalTo($user))
-                                       ->will($this->returnValue(true));
+                                       ->willReturn(true);
 
         $canView = $this->privacyFilter->CanViewDetails($user, $reservation);
         $canView2 = $this->privacyFilter->CanViewDetails($user, $reservation);
@@ -165,7 +165,7 @@ class PrivacyFilterTest extends TestBase
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanViewDetails')
                                        ->with($this->equalTo($res), $this->equalTo($user))
-                                       ->will($this->returnValue(false));
+                                       ->willReturn(false);
 
         $canView = $this->privacyFilter->CanViewDetails($user, $res);
 
@@ -184,7 +184,7 @@ class PrivacyFilterTest extends TestBase
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanViewDetails')
                                        ->with($this->equalTo($res), $this->equalTo($user))
-                                       ->will($this->returnValue(false));
+                                       ->willReturn(false);
 
         $canView = $this->privacyFilter->CanViewDetails($user, $res);
 

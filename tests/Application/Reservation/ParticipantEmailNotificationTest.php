@@ -34,20 +34,13 @@ class ParticipantEmailNotificationTest extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->exactly(3))
                  ->method('LoadById')
-                 ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
-
-        $userRepo->expects($this->at(1))
-                 ->method('LoadById')
-                 ->with($this->equalTo($participantId1))
-                 ->will($this->returnValue($participant1));
-
-        $userRepo->expects($this->at(2))
-                 ->method('LoadById')
-                 ->with($this->equalTo($participantId2))
-                 ->will($this->returnValue($participant2));
+                 ->willReturnMap([
+                    [$ownerId, $owner],
+                    [$participantId1, $participant1],
+                    [$participantId2, $participant2]
+                 ]);
 
         $notification = new ParticipantAddedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);
@@ -78,20 +71,13 @@ class ParticipantEmailNotificationTest extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->exactly(3))
                  ->method('LoadById')
-                 ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
-
-        $userRepo->expects($this->at(1))
-                 ->method('LoadById')
-                 ->with($this->equalTo($participantId1))
-                 ->will($this->returnValue($participant1));
-
-        $userRepo->expects($this->at(2))
-                 ->method('LoadById')
-                 ->with($this->equalTo($participantId2))
-                 ->will($this->returnValue($participant2));
+                 ->willReturnMap([
+                    [$ownerId, $owner],
+                    [$participantId1, $participant1],
+                    [$participantId2, $participant2]
+                 ]);
 
         $notification = new ParticipantDeletedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);

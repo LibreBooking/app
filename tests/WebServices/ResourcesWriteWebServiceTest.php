@@ -41,7 +41,7 @@ class ResourcesWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($request), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Create();
 
@@ -59,7 +59,7 @@ class ResourcesWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Create')
                 ->with($this->equalTo($request), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Create();
 
@@ -83,7 +83,7 @@ class ResourcesWriteWebServiceTest extends TestBase
                     $this->equalTo($request),
                     $this->equalTo($this->server->GetSession())
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Update($resourceId);
 
@@ -106,7 +106,7 @@ class ResourcesWriteWebServiceTest extends TestBase
                     $this->equalTo($request),
                     $this->equalTo($this->server->GetSession())
                 )
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Update($resourceId);
 
@@ -123,7 +123,7 @@ class ResourcesWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Delete')
                 ->with($this->equalTo($resourceId), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Delete($resourceId);
 
@@ -140,7 +140,7 @@ class ResourcesWriteWebServiceTest extends TestBase
         $this->controller->expects($this->once())
                 ->method('Delete')
                 ->with($this->equalTo($resourceId), $this->equalTo($this->server->GetSession()))
-                ->will($this->returnValue($controllerResult));
+                ->willReturn($controllerResult);
 
         $this->service->Delete($resourceId);
 

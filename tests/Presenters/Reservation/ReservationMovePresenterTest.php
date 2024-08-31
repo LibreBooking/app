@@ -80,7 +80,7 @@ class ReservationMovePresenterTest extends TestBase
         $this->persistenceService->expects($this->once())
                                  ->method('LoadByReferenceNumber')
                                  ->with($this->equalTo($this->page->_ReferenceNumber))
-                                 ->will($this->returnValue($expectedSeries));
+                                 ->willReturn($expectedSeries);
 
         $this->handler->expects($this->once())
                       ->method('Handle')
@@ -107,12 +107,12 @@ class ReservationMovePresenterTest extends TestBase
         $this->persistenceService->expects($this->once())
                                  ->method('LoadByReferenceNumber')
                                  ->with($this->equalTo($this->page->_ReferenceNumber))
-                                 ->will($this->returnValue($expectedSeries));
+                                 ->willReturn($expectedSeries);
 
         $this->resourceRepository->expects($this->once())
                     ->method('LoadById')
                     ->with($this->equalTo($this->page->_ResourceId))
-                    ->will($this->returnValue($newResource));
+                    ->willReturn($newResource);
 
         $this->presenter->PageLoad();
 
@@ -137,7 +137,7 @@ class ReservationMovePresenterTest extends TestBase
         $this->persistenceService->expects($this->once())
                                  ->method('LoadByReferenceNumber')
                                  ->with($this->equalTo($this->page->_ReferenceNumber))
-                                 ->will($this->returnValue($expectedSeries));
+                                 ->willReturn($expectedSeries);
 
         $this->presenter->PageLoad();
 

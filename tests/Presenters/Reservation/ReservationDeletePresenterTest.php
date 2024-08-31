@@ -68,20 +68,20 @@ class ReservationDeletePresenterTest extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetSeriesUpdateScope')
-            ->will($this->returnValue($seriesUpdateScope));
+            ->willReturn($seriesUpdateScope);
 
         $this->page->expects($this->once())
             ->method('GetReason')
-            ->will($this->returnValue($reason));
+            ->willReturn($reason);
 
         $this->persistenceService->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($expectedSeries));
+            ->willReturn($expectedSeries);
 
         $expectedSeries->expects($this->once())
             ->method('Delete')
@@ -104,7 +104,7 @@ class ReservationDeletePresenterTest extends TestBase
         $this->handler->expects($this->once())
             ->method('Handle')
             ->with($this->equalTo($series), $this->equalTo($this->page))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
 
         $this->presenter->HandleReservation($series);

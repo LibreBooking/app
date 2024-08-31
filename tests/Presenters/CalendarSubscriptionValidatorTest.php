@@ -38,12 +38,12 @@ class CalendarSubscriptionValidatorTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetResourceId')
-                ->will($this->returnValue($publicId));
+                ->willReturn($publicId);
 
         $this->subscriptionService->expects($this->once())
                 ->method('GetResource')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($resource));
+                ->willReturn($resource);
 
         $this->StubSubscriptionKey();
 
@@ -61,12 +61,12 @@ class CalendarSubscriptionValidatorTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetScheduleId')
-                ->will($this->returnValue($publicId));
+                ->willReturn($publicId);
 
         $this->subscriptionService->expects($this->once())
                 ->method('GetSchedule')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($schedule));
+                ->willReturn($schedule);
 
         $this->StubSubscriptionKey();
 
@@ -84,12 +84,12 @@ class CalendarSubscriptionValidatorTest extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetUserId')
-                ->will($this->returnValue($publicId));
+                ->willReturn($publicId);
 
         $this->subscriptionService->expects($this->once())
                 ->method('GetUser')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $this->StubSubscriptionKey();
 
@@ -102,7 +102,7 @@ class CalendarSubscriptionValidatorTest extends TestBase
     {
         $this->page->expects($this->once())
             ->method('GetSubscriptionKey')
-            ->will($this->returnValue('12'));
+            ->willReturn('12');
 
         $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY, '123');
 
@@ -124,7 +124,7 @@ class CalendarSubscriptionValidatorTest extends TestBase
     {
         $this->page->expects($this->once())
             ->method('GetSubscriptionKey')
-            ->will($this->returnValue('123'));
+            ->willReturn('123');
 
         $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY, '123');
     }

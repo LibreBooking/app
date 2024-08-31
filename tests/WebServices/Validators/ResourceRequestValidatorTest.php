@@ -59,7 +59,7 @@ class ResourceRequestValidatorTest extends TestBase
                     $this->equalTo(CustomAttributeCategory::RESOURCE),
                     $this->equalTo([new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue)])
                 )
-                ->will($this->returnValue($result));
+                ->willReturn($result);
 
         $createErrors = $this->validator->ValidateCreateRequest($request);
         $updateErrors = $this->validator->ValidateUpdateRequest(1, $request);

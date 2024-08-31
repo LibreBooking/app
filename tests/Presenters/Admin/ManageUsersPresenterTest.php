@@ -113,7 +113,7 @@ class ManageUsersPresenterTest extends TestBase
         $this->groupViewRepository
                 ->expects($this->once())
                 ->method('GetList')
-                ->will($this->returnValue($groupList));
+                ->willReturn($groupList);
 
         $this->presenter->PageLoad();
 
@@ -178,12 +178,12 @@ class ManageUsersPresenterTest extends TestBase
 
         $this->encryption->expects($this->once())
                          ->method('Salt')
-                         ->will($this->returnValue($salt));
+                         ->willReturn($salt);
 
         $this->encryption->expects($this->once())
                          ->method('Encrypt')
                          ->with($this->equalTo($password), $this->equalTo($salt))
-                         ->will($this->returnValue($encrypted));
+                         ->willReturn($encrypted);
 
         $user = new User();
 
@@ -241,7 +241,7 @@ class ManageUsersPresenterTest extends TestBase
                                      $this->equalTo($extraAttributes),
                                      $this->equalTo([new AttributeValue($attributeId, $attributeValue)])
                                  )
-                                 ->will($this->returnValue($user));
+                                 ->willReturn($user);
 
         $this->presenter->UpdateUser();
     }
@@ -263,13 +263,17 @@ class ManageUsersPresenterTest extends TestBase
         $userIds = [809, 909];
         $this->page->_DeletedUserIds = $userIds;
 
-        $this->manageUsersService->expects($this->at(0))
+        $matcher = $this->exactly(2);
+        $this->manageUsersService->expects($matcher)
                                  ->method('DeleteUser')
-                                 ->with($this->equalTo(809));
-
-        $this->manageUsersService->expects($this->at(1))
-                                 ->method('DeleteUser')
-                                 ->with($this->equalTo(909));
+                                 ->willReturnCallback(function ($userId) use ($matcher)
+                                 {
+                                    match ($matcher->numberOfInvocations())
+                                    {
+                                        1 => $this->assertEquals(809, $userId),
+                                        2 => $this->assertEquals(909, $userId)
+                                    };
+                                 });
 
         $this->presenter->DeleteMultipleUsers();
     }
@@ -324,12 +328,12 @@ class ManageUsersPresenterTest extends TestBase
                                                                UserAttribute::Position => null]),
                                      $this->equalTo([new AttributeValue($attributeId, $attributeValue)])
                                  )
-                                 ->will($this->returnValue($user));
+                                 ->willReturn($user);
 
         $this->groupRepository->expects($this->once())
                               ->method('LoadById')
                               ->with($this->equalTo($groupId))
-                              ->will($this->returnValue($group));
+                              ->willReturn($group);
 
         $this->groupRepository->expects($this->once())
                               ->method('Update')

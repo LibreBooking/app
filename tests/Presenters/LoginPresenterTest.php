@@ -201,7 +201,7 @@ class LoginPresenterTest extends TestBase
     }
 }
 
-abstract class FakeLoginPage extends FakePageBase implements ILoginPage
+class FakeLoginPage extends FakePageBase implements ILoginPage
 {
     public $_EmailAddress;
     public $_Password;
@@ -222,6 +222,12 @@ abstract class FakeLoginPage extends FakePageBase implements ILoginPage
     public $_ShowForgotPasswordPrompt = false;
     public $_ShowScheduleLink = false;
     public $_Announcements;
+
+    public function SetGoogleUrl($URL) { }
+
+    public function SetMicrosoftUrl($URL) { }
+
+    public function SetFacebookUrl($URL) { }
 
     public function PageLoad()
     {

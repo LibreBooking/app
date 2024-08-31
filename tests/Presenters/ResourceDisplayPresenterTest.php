@@ -128,7 +128,7 @@ class ResourceDisplayPresenterTest extends TestBase
         $this->attributeService->_ReservationAttributes = [];
 
         $this->presenter->reservationCreateHandler = $this->reservationCreateHandler;
-        $this->presenter->DisplayResource($publicId);
+        $this->presenter->DisplayResource($publicId, null);
         $expectedDate = DateRange::Create($now->ToTimezone($timezone)->GetDate()->ToUtc(), $now->ToTimezone($timezone)->GetDate()->AddDays(1)->ToUtc(), 'UTC');
 
         $this->assertEquals(new DailyLayout(
@@ -158,7 +158,7 @@ class ResourceDisplayPresenterTest extends TestBase
             $nextItem
         ];
 
-        $this->presenter->DisplayResource(1);
+        $this->presenter->DisplayResource(1, null);
 
         $this->assertEquals([$nextItem], $this->page->_UpcomingReservations);
         $this->assertEquals($nextItem, $this->page->_NextReservation);
@@ -182,7 +182,7 @@ class ResourceDisplayPresenterTest extends TestBase
             new ReservationListItem($r2),
         ];
 
-        $this->presenter->DisplayResource(1);
+        $this->presenter->DisplayResource(1, null);
 
         $this->assertEquals(true, $this->page->_RequiresCheckIn);
         $this->assertEquals("refnum", $this->page->_CheckinReferenceNumber);
@@ -203,7 +203,7 @@ class ResourceDisplayPresenterTest extends TestBase
             $nextItem
         ];
 
-        $this->presenter->DisplayResource(1);
+        $this->presenter->DisplayResource(1, null);
 
         $this->assertEquals(true, $this->page->_AvailableNow);
         $this->assertEquals(false, $this->page->_RequiresCheckIn);
@@ -224,7 +224,7 @@ class ResourceDisplayPresenterTest extends TestBase
             $nextItem
         ];
 
-        $this->presenter->DisplayResource(1);
+        $this->presenter->DisplayResource(1, null);
 
         $this->assertEquals(false, $this->page->_AvailableNow);
         $this->assertEquals($currentItem, $this->page->_CurrentReservation);
@@ -235,7 +235,7 @@ class ResourceDisplayPresenterTest extends TestBase
         $resource = new FakeBookableResource(1);
         $this->resourceRepository->_Resource = $resource;
 
-        $this->presenter->DisplayResource('whatever');
+        $this->presenter->DisplayResource('whatever', null);
 
         $this->assertTrue($this->page->_DisplayNotEnabledMessage);
     }
@@ -260,14 +260,14 @@ class ResourceDisplayPresenterTest extends TestBase
         $this->attributeService->_ReservationAttributes = [];
 
         $this->presenter->reservationCreateHandler = $this->reservationCreateHandler;
-        $this->presenter->DisplayResource($publicId);
-        $expectedDate = DateRange::Create($now->ToTimezone($timezone)->GetDate()->AddDays(1)->ToUtc(), $now->ToTimezone($timezone)->GetDate()->AddDays(2)->ToUtc(), 'UTC');
+        $this->presenter->DisplayResource($publicId, null);
+        $expectedDate = $now->ToTimezone($timezone)->GetDate()->AddDays(1);
 
         $this->assertEquals(new DailyLayout(
             $this->reservationService->_ReservationListing,
             $this->scheduleRepository->_Layout
         ), $this->page->_DailyLayout);
-        $this->assertEquals($expectedDate, $this->reservationService->_LastDateRange);
+        $this->assertEquals($expectedDate, $this->page->_Today);
     }
 
     public function testWhenBookingSucceeds()
@@ -276,6 +276,7 @@ class ResourceDisplayPresenterTest extends TestBase
         $this->page->_Email = 'some@user.com';
         $this->page->_BeginTime = '08:00';
         $this->page->_EndTime = '17:00';
+        $this->page->_BeginDate = '2016-03-11';
         $this->page->_Timezone = 'America/New_York';
         $this->page->_ResourceId = 292;
 
@@ -307,6 +308,7 @@ class ResourceDisplayPresenterTest extends TestBase
         $this->page->_Email = 'some@user.com';
         $this->page->_BeginTime = '08:00';
         $this->page->_EndTime = '17:00';
+        $this->page->_BeginDate = '2016-03-11';
         $this->page->_Timezone = 'America/New_York';
         $this->page->_ResourceId = 292;
 
@@ -377,10 +379,12 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     public $_DisplayNotEnabledMessage = false;
     public $_Email;
     public $_BeginTime;
+    public $_BeginDate;
     public $_EndTime;
     public $_Timezone;
     public $_ReservationCreatedSuccessfully;
     public $_ReservationCheckedInSuccessfully;
+    public $_Today;
 
     /**
      * @var ReservationResultCollector
@@ -483,6 +487,7 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
         $this->_UpcomingReservations = $upcoming;
         $this->_RequiresCheckIn = $requiresCheckin;
         $this->_CheckinReferenceNumber = $checkinReferenceNumber;
+        $this->_Today = $today;
     }
 
     public function BindResource(BookableResource $resource)
@@ -513,6 +518,11 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     public function GetBeginTime()
     {
         return $this->_BeginTime;
+    }
+
+    public function GetBeginDate()
+    {
+        return $this->_BeginDate;
     }
 
     public function GetEndTime()

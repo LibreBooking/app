@@ -44,13 +44,13 @@ class ManageResourceTypesPresenterTest extends TestBase
         $this->resourceRepository
                 ->expects($this->once())
         ->method('GetResourceTypes')
-        ->will($this->returnValue($types));
+        ->willReturn($types);
 
         $this->attributeService
                 ->expects($this->once())
         ->method('GetByCategory')
         ->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE))
-        ->will($this->returnValue($attributes));
+        ->willReturn($attributes);
 
         $this->page
                 ->expects($this->once())
@@ -71,11 +71,11 @@ class ManageResourceTypesPresenterTest extends TestBase
         $description = 'description';
         $this->page->expects($this->once())
         ->method('GetResourceTypeName')
-        ->will($this->returnValue($name));
+        ->willReturn($name);
 
         $this->page->expects($this->once())
         ->method('GetDescription')
-        ->will($this->returnValue($description));
+        ->willReturn($description);
 
         $type = ResourceType::CreateNew($name, $description);
 
@@ -98,23 +98,23 @@ class ManageResourceTypesPresenterTest extends TestBase
         $this->page
                 ->expects($this->once())
         ->method('GetId')
-        ->will($this->returnValue($id));
+        ->willReturn($id);
 
         $this->page
                 ->expects($this->once())
         ->method('GetResourceTypeName')
-        ->will($this->returnValue($id));
+        ->willReturn($id);
 
         $this->page
                 ->expects($this->once())
         ->method('GetDescription')
-        ->will($this->returnValue($id));
+        ->willReturn($id);
 
         $this->resourceRepository
                 ->expects($this->once())
         ->method('LoadResourceType')
         ->with($this->equalTo($id))
-        ->will($this->returnValue($resourceType));
+        ->willReturn($resourceType);
 
         $this->resourceRepository
                 ->expects($this->once())
@@ -131,7 +131,7 @@ class ManageResourceTypesPresenterTest extends TestBase
         $this->page
                 ->expects($this->once())
         ->method('GetId')
-        ->will($this->returnValue($id));
+        ->willReturn($id);
 
         $this->resourceRepository
                         ->expects($this->once())

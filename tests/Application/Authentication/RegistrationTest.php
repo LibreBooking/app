@@ -197,7 +197,7 @@ class RegistrationTest extends TestBase
         $this->userRepository->expects($this->once())
             ->method('Add')
             ->with($this->anything())
-            ->will($this->returnValue($expectedUserId));
+            ->willReturn($expectedUserId);
 
         $this->registration->Register(
             $this->login,
@@ -282,17 +282,17 @@ class RegistrationTest extends TestBase
         $this->userRepository->expects($this->once())
             ->method('UserExists')
             ->with($this->equalTo($email), $this->equalTo($username))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->userRepository->expects($this->once())
             ->method('LoadByUsername')
             ->with($this->equalTo($username))
-            ->will($this->returnValue($updatedUser));
+            ->willReturn($updatedUser);
 
         $this->userRepository->expects($this->once())
             ->method('Update')
             ->with($this->equalTo($updatedUser))
-            ->will($this->returnValue($updatedUser));
+            ->willReturn($updatedUser);
 
         $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, ['1', '2']);
         $expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
@@ -342,7 +342,7 @@ class RegistrationTest extends TestBase
         $this->userRepository->expects($this->once())
             ->method('UserExists')
             ->with($this->equalTo($email), $this->equalTo($username))
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->userRepository->expects($this->once())
             ->method('Add')

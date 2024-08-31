@@ -43,7 +43,7 @@ class ResourceCrossDayRuleTest extends TestBase
         $this->scheduleRepository->expects($this->once())
         ->method('LoadById')
         ->with($this->equalTo($reservation->ScheduleId()))
-        ->will($this->returnValue($this->schedule));
+        ->willReturn($this->schedule);
 
         $rule = new ResourceCrossDayRule($this->scheduleRepository);
         $result = $rule->Validate($reservation, null);
@@ -92,7 +92,7 @@ class ResourceCrossDayRuleTest extends TestBase
         $this->scheduleRepository->expects($this->once())
         ->method('LoadById')
         ->with($this->equalTo($reservation->ScheduleId()))
-        ->will($this->returnValue($this->schedule));
+        ->willReturn($this->schedule);
 
         $rule = new ResourceCrossDayRule($this->scheduleRepository);
         $result = $rule->Validate($reservation, null);

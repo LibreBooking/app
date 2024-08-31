@@ -57,7 +57,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $this->strategy->expects($this->exactly(2))
                        ->method('GetItemsBetween')
                        ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservations));
+                       ->willReturn($reservations);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
         $ruleResult = $rule->Validate($series, null);
@@ -84,7 +84,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $this->strategy->expects($this->once())
                        ->method('GetItemsBetween')
                        ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservations));
+                       ->willReturn($reservations);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
         $ruleResult = $rule->Validate($series, null);
@@ -112,7 +112,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $this->strategy->expects($this->once())
                        ->method('GetItemsBetween')
                        ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservations));
+                       ->willReturn($reservations);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
         $ruleResult = $rule->Validate($series, null);
@@ -142,7 +142,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $this->strategy->expects($this->once())
                        ->method('GetItemsBetween')
                        ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservations));
+                       ->willReturn($reservations);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
         $ruleResult = $rule->Validate($series, null);
@@ -210,7 +210,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
-                 ->will($this->returnValue([$scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5]));
+                 ->willReturn([$scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5]);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), "UTC");
         $result = $rule->Validate($reservation, null);
@@ -253,7 +253,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $strategy->expects($this->once())
                  ->method('GetItemsBetween')
                  ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
-                 ->will($this->returnValue([$conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3]));
+                 ->willReturn([$conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3]);
 
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($strategy), "UTC");
@@ -287,7 +287,7 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
         $this->strategy->expects($this->once())
                        ->method('GetItemsBetween')
                        ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservations));
+                       ->willReturn($reservations);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
         $ruleResult = $rule->Validate($series, null);
@@ -351,15 +351,9 @@ class ExistingResourceAvailabilityRuleTest extends TestBase
                 new TestReservationItemView(++$currentId, $instance->StartDate(), $instance->EndDate(), $resourceId, "r$currentId"),
         ];
 
-        $this->strategy->expects($this->at(0))
+        $this->strategy->expects($this->exactly(2))
                        ->method('GetItemsBetween')
-                       ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservationsInstance1));
-
-        $this->strategy->expects($this->at(1))
-                       ->method('GetItemsBetween')
-                       ->with($this->anything(), $this->anything())
-                       ->will($this->returnValue($reservationsInstance2));
+                       ->willReturn($reservationsInstance1, $reservationsInstance2);
 
         $rule = new ExistingResourceAvailabilityRule(new ReservationConflictIdentifier($this->strategy), $this->timezone);
         $ruleResult = $rule->Validate($series, null);

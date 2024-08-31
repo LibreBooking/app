@@ -70,7 +70,7 @@ class ManageQuotasPresenterTest extends TestBase
 
         $this->resourceRepository->expects($this->once())
                                  ->method('GetResourceList')
-                                 ->will($this->returnValue($bookableResources));
+                                 ->willReturn($bookableResources);
 
         $this->page->expects($this->once())
                    ->method('BindResources')
@@ -78,7 +78,7 @@ class ManageQuotasPresenterTest extends TestBase
 
         $this->groupRepository->expects($this->once())
                               ->method('GetList')
-                              ->will($this->returnValue($groupResult));
+                              ->willReturn($groupResult);
 
         $this->page->expects($this->once())
                    ->method('BindGroups')
@@ -86,7 +86,7 @@ class ManageQuotasPresenterTest extends TestBase
 
         $this->scheduleRepository->expects($this->once())
                                  ->method('GetAll')
-                                 ->will($this->returnValue($schedules));
+                                 ->willReturn($schedules);
 
         $this->page->expects($this->once())
                    ->method('BindSchedules')
@@ -94,7 +94,7 @@ class ManageQuotasPresenterTest extends TestBase
 
         $this->quotaRepository->expects($this->once())
                               ->method('GetAll')
-                              ->will($this->returnValue($quotaList));
+                              ->willReturn($quotaList);
 
         $this->presenter->PageLoad();
     }
@@ -114,51 +114,51 @@ class ManageQuotasPresenterTest extends TestBase
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetDuration')
-                   ->will($this->returnValue($duration));
+                   ->willReturn($duration);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetLimit')
-                   ->will($this->returnValue($limit));
+                   ->willReturn($limit);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetUnit')
-                   ->will($this->returnValue($unit));
+                   ->willReturn($unit);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetResourceId')
-                   ->will($this->returnValue($resourceId));
+                   ->willReturn($resourceId);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetGroupId')
-                   ->will($this->returnValue($groupId));
+                   ->willReturn($groupId);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetScheduleId')
-                   ->will($this->returnValue($scheduleId));
+                   ->willReturn($scheduleId);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetEnforcedAllDay')
-                   ->will($this->returnValue(false));
+                   ->willReturn(false);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetEnforcedStartTime')
-                   ->will($this->returnValue($enforcedStartTime));
+                   ->willReturn($enforcedStartTime);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetEnforcedEndTime')
-                   ->will($this->returnValue($enforcedEndTime));
+                   ->willReturn($enforcedEndTime);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetEnforcedEveryDay')
-                   ->will($this->returnValue(false));
+                   ->willReturn(false);
 
         $this->page->expects($this->atLeastOnce())
                    ->method('GetEnforcedDays')
-                   ->will($this->returnValue($enforcedDays));
+                   ->willReturn($enforcedDays);
 
         $this->page->expects($this->atLeastOnce())
                         ->method('GetScope')
-                        ->will($this->returnValue($scope));
+                        ->willReturn($scope);
 
         $expectedQuota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope);
 

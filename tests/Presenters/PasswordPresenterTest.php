@@ -22,25 +22,25 @@ class PasswordPresenterTest extends TestBase
 
         $page->expects($this->once())
                 ->method('ResettingPassword')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $page->expects($this->once())
                 ->method('IsValid')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $page->expects($this->atLeastOnce())
                 ->method('GetPassword')
-                ->will($this->returnValue($newPassword));
+                ->willReturn($newPassword);
 
         $userRepo->expects($this->atLeastOnce())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $encryption->expects($this->once())
                 ->method('EncryptPassword')
                 ->with($this->equalTo($newPassword))
-                ->will($this->returnValue($encryptedPassword));
+                ->willReturn($encryptedPassword);
 
         $user->expects($this->once())
                 ->method('ChangePassword')
@@ -52,7 +52,7 @@ class PasswordPresenterTest extends TestBase
 
         $page->expects($this->once())
                 ->method('ShowResetPasswordSuccess')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $presenter->PageLoad();
     }

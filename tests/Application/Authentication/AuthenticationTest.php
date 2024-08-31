@@ -137,7 +137,7 @@ class AuthenticationTest extends TestBase
         $this->userRepository->expects($this->once())
                 ->method('LoadByUsername')
                 ->with($this->equalTo($this->username))
-                ->will($this->returnValue($this->user));
+                ->willReturn($this->user);
 
         LoginTime::$Now = time();
 
@@ -150,22 +150,22 @@ class AuthenticationTest extends TestBase
         $this->authorization->expects($this->once())
                 ->method('IsApplicationAdministrator')
                 ->with($this->equalTo($this->user))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->authorization->expects($this->once())
                 ->method('IsGroupAdministrator')
                 ->with($this->equalTo($this->user))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->authorization->expects($this->once())
                 ->method('IsResourceAdministrator')
                 ->with($this->equalTo($this->user))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->authorization->expects($this->once())
                 ->method('IsScheduleAdministrator')
                 ->with($this->equalTo($this->user))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $context = new WebLoginContext(new LoginData(false, $language));
         $actualSession = $this->auth->Login($this->username, $context);
