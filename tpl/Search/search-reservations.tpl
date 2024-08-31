@@ -85,14 +85,14 @@
                     <div class="d-flex ms-5">
                         <div class="form-group px-2">
                             <label for="beginDate" class="visually-hidden">{translate key=BeginDate}</label>
-                            <input type="text" id="beginDate" class="form-control form-control-sm w-auto dateinput"
+                            <input type="text" id="beginDate" class="form-control form-control-sm dateinput"
                                 placeholder="{translate key=BeginDate}" />
                             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                                 value="{formatdate date=$BeginDate key=system}" />
                         </div>
                         <div class="form-group">
                             <label for=" endDate" class="visually-hidden">{translate key=EndDate}</label>
-                            <input type="text" id="endDate" class="form-control form-control-sm w-auto dateinput"
+                            <input type="text" id="endDate" class="form-control form-control-sm dateinput"
                                 placeholder="{translate key=EndDate}" />
                             <input type="hidden" id="formattedEndDate" {formname key=END_DATE}
                                 value="{formatdate date=$EndDate key=system}" />

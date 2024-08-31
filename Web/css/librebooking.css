@@ -276,6 +276,10 @@ li.ui-timepicker-selected,
     width: 90px;
 }
 
+.form-select.dateinput {
+    width: 90px;
+}
+
 #add-blackout-panel label {
     min-width: 90px;
 }

@@ -179,7 +179,7 @@
 								<div class="checkbox checkbox-single form-check">
 									<input class="form-check-input" type="checkbox" id="delete-all"
 										aria-label="{translate key=All}" />
-									<a href="#" id="delete-selected" class="link-danger no-show"
+									<a href="#" id="delete-selected" class="link-danger d-none"
 										title="{translate key=Delete}">{translate key=Delete}<i
 											class="bi bi-trash3-fill text-danger icon remove"></i>
 								</div>
@@ -387,17 +387,18 @@
 
 	<div id="wait-box" class="wait-box">
 		<div id="creatingNotification">
-			<h3>
+			{include file='wait-box.tpl'}
+			<!--<h3>
 				{block name="ajaxMessage"}
 					{translate key=Working}...
 				{/block}
 			</h3>
-			{html_image src="reservation_submitting.gif"}
+			{html_image src="reservation_submitting.gif"} -->
 		</div>
 		<div id="result"></div>
 	</div>
 
-	<div id="update-box" class="no-show">
+	<div id="update-box" class="d-none">
 		{indicator id="update-spinner"}
 		<div id="update-contents"></div>
 	</div>
