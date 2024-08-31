@@ -93,14 +93,14 @@ function ResourceDisplay(opts) {
             e.stopPropagation();
 
             var beforeReserve = function () {
-                $('#validationErrors').addClass('no-show');
+                $('#validationErrors').addClass('d-none');
                 showWait();
             };
 
             var afterReserve = function (data) {
                 var validationErrors = $('#validationErrors');
                 if (data.success) {
-                    validationErrors.find('ul').empty().addClass('no-show');
+                    validationErrors.find('ul').empty().addClass('d-none');
                     hidePopup();
                     resumeRefresh();
                     refreshResource();
@@ -110,9 +110,10 @@ function ResourceDisplay(opts) {
                     validationErrors.find('ul').empty().html($.map(errors, function (item) {
                         return "<li>" + item + "</li>";
                     }));
-                    validationErrors.removeClass('no-show');
+                    validationErrors.removeClass('d-none');
                 }
                 hideWait();
+                $('#reservation-box').modal('hide');
             };
 
             ajaxPost($('#formReserve'), null, beforeReserve, afterReserve);
@@ -251,7 +252,6 @@ function ResourceDisplay(opts) {
     elements.loginButton.click(function (e) {
         e.preventDefault();
         showWait();
-
         elements.loginForm.submit();
     });
 
