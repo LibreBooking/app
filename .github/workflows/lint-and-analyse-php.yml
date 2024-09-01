@@ -17,6 +17,39 @@ permissions:
   contents: read
 
 jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ["8.2", "8.3"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Install Composer dependencies
+        # Allow the previous check to fail but not abort
+        if: always()
+        uses: ramsey/composer-install@v2
+        with:
+          # Ignore zip for php-webdriver/webdriver
+          composer-options: "--ignore-platform-req=ext-zip"
+
+      - name: Create config.php for unit tests
+        run: cp config/config.dist.php config/config.php
+
+      - name: Unit Tests
+        run: composer phpunit
+
   lint-php-files:
     runs-on: ubuntu-latest
     strategy:
@@ -41,7 +74,7 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           # Ignore zip for php-webdriver/webdriver
-          composer-options: "--ignore-platform-req=ext-zip"
+          composer-options: "--ignore-platform-reqs"
 
       # TODO: Enable this after resolving issues
       # - name: Cache coding-standard

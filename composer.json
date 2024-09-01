@@ -36,8 +36,9 @@
         "build": "./tools/phing",
         "fix": "./tools/php-cs-fixer fix -v",
         "lint": "./tools/php-cs-fixer fix -vv --dry-run",
+        "phpunit": "./vendor/bin/phpunit",
         "test": [
-            "./vendor/bin/phpunit",
+            "@phpunit",
             "@lint"
         ],
         "sniffer:php8": "phpcs -p ./ --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility --report-full=./php8-report.log --ignore=./vendor/*,./tools/*,./.git/*,./tpl_c/*,./build/*,./.phpdoc/*,./var/*,./Web/scripts/*,./Web/css/* --runtime-set testVersion 8.0"
