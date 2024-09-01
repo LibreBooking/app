@@ -137,6 +137,8 @@ fieldset:disabled .btn {
     border-color: var(--primary-disabled);
 }
 
+a,
+a:visited,
 .link-primary {
     color: var(--primary) !important;
     text-decoration: none;
