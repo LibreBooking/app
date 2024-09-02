@@ -615,7 +615,7 @@
 						<label class="fw-bold mb-2" for="resourceImageAdd">{translate key=Image}</label>
 						<div class="dropzone text-center border border-2 rounded-3 bg-light" id="addResourceImage">
 							<div>
-								<i class="bi bi-filetype-pdf fs-1"></i><br />
+								<i class="bi bi-image fs-1"></i><br />
 								{translate key=ChooseOrDropFile}
 							</div>
 							<input id="resourceImageAdd" type="file" {formname key=RESOURCE_IMAGE}
