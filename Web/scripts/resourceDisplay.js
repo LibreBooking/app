@@ -104,6 +104,7 @@ function ResourceDisplay(opts) {
                     hidePopup();
                     resumeRefresh();
                     refreshResource();
+                    $('#reservation-box').modal('hide');
                 }
                 else {
                     var errors = data.errors ? data.errors : data.Messages;
@@ -113,7 +114,6 @@ function ResourceDisplay(opts) {
                     validationErrors.removeClass('d-none');
                 }
                 hideWait();
-                $('#reservation-box').modal('hide');
             };
 
             ajaxPost($('#formReserve'), null, beforeReserve, afterReserve);
