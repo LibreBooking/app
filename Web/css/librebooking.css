@@ -410,6 +410,11 @@ span.searchclear-label {
     font-family: "bootstrap-icons";
 }
 
+.announcement a,
+.announcement a:visited {
+    color: var(--primary);
+}
+
 .resource-draggable {
     cursor: move;
     border: solid 1px transparent;
