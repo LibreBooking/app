@@ -32,7 +32,7 @@ function EmailTemplateManagement(opts) {
         elements.templateOpts.on('change', function (e) {
             var templateName = elements.templateOpts.val();
             if (templateName == '') {
-                elements.editEmailSection.addClass('no-show');
+                elements.editEmailSection.addClass('d-none');
             }
             else {
                 elements.templatePath.val(templateName);
@@ -40,7 +40,7 @@ function EmailTemplateManagement(opts) {
             }
         });
 
-        elements.reloadEmailContents.on('click', function(e){
+        elements.reloadEmailContents.on('click', function (e) {
             e.preventDefault();
             var templateName = elements.templateOpts.val();
             ajaxGet(options.scriptUrl + '?dr=originalTemplate&lang=' + elements.languageOpts.val() + '&tn=' + templateName, null, loadTemplate);
@@ -51,18 +51,16 @@ function EmailTemplateManagement(opts) {
     };
 
     function updatedEmail(data) {
-        if (data.saveResult == true)
-        {
+        if (data.saveResult == true) {
             elements.updateSuccess.show().delay(2000).fadeOut(200);
         }
-        else
-        {
+        else {
             elements.updateFailed.show().delay(2000).fadeOut(200);
         }
     }
 
     function loadTemplate(data) {
         elements.templateContents.val(data);
-        elements.editEmailSection.removeClass('no-show');
+        elements.editEmailSection.removeClass('d-none');
     }
 }

@@ -11,7 +11,7 @@
 
             <form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post"
                 enctype="multipart/form-data">
-                <div class="validationSummary alert alert-danger no-show" id="validationErrors">
+                <div class="validationSummary alert alert-danger d-none" id="validationErrors">
                     <ul>
                         {async_validator id="logoFileExt"}
                         {async_validator id="cssFileExt"}

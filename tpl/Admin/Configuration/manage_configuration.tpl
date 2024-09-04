@@ -205,8 +205,7 @@
             });
         </script>
         <div id="wait-box" class="wait-box">
-            <h3>{translate key=Working}</h3>
-            {html_image src="reservation_submitting.gif"}
+            {include file="wait-box.tpl"}
         </div>
     {/if}
 </div>
