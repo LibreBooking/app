@@ -488,7 +488,7 @@
 														<div class="mb-4">
 															<span class="fs-6 fw-bold">{translate key='Capacity'}</span>
 															<a href="#" class="inline update changeCapacity link-primary">
-																<span class="no-show">{translate key=Capacity}</span>
+																<span class="visually-hiden">{translate key=Capacity}</span>
 																<span class="bi bi-pencil-square"></span>
 															</a>
 
@@ -794,7 +794,7 @@
 									<input type='hidden' id='bufferTime' class='interval' {formname key=BUFFER_TIME} />
 								</div>
 							{/capture}
-							<div id='bufferInputs'>
+							<div id="bufferInputs" class="collapse">
 								<div class="d-flex align-items-center flex-wrap gap-1 ms-2">
 									{translate key=ResourceBufferTime args=$txtBufferTime}
 								</div>

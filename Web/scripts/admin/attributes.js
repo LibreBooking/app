@@ -155,7 +155,7 @@ function AttributeManagement(opts) {
             handleEntitiesSelected(activeAppliesTo);
         });
 
-        elements.limitScope.change(function (e) {
+        elements.limitScope.change(function () {
             elements.attributeSecondary.addClass('no-show');
             if (elements.limitScope.is(':checked')) {
                 elements.attributeSecondary.removeClass('no-show');
