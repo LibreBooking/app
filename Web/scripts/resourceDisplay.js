@@ -141,6 +141,12 @@ function ResourceDisplay(opts) {
             ajaxPost($('#formCheckin'), null, beforeCheckin, afterCheckin);
         });
 
+        elements.placeholder.on('mouseenter', '.reservable', function (e) {
+            $(this).addClass('hilite');
+        }).on('mouseleave', '.reservable', function () {
+            $(this).removeClass('hilite');
+        });
+
         elements.startDate.on('change', function () {
             //showWait();
             refreshResource(hideWait);
