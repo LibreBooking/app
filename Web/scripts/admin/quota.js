@@ -39,7 +39,7 @@ function QuotaManagement(opts) {
 			handleEnforceEveryDayToggle(e);
 		});
 
-		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError, {onBeforeSubmit: validateTimes});
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError, { onBeforeSubmit: validateTimes });
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteQuota), null, handleAddError);
 	};
 
@@ -62,38 +62,32 @@ function QuotaManagement(opts) {
 	};
 
 	var handleEnforceAllDayToggle = function (e) {
-		if (elements.enforceAllDayToggle.is(':checked'))
-		{
-			elements.enforceHoursTimes.addClass('no-show');
+		if (elements.enforceAllDayToggle.is(':checked')) {
+			elements.enforceHoursTimes.addClass('d-none');
 		}
-		else
-		{
-			elements.enforceHoursTimes.removeClass('no-show');
+		else {
+			elements.enforceHoursTimes.removeClass('d-none');
 		}
 	};
 
 	var handleEnforceEveryDayToggle = function (e) {
-		if (elements.enforceEveryDayToggle.is(':checked'))
-		{
-			elements.enforceDays.addClass('no-show');
+		if (elements.enforceEveryDayToggle.is(':checked')) {
+			elements.enforceDays.addClass('d-none');
 		}
-		else
-		{
-			elements.enforceDays.removeClass('no-show');
+		else {
+			elements.enforceDays.removeClass('d-none');
 		}
 	};
 
 	var validateTimes = function () {
-		$('#timeError').addClass('no-show');
-		if (!elements.enforceAllDayToggle.is(':checked'))
-		{
+		$('#timeError').addClass('d-none');
+		if (!elements.enforceAllDayToggle.is(':checked')) {
 			var start = moment('2010-01-01 ' + elements.enforceStartTime.val(), 'YYYY-MM-DD hh:mm a');
 			var end = moment('2010-01-01 ' + elements.enforceEndTime.val(), 'YYYY-MM-DD hh:mm a');
 			var valid = start.isBefore(end) || (end.hour() == 0 && end.minute() == 0);
 
-			if (!valid)
-			{
-				$('#timeError').removeClass('no-show');
+			if (!valid) {
+				$('#timeError').removeClass('d-none');
 			}
 			return valid;
 		}

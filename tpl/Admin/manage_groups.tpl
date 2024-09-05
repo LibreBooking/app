@@ -508,8 +508,8 @@
                                 {async_validator id="fileExtensionValidator" key=""}
                             </ul>
                         </div>
-                        <div id="importErrors" class="alert alert-danger no-show"></div>
-                        <div id="importResult" class="alert alert-success no-show">
+                        <div id="importErrors" class="alert alert-danger d-none"></div>
+                        <div id="importResult" class="alert alert-success d-none">
                             <span>{translate key=RowsImported}</span>
 
                             <span id="importCount" class="inline fw-bold">0</span>

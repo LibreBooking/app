@@ -155,7 +155,7 @@
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding">
-									<label for="accessoryId" class="no-show">{translate key=Accessory}</label>
+									<label for="accessoryId" class="visually-hidden">{translate key=Accessory}</label>
 									<select class="form-control" {formname key=ACCESSORY_ID multi=true}
 										multiple="multiple" id="accessoryId">
 										{foreach from=$Accessories item=accessory}
@@ -164,7 +164,7 @@
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding">
-									<label for="scheduleId" class="no-show">{translate key=Schedule}</label>
+									<label for="scheduleId" class="visually-hidden">{translate key=Schedule}</label>
 									<select class="form-control" {formname key=SCHEDULE_ID multi=true}
 										multiple="multiple" id="scheduleId">
 										{foreach from=$Schedules item=schedule}
@@ -173,7 +173,7 @@
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding">
-									<label for="groupId" class="no-show">{translate key=Group}</label>
+									<label for="groupId" class="visually-hidden">{translate key=Group}</label>
 									<select class="form-control" {formname key=GROUP_ID multi=true} multiple="multiple"
 										id="groupId">
 										{foreach from=$Groups item=group}
