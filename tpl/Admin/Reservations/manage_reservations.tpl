@@ -219,7 +219,7 @@
 						{foreach from=$reservations item=reservation}
 							{cycle values='row0,row1' assign=rowCss}
 							{if $reservation->RequiresApproval}
-								{assign var=rowCss value='pending'}
+								{assign var=rowCss value='table-warning pending'}
 							{/if}
 							{assign var=reservationId value=$reservation->ReservationId}
 							<tr class="{$rowCss} {if $IsDesktop}editable{/if}" data-seriesId="{$reservation->SeriesId}"
@@ -263,8 +263,7 @@
 								{/if}
 								<td class="action">
 									{if $reservation->RequiresApproval}
-										<a href="#" class="update approve link-primary"><i
-												class="bi bi-pencil-fill fs-6"></i></a>
+										<a href="#" class="update approve link-success"><i class="bi bi-check-lg fs-4"></i></a>
 									{else}
 										-
 									{/if}
@@ -291,23 +290,23 @@
 								<td>
 									<div class="reservation-list-dates d-flex">
 										<div>
-											<label>{translate key='Created'}</label>
+											<label class="fw-bold">{translate key='Created'}</label>
 											{formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}
 										</div>
 										<div>
-											<label>{translate key='LastModified'}</label>
+											<label class="fw-bold">{translate key='LastModified'}</label>
 											{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}
 										</div>
 										<div>
-											<label>{translate key='CheckInTime'}</label>
+											<label class="fw-bold">{translate key='CheckInTime'}</label>
 											{formatdate date=$reservation->CheckinDate timezone=$Timezone key=short_datetime}
 										</div>
 										<div>
-											<label>{translate key='CheckOutTime'}</label>
+											<label class="fw-bold">{translate key='CheckOutTime'}</label>
 											{formatdate date=$reservation->CheckoutDate timezone=$Timezone key=short_datetime}
 										</div>
 										<div>
-											<label>{translate key='OriginalEndDate'}</label>
+											<label class="fw-bold">{translate key='OriginalEndDate'}</label>
 											{formatdate date=$reservation->OriginalEndDate timezone=$Timezone key=short_datetime}
 										</div>
 									</div>
