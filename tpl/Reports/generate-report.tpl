@@ -230,7 +230,7 @@
 </div>
 
 <div id="saveMessage" class="alert alert-success" style="display:none;">
-	<strong>{translate key=ReportSaved}</strong> <a
+	<strong>{translate key=ReportSaved}</strong> <a class="alert-link"
 		href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
 </div>
 
