@@ -326,7 +326,7 @@
 					<tr>
 						<td colspan="{$colCount-1}"></td>
 						<td class="action-delete">
-							<a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">
+							<a href="#" id="delete-selected" class="d-none" title="{translate key=Delete}">
 								<span class="bi bi-trash3-fill text-danger icon remove"></span>
 								<span class="visually-hidden">{translate key=Delete}</span>
 							</a>

@@ -37,11 +37,11 @@ function AttributeManagement(opts) {
 
         $.ajax({
             url: opts.changeCategoryUrl + categoryId, cache: false, beforeSend: function () {
-                $('#indicator').removeClass('no-show').insertBefore(elements.attributeList);
+                $('#indicator').removeClass('d-none').insertBefore(elements.attributeList);
                 $(elements.attributeList).html('');
             }
         }).done(function (data) {
-            $('#indicator').addClass('no-show');
+            $('#indicator').addClass('d-none');
             $(elements.attributeList).html(data);
         });
     }
@@ -156,9 +156,9 @@ function AttributeManagement(opts) {
         });
 
         elements.limitScope.change(function () {
-            elements.attributeSecondary.addClass('no-show');
+            elements.attributeSecondary.addClass('d-none');
             if (elements.limitScope.is(':checked')) {
-                elements.attributeSecondary.removeClass('no-show');
+                elements.attributeSecondary.removeClass('d-none');
             }
         });
 
@@ -321,14 +321,14 @@ function AttributeManagement(opts) {
         if (elements.attributeCategory.val() == options.categories.reservation) {
             $('.attributeUnique').hide();
             $('.attributeAdminOnly').show();
-            $('.secondaryEntities, .attributeSecondary').addClass('no-show');
-            $('.secondaryEntities').removeClass('no-show');
+            $('.secondaryEntities, .attributeSecondary').addClass('d-none');
+            $('.secondaryEntities').removeClass('d-none');
             $('.attributeIsPrivate').show();
         }
         else {
             $('.attributeUnique').show();
             //$('.attributeAdminOnly').hide();
-            $('.secondaryEntities, .attributeSecondary').addClass('no-show');
+            $('.secondaryEntities, .attributeSecondary').addClass('d-none');
             $('.attributeIsPrivate').hide();
         }
     };

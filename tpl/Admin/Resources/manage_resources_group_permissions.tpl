@@ -1,6 +1,6 @@
 <h5 class="mt-2">
     <span id="totalGroups">{$Groups|default:array()|count}</span> {translate key=Groups} <span
-        class="no-show group-permission-spinner">
+        class="d-none group-permission-spinner">
         <div class="spinner-border spinner-border-sm" role="status"></div>
     </span>
 </h5>

@@ -652,7 +652,7 @@
 							</div>
 						</div>
 
-						<label for="resourceImage" class="off-screen no-show">{translate key=Image}</label>
+						<label for="resourceImage" class="visually-hidden">{translate key=Image}</label>
 						<div class="dropzone text-center border border-2 rounded-3 bg-light" id="changeResourceImage">
 							<div class="dropzone-empty">
 								<i class="bi bi-image fs-1"></i><br />
@@ -1092,7 +1092,7 @@
 								</label>
 							</div>
 
-							<div class="form-group no-show newStatusReason mb-3">
+							<div class="form-group d-none newStatusReason mb-3">
 								<label class="clearfix">
 									<div class="fw-bold float-start">{translate key=ReasonText}</div>
 									<a href="#" class="float-end addStatusReason">
@@ -1125,7 +1125,7 @@
 								</div>
 							</div>
 
-							<div id="sendStatusChangeMessageContent" class="no-show border rounded bg-light p-3">
+							<div id="sendStatusChangeMessageContent" class="d-none border rounded bg-light p-3">
 								<div class="form-group mb-2">
 									<label class="fw-bold"
 										for="statusMessageSendDays">{translate key=AllUsersWhoHaveAReservationInTheNext}</label>
@@ -1197,7 +1197,7 @@
 				<div class="modal-body">
 					<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}"
 						class="form-vertical" role="form">
-						<div id="bulkUpdateErrors" class="error no-show mb-2">
+						<div id="bulkUpdateErrors" class="error d-none mb-2">
 							{async_validator id="bulkAttributeValidator" key=""}
 						</div>
 						<div class="d-flex align-items-center gap-1 mb-1">
@@ -1660,7 +1660,7 @@
 												{formname key=ALLOW_CONCURRENT_RESERVATIONS}>
 												{html_options options=$YesNoUnchangedOptions}
 											</select>
-											<div class="no-show" id="bulkEditAllowConcurrentDiv">
+											<div class="d-none" id="bulkEditAllowConcurrentDiv">
 												{capture name="txtConcurrentReservations" assign="txtConcurrentReservations"}
 													<label for='bulkEditMaxConcurrentReservations'
 														class='visually-hidden'>Maximum

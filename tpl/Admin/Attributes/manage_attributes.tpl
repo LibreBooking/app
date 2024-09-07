@@ -107,7 +107,7 @@
 								</div>
 							</div>
 
-							<div class="secondaryEntities no-show form-group">
+							<div class="secondaryEntities d-none form-group">
 								<div class="form-check">
 									<input type="checkbox" class="limitScope form-check-input"
 										{formname key=ATTRIBUTE_LIMIT_SCOPE} id="attributeLimitScope" />
@@ -115,7 +115,7 @@
 										for="attributeLimitScope">{translate key=LimitAttributeScope}</label>
 								</div>
 							</div>
-							<div class="attributeSecondary no-show form-group">
+							<div class="attributeSecondary d-none form-group">
 								<label for="attributeSecondaryCategory"
 									class="visually-hidden">{translate key=Category}</label>
 								<select class="secondaryAttributeCategory form-select"
@@ -127,7 +127,7 @@
 										{translate key=ResourceType}</option>
 								</select>
 							</div>
-							<div class="attributeSecondary no-show form-group">
+							<div class="attributeSecondary d-none form-group">
 								<label for="attributeSecondaryEntityDescription">{translate key=CollectFor}</label>
 								<a href="#" class="secondaryPrompt link-primary"
 									id="attributeSecondaryEntityDescription">{translate key=All}</a>
@@ -233,7 +233,7 @@
 								</div>
 							</div>
 
-							<div class="form-group secondaryEntities no-show">
+							<div class="form-group secondaryEntities d-none">
 								<div class="form-check">
 									<input type="checkbox" class="limitScope form-check-input"
 										{formname key=ATTRIBUTE_LIMIT_SCOPE} id="editAttributeLimitScope" />
@@ -242,7 +242,7 @@
 								</div>
 							</div>
 
-							<div class="form-group attributeSecondary no-show">
+							<div class="form-group attributeSecondary d-none">
 								<label for="editAttributeSecondaryCategory"
 									class="visually-hidden">{translate key=Category}</label>
 								<select class="secondaryAttributeCategory form-select"
@@ -255,7 +255,7 @@
 								</select>
 							</div>
 
-							<div class="form-group attributeSecondary no-show">
+							<div class="form-group attributeSecondary d-none">
 								<label for="editAttributeSecondaryEntityDescription">{translate key=CollectFor}</label>
 								<a href="#" class="secondaryPrompt link-primary"
 									id="editAttributeSecondaryEntityDescription">{translate key=All}</a>
