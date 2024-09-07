@@ -31,7 +31,8 @@
                 <button title="{translate key=CheckOut}" type="button"
                     class="btn btn-sm col-12 btn-warning text-white btnCheckin"
                     data-referencenumber="{$reservation->ReferenceNumber}"
-                    data-url="ajax/reservation_checkin.php?action={ReservationAction::Checkout}">
+                    data-url="ajax/reservation_checkin.php?action={ReservationAction::Checkout}"><i
+                        class="bi bi-box-arrow-in-left"></i>
                     {translate key=CheckOut}
                 </button>
             </div>
