@@ -528,6 +528,10 @@ input.mid-number {
     min-width: 250px;
 }
 
+#panelCustomReport label {
+    min-width: 130px;
+}
+
 .no-show {
     display: none !important;
 }
