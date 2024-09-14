@@ -16,7 +16,7 @@
 				<div id="add-announcement-content" class="accordion-collapse collapse">
 					<div class="accordion-body add-contents">
 						<div class="row gy-2 mb-2">
-							<div id="addResults" class="error no-show"></div>
+							<div id="addResults" class="error d-none"></div>
 							<div class="form-group col-12">
 								<label class="fw-bold" for="addAnnouncement">{translate key='Announcement'}<i
 										class="bi bi-asterisk text-danger align-top form-control-feedback"

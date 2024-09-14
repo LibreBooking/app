@@ -4,7 +4,7 @@
 
 	{include file='Admin/Resources/manage_resource_menu.tpl' ResourcePageTitleKey='ManageResourceGroups'}
 
-	<div id="globalError" class="alert alert-danger no-show"></div>
+	<div id="globalError" class="alert alert-danger d-none"></div>
 
 	<div id="manage-resource-groups-container bg-dark">
 		<div class="card shadow mb-3">

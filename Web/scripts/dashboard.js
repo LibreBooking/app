@@ -103,43 +103,49 @@ function Dashboard(opts) {
             var refNum = $(this).attr('id');
             window.location = options.reservationUrl + refNum;
         });
-        /* There is no btnCheckin or btnCheckout button, it appears to be unused.
-                $('.btnCheckin').click(function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var button = $(this);
-                    button.attr('disabled', 'disabled');
-                    button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
-        
-                    var form = $('#form-checkin');
-                    var refNum = $(this).attr('data-referencenumber');
-                    $('#referenceNumber').val(refNum);
-                    $.blockUI({ message: $('#wait-box') });
-                    ajaxPost(form, $(this).data('url'), null, function (data) {
-                        $('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
-                        $('#result').html(data);
-                        ShowReservationAjaxResponse();
-                    });
-                });
-        
-                $('.btnCheckout').click(function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var button = $(this);
-                    button.attr('disabled', 'disabled');
-                    button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
-        
-                    var form = $('#form-checkout');
-                    var refNum = $(this).attr('data-referencenumber');
-                    $('#referenceNumber').val(refNum);
-                    $.blockUI({ message: $('#wait-box') });
-                    ajaxPost(form, null, null, function (data) {
-                        $('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
-                        $('#result').html(data);
-                        ShowReservationAjaxResponse();
-                    });
-                });
-        */
+
+        $('.btnCheckin').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var button = $(this);
+            button.attr('disabled', 'disabled');
+            button.find('i').removeClass('bi-box-arrow-in-right').addClass('spinner-border').css({
+                'width': '1rem',
+                'height': '1rem'
+            });
+
+            var form = $('#form-checkin');
+            var refNum = $(this).attr('data-referencenumber');
+            $('#referenceNumber').val(refNum);
+            $.blockUI({ message: $('#wait-box') });
+            ajaxPost(form, $(this).data('url'), null, function (data) {
+                $('button[data-referencenumber="' + refNum + '"]').addClass('d-none');
+                $('#result').html(data);
+                ShowReservationAjaxResponse();
+            });
+        });
+
+        $('.btnCheckout').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var button = $(this);
+            button.attr('disabled', 'disabled');
+            button.find('i').removeClass('bi-box-arrow-in-left').addClass('spinner-border').css({
+                'width': '1rem',
+                'height': '1rem'
+            });
+
+            var form = $('#form-checkout');
+            var refNum = $(this).attr('data-referencenumber');
+            $('#referenceNumber').val(refNum);
+            $.blockUI({ message: $('#wait-box') });
+            ajaxPost(form, null, null, function (data) {
+                $('button[data-referencenumber="' + refNum + '"]').addClass('d-none');
+                $('#result').html(data);
+                ShowReservationAjaxResponse();
+            });
+        });
+
         $('#wait-box').on('click', '#btnSaveSuccessful', function (e) {
 
             CloseSaveDialog();

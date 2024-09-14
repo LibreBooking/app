@@ -13,10 +13,11 @@
 				<div id="panelCustomReport" class="accordion-collapse collapse">
 					<div class="accordion-body no-padding">
 						<div id="custom-report-input">
-							<div class="row gy-2 mb-2 input-set" id="selectDiv">
+							<div class="row mb-2 input-set" id="selectDiv">
 								<div class="col-md-1"><span class="fw-bold">{translate key=Select}</span></div>
 
-								<div class="btn-group-sm radio col-md-11" data-bs-toggle="buttons">
+								<div class="col-md-11 btn-group-sm radio d-flex flex-wrap gap-1"
+									data-bs-toggle="buttons">
 									<input type="radio" class="btn-check" {formname key=REPORT_RESULTS}
 										value="{Report_ResultSelection::FULL_LIST}" id="results_list"
 										checked="checked" />
@@ -41,9 +42,9 @@
 							</div>
 						</div>
 
-						<div class="row gy-2 input-set select-toggle mb-2" id="listOfDiv">
+						<div class="row input-set select-toggle mb-2" id="listOfDiv">
 							<div class="col-md-1"><span class="fw-bold">{translate key=Usage}</span></div>
-							<div class="col-md-11 btn-group-sm radio" data-bs-toggle="buttons">
+							<div class="col-md-11 btn-group-sm radio d-flex flex-wrap gap-1" data-bs-toggle="buttons">
 								<input type="radio" class="btn-check" {formname key=REPORT_USAGE}
 									value="{Report_Usage::RESOURCES}" id="usage_resources" checked="checked">
 								<label for="usage_resources" class="btn btn-outline-primary"><i
@@ -56,9 +57,9 @@
 							</div>
 						</div>
 
-						<div class="row gy-2 input-set select-toggle mb-2" id="aggregateDiv" style="display:none;">
+						<div class="row input-set select-toggle mb-2" id="aggregateDiv" style="display:none;">
 							<div class="col-md-1"><span class="fw-bold">{translate key=AggregateBy}</span></div>
-							<div class="col-md-11 btn-group-sm radio">
+							<div class="col-md-11 btn-group-sm radio d-flex flex-wrap align-items-start gap-1">
 								<input type="radio" class="btn-check" {formname key=REPORT_GROUPBY}
 									value="{Report_GroupBy::NONE}" id="groupby_none" checked="checked" />
 								<label for="groupby_none" class="btn btn-outline-primary"><i
@@ -88,10 +89,10 @@
 							</div>
 						</div>
 
-						<div class="row gy-2 mb-2 input-set form-group-sm" id="rangeDiv">
+						<div class="row mb-2 input-set form-group-sm" id="rangeDiv">
 							<div class="col-md-1"><span class="fw-bold">{translate key=Range}</span></div>
-							<div class="col-md-11 d-flex">
-								<div class=" btn-group-sm radio" data-bs-toggle="buttons">
+							<div class="col-md-11">
+								<div class="btn-group-sm radio d-flex flex-wrap gap-1" data-bs-toggle="buttons">
 									<input type="radio" class="btn-check" {formname key=REPORT_RANGE}
 										value="{Report_Range::CURRENT_MONTH}" id="current_month" checked="checked" />
 									<label for="current_month" class="btn btn-outline-primary"><i
@@ -112,50 +113,50 @@
 									<label for="range_all" class="btn btn-outline-primary"><i
 											class="bi bi-calendar3-fill me-1"></i>{translate key=AllTime}</label>
 
-									<input type="radio" class="btn-check" {formname key=REPORT_RANGE}
-										value="{Report_Range::DATE_RANGE}" id="range_within" />
-									<label for="range_within" class="btn btn-outline-primary"><i
-											class="bi bi-calendar3-range me-1"></i>{translate key=Between}</label>
-								</div>
+									<div class="d-inline-flex align-items-center gap-1 btn-group-sm ">
+										<input type="radio" class="btn-check" {formname key=REPORT_RANGE}
+											value="{Report_Range::DATE_RANGE}" id="range_within" />
+										<label for="range_within" class="btn btn-outline-primary"><i
+												class="bi bi-calendar3-range me-1"></i>{translate key=Between}</label>
 
-								<div class="d-flex align-items-center gap-1 ms-2">
-									<label for="startDate" class="visually-hidden">{translate key=StartDate}</label>
-									<input type="input" class="form-control form-control-sm w-auto dateinput inline"
-										id="startDate" />
-									-
-									<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START} />
-									<label for="endDate" class="visually-hidden">{translate key=EndDate}</label>
-									<input type="input" class="form-control form-control-sm w-auto dateinput inline"
-										id="endDate" />
-									<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
+										<label for="startDate" class="visually-hidden">{translate key=StartDate}</label>
+										<input type="input" class="form-control form-control-sm dateinput inline"
+											id="startDate" />
+										-
+										<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START} />
+										<label for="endDate" class="visually-hidden">{translate key=EndDate}</label>
+										<input type="input" class="form-control form-control-sm dateinput inline"
+											id="endDate" />
+										<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
+									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="row gy-2 input-set form-group-sm">
+						<div class="row input-set form-group-sm">
 							<div class="col-md-1"><span class="fw-bold">{translate key=FilterBy}</span></div>
-							<div class="col-md-11 d-flex flex-wrap">
-								<div class="form-group no-margin no-padding">
+							<div class="col-md-11 d-flex flex-wrap gap-1">
+								<div class="form-group no-margin no-padding col-12 col-md-3">
 									<label for="resourceId" class="visually-hidden">{translate key=Resource}</label>
-									<select class="form-control w-auto" {formname key=RESOURCE_ID multi=true}
+									<select class="form-control" {formname key=RESOURCE_ID multi=true}
 										multiple="multiple" id="resourceId">
 										{foreach from=$Resources item=resource}
 											<option value="{$resource->GetId()}">{$resource->GetName()}</option>
 										{/foreach}
 									</select>
 								</div>
-								<div class="form-group no-margin no-padding">
+								<div class="form-group no-margin no-padding col-12 col-md-3">
 									<label for="resourceTypeId"
 										class="visually-hidden">{translate key=ResourceType}</label>
-									<select class="form-control w-auto" {formname key=RESOURCE_TYPE_ID multi=true}
+									<select class="form-control" {formname key=RESOURCE_TYPE_ID multi=true}
 										multiple="multiple" id="resourceTypeId">
 										{foreach from=$ResourceTypes item=resourceType}
 											<option value="{$resourceType->Id()}">{$resourceType->Name()}</option>
 										{/foreach}
 									</select>
 								</div>
-								<div class="form-group no-margin no-padding">
-									<label for="accessoryId" class="no-show">{translate key=Accessory}</label>
+								<div class="form-group no-margin no-padding col-12 col-md-3">
+									<label for="accessoryId" class="visually-hidden">{translate key=Accessory}</label>
 									<select class="form-control" {formname key=ACCESSORY_ID multi=true}
 										multiple="multiple" id="accessoryId">
 										{foreach from=$Accessories item=accessory}
@@ -163,8 +164,8 @@
 										{/foreach}
 									</select>
 								</div>
-								<div class="form-group no-margin no-padding">
-									<label for="scheduleId" class="no-show">{translate key=Schedule}</label>
+								<div class="form-group no-margin no-padding col-12 col-md-3">
+									<label for="scheduleId" class="visually-hidden">{translate key=Schedule}</label>
 									<select class="form-control" {formname key=SCHEDULE_ID multi=true}
 										multiple="multiple" id="scheduleId">
 										{foreach from=$Schedules item=schedule}
@@ -172,8 +173,8 @@
 										{/foreach}
 									</select>
 								</div>
-								<div class="form-group no-margin no-padding">
-									<label for="groupId" class="no-show">{translate key=Group}</label>
+								<div class="form-group no-margin no-padding col-12 col-md-3">
+									<label for="groupId" class="visually-hidden">{translate key=Group}</label>
 									<select class="form-control" {formname key=GROUP_ID multi=true} multiple="multiple"
 										id="groupId">
 										{foreach from=$Groups item=group}
@@ -182,23 +183,20 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-11 offset-md-1 d-flex">
-								<div class="form-group no-margin no-padding">
+							<div class="col-md-11 gy-1 offset-md-1  d-flex flex-wrap gap-1">
+								<div class="form-group no-margin no-padding col-12 col-md-3">
 									<div id="user-filter-div">
-										<div class="">
-											<label class="control-label sr-only"
-												for="user-filter">{translate key=AllUsers}</label>
-											<input id="user-filter" type="search" class="form-control form-control-sm"
-												placeholder="{translate key=AllUsers}" />
-											<input id="user_id" class="filter-id" type="hidden"
-												{formname key=USER_ID} />
-										</div>
+										<label class="visually-hidden"
+											for="user-filter">{translate key=AllUsers}</label>
+										<input id="user-filter" type="search" class="form-control form-control-sm"
+											placeholder="{translate key=AllUsers}" />
+										<input id="user_id" class="filter-id" type="hidden" {formname key=USER_ID} />
 									</div>
 								</div>
-								<div class="form-group no-margin no-padding">
+								<div class="form-group no-margin no-padding col-12 col-md-3">
 									<div id="participant-filter-div">
 										<div class="form-group">
-											<label class="control-label sr-only"
+											<label class="visually-hidden"
 												for="participant-filter">{translate key=AllParticipants}</label>
 											<input id="participant-filter" type="search"
 												class="form-control form-control-sm"
@@ -230,7 +228,7 @@
 </div>
 
 <div id="saveMessage" class="alert alert-success" style="display:none;">
-	<strong>{translate key=ReportSaved}</strong> <a
+	<strong>{translate key=ReportSaved}</strong> <a class="alert-link"
 		href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
 </div>
 

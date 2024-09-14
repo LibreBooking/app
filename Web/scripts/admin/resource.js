@@ -326,11 +326,11 @@ function ResourceManagement(opts) {
 
 		$('#bulkEditConcurrent').change(function () {
 			if ($(this).val() == '1') {
-				$('#bulkEditAllowConcurrentDiv').removeClass('no-show');
+				$('#bulkEditAllowConcurrentDiv').removeClass('d-none');
 			}
 
 			if ($(this).val() == '0') {
-				$('#bulkEditAllowConcurrentDiv').addClass('no-show');
+				$('#bulkEditAllowConcurrentDiv').addClass('d-none');
 			}
 		});
 
@@ -461,10 +461,10 @@ function ResourceManagement(opts) {
 
 		elements.toggleStatusChangeMessage.on('change', function (e) {
 			if ($(this).is(":checked")) {
-				elements.sendStatusChangeMessageContent.removeClass('no-show');
+				elements.sendStatusChangeMessageContent.removeClass('d-none');
 			}
 			else {
-				elements.sendStatusChangeMessageContent.addClass('no-show');
+				elements.sendStatusChangeMessageContent.addClass('d-none');
 			}
 		});
 
@@ -833,10 +833,10 @@ function ResourceManagement(opts) {
 		addStatusReason.unbind();
 		addStatusReason.click(function (e) {
 			e.preventDefault();
-			statusForm.find(elements.newStatusReason).toggleClass('no-show');
-			statusForm.find(elements.existingStatusReason).toggleClass('no-show');
+			statusForm.find(elements.newStatusReason).toggleClass('d-none');
+			statusForm.find(elements.existingStatusReason).toggleClass('d-none');
 
-			if (statusForm.find(elements.newStatusReason).hasClass('no-show')) {
+			if (statusForm.find(elements.newStatusReason).hasClass('d-none')) {
 				statusForm.find(elements.statusReasons).data('prev', statusReasons.val());
 				statusForm.find(elements.statusReasons).val('');
 				statusForm.find(elements.resourceStatusReason).focus();
@@ -857,7 +857,7 @@ function ResourceManagement(opts) {
 		//
 
 		elements.toggleStatusChangeMessage.prop('checked', false);
-		elements.sendStatusChangeMessageContent.addClass('no-show');
+		elements.sendStatusChangeMessageContent.addClass('d-none');
 		elements.statusMessageContent.val('');
 
 		elements.statusDialog.modal('show');
@@ -928,12 +928,12 @@ function ResourceManagement(opts) {
 		var resourceId = getActiveResourceId();
 		$.get(opts.permissionsUrl + '?dr=users', { rid: resourceId }, function (data) {
 			elements.resourceUserList.html(data);
-			$('.user-permission-spinner').addClass('no-show');
+			$('.user-permission-spinner').addClass('d-none');
 		});
 	};
 
 	var changeUserPermission = function (userId, type) {
-		$('.user-permission-spinner').removeClass('no-show');
+		$('.user-permission-spinner').removeClass('d-none');
 		$('#changeUserId').val(userId);
 		$('#changeUserType').val(type);
 		elements.changeUserForm.submit();
@@ -955,12 +955,12 @@ function ResourceManagement(opts) {
 		var resourceId = getActiveResourceId();
 		$.get(opts.permissionsUrl + '?dr=groups', { rid: resourceId }, function (data) {
 			elements.resourceGroupList.html(data);
-			$('.group-permission-spinner').addClass('no-show');
+			$('.group-permission-spinner').addClass('d-none');
 		});
 	};
 
 	var changeGroupPermission = function (groupId, type) {
-		$('.group-permission-spinner').removeClass('no-show');
+		$('.group-permission-spinner').removeClass('d-none');
 		$('#changeGroupId').val(groupId);
 		$('#changeGroupType').val(type);
 		elements.changeGroupForm.submit();

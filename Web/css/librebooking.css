@@ -410,6 +410,11 @@ span.searchclear-label {
     font-family: "bootstrap-icons";
 }
 
+.announcement a,
+.announcement a:visited {
+    color: var(--primary);
+}
+
 .resource-draggable {
     cursor: move;
     border: solid 1px transparent;
@@ -490,6 +495,10 @@ input[type=text].user-search {
     width: 250px;
 }
 
+input.mid-number {
+    width: 70px !important;
+}
+
 #participantList,
 #inviteeList {
     height: 100px;
@@ -517,6 +526,10 @@ input[type=text].user-search {
 
 .social-login a {
     min-width: 250px;
+}
+
+#panelCustomReport label {
+    min-width: 130px;
 }
 
 .no-show {

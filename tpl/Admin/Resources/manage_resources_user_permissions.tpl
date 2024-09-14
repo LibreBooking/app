@@ -1,6 +1,6 @@
 <h5 class="mt-2">
     <span id="totalUsers">{$Users|default:array()|count}</span>
-    {translate key=Users} <span class="no-show user-permission-spinner">
+    {translate key=Users} <span class="d-none user-permission-spinner">
         <div class="spinner-border spinner-border-sm" role="status"></div>
     </span>
 </h5>

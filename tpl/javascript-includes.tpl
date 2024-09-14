@@ -44,7 +44,8 @@
     {jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}
 {/if}
 {if isset($Select2) && $Select2}
-    {jsfile src="js/select2-4.0.5.min.js"}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {*jsfile src="js/select2-4.0.5.min.js"*}
 {/if}
 {if isset($Timepicker) && $Timepicker}
     {jsfile src="js/jquery.timePicker.min.js"}

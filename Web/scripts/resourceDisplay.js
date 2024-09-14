@@ -79,11 +79,11 @@ function ResourceDisplay(opts) {
 
         elements.placeholder.on('click', '#reservePopup', function (e) {
             pauseRefresh();
-            showPopup();
+            //showPopup();
         });
 
         elements.placeholder.on('click', '#reserveCancel', function (e) {
-            hidePopup();
+            //hidePopup();
             resumeRefresh();
             refreshResource();
         });
@@ -93,24 +93,25 @@ function ResourceDisplay(opts) {
             e.stopPropagation();
 
             var beforeReserve = function () {
-                $('#validationErrors').addClass('no-show');
-                showWait();
+                $('#validationErrors').addClass('d-none');
+                //showWait();
             };
 
             var afterReserve = function (data) {
                 var validationErrors = $('#validationErrors');
                 if (data.success) {
-                    validationErrors.find('ul').empty().addClass('no-show');
-                    hidePopup();
+                    validationErrors.find('ul').empty().addClass('d-none');
+                    //hidePopup();
                     resumeRefresh();
                     refreshResource();
+                    $('#reservation-box').modal('hide');
                 }
                 else {
                     var errors = data.errors ? data.errors : data.Messages;
                     validationErrors.find('ul').empty().html($.map(errors, function (item) {
                         return "<li>" + item + "</li>";
                     }));
-                    validationErrors.removeClass('no-show');
+                    validationErrors.removeClass('d-none');
                 }
                 hideWait();
             };
@@ -130,7 +131,7 @@ function ResourceDisplay(opts) {
             e.stopPropagation();
 
             var beforeCheckin = function () {
-                showWait();
+                //showWait();
             };
 
             var afterCheckin = function () {
@@ -140,8 +141,14 @@ function ResourceDisplay(opts) {
             ajaxPost($('#formCheckin'), null, beforeCheckin, afterCheckin);
         });
 
+        elements.placeholder.on('mouseenter', '.reservable', function (e) {
+            $(this).addClass('hilite');
+        }).on('mouseleave', '.reservable', function () {
+            $(this).removeClass('hilite');
+        });
+
         elements.startDate.on('change', function () {
-            showWait();
+            //showWait();
             refreshResource(hideWait);
         });
 
@@ -240,18 +247,17 @@ function ResourceDisplay(opts) {
     };
 
     function showWait() {
-        $('#waitIndicator').removeClass('no-show');
-        $.blockUI({ message: $('#wait-box') });
+        // $('#waitIndicator').removeClass('no-show');
+        // $.blockUI({ message: $('#wait-box') });
     }
 
     function hideWait() {
-        $.unblockUI();
+        // $.unblockUI();
     }
 
     elements.loginButton.click(function (e) {
         e.preventDefault();
-        showWait();
-
+        //showWait();
         elements.loginForm.submit();
     });
 

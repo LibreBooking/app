@@ -45,7 +45,7 @@
 						{/capture}
 
 						{capture name="amount" assign="amount"}
-							<input type='number' step='any' class='form-control form-control-sm w-auto mid-number' min='0'
+							<input type='number' step='any' class='form-control form-control-sm mid-number' min='0'
 								max='10000' value='0' {formname key=LIMIT} title='Quota number' />
 						{/capture}
 
@@ -72,11 +72,12 @@
 									value='1' {formname key=ENFORCE_ALL_DAY} />
 								<label class='form-check-label' for='enforce-all-day'>{translate key=AllDay}</label>
 							</div>
-							<div id='enforce-hours-times' class='no-show'>
+							<div id='enforce-hours-times' class='d-none'>
 								<div class='form-group form-group-sm d-flex align-items-center'>
 									<span class='me-1'>{translate key=Between}</span>
-									<label for='enforce-time-start' class='no-show'>{translate key=StartTime}</label>
-									<label for='enforce-time-end' class='no-show'>{translate key=EndTime}</label>
+									<label for='enforce-time-start'
+										class='visually-hidden'>{translate key=StartTime}</label>
+									<label for='enforce-time-end' class='visually-hidden'>{translate key=EndTime}</label>
 									<input type='text' class='form-control form-control-sm time' id='enforce-time-start'
 										size='6' value='12:00am' {formname key=BEGIN_TIME} />
 									-
@@ -92,7 +93,7 @@
 									value='1' {formname key=ENFORCE_EVERY_DAY} />
 								<label class='form-check-label' for='enforce-every-day'>{translate key=Everyday}</label>
 							</div>
-							<div id='enforce-days' class='inline no-show'>
+							<div id='enforce-days' class='inline d-none'>
 								<div class='btn-group-sm' data-bs-toggle='buttons'>
 									<input type='checkbox' class='btn-check' id='enforce-sun' value='0'
 										{formname key=DAY multi=true} />

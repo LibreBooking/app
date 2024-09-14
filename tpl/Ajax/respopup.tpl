@@ -131,7 +131,7 @@
 
         {capture "pending"}
             {if $requiresApproval}
-                <div class="pendingApproval">{translate key=PendingApproval}</div>
+                <div class="pendingApproval text-warning">{translate key=PendingApproval}</div>
             {/if}
         {/capture}
         {$formatter->Add('pending', $smarty.capture.pending)}

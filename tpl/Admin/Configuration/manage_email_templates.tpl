@@ -25,7 +25,7 @@
                 </select>
             </div>
 
-            <div id="editEmailSection" class="no-show">
+            <div id="editEmailSection" class="d-none">
                 <div class="mb-2">
                     <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
                         <div class="form-group">

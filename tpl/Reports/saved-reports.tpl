@@ -108,7 +108,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteLabel">{translate key=Delete}</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden=</button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-danger">

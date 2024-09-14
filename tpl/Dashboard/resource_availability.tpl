@@ -35,9 +35,11 @@
                                     <span class="no-data fst-italic">{translate key=AllNoUpcomingReservations args=30}</span>
                                 {/if}
                             </div>
-                            <div class="reserveButton col-12 col-sm-3">
-                                <a class="btn btn-sm btn-success col-12"
-                                    href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}">{translate key=Reserve}</a>
+                            <div class="reserveButton col-12 col-sm-3 d-grid gap-2">
+                                <button class="btn btn-sm btn-success"
+                                    onclick="window.location.href='{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}'">
+                                    {translate key=Reserve}
+                                </button>
                             </div>
                         </div>
                     {/foreach}
@@ -72,9 +74,11 @@
                                 {translate key=AvailableBeginningAt}
                                 {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
                             </div>
-                            <div class="reserveButton col-12 col-sm-3">
-                                <a class="btn btn-sm btn-success col-12"
-                                    href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
+                            <div class="reserveButton col-12 col-sm-3 d-grid gap-2">
+                                <button class="btn btn-sm btn-success"
+                                    onclick="window.location.href='{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}'">
+                                    {translate key=Reserve}
+                                </button>
                             </div>
                         </div>
                     {/foreach}
@@ -107,9 +111,11 @@
                                 {translate key=AvailableAt}
                                 {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
                             </div>
-                            <div class="reserveButton col-12 col-sm-3">
-                                <a class="btn btn-sm btn-success col-12"
-                                    href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
+                            <div class="reserveButton col-12 col-sm-3 d-grid gap-2">
+                                <button class="btn btn-sm btn-success"
+                                    onclick="window.location.href='{{$Path}}{{Pages::RESERVATION}}?{{QueryStringKeys::RESOURCE_ID}}={{$i->ResourceId()}}&{{QueryStringKeys::START_DATE}}={{format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}}'">
+                                    {{translate key=Reserve}}
+                                </button>
                             </div>
                         </div>
                     {/foreach}

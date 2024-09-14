@@ -68,12 +68,11 @@
                         </button>
                     </div>
                     <!-- Modal -->
-                    <div class="modal fade" id="reservation-box" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="reservation-box" tabindex="-1">
                         <div class="modal-dialog modal-fullscreen">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title" id="exampleModalLabel">{translate key=Reserve}</h1>
+                                    <h1 class="modal-title">{translate key=Reserve}</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -83,7 +82,7 @@
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <div id="validationErrors"
-                                                    class="validationSummary alert alert-danger no-show">
+                                                    class="validationSummary alert alert-danger d-none">
                                                     <ul></ul>
                                                 </div>
                                                 <div>

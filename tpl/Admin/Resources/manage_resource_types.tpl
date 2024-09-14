@@ -18,7 +18,7 @@
 				</h2>
 				<div id="collapse-add-contents" class="accordion-collapse collapse show">
 					<div class="accordion-body add-contents">
-						<div id="addResults" class="error no-show"></div>
+						<div id="addResults" class="error d-none"></div>
 						<div class="d-flex align-items-center gap-2 mb-2">
 							<label class="fw-bold" for="resourceTypeName">{translate key='Name'}<i
 									class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i></label>

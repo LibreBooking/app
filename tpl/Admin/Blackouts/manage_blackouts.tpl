@@ -179,8 +179,9 @@
 								<div class="checkbox checkbox-single form-check">
 									<input class="form-check-input" type="checkbox" id="delete-all"
 										aria-label="{translate key=All}" />
+									<label class="visually-hidden">{translate key=Delete}</label>
 									<a href="#" id="delete-selected" class="link-danger d-none"
-										title="{translate key=Delete}">{translate key=Delete}<i
+										title="{translate key=Delete}"><i
 											class="bi bi-trash3-fill text-danger icon remove"></i>
 								</div>
 							</th>
@@ -222,14 +223,14 @@
 							</tr>
 						{/foreach}
 					</tbody>
-					<tfoot>
+					{*<tfoot>
 						<tr>
 							<td colspan="7"></td>
-							<td class="action-delete"><a href="#" id="delete-selected" class="no-show"
+							<td class="action-delete"><a href="#" id="delete-selected" class="d-none"
 									title="{translate key=Delete}">{translate key=Delete}<span
 										class="bi bi-trash3-fill text-danger icon remove"></span></a></td>
 						</tr>
-					</tfoot>
+					</tfoot>*}
 				</table>
 			</div>
 		</div>
@@ -313,7 +314,7 @@
 						{delete_button}
 						{indicator}
 					</div>
-					<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+					<div id="deleteMultiplePlaceHolder" class="d-none"></div>
 				</div>
 			</div>
 		</form>

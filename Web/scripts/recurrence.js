@@ -198,7 +198,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
                 elements.repeatOptions.trigger('change');
             }
             elements.repeatOptions.find("option[value='daily']").prop("disabled", "disabled");
-            elements.repeatOnWeeklyDiv.addClass('no-show');
+            elements.repeatOnWeeklyDiv.addClass('d-none');
         }
         else {
             if (repeatToggled) {

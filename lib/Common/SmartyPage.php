@@ -667,8 +667,7 @@ class SmartyPage extends Smarty
                     infoEmpty: "' . $NoResultsFoundText . '",
                     infoFiltered: "",
                     lengthMenu: "' . $lengthMenuText . '",
-                    zeroRecords: "' . $NoResultsFoundText .
-            '"
+                    zeroRecords: "' . $NoResultsFoundText .'",
                 },
                 buttons: [ 
                     {
@@ -677,8 +676,7 @@ class SmartyPage extends Smarty
                     },
                     {
                         extend: "excelHtml5",
-                        text: "<i class=\"bi bi-file-earmark-spreadsheet me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $exportText .
-            ' Excel</div>", 
+                        text: "<i class=\"bi bi-file-earmark-spreadsheet me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $exportText .' Excel</div>", 
                     },
                     {
                         extend: "pdfHtml5",
