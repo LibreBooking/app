@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/GuestUserService.php');
 
-class GuestUserServiceTests extends TestBase
+class GuestUserServiceTest extends TestBase
 {
     /**
      * @var FakeAuthentication

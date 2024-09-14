@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationDeletePresenter.php')
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationDeletePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationDeletePresenterTests extends TestBase
+class ReservationDeletePresenterTest extends TestBase
 {
     private $userId;
 
@@ -68,20 +68,20 @@ class ReservationDeletePresenterTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetSeriesUpdateScope')
-            ->will($this->returnValue($seriesUpdateScope));
+            ->willReturn($seriesUpdateScope);
 
         $this->page->expects($this->once())
             ->method('GetReason')
-            ->will($this->returnValue($reason));
+            ->willReturn($reason);
 
         $this->persistenceService->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($expectedSeries));
+            ->willReturn($expectedSeries);
 
         $expectedSeries->expects($this->once())
             ->method('Delete')
@@ -104,7 +104,7 @@ class ReservationDeletePresenterTests extends TestBase
         $this->handler->expects($this->once())
             ->method('Handle')
             ->with($this->equalTo($series), $this->equalTo($this->page))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
 
         $this->presenter->HandleReservation($series);

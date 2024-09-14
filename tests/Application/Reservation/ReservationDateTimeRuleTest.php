@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationDateTimeRuleTests extends TestBase
+class ReservationDateTimeRuleTest extends TestBase
 {
     public function testEnsuresThatStartMustBeBeforeEnd()
     {

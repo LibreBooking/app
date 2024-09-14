@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Values/PayPalPaymentResult.php');
 
-class PayPalPaymentResultTests extends TestBase
+class PayPalPaymentResultTest extends TestBase
 {
     public function testParsesJsonString()
     {

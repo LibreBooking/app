@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Pages/Ajax/UserDetailsPopupPage.php');
 
-class UserDetailsPopupPresenterTests extends TestBase
+class UserDetailsPopupPresenterTest extends TestBase
 {
     /**
      * @var UserDetailsPopupPresenter

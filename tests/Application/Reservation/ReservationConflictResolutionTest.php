@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php');
 
-class ReservationConflictResolutionTests extends TestBase
+class ReservationConflictResolutionTest extends TestBase
 {
     public function setUp(): void
     {
@@ -25,7 +25,7 @@ class ReservationConflictResolutionTests extends TestBase
         $repo->expects($this->once())
              ->method('LoadById')
              ->with($this->equalTo($id))
-             ->will($this->returnValue($reservation));
+             ->willReturn($reservation);
 
         $repo->expects($this->once())
              ->method('Delete')

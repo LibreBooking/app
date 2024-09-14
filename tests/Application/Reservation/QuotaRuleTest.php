@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class QuotaRuleTests extends TestBase
+class QuotaRuleTest extends TestBase
 {
     /**
      * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
@@ -80,17 +80,17 @@ class QuotaRuleTests extends TestBase
 
         $this->quotaRepository->expects($this->once())
                               ->method('LoadAll')
-                              ->will($this->returnValue($quotas));
+                              ->willReturn($quotas);
 
         $this->userRepository->expects($this->once())
                              ->method('LoadById')
                              ->with($this->equalTo($userId))
-                             ->will($this->returnValue($user));
+                             ->willReturn($user);
 
         $this->scheduleRepository->expects($this->once())
                                  ->method('LoadById')
                                  ->with($this->equalTo($scheduleId))
-                                 ->will($this->returnValue($schedule));
+                                 ->willReturn($schedule);
 
         $this->ChecksAgainstQuota($quota1, $series, $this->reservationViewRepository, $schedule, $user);
         $this->ChecksAgainstQuota($quota2, $series, $this->reservationViewRepository, $schedule, $user);
@@ -141,17 +141,17 @@ class QuotaRuleTests extends TestBase
 
         $this->quotaRepository->expects($this->once())
                               ->method('LoadAll')
-                              ->will($this->returnValue($quotas));
+                              ->willReturn($quotas);
 
         $this->userRepository->expects($this->once())
                              ->method('LoadById')
                              ->with($this->equalTo($userId))
-                             ->will($this->returnValue($user));
+                             ->willReturn($user);
 
         $this->scheduleRepository->expects($this->once())
                                  ->method('LoadById')
                                  ->with($this->equalTo($scheduleId))
-                                 ->will($this->returnValue($schedule));
+                                 ->willReturn($schedule);
 
         $this->ChecksAgainstQuota($quota1, $series, $this->reservationViewRepository, $schedule, $user, true);
 
@@ -175,7 +175,7 @@ class QuotaRuleTests extends TestBase
         $quota->expects($this->once())
               ->method('ExceedsQuota')
               ->with($this->equalTo($series), $this->equalTo($user), $this->equalTo($schedule), $this->equalTo($repo))
-              ->will($this->returnValue($exceeds));
+              ->willReturn($exceeds);
     }
 
     private function mockQuota()
@@ -183,7 +183,7 @@ class QuotaRuleTests extends TestBase
         $mock = $this->createMock('IQuota');
         $mock->expects($this->any())
              ->method('ToString')
-             ->will($this->returnValue(''));
+             ->willReturn('');
 
         return $mock;
     }

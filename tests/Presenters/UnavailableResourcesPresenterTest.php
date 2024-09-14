@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Pages/Ajax/UnavailableResourcesPage.php');
 require_once(ROOT_DIR . 'Presenters/UnavailableResourcesPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ResourceAvailability.php');
 
-class UnavailableResourcesPresenterTests extends TestBase
+class UnavailableResourcesPresenterTest extends TestBase
 {
     /**
      * @var FakeReservationConflictIdentifier

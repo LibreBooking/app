@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Export/CalendarSubscriptionPage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarSubscriptionPresenter.php');
 
-class CalendarSubscriptionPresenterTests extends TestBase
+class CalendarSubscriptionPresenterTest extends TestBase
 {
     /**
      * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
@@ -47,7 +47,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
         $this->validator->expects($this->atLeastOnce())
                 ->method('IsValid')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->presenter = new CalendarSubscriptionPresenter(
             $this->page,
@@ -74,12 +74,12 @@ class CalendarSubscriptionPresenterTests extends TestBase
         $this->service->expects($this->once())
                 ->method('GetSchedule')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($schedule));
+                ->willReturn($schedule);
 
         $this->repo->expects($this->once())
                 ->method('GetReservations')
                 ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $scheduleId, $this->isNull())
-                ->will($this->returnValue($reservationResult));
+                ->willReturn($reservationResult);
 
         $this->presenter->PageLoad();
 
@@ -102,12 +102,12 @@ class CalendarSubscriptionPresenterTests extends TestBase
         $this->service->expects($this->once())
                 ->method('GetResource')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($resource));
+                ->willReturn($resource);
 
         $this->repo->expects($this->once())
                 ->method('GetReservations')
                 ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $this->isNull(), $resourceId)
-                ->will($this->returnValue($reservationResult));
+                ->willReturn($reservationResult);
 
         $this->presenter->PageLoad();
 
@@ -130,12 +130,12 @@ class CalendarSubscriptionPresenterTests extends TestBase
         $this->service->expects($this->once())
                 ->method('GetUser')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $this->repo->expects($this->once())
                 ->method('GetReservations')
                 ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->equalTo($userId), ReservationUserLevel::ALL, $this->isNull(), $this->isNull())
-                ->will($this->returnValue($reservationResult));
+                ->willReturn($reservationResult);
 
         $this->presenter->PageLoad();
 
@@ -160,12 +160,12 @@ class CalendarSubscriptionPresenterTests extends TestBase
         $this->service->expects($this->once())
                 ->method('GetResourcesInGroup')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($resourceIds));
+                ->willReturn($resourceIds);
 
         $this->repo->expects($this->once())
                 ->method('GetReservations')
                 ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $this->isNull(), $this->isNull())
-                ->will($this->returnValue($reservationResult));
+                ->willReturn($reservationResult);
 
         $this->presenter->PageLoad();
 

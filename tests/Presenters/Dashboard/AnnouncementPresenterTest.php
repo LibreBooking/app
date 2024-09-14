@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Presenters/Dashboard/AnnouncementPresenter.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 
-class AnnouncementPresenterTests extends TestBase
+class AnnouncementPresenterTest extends TestBase
 {
     private $permissionService;
     /**

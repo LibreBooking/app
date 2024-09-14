@@ -1,6 +1,6 @@
 <?php
 
-class ReservationAuthorizationTests extends TestBase
+class ReservationAuthorizationTest extends TestBase
 {
     /**
      * @var FakeAuthorizationService

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ScheduleResourceFilterTests extends TestBase
+class ScheduleResourceFilterTest extends TestBase
 {
     /**
      * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
@@ -123,7 +123,7 @@ class ScheduleResourceFilterTests extends TestBase
         $this->attributeService->expects($this->once())
         ->method('GetAttributes')
         ->with($this->equalTo(CustomAttributeCategory::RESOURCE), $this->isNull())
-        ->will($this->returnValue($attributeList));
+        ->willReturn($attributeList);
 
         $filter = new ScheduleResourceFilter();
         $filter->ResourceAttributes = [
@@ -163,7 +163,7 @@ class ScheduleResourceFilterTests extends TestBase
         $this->attributeService->expects($this->once())
         ->method('GetAttributes')
         ->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE), $this->isNull())
-        ->will($this->returnValue($attributeList));
+        ->willReturn($attributeList);
 
         $filter = new ScheduleResourceFilter();
         $filter->ResourceTypeAttributes = [

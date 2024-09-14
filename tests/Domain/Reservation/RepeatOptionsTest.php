@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class RepeatOptionsTests extends TestBase
+class RepeatOptionsTest extends TestBase
 {
     //http://www.timeanddate.com/calendar/
 

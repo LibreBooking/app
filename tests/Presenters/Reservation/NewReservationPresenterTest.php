@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class NewReservationPresenterTests extends TestBase
+class NewReservationPresenterTest extends TestBase
 {
     /**
      * @var UserSession
@@ -44,7 +44,7 @@ class NewReservationPresenterTests extends TestBase
         $reservationInitializerFactory->expects($this->once())
             ->method('GetNewInitializer')
             ->with($this->equalTo($page))
-            ->will($this->returnValue($initializer));
+            ->willReturn($initializer);
 
         $initializer->expects($this->once())
             ->method('Initialize');

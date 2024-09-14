@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class ReservationWaitlistRepositoryTests extends TestBase
+class ReservationWaitlistRepositoryTest extends TestBase
 {
     /**
      * @var ReservationWaitlistRepository

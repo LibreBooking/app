@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'Pages/LoginPage.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class LoginPresenterTests extends TestBase
+class LoginPresenterTest extends TestBase
 {
     /**
      * @var FakeWebAuthentication
@@ -222,6 +222,12 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
     public $_ShowForgotPasswordPrompt = false;
     public $_ShowScheduleLink = false;
     public $_Announcements;
+
+    public function SetGoogleUrl($URL) { }
+
+    public function SetMicrosoftUrl($URL) { }
+
+    public function SetFacebookUrl($URL) { }
 
     public function PageLoad()
     {

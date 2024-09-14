@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageEmailTemplatesPresenter.php');
 
-class ManageEmailTemplatesPresenterTests extends TestBase
+class ManageEmailTemplatesPresenterTest extends TestBase
 {
     /**
      * @var FakeManageEmailTemplatesPage

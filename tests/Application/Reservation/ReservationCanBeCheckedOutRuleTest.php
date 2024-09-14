@@ -1,10 +1,17 @@
 <?php
 
-class ReservationCanBeCheckedOutRuleTests extends TestBase
+class ReservationCanBeCheckedOutRuleTest extends TestBase
 {
+    /**
+     *
+     * @var UserSession
+     */
+    private $userSession;
+
     public function setUp(): void
     {
         parent::setup();
+        $this->userSession = new UserSession(123);
     }
 
     public function testCanBeCheckedOutIfCheckedInAndPastStartDate()
@@ -24,7 +31,7 @@ class ReservationCanBeCheckedOutRuleTests extends TestBase
         $series->AddResource($resource2);
         $series->Checkin($this->fakeUser);
 
-        $rule = new ReservationCanBeCheckedOutRule();
+        $rule = new ReservationCanBeCheckedOutRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertTrue($result->IsValid());
     }
@@ -42,7 +49,7 @@ class ReservationCanBeCheckedOutRuleTests extends TestBase
         $series->WithPrimaryResource($resource1);
         $series->WithCurrentInstance($reservation);
 
-        $rule = new ReservationCanBeCheckedOutRule();
+        $rule = new ReservationCanBeCheckedOutRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }
@@ -59,7 +66,7 @@ class ReservationCanBeCheckedOutRuleTests extends TestBase
         $series->WithCurrentInstance($reservation);
         $series->Checkin($this->fakeUser);
 
-        $rule = new ReservationCanBeCheckedOutRule();
+        $rule = new ReservationCanBeCheckedOutRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }
@@ -76,7 +83,7 @@ class ReservationCanBeCheckedOutRuleTests extends TestBase
         $series->WithCurrentInstance($reservation);
         $series->Checkin($this->fakeUser);
 
-        $rule = new ReservationCanBeCheckedOutRule();
+        $rule = new ReservationCanBeCheckedOutRule($this->userSession);
         $result = $rule->Validate($series, null);
         $this->assertFalse($result->IsValid());
     }

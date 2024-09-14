@@ -248,7 +248,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         $maxDate = Date::Now()->ToTimezone($timezone)->AddDays($maxFutureDays+1)->GetDate();
 
         $resultCollector = new ReservationResultCollector();
-        
+
         if ($date->GetBegin()->GreaterThan($maxDate)) {
             $resultCollector->SetSaveSuccessfulMessage(false);
             $resultCollector->SetErrors(["Unauthorized"]);

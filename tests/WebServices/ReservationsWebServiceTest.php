@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
 
-class ReservationsWebServiceTests extends TestBase
+class ReservationsWebServiceTest extends TestBase
 {
     /**
      * @var FakeRestServer
@@ -80,7 +80,7 @@ class ReservationsWebServiceTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
                 ->method('GetReservations')
                 ->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate))
-                ->will($this->returnValue($reservations));
+                ->willReturn($reservations);
 
         $this->service->GetReservations();
 
@@ -99,7 +99,7 @@ class ReservationsWebServiceTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
                 ->method('GetReservations')
                 ->with($this->anything(), $this->anything(), $this->equalTo($userId))
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->service->GetReservations();
     }
@@ -120,7 +120,7 @@ class ReservationsWebServiceTests extends TestBase
                     $this->isNull(),
                     $this->equalTo($resourceId)
                 )
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->service->GetReservations();
     }
@@ -141,7 +141,7 @@ class ReservationsWebServiceTests extends TestBase
                     $this->equalTo($scheduleId),
                     $this->isNull()
                 )
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->service->GetReservations();
     }
@@ -158,12 +158,12 @@ class ReservationsWebServiceTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
                 ->method('GetReservationForEditing')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservation));
+                ->willReturn($reservation);
 
         $this->attributeService->expects($this->once())
                 ->method('GetByCategory')
                 ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $this->service->GetReservation($referenceNumber);
 
@@ -181,7 +181,7 @@ class ReservationsWebServiceTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
                 ->method('GetReservationForEditing')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservation));
+                ->willReturn($reservation);
 
         $this->service->GetReservation($referenceNumber);
 

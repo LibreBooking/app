@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ResourceMinimumDurationRuleTests extends TestBase
+class ResourceMinimumDurationRuleTest extends TestBase
 {
     public function setUp(): void
     {

@@ -45,10 +45,17 @@ class FakePaymentRepository implements IPaymentRepository
     {
         $this->_PayPal = new FakePayPalGateway();
         $this->_Stripe = new FakeStripeGateway();
-        $this->_CreditCost = new CreditCost();
+        $this->_CreditCost = [new CreditCost()];
     }
 
-    public function UpdateCreditCost(CreditCost $cost)
+    public function DeleteCreditCost($creditCount) { }
+
+    public function GetCreditCosts()
+    {
+        return $this->_CreditCost;
+    }
+
+    public function UpdateCreditCost($cost)
     {
         $this->_LastCost = $cost;
     }

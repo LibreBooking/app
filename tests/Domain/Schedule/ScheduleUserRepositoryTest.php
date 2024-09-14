@@ -1,6 +1,6 @@
 <?php
 
-class ScheduleUserRepositoryTests extends TestBase
+class ScheduleUserRepositoryTest extends TestBase
 {
     public function setUp(): void
     {

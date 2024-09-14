@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class CreditsRuleTests extends TestBase
+class CreditsRuleTest extends TestBase
 {
     /**
      * @var FakeUserRepository

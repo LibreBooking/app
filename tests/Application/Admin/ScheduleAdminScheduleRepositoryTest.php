@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class ScheduleAdminScheduleRepositoryTests extends TestBase
+class ScheduleAdminScheduleRepositoryTest extends TestBase
 {
     /**
      * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
@@ -34,20 +34,19 @@ class ScheduleAdminScheduleRepositoryTests extends TestBase
         $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $ra = new FakeScheduleRepository();
         $this->db->SetRows($ra->GetRows());
 
-        $user->expects($this->at(0))
+        $user->expects($this->exactly(2))
                 ->method('IsScheduleAdminFor')
-                ->with($this->equalTo($ra->_AllRows[0]))
-                ->will($this->returnValue(false));
-
-        $user->expects($this->at(1))
-                ->method('IsScheduleAdminFor')
-                ->with($this->equalTo($ra->_AllRows[1]))
-                ->will($this->returnValue(true));
+                ->willReturnCallback(function ($schedule) use ($ra)
+                {
+                    return $this
+                        ->equalTo($ra->_AllRows[1])
+                        ->evaluate($schedule, '', true);
+                });
 
         $schedules = $this->repo->GetAll();
 
@@ -62,15 +61,14 @@ class ScheduleAdminScheduleRepositoryTests extends TestBase
         $this->userRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $schedule = new FakeSchedule(1);
         $schedule->SetAdminGroupId(2);
 
-        $user->expects($this->at(0))
+        $user->expects($this->atLeastOnce())
                 ->method('IsScheduleAdminFor')
-                ->with($this->equalTo($schedule))
-                ->will($this->returnValue(false));
+                ->willReturn(false);
 
         $actualEx = null;
         try {

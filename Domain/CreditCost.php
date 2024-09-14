@@ -6,6 +6,7 @@ use Booked\Currency;
 class CreditCost
 {
     /**
+     * Number of Credits for the given cost
      * @var int
      */
     private $count;

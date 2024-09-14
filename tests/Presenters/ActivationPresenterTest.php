@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/ActivationPresenter.php');
 
-class ActivationPresenterTests extends TestBase
+class ActivationPresenterTest extends TestBase
 {
     /**
      * @var ActivationPresenter
@@ -45,7 +45,7 @@ class ActivationPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetActivationCode')
-                ->will($this->returnValue($activationCode));
+                ->willReturn($activationCode);
 
         $this->page->expects($this->once())
                 ->method('Redirect')
@@ -67,7 +67,7 @@ class ActivationPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetActivationCode')
-                ->will($this->returnValue($activationCode));
+                ->willReturn($activationCode);
 
         $this->page->expects($this->once())
                 ->method('ShowError');

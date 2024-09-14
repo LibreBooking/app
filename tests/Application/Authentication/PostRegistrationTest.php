@@ -1,6 +1,6 @@
 <?php
 
-class PostRegistrationTests extends TestBase
+class PostRegistrationTest extends TestBase
 {
     /**
      * @var FakeRegistrationPage

@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class PermissionValidationRuleTests extends TestBase
+class PermissionValidationRuleTest extends TestBase
 {
     public function setUp(): void
     {
@@ -46,7 +46,7 @@ class PermissionValidationRuleTests extends TestBase
 
         $factory->expects($this->once())
             ->method('GetPermissionService')
-            ->will($this->returnValue($service));
+            ->willReturn($service);
 
         $rule = new PermissionValidationRule($factory);
         $result = $rule->Validate($reservation, null);

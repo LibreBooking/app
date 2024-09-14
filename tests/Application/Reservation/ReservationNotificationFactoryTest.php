@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-class ReservationNotificationFactoryTests extends TestBase
+class ReservationNotificationFactoryTest extends TestBase
 {
     /**
      * @var IPostReservationFactory|PHPUnit_Framework_MockObject_MockObject
@@ -31,7 +31,7 @@ class ReservationNotificationFactoryTests extends TestBase
         $this->plugin->expects($this->once())
                 ->method('CreatePostAddService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($this->service));
+                ->willReturn($this->service);
 
         $reservationValidationFactory = new ReservationNotificationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Create, $this->fakeUser);
@@ -44,7 +44,7 @@ class ReservationNotificationFactoryTests extends TestBase
         $this->plugin->expects($this->once())
                 ->method('CreatePostUpdateService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($this->service));
+                ->willReturn($this->service);
 
         $reservationValidationFactory = new ReservationNotificationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Update, $this->fakeUser);
@@ -57,7 +57,7 @@ class ReservationNotificationFactoryTests extends TestBase
         $this->plugin->expects($this->once())
                 ->method('CreatePostDeleteService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($this->service));
+                ->willReturn($this->service);
 
         $reservationValidationFactory = new ReservationNotificationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Delete, $this->fakeUser);
@@ -71,7 +71,7 @@ class ReservationNotificationFactoryTests extends TestBase
         $this->plugin->expects($this->once())
                 ->method('CreatePostApproveService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($this->service));
+                ->willReturn($this->service);
 
         $reservationValidationFactory = new ReservationNotificationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Approve, $this->fakeUser);

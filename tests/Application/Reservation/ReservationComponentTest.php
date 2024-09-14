@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationInitializerBase.php');
 
-class ReservationComponentTests extends TestBase
+class ReservationComponentTest extends TestBase
 {
     /**
      * @var int
@@ -93,21 +93,21 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->once())
                           ->method('GetOwnerId')
-                          ->will($this->returnValue($this->userId));
+                          ->willReturn($this->userId);
 
         $this->initializer->expects($this->atLeastOnce())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->userRepository->expects($this->once())
                              ->method('GetById')
                              ->with($this->equalTo($this->userId))
-                             ->will($this->returnValue($userDto));
+                             ->willReturn($userDto);
 
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanChangeUsers')
                                        ->with($this->fakeUser)
-                                       ->will($this->returnValue(true));
+                                       ->willReturn(true);
 
         $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
         $this->initializer->expects($this->once())
@@ -134,15 +134,15 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->atLeastOnce())
                           ->method('GetScheduleId')
-                          ->will($this->returnValue($requestedScheduleId));
+                          ->willReturn($requestedScheduleId);
 
         $this->initializer->expects($this->atLeastOnce())
                           ->method('GetResourceId')
-                          ->will($this->returnValue($requestedResourceId));
+                          ->willReturn($requestedResourceId);
 
         $this->initializer->expects($this->atLeastOnce())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
 
         $bookedResource = new TestResourceDto(
@@ -204,13 +204,13 @@ class ReservationComponentTests extends TestBase
         $this->resourceService->expects($this->once())
                               ->method('GetResourceGroups')
                               ->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
-                              ->will($this->returnValue($groups));
+                              ->willReturn($groups);
 
         // accessories
         $accessoryList = [new Accessory(1, 'a1', 30), new Accessory(2, 'a2', 20)];
         $this->resourceService->expects($this->once())
                               ->method('GetAccessories')
-                              ->will($this->returnValue($accessoryList));
+                              ->willReturn($accessoryList);
 
         $this->initializer->expects($this->once())
                           ->method('BindResourceGroups')
@@ -243,15 +243,15 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->once())
                           ->method('GetScheduleId')
-                          ->will($this->returnValue($requestedScheduleId));
+                          ->willReturn($requestedScheduleId);
 
         $this->initializer->expects($this->once())
                           ->method('GetResourceId')
-                          ->will($this->returnValue($requestedResourceId));
+                          ->willReturn($requestedResourceId);
 
         $this->initializer->expects($this->once())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $resourceList = [];
         $groups = new FakeResourceGroupTree();
@@ -260,7 +260,7 @@ class ReservationComponentTests extends TestBase
         $this->resourceService->expects($this->once())
                               ->method('GetResourceGroups')
                               ->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
-                              ->will($this->returnValue($groups));
+                              ->willReturn($groups);
 
         $this->initializer->expects($this->once())
                           ->method('RedirectToError')
@@ -291,31 +291,31 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->initializer->expects($this->any())
                           ->method('GetTimezone')
-                          ->will($this->returnValue($timezone));
+                          ->willReturn($timezone);
 
         $this->initializer->expects($this->any())
                           ->method('GetReservationDate')
-                          ->will($this->returnValue($dateInUserTimezone));
+                          ->willReturn($dateInUserTimezone);
 
         $this->initializer->expects($this->any())
                           ->method('GetStartDate')
-                          ->will($this->returnValue($startDate));
+                          ->willReturn($startDate);
 
         $this->initializer->expects($this->any())
                           ->method('GetEndDate')
-                          ->will($this->returnValue($endDate));
+                          ->willReturn($endDate);
 
         $this->initializer->expects($this->any())
                           ->method('GetScheduleId')
-                          ->will($this->returnValue($scheduleId));
+                          ->willReturn($scheduleId);
 
         $this->initializer->expects($this->any())
                           ->method('PrimaryResource')
-                          ->will($this->returnValue($resourceDto));
+                          ->willReturn($resourceDto);
 
         $startPeriods = [new SchedulePeriod(Date::Now(), Date::Now())];
         $endPeriods = [new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1))];
@@ -324,15 +324,16 @@ class ReservationComponentTests extends TestBase
         $this->scheduleRepository->_Layout = $layout;
         $this->scheduleRepository->_Schedule = $schedule;
 
-        $layout->expects($this->at(0))
+        $layout->expects($this->exactly(2))
                ->method('GetLayout')
-               ->with($this->equalTo($startDate), $this->equalTo(true))
-               ->will($this->returnValue($startPeriods));
-
-        $layout->expects($this->at(1))
-               ->method('GetLayout')
-               ->with($this->equalTo($endDate), $this->equalTo(true))
-               ->will($this->returnValue($endPeriods));
+               ->willReturnCallback(function(Date $date, $hideBlockedPeriods) use ($startDate, $endDate, $startPeriods, $endPeriods)
+               {
+                    if ($date->Equals($startDate) && $hideBlockedPeriods)
+                        return $startPeriods;
+                    if ($date->Equals($endDate) && $hideBlockedPeriods)
+                        return $endPeriods;
+                    throw new Exception("Unexpected arguments");
+               });
 
         $this->initializer->expects($this->once())
                           ->method('SetDates')
@@ -372,31 +373,31 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->initializer->expects($this->any())
                           ->method('GetTimezone')
-                          ->will($this->returnValue($timezone));
+                          ->willReturn($timezone);
 
         $this->initializer->expects($this->any())
                           ->method('GetReservationDate')
-                          ->will($this->returnValue($dateInUserTimezone));
+                          ->willReturn($dateInUserTimezone);
 
         $this->initializer->expects($this->any())
                           ->method('GetStartDate')
-                          ->will($this->returnValue($startDate));
+                          ->willReturn($startDate);
 
         $this->initializer->expects($this->any())
                           ->method('GetEndDate')
-                          ->will($this->returnValue($endDate));
+                          ->willReturn($endDate);
 
         $this->initializer->expects($this->any())
                           ->method('GetScheduleId')
-                          ->will($this->returnValue($scheduleId));
+                          ->willReturn($scheduleId);
 
         $this->initializer->expects($this->any())
                           ->method('PrimaryResource')
-                          ->will($this->returnValue($resourceDto));
+                          ->willReturn($resourceDto);
 
         $startPeriods = [new SchedulePeriod(Date::Now(), Date::Now())];
         $endPeriods = [new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1))];
@@ -405,15 +406,16 @@ class ReservationComponentTests extends TestBase
         $this->scheduleRepository->_Layout = $layout;
         $this->scheduleRepository->_Schedule = new FakeSchedule();
 
-        $layout->expects($this->at(0))
+        $layout->expects($this->exactly(2))
                ->method('GetLayout')
-               ->with($this->equalTo($startDate))
-               ->will($this->returnValue($startPeriods));
-
-        $layout->expects($this->at(1))
-               ->method('GetLayout')
-               ->with($this->equalTo($endDate))
-               ->will($this->returnValue($endPeriods));
+               ->willReturnCallback(function(Date $date) use ($startDate, $endDate, $startPeriods, $endPeriods)
+               {
+                    if($date->Equals($startDate))
+                        return $startPeriods;
+                    if($date->Equals($endDate))
+                        return $endPeriods;
+                    throw new Exception("Unexpeced argument");
+               });
 
         $this->initializer->expects($this->once())
                           ->method('SetDates')
@@ -430,7 +432,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->once())
                           ->method('IsNew')
-                          ->will($this->returnValue(true));
+                          ->willReturn(true);
 
         $binder = new ReservationDateBinder($this->scheduleRepository);
         $binder->Bind($this->initializer);
@@ -447,27 +449,27 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->initializer->expects($this->any())
                           ->method('GetTimezone')
-                          ->will($this->returnValue($timezone));
+                          ->willReturn($timezone);
 
         $this->initializer->expects($this->any())
                           ->method('GetReservationDate')
-                          ->will($this->returnValue($dateInUserTimezone));
+                          ->willReturn($dateInUserTimezone);
 
         $this->initializer->expects($this->any())
                           ->method('GetStartDate')
-                          ->will($this->returnValue($requestedDate));
+                          ->willReturn($requestedDate);
 
         $this->initializer->expects($this->any())
                           ->method('GetEndDate')
-                          ->will($this->returnValue($requestedDate));
+                          ->willReturn($requestedDate);
 
         $this->initializer->expects($this->any())
                           ->method('GetScheduleId')
-                          ->will($this->returnValue($scheduleId));
+                          ->willReturn($scheduleId);
 
         $periods = [
                 new SchedulePeriod(
@@ -489,7 +491,7 @@ class ReservationComponentTests extends TestBase
         $layout->expects($this->any())
                ->method('GetLayout')
                ->with($this->equalTo($requestedDate))
-               ->will($this->returnValue($periods));
+               ->willReturn($periods);
 
         $this->initializer->expects($this->once())
                           ->method('SetDates')
@@ -645,7 +647,7 @@ class ReservationComponentTests extends TestBase
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanEdit')
                                        ->with($this->equalTo($this->reservationView), $this->equalTo($this->fakeUser))
-                                       ->will($this->returnValue($isEditable));
+                                       ->willReturn($isEditable);
 
         $this->page->expects($this->once())
                    ->method('SetIsEditable')
@@ -655,7 +657,7 @@ class ReservationComponentTests extends TestBase
         $this->reservationAuthorization->expects($this->once())
                                        ->method('CanApprove')
                                        ->with($this->equalTo($this->reservationView), $this->equalTo($this->fakeUser))
-                                       ->will($this->returnValue($isApprovable));
+                                       ->willReturn($isApprovable);
 
         $this->page->expects($this->once())
                    ->method('SetIsApprovable')
@@ -680,23 +682,23 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->atLeastOnce())
                           ->method('GetTimezone')
-                          ->will($this->returnValue($timezone));
+                          ->willReturn($timezone);
 
         $this->initializer->expects($this->atLeastOnce())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $canViewDetails = true;
         $canViewUser = true;
         $this->privacyFilter->expects($this->once())
                             ->method('CanViewDetails')
                             ->with($this->equalTo($this->fakeUser), $this->equalTo($this->reservationView))
-                            ->will($this->returnValue($canViewDetails));
+                            ->willReturn($canViewDetails);
 
         $this->privacyFilter->expects($this->once())
                             ->method('CanViewUser')
                             ->with($this->equalTo($this->fakeUser), $this->equalTo($this->reservationView))
-                            ->will($this->returnValue($canViewUser));
+                            ->willReturn($canViewUser);
 
         $this->initializer->expects($this->once())
                           ->method('ShowUserDetails')
@@ -725,11 +727,11 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationAuthorization->expects($this->once())
             ->method('CanEdit')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -758,7 +760,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -785,7 +787,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -812,7 +814,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -841,11 +843,11 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationAuthorization->expects($this->once())
             ->method('CanEdit')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -872,7 +874,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -899,7 +901,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -927,7 +929,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -954,7 +956,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -981,11 +983,11 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationAuthorization->expects($this->once())
             ->method('CanEdit')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,
@@ -1012,7 +1014,7 @@ class ReservationComponentTests extends TestBase
 
         $this->initializer->expects($this->any())
                           ->method('CurrentUser')
-                          ->will($this->returnValue($this->fakeUser));
+                          ->willReturn($this->fakeUser);
 
         $this->reservationDetailsBinder = new ReservationDetailsBinder(
             $this->reservationAuthorization,

@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Ajax/AvailableAccessoriesPage.php');
 require_once(ROOT_DIR . 'Presenters/AvailableAccessoriesPresenter.php');
 
-class AvailableAccessoriesPresenterTests extends TestBase
+class AvailableAccessoriesPresenterTest extends TestBase
 {
     /**
      * @var FakeAccessoryRepository

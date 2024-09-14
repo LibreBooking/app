@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationCheckinPresenter.php');
 
-class ReservationCheckinPresenterTests extends TestBase
+class ReservationCheckinPresenterTest extends TestBase
 {
     /**
      * @var FakeReservationCheckinPage
@@ -47,12 +47,12 @@ class ReservationCheckinPresenterTests extends TestBase
         $this->persistence->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($this->page->_ReferenceNumber))
-            ->will($this->returnValue($reservation));
+            ->willReturn($reservation);
 
         $this->handler->expects($this->once())
             ->method('Handle')
             ->with($this->equalTo($reservation), $this->equalTo($this->page))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->presenter->PageLoad();
 
@@ -71,12 +71,12 @@ class ReservationCheckinPresenterTests extends TestBase
         $this->persistence->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($this->page->_ReferenceNumber))
-            ->will($this->returnValue($reservation));
+            ->willReturn($reservation);
 
         $this->handler->expects($this->once())
             ->method('Handle')
             ->with($this->equalTo($reservation), $this->equalTo($this->page))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->presenter->PageLoad();
 

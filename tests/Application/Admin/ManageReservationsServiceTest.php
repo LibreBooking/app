@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-class ManageReservationsServiceTests extends TestBase
+class ManageReservationsServiceTest extends TestBase
 {
     /**
      * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
@@ -58,7 +58,7 @@ class ManageReservationsServiceTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
                 ->method('GetList')
                 ->with($pageNumber, $pageSize, null, null, $filter->GetFilter())
-                ->will($this->returnValue($data));
+                ->willReturn($data);
 
         $actualData = $this->service->LoadFiltered($pageNumber, $pageSize, null, null, $filter, $this->fakeUser);
 
@@ -74,12 +74,12 @@ class ManageReservationsServiceTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
                     ->method('GetReservationForEditing')
                     ->with($this->equalTo($referenceNumber))
-                    ->will($this->returnValue($reservation));
+                    ->willReturn($reservation);
 
         $this->reservationAuthorization->expects($this->once())
                     ->method('CanEdit')
                     ->with($this->equalTo($reservation), $this->equalTo($user))
-                    ->will($this->returnValue(true));
+                    ->willReturn(true);
 
         $res = $this->service->LoadByReferenceNumber($referenceNumber, $user);
 
@@ -103,7 +103,7 @@ class ManageReservationsServiceTests extends TestBase
         $this->persistenceService->expects($this->once())
                     ->method('LoadByReferenceNumber')
                     ->with($this->equalTo($referenceNumber))
-                    ->will($this->returnValue($reservation));
+                    ->willReturn($reservation);
 
         $this->reservationHandler->expects($this->once())
                     ->method('Handle')

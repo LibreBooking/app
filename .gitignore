@@ -62,3 +62,6 @@
 
 # php8 phpcompatibility report
 php8-report.log
+
+# phpunit cache
+.phpunit.cache/test-results

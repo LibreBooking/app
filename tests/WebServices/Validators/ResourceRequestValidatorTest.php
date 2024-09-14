@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Validators/ResourceRequestValidator.php');
 
-class ResourceRequestValidatorTests extends TestBase
+class ResourceRequestValidatorTest extends TestBase
 {
     /**
      * @var ResourceRequestValidator
@@ -59,7 +59,7 @@ class ResourceRequestValidatorTests extends TestBase
                     $this->equalTo(CustomAttributeCategory::RESOURCE),
                     $this->equalTo([new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue)])
                 )
-                ->will($this->returnValue($result));
+                ->willReturn($result);
 
         $createErrors = $this->validator->ValidateCreateRequest($request);
         $updateErrors = $this->validator->ValidateUpdateRequest(1, $request);

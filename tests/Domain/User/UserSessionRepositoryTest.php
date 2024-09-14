@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/UserSessionRepository.php');
 
-class UserSessionRepositoryTests extends TestBase
+class UserSessionRepositoryTest extends TestBase
 {
     /**
      * @var UserSessionRepository

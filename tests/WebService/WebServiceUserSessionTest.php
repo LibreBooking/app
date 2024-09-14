@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Values/WebService/WebServiceUserSession.php');
 
-class WebServiceUserSessionTests extends TestBase
+class WebServiceUserSessionTest extends TestBase
 {
     public function setUp(): void
     {

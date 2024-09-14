@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-class GuestEmailNotificationTests extends TestBase
+class GuestEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {
@@ -34,10 +34,10 @@ class GuestEmailNotificationTests extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $notification = new GuestAddedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);
@@ -71,10 +71,10 @@ class GuestEmailNotificationTests extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $notification = new GuestDeletedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);
@@ -107,10 +107,10 @@ class GuestEmailNotificationTests extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $notification = new GuestUpdatedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);

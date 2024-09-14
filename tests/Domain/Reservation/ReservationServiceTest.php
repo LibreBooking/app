@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ReservationServiceTests extends TestBase
+class ReservationServiceTest extends TestBase
 {
     public function setUp(): void
     {
@@ -42,19 +42,19 @@ class ReservationServiceTests extends TestBase
             ->expects($this->once())
             ->method('GetReservations')
             ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->equalTo($scheduleId), $this->isNull())
-            ->will($this->returnValue([$res1, $res2, $res3]));
+            ->willReturn([$res1, $res2, $res3]);
 
         $repository
             ->expects($this->once())
             ->method('GetBlackoutsWithin')
             ->with($this->equalTo(new DateRange($startDate, $endDate)), $this->equalTo($scheduleId))
-            ->will($this->returnValue([$blackout1, $blackout2, $blackout3]));
+            ->willReturn([$blackout1, $blackout2, $blackout3]);
 
         $listingFactory
             ->expects($this->once())
             ->method('CreateReservationListing')
             ->with($this->equalTo($timezone))
-            ->will($this->returnValue($reservationListing));
+            ->willReturn($reservationListing);
 
         $service = new ReservationService($repository, $listingFactory);
 

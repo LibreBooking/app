@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/AccountController.php');
 
-class AccountControllerTests extends TestBase
+class AccountControllerTest extends TestBase
 {
     /**
      * @var AccountController

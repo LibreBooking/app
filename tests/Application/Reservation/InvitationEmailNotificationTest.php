@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-class InvitationEmailNotificationTests extends TestBase
+class InvitationEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {
@@ -34,20 +34,13 @@ class InvitationEmailNotificationTests extends TestBase
         $userRepo = $this->createMock('IUserRepository');
         $attributeRepo = $this->createMock('IAttributeRepository');
 
-        $userRepo->expects($this->at(0))
+        $userRepo->expects($this->exactly(3))
             ->method('LoadById')
-            ->with($this->equalTo($ownerId))
-            ->will($this->returnValue($owner));
-
-        $userRepo->expects($this->at(1))
-            ->method('LoadById')
-            ->with($this->equalTo($inviteeId1))
-            ->will($this->returnValue($invitee1));
-
-        $userRepo->expects($this->at(2))
-            ->method('LoadById')
-            ->with($this->equalTo($inviteeId2))
-            ->will($this->returnValue($invitee2));
+            ->willReturnMap([
+                [$ownerId, $owner],
+                [$inviteeId1, $invitee1],
+                [$inviteeId2, $invitee2]
+            ]);
 
         $notification = new InviteeAddedEmailNotification($userRepo, $attributeRepo);
         $notification->Notify($series);

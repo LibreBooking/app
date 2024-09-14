@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 
-class LayoutValidatorTests extends TestBase
+class LayoutValidatorTest extends TestBase
 {
     public function testInvalidUnlessThereIsASlotCoveringEveryMinuteForTheWholeDay()
     {

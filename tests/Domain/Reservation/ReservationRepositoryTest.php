@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ReservationRepositoryTests extends TestBase
+class ReservationRepositoryTest extends TestBase
 {
     /**
      * @var ReservationRepository
@@ -184,7 +184,7 @@ class ReservationRepositoryTests extends TestBase
         $repeats->expects($this->once())
             ->method('GetDates')
             ->with($this->anything())
-            ->will($this->returnValue($dates));
+            ->willReturn($dates);
 
         $userSession = new FakeUserSession();
 

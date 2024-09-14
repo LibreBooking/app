@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class QuotaRepositoryTests extends TestBase
+class QuotaRepositoryTest extends TestBase
 {
     /**
      * @var QuotaRepository

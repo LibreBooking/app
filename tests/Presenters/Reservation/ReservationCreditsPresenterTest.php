@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationCreditsPresenter.php');
 
-class ReservationCreditsPresenterTests extends TestBase
+class ReservationCreditsPresenterTest extends TestBase
 {
     /**
      * @var FakeReservationCreditsPage
@@ -67,7 +67,7 @@ class ReservationCreditsPresenterTests extends TestBase
 
         $expectedCost = Booked\Currency::Create('USD')->Format(150);
 
-        $this->paymentRepository->_CreditCost = new CreditCost(15, 'USD');
+        $this->paymentRepository->_CreditCost = [new CreditCost(1, 15, 'USD')];
 
         $this->page->_ResourceId = 1;
         $this->page->_ResourceIds = [2];

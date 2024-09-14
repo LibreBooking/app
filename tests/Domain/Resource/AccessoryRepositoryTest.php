@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/AccessoryRepository.php');
 
-class AccessoryRepositoryTests extends TestBase
+class AccessoryRepositoryTest extends TestBase
 {
     /**
      * @var AccessoryRepository

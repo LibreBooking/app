@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class UserTests extends TestBase
+class UserTest extends TestBase
 {
     public function testUserIsGroupAdminIfAtLeastOneGroupIsAnAdminGroup()
     {

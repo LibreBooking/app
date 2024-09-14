@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class PasswordEncryptionTests extends TestBase
+class PasswordEncryptionTest extends TestBase
 {
     public function testGeneratesSaltAndHashesPassword()
     {

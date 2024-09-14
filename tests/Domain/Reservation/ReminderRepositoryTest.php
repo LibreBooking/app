@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/ReminderRepository.php');
 
-class ReminderRepositoryTests extends TestBase
+class ReminderRepositoryTest extends TestBase
 {
     /**
      * @var ReminderRepository

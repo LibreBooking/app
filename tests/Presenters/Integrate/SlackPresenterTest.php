@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Integrate/SlackPresenter.php');
 
-class SlackPresenterTests extends TestBase
+class SlackPresenterTest extends TestBase
 {
     /**
      * @var SlackPresenter

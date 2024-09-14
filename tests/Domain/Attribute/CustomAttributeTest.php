@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class CustomAttributeTests extends TestBase
+class CustomAttributeTest extends TestBase
 {
     public function testChecksForRequiredValues()
     {

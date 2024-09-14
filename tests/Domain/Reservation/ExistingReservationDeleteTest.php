@@ -1,6 +1,6 @@
 <?php
 
-class ExistingReservationDeleteTests extends TestBase
+class ExistingReservationDeleteTest extends TestBase
 {
     /**
      * @var FakeUserSession

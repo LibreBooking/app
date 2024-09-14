@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Credits/UserCreditsPresenter.php');
 
-class UserCreditsPresenterTests extends TestBase
+class UserCreditsPresenterTest extends TestBase
 {
     /**
      * @var FakeUserCreditsPage
@@ -47,7 +47,7 @@ class UserCreditsPresenterTests extends TestBase
         $currentCredits = 10.5;
         $this->userRepository->_User = new FakeUser();
         $this->userRepository->_User->WithCredits($currentCredits);
-        $this->paymentRepository->_CreditCost = new CreditCost('10.11');
+        $this->paymentRepository->_CreditCost = [new CreditCost(1, '10.11')];
 
         $this->presenter->PageLoad($this->fakeUser);
 

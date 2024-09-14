@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManagePaymentsPresenter.php');
 
-class ManagePaymentsPresenterTests extends TestBase
+class ManagePaymentsPresenterTest extends TestBase
 {
     /**
      * @var FakeManagePaymentsPage
@@ -33,8 +33,8 @@ class ManagePaymentsPresenterTests extends TestBase
 
         $this->presenter->PageLoad();
 
-        $this->assertEquals($creditCost->Cost(), $this->page->_CreditCost);
-        $this->assertEquals($creditCost->Currency(), $this->page->_CreditCurrency);
+        $this->assertEquals($creditCost->Cost(), $this->page->_CreditCost->Cost());
+        $this->assertEquals($creditCost->Currency(), $this->page->_CreditCost->Currency());
     }
 
     public function testPageLoadSetsGatewayValues()
@@ -64,7 +64,7 @@ class ManagePaymentsPresenterTests extends TestBase
 
         $this->presenter->UpdateCreditCost();
 
-        $this->assertEquals(new CreditCost($this->page->_CreditCost, $this->page->_CreditCurrency), $this->paymentRepository->_LastCost);
+        $this->assertEquals(new CreditCost(1, $this->page->_CreditCost, $this->page->_CreditCurrency), $this->paymentRepository->_LastCost);
     }
 
     public function testUpdatesPaymentGateways()
@@ -170,7 +170,6 @@ class ManagePaymentsPresenterTests extends TestBase
 
 class FakeManagePaymentsPage extends ManagePaymentsPage
 {
-    public $_CreditCount;
     public $_CreditCost;
     public $_CreditCurrency;
     public $_PayPalEnabled;
@@ -204,11 +203,9 @@ class FakeManagePaymentsPage extends ManagePaymentsPage
         return $this->_CreditCurrency;
     }
 
-    public function SetCreditCost($count, $cost, $currency)
+    public function SetCreditCosts($cost)
     {
-        $this->_CreditCount = $count;
         $this->_CreditCost = $cost;
-        $this->_CreditCurrency = $currency;
     }
 
     public function GetPayPalIsEnabled()

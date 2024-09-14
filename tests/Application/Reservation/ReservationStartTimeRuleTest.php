@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationStartTimeRuleTests extends TestBase
+class ReservationStartTimeRuleTest extends TestBase
 {
     /**
      * @var IScheduleRepository
@@ -108,13 +108,13 @@ class ReservationStartTimeRuleTests extends TestBase
         $this->scheduleRepository->expects($this->once())
             ->method('GetLayout')
             ->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory('UTC')))
-            ->will($this->returnValue($this->layout));
+            ->willReturn($this->layout);
 
         $period = new SchedulePeriod($periodStart, $periodEnd);
         $this->layout->expects($this->once())
                 ->method('GetPeriod')
                 ->with($this->equalTo($end))
-                ->will($this->returnValue($period));
+                ->willReturn($period);
 
 
         $rule = new ReservationStartTimeRule($this->scheduleRepository);
@@ -144,13 +144,13 @@ class ReservationStartTimeRuleTests extends TestBase
         $this->scheduleRepository->expects($this->once())
             ->method('GetLayout')
             ->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory('UTC')))
-            ->will($this->returnValue($this->layout));
+            ->willReturn($this->layout);
 
         $period = new SchedulePeriod($periodStart, $periodEnd);
         $this->layout->expects($this->once())
                 ->method('GetPeriod')
                 ->with($this->equalTo($end))
-                ->will($this->returnValue($period));
+                ->willReturn($period);
 
 
         $rule = new ReservationStartTimeRule($this->scheduleRepository);

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
 
-class LdapTests extends TestBase
+class LdapTest extends TestBase
 {
     /**
      * @var FakeAuth
@@ -329,7 +329,7 @@ class LdapTests extends TestBase
     }
 }
 
-class LdapIntegrationTests extends TestBase
+class LdapIntegrationTest extends TestBase
 {
     public function testAuthRealLdap()
     {

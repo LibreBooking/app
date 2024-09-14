@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/ResourceSaveController.php');
 
-class ResourceSaveControllerTests extends TestBase
+class ResourceSaveControllerTest extends TestBase
 {
     /**
      * @var ResourceSaveController
@@ -57,10 +57,15 @@ class ResourceSaveControllerTests extends TestBase
             $request->requiresApproval,
             $request->allowMultiday,
             $request->maxParticipants,
-            $request->minNotice,
+            $request->minNoticeAdd,
             $request->maxNotice,
             $request->description,
-            $request->scheduleId
+            $request->scheduleId,
+            minNoticeDelete: $request->minNoticeDelete,
+            minNoticeUpdate: $request->minNoticeUpdate,
+            bufferTime: $request->bufferTime,
+            groupIds: $request->groupIds,
+            resourceTypeId: $request->typeId
         );
 
         $expectedUpdateResource->SetSortOrder($request->sortOrder);
@@ -75,12 +80,12 @@ class ResourceSaveControllerTests extends TestBase
         $this->validator->expects($this->once())
                 ->method('ValidateCreateRequest')
                 ->with($this->equalTo($request))
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->repository->expects($this->once())
                 ->method('Add')
                 ->with($this->equalTo($expectedCreateResource))
-                ->will($this->returnValue($resourceId));
+                ->willReturn($resourceId);
 
         $this->repository->expects($this->once())
                 ->method('Update')
@@ -101,7 +106,7 @@ class ResourceSaveControllerTests extends TestBase
         $this->validator->expects($this->once())
                 ->method('ValidateCreateRequest')
                 ->with($this->anything())
-                ->will($this->returnValue($errors));
+                ->willReturn($errors);
 
         $response = $this->controller->Create($request, $this->session);
 
@@ -126,10 +131,15 @@ class ResourceSaveControllerTests extends TestBase
             $request->requiresApproval,
             $request->allowMultiday,
             $request->maxParticipants,
-            $request->minNotice,
+            $request->minNoticeAdd,
             $request->maxNotice,
             $request->description,
-            $request->scheduleId
+            $request->scheduleId,
+            minNoticeDelete: $request->minNoticeDelete,
+            minNoticeUpdate: $request->minNoticeUpdate,
+            bufferTime: $request->bufferTime,
+            groupIds: $request->groupIds,
+            resourceTypeId: $request->typeId
         );
 
         $expectedUpdateResource->SetSortOrder($request->sortOrder);
@@ -144,11 +154,18 @@ class ResourceSaveControllerTests extends TestBase
         $this->validator->expects($this->once())
                 ->method('ValidateUpdateRequest')
                 ->with($this->equalTo($resourceId), $this->equalTo($request))
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->repository->expects($this->once())
                 ->method('Update')
                 ->with($this->equalTo($expectedUpdateResource));
+
+        $this->repository->expects($this->once())
+                ->method('LoadById')
+                ->willReturnMap(
+                [
+                    [$resourceId, $expectedUpdateResource]
+                ]);
 
         $response = $this->controller->Update($resourceId, $request, $this->session);
 
@@ -166,7 +183,7 @@ class ResourceSaveControllerTests extends TestBase
         $this->validator->expects($this->once())
                 ->method('ValidateUpdateRequest')
                 ->with($this->anything(), $this->anything())
-                ->will($this->returnValue($errors));
+                ->willReturn($errors);
 
         $response = $this->controller->Update($resourceId, $request, $this->session);
 
@@ -183,12 +200,12 @@ class ResourceSaveControllerTests extends TestBase
         $this->validator->expects($this->once())
                 ->method('ValidateDeleteRequest')
                 ->with($this->equalTo($resourceId))
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->repository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($resourceId))
-                ->will($this->returnValue($resource));
+                ->willReturn($resource);
 
         $this->repository->expects($this->once())
                 ->method('Delete')
@@ -209,7 +226,7 @@ class ResourceSaveControllerTests extends TestBase
         $this->validator->expects($this->once())
                 ->method('ValidateDeleteRequest')
                 ->with($this->equalTo($resourceId))
-                ->will($this->returnValue($errors));
+                ->willReturn($errors);
 
         $response = $this->controller->Delete($resourceId, $this->session);
 
