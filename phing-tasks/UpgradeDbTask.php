@@ -77,7 +77,6 @@ class UpgradeDbTask // extends Task
 
         print("Upgrading database to version $upgrade\n");
 
-        // $this->ExecuteFile($fullUpgradeDir, 'clean.sql');
         $this->ExecuteFile($fullUpgradeDir, 'schema.sql');
         $this->ExecuteFile($fullUpgradeDir, 'data.sql');
 
