@@ -40,7 +40,7 @@ class MySqlConnection implements IDbConnection
 
         $this->_db = @mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword, $this->_dbName, $this->_port);
         $selected = @mysqli_select_db($this->_db, $this->_dbName);
-        @mysqli_set_charset($this->_db, 'utf8');
+        @mysqli_set_charset($this->_db, 'utf8mb4');
 
         if (!$this->_db || !$selected) {
             Log::Error("Error connecting to database\nCheck your database settings in the config file\n%s", @mysqli_error($this->_db));
