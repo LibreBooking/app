@@ -107,15 +107,15 @@ class SmartyPage extends Smarty
             $languageCode = $this->getTemplateVars('CurrentLanguage');
         }
         $localizedPath = ROOT_DIR . 'lang/' . $languageCode;
-        $defaultPath = ROOT_DIR . 'lang/en_us/';
         $customTemplateName = str_replace('.tpl', '-custom.tpl', $templateName);
 
         if (file_exists($localizedPath . '/' . $templateName) || file_exists($localizedPath . '/' . $customTemplateName)) {
             $path = $localizedPath;
             $this->AddTemplateDirectory($localizedPath);
         } else {
-            $path = $defaultPath;
-            $this->AddTemplateDirectory($defaultPath);
+            // Fallback path
+            $path = ROOT_DIR . 'lang/en_us/';
+            $this->AddTemplateDirectory($path);
         }
 
         if (file_exists($path . '/' . $customTemplateName)) {
