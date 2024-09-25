@@ -25,6 +25,7 @@
 # Customization Files
 /Web/custom-favicon.png
 /Web/img/custom-logo.png
+lang/*/*-custom.tpl
 
 # Upload Directories
 /uploads/*
