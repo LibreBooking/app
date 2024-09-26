@@ -715,11 +715,9 @@
 
 	{csrf_token}
 
-	<div id="colorbox">
-		<div id="approveDiv" class="wait-box">
-			<h3>{translate key=Approving}</h3>
-			{include file='wait-box.tpl'}
-		</div>
+	<div class="modal fade" id="approveDiv" tabindex="-1" role="dialog" aria-labelledby="approveDivLabel"
+		data-bs-backdrop="static" aria-hidden="true">
+		{include file="wait-box.tpl" translateKey='Approving'}
 	</div>
 
 </div>

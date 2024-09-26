@@ -127,8 +127,8 @@
 		</div>
 	</div>
 
-	<div id="indicator" class="text-center" style="display:none;">
-		{include file="wait-box.tpl"}
+	<div id="indicator" class="d-none card shadow p-2">
+		{include file="wait-box.tpl" translateKey='Working'}
 	</div>
 
 	{include file="Reports/chart.tpl"}

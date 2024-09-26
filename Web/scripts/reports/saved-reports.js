@@ -2,13 +2,13 @@ function SavedReports(reportOptions) {
 	var opts = reportOptions;
 
 	var elements = {
-		indicator:$('#indicator'),
-		resultsDiv:$('#resultsDiv'),
-		emailForm:$('#emailForm'),
-		deleteForm:$('#deleteForm'),
-		sendEmailButton:$('#btnSendEmail'),
-		emailIndicator:$('#sendEmailIndicator'),
-		deleteReportButton:$('#btnDeleteReport')
+		indicator: $('#indicator'),
+		resultsDiv: $('#resultsDiv'),
+		emailForm: $('#emailForm'),
+		deleteForm: $('#deleteForm'),
+		sendEmailButton: $('#btnSendEmail'),
+		emailIndicator: $('#sendEmailIndicator'),
+		deleteReportButton: $('#btnDeleteReport')
 	};
 
 	var reportId = 0;
@@ -16,17 +16,17 @@ function SavedReports(reportOptions) {
 	this.init = function () {
 
 		ConfigureAsyncForm(elements.emailForm,
-				function(){return opts.emailUrl + reportId;},
-				function (data) {
-						$('#emailSent').show().delay(3000).fadeOut(1000);
-						$('#emailDiv').modal('hide');
-					});
+			function () { return opts.emailUrl + reportId; },
+			function (data) {
+				$('#emailSent').show().delay(3000).fadeOut(1000);
+				$('#emailDiv').modal('hide');
+			});
 
-		ConfigureAsyncForm(elements.deleteForm, function(){return opts.deleteUrl + reportId;});
+		ConfigureAsyncForm(elements.deleteForm, function () { return opts.deleteUrl + reportId; });
 
 		wireUpReportLinks();
 
-		$(document).on('click', '#btnPrint',function (e) {
+		$(document).on('click', '#btnPrint', function (e) {
 			e.preventDefault();
 
 			var url = opts.printUrl + reportId;
@@ -39,16 +39,16 @@ function SavedReports(reportOptions) {
 			var url = opts.csvUrl + reportId;
 			window.open(url);
 		});
-        //
+		//
 		// $(document).on('click', '#btnChart', function(e) {
 		// 	e.preventDefault();
-        //
+		//
 		// 	var chart = new Chart();
 		// 	chart.generate();
 		// 	$('#report-results').hide();
 		// });
 
-		$('.save').on('click', function() {
+		$('.save').on('click', function () {
 			$(this).closest('form').submit();
 		});
 	};
@@ -61,12 +61,12 @@ function SavedReports(reportOptions) {
 
 		$('.runNow').click(function (e) {
 			var before = function () {
-				elements.indicator.show().insertBefore(elements.resultsDiv);
+				elements.indicator.removeClass('d-none').insertBefore(elements.resultsDiv);
 				elements.resultsDiv.html('');
 			};
 
 			var after = function (data) {
-				elements.indicator.hide();
+				elements.indicator.addClass('d-none');
 				elements.resultsDiv.html(data)
 			};
 
@@ -77,8 +77,7 @@ function SavedReports(reportOptions) {
 			$('#emailDiv').modal('show');
 		});
 
-		$('.delete').click(function(e)
-		{
+		$('.delete').click(function (e) {
 			$('#deleteDiv').modal('show');
 		});
 

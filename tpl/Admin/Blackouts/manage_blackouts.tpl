@@ -373,8 +373,8 @@
 			//$('#add-blackout-panel').showHidePanel();
 		});
 
-		$.blockUI.defaults.css.width = '60%';
-		$.blockUI.defaults.css.left = '20%';
+		$.blockUI.defaults.css.width = '80%';
+		$.blockUI.defaults.css.left = '10%';
 		$.blockUI.defaults.css.marginTop = '-5%';
 	</script>
 
@@ -386,22 +386,30 @@
 	{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
 
 
-	<div id="wait-box" class="wait-box">
-		<div id="creatingNotification">
-			{include file='wait-box.tpl'}
-			<!--<h3>
-				{block name="ajaxMessage"}
-					{translate key=Working}...
-				{/block}
-			</h3>
-			{html_image src="reservation_submitting.gif"} -->
+	<div id="wait-box" class="modal fade" aria-labelledby="update-boxLabel" data-bs-backdrop="static"
+		aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="creatingNotification">
+						{include file='wait-box.tpl' translateKey='Working'}
+					</div>
+					<div id="result" class="text-center"></div>
+				</div>
+			</div>
 		</div>
-		<div id="result"></div>
 	</div>
 
-	<div id="update-box" class="d-none">
-		{indicator id="update-spinner"}
-		<div id="update-contents"></div>
+	<div class="modal fade" id="update-box" tabindex="-1" aria-labelledby="update-boxLabel" data-bs-backdrop="static"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					{indicator id="update-spinner"}
+					<div id="update-contents"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </div>

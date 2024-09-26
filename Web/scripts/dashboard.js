@@ -2,14 +2,13 @@ function Dashboard(opts) {
     var options = opts;
 
     var ShowReservationAjaxResponse = function () {
-        $('.blockUI').css('cursor', 'default');
-
+        //$('.blockUI').css('cursor', 'default');
         $('#creatingNotification').hide();
         $('#result').show();
     };
 
     var CloseSaveDialog = function () {
-        $.unblockUI();
+        $('#wait-box').modal('hide');
     };
     Dashboard.prototype.init = function () {
         /*function setIcon(dash, targetIcon) {
@@ -117,7 +116,8 @@ function Dashboard(opts) {
             var form = $('#form-checkin');
             var refNum = $(this).attr('data-referencenumber');
             $('#referenceNumber').val(refNum);
-            $.blockUI({ message: $('#wait-box') });
+            $('#wait-box').modal('show');
+            //$.blockUI({ message: $('#wait-box') });
             ajaxPost(form, $(this).data('url'), null, function (data) {
                 $('button[data-referencenumber="' + refNum + '"]').addClass('d-none');
                 $('#result').html(data);
@@ -138,7 +138,7 @@ function Dashboard(opts) {
             var form = $('#form-checkout');
             var refNum = $(this).attr('data-referencenumber');
             $('#referenceNumber').val(refNum);
-            $.blockUI({ message: $('#wait-box') });
+            //$.blockUI({ message: $('#wait-box') });
             ajaxPost(form, null, null, function (data) {
                 $('button[data-referencenumber="' + refNum + '"]').addClass('d-none');
                 $('#result').html(data);

@@ -76,7 +76,7 @@
 
 		<div id="update-blackout-buttons" class="col-12 clearfix">
 			<div class="float-end">
-				<button type="button" class="btn btn-outline-secondary" id="cancelUpdate">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
 					{translate key='Cancel'}
 				</button>
 				{if $IsRecurring}

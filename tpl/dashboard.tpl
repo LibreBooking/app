@@ -28,11 +28,17 @@
 	</script>
 </div>
 
-<div id="wait-box" class="wait-box">
-	<div id="creatingNotification">
-		{include file='wait-box.tpl'}
+<div id="wait-box" class="modal fade" aria-labelledby="update-boxLabel" data-bs-backdrop="static" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div id="creatingNotification">
+					{include file='wait-box.tpl' translateKey='Working'}
+				</div>
+				<div id="result" class="text-center"></div>
+			</div>
+		</div>
 	</div>
-	<div id="result"></div>
 </div>
 
 {include file='globalfooter.tpl'}

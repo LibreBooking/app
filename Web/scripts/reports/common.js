@@ -3,13 +3,20 @@ function ReportsCommon(opts) {
         init: function () {
             $(document).on('click', '#btnChart', function (e) {
                 e.preventDefault();
+                $('#approveDiv').modal('show');
 
-                var chart = new Chart(opts.chartOpts);
-                chart.generate();
-                $('#report-results').hide();
+                // Use a small delay to ensure the modal is displayed sooner
+                setTimeout(function () {
+                    var chart = new Chart(opts.chartOpts);
+                    chart.generate();
+
+                    $('#report-results').hide();
+                    $('#approveDiv').modal('hide');
+
+                }, 500);
             });
 
-            $('body').click(function(e){
+            $('body').click(function (e) {
                 if (!$(e.target).closest('#customize-columns').length && !$(e.target).closest('#btnCustomizeColumns').length) {
                     $('#customize-columns').hide();
                 }
@@ -21,27 +28,24 @@ function ReportsCommon(opts) {
                 var allCells = th.closest('tr').children();
                 var normalIndex = allCells.index(th) + 1;
                 var colSelector = 'td:nth-child(' + normalIndex + ')';
-                var col = reportResults.find(colSelector );
+                var col = reportResults.find(colSelector);
 
-                if (show)
-                {
+                if (show) {
                     th.show();
                     col.show();
                 }
-                else
-                {
+                else {
                     th.hide();
                     col.hide();
                 }
             }
 
-            function initColumns(savedColumns){
+            function initColumns(savedColumns) {
                 if (savedColumns.length == 0) {
                     return;
                 }
-                $.each(getAllColumnTitles(), function(i, title){
-                    if (savedColumns.length < 1)
-                    {
+                $.each(getAllColumnTitles(), function (i, title) {
+                    if (savedColumns.length < 1) {
                         showColumn(title, false);
                     }
                     else if ($.inArray(title, savedColumns) == -1) {
@@ -51,7 +55,7 @@ function ReportsCommon(opts) {
             }
 
             function getAllColumnTitles() {
-                return $.map($('#report-results').find('th'), function(v) {
+                return $.map($('#report-results').find('th'), function (v) {
                     return $(v).attr('data-columnTitle');
                 });
             }
@@ -59,7 +63,7 @@ function ReportsCommon(opts) {
             function saveSelectedCols(selectedColumns) {
                 $('#selectedColumns').val(selectedColumns);
 
-                ajaxPost($('#saveSelectedColumns'), null, null, function(){});
+                ajaxPost($('#saveSelectedColumns'), null, null, function () { });
             }
 
             $(document).on('loaded', '#report-results', function (e) {
@@ -71,32 +75,32 @@ function ReportsCommon(opts) {
 
                 var items = [];
                 var allColumns = getAllColumnTitles();
-                $.each(allColumns, function(i, title){
+                $.each(allColumns, function (i, title) {
                     var checked = savedCols.length == 0 || $.inArray(title, savedCols) != -1 ? ' checked="checked" ' : '';
                     items.push('<div><label><input type="checkbox"' + checked + 'value="' + title + '"/> ' + title + '</label></div>');
                 });
 
                 var customizeColumns = $('#customize-columns');
                 customizeColumns.empty();
-                $('<div/>', {'class': '', html: items.join('')}).appendTo(customizeColumns);
+                $('<div/>', { 'class': '', html: items.join('') }).appendTo(customizeColumns);
 
                 var btnCustomizeColumns = $('#btnCustomizeColumns');
 
                 customizeColumns.find(':checkbox').unbind('click');
 
-                customizeColumns.on('click', ':checkbox', function(e) {
+                customizeColumns.on('click', ':checkbox', function (e) {
                     showColumn($(this).val(), $(this).is(':checked'));
 
-                    var columnsToSave = $.map(customizeColumns.find(':checked'), function(checkbox){
+                    var columnsToSave = $.map(customizeColumns.find(':checked'), function (checkbox) {
                         return $(checkbox).val();
                     });
 
                     saveSelectedCols(columnsToSave.join(separator));
                 });
 
-                btnCustomizeColumns.unbind('click').on('click', function(e) {
+                btnCustomizeColumns.unbind('click').on('click', function (e) {
                     e.preventDefault();
-                    customizeColumns.position({my:'right top', at:'right bottom', of: btnCustomizeColumns, collision: 'fit'});
+                    customizeColumns.position({ my: 'right top', at: 'right bottom', of: btnCustomizeColumns, collision: 'fit' });
                     customizeColumns.show();
                 });
             });
