@@ -168,7 +168,7 @@ function Reservation(opts) {
         });
 
         $('#btnWaitList').unbind().click(function () {
-            $.blockUI({ message: $('#wait-box') });
+            $('#wait-box').modal('show');
             JoinWaitList();
         });
 
@@ -203,12 +203,12 @@ function Reservation(opts) {
     }
 
     Reservation.prototype.preSubmit = function (formData, jqForm, options) {
-        $.blockUI({ message: $('#wait-box') });
+        $('#wait-box').modal('show');
 
-        $('#creatingNotification').find('h3').addClass('no-show');
-        $('#createUpdateMessage').removeClass('no-show');
-        $('#result').hide();
-        $('#creatingNotification').show();
+        $('#creatingNotification').find('h3').addClass('d-none');
+        $('#createUpdateMessage').removeClass('d-none');
+        $('#result').addClass('d-none');
+        //$('#creatingNotification').show();
 
         return true;
     };
@@ -635,7 +635,6 @@ function Reservation(opts) {
     };
 
     var ShowReservationAjaxResponse = function () {
-        $('.blockUI').css('cursor', 'default');
 
         $('#btnSaveSuccessful').unbind().click(function (e) {
             window.location = options.returnUrl.replace(/&amp;/g, '&');
@@ -658,18 +657,18 @@ function Reservation(opts) {
             elements.reservationForm.submit();
         });
 
-        $('#creatingNotification').hide();
-        $('#result').show();
+        $('#creatingNotification').addClass('d-none');
+        $('#result').removeClass('d-none');
     };
 
     var CloseSaveDialog = function () {
-        $.unblockUI();
+        $('#wait-box').modal('hide')
     };
 
     var JoinWaitList = function () {
-        $('#result').hide();
-        $('#creatingNotification').show();
-        $('#joiningWaitingList').removeClass('no-show');
+        $('#result').addClass('d-none');
+        //$('#creatingNotification').show();
+        $('#joiningWaitingList').removeClass('d-none');
 
         ajaxPost(elements.reservationForm, opts.waitlistUrl, null, function (data) {
             $('#result').html(data);
@@ -684,20 +683,20 @@ function Reservation(opts) {
 
         $('.update').click(function () {
             SetDeleteReason();
-            elements.deleteRecurringButtons.addClass('no-show');
+            elements.deleteRecurringButtons.addClass('d-none');
             $('form').attr("action", options.updateUrl);
         });
 
         $('.delete').click(function () {
             SetDeleteReason();
-            elements.deleteRecurringButtons.removeClass('no-show');
+            elements.deleteRecurringButtons.removeClass('d-none');
             $('form').attr("action", options.deleteUrl);
         });
 
         $('.btnCheckin').click(function () {
-            $('#creatingNotification').find('h3').addClass('no-show');
-            $('#checkingInMessage').removeClass('no-show');
-            $.blockUI({ message: $('#wait-box') });
+            $('#creatingNotification').find('h3').addClass('d-none');
+            $('#checkingInMessage').removeClass('d-none');
+            $('#wait-box').modal('show');
 
             ajaxPost(elements.reservationForm, opts.checkinUrl, null, function (data) {
                 $('#result').html(data);
@@ -706,9 +705,9 @@ function Reservation(opts) {
         });
 
         $('.btnCheckout').click(function () {
-            $('#creatingNotification').find('h3').addClass('no-show');
-            $('#checkingOutMessage').removeClass('no-show');
-            $.blockUI({ message: $('#wait-box') });
+            $('#creatingNotification').find('h3').addClass('d-none');
+            $('#checkingOutMessage').removeClass('d-none');
+            $('#wait-box').modal('show');
 
             ajaxPost(elements.reservationForm, opts.checkoutUrl, null, function (data) {
                 $('#result').html(data);

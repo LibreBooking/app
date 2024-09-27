@@ -280,7 +280,9 @@ li.ui-timepicker-selected,
     width: 90px;
 }
 
-#add-blackout-panel label {
+#add-blackout-panel label,
+#editRecurrenceModal label,
+#blackoutReasonLabel {
     min-width: 90px;
 }
 

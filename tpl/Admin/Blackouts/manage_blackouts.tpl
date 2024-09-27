@@ -22,7 +22,7 @@
 								<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
 									value="{formatdate date=$AddStartDate key=system}" />
 								<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
-									class="form-control form-control-sm dateinput timepicker"
+									class="form-select form-select-sm dateinput timepicker"
 									value="{format_date format='h:00 A' date=now}" title="{translate key=StartTime}" />
 								<label for="addStartTime" class="visually-hidden">{translate key=StartTime}</label>
 							</div>
@@ -33,7 +33,7 @@
 								<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
 									value="{formatdate date=$AddEndDate key=system}" />
 								<input {formname key=END_TIME} type="text" id="addEndTime"
-									class="form-control form-control-sm dateinput timepicker"
+									class="form-select form-select-sm dateinput timepicker"
 									value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
 									title="{translate key=EndTime}" />
 								<label for="addEndTime" class="visually-hidden">{translate key=EndTime}</label>
@@ -238,7 +238,7 @@
 
 	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 		aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
@@ -262,7 +262,7 @@
 
 	<div class="modal fade" id="deleteRecurringDialog" tabindex="-1" role="dialog"
 		aria-labelledby="deleteRecurringModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
@@ -274,15 +274,14 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form id="deleteRecurringForm" method="post">
-						<button type="button" class="btn btn-outline-secondary cancel"
-							data-dismiss="modal">{translate key='Cancel'}</button>
+					<form id="deleteRecurringForm" method="post" class="d-grid gap-2 d-md-flex justify-content-md-end">
+						{cancel_button}
 
 						<button type="button" class="btn btn-danger save btnUpdateThisInstance">
 							<i class="bi bi-x-lg"></i> {translate key='ThisInstance'}</button>
 
 						<button type="button" class="btn btn-danger save btnUpdateAllInstances">
-							<i class="bi bi-x-lg"></i> {translate key='AllInstances'}</button>
+							<i class="bi bi-x-circle"></i> {translate key='AllInstances'}</button>
 
 						<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
 							value="{SeriesUpdateScope::FullSeries}" />
@@ -296,7 +295,7 @@
 		aria-labelledby="deleteMultipleModalLabel" aria-hidden="true">
 		<form id="deleteMultipleForm" method="post"
 			action="{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE_MULTIPLE}">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span
@@ -373,9 +372,9 @@
 			//$('#add-blackout-panel').showHidePanel();
 		});
 
-		$.blockUI.defaults.css.width = '80%';
-		$.blockUI.defaults.css.left = '10%';
-		$.blockUI.defaults.css.marginTop = '-5%';
+		//$.blockUI.defaults.css.width = '80%';
+		//$.blockUI.defaults.css.left = '10%';
+		//$.blockUI.defaults.css.marginTop = '-5%';
 	</script>
 
 	{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
@@ -402,7 +401,7 @@
 
 	<div class="modal fade" id="update-box" tabindex="-1" aria-labelledby="update-boxLabel" data-bs-backdrop="static"
 		aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-body">
 					{indicator id="update-spinner"}

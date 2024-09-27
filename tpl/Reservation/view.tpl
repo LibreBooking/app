@@ -318,27 +318,34 @@
         </div>
     </div>
 
-    <div id="wait-box" class="wait-box">
-        <div id="creatingNotification">
-            <h3 id="createUpdateMessage" class="no-show">
-                {block name="ajaxMessage"}
-                    {translate key=UpdatingReservation}
-                {/block}
-            </h3>
-            <h3 id="joiningWaitingList" class="no-show">
-                {translate key=AddingToWaitlist}
-            </h3>
-            <h3 id="checkingInMessage" class="no-show">
-                {translate key=CheckingIn}
-            </h3>
-            <h3 id="checkingOutMessage" class="no-show">
-                {translate key=CheckingOut}
-            </h3>
-            <div class="spinner-border" role="status"></div>
+    <div id="wait-box" class="modal fade" aria-labelledby="update-boxLabel" data-bs-backdrop="static"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="creatingNotification" class="text-center">
+                        <h3 id="createUpdateMessage" class="d-none">
+                            {block name="ajaxMessage"}
+                                {translate key=UpdatingReservation}
+                            {/block}
+                        </h3>
+                        <h3 id="joiningWaitingList" class="d-none">
+                            {translate key=AddingToWaitlist}
+                        </h3>
+                        <h3 id="checkingInMessage" class="d-none">
+                            {translate key=CheckingIn}
+                        </h3>
+                        <h3 id="checkingOutMessage" class="d-none">
+                            {translate key=CheckingOut}
+                        </h3>
+                        <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status">
+                        </div>
+                    </div>
+                    <div id="result" class="text-center"></div>
+                </div>
+            </div>
         </div>
-        <div id="result"></div>
     </div>
-
 
     <div style="display: none">
         <form id="form-reservation" method="post" enctype="application/x-www-form-urlencoded">
@@ -429,8 +436,8 @@
         {include file="Reservation/pdf.tpl"}
         //
 
-        $.blockUI.defaults.css.width = '60%';
-        $.blockUI.defaults.css.left = '20%';
+        //$.blockUI.defaults.css.width = '60%';
+        //$.blockUI.defaults.css.left = '20%';
     });
 </script>
 {include file='globalfooter.tpl'}

@@ -1,6 +1,6 @@
 <form id="editBlackoutForm" class="form-inline" role="form" method="post">
-	<div id="updateBlackout" class="row p-4">
-		<div class="form-group col-6 d-flex align-items-center gap-1">
+	<div id="updateBlackout" class="row gy-1 p-4">
+		<div class="form-group col-12 col-sm-6 d-flex align-items-center">
 			<label class="fw-bold" for="updateStartDate">{translate key=BeginDate}</label>
 			<input type="text" id="updateStartDate" class="form-control form-control-sm dateinput"
 				value="{formatdate date=$BlackoutStartDate}" />
@@ -11,7 +11,7 @@
 				value="{formatdate date=$BlackoutStartDate format='h:i A'}" />
 		</div>
 
-		<div class="form-group col-6 d-flex align-items-center gap-1">
+		<div class="form-group col-12 col-sm-6 d-flex align-items-center">
 			<label class="fw-bold" for="updateEndDate">{translate key=EndDate}</label>
 			<input type="text" id="updateEndDate" class="form-control form-control-sm dateinput" size="10"
 				value="{formatdate date=$BlackoutEndDate}" />
@@ -22,8 +22,8 @@
 				value="{formatdate date=$BlackoutEndDate format='h:i A'}" />
 		</div>
 
-		<div class="form-group col-12 blackouts-edit-resources border rounded my-2">
-			<label class="fw-bold">{translate key=Resources}</label>
+		<label class="col-12 mt-2 mb-0 fw-bold">{translate key=Resources}</label>
+		<div class="form-group col-12 blackouts-edit-resources border rounded mb-2">
 			<div class="row">
 				{foreach from=$Resources item=resource}
 					{assign var=checked value=""}
@@ -41,17 +41,14 @@
 			</div>
 		</div>
 
-		<div class="col-12">
-			<div class="form-group d-flex align-items-center gap-1 mb-2">
-				<label class="fw-bold" for="blackoutReason">{translate key=Reason}<i
-						class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i></label>
-				<input {formname key=SUMMARY} type="text" id="blackoutReason" required
-					class="form-control form-control-sm w-auto required has-feedback" value="{$BlackoutTitle}" />
-				{*<i class="bi bi-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>*}
-			</div>
+		<div class="form-group d-flex align-items-center col-12 mb-2">
+			<label class="fw-bold" id="blackoutReasonLabel" for="blackoutReason">{translate key=Reason}<i
+					class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i></label>
+			<input {formname key=SUMMARY} type="text" id="blackoutReason" required
+				class="form-control form-control-sm w-auto required has-feedback" value="{$BlackoutTitle}" />
 		</div>
 
-		<div class="mb-2">
+		<div class="col-12 mb-2" id="editRecurrenceModal">
 			{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
 		</div>
 
@@ -74,28 +71,24 @@
 			</div>
 		</div>
 
-		<div id="update-blackout-buttons" class="col-12 clearfix">
-			<div class="float-end">
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-					{translate key='Cancel'}
+		<div id="update-blackout-buttons" class="d-grid gap-2 d-md-flex justify-content-md-end">
+			{cancel_button}
+			{if $IsRecurring}
+				<button type="button" class="btn btn-success save btnUpdateThisInstance">
+					<i class="bi bi-check-circle-fill"></i>
+					{translate key='ThisInstance'}
 				</button>
-				{if $IsRecurring}
-					<button type="button" class="btn btn-success save btnUpdateThisInstance">
-						<i class="bi bi-check-circle-fill"></i>
-						{translate key='ThisInstance'}
-					</button>
-					<button type="button" class="btn btn-success save btnUpdateAllInstances">
-						<i class="bi bi-check2-all"></i>
-						{translate key='AllInstances'}
-					</button>
-				{else}
-					<button type="button" class="btn btn-success save update btnUpdateAllInstances">
-						<i class="bi bi-check-circle-fill"></i>
-						{translate key='Update'}
-					</button>
-				{/if}
+				<button type="button" class="btn btn-success save btnUpdateAllInstances">
+					<i class="bi bi-check2-all"></i>
+					{translate key='AllInstances'}
+				</button>
+			{else}
+				<button type="button" class="btn btn-success save update btnUpdateAllInstances">
+					<i class="bi bi-check-circle-fill"></i>
+					{translate key='Update'}
+				</button>
+			{/if}
 
-			</div>
 		</div>
 
 		<input type="hidden" {formname key=BLACKOUT_INSTANCE_ID} value="{$BlackoutId}" />

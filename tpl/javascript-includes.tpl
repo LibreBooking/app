@@ -5,7 +5,7 @@
     {jsfile src="js/lodash.4.6.13.min.js"}
     {jsfile src="js/moment.min.js"}
     {jsfile src="js/jquery.form-3.09.min.js"}
-    {jsfile src="js/jquery.blockUI-2.66.0.min.js"}
+    {*{jsfile src="js/jquery.blockUI-2.66.0.min.js"}*}
     {if isset($Qtip) && $Qtip}
         {jsfile src="js/jquery.qtip.min.js"}
     {/if}
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js">
     </script>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
+    {*<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>*}
     {if isset($Qtip) && $Qtip}
         <script type="text/javascript" src="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>
     {/if}

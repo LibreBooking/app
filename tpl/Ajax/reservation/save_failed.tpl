@@ -12,7 +12,7 @@
 	</div>
 
 	<div>
-		<button id="btnSaveFailed" class="btn btn-warning text-white"><i
+		<button id="btnSaveFailed" class="btn btn-warning text-white" data-bs-dismiss="modal"><i
 				class="bi bi-arrow-left-circle-fill me-1"></i>{translate key='ReservationErrors'}</button>
 
 		{if $CanJoinWaitList}
@@ -21,14 +21,14 @@
 		{/if}
 
 		{if $CanBeRetried}
-			<div id="retryParams" class="no-show">
+			<div id="retryParams" class="d-none">
 				{foreach from=$RetryParameters item=retryParam}
 					<input type="hidden" id="{$retryParam->Name()}"
 						name="{FormKeys::RESERVATION_RETRY_PREFIX}[{$retryParam->Name()}]"
 						value="{$retryParam->Value()|escape}" />
 				{/foreach}
 			</div>
-			<div id="retryMessages" class="no-show">
+			<div id="retryMessages" class="d-none">
 				{foreach from=$RetryMessages item=each}
 					<div>{$each|nl2br}</div>
 				{/foreach}
