@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Qtip=true Owl=true}
+{include file='globalheader.tpl'}
 
 <div class="accordion" id="page-dashboard">
 	<div id="dashboardList">
@@ -7,7 +7,7 @@
 		{/foreach}
 	</div>
 
-	{include file="javascript-includes.tpl" Qtip=true Owl=true}
+	{include file="javascript-includes.tpl"}
 
 	{jsfile src="dashboard.js"}
 	{jsfile src="resourcePopup.js"}
@@ -40,5 +40,4 @@
 		</div>
 	</div>
 </div>
-
 {include file='globalfooter.tpl'}

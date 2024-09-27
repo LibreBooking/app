@@ -10,6 +10,7 @@
     --reservedParticipating: #875cae;
     --reservedPending: #f2dfbf;
     --pasttime: #bdbdbd;
+    --hiliteReservation: #79bf40;
     --bs-body-color: #464d53;
 }
 
@@ -79,10 +80,11 @@ img.logo {
     color: var(--primary-hover) !important;
 }
 
+/*
 .dropdown-toggle.show {
     color: var(--primary-hover) !important;
 }
-
+*/
 .dropdown-menu {
     --bs-dropdown-link-active-bg: var(--primary);
     font-size: 12px;
@@ -532,6 +534,23 @@ input.mid-number {
 
 #panelCustomReport label {
     min-width: 130px;
+}
+
+.respopup-tooltip .tooltip-inner {
+    font-size: 14px;
+    min-width: 450px;
+    text-align: left;
+}
+
+.fc-past {
+    background-color: var(--pasttime) !important;
+    color: #333;
+}
+
+.fc-future.hover {
+    background-color: var(--hiliteReservation) !important;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 .no-show {

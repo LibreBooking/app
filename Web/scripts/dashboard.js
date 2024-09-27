@@ -51,37 +51,40 @@ function Dashboard(opts) {
 
         var reservations = $(".reservation");
 
-        reservations.qtip({
-            position: {
-                my: 'bottom left', at: 'top left', effect: false
-            },
+        function attachReservationTooltip(reservations, options) {
+            reservations.on('mouseenter', function () {
+                var me = $(this);
+                var refNum = me.attr('id');
 
-            content: {
-                text: function (event, api) {
-                    var refNum = $(this).attr('id');
-                    $.ajax({ url: options.summaryPopupUrl, data: { id: refNum } })
-                        .done(function (html) {
-                            api.set('content.text', html)
-                        })
-                        .fail(function (xhr, status, error) {
-                            api.set('content.text', status + ': ' + error)
-                        });
+                me.attr('data-bs-toggle', 'tooltip')
+                    .tooltip('show');
 
-                    return 'Loading...';
-                }
-            },
+                $.ajax({
+                    url: options.summaryPopupUrl,
+                    data: { id: refNum }
+                })
+                    .done(function (html) {
+                        me.attr('data-bs-original-title', html).tooltip('show');
+                    })
+                    .fail(function (xhr, status, error) {
+                        me.attr('data-bs-original-title', status + ': ' + error).tooltip('show');
+                    });
+            });
 
-            show: {
-                delay: 700, effect: false
-            },
+            reservations.on('mouseleave', function () {
+                $(this).tooltip('hide');
+            });
+        }
 
-            hide: {
-                fixed: true, delay: 500
-            },
+        $(document).ready(function () {
+            var reservations = $('.reservation');
+            var options = {
+                summaryPopupUrl: 'ajax/respopup.php'
+            };
 
-            style: {
-                classes: 'qtip-light qtip-bootstrap'
-            }
+            attachReservationTooltip(reservations, options);
+
+            $('[data-bs-toggle="tooltip"]').tooltip();
         });
 
         reservations.hover(function () {

@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/calendar.print.css'}
+{include file='globalheader.tpl' Select2=true Fullcalendar=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/calendar.print.css'}
 
 <div id="page-{$pageIdSuffix}">
     {include file='Calendar/calendar.filter.tpl'}
@@ -52,7 +52,7 @@
 
     {csrf_token}
 
-    {include file="javascript-includes.tpl" Select2=true Qtip=true Fullcalendar=true}
+    {include file="javascript-includes.tpl" Select2=true Fullcalendar=true}
     {jsfile src="reservationPopup.js"}
     {jsfile src="calendar.js"}
     {jsfile src="ajax-helpers.js"}
