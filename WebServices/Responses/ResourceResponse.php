@@ -47,12 +47,12 @@ class ResourceResponse extends RestResponse
         $this->location = $resource->GetLocation();
         $this->contact = $resource->GetContact();
         $this->notes = $resource->GetNotes();
-        $this->maxLength = $resource->GetMaxLength()->__toString();
-        $this->minLength = $resource->GetMinLength()->__toString();
-        $this->maxNotice = $resource->GetMaxNotice()->__toString();
-        $this->minNoticeAdd = $resource->GetMinNoticeAdd()->__toString();
-        $this->minNoticeUpdate = $resource->GetMinNoticeUpdate()->__toString();
-        $this->minNoticeDelete = $resource->GetMinNoticeDelete()->__toString();
+        $this->maxLength = $resource->GetMaxLength()->ToShortString();
+        $this->minLength = $resource->GetMinLength()->ToShortString();
+        $this->maxNotice = $resource->GetMaxNotice()->ToShortString();
+        $this->minNoticeAdd = $resource->GetMinNoticeAdd()->ToShortString();
+        $this->minNoticeUpdate = $resource->GetMinNoticeUpdate()->ToShortString();
+        $this->minNoticeDelete = $resource->GetMinNoticeDelete()->ToShortString();
         $this->requiresApproval = $resource->GetRequiresApproval();
         $this->allowMultiday = $resource->GetAllowMultiday();
         $this->maxParticipants = $resource->GetMaxParticipants();
@@ -60,7 +60,7 @@ class ResourceResponse extends RestResponse
         $this->scheduleId = $resource->GetScheduleId();
         $this->statusId = $resource->GetStatusId();
         $this->statusReasonId = $resource->GetStatusReasonId();
-        $this->bufferTime = $resource->GetBufferTime()->__toString();
+        $this->bufferTime = $resource->GetBufferTime()->ToShortString();
         $this->typeId = $resource->GetResourceTypeId();
         $this->groupIds = $resource->GetResourceGroupIds();
         $this->autoReleaseMinutes = $resource->GetAutoReleaseMinutes();
@@ -97,7 +97,7 @@ class ExampleResourceResponse extends ResourceResponse
     public function __construct()
     {
         $interval = new TimeInterval(120);
-        $length = $interval->__toString();
+        $length = $interval->ToShortString();
         $this->resourceId = 123;
         $this->name = 'resource name';
         $this->location = 'location';

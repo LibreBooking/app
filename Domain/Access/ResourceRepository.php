@@ -49,6 +49,9 @@ class ResourceRepository implements IResourceRepository
         return $resources;
     }
 
+    /**
+     * Gets all the resources
+     */
     public function GetResourceList()
     {
         $resources = [];
@@ -61,6 +64,73 @@ class ResourceRepository implements IResourceRepository
         $reader->Free();
 
         return $resources;
+    }
+
+    /**
+     * Gets the resource IDs for all the resources
+     */
+    public function GetResourceIdList(): array {
+        $resourceIds = [];
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllResourcesCommand());
+        while ($row = $reader->GetRow()) {
+            $resourceId = $row[ColumnNames::RESOURCE_ID];
+
+            if (!array_key_exists($resourceId, $resourceIds)) {
+                $resourceIds[$resourceId] = $resourceId;
+            }
+        }
+        $reader->Free();
+        return $resourceIds;
+    }
+
+    /**
+     * Gets, for the logged in user, the resources that the user and the user groups
+     * have permissions to. Admin user will return all resources.
+     */
+    public function GetUserResourceList()
+    {
+        $userSession = ServiceLocator::GetUserSession();
+        if (is_null($userSession)) {
+            return [];
+        }
+        if ($userSession->IsAdmin){
+            return $this->GetResourceList();
+        }
+        $resourceIds = $this->GetUserResourceIdList();
+        $resources = [];
+        foreach($resourceIds as $resourceId){
+            $resource = $this->LoadById($resourceId);
+            if($resource->GetStatusId() != ResourceStatus::HIDDEN){
+                $resources[$resourceId] = $resource;
+            }
+        }
+        return $resources;
+    }
+
+    /**
+     * Gets the resource IDs that the logged in user has permissions (full access and view only permissions)
+     * This is used to block a user from seeing a resource if they don't have permissions to it.
+     */
+    public function GetUserResourceIdList() {
+        $userSession = ServiceLocator::GetUserSession();
+        if (is_null($userSession)) {
+            return [];
+        }
+        if ($userSession->IsAdmin){
+            return $this->GetResourceIdList();
+        }
+        $resourceIds = $this->GetUserResourcePermissions(userId: $userSession->UserId);
+        $resourceIds = $this->GetUserGroupResourcePermissions(userId: $userSession->UserId, resourceIds: $resourceIds);
+
+
+        if ($userSession->IsResourceAdmin){
+            $resourceIds = $this->GetResourceAdminResourceIds(userId: $userSession->UserId, resourceIds: $resourceIds);
+        }
+
+        if ($userSession->IsScheduleAdmin){
+            $resourceIds = $this->GetScheduleAdminResourceIds(userId: $userSession->UserId, resourceIds: $resourceIds);
+        }
+        return $resourceIds;
     }
 
     public function GetResourceGroupsList()
@@ -388,9 +458,9 @@ class ResourceRepository implements IResourceRepository
 
             if (!array_key_exists($resourceId, $resourceIds)) {
                 $resourceIds[$resourceId] = $resourceId;
-            }         
+            }
         }
-        
+
         $reader->Free();
 
         return $resourceIds;
@@ -408,7 +478,7 @@ class ResourceRepository implements IResourceRepository
 
             if (!array_key_exists($resourceId, $resourceIds)) {
                 $resourceIds[$resourceId] = $resourceId;
-            } 
+            }
         }
         $reader->Free();
 
@@ -419,8 +489,11 @@ class ResourceRepository implements IResourceRepository
      * Gets the resource ids that are under the responsability of the given resource user groups
      */
     public function GetResourceAdminResourceIds($userId, $resourceIds = []){
-
-        if (ServiceLocator::GetServer()->GetUserSession()->IsResourceAdmin){    
+        $userSession = ServiceLocator::GetUserSession();
+        if (is_null($userSession)) {
+            return $resourceIds;
+        }
+        if ($userSession->IsResourceAdmin){
             $command = new GetResourceAdminResourcesCommand($userId);
             $reader = ServiceLocator::GetDatabase()->Query($command);
 
@@ -429,7 +502,7 @@ class ResourceRepository implements IResourceRepository
 
                 if (!array_key_exists($resourceId, $resourceIds)) {
                     $resourceIds[$resourceId] = $resourceId;
-                } 
+                }
             }
             $reader->Free();
         }
@@ -440,8 +513,11 @@ class ResourceRepository implements IResourceRepository
      * Gets the resource ids that are under the responsability of the given schedule user groups
      */
     public function GetScheduleAdminResourceIds($userId, $resourceIds = []){
-
-        if (ServiceLocator::GetServer()->GetUserSession()->IsScheduleAdmin){
+        $userSession = ServiceLocator::GetUserSession();
+        if (is_null($userSession)) {
+            return $resourceIds;
+        }
+        if ($userSession->IsScheduleAdmin){
             $command = new GetScheduleAdminResourcesCommand($userId);
             $reader = ServiceLocator::GetDatabase()->Query($command);
 
@@ -450,7 +526,7 @@ class ResourceRepository implements IResourceRepository
 
                 if (!array_key_exists($resourceId, $resourceIds)) {
                     $resourceIds[$resourceId] = $resourceId;
-                } 
+                }
             }
             $reader->Free();
         }

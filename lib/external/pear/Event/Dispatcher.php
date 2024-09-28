@@ -246,7 +246,7 @@ class Event_Dispatcher
      */
     function &post(&$object, $nName, $info = array(), $pending = true, $bubble = true)
     {
-        $notification =& new $this->_notificationClass($object, $nName, $info);
+        $notification =& $this->_notificationClass($object, $nName, $info);
         return $this->postNotification($notification, $pending, $bubble);
     }
 

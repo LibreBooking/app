@@ -40,7 +40,15 @@ Please consult the wiki for more help <https://github.com/LibreBooking/app/wiki>
 
 09/03/2023 - The ReCaptcha integration has been updated to v3, you will need to generate new keys for your website if you are using it on your website.
 
+## Docker usage
+
+For information on how to use LibreBooking in a Docker container see:
+<https://github.com/LibreBooking/docker>
+
 ## Release Notes
+
+#### 2.8.6.2 - 2024-08-18
+See all the changes at <https://github.com/LibreBooking/app/commits/develop>
 
 #### 2.8.6.1 - 2023-09-26
 Mainly Bug fixes, special mention for the ldap plugin, more details at <https://github.com/LibreBooking/app/commits/develop>

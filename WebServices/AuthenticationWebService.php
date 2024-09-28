@@ -6,8 +6,21 @@ require_once(ROOT_DIR . 'WebServices/Responses/AuthenticationResponse.php');
 require_once(ROOT_DIR . 'WebServices/Requests/AuthenticationRequest.php');
 require_once(ROOT_DIR . 'WebServices/Requests/SignOutRequest.php');
 
+class SignedOutResponse extends RestResponse
+{
+    /**
+     * @var bool;
+     */
+    public $signedOut;
+}
+
+
 class AuthenticationWebService
 {
+    /**
+     * @var IRestServer
+     */
+    private $server;
     /**
      * @var IWebServiceAuthentication
      */
@@ -71,7 +84,7 @@ class AuthenticationWebService
         Log::Debug('WebService SignOut for userId %s and sessionToken %s', $userId, $sessionToken);
 
         $this->authentication->Logout($userId, $sessionToken);
-        $r = new RestResponse();
+        $r = new SignedOutResponse();
         $r->signedOut = true;
         $this->server->WriteResponse($r);
     }

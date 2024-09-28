@@ -30,6 +30,7 @@ if (!Configuration::Instance()->GetSectionKey(ConfigSection::API, ConfigKeys::AP
 $app = new \Slim\Slim();
 
 $server = new SlimServer($app);
+ServiceLocator::SetApiServer(apiServer: $server);
 
 $registry = new SlimWebServiceRegistry($app);
 

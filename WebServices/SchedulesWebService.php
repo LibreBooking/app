@@ -524,6 +524,11 @@ class ScheduleWebServiceView implements ISchedulePage
         $this->available = false;
     }
 
+    public function BindViewableResourceReservations($resourceIds)
+    {
+        // no-op
+    }
+
     public function SetAllowConcurrent($allowConcurrentReservations)
     {
         $this->allowConcurrentReservations = $allowConcurrentReservations;

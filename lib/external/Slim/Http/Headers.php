@@ -92,7 +92,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Array Access: Offset Exists
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->headers[$this->canonical($offset)]);
     }
@@ -100,7 +100,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Array Access: Offset Get
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $canonical = $this->canonical($offset);
         if (isset($this->headers[$canonical])) {
@@ -113,7 +113,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Array Access: Offset Set
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $canonical = $this->canonical($offset);
         $this->headers[$canonical] = $value;
@@ -123,7 +123,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Array Access: Offset Unset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $canonical = $this->canonical($offset);
         unset($this->headers[$canonical], $this->map[$canonical]);
@@ -132,7 +132,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Countable: Count
      */
-    public function count()
+    public function count(): int
     {
         return count($this->headers);
     }
@@ -140,7 +140,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Iterator: Rewind
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->headers);
     }
@@ -148,7 +148,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Iterator: Current
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->headers);
     }
@@ -156,7 +156,7 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Iterator: Key
      */
-    public function key()
+    public function key(): mixed
     {
         $key = key($this->headers);
 
@@ -166,15 +166,15 @@ class Headers implements \ArrayAccess, \Iterator, \Countable
     /**
      * Iterator: Next
      */
-    public function next()
+    public function next(): void
     {
-        return next($this->headers);
+        next($this->headers);
     }
 
     /**
      * Iterator: Valid
      */
-    public function valid()
+    public function valid(): bool
     {
         return current($this->headers) !== false;
     }

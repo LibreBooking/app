@@ -33,6 +33,7 @@ class ConfigKeys
     public const SCHEDULE_HIDE_BLOCKED_PERIODS = 'hide.blocked.periods';
     public const SCHEDULE_UPDATE_HIGHLIGHT_MINUTES = 'update.highlight.minutes';
     public const SCHEDULE_SHOW_WEEK_NUMBERS = 'show.week.numbers';
+    public const SCHEDULE_FAST_RESERVATION_LOAD = 'fast.reservation.load';
 
     public const DATABASE_TYPE = 'type';
     public const DATABASE_USER = 'user';
@@ -108,6 +109,7 @@ class ConfigKeys
     public const RECAPTCHA_ENABLED = 'enabled';
     public const RECAPTCHA_PUBLIC_KEY = 'public.key';
     public const RECAPTCHA_PRIVATE_KEY = 'private.key';
+    public const RECAPTCHA_REQUEST_METHOD = 'request.method';
 
     public const DEFAULT_FROM_ADDRESS = 'default.from.address';
     public const DEFAULT_FROM_NAME = 'default.from.name';

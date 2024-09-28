@@ -288,6 +288,10 @@ class ReservationControllerResult
      * @var array|string[]
      */
     private $errors = [];
+    /**
+     * @var bool
+     */
+    private $requiresApproval;
 
     public function __construct($referenceNumber = null, $errors = [], $requiresApproval = false)
     {

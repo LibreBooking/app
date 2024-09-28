@@ -56,7 +56,7 @@ class ResourcesWebService
      */
     public function GetAll()
     {
-        $resources = $this->resourceRepository->GetResourceList();
+        $resources = $this->resourceRepository->GetUserResourceList();
         $resourceIds = [];
         foreach ($resources as $resource) {
             $resourceIds[] = $resource->GetId();
@@ -74,9 +74,14 @@ class ResourcesWebService
      */
     public function GetResource($resourceId)
     {
-        $resource = $this->resourceRepository->LoadById($resourceId);
-
-        $resourceId = $resource->GetResourceId();
+        $allowedResourceIds = $this->resourceRepository->GetUserResourceIdList();
+        if (!in_array($resourceId, $allowedResourceIds)) {
+            $resourceId = null;
+            $resource = null;
+        } else {
+            $resource = $this->resourceRepository->LoadById($resourceId);
+            $resourceId = $resource->GetResourceId();
+        }
         if (empty($resourceId)) {
             $this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
         } else {
@@ -139,10 +144,14 @@ class ResourcesWebService
             $requestedTime = Date::Now();
         }
 
+        $resources = [];
         if (empty($resourceId)) {
-            $resources = $this->resourceRepository->GetResourceList();
+            $resources = $this->resourceRepository->GetUserResourceList();
         } else {
-            $resources[] = $this->resourceRepository->LoadById($resourceId);
+            $allowedResourceIds = $this->resourceRepository->GetUserResourceIdList();
+            if (in_array($resourceId, $allowedResourceIds)) {
+                $resources[] = $this->resourceRepository->LoadById($resourceId);
+            }
         }
 
         $lastDateSearched = $requestedTime->AddDays(7);

@@ -582,7 +582,10 @@ class BookableResource implements IBookableResource
         $scheduleId = null,
         $adminGroupId = null,
         $minNoticeUpdate = null,
-        $minNoticeDelete = null
+        $minNoticeDelete = null,
+        $bufferTime = null,
+        $groupIds = null,
+        $resourceTypeId = null,
     ) {
         $this->SetResourceId($resourceId);
         $this->SetName($name);
@@ -602,6 +605,9 @@ class BookableResource implements IBookableResource
         $this->SetMaxNotice($maxNotice);
         $this->SetScheduleId($scheduleId);
         $this->SetAdminGroupId($adminGroupId);
+        $this->SetBufferTime($bufferTime);
+        $this->SetResourceGroupIds($groupIds ?? []);
+        $this->SetResourceTypeId($resourceTypeId);
     }
 
     /**

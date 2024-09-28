@@ -210,7 +210,15 @@ class Server
         $userSession = $this->GetSession(SessionKeys::USER_SESSION);
 
         if (!empty($userSession)) {
-            return $userSession;
+            // return (UserSession) $userSession;
+            $class = 'UserSession';
+            return unserialize(
+                preg_replace(
+                    '/^O:\d+:"[^"]++"/',
+                    'O:'.strlen($class).':"'.$class.'"',
+                    serialize($userSession)
+                )
+            );
         }
 
         return new NullUserSession();

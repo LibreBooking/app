@@ -175,6 +175,10 @@ class AttributeService implements IAttributeService
                 continue;
             }
 
+            if (!$attribute->Required() && !array_key_exists($attribute->Id(), $values)) {
+                continue;
+            }
+
             $value = trim($values[$attribute->Id()]);
             $label = $attribute->Label();
 

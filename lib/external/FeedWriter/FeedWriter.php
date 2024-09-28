@@ -429,7 +429,6 @@
  } // end of class FeedWriter
  
 // autoload classes
-function __autoload($class_name) 
-{
+spl_autoload_register(function ($class_name) {
 	require_once $class_name . '.php';
-}
+});

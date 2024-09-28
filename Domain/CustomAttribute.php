@@ -76,7 +76,7 @@ class CustomAttribute
     protected $adminOnly = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $possibleValues;
 
@@ -134,6 +134,9 @@ class CustomAttribute
      */
     public function PossibleValueList()
     {
+        if (is_null($this->possibleValues)) {
+            return [];
+        }
         return explode(',', $this->possibleValues);
     }
 
