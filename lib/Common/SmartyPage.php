@@ -78,27 +78,6 @@ class SmartyPage extends Smarty
     /**
      * @param string $templateName
      * @param null $languageCode uses current language is nothing is passed in
-     */
-    public function DisplayLocalized($templateName, $languageCode = null)
-    {
-        if (empty($languageCode)) {
-            $languageCode = $this->getTemplateVars('CurrentLanguage');
-        }
-        $localizedPath = ROOT_DIR . 'lang/' . $languageCode;
-        $defaultPath = ROOT_DIR . 'lang/en_us/' . $templateName;
-
-        if (file_exists($localizedPath . '/' . $templateName)) {
-            $this->AddTemplateDirectory($localizedPath);
-        } else {
-            $this->AddTemplateDirectory($defaultPath);
-        }
-
-        $this->Display($templateName);
-    }
-
-    /**
-     * @param string $templateName
-     * @param null $languageCode uses current language is nothing is passed in
      * @return string
      */
     public function FetchLocalized($templateName, $languageCode = null)
