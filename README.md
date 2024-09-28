@@ -16,6 +16,44 @@ Because LibreBooking is an opensource project, there are some things we have to 
 
 This is a community effort to keep the OpenSource [GPLv3](./LICENSE.md) LibreBooking alive, see [History](./doc/HISTORY.md)
 
+# Note:
+## The update project is currently in the beta phase; testing and participation from all users and administrators are required.
+
+## What's new?
+- Update to Bootstrap 5 and migration of icons to Bootstrap Icons.
+
+![Update to Bootstrap 5 and migration of icons to Bootstrap Icons](./Web/img/readme/01.png)
+
+- Design changes.
+
+![Design changes](./Web/img/readme/02.png)
+![Design changes](./Web/img/readme/03.png)
+![Design changes](./Web/img/readme/04.png)
+![Design changes](./Web/img/readme/05.png)
+![Design changes](./Web/img/readme/06.png)
+![Design changes](./Web/img/readme/07.png)
+![Design changes](./Web/img/readme/08.png)
+
+- "Back to top" button on all pages.
+
+!["Back to top" button on all pages](./Web/img/readme/09.png)
+
+- Rename Web/booked.css to Web/librebooking.css (this is no longer Booked Schedule ;-) ).
+
+- Ability to change the color scheme in config.php $conf['settings']['css.theme'] = 'default'  and/or customize an existing one in Web/css/librebooking.css
+
+![color scheme](./Web/img/readme/10.png)
+![color scheme](./Web/img/readme/11.png)
+![color scheme](./Web/img/readme/12.png)
+![color scheme](./Web/img/readme/13.png)
+![color scheme](./Web/img/readme/14.png)
+
+- Use of DataTables (has a negative impact on tables with many records).
+
+![Use of DataTables](./Web/img/readme/15.png)
+
+- Removal of obsolete libraries (e.g. Owl, FloatThead).
+
 ## Prerequisites
 
 - PHP 8.1 or greater

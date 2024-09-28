@@ -465,6 +465,7 @@ class es extends en_gb
         $strings['LimitAttributeScope'] = 'Recopilar en casos específicos';
         $strings['CollectFor'] = 'Recopilar para';
         $strings['SignIn'] = 'Iniciar sesión';
+        $strings['SignInWith'] = 'Iniciar sesión con';
         $strings['AllParticipants'] = 'Todos los participantes';
         $strings['RegisterANewAccount'] = 'Registrar una nueva cuenta';
         $strings['Dates'] = 'Fechas';
@@ -531,7 +532,7 @@ class es extends en_gb
         $strings['UsersInGroups'] = 'Usuarios en grupos';
         $strings['UsersWithAccessToResources'] = 'Usuarios con acceso a recursos';
         $strings['AnnouncementSubject'] = '%s ha publicado un nuevo anuncio';
-        $strings['AnnouncementEmailNotice'] = 'los usuarios recibirán este anuncio por correo';
+        $strings['AnnouncementEmailNotice'] = 'usuarios recibirán este anuncio por correo';
         $strings['Day'] = 'Día';
         $strings['NotifyWhenAvailable'] = 'Notificarme cuando esté disponible';
         $strings['AddingToWaitlist'] = 'Añadiéndote a la lista de espera';
@@ -678,11 +679,11 @@ class es extends en_gb
         $strings['FullAccess'] = 'Acceso completo';
         $strings['ViewOnly'] = 'Sólo Ver';
         $strings['Purge'] = 'Purgar';
-        $strings['UsersWillBeDeleted'] = 'los usuarios serán borrados';
-        $strings['BlackoutsWillBeDeleted'] = 'se borrarán las agendas de no disponibilidad';
-        $strings['ReservationsWillBePurged'] = 'se purgarán las reservas';
-        $strings['ReservationsWillBeDeleted'] = 'se borrarán las reservas';
-        $strings['PermanentlyDeleteUsers'] = 'Borrar definitivamente los usuarios que no se han logado desde';
+        $strings['UsersWillBeDeleted'] = 'usuarios serán borrados';
+        $strings['BlackoutsWillBeDeleted'] = 'agendas de no disponibilidad serán borradas';
+        $strings['ReservationsWillBePurged'] = 'reservas serán purgadas';
+        $strings['ReservationsWillBeDeleted'] = 'reservas serán borradas';
+        $strings['PermanentlyDeleteUsers'] = 'Borrar definitivamente los usuarios que no se han iniciado sesión desde';
         $strings['DeleteBlackoutsBefore'] = 'Borrar agenda de no disponibilidad antes de';
         $strings['DeletedReservations'] = 'Reservas Borradas';
         $strings['DeleteReservationsBefore'] = 'Borrar reservas anteriores a';
@@ -1008,13 +1009,24 @@ class es extends en_gb
 
         //Missing Check In/Out Reservations in Dashboard
         $strings['NoMissingCheckOutReservations'] = 'No hay reservas de salida que falten';
-        $strings['MissingCheckOutReservations'] = 'Reservas de salida que faltan';        
+        $strings['MissingCheckOutReservations'] = 'Reservas de salida que faltan';
         //End Missing Check In/Out Reservations in Dashboard
 
         //Schedule Resource Permissions
         $strings['NoResourcePermissions'] = 'No se pueden ver los detalles de la reserva porque no tienes permisos para ninguno de los recursos en esta reserva';
         //End Schedule Resource Permissions
         //END NEEDS CHECKING
+
+        //View Resource
+        $strings['Check'] = 'Comprobar';
+        $strings['PermissionType'] = 'Tipo de permiso';
+        $strings['NoResourcesToView'] = 'No hay recursos disponibles';
+        //End View Resource
+
+        //Datatables
+        $strings['Info'] = "Mostrando página _PAGE_ de _PAGES_ de _MAX_";
+        $strings['LengthMenu'] = "Mostrar _MENU_ registros";
+        //End Datatables
 
         $this->Strings = $strings;
 

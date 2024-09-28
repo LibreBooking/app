@@ -282,10 +282,10 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
         $this->Set('Months', Resources::GetInstance()->GetMonths('full'));
         $this->Set('DayList', range(1, 31));
         $this->Set('StyleNames', [
-                ScheduleStyle::Standard => $resources->GetString('Standard'),
-                ScheduleStyle::Wide => $resources->GetString('Wide'),
-                ScheduleStyle::Tall => $resources->GetString('Tall'),
-                ScheduleStyle::CondensedWeek => $resources->GetString('Week'),
+            ScheduleStyle::Standard => $resources->GetString('Standard'),
+            ScheduleStyle::Wide => $resources->GetString('Wide'),
+            ScheduleStyle::Tall => $resources->GetString('Tall'),
+            ScheduleStyle::CondensedWeek => $resources->GetString('Week'),
         ]);
         $this->Display('Admin/Schedules/manage_schedules.tpl');
     }
@@ -430,12 +430,13 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
      */
     public function GetPageSize()
     {
-        $pageSize = $this->pageablePage->GetPageSize();
+        /* Datatable now does pagination
+        /*$pageSize = $this->pageablePage->GetPageSize();
 
         if ($pageSize > 10) {
             return 10;
         }
-        return $pageSize;
+        return $pageSize;*/
     }
 
     /**

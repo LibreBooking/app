@@ -24,35 +24,35 @@ function AccessoryManagement(opts) {
 
 	var accessories = new Object();
 
-	AccessoryManagement.prototype.init = function() {
+	AccessoryManagement.prototype.init = function () {
 
-		elements.accessoryList.delegate('a.update', 'click', function(e) {
+		elements.accessoryList.delegate('a.update', 'click', function (e) {
 			setActiveId($(this));
 			e.preventDefault();
 		});
 
-		elements.accessoryList.delegate('.edit', 'click', function() {
+		elements.accessoryList.delegate('.edit', 'click', function () {
 			editAccessory();
 		});
 
-		elements.accessoryList.delegate('.delete', 'click', function() {
+		elements.accessoryList.delegate('.delete', 'click', function () {
 			deleteAccessory();
 		});
 
-		elements.accessoryList.delegate('.resources', 'click', function() {
+		elements.accessoryList.delegate('.resources', 'click', function () {
 			showAccessoryResources();
 		});
 
-		$(".save").click(function() {
+		$(".save").click(function () {
 			$(this).closest('form').submit();
 		});
 
-		$(".cancel").click(function() {
+		$(".cancel").click(function () {
 			$(this).closest('.dialog').dialog("close");
 		});
 
 
-		elements.accessoryResourcesDialog.delegate('.resourceCheckbox', 'click', function() {
+		elements.accessoryResourcesDialog.delegate('.resourceCheckbox', 'click', function () {
 			handleAccessoryResourceClick($(this));
 		});
 
@@ -65,14 +65,13 @@ function AccessoryManagement(opts) {
 		WireUpUnlimited(elements.editUnlimited, elements.editQuantity);
 	};
 
-	var getSubmitCallback = function(action) {
-		return function() {
+	var getSubmitCallback = function (action) {
+		return function () {
 			return options.submitUrl + "?aid=" + getActiveId() + "&action=" + action;
 		};
 	};
 
-	var defaultSubmitCallback = function (form)
-	{
+	var defaultSubmitCallback = function (form) {
 		return options.submitUrl + "?aid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
 	};
 
@@ -85,17 +84,15 @@ function AccessoryManagement(opts) {
 		return elements.activeId.val();
 	}
 
-	var editAccessory = function() {
+	var editAccessory = function () {
 		var accessory = getActiveAccessory();
 		elements.editName.val(accessory.name);
 		elements.editQuantity.val(accessory.quantity);
 
-		if (accessory.quantity == '')
-		{
+		if (accessory.quantity == '') {
 			elements.editUnlimited.prop('checked', true);
 		}
-		else
-		{
+		else {
 			elements.editUnlimited.prop('checked', false);
 		}
 
@@ -103,69 +100,69 @@ function AccessoryManagement(opts) {
 		elements.editDialog.modal('show');
 	};
 
-	function handleAccessoryResourceClick(checkbox)
-	{
+	function handleAccessoryResourceClick(checkbox) {
 		var quantities = checkbox.closest('div[resource-id]').find('.quantities');
 
-		if (checkbox.is(':checked'))
-		{
-			quantities.removeClass('no-show');
+		if (checkbox.is(':checked')) {
+			quantities.removeClass('show');
 		}
-		else
-		{
-			quantities.addClass('no-show');
+		else {
+			quantities.addClass('show');
 		}
 	}
 
-	var showAccessoryResources = function()
-	{
+	var showAccessoryResources = function () {
 		var accessory = getActiveAccessory();
 
-		$.get(opts.submitUrl + '?dr=accessoryResources&aid=' + accessory.id, function(data)
-		{
+		$.get(opts.submitUrl + '?dr=accessoryResources&aid=' + accessory.id, function (data) {
 			elements.accessoryResourcesDialog.find(':checkbox').prop('checked', false);
-			elements.accessoryResourcesDialog.find('.hidden').hide();
+			elements.accessoryResourcesDialog.find('.collapse').removeClass('show');
 
-			$.each(data, function(idx, resource){
+			$.each(data, function (idx, resource) {
 				var div = elements.accessoryResourcesDialog.find('[resource-id="' + resource.ResourceId + '"]');
 				var checkbox = div.find(':checkbox');
 				checkbox.prop('checked', true);
+
+				var collapseTarget = div.find('#quantitiesaccessoryResource' + resource.ResourceId);
+				if (checkbox.is(':checked')) {
+					collapseTarget.collapse('show');
+				} else {
+					collapseTarget.collapse('hide');
+				}
+
 				handleAccessoryResourceClick(checkbox);
 
 				div.find('[data-type="min-quantity"]').val(resource.MinQuantity);
 				div.find('[data-type="max-quantity"]').val(resource.MaxQuantity);
 			});
+
 			elements.accessoryResourcesDialog.find('.resourcesDialogLabel').val(accessory.name + ' (' + accessory.quantity + ')');
 			elements.accessoryResourcesDialog.modal('show');
 		});
 	};
 
-	var deleteAccessory = function() {
+
+	var deleteAccessory = function () {
 		elements.deleteDialog.modal('show');
 	};
 
-	var getActiveAccessory = function ()
-	{
+	var getActiveAccessory = function () {
 		return accessories[getActiveId()];
 	};
 
-	var WireUpUnlimited = function(checkbox, quantity)
-	{
-		checkbox.change(function(){
-			if (checkbox.is(":checked"))
-			{
+	var WireUpUnlimited = function (checkbox, quantity) {
+		checkbox.change(function () {
+			if (checkbox.is(":checked")) {
 				quantity.val('');
 				quantity.attr('disabled', 'disabled');
 			}
-			else
-			{
+			else {
 				quantity.removeAttr('disabled');
 			}
 		});
 	};
 
-	AccessoryManagement.prototype.addAccessory = function(id, name, quantity)
-	{
-		accessories[id] = {id: id, name: name, quantity: quantity};
+	AccessoryManagement.prototype.addAccessory = function (id, name, quantity) {
+		accessories[id] = { id: id, name: name, quantity: quantity };
 	};
 }

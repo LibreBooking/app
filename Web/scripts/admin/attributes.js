@@ -37,16 +37,16 @@ function AttributeManagement(opts) {
 
         $.ajax({
             url: opts.changeCategoryUrl + categoryId, cache: false, beforeSend: function () {
-                $('#indicator').removeClass('no-show').insertBefore(elements.attributeList);
+                $('#indicator').removeClass('d-none').insertBefore(elements.attributeList);
                 $(elements.attributeList).html('');
             }
         }).done(function (data) {
-            $('#indicator').addClass('no-show');
+            $('#indicator').addClass('d-none');
             $(elements.attributeList).html(data);
         });
     }
 
-    var currentAttributeEntities = {entityIds: [], secondaryEntityIds: []};
+    var currentAttributeEntities = { entityIds: [], secondaryEntityIds: [] };
     var selectedEntityChoices = $('#entityChoices, #editEntityChoices');
     var activeAppliesTo;
     var updateEntityCallback = function () {
@@ -155,10 +155,10 @@ function AttributeManagement(opts) {
             handleEntitiesSelected(activeAppliesTo);
         });
 
-        elements.limitScope.change(function (e) {
-            elements.attributeSecondary.addClass('no-show');
+        elements.limitScope.change(function () {
+            elements.attributeSecondary.addClass('d-none');
             if (elements.limitScope.is(':checked')) {
-                elements.attributeSecondary.removeClass('no-show');
+                elements.attributeSecondary.removeClass('d-none');
             }
         });
 
@@ -321,14 +321,14 @@ function AttributeManagement(opts) {
         if (elements.attributeCategory.val() == options.categories.reservation) {
             $('.attributeUnique').hide();
             $('.attributeAdminOnly').show();
-            $('.secondaryEntities, .attributeSecondary').addClass('no-show');
-            $('.secondaryEntities').removeClass('no-show');
+            $('.secondaryEntities, .attributeSecondary').addClass('d-none');
+            $('.secondaryEntities').removeClass('d-none');
             $('.attributeIsPrivate').show();
         }
         else {
             $('.attributeUnique').show();
             //$('.attributeAdminOnly').hide();
-            $('.secondaryEntities, .attributeSecondary').addClass('no-show');
+            $('.secondaryEntities, .attributeSecondary').addClass('d-none');
             $('.attributeIsPrivate').hide();
         }
     };
@@ -338,7 +338,7 @@ function AttributeManagement(opts) {
         elements.appliesToId.find('input:checkbox').removeAttr('checked');
 
         selectedEntityChoices.empty();
-        selectedEntityChoices.css({left: element.position().left, top: element.position().top + element.height()});
+        selectedEntityChoices.css({ left: element.position().left, top: element.position().top + element.height() });
         selectedEntityChoices.show();
 
         $('<div class="ajax-indicator">&nbsp;</div>').appendTo(selectedEntityChoices).show();
@@ -357,18 +357,18 @@ function AttributeManagement(opts) {
             data = getResourceTypes();
         }
 
-        var items = ['<li><a href="#" class="all">' + options.allText + '</a> <a href="#" class="ok">OK</a></li>'];
+        var items = ['<li><a href="#" class="all btn btn-sm btn-primary">' + options.allText + '</a> <a href="#" class="ok btn btn-sm btn-primary">OK</a></li>'];
         $.each(data, function (index, item) {
             var checked = '';
             if (selectedIds.indexOf(item.Id) !== -1) {
                 checked = ' checked="checked" ';
             }
-            items.push('<li><label><input type="checkbox" name="' + formName + '[]" value="' + item.Id + '"' + checked + ' data-text="' + item.Name.replace(/"/g, '&quot;') + '"/>' + item.Name + '</label></li>');
+            items.push('<div class="form-check"><input type="checkbox" class="form-check-input" id="' + item.Id + '" name="' + formName + '[]" value="' + item.Id + '"' + checked + ' data-text="' + item.Name.replace(/"/g, '&quot;') + '"/><label class="form-check-label" for="' + item.Id + '">' + item.Name + '</label></div>');
         });
 
         selectedEntityChoices.empty();
 
-        $('<div/>', {'class': '', html: items.join('')}).appendTo(selectedEntityChoices);
+        $('<div/>', { 'class': '', html: items.join('') }).appendTo(selectedEntityChoices);
     };
 
     var getResources = function () {
@@ -388,7 +388,7 @@ function AttributeManagement(opts) {
             url: options.usersUrl, async: false
         }).done(function (data) {
             items = $.map(data, function (item, index) {
-                return {Id: item.UserId, Name: item.FullName};
+                return { Id: item.UserId, Name: item.FullName };
             });
         });
 
@@ -401,7 +401,7 @@ function AttributeManagement(opts) {
             url: options.resourceTypesUrl, async: false
         }).done(function (data) {
             items = $.map(data, function (item, index) {
-                return {Id: item.Id, Name: item.Name};
+                return { Id: item.Id, Name: item.Name };
             });
         });
 

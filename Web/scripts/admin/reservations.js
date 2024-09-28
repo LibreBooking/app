@@ -109,7 +109,7 @@ function ReservationManagement(opts, approval) {
         });
 
         elements.reservationTable.delegate('tr.editable', 'click', function (e) {
-            if ($(e.target).hasClass('action') || $(e.target).closest('td').hasClass('action')) {
+            if ($(e.target).hasClass('action') || $(e.target).hasClass('user') || $(e.target).closest('td').hasClass('action')) {
                 e.stopPropagation();
                 return;
             }
@@ -117,11 +117,12 @@ function ReservationManagement(opts, approval) {
             viewReservation($(this).attr('data-refnum'));
         });
 
-        elements.reservationTable.delegate('.edit', 'click', function () {
-            if ($(e.target).hasClass('action') || $(e.target).closest('td').hasClass('action')) {
+        elements.reservationTable.delegate('.edit', 'click', function (e) {
+            //This conditional prevents the edit button from working on mobile devices
+            /*if ($(e.target).hasClass('action') || $(e.target).closest('td').hasClass('action')) {
                 e.stopPropagation();
                 return;
-            }
+            }*/
             viewReservation($(this).closest('tr').attr('data-refnum'));
         });
 
@@ -130,11 +131,11 @@ function ReservationManagement(opts, approval) {
             var refNum = $(this).attr('data-refnum');
             $(this).attachReservationPopup(refNum, options.popupUrl);
 
-            $(this).hover(function (e) {
+            /*$(this).hover(function (e) {
                 $(this).find('td').addClass('highlight');
             }, function (e) {
                 $(this).find('td').removeClass('highlight');
-            });
+            });*/
         });
 
         elements.reservationTable.delegate('.delete', 'click', function (e) {
@@ -181,8 +182,8 @@ function ReservationManagement(opts, approval) {
         $('#import-reservations').click(function (e) {
             this.referenceNumber = '';
             e.preventDefault();
-            $('#importErrors').empty().addClass('no-show');
-            $('#importResults').addClass('no-show');
+            $('#importErrors').empty().addClass('d-none');
+            $('#importResults').addClass('d-none');
             elements.importReservationsDialog.modal('show');
         });
 
@@ -199,7 +200,7 @@ function ReservationManagement(opts, approval) {
             e.stopPropagation();
             var isChecked = elements.deleteMultipleSelectAll.is(":checked");
             elements.deleteMultipleCheckboxes.prop('checked', isChecked);
-            elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
+            elements.deleteMultiplePrompt.toggleClass('d-none', !isChecked);
         });
 
         elements.deleteMultipleCheckboxes.click(function (e) {
@@ -207,7 +208,7 @@ function ReservationManagement(opts, approval) {
             var numberChecked = elements.reservationTable.find('.delete-multiple:checked').length;
             var allSelected = numberChecked == elements.reservationTable.find('.delete-multiple').length;
             elements.deleteMultipleSelectAll.prop('checked', allSelected);
-            elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+            elements.deleteMultiplePrompt.toggleClass('d-none', numberChecked == 0);
         });
 
         elements.addTermsOfService.click(function (e) {
@@ -217,9 +218,9 @@ function ReservationManagement(opts, approval) {
         });
 
         elements.termsOfServiceDialog.find('.toggle').click(function (e) {
-            elements.termsOfServiceDialog.find('.tos-div').addClass('no-show');
+            elements.termsOfServiceDialog.find('.tos-div').addClass('d-none');
             var radio = $(e.target);
-            $('#' + radio.data('ref')).removeClass('no-show');
+            $('#' + radio.data('ref')).removeClass('d-none');
         });
 
         var deleteReservationResponseHandler = function (response, form) {
@@ -239,18 +240,18 @@ function ReservationManagement(opts, approval) {
 
             $('#importCount').text(responseText.importCount);
             $('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
-            $('#importResult').removeClass('no-show');
+            $('#importResult').removeClass('d-none');
 
             var errors = $('#importErrors');
             errors.empty();
             if (responseText.messages && responseText.messages.length > 0) {
                 var messages = responseText.messages.join('</li><li>');
-                errors.html('<div>' + messages + '</div>').removeClass('no-show');
+                errors.html('<div>' + messages + '</div>').removeClass('d-none');
             }
         };
 
-        ConfigureAsyncForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
-        ConfigureAsyncForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
+        ConfigureAsyncForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, { dataType: 'json' });
+        ConfigureAsyncForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, { dataType: 'json' });
         ConfigureAsyncForm(elements.statusForm, getUpdateStatusUrl, function () {
             elements.statusDialog.modal('hide');
             // todo inline update
@@ -286,7 +287,7 @@ function ReservationManagement(opts, approval) {
             reasons[statusId] = [];
         }
 
-        reasons[statusId].push({id: id, description: description});
+        reasons[statusId].push({ id: id, description: description });
     };
 
     ReservationManagement.prototype.initializeStatusFilter = function (statusId, reasonId) {
@@ -331,7 +332,7 @@ function ReservationManagement(opts, approval) {
     }
 
     function populateReasonOptions(statusId, reasonsElement) {
-        reasonsElement.empty().append($('<option>', {value: '', text: '-'}));
+        reasonsElement.empty().append($('<option>', { value: '', text: '-' }));
 
         if (statusId in reasons) {
             $.each(reasons[statusId], function (i, v) {
@@ -373,15 +374,15 @@ function ReservationManagement(opts, approval) {
     }
 
     function approveReservation(referenceNumber) {
-        $.blockUI({message: $('#approveDiv')});
+        $.blockUI({ message: $('#approveDiv') });
         approval.Approve(referenceNumber);
     }
 
     function loadExistingTermsOfService() {
         ajaxGet(options.termsOfServiceUrl, null, function (data) {
 
-            elements.termsOfServiceFile.addClass('no-show');
-            elements.deleteTerms.addClass('no-show');
+            elements.termsOfServiceFile.addClass('d-none');
+            elements.deleteTerms.addClass('d-none');
             elements.termsOfServiceForm.attr('ajaxAction', options.updateTermsOfServiceAction);
 
             if (data == null) {
@@ -397,18 +398,18 @@ function ReservationManagement(opts, approval) {
 
             if (text != null && text != '') {
                 $('#tos_manual_radio').click();
-                elements.deleteTerms.removeClass('no-show');
+                elements.deleteTerms.removeClass('d-none');
                 elements.termsOfServiceText.val(text);
             }
             if (url != null && url != '') {
                 $('#tos_url_radio').click();
-                elements.deleteTerms.removeClass('no-show');
+                elements.deleteTerms.removeClass('d-none');
                 elements.termsOfServiceUrl.val(url);
             }
             if (filename != null && filename != '') {
                 $('#tos_upload_radio').click();
-                elements.deleteTerms.removeClass('no-show');
-                elements.termsOfServiceFile.removeClass('no-show');
+                elements.deleteTerms.removeClass('d-none');
+                elements.termsOfServiceFile.removeClass('d-none');
             }
 
             if (applicability == 'REGISTRATION') {

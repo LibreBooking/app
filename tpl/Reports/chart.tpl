@@ -1,7 +1,6 @@
 <div class="clear"></div>
 <div id="chart-indicator" style="display:none; text-align: center;">
-	<h3>{translate key=Working}</h3>
-{html_image src="admin-ajax-indicator.gif"}
+	{include file="wait-box.tpl"}
 </div>
 
 <div id="chartdiv" style="display:none;margin:auto;height:400px;width:80%"></div>

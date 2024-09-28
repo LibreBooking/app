@@ -168,7 +168,7 @@ function Reservation(opts) {
         });
 
         $('#btnWaitList').unbind().click(function () {
-            $.blockUI({message: $('#wait-box')});
+            $.blockUI({ message: $('#wait-box') });
             JoinWaitList();
         });
 
@@ -203,7 +203,7 @@ function Reservation(opts) {
     }
 
     Reservation.prototype.preSubmit = function (formData, jqForm, options) {
-        $.blockUI({message: $('#wait-box')});
+        $.blockUI({ message: $('#wait-box') });
 
         $('#creatingNotification').find('h3').addClass('no-show');
         $('#createUpdateMessage').removeClass('no-show');
@@ -225,7 +225,7 @@ function Reservation(opts) {
                 return;
             }
             var div = $('<div class="emailAddress"/>');
-            div.append($('<span class="fa fa-remove icon remove"></span> <span>' + display + '</span>'));
+            div.append($('<span class="bi bi-x-lg text-danger icon remove"></span> <span>' + display + '</span>'));
             div.append($('<input type="hidden" name="email[]" value="' + val + '"/>'));
             elements.emailReservationList.append(div);
             elements.emailUserAutocomplete.val('');
@@ -291,7 +291,7 @@ function Reservation(opts) {
             onCreateLi: function (node, $li) {
                 var span = $li.find('span');
                 var itemName = span.text();
-                var label = $('<label><input type="checkbox"/>' + itemName + '</label>');
+                var label = $('<div class="form-check d-inline ms-2"><label class="form-check-label"><input type="checkbox" class="form-check-input"/>' + itemName + '</label></div>');
 
                 var checkbox = label.find('input');
 
@@ -320,7 +320,7 @@ function Reservation(opts) {
 
     function LoadCustomAttributes() {
         var attributesPlaceholder = $('#custom-attributes-placeholder');
-        attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
+        attributesPlaceholder.html('<span class="spinner-border"/>');
         var url = 'ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservation-box').hasClass('readonly');
 
         var resourceIds = GetSelectedResourceIds();
@@ -334,7 +334,7 @@ function Reservation(opts) {
         if (options.creditsEnabled) {
             elements.requiredCreditsCount.removeClass('insufficient-credits');
             elements.creditCost.removeClass('insufficient-credits');
-            elements.requiredCreditsCount.html('<span class="fa fa-spin fa-spinner"></span>');
+            elements.requiredCreditsCount.html('<span class="spinner-border spinner-border-sm"></span>');
             var availableCredits = parseInt(elements.availableCreditsCount.text());
             ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
 
@@ -431,7 +431,7 @@ function Reservation(opts) {
         }
         var x = 'accessory!-!id=' + id + ',quantity=' + quantity + ',name=' + encodeURIComponent(name);
 
-        elements.accessoriesList.append('<div accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></div>');
+        elements.accessoriesList.append('<div accessoryId="' + id + '"><span class="badge bg-secondary quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></div>');
     };
 
     var AddResources = function () {
@@ -474,9 +474,21 @@ function Reservation(opts) {
                     primaryResourceContainer.find('.resourceName').remove();
                     displayDiv = primaryResourceContainer;
                 }
-                displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' + '<span class="resourceDetails" data-resourceId="' + checkedResourceId + '">' + checkedResourceName + '</span> ' + '<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' + (requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') + (requiresCheckin ? ' <i class="fa fa-sign-in" data-tooltip="checkin"></i> ' : '') + (!_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') + '</div>');
+                var resourceHtml = `<div class="resourceName rounded-1 my-1 p-1 ${!color ? `text-success bg-success bg-opacity-10"` : `" style="background-color:${color}; color:${textColor};"`}>
+                <span class="resourceDetails" data-resourceId="${checkedResourceId}">${checkedResourceName}</span>
+                <input class="resourceId" type="hidden" name="additionalResources[]" value="${checkedResourceId}" />
+                ${requiresApproval ? '<i class="bi bi-lock-fill me-1" data-bs-toggle="tooltip" data-bs-title="approval"></i>' : ''}
+                ${requiresCheckin ? '<i class="bi bi-box-arrow-in-right me-1" data-bs-toggle="tooltip" data-bs-title="checkin"></i>' : ''}
+                ${!_.isEmpty(autoReleaseMinutes) ? `<i class="bi bi-clock-history" data-bs-toggle="tooltip" data-bs-title="autorelease" data-autorelease="${autoReleaseMinutes}"></i>` : ''}
+                </div>`;
+
+                displayDiv.append(resourceHtml);
             });
+
+            translateTooltips();
         }
+
+
 
         var accessoryIds = GetDisallowedAccessoryIds();
         _.forEach(accessoryIds, function (id) {
@@ -541,8 +553,7 @@ function Reservation(opts) {
         var isChecked = checkbox.is(':checked');
 
         const resourceCheckboxes = elements.groupDiv.find("[resource-id]");
-        if (opts.maximumResources && elements.groupDiv.find(":checked").length >= opts.maximumResources)
-        {
+        if (opts.maximumResources && elements.groupDiv.find(":checked").length >= opts.maximumResources) {
             elements.groupDiv.find(":not(:checked)").attr("disabled", true);
         }
         else {
@@ -686,7 +697,7 @@ function Reservation(opts) {
         $('.btnCheckin').click(function () {
             $('#creatingNotification').find('h3').addClass('no-show');
             $('#checkingInMessage').removeClass('no-show');
-            $.blockUI({message: $('#wait-box')});
+            $.blockUI({ message: $('#wait-box') });
 
             ajaxPost(elements.reservationForm, opts.checkinUrl, null, function (data) {
                 $('#result').html(data);
@@ -697,7 +708,7 @@ function Reservation(opts) {
         $('.btnCheckout').click(function () {
             $('#creatingNotification').find('h3').addClass('no-show');
             $('#checkingOutMessage').removeClass('no-show');
-            $.blockUI({message: $('#wait-box')});
+            $.blockUI({ message: $('#wait-box') });
 
             ajaxPost(elements.reservationForm, opts.checkoutUrl, null, function (data) {
                 $('#result').html(data);
@@ -811,7 +822,7 @@ function Reservation(opts) {
             $.ajax({
                 url: 'schedule.php',
                 dataType: 'json',
-                data: {dr: 'layout', 'sid': scheduleId, 'ld': date},
+                data: { dr: 'layout', 'sid': scheduleId, 'ld': date },
                 success: function (data) {
                     layoutCache[weekday] = data.periods;
                 },
@@ -1041,7 +1052,7 @@ function Reservation(opts) {
     function ShowAvailabilityView() {
         elements.reservationBox.addClass('no-show');
 
-        elements.userAvailabilityBox.html('<span class="fa fa-spin fa-spinner"></span>').removeClass('no-show');
+        elements.userAvailabilityBox.html('<span class="spinner-border"></span>').removeClass('no-show');
 
         var url = opts.availabilityUrl;
         var resourceIds = GetSelectedResourceIds();
@@ -1193,10 +1204,10 @@ function Reservation(opts) {
                 url: options.changeUserAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
                     allUserList = data;
                     $.map(allUserList, function (item) {
-                        items.push('<div><a href="#" class="add" title="Add" userId="' + item.Id + '" availableCredits="' + item.CurrentCreditCount + '">' + item.DisplayName + '</a></div>');
+                        items.push('<div><a href="#" class="add link-primary" title="Add" userId="' + item.Id + '" availableCredits="' + item.CurrentCreditCount + '">' + item.DisplayName + '</a></div>');
                     });
 
-                    $('<div/>', {'class': 'no-style', html: items.join('')}).appendTo(listElement);
+                    $('<div/>', { 'class': 'no-style', html: items.join('') }).appendTo(listElement);
                 }
             });
         }
@@ -1233,7 +1244,7 @@ function Reservation(opts) {
             return;
         }
 
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' + '</div>';
+        var item = '<div class="user">' + '<a href="#" class="remove"><span class="bi bi-x-lg text-danger"></span></a> <a href="#" class="bindableUser link-primary" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' + '</div>';
 
         elements.inviteeList.append(item);
         $('.bindableUser').bindUserDetails();
@@ -1246,7 +1257,7 @@ function Reservation(opts) {
             return;
         }
 
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + ' ' + opts.guestLabel + '<input type="hidden" class="id" name="guestInvitationList[]" value="' + emailAddress + '" />' + '</div>';
+        var item = '<div class="user">' + '<a href="#" class="remove"><span class="bi bi-x-lg text-danger"></span></a> ' + emailAddress + ' ' + opts.guestLabel + '<input type="hidden" class="id" name="guestInvitationList[]" value="' + emailAddress + '" />' + '</div>';
 
         elements.inviteeList.append(item);
 
@@ -1259,7 +1270,7 @@ function Reservation(opts) {
             return;
         }
 
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
+        var item = '<div class="user">' + '<a href="#" class="remove"><span class="bi bi-x-lg text-danger"></span></a> <a href="#" class="bindableUser link-primary" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
 
         elements.participantList.append(item);
         $('.bindableUser').bindUserDetails();
@@ -1272,7 +1283,7 @@ function Reservation(opts) {
             return;
         }
 
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + ' ' + opts.guestLabel + '<input type="hidden" class="id" name="guestParticipationList[]" value="' + emailAddress + '" />' + '</div>';
+        var item = '<div class="user">' + '<a href="#" class="remove"><span class="bi bi-x-lg text-danger"></span></a> ' + emailAddress + ' ' + opts.guestLabel + '<input type="hidden" class="id" name="guestParticipationList[]" value="' + emailAddress + '" />' + '</div>';
 
         elements.participantList.append(item);
 
@@ -1306,11 +1317,11 @@ function Reservation(opts) {
                     allUserList = data;
                     $.map(allUserList, function (item) {
                         if (item.Id != _ownerId) {
-                            items.push('<div><a href="#" class="add" title="Add" user-id="' + item.Id + '">' + '<span class="fa fa-plus-square icon"></span> <span class="name">' + item.DisplayName + '</span></a></div>');
+                            items.push('<div><a href="#" class="add link-dark link-underline-opacity-0" title="Add" user-id="' + item.Id + '">' + '<span class="bi bi-plus-square-fill text-success icon"></span> <span class="name">' + item.DisplayName + '</span></a></div>');
                         }
                     });
 
-                    $('<div/>', {'class': 'no-style', html: items.join('')}).appendTo(listElement);
+                    $('<div/>', { 'class': 'no-style', html: items.join('') }).appendTo(listElement);
                 }
             });
         }
@@ -1327,10 +1338,10 @@ function Reservation(opts) {
                 url: options.groupAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
                     allGroupList = data;
                     $.map(allGroupList, function (item) {
-                        items.push('<div><a href="#" class="add" title="Add" group-id="' + item.Id + '">' + '<span class="fa fa-plus-square icon"></span> <span class="name">' + item.Name + '</span></a></div>');
+                        items.push('<div><a href="#" class="add link-dark link-underline-opacity-0" title="Add" group-id="' + item.Id + '">' + '<span class="bi bi-plus-square-fill text-success icon"></span> <span class="name">' + item.Name + '</span></a></div>');
                     });
 
-                    $('<div/>', {'class': 'no-style', html: items.join('')}).appendTo(listElement);
+                    $('<div/>', { 'class': 'no-style', html: items.join('') }).appendTo(listElement);
                 }
             });
         }

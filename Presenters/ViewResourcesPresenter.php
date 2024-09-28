@@ -1,7 +1,8 @@
 <?php
 
-class ViewResourcesPresenter{
-    
+class ViewResourcesPresenter
+{
+
     /**
      * @var ResourceViewerViewResourcesPage;
      */
@@ -23,8 +24,8 @@ class ViewResourcesPresenter{
     private $groupRepo;
 
     /**
-    * @var IAttributeService
-    */
+     * @var IAttributeService
+     */
     private $attributeService;
 
     /**
@@ -38,19 +39,19 @@ class ViewResourcesPresenter{
         IScheduleRepository $scheduleRepo,
         IGroupRepository $groupRepo,
         IAttributeService $attributeService,
-        )
-    {
-    
-       $this->page = $page;
-       $this->resourceRepo = $resourceRepo;
-       $this->scheduleRepo = $scheduleRepo;
-       $this->groupRepo = $groupRepo;
-       $this->attributeService = $attributeService;
+    ) {
 
-       $this->userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+        $this->page = $page;
+        $this->resourceRepo = $resourceRepo;
+        $this->scheduleRepo = $scheduleRepo;
+        $this->groupRepo = $groupRepo;
+        $this->attributeService = $attributeService;
+
+        $this->userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
     }
 
-    public function PageLoad(){
+    public function PageLoad()
+    {
         $resources = $this->GetUserResources();
         $resourceAttributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
 
@@ -67,14 +68,16 @@ class ViewResourcesPresenter{
 
         $filterValues = $this->page->GetFilterValues();
 
-        foreach($resources as $resource){
+        foreach ($resources as $resource) {
             $resourceIds[] = $resource->GetId();
         }
 
         $results = $this->resourceRepo->GetUserList(
             $resourceIds,
-            $this->page->GetPageNumber(),
-            $this->page->GetPageSize(),
+            null,
+            null,
+            //$this->page->GetPageNumber(),
+            //$this->page->GetPageSize(),
             null,
             null,
             $filterValues->AsFilter($resourceAttributes)
@@ -85,18 +88,19 @@ class ViewResourcesPresenter{
         $this->page->BindPageInfo($results->PageInfo());
     }
 
-    private function GetUserResources(){
+    private function GetUserResources()
+    {
         $resources = [];
 
         $resourceIds = [];
 
         $resourceIds = $this->resourceRepo->GetUserResourcePermissions($this->userId);
 
-        $resourceIds = $this->resourceRepo->GetUserGroupResourcePermissions($this->userId,$resourceIds);
+        $resourceIds = $this->resourceRepo->GetUserGroupResourcePermissions($this->userId, $resourceIds);
 
-        foreach($resourceIds as $resourceId){
+        foreach ($resourceIds as $resourceId) {
             $resource = $this->resourceRepo->LoadById($resourceId);
-            if($resource->GetStatusId() != 0){
+            if ($resource->GetStatusId() != 0) {
                 $resources[$resourceId] = $resource;
             }
         }
@@ -104,57 +108,62 @@ class ViewResourcesPresenter{
         return $resources;
     }
 
-    private function GetSchedules(){
+    private function GetSchedules()
+    {
         $scheduleNames = [];
         $schedules = $this->scheduleRepo->GetAll();
-        foreach($schedules as $schedule){
+        foreach ($schedules as $schedule) {
             $scheduleNames[$schedule->GetId()] = $schedule;
         }
         return $scheduleNames;
     }
 
-    private function GetResourceAdminGroup(){
+    private function GetResourceAdminGroup()
+    {
         $resourceAdminGroupNames = [];
 
         $resourceAdminGroups = $this->groupRepo->GetGroupsByRole(3); //RESOURCE ADMINS
 
-        foreach($resourceAdminGroups as $resourceAdminGroup){
+        foreach ($resourceAdminGroups as $resourceAdminGroup) {
             $resourceAdminGroupNames[$resourceAdminGroup->Id] = $resourceAdminGroup;
         }
 
-        return $resourceAdminGroupNames;    
+        return $resourceAdminGroupNames;
     }
 
-    private function GetResourceGroup(){
+    private function GetResourceGroup()
+    {
         $resourceGroupNames = [];
-        
+
         $resourceGroups = $this->resourceRepo->GetResourceGroupsList();
 
-        foreach($resourceGroups as $resourceGroup){
+        foreach ($resourceGroups as $resourceGroup) {
             $resourceGroupNames[$resourceGroup->id] = $resourceGroup;
         }
 
-        return $resourceGroupNames;    
+        return $resourceGroupNames;
     }
 
-    private function GetResourceStatusReasons(){
+    private function GetResourceStatusReasons()
+    {
         $resourceStatusReasons = [];
 
         $resourceStatusReasonsList = $this->resourceRepo->GetStatusReasons();
 
-        foreach($resourceStatusReasonsList as $resourceStatusReason){
+        foreach ($resourceStatusReasonsList as $resourceStatusReason) {
             $resourceStatusReasons[$resourceStatusReason->Id()] = $resourceStatusReason;
         }
 
-        return $resourceStatusReasons;  
+        return $resourceStatusReasons;
     }
 
-    private function GetResourceTypes(){
+    private function GetResourceTypes()
+    {
         $resourceTypes = [];
 
         $resourceTypesList = $this->resourceRepo->GetResourceTypes();
 
-        foreach($resourceTypesList as $resourceType){
+        foreach ($resourceTypesList as $resourceType) {
             $resourceTypes[$resourceType->Id()]  = $resourceType;
         }
 
@@ -162,18 +171,19 @@ class ViewResourcesPresenter{
     }
 
     //To show user what type of permission he has to the resource (view only or full access)
-    private function GetUserResourcePermissionTypes(){
+    private function GetUserResourcePermissionTypes()
+    {
         //USER
         $resourcePermissionTypes = [];
 
         $command = new GetUserPermissionsCommand($this->userId);
         $reader = ServiceLocator::GetDatabase()->Query($command);
-        
+
         while ($row = $reader->GetRow()) {
-                $resourcePermissionTypes[$row[ColumnNames::RESOURCE_ID]] = $row[ColumnNames::PERMISSION_TYPE];
-                $resourcePermissionTypes[$row[ColumnNames::RESOURCE_ID]] = $row[ColumnNames::PERMISSION_TYPE];
+            $resourcePermissionTypes[$row[ColumnNames::RESOURCE_ID]] = $row[ColumnNames::PERMISSION_TYPE];
+            $resourcePermissionTypes[$row[ColumnNames::RESOURCE_ID]] = $row[ColumnNames::PERMISSION_TYPE];
         }
-            
+
         $reader->Free();
 
         //USER GROUPS
@@ -184,10 +194,9 @@ class ViewResourcesPresenter{
             $resourceId = $row[ColumnNames::RESOURCE_ID];
             $permissionType = $row[ColumnNames::PERMISSION_TYPE];
 
-            if (!array_key_exists($resourceId,$resourcePermissionTypes)){
+            if (!array_key_exists($resourceId, $resourcePermissionTypes)) {
                 $resourceId = $permissionType;
-            }
-            else if (array_key_exists($resourceId,$resourcePermissionTypes) && $resourcePermissionTypes[$resourceId] == 1 &&  $permissionType == 0){
+            } else if (array_key_exists($resourceId, $resourcePermissionTypes) && $resourcePermissionTypes[$resourceId] == 1 &&  $permissionType == 0) {
                 $resourcePermissionTypes[$resourceId] = $permissionType;
             }
         }

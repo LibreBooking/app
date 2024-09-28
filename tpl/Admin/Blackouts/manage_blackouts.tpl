@@ -1,202 +1,248 @@
-{include file='globalheader.tpl' Timepicker=true}
+{include file='globalheader.tpl' Timepicker=true DataTable=true}
 <div id="page-manage-blackouts" class="admin-page">
-	<h1>{translate key=ManageBlackouts}</h1>
+	<h1 class="border-bottom mb-3">{translate key=ManageBlackouts}</h1>
 
-	<form id="addBlackoutForm" class="form-inline" role="form" method="post">
-		<div class="panel panel-default" id="add-blackout-panel">
-			<div class="panel-heading">{translate key="AddBlackout"} {showhide_icon}</div>
-			<div class="panel-body add-contents">
-
-				<div class="form-group col-xs-6">
-					<label for="addStartDate">{translate key=BeginDate}</label>
-					<input type="text" id="addStartDate" class="form-control dateinput inline-block "
-						   value="{formatdate date=$AddStartDate}"/>
-					<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
-													 value="{formatdate date=$AddStartDate key=system}"/>
-					<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
-													 class="form-control dateinput inline-block timepicker"
-													 value="{format_date format='h:00 A' date=now}" title="{translate key=StartTime}"/>
-                    <label for="addStartTime" class="no-show">{translate key=StartTime}</label>
-				</div>
-				<div class="form-group col-xs-6">
-					<label for="addEndDate">{translate key=EndDate}</label>
-					<input type="text" id="addEndDate" class="form-control dateinput inline-block " size="10"
-						   value="{formatdate date=$AddEndDate}"/>
-					<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
-												   value="{formatdate date=$AddEndDate key=system}"/>
-					<input {formname key=END_TIME} type="text" id="addEndTime"
-												   class="form-control dateinput inline-block timepicker"
-												   value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
-												   title="{translate key=EndTime}"/>
-                    <label for="addEndTime" class="no-show">{translate key=EndTime}</label>
-                </div>
-				<div class="form-group col-xs-12">
-					<label for="addResourceId">{translate key=Resource}</label>
-					<select {formname key=RESOURCE_ID} class="form-control" id="addResourceId">
-						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
-					</select>
-					{if $Schedules|default:array()|count > 0}
-						|
-						<div class="checkbox">
-							<input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources"/>
-							<label for="allResources" style="">{translate key=AllResourcesOn} </label>
+	<div class="accordion">
+		<form id="addBlackoutForm" role="form" method="post">
+			<div class="accordion-item shadow mb-2 panel-default" id="add-blackout-panel">
+				<h2 class="accordion-header">
+					<button class="accordion-button collapsed link-primary" type="button" data-bs-toggle="collapse"
+						data-bs-target="#add-blackout-content" aria-expanded="false"
+						aria-controls="add-blackout-content">
+						<i class="bi bi-plus-circle-fill me-1"></i>{translate key="AddBlackout"}
+					</button>
+				</h2>
+				<div id="add-blackout-content" class="accordion-collapse collapse">
+					<div class="accordion-body add-contents">
+						<div class="form-group d-flex align-items-center flex-wrap gap-1 mb-2">
+							<div class="d-flex align-items-center flex-wrap gap-1 me-sm-4">
+								<label class="fw-bold" for="addStartDate">{translate key=BeginDate}</label>
+								<input type="text" id="addStartDate" class="form-control form-control-sm me-1 dateinput"
+									value="{formatdate date=$AddStartDate}" />
+								<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
+									value="{formatdate date=$AddStartDate key=system}" />
+								<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
+									class="form-control form-control-sm dateinput timepicker"
+									value="{format_date format='h:00 A' date=now}" title="{translate key=StartTime}" />
+								<label for="addStartTime" class="visually-hidden">{translate key=StartTime}</label>
+							</div>
+							<div class="d-flex align-items-center flex-wrap gap-1">
+								<label class="fw-bold" for="addEndDate">{translate key=EndDate}</label>
+								<input type="text" id="addEndDate" class="form-control form-control-sm me-1 dateinput"
+									size="10" value="{formatdate date=$AddEndDate}" />
+								<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
+									value="{formatdate date=$AddEndDate key=system}" />
+								<input {formname key=END_TIME} type="text" id="addEndTime"
+									class="form-control form-control-sm dateinput timepicker"
+									value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
+									title="{translate key=EndTime}" />
+								<label for="addEndTime" class="visually-hidden">{translate key=EndTime}</label>
+							</div>
 						</div>
-                        <label for="addScheduleId" class="no-show">{translate key=Schedule} </label>
-                        <select {formname key=SCHEDULE_ID} id="addScheduleId" class="form-control" disabled="disabled"
-														   title="{translate key=Schedule}">
-							{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
-						</select>
-					{/if}
-				</div>
-				<div class="col-xs-12">
-					<div class="form-group has-feedback">
-						<label for="blackoutReason">{translate key=Reason}</label>
-						<input {formname key=SUMMARY} type="text" id="blackoutReason" required
-													  class="form-control required"/>
-						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
-					</div>
-				</div>
-				<div class="form-group col-xs-12">
-					{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
-				</div>
-				<div class="form-group col-xs-12">
-					<div class="radio">
-						<input {formname key=CONFLICT_ACTION} type="radio" id="bookAround"
-															  name="existingReservations"
-															  checked="checked"
-															  value="{ReservationConflictResolution::BookAround}"/>
-						<label for="bookAround">{translate key=BlackoutAroundConflicts}</label>
-					</div>
-					<div class="radio">
-						<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting"
-															  name="existingReservations"
-															  value="{ReservationConflictResolution::Notify}"/>
-						<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
-					</div>
-					<div class="radio">
-						<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting"
-															  name="existingReservations"
-															  value="{ReservationConflictResolution::Delete}"/>
-						<label for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
+						<div class="form-group d-flex align-items-center flex-wrap gap-1 mb-2">
+							<label class="fw-bold" for="addResourceId">{translate key=Resource}</label>
+							<select {formname key=RESOURCE_ID} class="form-select form-select-sm w-auto"
+								id="addResourceId">
+								{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
+							</select>
+							{if $Schedules|default:array()|count > 0}
+								<div class="vr mx-2"></div>
+								<div class="form-check me-2">
+									<input class="form-check-input" {formname key=BLACKOUT_APPLY_TO_SCHEDULE}
+										type="checkbox" id="allResources" />
+									<label class="form-check-label" for="allResources"
+										style="">{translate key=AllResourcesOn}
+									</label>
+								</div>
+								<label for="addScheduleId" class="visually-hidden">{translate key=Schedule} </label>
+								<select {formname key=SCHEDULE_ID} id="addScheduleId"
+									class="form-select form-select-sm w-auto" disabled="disabled"
+									title="{translate key=Schedule}">
+									{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
+								</select>
+							{/if}
+						</div>
+						<div class="form-group d-flex align-items-center gap-1 mb-2">
+							<label class="fw-bold" for="blackoutReason">{translate key=Reason}<i
+									class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i>
+							</label>
+							<input {formname key=SUMMARY} type="text" id="blackoutReason" required
+								class="form-control form-control-sm w-auto required has-feedback" />
+						</div>
+						<div class="form-group mb-2">
+							{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
+						</div>
+						<div class="form-group">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" {formname key=CONFLICT_ACTION} type="radio"
+									id="bookAround" name="existingReservations" checked="checked"
+									value="{ReservationConflictResolution::BookAround}" />
+								<label class="form-check-label"
+									for="bookAround">{translate key=BlackoutAroundConflicts}</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" {formname key=CONFLICT_ACTION} type="radio"
+									id="notifyExisting" name="existingReservations"
+									value="{ReservationConflictResolution::Notify}" />
+								<label class="form-check-label"
+									for="notifyExisting">{translate key=BlackoutShowMe}</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" {formname key=CONFLICT_ACTION} type="radio"
+									id="deleteExisting" name="existingReservations"
+									value="{ReservationConflictResolution::Delete}" />
+								<label class="form-check-label"
+									for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
+							</div>
+						</div>
+
+						<div class="accordion-footer border-top pt-3">
+							{add_button class="btn-sm"}
+							{reset_button class="btn-sm"}
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="panel-footer">
-				{add_button class="btn-sm"}
-				{reset_button class="btn-sm"}
+		</form>
+
+		<form role="form">
+			<div class="accordion-item shadow mb-2 panel panel-default" id="filter-panel">
+				<h2 class="accordion-header">
+					<button class="accordion-button collapsed link-primary" type="button" data-bs-toggle="collapse"
+						data-bs-target="#filter-content" aria-expanded="false" aria-controls="filter-content">
+						<i class="bi bi-funnel-fill me-1"></i>{translate key="Filter"}
+					</button>
+				</h2>
+				<div id="filter-content" class="accordion-collapse collapse">
+					<div class="accordion-body row gy-2">
+						<div class="form-group col-12 col-sm-4">
+							<div class="d-flex align-items-center justify-content-between flex-wrap">
+								<div>
+									<label for="startDate" class="fw-bold">{translate key=BeginDate}</label>
+									<input id="startDate" type="text" class="form-control form-control-sm dateinput"
+										value="{formatdate date=$StartDate}" title="Between start date"
+										placeholder="{translate key=BeginDate}" />
+									<input id="formattedStartDate" type="hidden"
+										value="{formatdate date=$StartDate key=system}" />
+								</div>
+								<div class="ms-1">
+									<label for="endDate" class="fw-bold">{translate key=EndDate}</label>
+									<input id="endDate" type="text" class="form-control form-control-sm dateinput"
+										value="{formatdate date=$EndDate}" placeholder="{translate key=EndDate}" />
+									<input id="formattedEndDate" type="hidden"
+										value="{formatdate date=$EndDate key=system}" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-12 col-sm-4">
+							<label for="scheduleId" class="fw-bold">{translate key=Schedule} </label>
+
+							<select id="scheduleId" class="form-select form-select-sm col-12 col-sm-4">
+								<option value="">{translate key=AllSchedules}</option>
+								{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
+							</select>
+						</div>
+						<div class="form-group col-12 col-sm-4 mb-2">
+							<label for="resourceId" class="fw-bold">{translate key=Resource} </label>
+
+							<select id="resourceId" class="form-select form-select-sm col-12 col-sm-4">
+								<option value="">{translate key=AllResources}</option>
+								{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
+							</select>
+						</div>
+						<div class="card-footer border-top pt-3">
+							{filter_button class="btn-sm" id="filter"}
+							<button id="showAll"
+								class="btn btn-outline-secondary btn-sm">{translate key=ViewAll}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="card shadow">
+		<div class="card-body">
+			<div class="table-responsive">
+				{assign var=tableId value=blackoutTable}
+				<table class="table table-striped table-hover border-top w-100" id="{$tableId}">
+					<thead>
+						<tr>
+							<th>{translate key=Resource}</th>
+							<th>{translate key=BeginDate}</th>
+							<th>{translate key=EndDate}</th>
+							<th>{translate key=Reason}</th>
+							<th style="max-width:150px;">{translate key=CreatedBy}</th>
+							<th>{translate key=Update}</th>
+							<th>{translate key=Delete}</th>
+							<th class="action-delete">
+								<div class="checkbox checkbox-single form-check">
+									<input class="form-check-input" type="checkbox" id="delete-all"
+										aria-label="{translate key=All}" />
+									<label class="visually-hidden">{translate key=Delete}</label>
+									<a href="#" id="delete-selected" class="link-danger d-none"
+										title="{translate key=Delete}"><i
+											class="bi bi-trash3-fill text-danger icon remove"></i>
+								</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach from=$blackouts item=blackout}
+							{*{cycle values='row0,row1' assign=rowCss}*}
+							{assign var=id value=$blackout->InstanceId}
+							<tr class="{$rowCss} editable" data-blackout-id="{$id}">
+								<td>{$blackout->ResourceName}</td>
+								<td class="date">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}
+								</td>
+								<td class="date">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
+								<td>{$blackout->Title}</td>
+								<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
+								<td class="update edit"><a class="link-primary" href="#"><i
+											class="bi bi-pencil-square"></i></a>
+								</td>
+								{if $blackout->IsRecurring}
+									<td class="update">
+										<a href="#" class="update delete-recurring"><i
+												class="bi bi-trash3-fill text-danger icon remove"></i></a>
+									</td>
+								{else}
+									<td class="update">
+										<a href="#" class="update delete"><i
+												class="bi bi-trash3-fill text-danger icon remove"></i></a>
+									</td>
+								{/if}
+								<td class="action-delete">
+									<div class="checkbox checkbox-single">
+										<input {formname key=BLACKOUT_INSTANCE_ID multi=true}
+											class="delete-multiple form-check-input" type="checkbox" id="delete{$id}"
+											value="{$id}" aria-label="{translate key=Delete}" />
+										<label for="delete{$id}" class="visually-hidden">Delete</label>
+									</div>
+								</td>
+							</tr>
+						{/foreach}
+					</tbody>
+					{*<tfoot>
+						<tr>
+							<td colspan="7"></td>
+							<td class="action-delete"><a href="#" id="delete-selected" class="d-none"
+									title="{translate key=Delete}">{translate key=Delete}<span
+										class="bi bi-trash3-fill text-danger icon remove"></span></a></td>
+						</tr>
+					</tfoot>*}
+				</table>
 			</div>
 		</div>
-	</form>
-
-	<form class="form" role="form">
-		<div class="panel panel-default">
-			<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span>
-				{translate key="Filter"}
-			</div>
-			<div class="panel-body">
-				<div class="form-group col-xs-4">
-					<input id="startDate" type="text" class="form-control dateinput inline-block"
-						   value="{formatdate date=$StartDate}"
-						   title="Between start date" placeholder="{translate key=BeginDate}"/>
-					<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
-					-
-					<input id="endDate" type="text" class="form-control dateinput inline-block"
-						   value="{formatdate date=$EndDate}" placeholder="{translate key=EndDate}"/>
-					<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
-                    <label for="startDate" class="no-show">{translate key=StartDate}</label>
-                    <label for="endDate" class="no-show">{translate key=EndDate}</label>
-
-                </div>
-				<div class="form-group col-xs-4">
-                    <label for="scheduleId" class="no-show">{translate key=Schedule} </label>
-
-                    <select id="scheduleId" class="form-control col-xs-12">
-						<option value="">{translate key=AllSchedules}</option>
-						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
-					</select>
-				</div>
-				<div class="form-group col-xs-4">
-                    <label for="resourceId" class="no-show">{translate key=Resource} </label>
-
-                    <select id="resourceId" class="form-control col-xs-12">
-						<option value="">{translate key=AllResources}</option>
-						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
-					</select>
-				</div>
-			</div>
-			<div class="panel-footer">
-				{filter_button class="btn-sm" id="filter"}
-				<button id="showAll" class="btn btn-link btn-sm">{translate key=ViewAll}</button>
-			</div>
-		</div>
-	</form>
-
-	<table class="table" id="blackoutTable">
-		<thead>
-		<tr>
-			<th>{sort_column key=Resource field=ColumnNames::RESOURCE_NAME}</th>
-			<th>{sort_column key=BeginDate field=ColumnNames::BLACKOUT_START}</th>
-			<th>{sort_column key=EndDate field=ColumnNames::BLACKOUT_END}</th>
-			<th>{sort_column key=Reason field=ColumnNames::BLACKOUT_TITLE}</th>
-			<th>{translate key=CreatedBy}</th>
-			<th>{translate key=Update}</th>
-			<th>{translate key=Delete}</th>
-			<th class="action-delete">
-				<div class="checkbox checkbox-single">
-					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
-					<label for="delete-all" class="no-show">All</label>
-				</div>
-			</th>
-		</tr>
-		</thead>
-		<tbody>
-		{foreach from=$blackouts item=blackout}
-			{cycle values='row0,row1' assign=rowCss}
-			{assign var=id value=$blackout->InstanceId}
-			<tr class="{$rowCss} editable" data-blackout-id="{$id}">
-				<td>{$blackout->ResourceName}</td>
-				<td class="date">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
-				<td class="date">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
-				<td>{$blackout->Title}</td>
-				<td style="max-width:150px;">{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
-				<td class="update edit"><a href="#"><span class="fa fa-edit"></span></a></td>
-				{if $blackout->IsRecurring}
-					<td class="update">
-						<a href="#" class="update delete-recurring"><span class="fa fa-trash icon remove"></span></a>
-					</td>
-				{else}
-					<td class="update">
-						<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
-					</td>
-				{/if}
-				<td class="action-delete">
-					<div class="checkbox checkbox-single">
-						<input {formname key=BLACKOUT_INSTANCE_ID multi=true} class="delete-multiple" type="checkbox" id="delete{$id}"
-						value="{$id}"
-						aria-label="{translate key=Delete}"/>
-						<label for="delete{$id}" class="no-show">Delete</label>
-					</div>
-				</td>
-			</tr>
-		{/foreach}
-		</tbody>
-		<tfoot>
-		<tr>
-			<td colspan="7"></td>
-			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">{translate key=Delete}<span class="fa fa-trash icon remove"></span></a></td>
-		</tr>
-		</tfoot>
-	</table>
-
-	{pagination pageInfo=$PageInfo}
+	</div>
 
 	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-		 aria-hidden="true">
+		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-warning">
@@ -214,13 +260,13 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="deleteRecurringDialog" tabindex="-1" role="dialog" aria-labelledby="deleteRecurringModalLabel"
-		 aria-hidden="true">
+	<div class="modal fade" id="deleteRecurringDialog" tabindex="-1" role="dialog"
+		aria-labelledby="deleteRecurringModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 				</div>
 				<div class="modal-body">
 					<div class="alert alert-warning">
@@ -229,31 +275,33 @@
 				</div>
 				<div class="modal-footer">
 					<form id="deleteRecurringForm" method="post">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-outline-secondary cancel"
+							data-dismiss="modal">{translate key='Cancel'}</button>
 
 						<button type="button" class="btn btn-danger save btnUpdateThisInstance">
-							<span class="fa fa-remove"></span> {translate key='ThisInstance'}</button>
+							<i class="bi bi-x-lg"></i> {translate key='ThisInstance'}</button>
 
 						<button type="button" class="btn btn-danger save btnUpdateAllInstances">
-							<span class="fa fa-remove"></span> {translate key='AllInstances'}</button>
+							<i class="bi bi-x-lg"></i> {translate key='AllInstances'}</button>
 
 						<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
-							   value="{SeriesUpdateScope::FullSeries}"/>
+							value="{SeriesUpdateScope::FullSeries}" />
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div id="deleteMultipleDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteMultipleModalLabel"
-		 aria-hidden="true">
-		<form id="deleteMultipleForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE_MULTIPLE}">
+	<div id="deleteMultipleDialog" class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="deleteMultipleModalLabel" aria-hidden="true">
+		<form id="deleteMultipleForm" method="post"
+			action="{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE_MULTIPLE}">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
+						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span
+								id="deleteMultipleCount"></span>)</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -266,15 +314,15 @@
 						{delete_button}
 						{indicator}
 					</div>
-					<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+					<div id="deleteMultiplePlaceHolder" class="d-none"></div>
 				</div>
 			</div>
 		</form>
 	</div>
 
 	{csrf_token}
-    {include file="javascript-includes.tpl" Timepicker=true}
-
+	{include file="javascript-includes.tpl" Timepicker=true DataTable=true}
+	{datatable tableId=$tableId}
 	{jsfile src="reservationPopup.js"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/blackouts.js"}
@@ -282,8 +330,7 @@
 	{jsfile src="recurrence.js"}
 
 	<script type="text/javascript">
-
-		$(document).ready(function () {
+		$(document).ready(function() {
 			var updateScope = {};
 			updateScope.instance = '{SeriesUpdateScope::ThisInstance}';
 			updateScope.full = '{SeriesUpdateScope::FullSeries}';
@@ -311,7 +358,10 @@
 			};
 
 			var recurElements = {
-				beginDate: $('#formattedAddStartDate'), endDate: $('#formattedAddEndDate'), beginTime: $('#addStartTime'), endTime: $('#addEndTime')
+				beginDate: $('#formattedAddStartDate'),
+				endDate: $('#formattedAddEndDate'),
+				beginTime: $('#addStartTime'),
+				endTime: $('#addEndTime')
 			};
 
 			var recurrence = new Recurrence(recurOpts, recurElements);
@@ -320,11 +370,12 @@
 			var blackoutManagement = new BlackoutManagement(blackoutOpts);
 			blackoutManagement.init();
 
-			$('#add-blackout-panel').showHidePanel();
+			//$('#add-blackout-panel').showHidePanel();
 		});
 
 		$.blockUI.defaults.css.width = '60%';
 		$.blockUI.defaults.css.left = '20%';
+		$.blockUI.defaults.css.marginTop = '-5%';
 	</script>
 
 	{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
@@ -332,22 +383,23 @@
 	{control type="DatePickerSetupControl" ControlId="addStartDate" AltId="formattedAddStartDate"}
 	{control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
 	{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
-    {control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
+	{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
 
 
-    <div id="wait-box" class="wait-box">
+	<div id="wait-box" class="wait-box">
 		<div id="creatingNotification">
-			<h3>
+			{include file='wait-box.tpl'}
+			<!--<h3>
 				{block name="ajaxMessage"}
 					{translate key=Working}...
 				{/block}
 			</h3>
-			{html_image src="reservation_submitting.gif"}
+			{html_image src="reservation_submitting.gif"} -->
 		</div>
 		<div id="result"></div>
 	</div>
 
-	<div id="update-box" class="no-show">
+	<div id="update-box" class="d-none">
 		{indicator id="update-spinner"}
 		<div id="update-contents"></div>
 	</div>

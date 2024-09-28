@@ -1,17 +1,16 @@
 #page-reservation {
-	font-size: 12pt;
+    font-size: 12pt;
 }
 
-#page-reservation .col-top,
+.navbar,
+.buttonsEdit,
+footer,
+#page-view-reservation .buttons,
 #page-reservation .reservationButtons {
-    display:none;
+    display: none;
 }
 
 #page-reservation #accessories {
     overflow: visible;
-	max-height: none;
-}
-
-#page-view-reservation .buttons {
-    display:none;
+    max-height: none;
 }

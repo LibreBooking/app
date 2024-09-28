@@ -51,9 +51,8 @@ function AvailabilitySearch(options) {
             }
         });
 
-        elements.specificTime.on('click', function(e) {
-            if (elements.specificTime.is(':checked'))
-            {
+        elements.specificTime.on('click', function (e) {
+            if (elements.specificTime.is(':checked')) {
                 elements.beginTime.removeAttr('disabled');
                 elements.endTime.removeAttr('disabled');
                 elements.hours.attr('disabled', 'disabled');
@@ -72,9 +71,9 @@ function AvailabilitySearch(options) {
         elements.availabilityResults.empty().html(data);
         elements.availabilityResults.find('.resourceName').each(function () {
             var resourceId = $(this).attr("data-resourceId");
-            $(this).bindResourceDetails(resourceId, {position: 'left top'});
+            $(this).bindResourceDetails(resourceId, { position: 'left top' });
         });
     };
 
-    return {init: init};
+    return { init: init };
 }

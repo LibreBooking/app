@@ -1,7 +1,6 @@
 $.fn.attachReservationPopup = function (refNum, detailsUrl) {
 	var me = $(this);
-	if (detailsUrl == null)
-	{
+	if (detailsUrl == null) {
 		detailsUrl = "ajax/respopup.php";
 	}
 
@@ -14,13 +13,13 @@ $.fn.attachReservationPopup = function (refNum, detailsUrl) {
 
 		content: {
 			text: function (event, api) {
-				$.ajax({url: detailsUrl, data: {id: refNum}})
-						.done(function (html) {
-							api.set('content.text', html)
-						})
-						.fail(function (xhr, status, error) {
-							api.set('content.text', status + ': ' + error)
-						});
+				$.ajax({ url: detailsUrl, data: { id: refNum } })
+					.done(function (html) {
+						api.set('content.text', html)
+					})
+					.fail(function (xhr, status, error) {
+						api.set('content.text', status + ': ' + error)
+					});
 
 				return 'Loading...';
 			}
