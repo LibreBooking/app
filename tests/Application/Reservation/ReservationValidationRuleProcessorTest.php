@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class ReservationValidationRuleProcessorTests extends TestBase
+class ReservationValidationRuleProcessorTest extends TestBase
 {
     public function setUp(): void
     {
@@ -26,17 +26,17 @@ class ReservationValidationRuleProcessorTests extends TestBase
         $rule1->expects($this->once())
             ->method('Validate')
             ->with($this->equalTo($reservation))
-            ->will($this->returnValue($validResult));
+            ->willReturn($validResult);
 
         $rule2->expects($this->once())
             ->method('Validate')
             ->with($this->equalTo($reservation))
-            ->will($this->returnValue($validResult));
+            ->willReturn($validResult);
 
         $rule3->expects($this->once())
             ->method('Validate')
             ->with($this->equalTo($reservation))
-            ->will($this->returnValue($validResult));
+            ->willReturn($validResult);
 
         $rules = [$rule1, $rule2, $rule3];
 
@@ -61,7 +61,7 @@ class ReservationValidationRuleProcessorTests extends TestBase
         $rule1->expects($this->once())
             ->method('Validate')
             ->with($this->equalTo($reservation))
-            ->will($this->returnValue(new ReservationRuleResult()));
+            ->willReturn(new ReservationRuleResult());
 
         $error = 'something went wrong';
         $retryMessage = 'retry message';
@@ -70,7 +70,7 @@ class ReservationValidationRuleProcessorTests extends TestBase
         $rule2->expects($this->once())
             ->method('Validate')
             ->with($this->equalTo($reservation))
-            ->will($this->returnValue(new ReservationRuleResult(false, $error, true, $retryMessage, $retryParams)));
+            ->willReturn(new ReservationRuleResult(false, $error, true, $retryMessage, $retryParams));
 
         $vs = new ReservationValidationRuleProcessor($rules);
 

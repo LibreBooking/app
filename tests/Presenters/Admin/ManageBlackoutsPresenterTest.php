@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageBlackoutsPresenter.php');
 
-class ManageBlackoutsPresenterTests extends TestBase
+class ManageBlackoutsPresenterTest extends TestBase
 {
     /**
      * @var ManageBlackoutsPresenter
@@ -56,26 +56,26 @@ class ManageBlackoutsPresenterTests extends TestBase
 
         $this->page->expects($this->atLeastOnce())
                 ->method('GetStartDate')
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->page->expects($this->atLeastOnce())
                 ->method('GetEndDate')
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->page->expects($this->once())
             ->method('GetScheduleId')
-            ->will($this->returnValue($searchedScheduleId));
+            ->willReturn($searchedScheduleId);
 
         $this->page->expects($this->once())
             ->method('GetResourceId')
-            ->will($this->returnValue($searchedResourceId));
+            ->willReturn($searchedResourceId);
 
         $filter = $this->GetExpectedFilter($defaultStart, $defaultEnd, $searchedScheduleId, $searchedResourceId);
         $data = new PageableData();
         $this->blackoutsService->expects($this->once())
                 ->method('LoadFiltered')
                 ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->equalTo($filter), $this->equalTo($this->fakeUser))
-                ->will($this->returnValue($data));
+                ->willReturn($data);
 
         $this->page->expects($this->once())
                 ->method('SetStartDate')
@@ -123,11 +123,11 @@ class ManageBlackoutsPresenterTests extends TestBase
         $resourceId = 123;
         $this->page->expects($this->once())
             ->method('GetBlackoutResourceId')
-            ->will($this->returnValue($resourceId));
+            ->willReturn($resourceId);
 
         $this->page->expects($this->once())
             ->method('GetApplyBlackoutToAllResources')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $result = $this->createMock('IBlackoutValidationResult');
         $this->blackoutsService->expects($this->once())
@@ -139,7 +139,7 @@ class ManageBlackoutsPresenterTests extends TestBase
                 $this->equalTo($conflictResolution),
                 $this->equalTo($repeatOptions)
             )
-            ->will($this->returnValue($result));
+            ->willReturn($result);
 
         $this->presenter->AddBlackout();
     }
@@ -172,17 +172,17 @@ class ManageBlackoutsPresenterTests extends TestBase
         $scheduleId = 123;
         $this->page->expects($this->once())
             ->method('GetBlackoutScheduleId')
-            ->will($this->returnValue($scheduleId));
+            ->willReturn($scheduleId);
 
         $this->page->expects($this->once())
             ->method('GetApplyBlackoutToAllResources')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $resources = [new FakeBookableResource(1), new FakeBookableResource(2), new FakeBookableResource(3)];
         $this->resourceRepository->expects($this->once())
             ->method('GetScheduleResources')
             ->with($this->equalTo($scheduleId))
-            ->will($this->returnValue($resources));
+            ->willReturn($resources);
 
         $result = $this->createMock('IBlackoutValidationResult');
         $this->blackoutsService->expects($this->once())
@@ -194,7 +194,7 @@ class ManageBlackoutsPresenterTests extends TestBase
                 $this->equalTo($conflictResolution),
                 $this->equalTo($repeatOptions)
             )
-            ->will($this->returnValue($result));
+            ->willReturn($result);
 
         $this->presenter->AddBlackout();
     }
@@ -206,11 +206,11 @@ class ManageBlackoutsPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                     ->method('GetBlackoutId')
-                    ->will($this->returnValue($id));
+                    ->willReturn($id);
 
         $this->page->expects($this->once())
                             ->method('GetSeriesUpdateScope')
-                            ->will($this->returnValue(SeriesUpdateScope::ThisInstance));
+                            ->willReturn(SeriesUpdateScope::ThisInstance);
 
         $this->blackoutsService->expects($this->once())
                     ->method('Delete')
@@ -234,7 +234,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                    ->method('GetBlackoutId')
-                   ->will($this->returnValue($id));
+                   ->willReturn($id);
 
         $this->page->expects($this->once())
                     ->method('SetBlackoutResources')
@@ -290,7 +290,7 @@ class ManageBlackoutsPresenterTests extends TestBase
         $this->blackoutsService->expects($this->once())
                                ->method('LoadBlackout')
                                ->with($this->equalTo($id), $this->equalTo($this->fakeUser->UserId))
-                               ->will($this->returnValue($series));
+                               ->willReturn($series);
 
         $this->presenter->LoadBlackout();
     }
@@ -324,15 +324,15 @@ class ManageBlackoutsPresenterTests extends TestBase
         $resourceIds = [123, 456];
         $this->page->expects($this->once())
             ->method('GetBlackoutResourceIds')
-            ->will($this->returnValue($resourceIds));
+            ->willReturn($resourceIds);
 
         $this->page->expects($this->once())
             ->method('GetUpdateBlackoutId')
-            ->will($this->returnValue($blackoutInstanceId));
+            ->willReturn($blackoutInstanceId);
 
         $this->page->expects($this->once())
             ->method('GetSeriesUpdateScope')
-            ->will($this->returnValue($scope));
+            ->willReturn($scope);
 
         $result = $this->createMock('IBlackoutValidationResult');
 
@@ -347,7 +347,7 @@ class ManageBlackoutsPresenterTests extends TestBase
                 $this->equalTo($repeatOptions),
                 $this->equalTo($scope)
             )
-            ->will($this->returnValue($result));
+            ->willReturn($result);
 
         $this->presenter->UpdateBlackout();
     }
@@ -368,53 +368,53 @@ class ManageBlackoutsPresenterTests extends TestBase
     {
         $this->page->expects($this->once())
             ->method('GetBlackoutStartDate')
-            ->will($this->returnValue($startDate));
+            ->willReturn($startDate);
 
         $this->page->expects($this->once())
             ->method('GetBlackoutStartTime')
-            ->will($this->returnValue($startTime));
+            ->willReturn($startTime);
 
         $this->page->expects($this->once())
             ->method('GetBlackoutEndDate')
-            ->will($this->returnValue($endDate));
+            ->willReturn($endDate);
 
         $this->page->expects($this->once())
             ->method('GetBlackoutEndTime')
-            ->will($this->returnValue($endTime));
+            ->willReturn($endTime);
 
         $this->page->expects($this->once())
             ->method('GetBlackoutTitle')
-            ->will($this->returnValue($title));
+            ->willReturn($title);
 
         $this->page->expects($this->once())
             ->method('GetBlackoutConflictAction')
-            ->will($this->returnValue($conflictAction));
+            ->willReturn($conflictAction);
     }
 
     private function ExpectPageToReturnRepeatInfo($repeatType = RepeatType::None, $repeatInterval = null, $endDateString = null, $repeatDays = null, $repeatMonthlyType = null)
     {
         $this->page->expects($this->any())
                     ->method('GetRepeatType')
-                    ->will($this->returnValue($repeatType));
+                    ->willReturn($repeatType);
 
         $this->page->expects($this->any())
                     ->method('GetRepeatInterval')
-                    ->will($this->returnValue($repeatInterval));
+                    ->willReturn($repeatInterval);
 
         $this->page->expects($this->any())
                     ->method('GetRepeatTerminationDate')
-                    ->will($this->returnValue($endDateString));
+                    ->willReturn($endDateString);
 
         $this->page->expects($this->any())
                     ->method('GetRepeatWeekdays')
-                    ->will($this->returnValue($repeatDays));
+                    ->willReturn($repeatDays);
 
         $this->page->expects($this->any())
                     ->method('GetRepeatMonthlyType')
-                    ->will($this->returnValue($repeatMonthlyType));
+                    ->willReturn($repeatMonthlyType);
 
         $this->page->expects($this->once())
                     ->method('GetRepeatCustomDates')
-                    ->will($this->returnValue([]));
+                    ->willReturn([]);
     }
 }

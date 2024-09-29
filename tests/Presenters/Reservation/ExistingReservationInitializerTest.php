@@ -9,7 +9,7 @@ require_once(ROOT_DIR . 'Pages/Reservation/ExistingReservationPage.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/ExistingReservationInitializer.php');
 
-class ExistingReservationInitializerTests extends TestBase
+class ExistingReservationInitializerTest extends TestBase
 {
     /**
      * @var int

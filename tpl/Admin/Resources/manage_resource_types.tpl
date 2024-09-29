@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' InlineEdit=true}
+{include file='globalheader.tpl' InlineEdit=true DataTable=false}
 
 <div id="page-manage-resource-types" class="admin-page">
 
@@ -7,92 +7,109 @@
 	<div id="globalError" class="error" style="display:none"></div>
 
 	<form id="addForm" ajaxAction="{ManageResourceTypesActions::Add}" class="form-inline" role="form" method="post">
-		<div class="panel panel-default" id="add-resource-type-panel">
-			<div class="panel-heading">{translate key="AddResourceType"} {showhide_icon}</div>
-			<div class="panel-body add-contents">
-				<div id="addResults" class="error no-show"></div>
-				<div class="form-group has-feedback">
-					<label for="resourceTypeName">{translate key='Name'}</label>
-					<input type="text" class="form-control required" maxlength="85" required
-							{formname key=RESOURCE_TYPE_NAME} id="resourceTypeName"/>
-					<i class="glyphicon glyphicon-asterisk form-control-feedback"
-					   data-bv-icon-for="resourceTypeName"></i>
+		<div class="accordion">
+			<div class="accordion-item shadow mb-3 panel-default" id="add-resource-type-panel">
+				<h2 class="accordion-header">
+					<button class="accordion-button" type="button" data-bs-toggle="collapse"
+						data-bs-target="#collapse-add-contents" aria-expanded="true"
+						aria-controls="collapse-add-contents">
+						{translate key="AddResourceType"}
+					</button>
+				</h2>
+				<div id="collapse-add-contents" class="accordion-collapse collapse show">
+					<div class="accordion-body add-contents">
+						<div id="addResults" class="error d-none"></div>
+						<div class="d-flex align-items-center gap-2 mb-2">
+							<label class="fw-bold" for="resourceTypeName">{translate key='Name'}<i
+									class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i></label>
+							<div class="form-group">
+								<input type="text" class="form-control required has-feedback" maxlength="85" required
+									{formname key=RESOURCE_TYPE_NAME} id="resourceTypeName" />
+							</div>
+							<label class="fw-bold ms-3" for="resourceTypeDesc">{translate key='Description'}</label>
+							<div class="form-group">
+								<textarea class="form-control" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
+									id="resourceTypeDesc"></textarea>
+							</div>
+						</div>
+						<div class="accordion-footer border-top pt-3">
+							<button type="button" class="btn btn-success btn-sm save create">
+								<i class="bi bi-check-circle"></i>
+								{translate key='Create'}
+							</button>
+							<button type="reset" class="btn btn-outline-secondary btn-sm">{translate key=Reset}</button>
+							{indicator}
+						</div>
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="resourceTypeDesc">{translate key='Description'}</label>
-					<textarea class="form-control" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
-							  id="resourceTypeDesc"></textarea>
-				</div>
-			</div>
-			<div class="panel-footer">
-				<button type="button" class="btn btn-success btn-sm save create">
-					<span class="glyphicon glyphicon-ok-circle"></span>
-					{translate key='Create'}
-				</button>
-				<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
-				{indicator}
 			</div>
 		</div>
 	</form>
 
-	<table class="table" id="resourceTypes">
-		<thead>
-		<tr>
-			<th>{translate key='Name'}</th>
-			<th>{translate key='Description'}</th>
-			<th class="action">{translate key='Actions'}</th>
-		</tr>
-		</thead>
-		<tbody>
-		{foreach from=$ResourceTypes item=type}
-			{cycle values='row0,row1' assign=rowCss}
-			{assign var=id value=$type->Id()}
-			<tr class="{$rowCss}">
-				<td>{$type->Name()}</td>
-				<td>{$type->Description()|nl2br}</td>
-				<td class="action">
-					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
-					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
-					<input type="hidden" class="id" value="{$id}"/>
-				</td>
-			</tr>
-			{if $AttributeList|default:array()|count > 0}
-				<tr>
-					<td colspan="4">
-						{foreach from=$AttributeList item=attribute}
-							{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$type->GetAttributeValue($attribute->Id())}
-						{/foreach}
-					</td>
-				</tr>
-			{/if}
-		{/foreach}
-		</tbody>
-	</table>
+	<div class="card shadow">
+		<div class="card-body">
+			{assign var=tableId value=resourceTypes}
+			<table class="table table-striped table-hover border-top" id="{$tableId}">
+				<thead>
+					<tr>
+						<th>{translate key='Name'}</th>
+						<th>{translate key='Description'}</th>
+						<th class="action">{translate key='Actions'}</th>
+						{if $AttributeList|default:array()|count > 0}
+							<th>{translate key='More'}</th>
+						{/if}
+					</tr>
+				</thead>
+				<tbody>
+					{foreach from=$ResourceTypes item=type}
+						{*{cycle values='row0,row1' assign=rowCss}*}
+						{assign var=id value=$type->Id()}
+						<tr class="{$rowCss}">
+							<td>{$type->Name()}</td>
+							<td>{$type->Description()|nl2br}</td>
+							<td class="action">
+								<a href="#" class="update edit link-primary"><span class="bi bi-pencil-square icon"></a> |
+								<a href="#" class="update delete"><span
+										class="bi bi-trash3-fill text-danger icon remove"></span></a>
+								<input type="hidden" class="id" value="{$id}" />
+							</td>
+							{if $AttributeList|default:array()|count > 0}
+								<td>
+									{foreach from=$AttributeList item=attribute}
+										{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$type->GetAttributeValue($attribute->Id())}
+									{/foreach}
+								</td>
+							{/if}
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-	<input type="hidden" id="activeId" value=""/>
+	<input type="hidden" id="activeId" value="" />
 
 	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
-		 aria-hidden="true">
+		aria-hidden="true">
 		<div class="modal-dialog">
-			<form id="editForm" method="post" ajaxAction="{ManageResourceTypesActions::Update}">
+			<form id="editForm" method="post" ajaxAction="{ManageResourceTypesActions::Update}" class="was-validated">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="editDialogLabel">{translate key=Edit}</h4>
+						<h5 class="modal-title" id="editDialogLabel">{translate key=Edit}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="form-group has-feedback">
-							<label for="editName">{translate key=Name}</label><br/>
-							<input type="text" id="editName"
-								   class="form-control required" required="required"
-								   maxlength="85" {formname key=RESOURCE_TYPE_NAME} />
-							<i class="glyphicon glyphicon-asterisk form-control-feedback"
-							   data-bv-icon-for="editName"></i>
+							<label for="editName" class="fw-bold">{translate key=Name}<i
+									class="bi bi-asterisk text-danger align-top" style="font-size: 0.5rem;"></i></label>
+							<input type="text" id="editName" class="form-control required" required="required"
+								maxlength="85" {formname key=RESOURCE_TYPE_NAME} />
+							{*<i class="bi bi-asterisk form-control-feedback" data-bv-icon-for="editName"></i>*}
 						</div>
 						<div class="form-group">
-							<label for="editDescription">{translate key='Description'}</label><br/>
+							<label for="editDescription" class="fw-bold">{translate key='Description'}</label>
 							<textarea class="form-control" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
-									  id="editDescription"></textarea>
+								id="editDescription"></textarea>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -106,13 +123,13 @@
 	</div>
 
 	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
-		 aria-hidden="true">
+		aria-hidden="true">
 		<div class="modal-dialog">
 			<form id="deleteForm" method="post" ajaxAction="{ManageResourceTypesActions::Delete}">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+						<h5 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -131,18 +148,17 @@
 
 	{csrf_token}
 
-    {include file="javascript-includes.tpl" InlineEdit=true}
+	{include file="javascript-includes.tpl" InlineEdit=true DataTable=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/resource-types.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
-
+	{datatable tableId=$tableId}
 	<script type="text/javascript">
-
 		function hidePopoversWhenClickAway() {
-			$('body').on('click', function (e) {
-				$('[rel="popover"]').each(function () {
-					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
-					{
+			$('body').on('click', function(e) {
+				$('[rel="popover"]').each(function() {
+					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e
+							.target).length === 0) {
 						$(this).popover('hide');
 					}
 				});
@@ -154,18 +170,18 @@
 				container: 'body',
 				html: true,
 				placement: 'top',
-				content: function () {
+				content: function() {
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
-			}).click(function (e) {
+			}).click(function(e) {
 				e.preventDefault();
-			}).on('show.bs.popover', function () {
+			}).on('show.bs.popover', function() {
 
-			}).on('shown.bs.popover', function () {
+			}).on('shown.bs.popover', function() {
 				var trigger = $(this);
 				var popover = trigger.data('bs.popover').tip();
-				popover.find('.editable-cancel').click(function () {
+				popover.find('.editable-cancel').click(function() {
 					trigger.popover('hide');
 				});
 			});
@@ -188,7 +204,7 @@
 			});
 		}
 
-		$(document).ready(function () {
+		$(document).ready(function() {
 			setUpPopovers();
 			hidePopoversWhenClickAway();
 			setUpEditables();
@@ -202,19 +218,16 @@
 			resourceTypes.init();
 
 			{foreach from=$ResourceTypes item=type}
-			resourceTypes.add(
-					{
-						id:{$type->Id()},
-						name: "{$type->Name()|escape:'javascript'}",
-						description: "{$type->Description()|escape:'javascript'}"
-					});
+				resourceTypes.add({
+					id:{$type->Id()},
+					name: "{$type->Name()|escape:'javascript'}",
+					description: "{$type->Description()|escape:'javascript'}"
+				});
 			{/foreach}
 		});
 
 
-		$('#add-resource-type-panel').showHidePanel();
-
-
+		//$('#add-resource-type-panel').showHidePanel();
 	</script>
 </div>
 

@@ -1,8 +1,11 @@
 <?php
 
+use function PHPSTORM_META\map;
+use function PHPUnit\Framework\matches;
+
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
 
-class SchedulesWebServiceTests extends TestBase
+class SchedulesWebServiceTest extends TestBase
 {
     /**
      * @var SchedulesWebService
@@ -41,7 +44,7 @@ class SchedulesWebServiceTests extends TestBase
 
         $this->scheduleRepository->expects($this->once())
                 ->method('GetAll')
-                ->will($this->returnValue($schedules));
+                ->willReturn($schedules);
 
         $this->service->GetSchedules();
 
@@ -59,12 +62,12 @@ class SchedulesWebServiceTests extends TestBase
         $layout->expects($this->any())
                 ->method('GetLayout')
                 ->with($this->anything())
-                ->will($this->returnValue([]));
+                ->willReturn([]);
 
         $this->scheduleRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($schedule));
+                ->willReturn($schedule);
 
         $this->scheduleRepository->expects($this->once())
                 ->method('GetLayout')
@@ -72,7 +75,7 @@ class SchedulesWebServiceTests extends TestBase
                     $this->equalTo($scheduleId),
                     $this->equalTo(new ScheduleLayoutFactory($this->server->GetSession()->Timezone))
                 )
-                ->will($this->returnValue($layout));
+                ->willReturn($layout);
 
         $this->service->GetSchedule($scheduleId);
 
@@ -86,7 +89,7 @@ class SchedulesWebServiceTests extends TestBase
         $this->scheduleRepository->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->service->GetSchedule($scheduleId);
 
@@ -115,34 +118,24 @@ class SchedulesWebServiceTests extends TestBase
         $periods6 = [new SchedulePeriod($date6, $date6)];
         $periods7 = [new SchedulePeriod($date7, $date7)];
 
-        $layout->expects($this->at(0))
+        $matcher = $this->exactly(7);
+        $layout->expects($matcher)
                 ->method('GetLayout')
-                ->with($this->equalTo($date1))
-                ->will($this->returnValue($periods1));
-        $layout->expects($this->at(1))
-                ->method('GetLayout')
-                ->with($this->equalTo($date2))
-                ->will($this->returnValue($periods2));
-        $layout->expects($this->at(2))
-                ->method('GetLayout')
-                ->with($this->equalTo($date3))
-                ->will($this->returnValue($periods3));
-        $layout->expects($this->at(3))
-                ->method('GetLayout')
-                ->with($this->equalTo($date4))
-                ->will($this->returnValue($periods4));
-        $layout->expects($this->at(4))
-                ->method('GetLayout')
-                ->with($this->equalTo($date5))
-                ->will($this->returnValue($periods5));
-        $layout->expects($this->at(5))
-                ->method('GetLayout')
-                ->with($this->equalTo($date6))
-                ->will($this->returnValue($periods6));
-        $layout->expects($this->at(6))
-                ->method('GetLayout')
-                ->with($this->equalTo($date7))
-                ->will($this->returnValue($periods7));
+                ->willReturnCallback(function($date) use (
+                        $periods1, $periods2, $periods3, $periods4, $periods5,
+                        $periods6, $periods7,
+                        $date1, $date2, $date3, $date4, $date5, $date6, $date7) {
+                    return match (true) {
+                        $this->equalTo($date1)->evaluate($date, returnResult: true) => $periods1,
+                        $this->equalTo($date2)->evaluate($date, returnResult: true) => $periods2,
+                        $this->equalTo($date3)->evaluate($date, returnResult: true) => $periods3,
+                        $this->equalTo($date4)->evaluate($date, returnResult: true) => $periods4,
+                        $this->equalTo($date5)->evaluate($date, returnResult: true) => $periods5,
+                        $this->equalTo($date6)->evaluate($date, returnResult: true) => $periods6,
+                        $this->equalTo($date7)->evaluate($date, returnResult: true) => $periods7,
+                        default => throw new Exception('Unexpected date')
+                    };
+                });
 
         $response = new ScheduleResponse($this->server, $schedule, $layout);
 

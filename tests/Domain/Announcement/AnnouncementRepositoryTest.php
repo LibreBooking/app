@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/AnnouncementRepository.php');
 
-class AnnouncementRepositoryTests extends TestBase
+class AnnouncementRepositoryTest extends TestBase
 {
     /**
      * @var AnnouncementRepository

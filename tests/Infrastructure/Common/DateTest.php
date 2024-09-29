@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class DateTests extends TestBase
+class DateTest extends TestBase
 {
     private $tz;
     private $datestring;

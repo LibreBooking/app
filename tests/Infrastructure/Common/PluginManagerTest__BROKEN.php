@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class PluginManagerTests extends TestBase
+class PluginManagerTest extends TestBase
 {
     public function setUp(): void
     {

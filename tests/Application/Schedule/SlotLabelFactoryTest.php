@@ -1,6 +1,6 @@
 <?php
 
-class SlotLabelFactoryTests extends TestBase
+class SlotLabelFactoryTest extends TestBase
 {
     /**
      * @var ReservationItemView
@@ -19,6 +19,8 @@ class SlotLabelFactoryTests extends TestBase
         $this->reservation->LastName = 'last';
         $this->reservation->StartDate = Date::Now();
         $this->reservation->EndDate = Date::Now();
+        $this->reservation->UserId = 1;
+        $this->reservation->UserLevelId = ReservationUserLevel::OWNER;
     }
 
     public function testGetsNone()

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class ResourceParticipationRuleTests extends TestBase
+class ResourceParticipationRuleTest extends TestBase
 {
     /**
      * @var ResourceParticipationRule

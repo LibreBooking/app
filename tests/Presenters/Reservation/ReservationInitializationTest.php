@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
 require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/NewReservationInitializer.php');
 
-class ReservationInitializationTests extends TestBase
+class ReservationInitializationTest extends TestBase
 {
     /**
      * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
@@ -83,7 +83,7 @@ class ReservationInitializationTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetRequestedScheduleId')
-            ->will($this->returnValue($scheduleId));
+            ->willReturn($scheduleId);
 
         $this->page->expects($this->once())
             ->method('SetScheduleId')
@@ -165,7 +165,7 @@ class ReservationInitializationTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetRequestedScheduleId')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->page->expects($this->once())
             ->method('SetScheduleId')

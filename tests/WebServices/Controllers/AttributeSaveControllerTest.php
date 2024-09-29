@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'WebServices/Requests/CustomAttributes/CustomAttributeRequest.php');
 require_once(ROOT_DIR . 'WebServices/Controllers/AttributeSaveController.php');
 
-class AttributeSaveControllerTests extends TestBase
+class AttributeSaveControllerTest extends TestBase
 {
     /**
      * @var AttributeSaveController

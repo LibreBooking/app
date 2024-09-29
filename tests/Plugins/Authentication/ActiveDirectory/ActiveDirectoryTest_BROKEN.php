@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/namespace.php');
 
-class ActiveDirectoryTests extends TestBase
+class ActiveDirectoryTest extends TestBase
 {
     /**
      * @var FakeAuth

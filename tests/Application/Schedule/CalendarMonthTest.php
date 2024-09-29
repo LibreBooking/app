@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class CalendarMonthTests extends TestBase
+class CalendarMonthTest extends TestBase
 {
     public function testAddsReservationsToCalendar()
     {

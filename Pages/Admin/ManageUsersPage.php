@@ -253,7 +253,8 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 
     public function GetPageSize()
     {
-        return $this->pageable->GetPageSize();
+        /* replaced by dataTable */
+        /*return $this->pageable->GetPageSize();*/
     }
 
     public function BindUsers($users)

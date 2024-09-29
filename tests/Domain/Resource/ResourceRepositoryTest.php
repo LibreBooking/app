@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'tests/fakes/namespace.php');
 
-class ResourceRepositoryTests extends TestBase
+class ResourceRepositoryTest extends TestBase
 {
     /**
      * @var ResourceRepository
@@ -29,7 +29,7 @@ class ResourceRepositoryTests extends TestBase
         $scheduleId = 10;
 
         $ra = new FakeResourceAccess();
-        $rows = $ra->GetRows();
+        $rows = $ra->Rows();
         $this->db->SetRow(0, $rows);
 
         foreach ($rows as $row) {
@@ -238,7 +238,7 @@ class ResourceRepositoryTests extends TestBase
         $publicId = uniqid();
 
         $fr = new FakeResourceAccess();
-        $rows = $fr->GetRows();
+        $rows = $fr->Rows();
         $this->db->SetRow(0, $rows);
 
         $car = new CustomAttributeValueRow();
@@ -263,7 +263,7 @@ class ResourceRepositoryTests extends TestBase
         $id = 1;
 
         $fr = new FakeResourceAccess();
-        $rows = $fr->GetRows();
+        $rows = $fr->Rows();
         $this->db->SetRow(0, $rows);
 
         $car = new CustomAttributeValueRow();

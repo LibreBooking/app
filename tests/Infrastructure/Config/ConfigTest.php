@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
-class ConfigTests extends TestBase
+class ConfigTest extends TestBase
 {
     public function setup(): void
     {

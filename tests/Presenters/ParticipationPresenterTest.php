@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/ParticipationPresenter.php');
 
-class ParticipationPresenterTests extends TestBase
+class ParticipationPresenterTest extends TestBase
 {
     /**
      * @var IParticipationPage|PHPUnit_Framework_MockObject_MockObject
@@ -85,24 +85,24 @@ class ParticipationPresenterTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetResponseType')
-            ->will($this->returnValue('json'));
+            ->willReturn('json');
 
         $this->page->expects($this->once())
             ->method('GetInvitationAction')
-            ->will($this->returnValue($invitationAction));
+            ->willReturn($invitationAction);
 
         $this->page->expects($this->once())
             ->method('GetInvitationReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetUserId')
-            ->will($this->returnValue($currentUserId));
+            ->willReturn($currentUserId);
 
         $this->reservationRepo->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($series));
+            ->willReturn($series);
 
         $this->page->expects($this->once())
             ->method('DisplayResult')
@@ -140,24 +140,24 @@ class ParticipationPresenterTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetResponseType')
-            ->will($this->returnValue('json'));
+            ->willReturn('json');
 
         $this->page->expects($this->once())
             ->method('GetInvitationAction')
-            ->will($this->returnValue($invitationAction));
+            ->willReturn($invitationAction);
 
         $this->page->expects($this->once())
             ->method('GetInvitationReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetUserId')
-            ->will($this->returnValue($currentUserId));
+            ->willReturn($currentUserId);
 
         $this->reservationRepo->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($series));
+            ->willReturn($series);
 
         $this->page->expects($this->once())
             ->method('DisplayResult')
@@ -197,24 +197,24 @@ class ParticipationPresenterTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetResponseType')
-            ->will($this->returnValue('json'));
+            ->willReturn('json');
 
         $this->page->expects($this->once())
             ->method('GetInvitationAction')
-            ->will($this->returnValue($invitationAction));
+            ->willReturn($invitationAction);
 
         $this->page->expects($this->once())
             ->method('GetInvitationReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetUserId')
-            ->will($this->returnValue($currentUserId));
+            ->willReturn($currentUserId);
 
         $this->reservationRepo->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($series));
+            ->willReturn($series);
 
         $this->page->expects($this->once())
             ->method('DisplayResult')
@@ -263,7 +263,7 @@ class ParticipationPresenterTests extends TestBase
         $this->reservationViewRepo->expects($this->once())
             ->method('GetReservations')
             ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId), $this->equalTo($inviteeLevel))
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
 
         $this->page->expects($this->once())
             ->method('BindReservations')
@@ -287,24 +287,24 @@ class ParticipationPresenterTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('GetResponseType')
-            ->will($this->returnValue('json'));
+            ->willReturn('json');
 
         $this->page->expects($this->once())
             ->method('GetInvitationAction')
-            ->will($this->returnValue(InvitationAction::Join));
+            ->willReturn(InvitationAction::Join);
 
         $this->page->expects($this->once())
             ->method('GetInvitationReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetUserId')
-            ->will($this->returnValue($currentUserId));
+            ->willReturn($currentUserId);
 
         $this->reservationRepo->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($series));
+            ->willReturn($series);
 
         $this->page->expects($this->once())
             ->method('DisplayResult')
@@ -321,29 +321,29 @@ class ParticipationPresenterTests extends TestBase
         $currentUserId = 1029;
         $referenceNumber = 'abc123';
         $series = $this->createMock('ExistingReservationSeries');
-        $series->expects($this->any())->method('GetAllowParticipation')->will($this->returnValue(true));
-        $series->expects($this->any())->method('AllResources')->will($this->returnValue([]));
+        $series->expects($this->any())->method('GetAllowParticipation')->willReturn(true);
+        $series->expects($this->any())->method('AllResources')->willReturn([]);
 
         $this->page->expects($this->once())
             ->method('GetResponseType')
-            ->will($this->returnValue('json'));
+            ->willReturn('json');
 
         $this->page->expects($this->once())
             ->method('GetInvitationAction')
-            ->will($this->returnValue($invitationAction));
+            ->willReturn($invitationAction);
 
         $this->page->expects($this->once())
             ->method('GetInvitationReferenceNumber')
-            ->will($this->returnValue($referenceNumber));
+            ->willReturn($referenceNumber);
 
         $this->page->expects($this->once())
             ->method('GetUserId')
-            ->will($this->returnValue($currentUserId));
+            ->willReturn($currentUserId);
 
         $this->reservationRepo->expects($this->once())
             ->method('LoadByReferenceNumber')
             ->with($this->equalTo($referenceNumber))
-            ->will($this->returnValue($series));
+            ->willReturn($series);
 
         $series->expects($this->once())
             ->method($seriesMethod)

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reports/SavedReportsPresenter.php');
 
-class SavedReportsPresenterTests extends TestBase
+class SavedReportsPresenterTest extends TestBase
 {
     /**
      * @var SavedReportsPresenter
@@ -42,7 +42,7 @@ class SavedReportsPresenterTests extends TestBase
         $this->service->expects($this->once())
                       ->method('GetSavedReports')
                       ->with($this->equalTo($this->fakeUser->UserId))
-                      ->will($this->returnValue($savedReports));
+                      ->willReturn($savedReports);
 
         $this->presenter->PageLoad();
 
@@ -58,7 +58,7 @@ class SavedReportsPresenterTests extends TestBase
         $this->service->expects($this->once())
                       ->method('GenerateSavedReport')
                       ->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
-                      ->will($this->returnValue($report));
+                      ->willReturn($report);
 
         $user = new FakeUser();
         $savedReportColumns = 'savedreport';
@@ -78,7 +78,7 @@ class SavedReportsPresenterTests extends TestBase
         $this->service->expects($this->once())
                       ->method('GenerateSavedReport')
                       ->with($this->anything(), $this->anything())
-                      ->will($this->returnValue(null));
+                      ->willReturn(null);
 
         $this->presenter->GenerateReport();
 
@@ -99,7 +99,7 @@ class SavedReportsPresenterTests extends TestBase
         $this->service->expects($this->once())
                       ->method('GenerateSavedReport')
                       ->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
-                      ->will($this->returnValue($report));
+                      ->willReturn($report);
 
         $this->service->expects($this->once())
                       ->method('SendReport')

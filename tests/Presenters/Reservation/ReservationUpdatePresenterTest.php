@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php')
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationUpdatePresenterTests extends TestBase
+class ReservationUpdatePresenterTest extends TestBase
 {
     private $userId;
 
@@ -106,22 +106,16 @@ class ReservationUpdatePresenterTests extends TestBase
         $this->persistenceService->expects($this->once())
                                  ->method('LoadByReferenceNumber')
                                  ->with($this->equalTo($referenceNumber))
-                                 ->will($this->returnValue($expectedSeries));
+                                 ->willReturn($expectedSeries);
 
-        $this->resourceRepository->expects($this->at(0))
+        $this->resourceRepository->expects($this->exactly(3))
                                  ->method('LoadById')
-                                 ->with($this->equalTo($this->page->resourceId))
-                                 ->will($this->returnValue($resource));
-
-        $this->resourceRepository->expects($this->at(1))
-                                 ->method('LoadById')
-                                 ->with($this->equalTo($additionalId1))
-                                 ->will($this->returnValue($additional1));
-
-        $this->resourceRepository->expects($this->at(2))
-                                 ->method('LoadById')
-                                 ->with($this->equalTo($additionalId2))
-                                 ->will($this->returnValue($additional2));
+                                 ->willReturnMap(
+                                 [
+                                     [$this->page->resourceId, $resource],
+                                     [$additionalId1, $additional1],
+                                     [$additionalId2, $additional2]
+                                 ]);
 
         $this->page->repeatType = RepeatType::Daily;
         $roFactory = new RepeatOptionsFactory();
@@ -206,12 +200,12 @@ class ReservationUpdatePresenterTests extends TestBase
         $this->persistenceService->expects($this->once())
                                  ->method('LoadByReferenceNumber')
                                  ->with($this->equalTo($referenceNumber))
-                                 ->will($this->returnValue($expectedSeries));
+                                 ->willReturn($expectedSeries);
 
         $this->resourceRepository->expects($this->once())
                                  ->method('LoadById')
                                  ->with($this->equalTo($additionalId))
-                                 ->will($this->returnValue($resource));
+                                 ->willReturn($resource);
 
         $existingSeries = $this->presenter->BuildReservation();
 
@@ -229,7 +223,7 @@ class ReservationUpdatePresenterTests extends TestBase
         $this->handler->expects($this->once())
                       ->method('Handle')
                       ->with($this->equalTo($series), $this->isInstanceOf('FakeReservationUpdatePage'))
-                      ->will($this->returnValue(true));
+                      ->willReturn(true);
 
         $this->presenter->HandleReservation($series);
 

@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Application/Reporting/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class ReportingServiceTests extends TestBase
+class ReportingServiceTest extends TestBase
 {
     /**
      * @var ReportingService

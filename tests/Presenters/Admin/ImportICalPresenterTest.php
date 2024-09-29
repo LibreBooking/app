@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Admin/Import/ICalImportPresenter.php');
 
-class ImportICalPresenterTests extends TestBase
+class ImportICalPresenterTest extends TestBase
 {
     public function testCreatesEverything()
     {

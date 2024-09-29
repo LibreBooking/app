@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class CalendarSubscriptionServiceTests extends TestBase
+class CalendarSubscriptionServiceTest extends TestBase
 {
     /**
      * @var CalendarSubscriptionService
@@ -43,7 +43,7 @@ class CalendarSubscriptionServiceTests extends TestBase
         $this->userRepo->expects($this->once())
                 ->method('LoadByPublicId')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($expected));
+                ->willReturn($expected);
 
         $actual = $this->service->GetUser($publicId);
 
@@ -58,7 +58,7 @@ class CalendarSubscriptionServiceTests extends TestBase
         $this->resourceRepo->expects($this->once())
                 ->method('LoadByPublicId')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($expected));
+                ->willReturn($expected);
 
         $actual = $this->service->GetResource($publicId);
 
@@ -73,7 +73,7 @@ class CalendarSubscriptionServiceTests extends TestBase
         $this->scheduleRepo->expects($this->once())
                 ->method('LoadByPublicId')
                 ->with($this->equalTo($publicId))
-                ->will($this->returnValue($expected));
+                ->willReturn($expected);
 
         $actual = $this->service->GetSchedule($publicId);
 

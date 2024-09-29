@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/BlackoutRepository.php');
 
-class BlackoutRepositoryTests extends TestBase
+class BlackoutRepositoryTest extends TestBase
 {
     /**
      * @var BlackoutRepository

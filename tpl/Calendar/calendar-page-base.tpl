@@ -1,26 +1,35 @@
-{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/calendar.print.css'}
+{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/calendar.print.css'}
 
 <div id="page-{$pageIdSuffix}">
     {include file='Calendar/calendar.filter.tpl'}
 
     <div id="subscriptionContainer">
-        {include file="Calendar/{$subscriptionTpl}" IsSubscriptionAllowed=$IsSubscriptionAllowed IsSubscriptionEnabled=$IsSubscriptionEnabled SubscriptionUrl=$SubscriptionUrl}
+        {include file="Calendar/{$subscriptionTpl}" IsSubscriptionAllowed=$IsSubscriptionAllowed
+        IsSubscriptionEnabled=$IsSubscriptionEnabled SubscriptionUrl=$SubscriptionUrl}
     </div>
 
-    <div id="calendar"></div>
+    <div id="calendar" class="mt-4"></div>
 
-    <div id="dayDialog" class="default-box-shadow">
-        {if !isset($HideCreate)  || !$HideCreate}<a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>{/if}
-        <a href="#" id="dayDialogView">{html_image src="search.png"}{translate key=ViewDay}</a>
-        <a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
+    <div id="dayDialog" class="card shadow bg-secondary-subtle position-absolute d-none p-0" style="z-index: 2000;">
+        <div class="card-body">
+            {if !isset($HideCreate)  || !$HideCreate}
+                <a href=" #" id="dayDialogCreate" class="link-success me-2"><i
+                        class="bi bi-check-lg me-1"></i>{translate key=CreateReservation}</a>
+            {/if}
+            <a href="#" id="dayDialogView" class="link-secondary me-2"><i
+                    class="bi bi-search me-1"></i>{translate key=ViewDay}</a>
+            <a href="#" id="dayDialogCancel" class="link-danger"><i
+                    class="bi bi-dash-circle me-1"></i>{translate key=Cancel}</a>
+        </div>
     </div>
 
-    <div class="modal fade" id="moveErrorDialog" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal fade" id="moveErrorDialog" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="errorModalLabel">{translate key=ErrorMovingReservation}</h4>
+                    <h5 class="modal-title" id="errorModalLabel">{translate key=ErrorMovingReservation}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger">
@@ -51,7 +60,7 @@
     {jsfile src="js/tree.jquery.js"}
 
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             var options = {
                 view: '{$CalendarType|escape:javascript}',

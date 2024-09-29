@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class GroupRepositoryTests extends TestBase
+class GroupRepositoryTest extends TestBase
 {
     /**
      * @var GroupRepository

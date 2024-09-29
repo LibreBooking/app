@@ -2,5 +2,7 @@
 	{translate key=None}
 {/if}
 {foreach from=$resource->GetResourceGroupIds() item=resourceGroupId name=eachGroup}
-	<span class="resourceGroupId" data-value="{$resourceGroupId}">{$ResourceGroupList[$resourceGroupId]->name}</span>{if !$smarty.foreach.eachGroup.last}, {/if}
+	<span class="resourceGroupId"
+		data-value="{$resourceGroupId}">{$ResourceGroupList[$resourceGroupId]->name}</span>{if !$smarty.foreach.eachGroup.last},
+	{/if}
 {/foreach}

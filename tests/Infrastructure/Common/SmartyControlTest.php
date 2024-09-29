@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
-class SmartyControlTests extends TestBase
+class SmartyControlTest extends TestBase
 {
     private $_server;
     private $_attributes = 'style="font-size:12px;" class="something"';

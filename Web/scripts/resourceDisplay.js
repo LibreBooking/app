@@ -27,7 +27,7 @@ function ResourceDisplay(opts) {
     }
 
     function activateResourceDisplay(resourceId) {
-        $.blockUI({message: $('#wait-box')});
+        $.blockUI({ message: $('#wait-box') });
         ajaxPost(elements.activateResourceDisplayForm, null, null, function (data) {
             if (data.location) {
                 window.location = data.location;
@@ -59,13 +59,13 @@ function ResourceDisplay(opts) {
 
         var url = opts.url;
 
-        if(_.isEmpty(elements.startDate.val())){
+        if (_.isEmpty(elements.startDate.val())) {
             elements.rawStartDate.datepicker("setDate", new Date(opts.initialDate));
         }
 
         refreshResource();
 
-        setInterval(refreshResource, 60000);
+        //setInterval(refreshResource, 60000);
 
         elements.placeholder.on('click', '.reservePrompt', function (e) {
             var emailAddress = $('#emailAddress');
@@ -79,11 +79,11 @@ function ResourceDisplay(opts) {
 
         elements.placeholder.on('click', '#reservePopup', function (e) {
             pauseRefresh();
-            showPopup();
+            //showPopup();
         });
 
         elements.placeholder.on('click', '#reserveCancel', function (e) {
-            hidePopup();
+            //hidePopup();
             resumeRefresh();
             refreshResource();
         });
@@ -93,24 +93,25 @@ function ResourceDisplay(opts) {
             e.stopPropagation();
 
             var beforeReserve = function () {
-                $('#validationErrors').addClass('no-show');
-                showWait();
+                $('#validationErrors').addClass('d-none');
+                //showWait();
             };
 
             var afterReserve = function (data) {
                 var validationErrors = $('#validationErrors');
                 if (data.success) {
-                    validationErrors.find('ul').empty().addClass('no-show');
-                    hidePopup();
+                    validationErrors.find('ul').empty().addClass('d-none');
+                    //hidePopup();
                     resumeRefresh();
                     refreshResource();
+                    $('#reservation-box').modal('hide');
                 }
                 else {
                     var errors = data.errors ? data.errors : data.Messages;
                     validationErrors.find('ul').empty().html($.map(errors, function (item) {
                         return "<li>" + item + "</li>";
                     }));
-                    validationErrors.removeClass('no-show');
+                    validationErrors.removeClass('d-none');
                 }
                 hideWait();
             };
@@ -130,7 +131,7 @@ function ResourceDisplay(opts) {
             e.stopPropagation();
 
             var beforeCheckin = function () {
-                showWait();
+                //showWait();
             };
 
             var afterCheckin = function () {
@@ -140,23 +141,29 @@ function ResourceDisplay(opts) {
             ajaxPost($('#formCheckin'), null, beforeCheckin, afterCheckin);
         });
 
+        elements.placeholder.on('mouseenter', '.reservable', function (e) {
+            $(this).addClass('hilite');
+        }).on('mouseleave', '.reservable', function () {
+            $(this).removeClass('hilite');
+        });
+
         elements.startDate.on('change', function () {
-            showWait();
+            //showWait();
             refreshResource(hideWait);
         });
 
         var beginIndex = 0;
 
         function showPopup() {
-            $('#reservation-box-wrapper').show();
+            /*$('#reservation-box-wrapper').show();
             var reservationBox = $('#reservation-box');
             reservationBox.show();
             var offsetFromTop = ($('body').height() - reservationBox.height()) / 2;
             reservationBox.css(
-                {top: offsetFromTop + 'px'}
+                { top: offsetFromTop + 'px' }
             );
 
-            $('#emailAddress').focus();
+            $('#emailAddress').focus();*/
         }
 
         function pauseRefresh() {
@@ -164,8 +171,8 @@ function ResourceDisplay(opts) {
         }
 
         function hidePopup() {
-            $('#reservation-box').hide();
-            $('#reservation-box-wrapper').hide();
+            // $('#reservation-box').hide();
+            // $('#reservation-box-wrapper').hide();
         }
 
         function resumeRefresh() {
@@ -173,24 +180,24 @@ function ResourceDisplay(opts) {
         }
 
         function refreshResource(next) {
-            if(!next){
-                next = function(){};
+            if (!next) {
+                next = function () { };
             }
             if (!_refreshEnabled) {
                 return next();
             }
             var startDate = elements.startDate.val();
-            if(!_.isEmpty(startDate)){
+            if (!_.isEmpty(startDate)) {
                 url = opts.url + "&sd=" + startDate
             }
-            
+
             ajaxGet(url, null, function (data) {
                 if (!_refreshEnabled) {
                     return;
                 }
                 elements.placeholder.html(data);
 
-                $('#resource-display').height($('body').height());
+                //$('#resource-display').height($('body').height());
 
                 var formCheckin = $('#formCheckin');
                 formCheckin.unbind('submit');
@@ -240,18 +247,17 @@ function ResourceDisplay(opts) {
     };
 
     function showWait() {
-        $('#waitIndicator').removeClass('no-show');
-        $.blockUI({message: $('#wait-box')});
+        // $('#waitIndicator').removeClass('no-show');
+        // $.blockUI({ message: $('#wait-box') });
     }
 
     function hideWait() {
-        $.unblockUI();
+        // $.unblockUI();
     }
 
     elements.loginButton.click(function (e) {
         e.preventDefault();
-        showWait();
-
+        //showWait();
         elements.loginForm.submit();
     });
 

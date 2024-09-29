@@ -1,6 +1,6 @@
 <?php
 
-class ReservationViewRepositoryTests extends TestBase
+class ReservationViewRepositoryTest extends TestBase
 {
     /**
      * @var ReservationViewRepository

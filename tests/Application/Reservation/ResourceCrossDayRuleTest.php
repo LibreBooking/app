@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ResourceCrossDayRuleTests extends TestBase
+class ResourceCrossDayRuleTest extends TestBase
 {
     /**
      * @var IScheduleRepository
@@ -43,7 +43,7 @@ class ResourceCrossDayRuleTests extends TestBase
         $this->scheduleRepository->expects($this->once())
         ->method('LoadById')
         ->with($this->equalTo($reservation->ScheduleId()))
-        ->will($this->returnValue($this->schedule));
+        ->willReturn($this->schedule);
 
         $rule = new ResourceCrossDayRule($this->scheduleRepository);
         $result = $rule->Validate($reservation, null);
@@ -92,7 +92,7 @@ class ResourceCrossDayRuleTests extends TestBase
         $this->scheduleRepository->expects($this->once())
         ->method('LoadById')
         ->with($this->equalTo($reservation->ScheduleId()))
-        ->will($this->returnValue($this->schedule));
+        ->willReturn($this->schedule);
 
         $rule = new ResourceCrossDayRule($this->scheduleRepository);
         $result = $rule->Validate($reservation, null);

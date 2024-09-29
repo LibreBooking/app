@@ -1,5 +1,4 @@
-function Approval(opts)
-{
+function Approval(opts) {
 	var options = opts;
 
 	var elements = {
@@ -7,30 +6,24 @@ function Approval(opts)
 		referenceNumber: $("#referenceNumber")
 	};
 
-	function initReservation()
-	{
-		elements.approveButton.click(function ()
-		{
-			$('<span class="fa fa-spinner fa-spin fa-2x"/>').insertAfter(elements.approveButton);
+	function initReservation() {
+		elements.approveButton.click(function () {
+			$('<span class="spinner-border spinner-border-sm"/>').insertAfter(elements.approveButton);
 			elements.approveButton.hide();
 			approve(elements.referenceNumber.val());
 		});
 	}
 
-	function approve(referenceNumber)
-	{
+	function approve(referenceNumber) {
 		$.ajax({
 			url: options.url,
 			dataType: 'json',
-			data: {rn: referenceNumber, rs: options.responseType},
-			success: function (data)
-			{
-				if (options.returnUrl)
-				{
+			data: { rn: referenceNumber, rs: options.responseType },
+			success: function (data) {
+				if (options.returnUrl) {
 					window.location = options.returnUrl.replace(/&amp;/g, '&');
 				}
-				else
-				{
+				else {
 					window.location.reload();
 				}
 			}

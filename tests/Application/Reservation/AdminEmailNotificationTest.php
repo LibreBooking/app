@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-class AdminEmailNotificationTests extends TestBase
+class AdminEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {
@@ -47,21 +47,21 @@ class AdminEmailNotificationTests extends TestBase
         $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $userRepo->expects($this->once())
                  ->method('GetResourceAdmins')
                  ->with($this->equalTo($resourceId))
-                 ->will($this->returnValue($resourceAdmins));
+                 ->willReturn($resourceAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetApplicationAdmins')
-                 ->will($this->returnValue($appAdmins));
+                 ->willReturn($appAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetGroupAdmins')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($groupAdmins));
+                 ->willReturn($groupAdmins);
 
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_RESOURCE_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_APPLICATION_ADMINS);
@@ -107,21 +107,21 @@ class AdminEmailNotificationTests extends TestBase
         $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $userRepo->expects($this->once())
                  ->method('GetResourceAdmins')
                  ->with($this->equalTo($resourceId))
-                 ->will($this->returnValue($resourceAdmins));
+                 ->willReturn($resourceAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetApplicationAdmins')
-                 ->will($this->returnValue($appAdmins));
+                 ->willReturn($appAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetGroupAdmins')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($groupAdmins));
+                 ->willReturn($groupAdmins);
 
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_UPDATE_RESOURCE_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_UPDATE_APPLICATION_ADMINS);
@@ -168,21 +168,21 @@ class AdminEmailNotificationTests extends TestBase
         $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $userRepo->expects($this->once())
                  ->method('GetResourceAdmins')
                  ->with($this->equalTo($resourceId))
-                 ->will($this->returnValue($resourceAdmins));
+                 ->willReturn($resourceAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetApplicationAdmins')
-                 ->will($this->returnValue($appAdmins));
+                 ->willReturn($appAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetGroupAdmins')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($groupAdmins));
+                 ->willReturn($groupAdmins);
 
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_APPROVAL_RESOURCE_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_APPROVAL_APPLICATION_ADMINS);
@@ -254,21 +254,21 @@ class AdminEmailNotificationTests extends TestBase
         $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $userRepo->expects($this->once())
                  ->method('GetResourceAdmins')
                  ->with($this->equalTo($resourceId))
-                 ->will($this->returnValue($resourceAdmins));
+                 ->willReturn($resourceAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetApplicationAdmins')
-                 ->will($this->returnValue($appAdmins));
+                 ->willReturn($appAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetGroupAdmins')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($groupAdmins));
+                 ->willReturn($groupAdmins);
 
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_APPROVAL_RESOURCE_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_APPROVAL_APPLICATION_ADMINS);
@@ -314,21 +314,21 @@ class AdminEmailNotificationTests extends TestBase
         $userRepo->expects($this->once())
                  ->method('LoadById')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($owner));
+                 ->willReturn($owner);
 
         $userRepo->expects($this->once())
                  ->method('GetResourceAdmins')
                  ->with($this->equalTo($resourceId))
-                 ->will($this->returnValue($resourceAdmins));
+                 ->willReturn($resourceAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetApplicationAdmins')
-                 ->will($this->returnValue($appAdmins));
+                 ->willReturn($appAdmins);
 
         $userRepo->expects($this->once())
                  ->method('GetGroupAdmins')
                  ->with($this->equalTo($ownerId))
-                 ->will($this->returnValue($groupAdmins));
+                 ->willReturn($groupAdmins);
 
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_DELETE_RESOURCE_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_DELETE_APPLICATION_ADMINS);

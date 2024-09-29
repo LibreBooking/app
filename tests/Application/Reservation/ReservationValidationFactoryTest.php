@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-class ReservationValidationFactoryTests extends TestBase
+class ReservationValidationFactoryTest extends TestBase
 {
     public function testLoadsAddRulesFromPlugins()
     {
@@ -16,7 +16,7 @@ class ReservationValidationFactoryTests extends TestBase
         $preResPlugin->expects($this->once())
                 ->method('CreatePreAddService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($validationService));
+                ->willReturn($validationService);
 
         $reservationValidationFactory = new ReservationValidationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Create, $this->fakeUser);
@@ -36,7 +36,7 @@ class ReservationValidationFactoryTests extends TestBase
         $preResPlugin->expects($this->once())
                 ->method('CreatePreUpdateService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($validationService));
+                ->willReturn($validationService);
 
         $reservationValidationFactory = new ReservationValidationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Update, $this->fakeUser);
@@ -56,7 +56,7 @@ class ReservationValidationFactoryTests extends TestBase
         $preResPlugin->expects($this->once())
                 ->method('CreatePreDeleteService')
                 ->with($this->fakeUser)
-                ->will($this->returnValue($validationService));
+                ->willReturn($validationService);
 
         $reservationValidationFactory = new ReservationValidationFactory();
         $actual = $reservationValidationFactory->Create(ReservationAction::Delete, $this->fakeUser);

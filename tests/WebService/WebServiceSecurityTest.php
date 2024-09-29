@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
-class WebServiceSecurityTests extends TestBase
+class WebServiceSecurityTest extends TestBase
 {
     private $sessionToken = 'sessionToken';
     private $userId = 'userId';
@@ -41,20 +41,18 @@ class WebServiceSecurityTests extends TestBase
 
     public function testSetsUserSessionIfValidAndNotExpired()
     {
-        $this->server->expects($this->at(0))
+        $this->server->expects($this->exactly(2))
                 ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
-                ->will($this->returnValue($this->sessionToken));
-
-        $this->server->expects($this->at(1))
-                ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::USER_ID))
-                ->will($this->returnValue($this->userId));
+                ->willReturnMap(
+                [
+                    [WebServiceHeaders::SESSION_TOKEN, $this->sessionToken],
+                    [WebServiceHeaders::USER_ID, $this->userId]
+                ]);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($this->sessionToken))
-                ->will($this->returnValue($this->session));
+                ->willReturn($this->session);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('Update')
@@ -74,20 +72,18 @@ class WebServiceSecurityTests extends TestBase
     {
         $this->session->_IsExpired = true;
 
-        $this->server->expects($this->at(0))
+        $this->server->expects($this->exactly(2))
                 ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
-                ->will($this->returnValue($this->sessionToken));
-
-        $this->server->expects($this->at(1))
-                ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::USER_ID))
-                ->will($this->returnValue($this->userId));
+                ->willReturnMap(
+                [
+                    [WebServiceHeaders::SESSION_TOKEN, $this->sessionToken],
+                    [WebServiceHeaders::USER_ID, $this->userId]
+                ]);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($this->sessionToken))
-                ->will($this->returnValue($this->session));
+                ->willReturn($this->session);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('Delete')
@@ -101,20 +97,18 @@ class WebServiceSecurityTests extends TestBase
 
     public function testHandlesSessionNotFound()
     {
-        $this->server->expects($this->at(0))
+        $this->server->expects($this->exactly(2))
                 ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
-                ->will($this->returnValue($this->sessionToken));
-
-        $this->server->expects($this->at(1))
-                ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::USER_ID))
-                ->will($this->returnValue($this->userId));
+                ->willReturnMap(
+                [
+                    [WebServiceHeaders::SESSION_TOKEN, $this->sessionToken],
+                    [WebServiceHeaders::USER_ID, $this->userId]
+                ]);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($this->sessionToken))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $wasHandled = $this->security->HandleSecureRequest($this->server);
 
@@ -123,20 +117,18 @@ class WebServiceSecurityTests extends TestBase
 
     public function testHandlesSessionMisMatch()
     {
-        $this->server->expects($this->at(0))
+        $this->server->expects($this->exactly(2))
                 ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
-                ->will($this->returnValue('not the right token'));
-
-        $this->server->expects($this->at(1))
-                ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::USER_ID))
-                ->will($this->returnValue('not the right id'));
+                ->willReturnMap(
+                [
+                    [WebServiceHeaders::SESSION_TOKEN, 'not the right token'],
+                    [WebServiceHeaders::USER_ID, 'not the right id']
+                ]);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo('not the right token'))
-                ->will($this->returnValue($this->session));
+                ->willReturn($this->session);
 
         $wasHandled = $this->security->HandleSecureRequest($this->server);
 
@@ -146,20 +138,18 @@ class WebServiceSecurityTests extends TestBase
     public function testHandlesAdminRequest()
     {
         $this->session->IsAdmin = true;
-        $this->server->expects($this->at(0))
+        $this->server->expects($this->exactly(2))
                 ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
-                ->will($this->returnValue($this->sessionToken));
-
-        $this->server->expects($this->at(1))
-                ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::USER_ID))
-                ->will($this->returnValue($this->userId));
+                ->willReturnMap(
+                [
+                    [WebServiceHeaders::SESSION_TOKEN, $this->sessionToken],
+                    [WebServiceHeaders::USER_ID, $this->userId]
+                ]);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($this->sessionToken))
-                ->will($this->returnValue($this->session));
+                ->willReturn($this->session);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('Update')
@@ -178,20 +168,18 @@ class WebServiceSecurityTests extends TestBase
     public function testHandlesWhenUserIsNotAdmin()
     {
         $this->session->IsAdmin = false;
-        $this->server->expects($this->at(0))
+        $this->server->expects($this->exactly(2))
                 ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
-                ->will($this->returnValue($this->sessionToken));
-
-        $this->server->expects($this->at(1))
-                ->method('GetHeader')
-                ->with($this->equalTo(WebServiceHeaders::USER_ID))
-                ->will($this->returnValue($this->userId));
+                ->willReturnMap(
+                [
+                    [WebServiceHeaders::SESSION_TOKEN, $this->sessionToken],
+                    [WebServiceHeaders::USER_ID, $this->userId]
+                ]);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($this->sessionToken))
-                ->will($this->returnValue($this->session));
+                ->willReturn($this->session);
 
         $wasHandled = $this->security->HandleSecureRequest($this->server, true);
 

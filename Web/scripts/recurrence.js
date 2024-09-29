@@ -33,12 +33,12 @@ function Recurrence(recurOptions, recurElements, prefix) {
         InitializeRepeatElements();
         InitializeRepeatOptions();
         ToggleRepeatOptions();
-        elements.addDateBtn.on('click', function(e) {
+        elements.addDateBtn.on('click', function (e) {
             e.preventDefault();
             OnRepeatDateAdded();
         });
 
-        elements.customDatesDiv.on('click', '.remove-repeat-date', function(e) {
+        elements.customDatesDiv.on('click', '.remove-repeat-date', function (e) {
             e.preventDefault();
             OnRepeatDateRemoved($(e.target).data("repeat-date"));
         });
@@ -48,7 +48,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
         changeCallback = callback;
     };
 
-    this.addCustomDate = function(systemFormattedDate, userFormattedDate) {
+    this.addCustomDate = function (systemFormattedDate, userFormattedDate) {
         AddRepeatDate(systemFormattedDate, userFormattedDate);
     };
 
@@ -67,11 +67,11 @@ function Recurrence(recurOptions, recurElements, prefix) {
     };
 
     var show = function (element) {
-        element.removeClass('no-show').addClass('inline');
+        element.removeClass('d-none'); //.addClass('d-inline')
     };
 
     var hide = function (element) {
-        element.removeClass('inline').addClass('no-show');
+        element.addClass('d-none'); //.removeClass('d-inline')
     };
 
     var ChangeRepeatOptions = function () {
@@ -105,7 +105,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
             show($('.years', elements.repeatDiv));
         }
 
-        if(repeatDropDown.val() == 'custom') {
+        if (repeatDropDown.val() == 'custom') {
             show($('.specific-dates', elements.repeatDiv));
         }
 
@@ -162,17 +162,18 @@ function Recurrence(recurOptions, recurElements, prefix) {
             for (var i = 0; i < options.repeatWeekdays.length; i++) {
                 var id = '#' + prefix + 'repeatDay' + options.repeatWeekdays[i];
                 if (!$(id).is(':checked')) {
-                    $(id).closest('label').button('toggle');
+                    //$(id).closest('label').button('toggle');
+                    $('label[for="' + id.replace(/#/g, '') + '"]').addClass('active');
                 }
             }
 
             $("#" + prefix + "repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").prop('checked', true);
         }
 
-        elements.repeatOnWeeklyDiv.find('label').click(function(e){
+        elements.repeatOnWeeklyDiv.find('label').click(function (e) {
             NotifyChange();
         });
-        elements.repeatOnMonthlyDiv.find('label').click(function(e){
+        elements.repeatOnMonthlyDiv.find('label').click(function (e) {
             NotifyChange();
         });
     }
@@ -197,7 +198,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
                 elements.repeatOptions.trigger('change');
             }
             elements.repeatOptions.find("option[value='daily']").prop("disabled", "disabled");
-            elements.repeatOnWeeklyDiv.addClass('no-show');
+            elements.repeatOnWeeklyDiv.addClass('d-none');
         }
         else {
             if (repeatToggled) {
@@ -239,13 +240,12 @@ function Recurrence(recurOptions, recurElements, prefix) {
         elements.repeatTerminationTextbox.datepicker("setDate", newEndDate);
     };
 
-    var OnRepeatDateAdded = function()
-    {
+    var OnRepeatDateAdded = function () {
         AddRepeatDate(elements.repeatDateFormatted.val(), elements.repeatDate.val());
     };
 
-    var AddRepeatDate = function(systemFormattedDate, userFormattedDate) {
-        var d = {"system": systemFormattedDate, "user": userFormattedDate};
+    var AddRepeatDate = function (systemFormattedDate, userFormattedDate) {
+        var d = { "system": systemFormattedDate, "user": userFormattedDate };
         if (systemFormattedDate != "" && userFormattedDate != "" && repeatDates.find(x => x.system === systemFormattedDate) === undefined && options.customRepeatExclusions.find(x => x == systemFormattedDate) === undefined) {
             repeatDates.push(d);
         }
@@ -254,15 +254,15 @@ function Recurrence(recurOptions, recurElements, prefix) {
         NotifyChange();
     };
 
-    var DisplayRepeatDates = function() {
+    var DisplayRepeatDates = function () {
         var datediv = elements.customDatesDiv.find(".repeat-date-list");
         datediv.empty();
         repeatDates.sort((r1, r2) => r1.system.localeCompare(r2.system)).forEach((v, i) => {
-            datediv.append($("<div data-repeat-date='"  + v.system + "'><span>" + v.user + "</span> <a href='#'><i class='fa fa-remove icon delete remove-repeat-date' data-repeat-date='" + v.system +"' /></a><input type='hidden' name='repeatCustomDates[]' value='" + v.system +"'</div>"));
+            datediv.append($("<div data-repeat-date='" + v.system + "'><a class='link-danger' href='#'><i class='bi bi-x-lg icon delete remove-repeat-date' data-repeat-date='" + v.system + "' /></a> <span>" + v.user + "</span> <input type='hidden' name='repeatCustomDates[]' value='" + v.system + "'</div>"));
         });
     };
 
-    var OnRepeatDateRemoved = function(systemFormattedDate) {
+    var OnRepeatDateRemoved = function (systemFormattedDate) {
         repeatDates = repeatDates.filter(d => d.system !== systemFormattedDate);
         DisplayRepeatDates();
         NotifyChange();

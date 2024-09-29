@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class ReservationTests extends TestBase
+class ReservationTest extends TestBase
 {
     public function setUp(): void
     {
@@ -39,7 +39,7 @@ class ReservationTests extends TestBase
         $repeatOptions->expects($this->once())
             ->method('GetDates')
             ->with($this->equalTo($dateRange->ToTimezone($userSession->Timezone)))
-            ->will($this->returnValue($repeatDates));
+            ->willReturn($repeatDates);
 
         $resource = new FakeBookableResource($resourceId);
         $series = ReservationSeries::Create(

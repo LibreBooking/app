@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Pages/Reports/GenerateReportPage.php');
 
-class GenerateReportPresenterTests extends TestBase
+class GenerateReportPresenterTest extends TestBase
 {
     /**
      * @var GenerateReportPresenter
@@ -78,7 +78,7 @@ class GenerateReportPresenterTests extends TestBase
                                    $this->equalTo($range),
                                    $this->equalTo($filter)
                                )
-                               ->will($this->returnValue($expectedReport));
+                               ->willReturn($expectedReport);
 
         $user = new FakeUser();
         $savedReportColumns = 'savedreport';

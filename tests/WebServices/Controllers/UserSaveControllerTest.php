@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/UserSaveController.php');
 
-class UserSaveControllerTests extends TestBase
+class UserSaveControllerTest extends TestBase
 {
     /**
      * @var UserSaveController
@@ -46,11 +46,11 @@ class UserSaveControllerTests extends TestBase
         $this->requestValidator->expects($this->once())
                                ->method('ValidateCreateRequest')
                                ->with($this->equalTo($request))
-                               ->will($this->returnValue(null));
+                               ->willReturn(null);
 
         $this->manageUserServiceFactory->expects($this->once())
                                        ->method('CreateAdmin')
-                                       ->will($this->returnValue($this->manageUsersService));
+                                       ->willReturn($this->manageUsersService);
 
         $this->manageUsersService->expects($this->once())
                                  ->method('AddUser')
@@ -69,7 +69,7 @@ class UserSaveControllerTests extends TestBase
                                          $request->customAttributes[0]->attributeValue
                                      )])
                                  )
-                                 ->will($this->returnValue($createdUser));
+                                 ->willReturn($createdUser);
 
         $result = $this->controller->Create($request, $session);
 
@@ -88,7 +88,7 @@ class UserSaveControllerTests extends TestBase
         $this->requestValidator->expects($this->once())
                                ->method('ValidateCreateRequest')
                                ->with($this->equalTo($request))
-                               ->will($this->returnValue($errors));
+                               ->willReturn($errors);
 
         $result = $this->controller->Create($request, $session);
 
@@ -106,11 +106,11 @@ class UserSaveControllerTests extends TestBase
         $this->requestValidator->expects($this->once())
                                ->method('ValidateUpdateRequest')
                                ->with($this->equalTo($userId), $this->equalTo($request))
-                               ->will($this->returnValue(null));
+                               ->willReturn(null);
 
         $this->manageUserServiceFactory->expects($this->once())
                                        ->method('CreateAdmin')
-                                       ->will($this->returnValue($this->manageUsersService));
+                                       ->willReturn($this->manageUsersService);
 
         $this->manageUsersService->expects($this->once())
                                  ->method('UpdateUser')
@@ -127,7 +127,7 @@ class UserSaveControllerTests extends TestBase
                                          $request->customAttributes[0]->attributeValue
                                      )])
                                  )
-                                 ->will($this->returnValue($user));
+                                 ->willReturn($user);
 
 
         $result = $this->controller->Update($userId, $request, $session);
@@ -147,7 +147,7 @@ class UserSaveControllerTests extends TestBase
         $this->requestValidator->expects($this->once())
                                ->method('ValidateUpdateRequest')
                                ->with($this->equalTo(1), $this->equalTo($request))
-                               ->will($this->returnValue($errors));
+                               ->willReturn($errors);
 
         $result = $this->controller->Update(1, $request, $session);
 
@@ -162,7 +162,7 @@ class UserSaveControllerTests extends TestBase
 
         $this->manageUserServiceFactory->expects($this->once())
                                        ->method('CreateAdmin')
-                                       ->will($this->returnValue($this->manageUsersService));
+                                       ->willReturn($this->manageUsersService);
 
         $this->manageUsersService->expects($this->once())
                                  ->method('DeleteUser')
@@ -182,11 +182,11 @@ class UserSaveControllerTests extends TestBase
         $this->requestValidator->expects($this->once())
                                ->method('ValidateUpdatePasswordRequest')
                                ->with($this->equalTo($userId), $this->equalTo($password))
-                               ->will($this->returnValue(null));
+                               ->willReturn(null);
 
         $this->manageUserServiceFactory->expects($this->once())
                                        ->method('CreateAdmin')
-                                       ->will($this->returnValue($this->manageUsersService));
+                                       ->willReturn($this->manageUsersService);
 
         $this->manageUsersService->expects($this->once())
                                  ->method('UpdatePassword')

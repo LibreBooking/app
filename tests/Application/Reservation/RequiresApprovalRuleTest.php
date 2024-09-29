@@ -1,6 +1,6 @@
 <?php
 
-class RequiresApprovalRuleTests extends TestBase
+class RequiresApprovalRuleTest extends TestBase
 {
     /**
      * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
@@ -37,7 +37,7 @@ class RequiresApprovalRuleTests extends TestBase
         $this->authorizationService->expects($this->once())
                             ->method('CanApproveForResource')
                             ->with($this->equalTo($this->fakeUser), $this->equalTo($resource))
-                            ->will($this->returnValue(false));
+                            ->willReturn(false);
 
         $this->rule->Validate($series, null);
 
@@ -68,7 +68,7 @@ class RequiresApprovalRuleTests extends TestBase
         $this->authorizationService->expects($this->once())
                                     ->method('CanApproveForResource')
                                     ->with($this->equalTo($this->fakeUser), $this->equalTo($resource))
-                                    ->will($this->returnValue(true));
+                                    ->willReturn(true);
 
         $this->rule->Validate($series, null);
 

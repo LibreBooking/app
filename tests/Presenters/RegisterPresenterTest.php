@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'Pages/RegistrationPage.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class RegisterPresenterTests extends TestBase
+class RegisterPresenterTest extends TestBase
 {
     /**
      * @var FakeRegistrationPage
@@ -140,6 +140,7 @@ class RegisterPresenterTests extends TestBase
     public function testSetsSelectedHomepageToDefault()
     {
         $expectedHomepage = 1;
+        $this->fakeConfig->SetKey(ConfigKeys::DEFAULT_HOMEPAGE, $expectedHomepage);
 
         $this->page->_IsPostBack = false;
 
@@ -147,7 +148,7 @@ class RegisterPresenterTests extends TestBase
 
         $this->presenter->PageLoad();
 
-        $this->assertEquals($this->page->_Homepage, $expectedHomepage);
+        $this->assertEquals($expectedHomepage, $this->page->_Homepage);
     }
 
     public function testSetsSelectedHomepageToServerSubmitted()
@@ -160,7 +161,7 @@ class RegisterPresenterTests extends TestBase
 
         $this->presenter->PageLoad();
 
-        $this->assertEquals($this->page->_Homepage, $expectedHomepage);
+        $this->assertEquals($expectedHomepage, $this->page->_Homepage);
     }
 
     public function testSetsCaptchaUrl()
@@ -169,7 +170,7 @@ class RegisterPresenterTests extends TestBase
 
         $this->captcha->expects($this->once())
             ->method('GetImageUrl')
-            ->will($this->returnValue($url));
+            ->willReturn($url);
 
         $this->ExpectAttributeServiceCalled();
 
@@ -277,7 +278,7 @@ class RegisterPresenterTests extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetAttributes')
                 ->with($this->equalTo(CustomAttributeCategory::USER))
-                ->will($this->returnValue($list));
+                ->willReturn($list);
     }
 
     private function LoadPageValues()

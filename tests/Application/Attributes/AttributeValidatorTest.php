@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
-class AttributeValidatorTests extends TestBase
+class AttributeValidatorTest extends TestBase
 {
     public function testChecksAttributesAgainstService()
     {
@@ -18,7 +18,7 @@ class AttributeValidatorTests extends TestBase
         $service->expects($this->once())
                 ->method('Validate')
                 ->with($this->equalTo($category), $this->equalTo($attributes), $this->equalTo($entityId))
-                ->will($this->returnValue($serviceResult));
+                ->willReturn($serviceResult);
 
         $validator = new AttributeValidator($service, $category, $attributes, $entityId);
         $validator->Validate();

@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Controllers/ReservationSaveController.php');
 
-class ReservationSaveControllerTests extends TestBase
+class ReservationSaveControllerTest extends TestBase
 {
     /**
      * @var ReservationSaveController
@@ -37,11 +37,11 @@ class ReservationSaveControllerTests extends TestBase
         $this->presenterFactory->expects($this->once())
                                ->method('Create')
                                ->with($this->equalTo($facade), $this->equalTo($session))
-                               ->will($this->returnValue($presenter));
+                               ->willReturn($presenter);
 
         $presenter->expects($this->once())
                   ->method('BuildReservation')
-                  ->will($this->returnValue($series));
+                  ->willReturn($series);
 
         $presenter->expects($this->once())
                   ->method('HandleReservation')
@@ -70,10 +70,10 @@ class ReservationSaveControllerTests extends TestBase
         $this->presenterFactory->expects($this->once())
                                ->method('Update')
                                ->with($this->equalTo($facade), $this->equalTo($session))
-                               ->will($this->returnValue($presenter));
+                               ->willReturn($presenter);
         $presenter->expects($this->once())
                   ->method('BuildReservation')
-                  ->will($this->returnValue($series));
+                  ->willReturn($series);
 
         $presenter->expects($this->once())
                   ->method('HandleReservation')
@@ -97,7 +97,7 @@ class ReservationSaveControllerTests extends TestBase
         $this->presenterFactory->expects($this->once())
                                ->method('Approve')
                                ->with($this->equalTo($facade), $this->equalTo($session))
-                               ->will($this->returnValue($presenter));
+                               ->willReturn($presenter);
 
         $presenter->expects($this->once())
                   ->method('PageLoad');
@@ -123,11 +123,11 @@ class ReservationSaveControllerTests extends TestBase
         $this->presenterFactory->expects($this->once())
                                ->method('Delete')
                                ->with($this->equalTo($facade), $this->equalTo($session))
-                               ->will($this->returnValue($presenter));
+                               ->willReturn($presenter);
 
         $presenter->expects($this->once())
                   ->method('BuildReservation')
-                  ->will($this->returnValue($reservation));
+                  ->willReturn($reservation);
 
         $presenter->expects($this->once())
                   ->method('HandleReservation')

@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class ScheduleReservationListTests extends TestBase
+class ScheduleReservationListTest extends TestBase
 {
     private $utc;
     private $userTz;
@@ -73,12 +73,12 @@ class ScheduleReservationListTests extends TestBase
         $layout = $this->createMock('IScheduleLayout');
         $layout->expects($this->once())
                 ->method('Timezone')
-                ->will($this->returnValue($userTz));
+                ->willReturn($userTz);
 
         $layout->expects($this->once())
                 ->method('GetLayout')
                 ->with($this->equalTo($date), $this->equalTo($hideBlocked))
-                ->will($this->returnValue($layoutPeriods));
+                ->willReturn($layoutPeriods);
 
         $scheduleList = new ScheduleReservationList([$r1], $layout, $date, $hideBlocked);
         $slots = $scheduleList->BuildSlots();

@@ -38,7 +38,7 @@ class ViewSchedulesPresenter
 
     public function PageLoad()
     {
-        $results = $this->manageSchedulesService->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+        $results = $this->manageSchedulesService->GetList(null, null);
         $schedules = $results->Results();
 
         $sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
@@ -65,7 +65,7 @@ class ViewSchedulesPresenter
         $all = $this->resourceRepo->GetResourceList();
         /** @var BookableResource $resource */
         foreach ($all as $resource) {
-            if($resource->GetStatusId() != 0){
+            if ($resource->GetStatusId() != 0) {
                 $resources[$resource->GetScheduleId()][] = $resource;
             }
         }

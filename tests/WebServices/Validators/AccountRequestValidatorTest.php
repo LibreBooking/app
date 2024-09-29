@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Validators/AccountRequestValidator.php');
 
-class AccountRequestValidatorTests extends TestBase
+class AccountRequestValidatorTest extends TestBase
 {
     /**
      * @var FakeAttributeService

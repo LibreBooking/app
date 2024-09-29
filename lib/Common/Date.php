@@ -510,7 +510,7 @@ class Date
      */
     public function AddHours($hours)
     {
-        return new Date($this->Format(self::SHORT_FORMAT) . " +" . $hours . " hours", $this->timezone);
+        return new Date($this->Format(self::SHORT_FORMAT) . $this->getOperator($hours) . abs($hours) . " hours", $this->timezone);
     }
 
     /**

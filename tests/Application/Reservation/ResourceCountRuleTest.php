@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ResourceCountRuleTests extends TestBase
+class ResourceCountRuleTest extends TestBase
 {
     /**
      * @var FakeScheduleRepository

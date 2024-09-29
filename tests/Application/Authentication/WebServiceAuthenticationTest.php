@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class WebServiceAuthenticationTests extends TestBase
+class WebServiceAuthenticationTest extends TestBase
 {
     /**
      * @var FakeAuth
@@ -54,7 +54,7 @@ class WebServiceAuthenticationTests extends TestBase
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($expectedSession->SessionToken))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('Add')
@@ -74,7 +74,7 @@ class WebServiceAuthenticationTests extends TestBase
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($expectedSession->SessionToken))
-                ->will($this->returnValue(new WebServiceUserSession(123)));
+                ->willReturn(new WebServiceUserSession(123));
 
         $this->userSessionRepository->expects($this->once())
                 ->method('Update')
@@ -96,7 +96,7 @@ class WebServiceAuthenticationTests extends TestBase
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($sessionToken))
-                ->will($this->returnValue($userSession));
+                ->willReturn($userSession);
 
         $this->userSessionRepository->expects($this->once())
                 ->method('Delete')
@@ -117,7 +117,7 @@ class WebServiceAuthenticationTests extends TestBase
         $this->userSessionRepository->expects($this->once())
                 ->method('LoadBySessionToken')
                 ->with($this->equalTo($sessionToken))
-                ->will($this->returnValue($userSession));
+                ->willReturn($userSession);
 
         $this->webAuth->Logout($userId, $sessionToken);
 

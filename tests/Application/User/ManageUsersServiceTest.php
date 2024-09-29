@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/User/ManageUsersService.php');
 
-class ManageUsersServiceTests extends TestBase
+class ManageUsersServiceTest extends TestBase
 {
     /**
      * @var ManageUsersService
@@ -89,7 +89,7 @@ class ManageUsersServiceTests extends TestBase
                                $this->equalTo($extraAttributes),
                                $this->equalTo($customAttributes)
                            )
-                           ->will($this->returnValue($user));
+                           ->willReturn($user);
 
         $actualUser = $this->service->AddUser(
             $username,
@@ -138,12 +138,12 @@ class ManageUsersServiceTests extends TestBase
 
         $this->userViewRepo->expects($this->once())
                            ->method('GetApplicationAdmins')
-                           ->will($this->returnValue($appAdmins));
+                           ->willReturn($appAdmins);
 
         $this->userViewRepo->expects($this->once())
                            ->method('GetGroupAdmins')
                            ->with($this->equalTo($userId))
-                           ->will($this->returnValue($groupAdmins));
+                           ->willReturn($groupAdmins);
 
         $this->service->DeleteUser($userId);
 
@@ -203,20 +203,13 @@ class ManageUsersServiceTests extends TestBase
         $group4 = new FakeGroup(4);
         $group4->WithUser($userId);
 
-        $this->groupRepo->expects($this->at(0))
+        $this->groupRepo->expects($this->exactly(3))
                         ->method('LoadById')
-                        ->with($this->equalTo(2))
-                        ->will($this->returnValue($group2));
-
-        $this->groupRepo->expects($this->at(2))
-                        ->method('LoadById')
-                        ->with($this->equalTo(3))
-                        ->will($this->returnValue($group3));
-
-        $this->groupRepo->expects($this->at(4))
-                        ->method('LoadById')
-                        ->with($this->equalTo(4))
-                        ->will($this->returnValue($group4));
+                        ->willReturnMap([
+                            [2, $group2],
+                            [3, $group3],
+                            [4, $group4]
+                        ]);
 
         $this->service->ChangeGroups($user, $groupids);
 

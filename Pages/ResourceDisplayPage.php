@@ -72,6 +72,12 @@ interface IResourceDisplayPage extends IPage, IActionPage
     public function GetBeginTime();
 
     /**
+     *
+     * @return string
+     */
+    public function GetBeginDate();
+
+    /**
      * @return string
      */
     public function GetEndTime();
@@ -237,7 +243,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         }
         return $startDate;
     }
-    
+
     public function BindResource(BookableResource $resource)
     {
         $this->Set('ResourceName', $resource->GetName());

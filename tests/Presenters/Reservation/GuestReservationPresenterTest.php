@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reservation/GuestReservationPresenter.php');
 
-class GuestReservationPresenterTests extends TestBase
+class GuestReservationPresenterTest extends TestBase
 {
     /**
      * @var FakeGuestReservationPage
@@ -47,7 +47,7 @@ class GuestReservationPresenterTests extends TestBase
         $this->factory->expects($this->any())
             ->method('GetNewInitializer')
             ->with($this->anything())
-            ->will($this->returnValue($this->initializer));
+            ->willReturn($this->initializer);
 
         $this->presenter = new GuestReservationPresenter(
             $this->page,

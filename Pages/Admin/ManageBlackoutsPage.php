@@ -433,7 +433,8 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
      */
     public function GetPageSize()
     {
-        return $this->pageablePage->GetPageSize();
+        /* replaced by dataTable */
+        /*return $this->pageablePage->GetPageSize();*/
     }
 
     /**

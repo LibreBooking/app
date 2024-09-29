@@ -2,47 +2,52 @@
 
 <div id="page-import-ics" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-        <h1>{translate key=ImportICS}</h1>
+    <div class="card col-12 col-sm-8 mx-auto">
+        <div class="card-body">
+            <h1 class="border-bottom mb-3">{translate key=ImportICS}</h1>
 
-        <div class="margin-bottom-25">
-
-            <div id="importErrors" class="error hidden"></div>
-            <div id="importResult" class="hidden">
-                <span>{translate key=RowsImported}</span>
-
-                <div id="importCount" class="inline bold"></div>
-                <span>{translate key=RowsSkipped}</span>
-
-                <div id="importSkipped" class="inline bold"></div>
-                <a href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
+            <div>
+                <div class="alert alert-info fst-italic">
+                    <div class="note">{translate key=OnlyIcs}</div>
+                    <div class="note">{translate key=IcsLocationsAsResources}</div>
+                    <div class="note">{translate key=IcsMissingOrganizer}</div>
+                </div>
+                <div class="alert alert-warning">{translate key=IcsWarning}</div>
             </div>
-            <form id="icsImportForm" method="post" enctype="multipart/form-data" ajaxAction="importIcs">
-                <div class="validationSummary alert alert-danger no-show">
-                    <ul>
-                        {async_validator id="fileExtensionValidator" key=""}
-                        {async_validator id="importQuartzyValidator" key=""}
-                    </ul>
-                </div>
-                <div>
-                    <label for="importFile" class="no-show">Import File</label>
-                    <input type="file" {formname key=ICS_IMPORT_FILE} id="importFile" />
-                </div>
 
-                <div class="admin-update-buttons">
-                    <button id="btnUpload" type="button"
-                            class="btn btn-success save"><i class="fa fa fa-upload"></i> {translate key=Import}</button>
-                    {indicator}
+            <div class="">
+
+                <div id="importErrors" class="alert alert-danger d-none"></div>
+                <div id="importResult" class="alert alert-success d-none">
+                    <span>{translate key=RowsImported}</span>
+
+                    <span id="importCount" class="fw-bold"></span>
+                    <span>{translate key=RowsSkipped}</span>
+
+                    <span id="importSkipped" class="fw-bold"></span>
+                    <a href="{$smarty.server.SCRIPT_NAME}" class="alert-link">{translate key=Done}</a>
                 </div>
-            </form>
-        </div>
-        <div>
-            <div class="alert alert-info">
-                <div class="note">{translate key=OnlyIcs}</div>
-                <div class="note">{translate key=IcsLocationsAsResources}</div>
-                <div class="note">{translate key=IcsMissingOrganizer}</div>
+                <form id="icsImportForm" method="post" enctype="multipart/form-data" ajaxAction="importIcs">
+                    <div class="validationSummary alert alert-danger d-none">
+                        <ul>
+                            {async_validator id="fileExtensionValidator" key=""}
+                            {async_validator id="importQuartzyValidator" key=""}
+                        </ul>
+                    </div>
+                    <div class="mb-2">
+                        <label for="importFile" class="visually-hidden">Import File</label>
+                        <input type="file" {formname key=ICS_IMPORT_FILE} id="importFile" class="form-control"
+                            accept=".ics" />
+                    </div>
+
+                    <div class="admin-update-buttons ">
+                        <button id="btnUpload" type="button" class="btn btn-success save"><i class="bi bi-upload"></i>
+                            {translate key=Import}</button>
+                        {indicator}
+                    </div>
+                </form>
             </div>
-            <div class="alert alert-warning">{translate key=IcsWarning}</div>
+
         </div>
     </div>
 
@@ -54,34 +59,34 @@
 {jsfile src="js/jquery.form-3.09.min.js"}
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         var importForm = $('#icsImportForm');
 
-        var defaultSubmitCallback = function (form) {
-            return function () {
+        var defaultSubmitCallback = function(form) {
+            return function() {
                 return '{$smarty.server.SCRIPT_NAME}?action=' + form.attr('ajaxAction');
             };
         };
 
-        var importHandler = function (responseText, form) {
+        var importHandler = function(responseText, form) {
             if (!responseText) {
                 return;
             }
 
             $('#importCount').text(responseText.importCount);
             $('#importSkipped').text(responseText.skippedRows);
-            $('#importResult').show();
+            $('#importResult').removeClass('d-none');
 
             var errors = $('#importErrors');
             errors.empty();
             if (responseText.messages && responseText.messages.length > 0) {
                 var messages = responseText.messages.join('</li><li>');
-                errors.html('<div>' + messages + '</div>').show();
+                errors.html('<div>' + messages + '</div>').removeClass('d-none');
             }
         };
 
-        $('#btnUpload').click(function (e) {
+        $('#btnUpload').click(function(e) {
             e.preventDefault();
             importForm.submit();
         });

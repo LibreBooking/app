@@ -1,6 +1,6 @@
 <?php
 
-class ResourceGroupTests extends TestBase
+class ResourceGroupTest extends TestBase
 {
     public function setUp(): void
     {

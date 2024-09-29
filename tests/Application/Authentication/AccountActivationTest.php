@@ -1,6 +1,6 @@
 <?php
 
-class AccountActivationTests extends TestBase
+class AccountActivationTest extends TestBase
 {
     /**
      * @var IAccountActivationRepository|PHPUnit_Framework_MockObject_MockObject
@@ -51,7 +51,7 @@ class AccountActivationTests extends TestBase
         $this->activationRepo->expects($this->once())
                 ->method('FindUserIdByCode')
                 ->with($this->equalTo($activationCode))
-                ->will($this->returnValue($userId));
+                ->willReturn($userId);
 
         $this->activationRepo->expects($this->once())
                 ->method('DeleteActivation')
@@ -60,7 +60,7 @@ class AccountActivationTests extends TestBase
         $this->userRepo->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
+                ->willReturn($user);
 
         $this->userRepo->expects($this->once())
                 ->method('Update')
@@ -80,7 +80,7 @@ class AccountActivationTests extends TestBase
         $this->activationRepo->expects($this->once())
                 ->method('FindUserIdByCode')
                 ->with($this->equalTo($activationCode))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $result = $this->activation->Activate($activationCode);
 

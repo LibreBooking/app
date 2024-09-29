@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationAttachmentPresenter.php');
 
-class ReservationAttachmentPresenterTests extends TestBase
+class ReservationAttachmentPresenterTest extends TestBase
 {
     /**
      * @var ReservationAttachmentPresenter
@@ -52,21 +52,21 @@ class ReservationAttachmentPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetFileId')
-                ->will($this->returnValue($fileId));
+                ->willReturn($fileId);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadReservationAttachment')
                 ->with($this->equalTo($fileId))
-                ->will($this->returnValue($reservationAttachment));
+                ->willReturn($reservationAttachment);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadByReferenceNumber')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationSeries));
+                ->willReturn($reservationSeries);
 
         $this->page->expects($this->once())
                 ->method('BindAttachment')
@@ -97,21 +97,21 @@ class ReservationAttachmentPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetFileId')
-                ->will($this->returnValue($fileId));
+                ->willReturn($fileId);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadReservationAttachment')
                 ->with($this->equalTo($fileId))
-                ->will($this->returnValue($reservationAttachment));
+                ->willReturn($reservationAttachment);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadByReferenceNumber')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationSeries));
+                ->willReturn($reservationSeries);
 
         $this->page->expects($this->once())
                 ->method('ShowError');
@@ -132,21 +132,21 @@ class ReservationAttachmentPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetFileId')
-                ->will($this->returnValue($fileId));
+                ->willReturn($fileId);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadReservationAttachment')
                 ->with($this->equalTo($fileId))
-                ->will($this->returnValue($reservationAttachment));
+                ->willReturn($reservationAttachment);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadByReferenceNumber')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->page->expects($this->once())
                 ->method('ShowError');
@@ -161,16 +161,16 @@ class ReservationAttachmentPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetFileId')
-                ->will($this->returnValue($fileId));
+                ->willReturn($fileId);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadReservationAttachment')
                 ->with($this->equalTo($fileId))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->page->expects($this->once())
                 ->method('ShowError');
@@ -196,21 +196,21 @@ class ReservationAttachmentPresenterTests extends TestBase
 
         $this->page->expects($this->once())
                 ->method('GetFileId')
-                ->will($this->returnValue($fileId));
+                ->willReturn($fileId);
 
         $this->page->expects($this->once())
                 ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+                ->willReturn($referenceNumber);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadReservationAttachment')
                 ->with($this->equalTo($fileId))
-                ->will($this->returnValue($reservationAttachment));
+                ->willReturn($reservationAttachment);
 
         $this->reservationRepository->expects($this->once())
                 ->method('LoadByReferenceNumber')
                 ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationSeries));
+                ->willReturn($reservationSeries);
 
         $this->page->expects($this->once())
                 ->method('ShowError');

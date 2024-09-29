@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class QuotaWhenModifyingTests extends TestBase
+class QuotaWhenModifyingTest extends TestBase
 {
     /**
      * @var string
@@ -187,6 +187,6 @@ class QuotaWhenModifyingTests extends TestBase
         $this->reservationViewRepository->expects($this->once())
             ->method('GetReservations')
             ->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
     }
 }

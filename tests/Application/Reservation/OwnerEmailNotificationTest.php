@@ -6,7 +6,7 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmail.php');
 
-class OwnerEmailNotificationTests extends TestBase
+class OwnerEmailNotificationTest extends TestBase
 {
     public function setUp(): void
     {
@@ -104,7 +104,7 @@ class OwnerEmailNotificationTests extends TestBase
     //		$user->expects($this->once())
     //			->method('WantsEventEmail')
     //			->with($this->equalTo($event))
-    //			->will($this->returnValue(true));
+    //			->willReturn(true);
     //	}
 
     public function LoadsUser($userRepo, $ownerId)
@@ -115,7 +115,7 @@ class OwnerEmailNotificationTests extends TestBase
         $userRepo->expects($this->once())
             ->method('LoadById')
             ->with($this->equalTo($ownerId))
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         return $user;
     }

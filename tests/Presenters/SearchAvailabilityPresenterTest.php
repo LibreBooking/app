@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Presenters/SearchAvailabilityPresenter.php');
 
-class SearchAvailabilityPresenterTests extends TestBase
+class SearchAvailabilityPresenterTest extends TestBase
 {
     /**
      * @var SearchAvailabilityPresenter
@@ -128,7 +128,7 @@ class SearchAvailabilityPresenterTests extends TestBase
 
         $this->presenter->SearchAvailability();
 
-        $expectedSearchRange = new DateRange(Date::Parse('2016-07-03', $this->fakeUser->Timezone), Date::Parse('2016-07-09', $this->fakeUser->Timezone));
+        $expectedSearchRange = new DateRange(Date::Parse('2016-07-03', $this->fakeUser->Timezone), Date::Parse('2016-07-10', $this->fakeUser->Timezone));
         $this->assertEquals($expectedSearchRange, $this->reservationService->_LastDateRange);
     }
 
@@ -283,13 +283,13 @@ class SearchAvailabilityPresenterTests extends TestBase
         $resource = new TestResourceDto($resourceId);
         $this->resourceService->_AllResources = [$resource];
 
-        $sun = new Date('2019-01-20', $tz);
         $mon = new Date('2019-01-21', $tz);
         $tue = new Date('2019-01-22', $tz);
         $wed = new Date('2019-01-23', $tz);
         $thu = new Date('2019-01-24', $tz);
         $fri = new Date('2019-01-25', $tz);
         $sat = new Date('2019-01-26', $tz);
+        $sun = new Date('2019-01-27', $tz);
 
         Date::_SetNow($tue);
         $this->page->_Range = 'thisweek';

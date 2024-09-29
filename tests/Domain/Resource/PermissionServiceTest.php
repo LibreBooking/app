@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class PermissionServiceTests extends TestBase
+class PermissionServiceTest extends TestBase
 {
     public function testAsksStoreForAllowedResourcesAndReturnsTrueIfItExists()
     {
@@ -19,7 +19,7 @@ class PermissionServiceTests extends TestBase
         $store->expects($this->once())
             ->method('GetAllResources')
             ->with($this->equalTo($userId))
-            ->will($this->returnValue($resourceIdList));
+            ->willReturn($resourceIdList);
 
         $canAccess = $ps->CanAccessResource($resource, $user);
 
@@ -41,7 +41,7 @@ class PermissionServiceTests extends TestBase
         $store->expects($this->once())
             ->method('GetAllResources')
             ->with($this->equalTo($userId))
-            ->will($this->returnValue($resourceIdList));
+            ->willReturn($resourceIdList);
 
         $canAccess1 = $ps->CanAccessResource($resource, $user);
         $canAccess2 = $ps->CanAccessResource($resource, $user);

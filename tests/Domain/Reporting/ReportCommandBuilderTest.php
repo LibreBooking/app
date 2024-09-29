@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class ReportCommandBuilderTests extends TestBase
+class ReportCommandBuilderTest extends TestBase
 {
     public function setUp(): void
     {

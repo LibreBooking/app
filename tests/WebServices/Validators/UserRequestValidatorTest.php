@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/Validators/UserRequestValidator.php');
 
-class UserRequestValidatorTests extends TestBase
+class UserRequestValidatorTest extends TestBase
 {
     /**
      * @var IAttributeService
@@ -59,32 +59,21 @@ class UserRequestValidatorTests extends TestBase
         $this->assertTrue(count($errors) == 1);
     }
 
-    public function testCreateValidatesExistingEmail()
+    public function testCreateValidatesExistingEmailAndUsername()
     {
         $this->expectsAttributeValidator();
         $request = CreateUserRequest::Example();
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                 ->method('UserExists')
-                ->with($this->equalTo($request->emailAddress), $this->isNull())
-                ->will($this->returnValue(1));
+                ->willReturnMap(
+                [
+                    [$request->emailAddress, null, 1],
+                    [null, $request->userName, 1]
+                ]);
 
         $errors = $this->validator->ValidateCreateRequest($request);
-        $this->assertTrue(count($errors) == 1);
-    }
-
-    public function testCreateValidatesExistingUsername()
-    {
-        $this->expectsAttributeValidator();
-        $request = CreateUserRequest::Example();
-
-        $this->userRepository->expects($this->at(1))
-                ->method('UserExists')
-                ->with($this->isNull(), $this->equalTo($request->userName))
-                ->will($this->returnValue(1));
-
-        $errors = $this->validator->ValidateCreateRequest($request);
-        $this->assertTrue(count($errors) == 1);
+        $this->assertTrue(count($errors) == 2);
     }
 
     public function testCreateValidatesAttributes()
@@ -97,7 +86,7 @@ class UserRequestValidatorTests extends TestBase
                     $this->equalTo(CustomAttributeCategory::USER),
                     $this->equalTo([new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue)])
                 )
-                ->will($this->returnValue($result));
+                ->willReturn($result);
 
         $errors = $this->validator->ValidateCreateRequest($request);
         $this->assertTrue(count($errors) == 1);
@@ -136,10 +125,13 @@ class UserRequestValidatorTests extends TestBase
         $this->expectsAttributeValidator();
         $request = UpdateUserRequest::Example();
 
-        $this->userRepository->expects($this->at(0))
+        $this->userRepository->expects($this->exactly(2))
                 ->method('UserExists')
-                ->with($this->equalTo($request->emailAddress), $this->isNull())
-                ->will($this->returnValue(2));
+                ->willReturnMap(
+                [
+                    [$request->emailAddress, null, 2],
+                    [null, $request->userName, 1]
+                ]);
 
         $errors = $this->validator->ValidateUpdateRequest(1, $request);
         $this->assertTrue(count($errors) == 1);
@@ -150,10 +142,13 @@ class UserRequestValidatorTests extends TestBase
         $this->expectsAttributeValidator();
         $request = UpdateUserRequest::Example();
 
-        $this->userRepository->expects($this->at(1))
+        $this->userRepository->expects($this->exactly(2))
                 ->method('UserExists')
-                ->with($this->isNull(), $this->equalTo($request->userName))
-                ->will($this->returnValue(2));
+                ->willReturnMap(
+                    [
+                        [$request->emailAddress, null, 1],
+                        [null, $request->userName, 2]
+                    ]);
 
         $errors = $this->validator->ValidateUpdateRequest(1, $request);
         $this->assertTrue(count($errors) == 1);
@@ -169,7 +164,7 @@ class UserRequestValidatorTests extends TestBase
                     $this->equalTo(CustomAttributeCategory::USER),
                     $this->equalTo([new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue)])
                 )
-                ->will($this->returnValue($result));
+                ->willReturn($result);
 
         $errors = $this->validator->ValidateUpdateRequest(1, $request);
         $this->assertTrue(count($errors) == 1);
@@ -180,6 +175,6 @@ class UserRequestValidatorTests extends TestBase
         $this->attributeService->expects($this->any())
                 ->method('Validate')
                 ->with($this->anything(), $this->anything())
-                ->will($this->returnValue(new AttributeServiceValidationResult(true, null)));
+                ->willReturn(new AttributeServiceValidationResult(true, null));
     }
 }

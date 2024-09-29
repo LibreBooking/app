@@ -1,6 +1,6 @@
 <?php
 
-class ParticipationNotificationTests extends TestBase
+class ParticipationNotificationTest extends TestBase
 {
     /**
      * @var FakeUserRepository

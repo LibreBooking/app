@@ -27,6 +27,25 @@ class FakeResourceRepository implements IResourceRepository
 
     public $_PublicResourceIds = [];
 
+    public function GetResourceIdList(): array
+    {
+         throw new Exception('Not implemented');
+    }
+
+    public function GetUserResourceList() { }
+
+    public function GetUserResourceIdList() { }
+
+    public function GetUserList($resourceIds, $pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null) { }
+
+    public function GetUserResourcePermissions($userId, $resourceIds = []) { }
+
+    public function GetUserGroupResourcePermissions($userId, $resourceIds = []) { }
+
+    public function GetResourceAdminResourceIds($userId, $resourceIds = []) { }
+
+    public function GetScheduleAdminResourceIds($userId, $resourceIds = []) { }
+
     public function GetScheduleResources($scheduleId)
     {
         return $this->_ScheduleResourceList;

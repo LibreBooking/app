@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class ExistingReservationTests extends TestBase
+class ExistingReservationTest extends TestBase
 {
     public function setUp(): void
     {

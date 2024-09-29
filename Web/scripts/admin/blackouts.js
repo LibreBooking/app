@@ -60,7 +60,7 @@ function BlackoutManagement(opts) {
 			var id = tr.attr('data-blackout-id');
 
 			$.blockUI({
-				message: $('#update-box'), css: {textAlign: 'left'}
+				message: $('#update-box'), css: { textAlign: 'left' }
 			});
 
 			var updateDiv = $('#update-contents');
@@ -82,19 +82,18 @@ function BlackoutManagement(opts) {
 				});
 
 				$('#cancelUpdate').click(function (e) {
-                    $('#update-box').addClass('no-show');
-                    $.unblockUI();
+					$('#update-box').addClass('d-none');
+					$.unblockUI();
 				});
 
 				$('.blackoutResources').click(function (e) {
-					if ($(".blackoutResources input:checked").length == 0)
-					{
+					if ($(".blackoutResources input:checked").length == 0) {
 						e.preventDefault();
 					}
 				});
 				wireUpTimePickers();
 
-				$('#update-box').removeClass('no-show');
+				$('#update-box').removeClass('d-none');
 			});
 		});
 
@@ -145,7 +144,7 @@ function BlackoutManagement(opts) {
 			e.stopPropagation();
 			var isChecked = elements.deleteMultipleSelectAll.is(":checked");
 			elements.deleteMultipleCheckboxes.prop('checked', isChecked);
-			elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
+			elements.deleteMultiplePrompt.toggleClass('d-none', !isChecked);
 		});
 
 		elements.deleteMultipleCheckboxes.click(function (e) {
@@ -153,7 +152,7 @@ function BlackoutManagement(opts) {
 			var numberChecked = elements.reservationTable.find('.delete-multiple:checked').length;
 			var allSelected = numberChecked == elements.reservationTable.find('.delete-multiple').length;
 			elements.deleteMultipleSelectAll.prop('checked', allSelected);
-			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+			elements.deleteMultiplePrompt.toggleClass('d-none', numberChecked == 0);
 		});
 
 		ConfigureAsyncForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {
@@ -185,7 +184,7 @@ function BlackoutManagement(opts) {
 	}
 
 	function showWaitBox() {
-		$.blockUI({message: $('#wait-box')});
+		$.blockUI({ message: $('#wait-box') });
 
 		$('#result').hide();
 		$('#creatingNotification').show();
@@ -194,8 +193,7 @@ function BlackoutManagement(opts) {
 	function onBeforeAddSubmit(formData, jqForm, opts) {
 		var isValid = BeforeFormSubmit(formData, jqForm, opts);
 
-		if (isValid)
-		{
+		if (isValid) {
 			showWaitBox();
 		}
 		return isValid;
@@ -251,13 +249,11 @@ function BlackoutManagement(opts) {
 
 	function handleBlackoutApplicabilityChange() {
 		elements.allResources.change(function () {
-			if ($(this).is(':checked'))
-			{
+			if ($(this).is(':checked')) {
 				elements.addResourceId.attr('disabled', 'disabled');
 				elements.addScheduleId.removeAttr('disabled');
 			}
-			else
-			{
+			else {
 				elements.addScheduleId.attr('disabled', 'disabled');
 				elements.addResourceId.removeAttr('disabled');
 			}

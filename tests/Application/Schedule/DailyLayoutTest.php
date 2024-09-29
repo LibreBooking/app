@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
-class DailyLayoutTests extends TestBase
+class DailyLayoutTest extends TestBase
 {
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ class DailyLayoutTests extends TestBase
         $listing->expects($this->once())
             ->method('OnDateForResource')
             ->with($this->equalTo($date), $this->equalTo($resourceId))
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
 
         $layout = new DailyLayout($listing, $scheduleLayout);
         $layoutSlots = $layout->GetLayout($date, $resourceId);
@@ -57,7 +57,7 @@ class DailyLayoutTests extends TestBase
         $scheduleLayout->expects($this->once())
             ->method('GetLayout')
             ->with($this->equalTo($displayDate))
-            ->will($this->returnValue($periods));
+            ->willReturn($periods);
 
         $layout = new DailyLayout(new ReservationListing("America/Chicago"), $scheduleLayout);
         $labels = $layout->GetLabels($displayDate);
@@ -91,11 +91,11 @@ class DailyLayoutTests extends TestBase
         $scheduleLayout->expects($this->once())
             ->method('GetLayout')
             ->with($this->equalTo($displayDate))
-            ->will($this->returnValue($periods));
+            ->willReturn($periods);
 
         $scheduleLayout->expects($this->once())
             ->method('FitsToHours')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $layout = new DailyLayout(new ReservationListing("America/Chicago"), $scheduleLayout);
         $labels = $layout->GetPeriods($displayDate, true);
@@ -152,7 +152,7 @@ class DailyLayoutTests extends TestBase
         $listing->expects($this->once())
             ->method('OnDateForResource')
             ->with($this->equalTo($date), $this->equalTo($resourceId))
-            ->will($this->returnValue($reservations));
+            ->willReturn($reservations);
 
         $layout = new DailyLayout($listing, $scheduleLayout);
         $summary = $layout->GetSummary($date, $resourceId);

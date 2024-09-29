@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'Domain/Access/PaymentRepository.php');
 
-class PaymentRepositoryTests extends TestBase
+class PaymentRepositoryTest extends TestBase
 {
     /**
      * @var PaymentRepository

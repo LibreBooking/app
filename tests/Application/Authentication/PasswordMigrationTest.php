@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class PasswordMigrationTests extends TestBase
+class PasswordMigrationTest extends TestBase
 {
     /**
      * @var FakeDatabase

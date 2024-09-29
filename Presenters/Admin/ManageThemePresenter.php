@@ -16,6 +16,7 @@ class ManageThemePresenter extends ActionPresenter
         $this->AddAction('update', 'UpdateTheme');
         $this->AddAction('removeLogo', 'RemoveLogo');
         $this->AddAction('removeFavicon', 'RemoveFavicon');
+        $this->AddAction('removeCss', 'RemoveCss');
     }
 
     public function UpdateTheme()
@@ -98,6 +99,20 @@ class ManageThemePresenter extends ActionPresenter
         }
     }
 
+    public function RemoveCss()
+    {
+        try {
+            $targets = glob(ROOT_DIR . 'Web/css/custom-style.css');
+            foreach ($targets as $target) {
+                $removed = unlink($target);
+                if (!$removed) {
+                    Log::Error('Could not remove existing css. Ensure %s is writable.', $target);
+                }
+            }
+        } catch (Exception $ex) {
+            Log::Error('Could not remove css file. %s', $ex);
+        }
+    }
     protected function LoadValidators($action)
     {
         $this->page->RegisterValidator('logoFile', new FileUploadValidator($this->page->GetLogoFile()));

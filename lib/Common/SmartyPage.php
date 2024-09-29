@@ -2,7 +2,7 @@
 
 
 if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
-  require_once ROOT_DIR . 'vendor/autoload.php';
+    require_once ROOT_DIR . 'vendor/autoload.php';
 }
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
@@ -167,6 +167,8 @@ class SmartyPage extends Smarty
         $this->registerPlugin('modifier', 'join', [$this, 'Join']);
         $this->registerPlugin('modifier', 'intval', [$this, 'Intval']);
         $this->registerPlugin('modifier', 'strtolower', [$this, 'Strtolower']);
+        $this->registerPlugin('function', 'datatable', [$this, 'CreateDataTable']);
+        $this->registerPlugin('function', 'datatablefilter', [$this, 'CreateDataTableFilter']);
 
         /**
          * PageValidators
@@ -235,7 +237,7 @@ class SmartyPage extends Smarty
         $knownAttributes = ['key', 'title', 'href'];
         $attributes = $this->AppendAttributes($params, $knownAttributes);
 
-        return "<a href=\"$href\" title=\"$title\" $attributes>$string</a>";
+        return "<a href=\"$href\" class=\"link-primary\" title=\"$title\" $attributes><i class=\"bi bi-people-fill me-1\"></i>$string</a>";
     }
 
     public function SmartyTranslate($params, $smarty)
@@ -325,10 +327,13 @@ class SmartyPage extends Smarty
             $actualContent = trim($content);
 
             return empty($actualContent) ? '' :
-                    "<div class=\"$class\">
-					<div class=\"pull-left\"><i class=\"fa fa-warning fa-2x\"></i></div>
-					<div class=\"error-list\"><ul class=\"list-unstyled\">$actualContent</ul></div>
-				</div>";
+                '<div class="' . $class . ' d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill fs-2 me-3"></i>
+                    <div class="error-list">
+                        <ul class="list-unstyled">' . $actualContent . '</ul>
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
         }
         return '';
     }
@@ -561,13 +566,18 @@ class SmartyPage extends Smarty
         $size = $pageInfo->PageSize;
         $currentPage = $pageInfo->CurrentPage;
 
+        $sb->Append('<nav aria-label="Reservations Pagination">'); /* Nav for Bootstrap 5 */
         $sb->Append('<ul class="pagination">');
-        $sb->Append('<li>');
+        $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
-            ['page' => max(
-                1,
-                $currentPage - 1
-            ), 'size' => $size, 'text' => '&laquo;'],
+            [
+                'page' => max(
+                    1,
+                    $currentPage - 1
+                ),
+                'size' => $size,
+                'text' => '&laquo;'
+            ],
             $smarty
         ));
         $sb->Append('</li>');
@@ -576,23 +586,28 @@ class SmartyPage extends Smarty
             $isCurrent = ($i == $currentPage);
 
             if ($isCurrent) {
-                $sb->Append('<li class="active">');
+                $sb->Append('<li class="page-item active">');
             } else {
-                $sb->Append('<li>');
+                $sb->Append('<li class="page-item">');
             }
             $sb->Append($this->CreatePageLink(['page' => $i, 'size' => $size], $smarty));
             $sb->Append('</li>');
         }
-        $sb->Append('<li>');
+        $sb->Append('<li class="page-item">');
         $sb->Append($this->CreatePageLink(
-            ['page' => min(
-                $pageInfo->TotalPages,
-                $currentPage + 1
-            ), 'size' => $size, 'text' => '&raquo;'],
+            [
+                'page' => min(
+                    $pageInfo->TotalPages,
+                    $currentPage + 1
+                ),
+                'size' => $size,
+                'text' => '&raquo;'
+            ],
             $smarty
         ));
         $sb->Append('</li>');
         $sb->Append('</ul>');
+        $sb->Append('</nav>');/* End nav pagination Bootstrap 5 */
 
         return $sb->ToString();
     }
@@ -608,11 +623,110 @@ class SmartyPage extends Smarty
         $newUrl = $this->ReplaceQueryString($url, QueryStringKeys::PAGE, $page);
         $newUrl = $this->ReplaceQueryString($newUrl, QueryStringKeys::PAGE_SIZE, $pageSize);
 
-        $class = $iscurrent ? "page current" : "page";
+        $class = $iscurrent ? "page-link active" : "page-link";
 
         return sprintf('<a class="%s" href="%s" data-page="%s" data-page-size="%s">%s</a>', $class, $newUrl, $page, $pageSize, $text);
     }
 
+    public function CreateDataTable($params)
+    {
+        $tableId = $params['tableId'];
+        $searchText = $this->Resources->GetString('Filter');
+        $AllText = $this->Resources->GetString('All');
+        $NoResultsFoundText = $this->Resources->GetString('NoResultsFound');
+        $copyText = $this->Resources->GetString('Copy');
+        $exportText = $this->Resources->GetString('Export');
+        $printText = $this->Resources->GetString('Print');
+        $showHideText = $this->Resources->GetString('ShowHide');
+        $infoText = $this->Resources->GetString('Info');
+        $lengthMenuText = $this->Resources->GetString('LengthMenu');
+
+        if ($tableId == 'report-results') {
+            $pagination = '"paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "info": false,
+                "ordering": false,';
+        } else {
+            $pagination = '"lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $AllText . '"] ],';
+        }
+
+        return sprintf(
+            '<script>
+           var table =  $("#' . $tableId . '").DataTable({
+                "dom": \'<"d-flex justify-content-center flex-wrap"B><"d-flex justify-content-between flex-wrap mt-2"fil>rt<"d-flex justify-content-center"i><"d-flex justify-content-center"p><"clear">\',
+                ' . $pagination . '
+                language: {
+                    search: "' . $searchText . '",
+                    info: "' . $infoText . '",
+                    infoEmpty: "' . $NoResultsFoundText . '",
+                    infoFiltered: "",
+                    lengthMenu: "' . $lengthMenuText . '",
+                    zeroRecords: "' . $NoResultsFoundText .'",
+                },
+                buttons: [ 
+                    {
+                        extend: "copyHtml5",
+                        text: "<i class=\"bi bi-copy me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $copyText . '</div>", 
+                    },
+                    {
+                        extend: "excelHtml5",
+                        text: "<i class=\"bi bi-file-earmark-spreadsheet me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $exportText .' Excel</div>", 
+                    },
+                    {
+                        extend: "pdfHtml5",
+                        text: "<i class=\"bi bi-filetype-pdf me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $exportText . ' PDF</div>",
+                    },
+                    {
+                        extend: "print",
+                        text: "<i class=\"bi bi-printer me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $printText . '</div>",
+                    },
+                    {
+                        extend: "colvis",
+                        text: "<i class=\"bi bi-list-check me-1\"></i><div class=\"d-none d-sm-inline-block\">' . $showHideText . '</div>", 
+                    }
+                ],
+                "initComplete": function(settings, json) {
+                    var table = this.api();
+                    table.on("init.dt", function () {
+                        $(".dt-buttons .btn-secondary").removeClass("btn-secondary").addClass("btn-primary");
+                        $(".dt-buttons").addClass("btn-group-sm");
+                        $(".buttons-collection").addClass("btn-sm");
+                    });
+                },
+            });
+        </script>
+        '
+        );
+    }
+    public function CreateDataTableFilter($params)
+    {
+        $tableId = $params['tableId'];
+        $searchText = $this->Resources->GetString('Filter');
+        $viewAllText = $this->Resources->GetString('All');
+        $NoResultsFoundText = $this->Resources->GetString('NoResultsFound');
+        $infoText = $this->Resources->GetString('Info');
+        $lengthMenuText = $this->Resources->GetString('LengthMenu');
+
+        return sprintf(
+            '<script>
+           var table =  $("#' . $tableId . '").DataTable({
+                "dom": \'<"d-flex justify-content-between my-1"fl><t>t<"d-flex justify-content-center"i><"d-flex justify-content-center"p><"clear">\',
+                "lengthMenu": [ [25, 50, 75, 100, -1], [ 25, 50, 75, 100, "' . $viewAllText . '"] ],
+                language: {
+                    search: "' . $searchText . '",
+                    info: "' . $searchText . '",
+                    infoEmpty: "' . $infoText . '",
+                    infoFiltered: "",
+                    lengthMenu: "' . $lengthMenuText . '",
+                    zeroRecords: "' . $NoResultsFoundText .
+            '"
+                },
+            });
+        </script>
+        '
+        );
+    }
     public function ReplaceQueryString($url, $key, $value)
     {
         $newUrl = $url;
@@ -650,11 +764,12 @@ class SmartyPage extends Smarty
             $ignorePrivacy = true;
         }
 
-        if (!$ignorePrivacy && $config->GetSectionKey(
-            ConfigSection::PRIVACY,
-            ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-            new BooleanConverter()
-        ) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin
+        if (
+            !$ignorePrivacy && $config->GetSectionKey(
+                ConfigSection::PRIVACY,
+                ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
+                new BooleanConverter()
+            ) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin
         ) {
             return $this->Resources->GetString('Private');
         }
@@ -716,12 +831,11 @@ class SmartyPage extends Smarty
     public function DisplayIndicator($params, $smarty)
     {
         $id = isset($params['id']) ? $params['id'] : '';
-        $spinClass = isset($params['spinClass']) ? $params['spinClass'] : 'fa-spinner';
-        $size = isset($params['size']) ? "fa-{$params['size']}x" : 'fa-2x';
-        $show = isset($params['show']) ? '' : 'no-show';
+        $size = isset($params['size']) ? "spinner-border-{$params['size']}" : 'spinner-border-sm';
+        $show = isset($params['show']) ? '' : 'd-none';
         $class = isset($params['class']) ? $params['class'] : 'indicator';
 
-        echo "<span id=\"$id\" class=\"fa fa-spin $spinClass $size $class $show\"></span>";
+        echo "<span id=\"$id\" class=\"spinner-border $size $class $show\"></span>";
     }
 
     public function ReadOnlyAttribute($params, $smarty)
@@ -742,7 +856,7 @@ class SmartyPage extends Smarty
     public function CSRFToken($params, $smarty)
     {
         echo '<input type="hidden" id="csrf_token" name="' . FormKeys::CSRF_TOKEN . '" value="' .
-                ServiceLocator::GetServer()->GetUserSession()->CSRFToken . '"/>';
+            ServiceLocator::GetServer()->GetUserSession()->CSRFToken . '"/>';
     }
 
     private function GetButtonAttributes($params)
@@ -755,8 +869,8 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Cancel';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-default cancel ' . $class . '" data-dismiss="modal" ' . $this->GetButtonAttributes($params) . '>' .
-                Resources::GetInstance()->GetString($key) . '</button>';
+        echo '<button type="button" class="btn btn-outline-secondary cancel ' . $class . '" data-bs-dismiss="modal" ' . $this->GetButtonAttributes($params) . '>' .
+            Resources::GetInstance()->GetString($key) . '</button>';
     }
 
     public function UpdateButton($params, $smarty)
@@ -766,8 +880,8 @@ class SmartyPage extends Smarty
         $type = isset($params['submit']) ? 'submit' : 'button';
         $save = $type == 'submit' ? '' : ' save ';
 
-        echo '<button type="' . $type . '" class="btn btn-success' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
-                                                                                                                                                                                                      ->GetString($key) . '</button>';
+        echo '<button type="' . $type . '" class="btn btn-success' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-check2-circle"></i> ' . Resources::GetInstance()
+            ->GetString($key) . '</button>';
     }
 
     public function AddButton($params, $smarty)
@@ -780,8 +894,8 @@ class SmartyPage extends Smarty
             $type = 'submit';
         }
 
-        echo '<button type="' . $type . '" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
-                                                                                                                                                                                                    ->GetString($key) . '</button>';
+        echo '<button type="' . $type . '" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-check2-circle"></i> ' . Resources::GetInstance()
+            ->GetString($key) . '</button>';
     }
 
     public function DeleteButton($params, $smarty)
@@ -793,38 +907,38 @@ class SmartyPage extends Smarty
         if ($submit) {
             $type = 'submit';
         }
-        echo '<button type="' . $type . '" class="btn btn-danger save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-trash"></span> ' . Resources::GetInstance()
-                                                                                                                                                                                        ->GetString($key) . '</button>';
+        echo '<button type="' . $type . '" class="btn btn-danger save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-trash3-fill"></i> ' . Resources::GetInstance()
+            ->GetString($key) . '</button>';
     }
 
     public function ResetButton($params, $smarty)
     {
         $key = isset($params['key']) ? $params['key'] : 'Reset';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="reset" class="btn btn-default ' . $class . '" ' . $this->GetButtonAttributes($params) . '>' . Resources::GetInstance()
-                                                                                                                                    ->GetString($key) . '</button>';
+        echo '<button type="reset" class="btn btn-outline-secondary ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-arrow-counterclockwise"></i>' . Resources::GetInstance()
+            ->GetString($key) . '</button>';
     }
 
     public function FilterButton($params, $smarty)
     {
         $key = isset($params['key']) ? $params['key'] : 'Filter';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="glyphicon glyphicon-search"></span> ' . Resources::GetInstance()
-                                                                                                                                                                                      ->GetString($key) . '</button>';
+        echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-search"></i> ' . Resources::GetInstance()
+            ->GetString($key) . '</button>';
     }
 
     public function OkButton($params, $smarty)
     {
         $key = isset($params['key']) ? $params['key'] : 'OK';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
-                                                                                                                                                                                        ->GetString($key) . '</button>';
+        echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><i class="bi bi-check2-circle"></i> ' . Resources::GetInstance()
+            ->GetString($key) . '</button>';
     }
 
     public function ShowHideIcon($params, $smarty)
     {
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<a href="#"><span class="icon black show-hide glyphicon ' . $class . '"></span><span class="no-show">Show/Hide</span></a>';
+        echo '<a class="link-primary" href="#"><i class="show-hide bi ' . $class . '"></i><span class="visually-hidden">Show/Hide</span></a>';
     }
 
     public function SortColumn($params, $smarty)
@@ -844,9 +958,9 @@ class SmartyPage extends Smarty
         $indicator = '';
         if ($sortField == $currentField) {
             $sortDirection = $currentDirection == 'asc' ? 'desc' : 'asc';
-            $indicator = "<i class=\"fa fa-sort-desc\"></i>";
+            $indicator = "<i class=\"bi bi-caret-down-fill\"></i>";
             if ($currentDirection == 'asc') {
-                $indicator = "<i class=\"fa fa-sort-asc\"></i>";
+                $indicator = "<i class=\"bi bi-caret-up-fill\"></i>";
             }
         }
 

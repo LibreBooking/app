@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'WebServices/AttributesWebService.php');
 
-class AttributesWebServiceTests extends TestBase
+class AttributesWebServiceTest extends TestBase
 {
     /**
      * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
@@ -38,7 +38,7 @@ class AttributesWebServiceTests extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetById')
                 ->with($this->equalTo($attributeId))
-                ->will($this->returnValue($attribute));
+                ->willReturn($attribute);
 
         $expectedResponse = new CustomAttributeDefinitionResponse($this->server, $attribute);
 
@@ -54,7 +54,7 @@ class AttributesWebServiceTests extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetById')
                 ->with($this->equalTo($attributeId))
-                ->will($this->returnValue(null));
+                ->willReturn(null);
 
         $this->service->GetAttribute($attributeId);
 
@@ -69,7 +69,7 @@ class AttributesWebServiceTests extends TestBase
         $this->attributeService->expects($this->once())
                 ->method('GetByCategory')
                 ->with($this->equalTo($categoryId))
-                ->will($this->returnValue($attributes));
+                ->willReturn($attributes);
 
         $expectedResponse = new CustomAttributesResponse($this->server, $attributes);
 
