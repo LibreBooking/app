@@ -17,6 +17,7 @@ class ConfigKeys
     public const HOME_URL = 'home.url';
     public const INACTIVITY_TIMEOUT = 'inactivity.timeout';
     public const LANGUAGE = 'default.language';
+    public const ENFORCE_CUSTOM_MAIL_TEMPLATE = 'enforce.custom.mail.template';
     public const LOGOUT_URL = 'logout.url';
     public const NAME_FORMAT = 'name.format';
     public const SCRIPT_URL = 'script.url';

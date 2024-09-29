@@ -76,19 +76,35 @@ class SmartyPage extends Smarty
     }
 
     /**
+     * Fetches template in a specific language. A custom template file might override the default template.
+     * In case the template is not available in the target language it will fall back to en_us.
      * @param string $templateName
-     * @param null $languageCode uses current language is nothing is passed in
+     * @param string $languageCode Will be set to template var CurrentLanguage if null
+     * @param bool $enforceCustomTemplate if true uses custom language from default language
+     * if custom template of the target language is not available.
      * @return string
      */
-    public function FetchLocalized($templateName, $languageCode = null)
+    public function FetchLocalized($templateName, bool $enforceCustomTemplate, string $languageCode = null)
     {
-        if (empty($languageCode)) {
+        if ($languageCode == null) {
             $languageCode = $this->getTemplateVars('CurrentLanguage');
         }
-        $localizedPath = ROOT_DIR . 'lang/' . $languageCode;
+        $langPath = ROOT_DIR . 'lang/';
+        $localizedPath = $langPath . $languageCode;
         $customTemplateName = str_replace('.tpl', '-custom.tpl', $templateName);
+        $hasCustomTemplate = file_exists($localizedPath . '/' . $customTemplateName);
+        
+        if ($enforceCustomTemplate && !$hasCustomTemplate) {
+            $defaultLanguageCode = Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE);
+            $defaultLocalizedPath = $langPath . $defaultLanguageCode;
+            $hasCustomDefaultTemplate = file_exists($defaultLocalizedPath . '/' . $customTemplateName);
+            if ($languageCode != $defaultLanguageCode && $hasCustomDefaultTemplate) {
+                $hasCustomTemplate = true;
+                $localizedPath = $defaultLocalizedPath;
+            }
+        }
 
-        if (file_exists($localizedPath . '/' . $templateName) || file_exists($localizedPath . '/' . $customTemplateName)) {
+        if (file_exists($localizedPath . '/' . $templateName) || $hasCustomTemplate) {
             $path = $localizedPath;
             $this->AddTemplateDirectory($localizedPath);
         } else {
