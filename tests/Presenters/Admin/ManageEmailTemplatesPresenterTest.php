@@ -74,11 +74,12 @@ class ManageEmailTemplatesPresenterTest extends TestBase
         $this->page->_UpdatedTemplateName = $templateName;
         $this->page->_TemplateContents = $contents;
         $this->page->_Language = 'en_us';
+        $this->page->_UpdatedLanguage = 'cz';
 
         $this->presenter->UpdateEmailTemplate();
 
         $this->assertEquals($contents, $this->fileSystem->_AddedFileContents);
-        $this->assertEquals(Paths::EmailTemplates('en_us'), $this->fileSystem->_AddedFilePath);
+        $this->assertEquals(Paths::EmailTemplates('cz'), $this->fileSystem->_AddedFilePath);
         $this->assertEquals('template-custom.tpl', $this->fileSystem->_AddedFileName);
     }
 }
@@ -91,6 +92,7 @@ class FakeManageEmailTemplatesPage extends ManageEmailTemplatesPage
     public $_BoundTemplateContents;
     public $_TemplateContents;
     public $_Language;
+    public $_UpdatedLanguage;
     public $_SaveResult = true;
 
     public function BindTemplateNames($templates)
@@ -121,6 +123,11 @@ class FakeManageEmailTemplatesPage extends ManageEmailTemplatesPage
     public function GetLanguage()
     {
         return $this->_Language;
+    }
+
+    public function GetUpdatedLanguage(): string
+    {
+        return $this->_UpdatedLanguage;
     }
 
     public function SetSaveResult($saveResult)
