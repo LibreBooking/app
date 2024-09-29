@@ -15,18 +15,18 @@
 
         </div>
 
-        <div class="form-group col-sm-4 col-xs-6">
-            <select id="languageOpts" title="{translate key=Language}" class="form-control">
-                {foreach from=$Languages item=language}
-                    <option value="{$language->LanguageCode}"
-                            {if $Language==$language->LanguageCode}selected="selected"{/if}>{$language->DisplayName}</option>
-                {/foreach}
-            </select>
-        </div>
+        <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
+            <div class="form-group col-sm-4 col-xs-6">
+                <select id="languageOpts" {formname key=EMAIL_TEMPLATE_LANGUAGE} title="{translate key=Language}" class="form-control">
+                    {foreach from=$Languages item=language}
+                        <option value="{$language->LanguageCode}"
+                                {if $Language==$language->LanguageCode}selected="selected"{/if}>{$language->DisplayName}</option>
+                    {/foreach}
+                </select>
+            </div>
 
-        <div id="editEmailSection" class="no-show">
-            <div>
-                <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
+            <div id="editEmailSection" class="no-show">
+                <div>
                     <div class="form-group col-xs-12">
                     <textarea id="templateContents" {formname key=EMAIL_CONTENTS} title="{translate key=EmailTemplate}"
                               class="form-control" rows="20" style="width:100%"></textarea>
@@ -41,8 +41,8 @@
 
                     <input type="hidden" id="templatePath" {formname key=EMAIL_TEMPLATE_NAME} />
                     {csrf_token}
-                </form>
-            </div>
+                </div>
+            </form>
 
             <div id="updateSuccess" class="alert alert-success col-xs-12" style="display:none;">
                 <span class="glyphicon glyphicon-ok-sign"></span> {translate key=UpdateEmailTemplateSuccess}

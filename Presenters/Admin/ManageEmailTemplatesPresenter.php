@@ -117,7 +117,7 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
         try {
             Log::Debug('Updating email template. Template=%s', $templateName);
 
-            $templatePath = Paths::EmailTemplates($this->GetSelectedLanguage());
+            $templatePath = Paths::EmailTemplates($this->page->GetUpdatedLanguage());
             $saveResult = $this->filesystem->Save($templatePath, str_replace('.tpl', '-custom.tpl', $templateName), $this->page->GetTemplateContents());
 
             $this->filesystem->FlushSmartyCache();
