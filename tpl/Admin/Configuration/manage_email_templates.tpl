@@ -16,15 +16,15 @@
 
             </div>
 
-        <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
-            <div class="form-group col-sm-4 col-xs-6">
-                <select id="languageOpts" {formname key=EMAIL_TEMPLATE_LANGUAGE} title="{translate key=Language}" class="form-select">
-                    {foreach from=$Languages item=language}
-                        <option value="{$language->LanguageCode}" {if $Language==$language->LanguageCode} selected="selected"
-                            {/if}>{$language->DisplayName}</option>
-                    {/foreach}
-                </select>
-            </div>
+            <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
+                <div class="form-group col-sm-4 col-xs-6">
+                    <select id="languageOpts" {formname key=EMAIL_TEMPLATE_LANGUAGE} title="{translate key=Language}" class="form-select">
+                        {foreach from=$Languages item=language}
+                            <option value="{$language->LanguageCode}" {if $Language==$language->LanguageCode} selected="selected"
+                                {/if}>{$language->DisplayName}</option>
+                        {/foreach}
+                    </select>
+                </div>
 
                 <div id="editEmailSection" class="d-none">
                     <div class="mb-2">
