@@ -433,7 +433,7 @@ class Net_LDAP2 extends PEAR
             $this->_config['host'] = $host;
 
             // Attempt a connection.
-            $this->_link = @ldap_connect($host, $this->_config['port']);
+            $this->_link = @ldap_connect($host . ":" . $this->_config['port']);
             if (false === $this->_link) {
                 $current_error = PEAR::raiseError('Could not connect to ' .
                     $host . ':' . $this->_config['port']);
