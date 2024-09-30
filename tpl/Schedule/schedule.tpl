@@ -39,7 +39,7 @@
 {* End slot display formatting *}
 
 {block name="header"}
-    {include file='globalheader.tpl' Qtip=true Select2=true Owl=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/schedule.print.css'}
+    {include file='globalheader.tpl' Qtip=true Select2=true cssFiles='scripts/css/jqtree.css,css/schedule.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
 <div id="page-schedule">
@@ -382,7 +382,7 @@
 
 <div id="loading-schedule" class="d-none">Loading reservations...</div>
 
-{include file="javascript-includes.tpl" Qtip=true Select2=true Owl=true Clear=true}
+{include file="javascript-includes.tpl" Qtip=true Select2=true Clear=true}
 
 {block name="scripts-before"}
 
@@ -397,11 +397,10 @@
 {jsfile src="autocomplete.js"}
 {jsfile src="ajax-helpers.js"}
 <script type="text/javascript">
-
-let resourceMaxConcurrentReservations = {};
-{foreach from=$Resources item=r}
-    resourceMaxConcurrentReservations[{$r->GetId()}] = {$r->MaxConcurrentReservations};
-{/foreach}
+    let resourceMaxConcurrentReservations = {};
+    {foreach from=$Resources item=r}
+        resourceMaxConcurrentReservations[{$r->GetId()}] = {$r->MaxConcurrentReservations};
+    {/foreach}
 
 
     const scheduleOpts = {

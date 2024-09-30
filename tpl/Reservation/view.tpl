@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true Owl=false printCssFiles='css/reservation.print.css'}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading' printCssFiles='css/reservation.print.css'}
 <div id="page-view-reservation">
     <div id="reservation-box" class="card shadow readonly">
         <div id="reservationFormDiv" class="card-body">
@@ -366,7 +366,7 @@
     </div>
 </div>
 
-{include file="javascript-includes.tpl" Qtip=true Owl=true}
+{include file="javascript-includes.tpl"}
 {jsfile src="participation.js"}
 {jsfile src="approval.js"}
 {jsfile src="js/jquery.autogrow.js"}

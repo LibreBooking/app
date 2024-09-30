@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Select2=true Qtip=true DataTable=true}
+{include file='globalheader.tpl' Select2=true DataTable=true}
 
 <div class="page-search-reservations">
     <div class="card shadow mb-2">

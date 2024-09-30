@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Select2=true Owl=true Timepicker=true}
+{include file='globalheader.tpl' Select2=true Timepicker=true}
 
 <div class="page-search-availability">
     <div class="card shadow mb-3">
@@ -155,7 +155,7 @@
 
     {csrf_token}
 
-    {include file="javascript-includes.tpl" Select2=true Owl=true Timepicker=true}
+    {include file="javascript-includes.tpl" Select2=true Timepicker=true}
     {jsfile src="js/tree.jquery.js"}
     {jsfile src="js/jquery.cookie.js"}
     {jsfile src="ajax-helpers.js"}

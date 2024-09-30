@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true qtip=true DataTable=true}
+{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true DataTable=true}
 
 <div id="page-manage-schedules" class="admin-page">
 

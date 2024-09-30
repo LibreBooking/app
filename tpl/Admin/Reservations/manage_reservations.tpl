@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Qtip=true InlineEdit=true DataTable=true}
+{include file='globalheader.tpl' InlineEdit=true DataTable=true}
 
 <div id="page-manage-reservations" class="admin-page">
 	<div class="clearfix border-bottom mb-3">
@@ -591,7 +591,7 @@
 		</div>
 	</div>
 
-	{include file="javascript-includes.tpl" Qtip=true InlineEdit=true Clear=true DataTable=true}
+	{include file="javascript-includes.tpl" InlineEdit=true Clear=true DataTable=true}
 	{datatable tableId=$tableId}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/reservations.js"}
