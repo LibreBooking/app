@@ -54,7 +54,7 @@ function BlackoutManagement(opts) {
 			$('#wait-box').modal('hide');
 		});
 
-		elements.blackoutTable.find('.edit').click(function (e) {
+		elements.blackoutTable.on('click', '.edit', function (e) {
 			$('#update-spinner').removeClass('d-none');
 			var tr = $(this).parents('tr');
 			var id = tr.attr('data-blackout-id');
