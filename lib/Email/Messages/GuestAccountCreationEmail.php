@@ -2,49 +2,16 @@
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
-class GuestAccountCreationEmail extends EmailMessage
+class GuestAccountCreationEmail
 {
-    /**
-     * @var User
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $password;
-
-    public function __construct(User $user, $password)
+    public static function BuilderFor(User $user, $password): EmailBuilder
     {
-        $this->user = $user;
-        $this->password = $password;
-
-        parent::__construct($user->Language());
-    }
-
-    /**
-     * @return array|EmailAddress[]|EmailAddress
-     */
-    public function To()
-    {
-        return new EmailAddress($this->user->EmailAddress(), $this->user->FullName());
-    }
-
-    /**
-     * @return string
-     */
-    public function Subject()
-    {
-        return $this->Translate('GuestAccountCreatedSubject', [Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)]);
-    }
-
-    /**
-     * @return string
-     */
-    public function Body()
-    {
-        $this->Set('EmailAddress', $this->user->EmailAddress());
-        $this->Set('Password', $this->password);
-        return $this->FetchTemplate('GuestAccountCreation.tpl');
+        return (new EmailBuilder)
+            ->SubjectTranslation('GuestAccountCreatedSubject', [Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)])
+            ->AddTo($user->EmailAddress(), $user->FullName())
+            ->Template('GuestAccountCreation.tpl')
+            ->LanguageCode($user->Language())
+            ->Set('EmailAddress', $user->EmailAddress())
+            ->Set('Password', $password);
     }
 }

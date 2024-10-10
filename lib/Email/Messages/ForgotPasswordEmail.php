@@ -3,48 +3,15 @@
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 
-class ForgotPasswordEmail extends EmailMessage
+class ForgotPasswordEmail
 {
-    /**
-     * @var \User
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $temporaryPassword;
-
-    public function __construct(User $user, $temporaryPassword)
+    public static function BuilderFor(User $user, $temporaryPassword): EmailBuilder
     {
-        parent::__construct($user->Language());
-
-        $this->user = $user;
-        $this->temporaryPassword = $temporaryPassword;
-    }
-
-    /**
-     * @return EmailAddress[]
-     */
-    public function To()
-    {
-        return new EmailAddress($this->user->EmailAddress(), $this->user->FullName());
-    }
-
-    /**
-     * @return string
-     */
-    public function Subject()
-    {
-        return $this->Translate('ResetPasswordRequest');
-    }
-
-    /**
-     * @return string
-     */
-    public function Body()
-    {
-        $this->Set('TemporaryPassword', $this->temporaryPassword);
-        return $this->FetchTemplate('ResetPassword.tpl');
+        return (new EmailBuilder)
+            ->SubjectTranslation('ResetPasswordRequest')
+            ->AddTo($user->EmailAddress(), $user->FullName())
+            ->Template('ResetPassword.tpl')
+            ->LanguageCode($user->Language())
+            ->Set('TemporaryPassword', $temporaryPassword);
     }
 }

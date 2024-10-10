@@ -2,53 +2,19 @@
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
-class AccountDeletedEmail extends EmailMessage
+class AccountDeletedEmail
 {
-    /**
-     * @var User
-     */
-    private $deletedUser;
-    /**
-     * @var UserDto
-     */
-    private $to;
-    /**
-     * @var UserSession
-     */
-    private $userSession;
-
-    public function __construct(User $deletedUser, UserDto $to, UserSession $userSession)
+    public static function BuilderFor(User $deletedUser, UserDto $to, UserSession $userSession): EmailBuilder
     {
-        parent::__construct($to->LanguageCode);
-
-        $this->deletedUser = $deletedUser;
-        $this->to = $to;
-        $this->userSession = $userSession;
-    }
-
-    /**
-     * @return array|EmailAddress[]|EmailAddress
-     */
-    public function To()
-    {
-        return new EmailAddress($this->to->EmailAddress(), $this->to->FullName());
-    }
-
-    /**
-     * @return string
-     */
-    public function Subject()
-    {
-        return $this->Translate('UserDeleted', [$this->deletedUser->FullName(), new FullName($this->userSession->FirstName, $this->userSession->LastName)]);
-    }
-
-    /**
-     * @return string
-     */
-    public function Body()
-    {
-        $this->Set('UserFullName', $this->deletedUser->FullName());
-        $this->Set('AdminFullName', new FullName($this->userSession->FirstName, $this->userSession->LastName));
-        return $this->FetchTemplate('AccountDeleted.tpl');
+        return (new EmailBuilder)
+            ->SubjectTranslation('UserDeleted', [
+                $deletedUser->FullName(), 
+                new FullName($userSession->FirstName, $userSession->LastName)
+                ])
+            ->AddTo($to->EmailAddress(), $to->FullName())
+            ->Template('AccountDeleted.tpl')
+            ->LanguageCode($to->LanguageCode)
+            ->Set('UserFullName', $deletedUser->FullName())
+            ->Set('AdminFullName', new FullName($userSession->FirstName, $userSession->LastName));
     }
 }

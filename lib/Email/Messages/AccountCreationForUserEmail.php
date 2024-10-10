@@ -2,65 +2,29 @@
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
-class AccountCreationForUserEmail extends EmailMessage
+class AccountCreationForUserEmail
 {
-    /**
-     * @var User
-     */
-    private $user;
-
-    /**
-     * @var null|UserSession
-     */
-    private $userSession;
-
-    /**
-     * @var string
-     */
-    private $password;
-
-    public function __construct(User $user, $password, $userSession = null)
+    public static function BuilderFor(User $user, $password, $userSession = null): EmailBuilder
     {
-        $this->user = $user;
-        $this->userSession = $userSession;
-        $this->password = $password;
-        parent::__construct(Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE));
-    }
+        $builder = new EmailBuilder();
+        $builder
+            ->SubjectTranslation('GuestAccountCreatedSubject', [Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)])
+            ->AddTo($user->EmailAddress(), $user->FullName())
+            ->Template('AccountCreationForUser.tpl')
+            ->LanguageCode(Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE))
+            ->Set('FullName', $user->FullName())
+            ->Set('EmailAddress', $user->EmailAddress())
+            ->Set('Phone', $user->GetAttribute(UserAttribute::Phone))
+            ->Set('Organization', $user->GetAttribute(UserAttribute::Organization))
+            ->Set('Position', $user->GetAttribute(UserAttribute::Position))
+            ->Set('Password', $password)
+            ->Set('AppTitle', Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE))
+            ->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl())
+            ->Set('CreatedBy', '');
 
-    /**
-     * @return array|EmailAddress[]|EmailAddress
-     */
-    public function To()
-    {
-        return new EmailAddress($this->user->EmailAddress(), $this->user->FullName());
-    }
-
-    /**
-     * @return string
-     */
-    public function Subject()
-    {
-        return $this->Translate('GuestAccountCreatedSubject', [Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)]);
-    }
-
-    /**
-     * @return string
-     */
-    public function Body()
-    {
-        $this->Set('FullName', $this->user->FullName());
-        $this->Set('EmailAddress', $this->user->EmailAddress());
-        $this->Set('Phone', $this->user->GetAttribute(UserAttribute::Phone));
-        $this->Set('Organization', $this->user->GetAttribute(UserAttribute::Organization));
-        $this->Set('Position', $this->user->GetAttribute(UserAttribute::Position));
-        $this->Set('Password', $this->password);
-        $this->Set('AppTitle', Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE));
-        $this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
-        $this->Set('CreatedBy', '');
-        if ($this->userSession != null && $this->userSession->UserId != $this->user->Id()) {
-            $this->Set('CreatedBy', new FullName($this->userSession->FirstName, $this->userSession->LastName));
-        }
-
-        return $this->FetchTemplate('AccountCreationForUser.tpl');
+        if ($userSession != null && $userSession->UserId != $user->Id()) {
+            $builder->Set('CreatedBy', new FullName($userSession->FirstName, $userSession->LastName));
+        }    
+        return $builder;
     }
 }
