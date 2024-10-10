@@ -18,6 +18,7 @@ $conf['settings']['company.url'] = '';                          // URL of compan
 $conf['settings']['default.page.size'] = '50';                  // number of records per page
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
 $conf['settings']['default.language'] = 'en_us';                // find your language in the lang directory
+$conf['settings']['enforce.custom.mail.template'] = 'false';    // Fallback to default.language for missing custom templates, bu only when custom template is available for default.language 
 $conf['settings']['script.url'] = '';                           // public URL to the Web directory of this instance. this is the URL that appears when you are logging in. leave http: or https: off to auto-detect
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or relative path to where images will be stored
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from

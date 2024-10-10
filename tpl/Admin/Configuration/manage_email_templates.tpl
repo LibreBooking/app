@@ -16,19 +16,19 @@
 
             </div>
 
-            <div class="form-group col-sm-4 col-6">
-                <select id="languageOpts" title="{translate key=Language}" class="form-select">
-                    {foreach from=$Languages item=language}
-                        <option value="{$language->LanguageCode}" {if $Language==$language->LanguageCode}selected="selected"
-                            {/if}>{$language->DisplayName}</option>
-                    {/foreach}
-                </select>
-            </div>
+            <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
+                <div class="form-group col-sm-4 col-xs-6">
+                    <select id="languageOpts" {formname key=EMAIL_TEMPLATE_LANGUAGE} title="{translate key=Language}" class="form-select">
+                        {foreach from=$Languages item=language}
+                            <option value="{$language->LanguageCode}" {if $Language==$language->LanguageCode} selected="selected"
+                                {/if}>{$language->DisplayName}</option>
+                        {/foreach}
+                    </select>
+                </div>
 
-            <div id="editEmailSection" class="d-none">
-                <div class="mb-2">
-                    <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
-                        <div class="form-group">
+                <div id="editEmailSection" class="d-none">
+                    <div class="mb-2">
+                            <div class="form-group">
                             <textarea id="templateContents" {formname key=EMAIL_CONTENTS}
                                 title="{translate key=EmailTemplate}" class="form-control mb-2" rows="20"
                                 style="width:100%"></textarea>
@@ -41,10 +41,10 @@
                                 value="{translate key=ReloadOriginalContents}" />
                         </div>
 
-                        <input type="hidden" id="templatePath" {formname key=EMAIL_TEMPLATE_NAME} />
-                        {csrf_token}
-                    </form>
+                    <input type="hidden" id="templatePath" {formname key=EMAIL_TEMPLATE_NAME} />
+                    {csrf_token}
                 </div>
+            </form>
 
                 <div id="updateSuccess" class="alert alert-success" style="display:none;">
                     <i class="bi bi-check-circle me-1"></i> {translate key=UpdateEmailTemplateSuccess}

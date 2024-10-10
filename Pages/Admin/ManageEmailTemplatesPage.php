@@ -44,6 +44,8 @@ interface IManageEmailTemplatesPage extends IActionPage
      * @return string
      */
     public function GetUpdatedTemplateName();
+
+    public function GetUpdatedLanguage(): string;
 }
 
 class ManageEmailTemplatesPage extends ActionPage implements IManageEmailTemplatesPage
@@ -73,6 +75,11 @@ class ManageEmailTemplatesPage extends ActionPage implements IManageEmailTemplat
         $this->presenter->PageLoad();
 
         $this->Display('Admin/Configuration/manage_email_templates.tpl');
+    }
+
+    public function GetUpdatedLanguage(): string 
+    { 
+        return $this->GetForm(FormKeys::EMAIL_TEMPLATE_LANGUAGE);
     }
 
     public function GetLanguage()

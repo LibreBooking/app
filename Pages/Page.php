@@ -395,13 +395,10 @@ abstract class Page implements IPage
 
     /**
      * @param string $templateName
-     * @param null $languageCode uses current language is nothing is passed in
      */
-    protected function DisplayLocalized($templateName, $languageCode = null)
+    protected function DisplayLocalized($templateName)
     {
-        if (empty($languageCode)) {
-            $languageCode = $this->GetVar('CurrentLanguage');
-        }
+        $languageCode = $this->GetVar('CurrentLanguage');        
         $localizedPath = ROOT_DIR . 'lang/' . $languageCode;
         $defaultPath = ROOT_DIR . 'lang/en_us/';
 
