@@ -89,7 +89,6 @@ class FormKeys
     public const ENABLE_AUTO_RELEASE = 'ENABLE_AUTO_RELEASE';
     public const EMAIL_CONTENTS = 'EMAIL_CONTENTS';
     public const EMAIL_TEMPLATE_NAME = 'EMAIL_TEMPLATE_NAME';
-    public const EMAIL_TEMPLATE_LANGUAGE = 'EMAIL_TEMPLATE_LANGUAGE';
 
     public const FIRST_NAME = 'fname';
     public const FAVICON_FILE = 'FAVICON_FILE';

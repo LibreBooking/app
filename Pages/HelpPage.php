@@ -18,5 +18,20 @@ class HelpPage extends Page
         $this->Set('ServerTimezone', date_default_timezone_get());
 
         $this->DisplayLocalized('support-and-credits.tpl');
+
+        //		$helpType = $this->GetQuerystring('ht');
+//
+//		if ($helpType == 'about')
+//		{
+//
+//		}
+//		else if ($helpType == 'admin')
+//		{
+//			$this->DisplayLocalized('help-admin.tpl');
+//		}
+//		else
+//		{
+//			$this->DisplayLocalized('help.tpl');
+//		}
     }
 }

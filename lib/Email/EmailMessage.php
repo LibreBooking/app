@@ -5,7 +5,7 @@ abstract class EmailMessage implements IEmailMessage
     /**
      * @var SmartyPage
      */
-    protected $email;
+    private $email;
     /**
      * @var string|null
      */
@@ -15,11 +15,8 @@ abstract class EmailMessage implements IEmailMessage
      */
     private $attachmentFileName;
 
-    protected bool $enforceCustomTemplate;
-
     protected function __construct($languageCode = null)
     {
-        $this->enforceCustomTemplate = Configuration::Instance()->GetKey(ConfigKeys::ENFORCE_CUSTOM_MAIL_TEMPLATE, new BooleanConverter());
         $this->email = new SmartyPage($resources);
         $resources = Resources::GetInstance();
         if (!empty($languageCode)) {
@@ -40,7 +37,7 @@ abstract class EmailMessage implements IEmailMessage
     protected function FetchTemplate($templateName, $includeHeaders = true)
     {
         $header = $includeHeaders ? $this->email->fetch('Email/emailheader.tpl') : '';
-        $body = $this->email->FetchLocalized($templateName, $this->enforceCustomTemplate);
+        $body = $this->email->FetchLocalized($templateName);
         $footer = $includeHeaders ? $this->email->fetch('Email/emailfooter.tpl') : '';
 
         return $header . $body . $footer;

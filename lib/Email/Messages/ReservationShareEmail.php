@@ -7,7 +7,7 @@ class ReservationShareEmail extends ReservationEmailMessage
     /**
      * @var string
      */
-    private $emailToShare;
+    private $email;
 
     public function __construct(User $reservationOwner, $emailToShare, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
     {
@@ -16,12 +16,12 @@ class ReservationShareEmail extends ReservationEmailMessage
         $this->reservationOwner = $reservationOwner;
         $this->reservationSeries = $reservationSeries;
         $this->timezone = $reservationOwner->Timezone();
-        $this->emailToShare = $emailToShare;
+        $this->email = $emailToShare;
     }
 
     public function To()
     {
-        return [new EmailAddress($this->emailToShare)];
+        return [new EmailAddress($this->email)];
     }
 
     public function Subject()
