@@ -32,7 +32,7 @@ class ReportEmailMessage extends EmailMessage
         $this->Set('Definition', $definition);
         $this->Set('Report', $report);
         $this->Set('ReportCsvColumnView', new ReportCsvColumnView($selectedColumns));
-        $contents = $this->email->FetchLocalized('Reports/custom-csv.tpl', false);
+        $contents = $this->FetchTemplate('Reports/custom-csv.tpl', false);
 
         $name = $report->ReportName();
         if (!empty($name)) {
