@@ -51,25 +51,22 @@ function BlackoutManagement(opts) {
 
 		$('#result').delegate('.unblock', 'click', function (e) {
 			$('#result').hide();
-			$.unblockUI();
+			$('#wait-box').modal('hide');
 		});
 
-		elements.blackoutTable.find('.edit').click(function (e) {
-			$('#update-spinner').show();
+		elements.blackoutTable.on('click', '.edit', function (e) {
+			$('#update-spinner').removeClass('d-none');
 			var tr = $(this).parents('tr');
 			var id = tr.attr('data-blackout-id');
 
-			$.blockUI({
-				message: $('#update-box'), css: { textAlign: 'left' }
-			});
+			$('#update-box').modal('show');
 
 			var updateDiv = $('#update-contents');
 
 			updateDiv.empty();
 			updateDiv.load(opts.editUrl + id, function () {
-				$('.blockUI').css('cursor', 'default');
 
-				$('#update-spinner').hide();
+				$('#update-spinner').addClass('d-none');
 
 				ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
 					onBeforeSubmit: onBeforeAddSubmit, target: '#result'
@@ -81,10 +78,10 @@ function BlackoutManagement(opts) {
 					$(this).closest('form').submit();
 				});
 
-				$('#cancelUpdate').click(function (e) {
+				/*$('#cancelUpdate').click(function (e) {
 					$('#update-box').addClass('d-none');
 					$.unblockUI();
-				});
+				});*/
 
 				$('.blackoutResources').click(function (e) {
 					if ($(".blackoutResources input:checked").length == 0) {
@@ -93,7 +90,6 @@ function BlackoutManagement(opts) {
 				});
 				wireUpTimePickers();
 
-				$('#update-box').removeClass('d-none');
 			});
 		});
 
@@ -184,7 +180,8 @@ function BlackoutManagement(opts) {
 	}
 
 	function showWaitBox() {
-		$.blockUI({ message: $('#wait-box') });
+		$('#update-box').modal('hide');
+		$('#wait-box').modal('show');
 
 		$('#result').hide();
 		$('#creatingNotification').show();
@@ -205,7 +202,6 @@ function BlackoutManagement(opts) {
 	}
 
 	function onAddSuccess() {
-		$('.blockUI').css('cursor', 'default');
 		$('#creatingNotification').hide();
 		$('#result').show();
 

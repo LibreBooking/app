@@ -2,15 +2,15 @@ function CannedReports(reportOptions) {
 	var opts = reportOptions;
 
 	var elements = {
-		indicator:$('#indicator'),
-		resultsDiv:$('#resultsDiv')
+		indicator: $('#indicator'),
+		resultsDiv: $('#resultsDiv')
 	};
 
 	this.init = function () {
 
 		wireUpReportLinks();
 
-		$(document).on('click', '#btnPrint',function (e) {
+		$(document).on('click', '#btnPrint', function (e) {
 			e.preventDefault();
 
 			var url = opts.printUrl + reportId;
@@ -26,7 +26,7 @@ function CannedReports(reportOptions) {
 
 		// $(document).on('click', '#btnChart', function(e) {
 		// 	e.preventDefault();
-        //
+		//
 		// 	var chart = new Chart();
 		// 	chart.generate();
 		// 	$('#report-results').hide();
@@ -37,21 +37,21 @@ function CannedReports(reportOptions) {
 			$(this).closest('.dialog').dialog('close');
 		});
 
-//		elements.sendEmailButton.click(function (e) {
-//			e.preventDefault();
-//			var before = function () {
-//				elements.sendEmailButton.hide();
-//				elements.emailIndicator.show()
-//			};
-//			var after = function (data) {
-//				$('#emailSent').show().delay(3000).fadeOut(1000);
-//				elements.emailIndicator.hide();
-//				elements.sendEmailButton.show();
-//				$('#emailDiv').dialog('close');
-//			};
-//
-//			ajaxPost(elements.emailForm, opts.emailUrl + reportId, before, after);
-//		});
+		//		elements.sendEmailButton.click(function (e) {
+		//			e.preventDefault();
+		//			var before = function () {
+		//				elements.sendEmailButton.hide();
+		//				elements.emailIndicator.show()
+		//			};
+		//			var after = function (data) {
+		//				$('#emailSent').show().delay(3000).fadeOut(1000);
+		//				elements.emailIndicator.hide();
+		//				elements.sendEmailButton.show();
+		//				$('#emailDiv').dialog('close');
+		//			};
+		//
+		//			ajaxPost(elements.emailForm, opts.emailUrl + reportId, before, after);
+		//		});
 	};
 
 	var wireUpReportLinks = function () {
@@ -62,12 +62,12 @@ function CannedReports(reportOptions) {
 
 		$('.runNow').click(function (e) {
 			var before = function () {
-				elements.indicator.show().insertBefore(elements.resultsDiv);
+				elements.indicator.removeClass('d-none').insertBefore(elements.resultsDiv);
 				elements.resultsDiv.html('');
 			};
 
 			var after = function (data) {
-				elements.indicator.hide();
+				elements.indicator.addClass('d-none');
 				elements.resultsDiv.html(data)
 			};
 
@@ -75,7 +75,7 @@ function CannedReports(reportOptions) {
 		});
 
 		$('.emailNow').click(function (e) {
-			$('#emailDiv').dialog({modal:true});
+			$('#emailDiv').dialog({ modal: true });
 		});
 	};
 }

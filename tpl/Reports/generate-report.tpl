@@ -120,13 +120,13 @@
 												class="bi bi-calendar3-range me-1"></i>{translate key=Between}</label>
 
 										<label for="startDate" class="visually-hidden">{translate key=StartDate}</label>
-										<input type="input" class="form-control form-control-sm dateinput inline"
-											id="startDate" />
+										<input type="date" class="form-control form-control-sm dateinput inline"
+											id="startDate" autocomplete="off" />
 										-
 										<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START} />
 										<label for="endDate" class="visually-hidden">{translate key=EndDate}</label>
-										<input type="input" class="form-control form-control-sm dateinput inline"
-											id="endDate" />
+										<input type="date" class="form-control form-control-sm dateinput inline"
+											id="endDate" autocomplete="off" />
 										<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
 									</div>
 								</div>
@@ -235,8 +235,8 @@
 <div id="resultsDiv">
 </div>
 
-<div id="indicator" style="display:none; text-align: center;">
-	{include file="wait-box.tpl"}
+<div id="indicator" class="d-none card shadow p-2">
+	{include file="wait-box.tpl" translateKey='Working'}
 </div>
 
 {include file="Reports/chart.tpl"}

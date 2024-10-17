@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Qtip=true}
+{include file='globalheader.tpl'}
 
 <div class="page-participation">
 	{if !empty($result)}
@@ -80,7 +80,7 @@
 
 	{html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
 
-	{include file="javascript-includes.tpl" Qtip=true}
+	{include file="javascript-includes.tpl"}
 	{jsfile src="reservationPopup.js"}
 	{jsfile src="participation.js"}
 

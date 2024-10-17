@@ -33,7 +33,7 @@
 	{jsfile src="ajax-helpers.js"}
 
 	<div id="wait-box" class="wait-box">
-		{include file="wait-box.tpl"}
+		{include file="wait-box.tpl" translateKey='Working'}
 	</div>
 
 </div>

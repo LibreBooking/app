@@ -125,9 +125,9 @@
                     <div class="d-flex flex-wrap">
                         <div class="form-group d-flex align-items-center me-2">
                             <label for="BeginDate" class="reservationDate fw-bold">{translate key='BeginDate'}</label>
-                            <input type="text" id="BeginDate"
+                            <input type="date" id="BeginDate"
                                 class="form-control form-control-sm d-inline-block dateinput{if $LockPeriods} no-show{/if}"
-                                value="{formatdate date=$StartDate}" />
+                                value="{formatdate date=$StartDate key=system}" />
                             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                                 value="{formatdate date=$StartDate key=system}" />
                             <select id="BeginPeriod" {formname key=BEGIN_PERIOD}
@@ -150,9 +150,9 @@
                         <div class="form-group d-flex align-items-center">
                             <label for="EndDate"
                                 class="reservationDate fw-bold text-md-end pe-md-1">{translate key='EndDate'}</label>
-                            <input type="text" id="EndDate"
+                            <input type="date" id="EndDate"
                                 class="form-control form-control-sm d-inline-block dateinput{if $LockPeriods} no-show{/if}"
-                                value="{formatdate date=$EndDate}" />
+                                value="{formatdate date=$EndDate key=system}" />
                             <input type="hidden" id="formattedEndDate" {formname key=END_DATE}
                                 value="{formatdate date=$EndDate key=system}" />
                             <select id="EndPeriod" {formname key=END_PERIOD}
@@ -483,8 +483,7 @@
 
             </div>
             <div class="modal-footer">
-                <button id="btnCancelAddAccessories" type="button" class="btn btn-outline-secondary"
-                    data-bs-dismiss="modal">{translate key='Cancel'}</button>
+                {cancel_button}
                 <button id="btnConfirmAddAccessories" type="button"
                     class="btn btn-primary">{translate key='Done'}</button>
             </div>
@@ -492,25 +491,32 @@
     </div>
 </div>
 
-<div id="wait-box" class="wait-box">
-    <div id="creatingNotification">
-        <h3 id="createUpdateMessage" class="no-show">
-            {block name="ajaxMessage"}
-            {translate key=CreatingReservation}
-            {/block}
-        </h3>
-        <h3 id="checkingInMessage" class="no-show">
-            {translate key=CheckingIn}
-        </h3>
-        <h3 id="checkingOutMessage" class="no-show">
-            {translate key=CheckingOut}
-        </h3>
-        <h3 id="joiningWaitingList" class="no-show">
-            {translate key=AddingToWaitlist}
-        </h3>
-        <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status"></div>
+
+<div id="wait-box" class="modal fade" aria-labelledby="update-boxLabel" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="creatingNotification" class="text-center">
+                    <h3 id="createUpdateMessage" class="d-none">
+                        {block name="ajaxMessage"}
+                        {translate key=CreatingReservation}
+                        {/block}
+                    </h3>
+                    <h3 id="checkingInMessage" class="d-none">
+                        {translate key=CheckingIn}
+                    </h3>
+                    <h3 id="checkingOutMessage" class="d-none">
+                        {translate key=CheckingOut}
+                    </h3>
+                    <h3 id="joiningWaitingList" class="d-none">
+                        {translate key=AddingToWaitlist}
+                    </h3>
+                    <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status"></div>
+                </div>
+                <div id="result" class="text-center"></div>
+            </div>
+        </div>
     </div>
-    <div id="result"></div>
 </div>
 
 <div id="user-availability-box"></div>
@@ -643,9 +649,6 @@
         // jsPDF
         {include file="Reservation/pdf.tpl"}
         //
-
-        $.blockUI.defaults.css.width = '60%';
-        $.blockUI.defaults.css.left = '20%';
 
         translateTooltips();
 

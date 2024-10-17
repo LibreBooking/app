@@ -6,7 +6,7 @@
                 <div class="date form-group w-50">
                         <label class="fw-bold text-uppercase fs-6 text-secondary"
                                 for="availabilityStartDate">{translate key='Date'}</label>
-                        <input type="text" id="availabilityStartDate" class="form-control w-auto"
+                        <input type="date" id="availabilityStartDate" class="form-control w-auto hasDatepicker"
                                 {formname key=ANNOUNCEMENT_START} />
                         <input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />
                 </div>
@@ -15,8 +15,9 @@
         <div id="placeholder"></div>
 </div>
 
-<div id="wait-box" class="wait-box">
-        {indicator id="waitIndicator"}
+<div class="modal" id="waitModal" tabindex="-1" role="dialog" aria-labelledby="waitModalLabel" data-bs-backdrop="static"
+        aria-hidden="true">
+        {include file="wait-box.tpl" translateKey='Working'}
 </div>
 
 {include file="javascript-includes.tpl"}

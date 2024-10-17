@@ -11,8 +11,8 @@
                 <div class="input-group input-group-sm">
                     <label class="input-group-text fw-bold"
                         for="reservationDeleteDate">{translate key=DeleteReservationsBefore}</label>
-                    <input type="text" id="reservationDeleteDate" class="form-control dateinput"
-                        value="{formatdate date=$DeleteDate}" />
+                    <input type="date" id="reservationDeleteDate" class="form-control dateinput"
+                        value="{formatdate date=$DeleteDate format='Y-m-d'}" />
                     <input type="hidden" id="formattedReservationDeleteDate"
                         value="{formatdate date=$DeleteDate key=system}" />
                     {delete_button id='deleteReservations'}
@@ -34,8 +34,8 @@
                 <div class="input-group input-group-sm">
                     <label class="input-group-text fw-bold"
                         for="blackoutDeleteDate">{translate key=DeleteBlackoutsBefore}</label>
-                    <input type="text" id="blackoutDeleteDate" class="form-control input-sm inline-block dateinput"
-                        value="{formatdate date=$DeleteDate}" />
+                    <input type="date" id="blackoutDeleteDate" class="form-control input-sm inline-block dateinput"
+                        value="{formatdate date=$DeleteDate format='Y-m-d'}" />
                     <input type="hidden" id="formattedBlackoutDeleteDate"
                         value="{formatdate date=$DeleteDate key=system}" />
                     {delete_button id='deleteBlackouts'}
@@ -50,8 +50,8 @@
                 <div class="input-group input-group-sm">
                     <label class="input-group-text fw-bold"
                         for="userDeleteDate">{translate key=PermanentlyDeleteUsers}</label>
-                    <input type="text" id="userDeleteDate" class="form-control input-sm inline-block dateinput"
-                        value="{formatdate date=$DeleteDate}" />
+                    <input type="date" id="userDeleteDate" class="form-control input-sm inline-block dateinput"
+                        value="{formatdate date=$DeleteDate format='Y-m-d'}" />
                     <input type="hidden" id="formattedUserDeleteDate"
                         value="{formatdate date=$DeleteDate key=system}" />
                     {delete_button id='deleteUsers'}
@@ -181,9 +181,9 @@
 {jsfile src="js/moment.min.js"}
 {jsfile src="ajax-helpers.js"}
 
-{control type="DatePickerSetupControl" ControlId="reservationDeleteDate" AltId="formattedReservationDeleteDate" DefaultDate=$DeleteDate}
-{control type="DatePickerSetupControl" ControlId="blackoutDeleteDate" AltId="formattedBlackoutDeleteDate" DefaultDate=$DeleteDate}
-{control type="DatePickerSetupControl" ControlId="userDeleteDate" AltId="formattedUserDeleteDate" DefaultDate=$DeleteDate}
+{control type="DatePickerSetupControl" ControlId="reservationDeleteDate" AltId="formattedReservationDeleteDate"}
+{control type="DatePickerSetupControl" ControlId="blackoutDeleteDate" AltId="formattedBlackoutDeleteDate"}
+{control type="DatePickerSetupControl" ControlId="userDeleteDate" AltId="formattedUserDeleteDate"}
 
 <script type="text/javascript">
     $(document).ready(function() {

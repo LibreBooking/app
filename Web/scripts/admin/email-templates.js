@@ -52,10 +52,14 @@ function EmailTemplateManagement(opts) {
 
     function updatedEmail(data) {
         if (data.saveResult == true) {
-            elements.updateSuccess.show().delay(2000).fadeOut(200);
+            elements.updateSuccess.css('display', '').removeClass('d-none').delay(2000).fadeOut(200, function () {
+                $(this).addClass('d-none');
+            });
         }
         else {
-            elements.updateFailed.show().delay(2000).fadeOut(200);
+            elements.updateFailed.css('display', '').removeClass('d-none').delay(2000).fadeOut(200, function () {
+                $(this).addClass('d-none');
+            });
         }
     }
 

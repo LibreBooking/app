@@ -39,13 +39,13 @@ function Profile() {
 
 		$('#profileUpdatedMessage').addClass('d-none');
 
-		$.blockUI({ message: $('#wait-box') });
+		$('#waitModal').modal('show');
 
 		return true;
 	}
 
 	function hideModal() {
-		$.unblockUI();
+		$('#waitModal').modal('hide');
 
 		var top = $("#profile-box").scrollTop();
 		$('html, body').animate({ scrollTop: top }, 'slow');

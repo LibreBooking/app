@@ -50,13 +50,13 @@ function Registration() {
 
 		$('#profileUpdatedMessage').hide();
 
-		$.blockUI({ message: $('#modalDiv') });
+		$('#waitModal').modal('show');
 
 		return true;
 	}
 
 	function hideModal() {
-		$.unblockUI();
+		$('#waitModal').modal('hide');
 
 		var top = $("#registrationbox").scrollTop();
 		$('html, body').animate({ scrollTop: top }, 'slow');
@@ -68,10 +68,8 @@ function Registration() {
 			var src = captchaImg.attr('src') + '?' + Math.random();
 			captchaImg.attr('src', src);
 			$('#captchaValue').val('');
-		} else if (window.grecaptcha)
-		{
-			grecaptcha.execute(grecaptcha.public_key, { action: 'reload' }).then(function (token)
-			{
+		} else if (window.grecaptcha) {
+			grecaptcha.execute(grecaptcha.public_key, { action: 'reload' }).then(function (token) {
 				var captcha = document.getElementById('g-recaptcha-response');
 				captcha.value = token;
 			});

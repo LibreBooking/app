@@ -374,7 +374,7 @@ function ReservationManagement(opts, approval) {
     }
 
     function approveReservation(referenceNumber) {
-        $.blockUI({ message: $('#approveDiv') });
+        $('#approveDiv').modal('show');
         approval.Approve(referenceNumber);
     }
 

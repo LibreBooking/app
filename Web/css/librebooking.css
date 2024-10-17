@@ -10,6 +10,7 @@
     --reservedParticipating: #875cae;
     --reservedPending: #f2dfbf;
     --pasttime: #bdbdbd;
+    --hiliteReservation: #79bf40;
     --bs-body-color: #464d53;
 }
 
@@ -79,10 +80,11 @@ img.logo {
     color: var(--primary-hover) !important;
 }
 
+/*
 .dropdown-toggle.show {
     color: var(--primary-hover) !important;
 }
-
+*/
 .dropdown-menu {
     --bs-dropdown-link-active-bg: var(--primary);
     font-size: 12px;
@@ -273,14 +275,16 @@ li.ui-timepicker-selected,
 }
 
 .form-control.dateinput {
-    width: 90px;
+    width: 120px;
 }
 
 .form-select.dateinput {
     width: 90px;
 }
 
-#add-blackout-panel label {
+#add-blackout-panel label,
+#editRecurrenceModal label,
+#blackoutReasonLabel {
     min-width: 90px;
 }
 
@@ -316,7 +320,7 @@ span.searchclear-label {
     cursor: pointer;
     transition: all 300ms ease;
     transform: scale(0);
-    z-index: 1100;
+    z-index: 1050;
     opacity: 0.9;
 }
 
@@ -530,6 +534,23 @@ input.mid-number {
 
 #panelCustomReport label {
     min-width: 130px;
+}
+
+.respopup-tooltip .tooltip-inner {
+    font-size: 14px;
+    min-width: 450px;
+    text-align: left;
+}
+
+.fc-past {
+    background-color: var(--pasttime) !important;
+    color: #333;
+}
+
+.fc-future.hover {
+    background-color: var(--hiliteReservation) !important;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 .no-show {

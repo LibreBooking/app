@@ -1,7 +1,6 @@
 {include file='globalheader.tpl' Timepicker=true DataTable=true}
 <div id="page-manage-blackouts" class="admin-page">
 	<h1 class="border-bottom mb-3">{translate key=ManageBlackouts}</h1>
-
 	<div class="accordion">
 		<form id="addBlackoutForm" role="form" method="post">
 			<div class="accordion-item shadow mb-2 panel-default" id="add-blackout-panel">
@@ -17,23 +16,23 @@
 						<div class="form-group d-flex align-items-center flex-wrap gap-1 mb-2">
 							<div class="d-flex align-items-center flex-wrap gap-1 me-sm-4">
 								<label class="fw-bold" for="addStartDate">{translate key=BeginDate}</label>
-								<input type="text" id="addStartDate" class="form-control form-control-sm me-1 dateinput"
-									value="{formatdate date=$AddStartDate}" />
+								<input type="date" id="addStartDate" class="form-control form-control-sm me-1 dateinput"
+									value="{formatdate date=$AddStartDate format='Y-m-d'}" />
 								<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
 									value="{formatdate date=$AddStartDate key=system}" />
 								<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
-									class="form-control form-control-sm dateinput timepicker"
+									class="form-select form-select-sm dateinput timepicker"
 									value="{format_date format='h:00 A' date=now}" title="{translate key=StartTime}" />
 								<label for="addStartTime" class="visually-hidden">{translate key=StartTime}</label>
 							</div>
 							<div class="d-flex align-items-center flex-wrap gap-1">
 								<label class="fw-bold" for="addEndDate">{translate key=EndDate}</label>
-								<input type="text" id="addEndDate" class="form-control form-control-sm me-1 dateinput"
-									size="10" value="{formatdate date=$AddEndDate}" />
+								<input type="date" id="addEndDate" class="form-control form-control-sm me-1 dateinput"
+									size="10" value="{formatdate date=$AddEndDate format='Y-m-d'}" />
 								<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
 									value="{formatdate date=$AddEndDate key=system}" />
 								<input {formname key=END_TIME} type="text" id="addEndTime"
-									class="form-control form-control-sm dateinput timepicker"
+									class="form-select form-select-sm dateinput timepicker"
 									value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
 									title="{translate key=EndTime}" />
 								<label for="addEndTime" class="visually-hidden">{translate key=EndTime}</label>
@@ -119,16 +118,17 @@
 							<div class="d-flex align-items-center justify-content-between flex-wrap">
 								<div>
 									<label for="startDate" class="fw-bold">{translate key=BeginDate}</label>
-									<input id="startDate" type="text" class="form-control form-control-sm dateinput"
-										value="{formatdate date=$StartDate}" title="Between start date"
+									<input id="startDate" type="date" class="form-control form-control-sm dateinput"
+										value="{formatdate date=$StartDate format='Y-m-d'}" title="Between start date"
 										placeholder="{translate key=BeginDate}" />
 									<input id="formattedStartDate" type="hidden"
 										value="{formatdate date=$StartDate key=system}" />
 								</div>
 								<div class="ms-1">
 									<label for="endDate" class="fw-bold">{translate key=EndDate}</label>
-									<input id="endDate" type="text" class="form-control form-control-sm dateinput"
-										value="{formatdate date=$EndDate}" placeholder="{translate key=EndDate}" />
+									<input id="endDate" type="date" class="form-control form-control-sm dateinput"
+										value="{formatdate date=$EndDate format='Y-m-d'}"
+										placeholder="{translate key=EndDate}" />
 									<input id="formattedEndDate" type="hidden"
 										value="{formatdate date=$EndDate key=system}" />
 								</div>
@@ -238,7 +238,7 @@
 
 	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 		aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
@@ -262,7 +262,7 @@
 
 	<div class="modal fade" id="deleteRecurringDialog" tabindex="-1" role="dialog"
 		aria-labelledby="deleteRecurringModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
@@ -274,15 +274,14 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form id="deleteRecurringForm" method="post">
-						<button type="button" class="btn btn-outline-secondary cancel"
-							data-dismiss="modal">{translate key='Cancel'}</button>
+					<form id="deleteRecurringForm" method="post" class="d-grid gap-2 d-md-flex justify-content-md-end">
+						{cancel_button}
 
 						<button type="button" class="btn btn-danger save btnUpdateThisInstance">
 							<i class="bi bi-x-lg"></i> {translate key='ThisInstance'}</button>
 
 						<button type="button" class="btn btn-danger save btnUpdateAllInstances">
-							<i class="bi bi-x-lg"></i> {translate key='AllInstances'}</button>
+							<i class="bi bi-x-circle"></i> {translate key='AllInstances'}</button>
 
 						<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
 							value="{SeriesUpdateScope::FullSeries}" />
@@ -296,7 +295,7 @@
 		aria-labelledby="deleteMultipleModalLabel" aria-hidden="true">
 		<form id="deleteMultipleForm" method="post"
 			action="{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE_MULTIPLE}">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span
@@ -373,9 +372,9 @@
 			//$('#add-blackout-panel').showHidePanel();
 		});
 
-		$.blockUI.defaults.css.width = '60%';
-		$.blockUI.defaults.css.left = '20%';
-		$.blockUI.defaults.css.marginTop = '-5%';
+		//$.blockUI.defaults.css.width = '80%';
+		//$.blockUI.defaults.css.left = '10%';
+		//$.blockUI.defaults.css.marginTop = '-5%';
 	</script>
 
 	{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
@@ -386,22 +385,30 @@
 	{control type="DatePickerSetupControl" ControlId="RepeatDate" AltId="formattedRepeatDate"}
 
 
-	<div id="wait-box" class="wait-box">
-		<div id="creatingNotification">
-			{include file='wait-box.tpl'}
-			<!--<h3>
-				{block name="ajaxMessage"}
-					{translate key=Working}...
-				{/block}
-			</h3>
-			{html_image src="reservation_submitting.gif"} -->
+	<div id="wait-box" class="modal fade" aria-labelledby="update-boxLabel" data-bs-backdrop="static"
+		aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="creatingNotification">
+						{include file='wait-box.tpl' translateKey='Working'}
+					</div>
+					<div id="result" class="text-center"></div>
+				</div>
+			</div>
 		</div>
-		<div id="result"></div>
 	</div>
 
-	<div id="update-box" class="d-none">
-		{indicator id="update-spinner"}
-		<div id="update-contents"></div>
+	<div class="modal fade" id="update-box" tabindex="-1" aria-labelledby="update-boxLabel" data-bs-backdrop="static"
+		aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					{indicator id="update-spinner"}
+					<div id="update-contents"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </div>

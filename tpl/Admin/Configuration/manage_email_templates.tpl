@@ -46,11 +46,11 @@
                     </form>
                 </div>
 
-                <div id="updateSuccess" class="alert alert-success" style="display:none;">
+                <div id="updateSuccess" class="alert alert-success d-none">
                     <i class="bi bi-check-circle me-1"></i> {translate key=UpdateEmailTemplateSuccess}
                 </div>
 
-                <div id="updateFailed" class="alert alert-warning" style="display:none;">
+                <div id="updateFailed" class="alert alert-warning d-none">
                     <i class="bi bi-exclamation-triangle-fill me-1"></i>{translate key=UpdateEmailTemplateFailed}
                 </div>
             </div>
@@ -69,8 +69,7 @@
                 });
             </script>
             <div id="wait-box" class="wait-box">
-                <h3>{translate key=Working}</h3>
-                {html_image src="reservation_submitting.gif"}
+                {include file="wait-box.tpl" translateKey='Working'}
             </div>
         </div>
     </div>

@@ -90,14 +90,14 @@
             </button>
             <div class="modal fade" id="updateButtons" tabindex="-1" role="dialog" aria-labelledby="updateButtonsLabel"
                 aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
-                            <div id="deleteRecurringButtons" class="no-show mb-3">
+                            <div id="deleteRecurringButtons" class="d-none mb-3">
                                 <div>{translate key=DeleteReminderWarning}</div>
                                 <div>
                                     <label for="deleteReasonRecurring">{translate key=Reason} ({translate key=Optional})</label>
@@ -105,21 +105,23 @@
                                 </div>
                             </div>
 
-                            <button type="button" class="btn btn-success save btnUpdateThisInstance">
-                                <span class="bi bi-check-lg"></span>
-                                {translate key='ThisInstance'}
-                            </button>
-                            <button type="button" class="btn btn-success save btnUpdateAllInstances">
-                                <span class="bi bi-check-square-fill"></span>
-                                {translate key='AllInstances'}
-                            </button>
-                            <button type="button" class="btn btn-success save btnUpdateFutureInstances">
-                                <span class="bi bi-check2-square"></span>
-                                {translate key='FutureInstances'}
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary">
-                                {translate key='Cancel'}
-                            </button>
+                            <div class="d-grid gap-2 d-sm-block">
+                                <button type="button" class="btn btn-success save btnUpdateThisInstance">
+                                    <span class="bi bi-check-lg"></span>
+                                    {translate key='ThisInstance'}
+                                </button>
+                                <button type="button" class="btn btn-success save btnUpdateAllInstances">
+                                    <span class="bi bi-check-square-fill"></span>
+                                    {translate key='AllInstances'}
+                                </button>
+                                <button type="button" class="btn btn-success save btnUpdateFutureInstances">
+                                    <span class="bi bi-check2-square"></span>
+                                    {translate key='FutureInstances'}
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary">
+                                    {translate key='Cancel'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -134,7 +136,7 @@
         {/if}
 
         <div id="deleteButtonPrompt" class="modal fade">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="updateButtonsLabel">{translate key=Delete}</h5>
@@ -179,45 +181,45 @@
                 <div>
                     <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
                     <textarea id="deleteReason" class="deleteReason form-control"></textarea>
-        {/if}
-    {/block}
+                {/if}
+            {/block}
 
-    {block name=extras}
-        {if $AutoReleaseMinutes != null}
-            <input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}" />
-        {/if}
+            {block name=extras}
+                {if $AutoReleaseMinutes != null}
+                    <input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}" />
+                {/if}
 
-        <div class="modal fade" id="emailReservationPrompt" tabindex="-1" role="dialog"
-            aria-labelledby="emailReservationLabel" aria-hidden="true">
-            <form id="emailReservationForm" method="post" role="form" onkeypress="return event.keyCode != 13;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="emailReservationLabel">{translate key=EmailReservation}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="emailUserAutocomplete" class="visually-hidden">{translate key=User}</label>
-                                <input type="search" id="emailUserAutocomplete" name="email" class="form-control"
-                                    placeholder="{translate key=Email}" autofocus="autofocus" />
+                <div class="modal fade" id="emailReservationPrompt" tabindex="-1" role="dialog"
+                    aria-labelledby="emailReservationLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <form id="emailReservationForm" method="post" role="form" onkeypress="return event.keyCode != 13;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="emailReservationLabel">{translate key=EmailReservation}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-hidden="true"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="emailUserAutocomplete"
+                                            class="visually-hidden">{translate key=User}</label>
+                                        <input type="search" id="emailUserAutocomplete" name="email" class="form-control"
+                                            placeholder="{translate key=Email}" autofocus="autofocus" />
+                                    </div>
+
+                                    <div id="emailReservationList">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" id="btnSendReservation">
+                                        <span class="bi bi-envelope-fill"></span>
+                                        {translate key='Email'}
+                                    </button>
+                                    {cancel_button}
+                                </div>
                             </div>
-
-                            <div id="emailReservationList">
-
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="btnSendReservation">
-                                <span class="bi bi-envelope-fill"></span>
-                                {translate key='Email'}
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                {translate key='Cancel'}
-                            </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-        </div>
 {/block}

@@ -96,8 +96,9 @@
         </div>
     </div>
 
-    <div id="wait-box" class="wait-box">
-        {include file="wait-box.tpl"}
+    <div class="modal" id="waitModal" tabindex="-1" role="dialog" aria-labelledby="waitModalLabel"
+        data-bs-backdrop="static" aria-hidden="true">
+        {include file="wait-box.tpl" translateKey='Working'}
     </div>
 
     {include file="javascript-includes.tpl"}

@@ -27,13 +27,13 @@ function ResourceDisplay(opts) {
     }
 
     function activateResourceDisplay(resourceId) {
-        $.blockUI({ message: $('#wait-box') });
+        $('#waitModal').modal('show');
         ajaxPost(elements.activateResourceDisplayForm, null, null, function (data) {
             if (data.location) {
                 window.location = data.location;
             }
             else {
-                $.unblockUI();
+                $('#waitModal').modal('hide');
             }
         });
     }
@@ -65,7 +65,7 @@ function ResourceDisplay(opts) {
 
         refreshResource();
 
-        //setInterval(refreshResource, 60000);
+        setInterval(refreshResource, 60000);
 
         elements.placeholder.on('click', '.reservePrompt', function (e) {
             var emailAddress = $('#emailAddress');
@@ -94,7 +94,7 @@ function ResourceDisplay(opts) {
 
             var beforeReserve = function () {
                 $('#validationErrors').addClass('d-none');
-                //showWait();
+                showWait();
             };
 
             var afterReserve = function (data) {
@@ -131,7 +131,7 @@ function ResourceDisplay(opts) {
             e.stopPropagation();
 
             var beforeCheckin = function () {
-                //showWait();
+                showWait();
             };
 
             var afterCheckin = function () {
@@ -148,7 +148,7 @@ function ResourceDisplay(opts) {
         });
 
         elements.startDate.on('change', function () {
-            //showWait();
+            showWait();
             refreshResource(hideWait);
         });
 
@@ -247,17 +247,16 @@ function ResourceDisplay(opts) {
     };
 
     function showWait() {
-        // $('#waitIndicator').removeClass('no-show');
-        // $.blockUI({ message: $('#wait-box') });
+        $('#wait-modal').modal('show');
     }
 
     function hideWait() {
-        // $.unblockUI();
+        $('#wait-modal').modal('hide');
     }
 
     elements.loginButton.click(function (e) {
         e.preventDefault();
-        //showWait();
+        showWait();
         elements.loginForm.submit();
     });
 
