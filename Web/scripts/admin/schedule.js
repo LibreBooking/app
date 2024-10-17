@@ -569,15 +569,13 @@ function ScheduleManagement(opts) {
 	var showAvailabilityDialog = function (scheduleId) {
 		var placeholder = $('[data-schedule-id=' + scheduleId + ']').find('.availabilityPlaceHolder');
 		var dates = placeholder.find('.availableDates');
-
+		var startDate = formatDate(dates.data('start-date'));
+		var endDate = formatDate(dates.data('end-date'));
 		var hasAvailability = dates.data('has-availability') == '1';
 
-		// elements.availableAllYear.prop('checked', !hasAvailability);
-		elements.availableStartDateTextbox.datepicker("setDate", dates.data('start-date'));
-		elements.availableStartDate.trigger('change');
-
-		elements.availableEndDateTextbox.datepicker("setDate", dates.data('end-date'));
-		elements.availableEndDate.trigger('change');
+		//elements.availableAllYear.prop('checked', !hasAvailability);
+		elements.availableStartDateTextbox.val(startDate).trigger('change');
+		elements.availableEndDateTextbox.val(endDate).trigger('change');
 
 		if (!hasAvailability) {
 			elements.availableAllYear.trigger('click');
@@ -585,6 +583,14 @@ function ScheduleManagement(opts) {
 
 		elements.availabilityDialog.modal('show');
 	};
+
+	function formatDate(dateString) {
+		var date = new Date(dateString);
+		var year = date.getFullYear();
+		var month = ('0' + (date.getMonth() + 1)).slice(-2);
+		var day = ('0' + date.getDate()).slice(-2);
+		return year + '-' + month + '-' + day;
+	}
 
 	var refreshAvailability = function (resultHtml) {
 		$('[data-schedule-id=' + getActiveScheduleId() + ']').find('.availabilityPlaceHolder').html(resultHtml);

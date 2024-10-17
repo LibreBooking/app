@@ -7,7 +7,7 @@
 	{if $readonly}
 		<span class="attributeValue {$class}">{formatdate date=$attributeValue key=general_datetime}</span>
 	{else}
-		<input type="text" id="{$attributeId}" value="{formatdate date=$attributeValue key=general_datetime}"
+		<input type="datetime-local" id="{$attributeId}" value="{formatdate date=$attributeValue format='Y-m-d H:i:s'}"
 			class="customAttribute form-control {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}" />
 		<input type="hidden" id="formatted{$attributeId}" name="{$attributeName}"
 			value="{formatdate date=$attributeValue key=system_datetime}" />

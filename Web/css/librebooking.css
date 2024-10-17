@@ -275,7 +275,7 @@ li.ui-timepicker-selected,
 }
 
 .form-control.dateinput {
-    width: 90px;
+    width: 120px;
 }
 
 .form-select.dateinput {
@@ -320,7 +320,7 @@ span.searchclear-label {
     cursor: pointer;
     transition: all 300ms ease;
     transform: scale(0);
-    z-index: 1100;
+    z-index: 1050;
     opacity: 0.9;
 }
 

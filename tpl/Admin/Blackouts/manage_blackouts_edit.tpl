@@ -2,8 +2,8 @@
 	<div id="updateBlackout" class="row gy-1 p-4">
 		<div class="form-group col-12 col-sm-6 d-flex align-items-center">
 			<label class="fw-bold" for="updateStartDate">{translate key=BeginDate}</label>
-			<input type="text" id="updateStartDate" class="form-control form-control-sm dateinput"
-				value="{formatdate date=$BlackoutStartDate}" />
+			<input type="date" id="updateStartDate" class="form-control form-control-sm dateinput"
+				value="{formatdate date=$BlackoutStartDate format='Y-m-d'}" />
 			<input {formname key=BEGIN_DATE} id="formattedUpdateStartDate" type="hidden"
 				value="{formatdate date=$BlackoutStartDate key=system}" />
 			<input {formname key=BEGIN_TIME} type="text" id="updateStartTime"
@@ -13,8 +13,8 @@
 
 		<div class="form-group col-12 col-sm-6 d-flex align-items-center">
 			<label class="fw-bold" for="updateEndDate">{translate key=EndDate}</label>
-			<input type="text" id="updateEndDate" class="form-control form-control-sm dateinput" size="10"
-				value="{formatdate date=$BlackoutEndDate}" />
+			<input type="date" id="updateEndDate" class="form-control form-control-sm dateinput" size="10"
+				value="{formatdate date=$BlackoutEndDate format='Y-m-d'}" />
 			<input {formname key=END_DATE} type="hidden" id="formattedUpdateEndDate"
 				value="{formatdate date=$BlackoutEndDate key=system}" />
 			<input {formname key=END_TIME} type="text" id="updateEndTime"

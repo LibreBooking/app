@@ -125,9 +125,9 @@
                     <div class="d-flex flex-wrap">
                         <div class="form-group d-flex align-items-center me-2">
                             <label for="BeginDate" class="reservationDate fw-bold">{translate key='BeginDate'}</label>
-                            <input type="text" id="BeginDate"
+                            <input type="date" id="BeginDate"
                                 class="form-control form-control-sm d-inline-block dateinput{if $LockPeriods} no-show{/if}"
-                                value="{formatdate date=$StartDate}" />
+                                value="{formatdate date=$StartDate key=system}" />
                             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                                 value="{formatdate date=$StartDate key=system}" />
                             <select id="BeginPeriod" {formname key=BEGIN_PERIOD}
@@ -150,9 +150,9 @@
                         <div class="form-group d-flex align-items-center">
                             <label for="EndDate"
                                 class="reservationDate fw-bold text-md-end pe-md-1">{translate key='EndDate'}</label>
-                            <input type="text" id="EndDate"
+                            <input type="date" id="EndDate"
                                 class="form-control form-control-sm d-inline-block dateinput{if $LockPeriods} no-show{/if}"
-                                value="{formatdate date=$EndDate}" />
+                                value="{formatdate date=$EndDate key=system}" />
                             <input type="hidden" id="formattedEndDate" {formname key=END_DATE}
                                 value="{formatdate date=$EndDate key=system}" />
                             <select id="EndPeriod" {formname key=END_PERIOD}

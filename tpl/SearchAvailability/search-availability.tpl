@@ -90,13 +90,13 @@
                     <div class="d-flex flex-wrap">
                         <div class="form-group px-2">
                             <label for="beginDate" class="visually-hidden">{translate key=BeginDate}</label>
-                            <input type="text" id="beginDate" class="form-control form-control-sm dateinput"
+                            <input type="date" id="beginDate" class="form-control form-control-sm dateinput"
                                 placeholder="{translate key=BeginDate}" disabled="disabled" />
                             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} />
                         </div>
                         <div class="form-group">
                             <label for="endDate" class="visually-hidden">{translate key=EndDate}</label>
-                            <input type="text" id="endDate" class="form-control form-control-sm dateinput"
+                            <input type="date" id="endDate" class="form-control form-control-sm dateinput"
                                 placeholder="{translate key=EndDate}" disabled="disabled" />
                             <input type="hidden" id="formattedEndDate" {formname key=END_DATE} />
                         </div>

@@ -6,7 +6,7 @@
                 <div class="date form-group w-50">
                         <label class="fw-bold text-uppercase fs-6 text-secondary"
                                 for="availabilityStartDate">{translate key='Date'}</label>
-                        <input type="text" id="availabilityStartDate" class="form-control w-auto"
+                        <input type="date" id="availabilityStartDate" class="form-control w-auto hasDatepicker"
                                 {formname key=ANNOUNCEMENT_START} />
                         <input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />
                 </div>

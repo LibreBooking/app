@@ -381,10 +381,11 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
 					</div>
 					<div class="modal-body row gy-2">
-						<div class="validationSummary alert alert-danger no-show">
-							<ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}</ul>
+						<div class="col-12">
+							<div class="validationSummary alert alert-danger no-show">
+								<ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}</ul>
+							</div>
 						</div>
-
 						<div class="col-12">
 							<div class="form-check">
 								<input class="form-check-input" type="checkbox" id="usesSingleLayout"
@@ -679,11 +680,11 @@
 							<div id="availableDates" class="d-flex align-items-center gap-1">
 								<label for="availabilityStartDate">{translate key=AvailableBetween}</label>
 								<label for="availabilityEndDate" class="visually-hidden">Available End Date</label>
-								<input type="text" id="availabilityStartDate"
+								<input type="date" id="availabilityStartDate"
 									class="form-control form-control-sm inline-block dateinput" />
 								<input type="hidden" id="formattedBeginDate" {formname key=AVAILABLE_BEGIN_DATE} />
 								-
-								<input type="text" id="availabilityEndDate"
+								<input type="date" id="availabilityEndDate"
 									class="form-control form-control-sm inline-block dateinput" />
 								<input type="hidden" id="formattedEndDate" {formname key=AVAILABLE_END_DATE} />
 							</div>

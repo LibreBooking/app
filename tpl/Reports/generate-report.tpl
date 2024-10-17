@@ -120,12 +120,12 @@
 												class="bi bi-calendar3-range me-1"></i>{translate key=Between}</label>
 
 										<label for="startDate" class="visually-hidden">{translate key=StartDate}</label>
-										<input type="input" class="form-control form-control-sm dateinput inline"
+										<input type="date" class="form-control form-control-sm dateinput inline"
 											id="startDate" autocomplete="off" />
 										-
 										<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START} />
 										<label for="endDate" class="visually-hidden">{translate key=EndDate}</label>
-										<input type="input" class="form-control form-control-sm dateinput inline"
+										<input type="date" class="form-control form-control-sm dateinput inline"
 											id="endDate" autocomplete="off" />
 										<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
 									</div>

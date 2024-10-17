@@ -1,7 +1,6 @@
 {include file='globalheader.tpl' Timepicker=true DataTable=true}
 <div id="page-manage-blackouts" class="admin-page">
 	<h1 class="border-bottom mb-3">{translate key=ManageBlackouts}</h1>
-
 	<div class="accordion">
 		<form id="addBlackoutForm" role="form" method="post">
 			<div class="accordion-item shadow mb-2 panel-default" id="add-blackout-panel">
@@ -17,8 +16,8 @@
 						<div class="form-group d-flex align-items-center flex-wrap gap-1 mb-2">
 							<div class="d-flex align-items-center flex-wrap gap-1 me-sm-4">
 								<label class="fw-bold" for="addStartDate">{translate key=BeginDate}</label>
-								<input type="text" id="addStartDate" class="form-control form-control-sm me-1 dateinput"
-									value="{formatdate date=$AddStartDate}" />
+								<input type="date" id="addStartDate" class="form-control form-control-sm me-1 dateinput"
+									value="{formatdate date=$AddStartDate format='Y-m-d'}" />
 								<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
 									value="{formatdate date=$AddStartDate key=system}" />
 								<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
@@ -28,8 +27,8 @@
 							</div>
 							<div class="d-flex align-items-center flex-wrap gap-1">
 								<label class="fw-bold" for="addEndDate">{translate key=EndDate}</label>
-								<input type="text" id="addEndDate" class="form-control form-control-sm me-1 dateinput"
-									size="10" value="{formatdate date=$AddEndDate}" />
+								<input type="date" id="addEndDate" class="form-control form-control-sm me-1 dateinput"
+									size="10" value="{formatdate date=$AddEndDate format='Y-m-d'}" />
 								<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
 									value="{formatdate date=$AddEndDate key=system}" />
 								<input {formname key=END_TIME} type="text" id="addEndTime"
@@ -119,16 +118,17 @@
 							<div class="d-flex align-items-center justify-content-between flex-wrap">
 								<div>
 									<label for="startDate" class="fw-bold">{translate key=BeginDate}</label>
-									<input id="startDate" type="text" class="form-control form-control-sm dateinput"
-										value="{formatdate date=$StartDate}" title="Between start date"
+									<input id="startDate" type="date" class="form-control form-control-sm dateinput"
+										value="{formatdate date=$StartDate format='Y-m-d'}" title="Between start date"
 										placeholder="{translate key=BeginDate}" />
 									<input id="formattedStartDate" type="hidden"
 										value="{formatdate date=$StartDate key=system}" />
 								</div>
 								<div class="ms-1">
 									<label for="endDate" class="fw-bold">{translate key=EndDate}</label>
-									<input id="endDate" type="text" class="form-control form-control-sm dateinput"
-										value="{formatdate date=$EndDate}" placeholder="{translate key=EndDate}" />
+									<input id="endDate" type="date" class="form-control form-control-sm dateinput"
+										value="{formatdate date=$EndDate format='Y-m-d'}"
+										placeholder="{translate key=EndDate}" />
 									<input id="formattedEndDate" type="hidden"
 										value="{formatdate date=$EndDate key=system}" />
 								</div>
